@@ -13,10 +13,20 @@ struct CurrentUserFriendsScreen: View {
 
     @State private var showRemoveFriendConfirmation = false
     @State private var showUserSearchSheet = false
+    @State private var searchTerm = ""
+
+    var filteredFriends: [Friend] {
+        if searchTerm.isEmpty {
+            return friendManager.acceptedOrPendingFriends
+        }
+        return friendManager.acceptedOrPendingFriends.filter { friend in
+            friend.getFriend(userId: profileManager.id).preferredName.contains(searchTerm)
+        }
+    }
 
     var body: some View {
         List {
-            ForEach(friendManager.acceptedOrPendingFriends) { friend in
+            ForEach(filteredFriends) { friend in
                 FriendListItemView(profile: friend.getFriend(userId: profileManager.profile.id)) {
                     HStack {
                         if friend.status == Friend.Status.pending {
@@ -88,6 +98,7 @@ struct CurrentUserFriendsScreen: View {
         .listStyle(.insetGrouped)
         .navigationTitle("Friends (\(friendManager.friends.count))")
         .navigationBarTitleDisplayMode(.inline)
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {
                 await friendManager.refresh(withFeedback: true)

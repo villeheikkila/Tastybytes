@@ -5,8 +5,10 @@ struct FriendsScreen: View {
     private let logger = Logger(category: "FriendsScreen")
     @Environment(Repository.self) private var repository
     @Environment(FriendManager.self) private var friendManager
+    @Environment(ProfileManager.self) private var profileManager
     @Environment(FeedbackManager.self) private var feedbackManager
     @State private var friends: [Friend]
+    @State private var searchTerm = ""
 
     let profile: Profile
 
@@ -15,30 +17,40 @@ struct FriendsScreen: View {
         _friends = State(wrappedValue: initialFriends ?? [])
     }
 
+    var filteredFriends: [Friend] {
+        if searchTerm.isEmpty {
+            return friendManager.acceptedOrPendingFriends
+        }
+        return friends.filter { friend in
+            friend.getFriend(userId: profileManager.id).preferredName.contains(searchTerm)
+        }
+    }
+
     var body: some View {
         List {
-            ForEach(friends) { friend in
+            ForEach(filteredFriends) { friend in
                 FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
             }
             .listStyle(.insetGrouped)
             .navigationTitle("Friends (\(friends.count))")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
-        .refreshable {
-            await feedbackManager.wrapWithHaptics {
-                await loadFriends()
+            .refreshable {
+                await feedbackManager.wrapWithHaptics {
+                    await loadFriends()
+                }
             }
-        }
         #endif
-        .task {
-            if friends.isEmpty {
-                await loadFriends()
-            }
-        }
-        .toolbar {
-            toolbarContent
-        }
+            .task {
+                    if friends.isEmpty {
+                        await loadFriends()
+                    }
+                }
+                .toolbar {
+                    toolbarContent
+                }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
