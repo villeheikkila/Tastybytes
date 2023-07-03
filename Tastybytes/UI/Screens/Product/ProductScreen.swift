@@ -42,14 +42,11 @@ struct ProductScreen: View {
             }
         )
         .id(resetView)
-        .overlay(
-            MaterialOverlay(alignment: .top) {
-                Text("Is this not the product you were looking for?")
-                Button("Back to search") {
-                    router.removeLast()
-                }
-            }
-        )
+        .if(loadedWithBarcode != nil, transform: { view in
+            view.overlay(
+                loadedFromBarcodeOverlay
+            )
+        })
         .task {
             if summary == nil {
                 await loadSummary()
@@ -87,6 +84,9 @@ struct ProductScreen: View {
 
     @ViewBuilder private var headerContent: some View {
         Group {
+            if loadedWithBarcode != nil {
+                Spacer(minLength: 50)
+            }
             ProductItemView(product: product, extras: [.companyLink, .logo])
             SummaryView(summary: summary)
             HStack(spacing: 0) {
@@ -135,6 +135,31 @@ struct ProductScreen: View {
             }
         }
         .listRowSeparator(.hidden)
+    }
+
+    @ViewBuilder private var loadedFromBarcodeOverlay: some View {
+        VStack {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("Not the product you were looking for?")
+                    HStack {
+                        Button("Back to search") {
+                            router.removeLast()
+                        }
+                    }
+                }
+                .padding([.top, .bottom], 10)
+                Spacer()
+                Button("Dismiss barcode notice", systemSymbol: .xCircle, action: {
+                    loadedWithBarcode = nil
+                })
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+            }
+            .padding([.leading, .trailing], 10)
+            .background(.ultraThinMaterial)
+            Spacer()
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

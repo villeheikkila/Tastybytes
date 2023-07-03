@@ -341,15 +341,14 @@ struct DiscoverScreen: View {
         switch await repository.product.search(barcode: barcode) {
         case let .success(searchResults):
             self.barcode = barcode
-            if searchResults.count == 1, let result = searchResults.first {
-                router.fetchAndNavigateTo(repository, .product(id: result.id))
-            } else {
-                await MainActor.run {
-                    withAnimation {
-                        products = searchResults
-                        isSearched = true
-                    }
+            await MainActor.run {
+                withAnimation {
+                    products = searchResults
+                    isSearched = true
                 }
+            }
+            if searchResults.count == 1, let result = searchResults.first {
+                router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }

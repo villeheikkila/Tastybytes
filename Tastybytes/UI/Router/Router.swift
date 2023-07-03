@@ -69,7 +69,7 @@ final class Router {
                 switch await repository.product.getById(id: id) {
                 case let .success(product):
                     await MainActor.run {
-                        self.navigate(screen: .product(product), resetStack: resetStack)
+                        self.navigate(screen: .productFromBarcode(product, barcode))
                     }
                 case let .failure(error):
                     await MainActor.run {
