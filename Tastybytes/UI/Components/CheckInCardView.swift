@@ -20,7 +20,6 @@ struct CheckInCardView: View {
             }
             .padding([.leading, .trailing], padding)
             checkInImage
-
             Group {
                 checkInSection
                 taggedProfilesSection
@@ -178,9 +177,12 @@ struct CheckInCardView: View {
             }
 
             if let review = checkIn.review {
-                Text(review)
-                    .fontWeight(.medium)
-                    .foregroundColor(.primary)
+                HStack {
+                    Text(review)
+                        .fontWeight(.medium)
+                        .foregroundColor(.primary)
+                    Spacer()
+                }
             }
 
             FlavorsView(flavors: checkIn.flavors)
