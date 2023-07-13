@@ -43,7 +43,7 @@ struct ProductMutationView: View {
     var body: some View {
         VStack {
             if let initialValues {
-                ProductMutationInnerView(mode: mode, initialValues: initialValues,
+                ProductMutationInnerView(mode: mode, isSheet: isSheet, initialValues: initialValues,
                                          initialBarcode: initialBarcode, onEdit: onEdit, onCreate: onCreate)
             }
         }
@@ -225,17 +225,20 @@ struct ProductMutationInnerView: View {
     @State private var barcode: Barcode?
 
     let mode: Mode
+    let isSheet: Bool
     let onEdit: (() async -> Void)?
     let onCreate: ((_ product: Product.Joined) async -> Void)?
 
     fileprivate init(
         mode: Mode,
+        isSheet: Bool,
         initialValues: ProductMutationInitialValues,
         initialBarcode: Barcode? = nil,
         onEdit: (() async -> Void)? = nil,
         onCreate: ((_ product: Product.Joined) -> Void)? = nil
     ) {
         self.mode = mode
+        self.isSheet = isSheet
         _barcode = State(wrappedValue: initialBarcode)
         self.onEdit = onEdit
         self.onCreate = onCreate
@@ -423,12 +426,14 @@ struct ProductMutationInnerView: View {
         )
         switch await repository.product.create(newProductParams: newProductParams) {
         case let .success(newProduct):
-            await MainActor.run {
-                feedbackManager.trigger(.notification(.success))
-                router.navigate(screen: .product(newProduct))
-                dismiss()
-            }
+            feedbackManager.trigger(.notification(.success))
+            router.navigate(screen: .product(newProduct))
             await onSuccess(newProduct)
+            if isSheet {
+                await MainActor.run {
+                    dismiss()
+                }
+            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))

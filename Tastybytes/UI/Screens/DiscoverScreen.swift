@@ -30,11 +30,7 @@ struct DiscoverScreen: View {
         }
     }
 
-    @Binding private var scrollToTop: Int
-
-    init(scrollToTop: Binding<Int>) {
-        _scrollToTop = scrollToTop
-    }
+    @Binding var scrollToTop: Int
 
     var body: some View {
         ScrollViewReader { proxy in
