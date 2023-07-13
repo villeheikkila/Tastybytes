@@ -138,6 +138,20 @@ struct CheckInListView<Header>: View where Header: View {
                                     showDeleteConfirmationFor = checkIn
                                 }
                             )
+                            .if(showDeleteConfirmationFor == checkIn, transform: { view in
+                                view.confirmationDialog(
+                                    "Are you sure you want to delete check-in? The data will be permanently lost.",
+                                    isPresented: $showDeleteCheckInConfirmationDialog,
+                                    titleVisibility: .visible,
+                                    presenting: showDeleteConfirmationFor
+                                ) { presenting in
+                                    ProgressButton(
+                                        "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
+                                        role: .destructive,
+                                        action: { await deleteCheckIn(checkIn: presenting) }
+                                    )
+                                }
+                            })
                             .onAppear {
                                 if checkIn == checkIns.last, isLoading != true {
                                     Task {
@@ -162,17 +176,6 @@ struct CheckInListView<Header>: View where Header: View {
                     if isContentUnavailable {
                         fetcher.emptyContentView
                     }
-                }
-                .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
-                                    isPresented: $showDeleteCheckInConfirmationDialog,
-                                    titleVisibility: .visible,
-                                    presenting: showDeleteConfirmationFor)
-                { presenting in
-                    ProgressButton(
-                        "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
-                        role: .destructive,
-                        action: { await deleteCheckIn(checkIn: presenting) }
-                    )
                 }
                 .onChange(of: scrollToTop) {
                     withAnimation {
