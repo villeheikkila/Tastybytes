@@ -41,13 +41,11 @@ struct RootView: View {
             case .signedIn:
                 AuthenticatedContent()
             case .passwordRecovery:
-                AuthenticationScreen(scene: .resetPassword)
-            case .userDeleted:
-                AuthenticationScreen(scene: .accountDeleted)
+                AuthenticationScreen(authenticationScene: .emailPassword(.resetPassword))
             case nil:
                 SplashScreen()
             default:
-                AuthenticationScreen(scene: .signIn)
+                AuthenticationScreen()
             }
             if !isMac(), splashScreenManager.state != .finished {
                 SplashScreen()
