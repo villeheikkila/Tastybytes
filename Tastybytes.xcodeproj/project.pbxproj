@@ -83,6 +83,9 @@
 		5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237E2986FAA40085522E /* CheckInListView.swift */; };
 		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
 		5C46E8642911D9FD0008F142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C46E8632911D9FD0008F142 /* Config.swift */; };
+		5C5882682A63DB5000851FA7 /* CloseButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5882672A63DB5000851FA7 /* CloseButtonView.swift */; };
+		5C58826A2A63DBB000851FA7 /* MagicLinkAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5882692A63DBB000851FA7 /* MagicLinkAuthenticationView.swift */; };
+		5C58826C2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C58826B2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift */; };
 		5C5D3AB42A3607890061B77D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5D3AB32A3607890061B77D /* RootView.swift */; };
 		5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */; };
 		5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */; };
@@ -324,6 +327,9 @@
 		5C43238029898A4C0085522E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5C46E8632911D9FD0008F142 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		5C46E8662911E5860008F142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5C5882672A63DB5000851FA7 /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
+		5C5882692A63DBB000851FA7 /* MagicLinkAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLinkAuthenticationView.swift; sourceTree = "<group>"; };
+		5C58826B2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPasswordAuthenticationView.swift; sourceTree = "<group>"; };
 		5C5D3AB32A3607890061B77D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicataProductScreen.swift; sourceTree = "<group>"; };
 		5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverScreen.swift; sourceTree = "<group>"; };
@@ -801,6 +807,22 @@
 			path = Sheets;
 			sourceTree = "<group>";
 		};
+		5C5882662A63DB3900851FA7 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				5C5882672A63DB5000851FA7 /* CloseButtonView.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		5C58826E2A63E0A300851FA7 /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				5C7C357F299AC0A6009A3C09 /* AuthenticationInput.swift */,
+			);
+			path = ViewModifier;
+			sourceTree = "<group>";
+		};
 		5C5DF97F297C148400D895CB /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -869,10 +891,8 @@
 			isa = PBXGroup;
 			children = (
 				5C0E364B292308080072EFBD /* AuthenticationScreen.swift */,
-				5C7C357F299AC0A6009A3C09 /* AuthenticationInput.swift */,
-				5C7C35EF299AE656009A3C09 /* EmailTextFieldView.swift */,
-				5C7C35F1299AE67B009A3C09 /* UsernameTextFieldView.swift */,
-				5C7C35F3299AE69D009A3C09 /* PasswordTextFieldView.swift */,
+				5C5882692A63DBB000851FA7 /* MagicLinkAuthenticationView.swift */,
+				5C58826B2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -1044,6 +1064,10 @@
 		5C9968542A3B996200EEE993 /* Input */ = {
 			isa = PBXGroup;
 			children = (
+				5C58826E2A63E0A300851FA7 /* ViewModifier */,
+				5C7C35F1299AE67B009A3C09 /* UsernameTextFieldView.swift */,
+				5C7C35EF299AE656009A3C09 /* EmailTextFieldView.swift */,
+				5C7C35F3299AE69D009A3C09 /* PasswordTextFieldView.swift */,
 				5C9968552A3B997000EEE993 /* ScanTextField.swift */,
 			);
 			path = Input;
@@ -1267,6 +1291,7 @@
 		5CFB562D28F5969300F13A1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5C5882662A63DB3900851FA7 /* Buttons */,
 				5C663F22292DFF66006F9A97 /* AppLogoView.swift */,
 				5C663F24292E0100006F9A97 /* AppNameView.swift */,
 				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
@@ -1486,6 +1511,7 @@
 				5C919E1A28FEE2DE0055CFD2 /* FriendSheet.swift in Sources */,
 				5C323E8F298C500400B005A9 /* URL+Extension.swift in Sources */,
 				5C367EB629A3F87C000A7149 /* AppDelegate.swift in Sources */,
+				5C58826A2A63DBB000851FA7 /* MagicLinkAuthenticationView.swift in Sources */,
 				5CDC9F9329E3D91600B6082F /* NewFlavorSheet.swift in Sources */,
 				5CDCAE202A33BF2E00EA7824 /* ProfileShareLinkView.swift in Sources */,
 				5CB4E03229E093AA00135ADA /* ReportButtonView.swift in Sources */,
@@ -1596,6 +1622,7 @@
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,
 				5CA375682A13D4C3000DF444 /* AccountDeletedScreen.swift in Sources */,
 				5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */,
+				5C5882682A63DB5000851FA7 /* CloseButtonView.swift in Sources */,
 				5C66745129C64A4C005380B7 /* PhotosUI+Extension.swift in Sources */,
 				5C7C3593299AC426009A3C09 /* ScalingButton.swift in Sources */,
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
@@ -1604,6 +1631,7 @@
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C32C40E29E715B2008CE8A9 /* NavigatablePath.swift in Sources */,
 				5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */,
+				5C58826C2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift in Sources */,
 				5C7C35E0299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift in Sources */,
 				5C32C40C29E7150D008CE8A9 /* RouterLink.swift in Sources */,
 				5CBC2452297C60AE00A0002B /* ProfileScreen.swift in Sources */,
