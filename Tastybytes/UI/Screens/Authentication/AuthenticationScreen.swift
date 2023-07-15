@@ -218,7 +218,7 @@ struct EmailPasswordAuthenticationModal: View {
         .padding([.leading, .trailing], 16)
         .toolbar {
             ToolbarItemGroup(placement: .topBarLeading) {
-                Text(scene.primaryLabel)
+                Text(scene.title)
                     .font(.headline)
             }
             ToolbarItemGroup(placement: .topBarTrailing) {
