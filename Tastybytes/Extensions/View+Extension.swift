@@ -47,7 +47,7 @@ extension View {
     }
 }
 
-public extension View {
+extension View {
     func onChange<Value>(
         of value: Value,
         debounceTime: TimeInterval,
@@ -74,7 +74,7 @@ private struct DebouncedChangeViewModifier<Value>: ViewModifier where Value: Equ
     }
 }
 
-public extension Task {
+extension Task {
     @discardableResult
     static func delayed(
         seconds: TimeInterval,

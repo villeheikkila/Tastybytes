@@ -3,12 +3,12 @@ import SwiftUI
 actor ImageLoader {
     private var images: [URLRequest: LoaderStatus] = [:]
 
-    public func fetch(_ url: URL) async throws -> UIImage {
+    func fetch(_ url: URL) async throws -> UIImage {
         let request = URLRequest(url: url)
         return try await fetch(request)
     }
 
-    public func fetch(_ urlRequest: URLRequest) async throws -> UIImage {
+    func fetch(_ urlRequest: URLRequest) async throws -> UIImage {
         if let status = images[urlRequest] {
             return switch status {
             case let .fetched(image):

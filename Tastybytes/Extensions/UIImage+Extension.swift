@@ -13,7 +13,7 @@ extension UIImage {
 }
 
 extension UIImage {
-    public func blurHash(numberOfComponents components: (Int, Int)) -> String? {
+    func blurHash(numberOfComponents components: (Int, Int)) -> String? {
         let pixelWidth = Int(round(size.width))
         let pixelHeight = Int(round(size.height))
 
@@ -175,7 +175,7 @@ private func pow(_ base: Int, _ exponent: Int) -> Int {
     (0 ..< exponent).reduce(1) { value, _ in value * base }
 }
 
-public extension UIImage {
+extension UIImage {
     convenience init?(blurHash: String, size: CGSize, punch: Float = 1) {
         guard blurHash.count >= 6 else { return nil }
 
