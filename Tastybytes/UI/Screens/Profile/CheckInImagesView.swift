@@ -27,7 +27,6 @@ struct CheckInImagesView: View {
                 }
             }
         }
-        .scrollPosition(initialAnchor: .init(x: 0.05, y: 0))
         .task {
             await fetchImages()
         }

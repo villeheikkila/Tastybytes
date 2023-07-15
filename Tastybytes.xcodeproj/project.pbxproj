@@ -112,6 +112,7 @@
 		5C6E10712A210FFA00079F8E /* PermissionOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E10702A210FFA00079F8E /* PermissionOnboarding.swift */; };
 		5C6E10732A235ED000079F8E /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E10722A235ED000079F8E /* PermissionManager.swift */; };
 		5C73CD0E29E5ED2100A31F45 /* VerificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C73CD0D29E5ED2100A31F45 /* VerificationButton.swift */; };
+		5C73D9B52A63239A008BDFB9 /* SignInWithAppleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C73D9B42A63239A008BDFB9 /* SignInWithAppleView.swift */; };
 		5C7503C12A3902A000069E59 /* SendMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7503C02A3902A000069E59 /* SendMailView.swift */; };
 		5C7881F22A0AAFC400AF29EE /* MergeLocationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7881F12A0AAFC400AF29EE /* MergeLocationSheet.swift */; };
 		5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */; };
@@ -352,6 +353,7 @@
 		5C6E10702A210FFA00079F8E /* PermissionOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionOnboarding.swift; sourceTree = "<group>"; };
 		5C6E10722A235ED000079F8E /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		5C73CD0D29E5ED2100A31F45 /* VerificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationButton.swift; sourceTree = "<group>"; };
+		5C73D9B42A63239A008BDFB9 /* SignInWithAppleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleView.swift; sourceTree = "<group>"; };
 		5C7503C02A3902A000069E59 /* SendMailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailView.swift; sourceTree = "<group>"; };
 		5C7881F12A0AAFC400AF29EE /* MergeLocationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeLocationSheet.swift; sourceTree = "<group>"; };
 		5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserFriendsScreenView.swift; sourceTree = "<group>"; };
@@ -1297,6 +1299,7 @@
 				5C0E365B292ADA290072EFBD /* SummaryView.swift */,
 				5C73CD0D29E5ED2100A31F45 /* VerificationButton.swift */,
 				5CDCAE272A34596400EA7824 /* WrappingHStack.swift */,
+				5C73D9B42A63239A008BDFB9 /* SignInWithAppleView.swift */,
 				5CAC99832A3611FA003729C6 /* Camera */,
 				5C0595EC2A38B9B40067F46C /* ContentUnavailable */,
 				5C9FD5632A36685700ED2CEF /* ContextMenu */,
@@ -1502,6 +1505,7 @@
 				5CED432028FAB5F5003F8194 /* View+Extension.swift in Sources */,
 				5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */,
 				5C9968562A3B997000EEE993 /* ScanTextField.swift in Sources */,
+				5C73D9B52A63239A008BDFB9 /* SignInWithAppleView.swift in Sources */,
 				5C353CC429A2A5A50067C4EE /* ProfileStatisticsView.swift in Sources */,
 				5C964DBC2A2BE44400805199 /* UserDefaults.swift in Sources */,
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
@@ -1960,8 +1964,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase-community/supabase-swift";
 			requirement = {
-				kind = versionRange;
-				maximumVersion = 2.0.0;
+				kind = upToNextMajorVersion;
 				minimumVersion = 0.1.0;
 			};
 		};

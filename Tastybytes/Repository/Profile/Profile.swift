@@ -86,7 +86,7 @@ extension Profile {
 extension Profile {
     struct Extended: Identifiable, Codable, Sendable, AvatarURL {
         let id: UUID
-        let username: String
+        let username: String?
         let firstName: String?
         let lastName: String?
         let joinedAt: Date
@@ -100,7 +100,7 @@ extension Profile {
 
         init(
             id: UUID,
-            username: String,
+            username: String?,
             joinedAt: Date,
             isPrivate: Bool,
             isOnboarded: Bool,
@@ -128,8 +128,8 @@ extension Profile {
 
         func copyWith(
             username: String? = nil,
-            firstName: String?? = nil,
-            lastName: String?? = nil,
+            firstName: String? = nil,
+            lastName: String? = nil,
             joinedAt: Date? = nil,
             isPrivate: Bool? = nil,
             isOnboarded: Bool? = nil,
@@ -156,7 +156,13 @@ extension Profile {
         }
 
         var profile: Profile {
-            Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarFile: avatarFile, joinedAt: joinedAt)
+            Profile(
+                id: id,
+                preferredName: preferredName,
+                isPrivate: isPrivate,
+                avatarFile: avatarFile,
+                joinedAt: joinedAt
+            )
         }
 
         enum CodingKeys: String, CodingKey, CaseIterable {
@@ -178,7 +184,7 @@ extension Profile {
         init(from decoder: Decoder) throws {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             id = try values.decode(UUID.self, forKey: .id)
-            username = try values.decode(String.self, forKey: .username)
+            username = try values.decodeIfPresent(String.self, forKey: .username)
             let joinedAtRaw = try values.decode(String.self, forKey: .joinedAt)
 
             if let date = CustomDateFormatter.shared.parse(string: joinedAtRaw, .date) {
@@ -186,7 +192,7 @@ extension Profile {
             } else {
                 joinedAt = Date()
             }
-            preferredName = try values.decode(String.self, forKey: .preferredName)
+            preferredName = try values.decodeIfPresent(String.self, forKey: .preferredName) ?? ""
             isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
             isOnboarded = try values.decode(Bool.self, forKey: .isOnboarded)
             firstName = try values.decodeIfPresent(String.self, forKey: .firstName)

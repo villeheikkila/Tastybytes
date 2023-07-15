@@ -1,5 +1,6 @@
 import GoTrue
 import Supabase
+@_spi(Experimental) import GoTrue
 
 protocol AuthRepository {
     func getUser() async -> Result<User, Error>
@@ -8,6 +9,7 @@ protocol AuthRepository {
     func sendMagicLink(email: String) async -> Result<Void, Error>
     func signUp(username: String, email: String, password: String) async -> Result<Void, Error>
     func signIn(email: String, password: String) async -> Result<Void, Error>
+    func signInWithApple(token: String) async -> Result<Void, Error>
     func sendPasswordResetEmail(email: String) async -> Result<Void, Error>
     func updatePassword(newPassword: String) async -> Result<Void, Error>
 }
@@ -18,7 +20,6 @@ struct SupabaseAuthRepository: AuthRepository {
     func getUser() async -> Result<User, Error> {
         do {
             let response = try await client.auth.session.user
-
             return .success(response)
         } catch {
             return .failure(error)
@@ -30,6 +31,21 @@ struct SupabaseAuthRepository: AuthRepository {
             try await client
                 .auth
                 .signOut()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func signInWithApple(token: String) async -> Result<Void, Error> {
+        do {
+            try await client.auth.signInWithIdToken(
+                credentials: .init(
+                    provider: .apple,
+                    idToken: token
+                )
+            )
 
             return .success(())
         } catch {

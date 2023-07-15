@@ -1,14 +1,33 @@
 import OSLog
 import SwiftUI
 
+enum AuthenticationModalMode: String, Identifiable {
+    var id: String {
+        rawValue
+    }
+
+    case emailPassword, magicLink
+
+    var height: Double {
+        switch self {
+        case .emailPassword:
+            400
+        case .magicLink:
+            200
+        }
+    }
+}
+
 struct AuthenticationScreen: View {
     private let logger = Logger(category: "AuthenticationScreen")
     @Environment(Repository.self) private var repository
     @Environment(SplashScreenManager.self) private var splashScreenManager
     @Environment(FeedbackManager.self) private var feedbackManager
     @FocusState private var focusedField: Field?
-    @State private var scene: Scene
+    @State var scene: Scene
     @State private var isLoading = false
+    @State private var showAlternativeSignInMethods = false
+    @State private var signInModalMode: AuthenticationModalMode?
     @State private var email = ""
     @State private var username = ""
     @State private var isValidNewPassword = false
@@ -22,10 +41,6 @@ struct AuthenticationScreen: View {
         didSet {
             passwordCheck()
         }
-    }
-
-    init(scene: Scene) {
-        _scene = State(wrappedValue: scene)
     }
 
     func setScene(_ scene: Scene) {
@@ -49,33 +64,70 @@ struct AuthenticationScreen: View {
         @Bindable var feedbackManager = feedbackManager
         VStack(spacing: scene == .signUp ? 4 : 20) {
             projectLogo
-            if scene == .signUp {
-                UsernameTextFieldView(username: $username)
-                    .focused($focusedField, equals: .username)
-            }
-            if [.signIn, .signUp, .accountDeleted, .magicLink, .forgotPassword].contains(scene) {
-                EmailTextFieldView(email: $email)
-                    .focused($focusedField, equals: .email)
-            }
-            if [.signIn, .signUp, .resetPassword].contains(scene) {
-                PasswordTextFieldView(
-                    password: $password,
-                    mode: scene == .signIn ? .password : .newPassword
-                )
-                .focused($focusedField, equals: .password)
-            }
-            if scene == .resetPassword {
-                PasswordTextFieldView(password: $passwordConfirmation, mode: .confirmPassword)
-                    .focused($focusedField, equals: .resetPassword)
-            }
-
             if scene == .accountDeleted {
                 accountDeletion
             }
-            actions
+            SignInWithAppleView()
+            Button("Alternative Sign-in Methods") {
+                showAlternativeSignInMethods.toggle()
+            }
         }
         .padding(40)
         .frame(maxWidth: 500)
+        .sheet(item: $signInModalMode) { modal in
+            NavigationStack {
+                switch modal {
+                case .emailPassword:
+                    ScrollView {
+                        if scene == .signUp {
+                            UsernameTextFieldView(username: $username)
+                                .focused($focusedField, equals: .username)
+                        }
+                        if [.signIn, .signUp, .accountDeleted, .magicLink, .forgotPassword].contains(scene) {
+                            EmailTextFieldView(email: $email)
+                                .focused($focusedField, equals: .email)
+                        }
+                        if [.signIn, .signUp, .resetPassword].contains(scene) {
+                            PasswordTextFieldView(
+                                password: $password,
+                                mode: scene == .signIn ? .password : .newPassword
+                            )
+                            .focused($focusedField, equals: .password)
+                        }
+                        if scene == .resetPassword {
+                            PasswordTextFieldView(password: $passwordConfirmation, mode: .confirmPassword)
+                                .focused($focusedField, equals: .resetPassword)
+                        }
+                        actions
+                    }
+                    .padding([.leading, .trailing], 16)
+                    .navigationTitle("Sign In")
+                    .navigationBarTitleDisplayMode(.inline)
+                case .magicLink:
+                    VStack {
+                        EmailTextFieldView(email: $email)
+                            .focused($focusedField, equals: .email)
+                        primaryAction
+                    }
+                    .padding([.leading, .trailing], 16)
+                    .navigationTitle("Magic Link")
+                    .navigationBarTitleDisplayMode(.inline)
+                }
+            }
+            .presentationDetents([.height(modal.height)])
+            .presentationBackground(.thinMaterial)
+        }
+        .confirmationDialog("Alternative Sign-in Methods",
+                            isPresented: $showAlternativeSignInMethods,
+                            titleVisibility: .visible)
+        {
+            Button("Email & Password") {
+                signInModalMode = .emailPassword
+            }
+            Button("Magic Link") {
+                signInModalMode = .magicLink
+            }
+        }
         .task {
             await splashScreenManager.dismiss()
         }
@@ -117,23 +169,27 @@ struct AuthenticationScreen: View {
         }
     }
 
+    private var primaryAction: some View {
+        Button(action: { primaryActionTapped() }, label: {
+            HStack(spacing: 8) {
+                if isLoading {
+                    ProgressView()
+                }
+                Text(scene.primaryLabel).bold()
+            }
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+            )
+        })
+        .disabled(isLoading || (scene == .resetPassword && !isValidNewPassword))
+    }
+
     private var actions: some View {
         VStack(spacing: 12) {
-            Button(action: { primaryActionTapped() }, label: {
-                HStack(spacing: 8) {
-                    if isLoading {
-                        ProgressView()
-                    }
-                    Text(scene.primaryLabel).bold()
-                }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 6, style: .continuous)
-                )
-            })
-            .disabled(isLoading || (scene == .resetPassword && !isValidNewPassword))
+            primaryAction
 
             if scene == .forgotPassword {
                 HStack {
@@ -149,12 +205,6 @@ struct AuthenticationScreen: View {
                         : "Do you have an account? Sign in"
                 ) {
                     setScene(scene == .signIn ? .signUp : .signIn)
-                }
-            }
-
-            if scene == .signIn {
-                Button("Sign in with magic link") {
-                    setScene(.magicLink)
                 }
             }
 

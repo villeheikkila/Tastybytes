@@ -130,7 +130,6 @@ struct ProductScreen: View {
                         }
                     }
                 }
-                .scrollPosition(initialAnchor: .init(x: 0.05, y: 0))
                 .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
             }
         }

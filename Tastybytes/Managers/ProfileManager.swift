@@ -53,7 +53,7 @@ final class ProfileManager: ObservableObject {
 
     var username: String {
         if let extendedProfile {
-            return extendedProfile.username
+            return extendedProfile.username ?? ""
         } else {
             fatalError("username can only be used on authenticated routes.")
         }
