@@ -43,3 +43,25 @@ func getPagination(page: Int, size: Int) -> (Int, Int) {
     let to = from + size
     return (from, to)
 }
+
+func clearTemporaryData() {
+    let logger = Logger(category: "TempDataCleanUp")
+    // Reset tab restoration
+    UserDefaults.standard.removeObject(for: .selectedTab)
+
+    // Reset NavigationStack restoration
+    let fileManager = FileManager.default
+    let filesToDelete = Tab.allCases.map(\.cachesPath)
+    do {
+        let directoryContents = try fileManager.contentsOfDirectory(
+            at: URL.cachesDirectory,
+            includingPropertiesForKeys: nil,
+            options: []
+        )
+        for file in directoryContents where filesToDelete.contains(file.lastPathComponent) {
+            try fileManager.removeItem(at: file)
+        }
+    } catch {
+        logger.error("Failed to delete navigation stack state restoration files. Error: \(error) (\(#file):\(#line))")
+    }
+}

@@ -165,7 +165,10 @@ final class ProfileManager: ObservableObject {
     }
 
     func logOut() async {
-        if case let .failure(error) = await repository.auth.logOut() {
+        switch await repository.auth.logOut() {
+        case .success():
+            clearTemporaryData()
+        case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
             logger.error("Failed to log out. Error: \(error) (\(#file):\(#line))")

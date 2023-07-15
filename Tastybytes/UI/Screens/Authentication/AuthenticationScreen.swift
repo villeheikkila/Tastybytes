@@ -107,7 +107,21 @@ struct AuthenticationScreen: View {
                     VStack {
                         EmailTextFieldView(email: $email)
                             .focused($focusedField, equals: .email)
-                        primaryAction
+                        ProgressButton(action: { await signUpWithMagicLink() }, actionOptions: Set(), label: {
+                            HStack(spacing: 8) {
+                                if isLoading {
+                                    ProgressView()
+                                }
+                                Text(scene.primaryLabel).bold()
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                            )
+                        })
+                        .disabled(isLoading)
                     }
                     .padding([.leading, .trailing], 16)
                     .navigationTitle("Magic Link")
@@ -284,6 +298,21 @@ struct AuthenticationScreen: View {
 
             isLoading = false
         }
+    }
+
+    func signUpWithMagicLink() async {
+        isLoading = true
+        switch await repository.auth.sendMagicLink(email: email) {
+        case .success:
+            feedbackManager.toggle(.success("Magic link sent!"))
+        case let .failure(error):
+            feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+            logger
+                .error(
+                    "Error occured when trying to log in with magic link. Error: \(error) (\(#file):\(#line))"
+                )
+        }
+        isLoading = false
     }
 }
 

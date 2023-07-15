@@ -57,7 +57,7 @@ struct SupabaseAuthRepository: AuthRepository {
         do {
             try await client
                 .auth
-                .signInWithOTP(email: email, shouldCreateUser: false)
+                .signInWithOTP(email: email, shouldCreateUser: true)
 
             return .success(())
         } catch {
