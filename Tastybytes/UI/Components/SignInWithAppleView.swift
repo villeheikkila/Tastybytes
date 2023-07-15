@@ -21,8 +21,7 @@ struct SignInWithAppleView: View {
     }
 
     private func handleAuthorizationResult(_ result: Result<ASAuthorization, Error>) async {
-        switch result {
-        case let .success(asAuthorization):
+        if case let .success(asAuthorization) = result {
             guard let credential = asAuthorization.credential as? ASAuthorizationAppleIDCredential,
                   let tokenData = credential.identityToken else { return }
             let token = String(decoding: tokenData, as: UTF8.self)
@@ -34,12 +33,6 @@ struct SignInWithAppleView: View {
                         "Error occured when trying to sign in with Apple . Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))"
                     )
             }
-        case let .failure(error):
-            feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-            logger
-                .error(
-                    "Error while requesting sign in with Apple. Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))"
-                )
         }
     }
 }

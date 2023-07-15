@@ -101,7 +101,30 @@ struct AuthenticationScreen: View {
                         actions
                     }
                     .padding([.leading, .trailing], 16)
-                    .navigationTitle("Sign In")
+                    .toolbar {
+                        ToolbarItemGroup(placement: .topBarLeading) {
+                            Text(scene.primaryLabel)
+                                .font(.headline)
+                        }
+                        ToolbarItemGroup(placement: .topBarTrailing) {
+                            Button(action: {
+                                signInModalMode = nil
+                            }, label: {
+                                Circle()
+                                    .fill(Color(.secondarySystemBackground))
+                                    .frame(width: 30,
+                                           height: 30)
+                                    .overlay(
+                                        Image(systemName: "xmark")
+                                            .font(.system(size: 12, weight: .bold,
+                                                          design: .rounded))
+                                            .foregroundColor(.secondary)
+                                    )
+                            })
+                            .buttonStyle(PlainButtonStyle())
+                            .accessibilityLabel(Text("Close"))
+                        }
+                    }
                     .navigationBarTitleDisplayMode(.inline)
                 case .magicLink:
                     VStack {
