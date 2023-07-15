@@ -73,7 +73,8 @@ struct RatingChartView: View {
     }
 
     private func updateSelectedRating(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
-        let xPosition = location.x - geometry[proxy.plotAreaFrame].origin.x
+        guard let plotFrame = proxy.plotFrame else { return }
+        let xPosition = location.x - geometry[plotFrame].origin.x
         guard let value: String = proxy.value(atX: xPosition), let rating = Double(value) else {
             return
         }

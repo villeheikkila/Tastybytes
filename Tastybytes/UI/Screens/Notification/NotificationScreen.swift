@@ -59,14 +59,19 @@ struct NotificationScreen: View {
                     await notificationManager.deleteFromIndex(at: index)
                 } })
             }
+            #if !targetEnvironment(macCatalyst)
+            .refreshable {
+                await notificationManager.refresh(reset: true, withFeedback: true)
+            }
+            #endif
             .onChange(of: scrollToTop) {
-                withAnimation {
-                    filter = nil
-                    if let first = filteredNotifications.first {
-                        scrollProxy.scrollTo(first.id, anchor: .top)
+                    withAnimation {
+                        filter = nil
+                        if let first = filteredNotifications.first {
+                            scrollProxy.scrollTo(first.id, anchor: .top)
+                        }
                     }
                 }
-            }
         }
         .task {
             await notificationManager.refresh(reset: true)
@@ -74,21 +79,16 @@ struct NotificationScreen: View {
         .task {
             await splashScreenManager.dismiss()
         }
-        #if !targetEnvironment(macCatalyst)
-        .refreshable {
-            await notificationManager.refresh(reset: true, withFeedback: true)
-        }
-        #endif
         .navigationTitle(filter?.label ?? "Notifications")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                toolbarContent
-            }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
+            toolbarContent
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 ProgressButton("Mark all read", systemSymbol: .envelopeOpen, action: {
                     feedbackManager.trigger(.impact(intensity: .low))
