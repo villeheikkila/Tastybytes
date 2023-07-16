@@ -42,6 +42,7 @@ struct AvatarOnboarding: View {
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .scrollDisabled(true)
+        .simultaneousGesture(DragGesture())
         .accessibility(hidden: true)
     }
 }

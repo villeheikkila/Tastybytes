@@ -6,21 +6,22 @@ struct WelcomeOnboarding: View {
     let nextTab: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 60) {
+        VStack(alignment: .leading) {
             HStack {
                 Spacer()
                 appIcon
                 Spacer()
             }
-            VStack(alignment: .leading, spacing: 30) {
+            .padding()
+            VStack(alignment: .leading) {
                 ForEach(features, id: \.self) { feature in
                     feature.view
                 }
             }
-            .padding(.horizontal)
+            .padding()
             Spacer()
         }
-        .padding(.top, 40)
+        .padding(.top, 50)
         .modifier(OnboardingContinueButtonModifier(title: "Continue", onClick: {
             nextTab()
         }))
@@ -40,20 +41,26 @@ struct WelcomeOnboarding: View {
     ),
     FeatureItem(
         title: "Statistics",
-        description: "See overview on your tasting habits",
+        description: "See the overview of your tasting habits and locations",
         systemSymbol: .chartXyaxisLine,
         color: .orange
+    ),
+    FeatureItem(
+        title: "Wishlist",
+        description: "Explore, save, indulge.",
+        systemSymbol: .heartFill,
+        color: .red
     )]
 
     var appIcon: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 18) {
             Image(AppIcon.ramune.logo)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 80, height: 80, alignment: .center)
+                .frame(width: 60, height: 60, alignment: .center)
                 .accessibility(hidden: true)
 
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(Config.appName)
                     .font(.title)
                     .fontWeight(.bold)
@@ -72,22 +79,26 @@ struct FeatureItem: Hashable {
     let color: Color
 
     @ViewBuilder var view: some View {
-        HStack(alignment: .center, spacing: 30) {
-            Image(systemSymbol: systemSymbol)
-                .font(.largeTitle)
-                .frame(width: 60)
-                .accessibility(hidden: true)
-                .foregroundColor(color)
+        HStack(alignment: .center) {
+            HStack {
+                Image(systemSymbol: systemSymbol)
+                    .font(.system(size: 50))
+                    .frame(width: 50)
+                    .foregroundColor(color)
+                    .padding()
+                    .accessibility(hidden: true)
+                    .foregroundColor(color)
 
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.title3)
-                    .foregroundColor(.primary)
+                VStack(alignment: .leading) {
+                    Text(title)
+                        .bold()
+                        .foregroundColor(.primary)
 
-                Text(description)
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                    Text(description)
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
         }
     }

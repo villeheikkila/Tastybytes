@@ -67,7 +67,7 @@ enum Config {
 
     static let feedbackEmail: String = {
         guard let email = Config.infoDictionary[Keys.Plist.feedbackEmail] as? String else {
-            fatalError("Deep link base url is not set in plist for this environment")
+            fatalError("Feedback email is not set in plist for this environment")
         }
         return email
     }()

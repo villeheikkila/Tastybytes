@@ -35,6 +35,8 @@
 	<string>${APP_NAME}</string>
 	<key>PRIVACY_POLICY_URL</key>
 	<string>${PRIVACY_POLICY_URL}</string>
+	<key>FEEDBACK_EMAIL</key>
+	<string>${FEEDBACK_EMAIL}</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Comfortaa-Bold.ttf</string>

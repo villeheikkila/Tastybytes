@@ -54,6 +54,7 @@ struct PermissionOnboarding: View {
             Text("Permissions")
                 .font(.largeTitle)
                 .fontWeight(.semibold)
+                .padding()
 
             PermissionListRow(
                 title: "Notification",
@@ -95,6 +96,7 @@ struct PermissionOnboarding: View {
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .scrollDisabled(true)
+        .simultaneousGesture(DragGesture())
         .modifier(OnboardingContinueButtonModifier(title: "Continue", onClick: {
             if let nextTab = currentTab.next {
                 withAnimation {
@@ -116,13 +118,14 @@ private struct PermissionListRow: View {
     let action: () -> Void
 
     var body: some View {
-        HStack(spacing: 16) {
+        HStack {
             Image(systemSymbol: systemSymbol)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(Color.blue)
-                .frame(width: 40, height: 40, alignment: .center)
+                .frame(width: 36, height: 36, alignment: .center)
                 .accessibility(hidden: true)
+                .padding()
 
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
@@ -133,6 +136,7 @@ private struct PermissionListRow: View {
                 }
                 HStack {
                     Text(subtitle)
+                        .font(.caption)
                         .lineLimit(nil)
                         .truncationMode(.middle)
                         .foregroundColor(.secondary)
@@ -147,6 +151,7 @@ private struct PermissionListRow: View {
                 .padding(.vertical, 6)
                 .background(Color.blue)
                 .cornerRadius(20)
+                .padding(.leading, 4)
         }
         .listRowInsets(EdgeInsets(top: 32, leading: 24, bottom: 8, trailing: 24))
         .listRowSeparator(.hidden)

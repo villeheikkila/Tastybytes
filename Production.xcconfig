@@ -4,3 +4,4 @@ SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 PRIVACY_POLICY_URL = https:/$()/tastybytes.app
 DEEP_LINK_BASE_URL = tastybytes:/$()/deeplink/
 APP_NAME = Tastybytes
+FEEDBACK_EMAIL = contact@tastybytes.app
