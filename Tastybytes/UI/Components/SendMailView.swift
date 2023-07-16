@@ -66,7 +66,7 @@ struct Email: Sendable {
     let subject: String
     let body: String
 
-    static let feedback = Email(adress: "contact@tastybytes.app",
+    static let feedback = Email(adress: Config.feedbackEmail,
                                 subject: "Feedback for \(Config.appName)",
                                 body: "")
 }

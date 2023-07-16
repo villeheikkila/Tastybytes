@@ -6,6 +6,7 @@ struct EmailPasswordAuthenticationView: View {
     @Environment(Repository.self) private var repository
     @Environment(SplashScreenManager.self) private var splashScreenManager
     @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Field?
     @State private var scene: AuthenticationScene.Scene = .signIn
     @State private var isLoading = false
@@ -121,7 +122,9 @@ struct EmailPasswordAuthenticationView: View {
             case .signIn:
                 switch await repository.auth.signIn(email: email, password: password) {
                 case .success:
-                    break
+                    await MainActor.run {
+                        dismiss()
+                    }
                 case let .failure(error):
                     feedbackManager.toggle(.error(.custom(error.localizedDescription)))
                     logger
@@ -132,6 +135,9 @@ struct EmailPasswordAuthenticationView: View {
             case .signUp:
                 switch await repository.auth.signUp(username: username, email: email, password: password) {
                 case .success:
+                    await MainActor.run {
+                        dismiss()
+                    }
                     feedbackManager.toggle(.success("Confirmation email has been sent!"))
                     onSignUp()
                 case let .failure(error):
@@ -141,6 +147,9 @@ struct EmailPasswordAuthenticationView: View {
             case .resetPassword:
                 switch await repository.auth.updatePassword(newPassword: password) {
                 case .success:
+                    await MainActor.run {
+                        dismiss()
+                    }
                     feedbackManager.toggle(.success("Confirmation email has been sent!"))
                     onSignUp()
                 case let .failure(error):
@@ -150,6 +159,9 @@ struct EmailPasswordAuthenticationView: View {
             case .forgotPassword:
                 switch await repository.auth.sendPasswordResetEmail(email: email) {
                 case .success:
+                    await MainActor.run {
+                        dismiss()
+                    }
                     feedbackManager.toggle(.success("Password reset email sent!"))
                 case let .failure(error):
                     feedbackManager.toggle(.error(.custom(error.localizedDescription)))

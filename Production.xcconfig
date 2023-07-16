@@ -1,3 +1,6 @@
 BASE_URL = https:/$()/tastybytes.app
 SUPABASE_URL = https:/$()/dmkvuqooctolvhdsubot.supabase.co
 SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRta3Z1cW9vY3RvbHZoZHN1Ym90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjUzODg1MTQsImV4cCI6MTk4MDk2NDUxNH0.KmVr-_SLfU86G5CUfaR6plT4wdgab1DHpOpFmLtJlu8
+PRIVACY_POLICY_URL = https:/$()/tastybytes.app
+DEEP_LINK_BASE_URL = tastybytes:/$()/deeplink/
+APP_NAME = Tastybytes

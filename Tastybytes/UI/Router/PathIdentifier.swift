@@ -10,7 +10,7 @@ extension URL {
     }
 
     var isDeepLink: Bool {
-        scheme == "tastybytes"
+        scheme == Config.deeplinkSchema
     }
 
     var pathIdentifier: PathIdentifier? {

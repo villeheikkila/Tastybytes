@@ -9,10 +9,16 @@ struct AuthenticationScreen: View {
     @State private var showAlternativeSignInMethods = false
     @State var authenticationScene: AuthenticationScene?
 
+    var privacyPolicyString: String =
+        "Visit [Privacy Policy](\(Config.privacyPolicyUrl)) to learn how your personal data is processed."
+
     var body: some View {
         @Bindable var feedbackManager = feedbackManager
-        VStack(spacing: 20) {
+        VStack(alignment: .center, spacing: 20) {
+            Spacing(height: 30)
             projectLogo
+            Spacer()
+            instructionSection
             signInMethods
         }
         .padding(40)
@@ -34,14 +40,21 @@ struct AuthenticationScreen: View {
     }
 
     private var projectLogo: some View {
-        VStack(alignment: .center, spacing: 24) {
-            Spacer()
+        VStack(alignment: .center, spacing: 20) {
             AppLogoView()
-            AppNameView()
-            Spacer()
+            Text(Config.appName)
+                .font(Font.custom("Comfortaa-Bold", size: 32))
+                .bold()
+            Spacing(height: 12)
         }
-        .contentShape(Rectangle())
-        .accessibilityAddTraits(.isButton)
+    }
+
+    @ViewBuilder
+    private var instructionSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Please choose how you want to sign up or sign in.")
+            Text(.init(privacyPolicyString)).font(.caption)
+        }
     }
 
     @ViewBuilder
@@ -55,7 +68,7 @@ struct AuthenticationScreen: View {
             SignInButton(type: .password, action: {
                 authenticationScene = .emailPassword(.signIn)
             })
-        }.frame(maxWidth: 400)
+        }
     }
 }
 

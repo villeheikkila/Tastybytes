@@ -5,6 +5,7 @@ struct MagicLinkAuthenticationView: View {
     private let logger = Logger(category: "MagicLinkAuthenticationView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(\.dismiss) private var dismiss
     @State private var email = ""
     @State private var isLoading = false
 
@@ -33,6 +34,9 @@ struct MagicLinkAuthenticationView: View {
         isLoading = true
         switch await repository.auth.sendMagicLink(email: email) {
         case .success:
+            await MainActor.run {
+                dismiss()
+            }
             feedbackManager.toggle(.success("Magic link sent!"))
         case let .failure(error):
             feedbackManager.toggle(.error(.custom(error.localizedDescription)))

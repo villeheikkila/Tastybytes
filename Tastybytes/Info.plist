@@ -29,6 +29,12 @@
 	<string>${SUPABASE_ANON_KEY}</string>
 	<key>SUPABASE_URL</key>
 	<string>${SUPABASE_URL}</string>
+	<key>DEEP_LINK_BASE_URL</key>
+	<string>${DEEP_LINK_BASE_URL}</string>
+	<key>APP_NAME</key>
+	<string>${APP_NAME}</string>
+	<key>PRIVACY_POLICY_URL</key>
+	<string>${PRIVACY_POLICY_URL}</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Comfortaa-Bold.ttf</string>
