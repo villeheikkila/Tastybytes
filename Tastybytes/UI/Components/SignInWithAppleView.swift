@@ -11,13 +11,12 @@ struct SignInWithAppleView: View {
     @Environment(FeedbackManager.self) private var feedbackManager
 
     var body: some View {
-        SignInWithAppleButton(onRequest: { request in
+        SignInWithAppleButton(.continue, onRequest: { request in
             request.requestedScopes = [.email, .fullName]
         }, onCompletion: { result in Task {
             await handleAuthorizationResult(result)
         }})
         .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-        .frame(width: 200, height: 50)
     }
 
     private func handleAuthorizationResult(_ result: Result<ASAuthorization, Error>) async {

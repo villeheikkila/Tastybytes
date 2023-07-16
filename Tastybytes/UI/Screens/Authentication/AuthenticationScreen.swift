@@ -13,11 +13,18 @@ struct AuthenticationScreen: View {
         @Bindable var feedbackManager = feedbackManager
         VStack(spacing: 20) {
             projectLogo
-            SignInWithAppleView()
-            alternativeSignInMethods
+            signInMethods
         }
         .padding(40)
         .frame(maxWidth: 500)
+        .sheet(item: $authenticationScene) { authenticationScene in
+            NavigationStack {
+                AuthenticationModalView(authenticationScene: authenticationScene)
+            }
+            .presentationDetents([.height(authenticationScene.height)])
+            .presentationBackground(.thinMaterial)
+            .interactiveDismissDisabled(true)
+        }
         .task {
             await splashScreenManager.dismiss()
         }
@@ -37,29 +44,18 @@ struct AuthenticationScreen: View {
         .accessibilityAddTraits(.isButton)
     }
 
-    private var alternativeSignInMethods: some View {
-        Button("Alternative Sign-in Methods", action: {
-            showAlternativeSignInMethods.toggle()
-        })
-        .sheet(item: $authenticationScene) { authenticationScene in
-            NavigationStack {
-                AuthenticationModalView(authenticationScene: authenticationScene)
-            }
-            .presentationDetents([.height(authenticationScene.height)])
-            .presentationBackground(.thinMaterial)
-            .interactiveDismissDisabled(true)
-        }
-        .confirmationDialog("Alternative Sign-in Methods",
-                            isPresented: $showAlternativeSignInMethods,
-                            titleVisibility: .visible)
-        {
-            Button("Email & Password") {
-                authenticationScene = .emailPassword(.signIn)
-            }
-            Button("Magic Link") {
+    @ViewBuilder
+    private var signInMethods: some View {
+        VStack {
+            SignInWithAppleView()
+                .frame(height: 52)
+            SignInButton(type: .magicLink, action: {
                 authenticationScene = .magicLink
-            }
-        }
+            })
+            SignInButton(type: .password, action: {
+                authenticationScene = .emailPassword(.signIn)
+            })
+        }.frame(maxWidth: 400)
     }
 }
 
