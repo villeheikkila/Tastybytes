@@ -1,3 +1,4 @@
+import NukeUI
 import OSLog
 import PhotosUI
 import SwiftUI
@@ -84,18 +85,21 @@ struct CompanyScreen: View {
         }
     }
 
+    @MainActor
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
                 if let logoUrl = company.logoUrl {
-                    AsyncImage(url: logoUrl) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 32, height: 32)
-                            .accessibility(hidden: true)
-                    } placeholder: {
-                        ProgressView()
+                    LazyImage(url: logoUrl) { state in
+                        if let image = state.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 32, height: 32)
+                                .accessibility(hidden: true)
+                        } else {
+                            ProgressView()
+                        }
                     }
                 }
                 Text(company.name)

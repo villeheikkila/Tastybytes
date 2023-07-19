@@ -1,3 +1,4 @@
+import NukeUI
 import OSLog
 import PhotosUI
 import SwiftUI
@@ -108,6 +109,7 @@ struct CheckInSheet: View {
         }
     }
 
+    @MainActor
     @ViewBuilder private var topSection: some View {
         Section {
             ProductItemView(product: product)
@@ -127,15 +129,17 @@ struct CheckInSheet: View {
                             .shadow(radius: 4)
                             .accessibilityLabel("Image of the check-in")
                     } else if let imageUrl = editCheckIn?.imageUrl {
-                        AsyncImage(url: imageUrl) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 150, alignment: .top)
-                                .shadow(radius: 4)
-                                .accessibilityLabel("Image of the check-in")
-                        } placeholder: {
-                            EmptyView()
+                        LazyImage(url: imageUrl) { state in
+                            if let image = state.image {
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: 150, alignment: .top)
+                                    .shadow(radius: 4)
+                                    .accessibilityLabel("Image of the check-in")
+                            } else {
+                                EmptyView()
+                            }
                         }
                     }
                     Spacer()

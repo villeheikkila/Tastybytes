@@ -1,3 +1,4 @@
+import NukeUI
 import SwiftUI
 
 struct CheckInCardView: View {
@@ -72,50 +73,58 @@ struct CheckInCardView: View {
         }
     }
 
+    @MainActor
     @ViewBuilder private var checkInImage: some View {
         if let imageUrl = checkIn.imageUrl {
-            AsyncImage(url: imageUrl) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 200)
-                    .clipped()
-                    .contentShape(Rectangle())
-                    .if(!isMac(), transform: { view in
-                        view
-                            .onTapGesture {
-                                showFullPicture = true
+            LazyImage(url: imageUrl) { state in
+                if let image = state.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 200)
+                        .clipped()
+                        .contentShape(Rectangle())
+                        .if(!isMac(), transform: { view in
+                            view
+                                .onTapGesture {
+                                    showFullPicture = true
+                                }
+                                .accessibility(addTraits: .isButton)
+                        })
+                        .popover(isPresented: $showFullPicture) {
+                            LazyImage(url: imageUrl) { state in
+                                if let image = state.image {
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                } else {
+                                    ProgressView()
+                                }
                             }
-                            .accessibility(addTraits: .isButton)
-                    })
-                    .popover(isPresented: $showFullPicture) {
-                        AsyncImage(url: imageUrl) { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        } placeholder: {
-                            ProgressView()
                         }
-                    }
-            } placeholder: {
-                BlurHashPlaceholder(blurHash: checkIn.blurHash, height: 200)
+                } else {
+                    BlurHashPlaceholder(blurHash: checkIn.blurHash, height: 200)
+                }
             }
             .frame(height: 200)
             .padding([.top, .bottom], spacing)
         }
     }
 
+    @MainActor
     private var productSection: some View {
         HStack(spacing: spacing) {
             if let logoUrl = checkIn.product.logoUrl {
-                AsyncImage(url: logoUrl) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 32, height: 32)
-                        .accessibility(hidden: true)
-                } placeholder: {
-                    ProgressView()
+                LazyImage(url: logoUrl) { state in
+                    if let image = state.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 32, height: 32)
+                            .accessibility(hidden: true)
+                    } else {
+                        ProgressView()
+                    }
                 }
                 .padding(.leading, padding)
             }

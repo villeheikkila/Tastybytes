@@ -1,3 +1,4 @@
+import NukeUI
 import SwiftUI
 
 struct ProductItemView: View {
@@ -17,14 +18,16 @@ struct ProductItemView: View {
     var body: some View {
         HStack(spacing: 24) {
             if extras.contains(.logo), let logoUrl = product.logoUrl {
-                AsyncImage(url: logoUrl) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 68, height: 68)
-                        .accessibility(hidden: true)
-                } placeholder: {
-                    ProgressView()
+                LazyImage(url: logoUrl) { state in
+                    if let image = state.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 68, height: 68)
+                            .accessibility(hidden: true)
+                    } else {
+                        ProgressView()
+                    }
                 }
             }
             VStack(alignment: .leading, spacing: 4) {

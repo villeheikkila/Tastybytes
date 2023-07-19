@@ -1,3 +1,4 @@
+import NukeUI
 import SwiftUI
 
 struct AvatarView: View {
@@ -7,10 +8,12 @@ struct AvatarView: View {
 
     var body: some View {
         if let avatarUrl {
-            AsyncImage(url: avatarUrl) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
+            LazyImage(url: avatarUrl) { state in
+                if let image = state.image {
+                    image.resizable()
+                } else {
+                    ProgressView()
+                }
             }
             .clipShape(Circle())
             .aspectRatio(contentMode: .fill)

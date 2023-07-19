@@ -1,3 +1,4 @@
+import NukeUI
 import SwiftUI
 
 struct CheckInEntityView: View {
@@ -33,18 +34,21 @@ struct CheckInEntityView: View {
         }
     }
 
+    @MainActor
     @ViewBuilder private var checkInImage: some View {
         if let imageUrl = checkIn.imageUrl {
             HStack {
-                AsyncImage(url: imageUrl) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 200)
-                        .clipped()
-                        .contentShape(Rectangle())
-                } placeholder: {
-                    BlurHashPlaceholder(blurHash: checkIn.blurHash, height: 200)
+                LazyImage(url: imageUrl) { state in
+                    if let image = state.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(height: 200)
+                            .clipped()
+                            .contentShape(Rectangle())
+                    } else {
+                        BlurHashPlaceholder(blurHash: checkIn.blurHash, height: 200)
+                    }
                 }.frame(height: 200)
             }
         }

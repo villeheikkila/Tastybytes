@@ -1,3 +1,4 @@
+import NukeUI
 import OSLog
 import SwiftUI
 
@@ -64,16 +65,18 @@ struct CheckInImageCellView: View {
 
     var body: some View {
         HStack {
-            AsyncImage(url: checkInImage.imageUrl) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 100, height: 100)
-                    .clipped()
-                    .cornerRadius(4)
-                    .contentShape(Rectangle())
-            } placeholder: {
-                BlurHashPlaceholder(blurHash: checkInImage.blurHash, height: 100)
+            LazyImage(url: checkInImage.imageUrl) { state in
+                if let image = state.image {
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100)
+                        .clipped()
+                        .cornerRadius(4)
+                        .contentShape(Rectangle())
+                } else {
+                    BlurHashPlaceholder(blurHash: checkInImage.blurHash, height: 100)
+                }
             }
             .frame(width: 100, height: 100)
             .onTapGesture {

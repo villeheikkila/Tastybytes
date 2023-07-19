@@ -1,3 +1,4 @@
+import NukeUI
 import OSLog
 import PhotosUI
 import SwiftUI
@@ -58,6 +59,7 @@ struct EditCompanySheet: View {
         }
     }
 
+    @MainActor
     @ViewBuilder var companyPhotoSection: some View {
         if profileManager.hasPermission(.canAddCompanyLogo) {
             Section("Logo") {
@@ -67,15 +69,17 @@ struct EditCompanySheet: View {
                     photoLibrary: .shared()
                 ) {
                     if let logoUrl = company.logoUrl {
-                        AsyncImage(url: logoUrl) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 52, height: 52)
-                                .accessibility(hidden: true)
-                        } placeholder: {
-                            Image(systemSymbol: .photo)
-                                .accessibility(hidden: true)
+                        LazyImage(url: logoUrl) { state in
+                            if let image = state.image {
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 52, height: 52)
+                                    .accessibility(hidden: true)
+                            } else {
+                                Image(systemSymbol: .photo)
+                                    .accessibility(hidden: true)
+                            }
                         }
                     } else {
                         Image(systemSymbol: .photo)
