@@ -111,9 +111,9 @@ struct ProductScreen: View {
                 .padding(.all, 6)
                 .background(Color.orange)
                 .foregroundColor(.white)
-                .cornerRadius(4, corners: [.topRight, .bottomRight])
+                .cornerRadius(3, corners: [.topRight, .bottomRight])
             }
-            .listRowInsets(.init(top: 4, leading: 6, bottom: 6, trailing: 4))
+            .listRowInsets(.init(top: 4, leading: 9, bottom: 6, trailing: 9))
 
             if !checkInImages.isEmpty {
                 ScrollView(.horizontal) {
