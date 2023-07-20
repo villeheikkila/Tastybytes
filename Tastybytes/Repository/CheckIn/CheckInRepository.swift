@@ -252,7 +252,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .upload(
                     path: "\(userId.uuidString.lowercased())/\(fileName)",
                     file: file,
-                    fileOptions: FileOptions(cacheControl: "86400")
+                    fileOptions: nil
                 )
 
             return .success(fileName)
