@@ -5,6 +5,7 @@ struct Product: Identifiable, Codable, Hashable, Sendable {
     let name: String
     let description: String?
     let isVerified: Bool
+    let isDiscontinued: Bool
     let logoFile: String?
 
     enum CodingKeys: String, CodingKey {
@@ -13,6 +14,7 @@ struct Product: Identifiable, Codable, Hashable, Sendable {
         case description
         case logoFile = "logo_file"
         case isVerified = "is_verified"
+        case isDiscontinued = "is_discontinued"
     }
 }
 

@@ -54,6 +54,8 @@ struct ProfileLocationsScreen: View {
         })
         .navigationTitle("Check-in Locations")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         .task {
             await loadCheckInlocations()
         }

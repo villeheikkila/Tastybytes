@@ -3,6 +3,7 @@ import SwiftUI
 
 struct RatingChartView: View {
     @Environment(Router.self) private var router
+    @State private var selection: String?
     let profile: Profile
     let profileSummary: ProfileSummary?
 
@@ -58,26 +59,13 @@ struct RatingChartView: View {
                     AxisValueLabel()
                 }
             }
-            .chartOverlay { proxy in
-                GeometryReader { geometry in
-                    Rectangle().fill(.clear).contentShape(Rectangle())
-                        .onTapGesture { location in
-                            updateSelectedRating(at: location,
-                                                 proxy: proxy,
-                                                 geometry: geometry)
-                        }
+            .chartXSelection(value: $selection)
+            .onChange(of: selection) { _, newValue in
+                if let newValue, let rating = Double(newValue) {
+                    router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(rating: rating)))
                 }
             }
             .frame(height: 100)
         }
-    }
-
-    private func updateSelectedRating(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
-        guard let plotFrame = proxy.plotFrame else { return }
-        let xPosition = location.x - geometry[plotFrame].origin.x
-        guard let value: String = proxy.value(atX: xPosition), let rating = Double(value) else {
-            return
-        }
-        router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(rating: rating)))
     }
 }
