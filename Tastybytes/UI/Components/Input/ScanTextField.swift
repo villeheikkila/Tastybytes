@@ -6,7 +6,7 @@ struct ScanTextField: View {
 
     var body: some View {
         HStack {
-            TextField(title, text: $text)
+            TextField(title, text: $text, axis: .vertical)
             Spacer()
             ScanTextButton(text: $text)
         }
