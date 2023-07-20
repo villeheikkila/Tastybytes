@@ -149,14 +149,14 @@ struct ProductScreen: View {
                 }
                 .padding([.top, .bottom], 10)
                 Spacer()
-                Button("Dismiss barcode notice", systemSymbol: .xCircle, action: {
+                CloseButtonView {
                     loadedWithBarcode = nil
-                })
+                }
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
             }
             .padding([.leading, .trailing], 10)
-            .background(.ultraThinMaterial)
+            .background(.thinMaterial)
             Spacer()
         }
     }
