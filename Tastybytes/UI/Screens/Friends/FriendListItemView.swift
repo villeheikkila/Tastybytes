@@ -14,18 +14,16 @@ struct FriendListItemView<RootView: View>: View {
     }
 
     var body: some View {
-        HStack(alignment: .center) {
-            RouterLink(screen: .profile(profile), asTapGesture: true) {
-                HStack {
-                    AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
-                    Text(profile.preferredName)
-                        .foregroundColor(.primary)
+        RouterLink(screen: .profile(profile), asTapGesture: true) {
+            HStack {
+                AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
+                Text(profile.preferredName)
+                    .foregroundColor(.primary)
+                if RootView.self == EmptyView.self {
+                    Spacer()
+                } else {
+                    view()
                 }
-            }
-            if RootView.self == EmptyView.self {
-                Spacer()
-            } else {
-                view()
             }
         }
         .padding([.top, .bottom], 3)

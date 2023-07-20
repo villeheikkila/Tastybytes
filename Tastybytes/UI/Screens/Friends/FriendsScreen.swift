@@ -17,18 +17,9 @@ struct FriendsScreen: View {
         _friends = State(wrappedValue: initialFriends ?? [])
     }
 
-    var filteredFriends: [Friend] {
-        if searchTerm.isEmpty {
-            return friendManager.acceptedOrPendingFriends
-        }
-        return friends.filter { friend in
-            friend.getFriend(userId: profileManager.id).preferredName.contains(searchTerm)
-        }
-    }
-
     var body: some View {
         List {
-            ForEach(filteredFriends) { friend in
+            ForEach(friends) { friend in
                 FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
             }
             .listStyle(.insetGrouped)
