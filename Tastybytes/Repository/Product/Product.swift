@@ -21,7 +21,7 @@ struct Product: Identifiable, Codable, Hashable, Sendable {
 extension Product {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "products"
-        let saved = "id, name, description, logo_file, is_verified"
+        let saved = "id, name, description, logo_file, is_verified, is_discontinued"
         let logoBucketId = "product-logos"
 
         switch queryType {
@@ -152,6 +152,7 @@ extension Product {
         let categoryId: Int
         let subcategoryIds: [Int]
         let subBrandId: Int
+        let isDiscontinued: Bool
 
         enum CodingKeys: String, CodingKey {
             case productId = "p_product_id"
@@ -160,6 +161,7 @@ extension Product {
             case categoryId = "p_category_id"
             case subcategoryIds = "p_sub_category_ids"
             case subBrandId = "p_sub_brand_id"
+            case isDiscontinued = "p_is_discontinued"
         }
 
         init(
@@ -168,13 +170,15 @@ extension Product {
             description: String?,
             categoryId: Int,
             subBrandId: Int,
-            subcategories: [Subcategory]
+            subcategories: [Subcategory],
+            isDiscontinued: Bool
         ) {
             self.productId = productId
             self.name = name
             self.description = description
             self.categoryId = categoryId
             self.subBrandId = subBrandId
+            self.isDiscontinued = isDiscontinued
             subcategoryIds = subcategories.map(\.id)
         }
     }
@@ -294,6 +298,7 @@ extension Product {
         let subBrandId: Int?
         let barcodeCode: String?
         let barcodeType: String?
+        let isDiscontinued: Bool
 
         enum CodingKeys: String, CodingKey {
             case name = "p_name"
@@ -304,6 +309,7 @@ extension Product {
             case subBrandId = "p_sub_brand_id"
             case barcodeCode = "p_barcode_code"
             case barcodeType = "p_barcode_type"
+            case isDiscontinued = "p_is_discontinued"
         }
 
         init(
@@ -313,6 +319,7 @@ extension Product {
             brandId: Int,
             subBrandId: Int?,
             subCategoryIds: [Int],
+            isDiscontinued: Bool,
             barcode: Barcode?
         ) {
             self.name = name
@@ -321,6 +328,7 @@ extension Product {
             self.subBrandId = subBrandId
             self.subCategoryIds = subCategoryIds
             self.brandId = brandId
+            self.isDiscontinued = isDiscontinued
 
             if let barcode {
                 barcodeCode = barcode.barcode
@@ -398,6 +406,7 @@ extension Product {
         let currentUserCheckIns: Int?
         let createdBy: Profile?
         let createdAt: String?
+        let isDiscontinued: Bool
 
         var logoUrl: URL? {
             guard let logoFile else { return nil }
@@ -407,12 +416,18 @@ extension Product {
         func getDisplayName(_ part: NameParts) -> String {
             switch part {
             case .full:
-                return [subBrand.brand.brandOwner.name, subBrand.brand.name, subBrand.name, name]
+                return [
+                    subBrand.brand.brandOwner.name,
+                    subBrand.brand.name,
+                    subBrand.name,
+                    name,
+                    isDiscontinued ? "(discontinued)" : nil,
+                ]
                     .joinOptionalSpace()
             case .brandOwner:
                 return subBrand.brand.brandOwner.name
             case .fullName:
-                return [subBrand.brand.name, subBrand.name, name]
+                return [subBrand.brand.name, subBrand.name, name, isDiscontinued ? "(discontinued)" : nil]
                     .joinOptionalSpace()
             }
         }
@@ -431,6 +446,7 @@ extension Product {
             case currentUserCheckIns = "current_user_check_ins"
             case createdBy = "profiles"
             case createdAt = "created_at"
+            case isDiscontinued = "is_discontinued"
         }
 
         init(
@@ -442,7 +458,8 @@ extension Product {
             subBrand: SubBrand.JoinedBrand,
             category: Category,
             subcategories: [Subcategory.JoinedCategory],
-            barcodes: [ProductBarcode]
+            barcodes: [ProductBarcode],
+            isDiscontinued: Bool
         ) {
             self.id = id
             self.name = name
@@ -453,6 +470,7 @@ extension Product {
             self.subcategories = subcategories
             self.category = category
             self.barcodes = barcodes
+            self.isDiscontinued = isDiscontinued
             currentUserCheckIns = nil
             averageRating = nil
             createdBy = nil
@@ -489,6 +507,7 @@ extension Product {
             averageRating = nil
             createdBy = nil
             createdAt = nil
+            isDiscontinued = product.isDiscontinued
         }
 
         init(
@@ -520,6 +539,7 @@ extension Product {
             averageRating = nil
             createdBy = nil
             createdAt = nil
+            isDiscontinued = product.isDiscontinued
         }
     }
 
@@ -529,13 +549,22 @@ extension Product {
         let description: String?
         let subBrandId: Int?
         let categoryId: Int?
+        let isDiscontinued: Bool?
 
-        init(id: Int?, name: String?, description: String?, subBrand: SubBrandProtocol?, category: CategoryProtocol?) {
+        init(
+            id: Int?,
+            name: String?,
+            description: String?,
+            subBrand: SubBrandProtocol?,
+            category: CategoryProtocol?,
+            isDiscontinued: Bool?
+        ) {
             self.id = id
             self.name = name
             self.description = description?.isEmpty ?? true ? nil : description
             subBrandId = subBrand?.id
             categoryId = category?.id
+            self.isDiscontinued = isDiscontinued
         }
 
         internal init(
@@ -543,13 +572,15 @@ extension Product {
             name: String? = nil,
             description: String? = nil,
             subBrandId: Int? = nil,
-            categoryId: Int? = nil
+            categoryId: Int? = nil,
+            isDiscontinued: Bool? = nil
         ) {
             self.id = id
             self.name = name
             self.description = description
             self.subBrandId = subBrandId
             self.categoryId = categoryId
+            self.isDiscontinued = isDiscontinued
         }
 
         enum CodingKeys: String, CodingKey {
@@ -558,6 +589,7 @@ extension Product {
             case description
             case categoryId = "category_id"
             case subBrandId = "sub_brand_id"
+            case isDiscontinued = "is_discontinued"
         }
 
         func diff(from joined: Joined) -> EditSuggestionRequest? {
@@ -566,11 +598,12 @@ extension Product {
                 name: joined.name == name ? nil : name,
                 description: joined.description == description ? nil : description,
                 subBrandId: joined.subBrand.id == subBrandId ? nil : subBrandId,
-                categoryId: joined.category.id == categoryId ? nil : categoryId
+                categoryId: joined.category.id == categoryId ? nil : categoryId,
+                isDiscontinued: joined.isDiscontinued == isDiscontinued ? nil : isDiscontinued
             )
 
             return diff.name != nil || diff.description != nil || diff.subBrandId != nil || diff
-                .categoryId != nil ? diff : nil
+                .categoryId != nil || diff.isDiscontinued != nil ? diff : nil
         }
     }
 
@@ -580,6 +613,7 @@ extension Product {
         let description: String?
         let logoFile: String?
         let isVerified: Bool
+        let isDiscontinued: Bool
         let category: Category
         let subcategories: [Subcategory.JoinedCategory]
 
@@ -589,6 +623,7 @@ extension Product {
             case description
             case logoFile = "logo_file"
             case isVerified = "is_verified"
+            case isDiscontinued = "is_discontinued"
             case category = "categories"
             case subcategories
         }
@@ -599,6 +634,7 @@ extension Product {
             description: String?,
             logoFile: String?,
             isVerified: Bool,
+            isDiscontinued: Bool,
             category: Category,
             subcategories: [Subcategory.JoinedCategory]
         ) {
@@ -609,6 +645,7 @@ extension Product {
             self.isVerified = isVerified
             self.category = category
             self.subcategories = subcategories
+            self.isDiscontinued = isDiscontinued
         }
     }
 }

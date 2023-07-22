@@ -187,7 +187,9 @@ struct ProductScreen: View {
                 })
                 Divider()
                 if profileManager.hasPermission(.canEditCompanies) {
-                    RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product))
+                    RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
+                        await refresh()
+                    }))
                 } else {
                     RouterLink(
                         "Edit Suggestion",

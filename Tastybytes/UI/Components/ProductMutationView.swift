@@ -146,6 +146,7 @@ struct ProductMutationView: View {
                 subBrand: initialProduct.subBrand,
                 name: initialProduct.name,
                 description: initialProduct.description.orEmpty,
+                isDiscontinued: initialProduct.isDiscontinued,
                 logoFile: initialProduct.logoFile
             )
         case let .failure(error):
@@ -167,6 +168,7 @@ private struct ProductMutationInitialValues {
     let subBrand: SubBrandProtocol?
     let name: String
     let description: String
+    let isDiscontinued: Bool
     let hasSubBrand: Bool
     let logoFile: String?
 
@@ -178,6 +180,7 @@ private struct ProductMutationInitialValues {
         subBrand: SubBrandProtocol? = nil,
         name: String = "",
         description: String = "",
+        isDiscontinued: Bool = false,
         logoFile: String? = nil
     ) {
         self.subcategories = subcategories
@@ -187,6 +190,7 @@ private struct ProductMutationInitialValues {
         self.subBrand = subBrand
         self.name = name
         self.description = description
+        self.isDiscontinued = isDiscontinued
         hasSubBrand = subBrand?.name != nil
         self.logoFile = logoFile
     }
@@ -214,6 +218,7 @@ struct ProductMutationInnerView: View {
     @State private var subBrand: SubBrandProtocol?
     @State private var name: String
     @State private var description: String
+    @State private var isDiscontinued = false
     @State private var hasSubBrand: Bool {
         didSet {
             if oldValue == true {
@@ -250,6 +255,7 @@ struct ProductMutationInnerView: View {
         _subBrand = State(initialValue: initialValues.subBrand)
         _name = State(initialValue: initialValues.name)
         _description = State(initialValue: initialValues.description)
+        _isDiscontinued = State(initialValue: initialValues.isDiscontinued)
     }
 
     var showBarcodeSection: Bool {
@@ -381,6 +387,7 @@ struct ProductMutationInnerView: View {
                     })
                 )
             }
+            Toggle("No longer in production", isOn: $isDiscontinued)
         } header: {
             Text("Product")
                 .accessibilityAddTraits(.isButton)
@@ -422,6 +429,7 @@ struct ProductMutationInnerView: View {
             brandId: brandId,
             subBrandId: subBrand?.id,
             subCategoryIds: subcategories.map(\.id),
+            isDiscontinued: isDiscontinued,
             barcode: barcode
         )
         switch await repository.product.create(newProductParams: newProductParams) {
@@ -448,7 +456,8 @@ struct ProductMutationInnerView: View {
             name: name,
             description: description,
             subBrand: subBrand,
-            category: category
+            category: category,
+            isDiscontinued: isDiscontinued
         )
 
         let diffFromCurrent = editSuggestion.diff(from: product)
@@ -485,7 +494,8 @@ struct ProductMutationInnerView: View {
             description: description,
             categoryId: category.id,
             subBrandId: subBrandWithNil.id,
-            subcategories: subcategories
+            subcategories: subcategories,
+            isDiscontinued: isDiscontinued
         )
 
         switch await repository.product.editProduct(productEditParams: productEditParams) {
