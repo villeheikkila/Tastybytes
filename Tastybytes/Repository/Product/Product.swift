@@ -8,7 +8,7 @@ struct Product: Identifiable, Codable, Hashable, Sendable {
     let isDiscontinued: Bool
     let logoFile: String?
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case name
         case description
@@ -21,7 +21,10 @@ struct Product: Identifiable, Codable, Hashable, Sendable {
 extension Product {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "products"
-        let saved = "id, name, description, logo_file, is_verified, is_discontinued"
+        let saved = Product.CodingKeys.allCases
+            .compactMap { k in k.stringValue }
+            .joinComma()
+        // let saved = "id, name, description, logo_file, is_verified, is_discontinued"
         let logoBucketId = "product-logos"
 
         switch queryType {
@@ -647,5 +650,12 @@ extension Product {
             self.subcategories = subcategories
             self.isDiscontinued = isDiscontinued
         }
+    }
+}
+
+
+extension CaseIterable where Self: RawRepresentable, Self.RawValue == String {
+    static var allValues: [String] {
+        return allCases.map { $0.rawValue }
     }
 }

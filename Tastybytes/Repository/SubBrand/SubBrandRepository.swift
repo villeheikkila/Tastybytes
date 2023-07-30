@@ -72,7 +72,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__verify_sub_brand", params: SubBrand.VerifyRequest(id: id, isVerified: isVerified))
+                .rpc(fn: .verifySubBrand, params: SubBrand.VerifyRequest(id: id, isVerified: isVerified))
                 .single()
                 .execute()
 

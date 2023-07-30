@@ -20,7 +20,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let result: Location = try await client
                 .database
-                .rpc(fn: "fnc__get_location_insert_if_not_exist", params: location)
+                .rpc(fn: .getLocationInsertIfNotExist, params: location)
                 .select(columns: Location.getQuery(.joined(false)))
                 .single()
                 .execute()
@@ -88,7 +88,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: [Location] = try await client
                 .database
-                .rpc(fn: "fnc__get_location_suggestions", params: location)
+                .rpc(fn: .getLocationSuggestions, params: location)
                 .select(columns: Location.getQuery(.joined(false)))
                 .limit(count: 10)
                 .execute()
@@ -135,7 +135,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: Summary = try await client
                 .database
-                .rpc(fn: "fnc__get_location_summary", params: Location.SummaryRequest(id: id))
+                .rpc(fn: .getLocationSummary, params: Location.SummaryRequest(id: id))
                 .select()
                 .limit(count: 1)
                 .single()
@@ -153,7 +153,7 @@ struct SupabaseLocationRepository: LocationRepository {
             try await client
                 .database
                 .rpc(
-                    fn: "fnc__merge_locations",
+                    fn: .mergeLocations,
                     params: Location.MergeLocationParams(locationId: locationId, toLocationId: toLocationId)
                 )
                 .execute()

@@ -3,7 +3,8 @@ import Supabase
 protocol NotificationRepository {
     func getAll(afterId: Int?) async -> Result<[Notification], Error>
     func getUnreadCount() async -> Result<Int, Error>
-    func refreshPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<ProfilePushNotification, Error>
+    func refreshPushNotificationToken(token: Profile.PushNotificationToken) async
+        -> Result<ProfilePushNotification, Error>
     func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
         -> Result<ProfilePushNotification, Error>
     func markRead(id: Int) async -> Result<Notification, Error>
@@ -50,11 +51,13 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    func refreshPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<ProfilePushNotification, Error> {
+    func refreshPushNotificationToken(token: Profile
+        .PushNotificationToken) async -> Result<ProfilePushNotification, Error>
+    {
         do {
             let response: ProfilePushNotification = try await client
                 .database
-                .rpc(fn: "fnc__upsert_push_notification_token", params: token)
+                .rpc(fn: .upsertPushNotificationToken, params: token)
                 .select(columns: ProfilePushNotification.getQuery(.saved(false)))
                 .limit(count: 1)
                 .single()
@@ -91,7 +94,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         do {
             let response: Notification = try await client
                 .database
-                .rpc(fn: "fnc__mark_notification_as_read", params: Notification.MarkReadRequest(id: id))
+                .rpc(fn: .markNotificationAsRead, params: Notification.MarkReadRequest(id: id))
                 .select(columns: Notification.getQuery(.joined))
                 .limit(count: 1)
                 .single()
@@ -108,7 +111,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__mark_all_notification_read")
+                .rpc(fn: .markAllNotificationRead)
                 .execute()
 
             return .success(())
@@ -121,7 +124,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         do {
             let response: [Notification] = try await client
                 .database
-                .rpc(fn: "fnc__mark_friend_request_notification_as_read")
+                .rpc(fn: .markFriendRequestNotificationAsRead)
                 .select(columns: Notification.getQuery(.joined))
                 .execute()
                 .value
@@ -137,7 +140,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response: [Notification] = try await client
                 .database
                 .rpc(
-                    fn: "fnc__mark_check_in_notification_as_read",
+                    fn: .markCheckInNotificationAsRead,
                     params: Notification.MarkCheckInReadRequest(checkInId: checkInId)
                 )
                 .select(columns: Notification.getQuery(.joined))

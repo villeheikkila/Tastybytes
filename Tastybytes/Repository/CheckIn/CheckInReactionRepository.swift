@@ -12,7 +12,7 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
         do {
             let response: CheckInReaction = try await client
                 .database
-                .rpc(fn: "fnc__create_check_in_reaction", params: newCheckInReaction)
+                .rpc(fn: .createCheckInReaction, params: newCheckInReaction)
                 .select(columns: CheckInReaction.getQuery(.joinedProfile(false)))
                 .limit(count: 1)
                 .single()
@@ -29,7 +29,7 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__soft_delete_check_in_reaction", params: CheckInReaction.DeleteRequest(id: id))
+                .rpc(fn: .softDeleteCheckInReaction, params: CheckInReaction.DeleteRequest(id: id))
                 .execute()
 
             return .success(())

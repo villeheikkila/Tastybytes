@@ -43,7 +43,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let response: Profile.Extended = try await client
                 .database
-                .rpc(fn: "fnc__get_current_profile")
+                .rpc(fn: .getCurrentProfile)
                 .select(columns: Profile.getQuery(.extended(false)))
                 .limit(count: 1)
                 .single()
@@ -112,7 +112,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let response: Contributions = try await client
                 .database
-                .rpc(fn: Contributions.getQuery(.rpcName), params: Contributions.ContributionsParams(id: userId))
+                .rpc(fn: .getContributionsByUser, params: Contributions.ContributionsParams(id: userId))
                 .select(columns: Contributions.getQuery(.value))
                 .limit(count: 1)
                 .single()
@@ -130,7 +130,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             let response: [CategoryStatistics] = try await client
                 .database
                 .rpc(
-                    fn: CategoryStatistics.getQuery(.rpcName),
+                    fn: .getCategoryStats,
                     params: CategoryStatistics.CategoryStatisticsParams(id: userId)
                 )
                 .select(columns: CategoryStatistics.getQuery(.value))
@@ -148,7 +148,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             let response: [SubcategoryStatistics] = try await client
                 .database
                 .rpc(
-                    fn: SubcategoryStatistics.getQuery(.rpcName),
+                    fn: .getSubcategoryStats,
                     params: SubcategoryStatistics.SubcategoryStatisticsParams(userId: userId, categoryId: categoryId)
                 )
                 .select(columns: SubcategoryStatistics.getQuery(.value))
@@ -165,7 +165,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let csv: String = try await client
                 .database
-                .rpc(fn: "fnc__export_data")
+                .rpc(fn: .exportData)
                 .csv()
                 .execute()
                 .value
@@ -222,7 +222,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__delete_current_user")
+                .rpc(fn: .deleteCurrentUser)
                 .execute()
 
             return .success(())
@@ -236,7 +236,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             let result: Bool = try await client
                 .database
                 .rpc(
-                    fn: "fnc__check_if_username_is_available",
+                    fn: .checkIfUsernameIsAvailable,
                     params: Profile.UsernameCheckRequest(username: username)
                 )
                 .execute()

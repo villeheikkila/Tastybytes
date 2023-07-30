@@ -30,7 +30,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response: [CheckIn] = try await client
                 .database
-                .rpc(function: .getActivityFeed)
+                .rpc(fn: .getActivityFeed)
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .range(from: from, to: to)
                 .execute()
@@ -166,7 +166,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let createdCheckIn: IntId = try await client
                 .database
-                .rpc(fn: "fnc__create_check_in", params: newCheckInParams)
+                .rpc(fn: .createCheckIn, params: newCheckInParams)
                 .select(columns: "id")
                 .limit(count: 1)
                 .single()
@@ -183,7 +183,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response: CheckIn = try await client
                 .database
-                .rpc(fn: "fnc__update_check_in", params: updateCheckInParams)
+                .rpc(fn: .updateCheckIn, params: updateCheckInParams)
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .limit(count: 1)
                 .single()
@@ -215,7 +215,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__delete_check_in_as_moderator", params: CheckIn.DeleteAsAdminRequest(checkIn: checkIn))
+                .rpc(fn: .deleteCheckInAsModerator, params: CheckIn.DeleteAsAdminRequest(checkIn: checkIn))
                 .execute()
 
             return .success(())
@@ -228,7 +228,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response: ProfileSummary = try await client
                 .database
-                .rpc(fn: "fnc__get_profile_summary", params: ProfileSummary.GetRequest(profileId: id))
+                .rpc(fn: .getProfileSummary, params: ProfileSummary.GetRequest(profileId: id))
                 .select()
                 .limit(count: 1)
                 .single()

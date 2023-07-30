@@ -83,6 +83,7 @@
 		5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237E2986FAA40085522E /* CheckInListView.swift */; };
 		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
 		5C46E8642911D9FD0008F142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C46E8632911D9FD0008F142 /* Config.swift */; };
+		5C4C95112A7645C8009E2084 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C95102A7645C7009E2084 /* Database.swift */; };
 		5C5882682A63DB5000851FA7 /* CloseButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5882672A63DB5000851FA7 /* CloseButtonView.swift */; };
 		5C58826A2A63DBB000851FA7 /* MagicLinkAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5882692A63DBB000851FA7 /* MagicLinkAuthenticationView.swift */; };
 		5C58826C2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C58826B2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift */; };
@@ -329,6 +330,7 @@
 		5C43238029898A4C0085522E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5C46E8632911D9FD0008F142 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		5C46E8662911E5860008F142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5C4C95102A7645C7009E2084 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		5C5882672A63DB5000851FA7 /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
 		5C5882692A63DBB000851FA7 /* MagicLinkAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLinkAuthenticationView.swift; sourceTree = "<group>"; };
 		5C58826B2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPasswordAuthenticationView.swift; sourceTree = "<group>"; };
@@ -1165,6 +1167,7 @@
 		5CD10A5A28F9988C0001CFC2 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				5C4C95102A7645C7009E2084 /* Database.swift */,
 				5C989DAA2901AAD500BBC5A7 /* Repository.swift */,
 				5C25C67D299568FD00C07953 /* Auth */,
 				5C25C6742995672700C07953 /* Brand */,
@@ -1492,6 +1495,7 @@
 				5CD7234629F45F83003DA030 /* NotificationScreen.swift in Sources */,
 				5C0595F22A38C9A50067F46C /* ProductShareLinkView.swift in Sources */,
 				5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */,
+				5C4C95112A7645C8009E2084 /* Database.swift in Sources */,
 				5CDC9F9929E3E1EE00B6082F /* EditCompanySheet.swift in Sources */,
 				5C0E365429279B240072EFBD /* Barcode.swift in Sources */,
 				5C6E106B2A1E014100079F8E /* TabIdentifier.swift in Sources */,

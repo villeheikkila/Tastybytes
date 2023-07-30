@@ -113,7 +113,7 @@ struct SupabaseBrandRepository: BrandRepository {
             let response: Bool = try await client
                 .database
                 .rpc(
-                    fn: "fnc__is_brand_liked_by_current_user",
+                    fn: .isBrandLikedByCurrentUser,
                     params: BrandLike.CheckIfLikedRequest(id: id)
                 )
                 .single()
@@ -160,7 +160,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__verify_brand", params: Brand.VerifyRequest(id: id, isVerified: isVerified))
+                .rpc(fn: .verifyBrand, params: Brand.VerifyRequest(id: id, isVerified: isVerified))
                 .single()
                 .execute()
 

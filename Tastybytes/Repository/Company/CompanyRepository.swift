@@ -156,7 +156,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__verify_company", params: Company.VerifyRequest(id: id, isVerified: isVerified))
+                .rpc(fn: .verifyCompany, params: Company.VerifyRequest(id: id, isVerified: isVerified))
                 .single()
                 .execute()
 
@@ -191,7 +191,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response: Summary = try await client
                 .database
-                .rpc(fn: "fnc__get_company_summary", params: Company.SummaryRequest(id: id))
+                .rpc(fn: .getCompanySummary, params: Company.SummaryRequest(id: id))
                 .select()
                 .limit(count: 1)
                 .single()

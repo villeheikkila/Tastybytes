@@ -34,7 +34,7 @@ struct SupabaseProductRepository: ProductRepository {
         let queryBuilder = client
             .database
             .rpc(
-                fn: "fnc__search_products",
+                fn: .searchProducts,
                 params: Product.SearchParams(searchTerm: searchTerm, filter: filter)
             )
             .select(columns: Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
@@ -157,7 +157,7 @@ struct SupabaseProductRepository: ProductRepository {
             let response: Bool = try await client
                 .database
                 .rpc(
-                    fn: "fnc__is_on_current_user_wishlist",
+                    fn: .isOnCurrentUserWishlist,
                     params: ProfileWishlist.CheckIfOnWishlist(id: id)
                 )
                 .single()
@@ -301,7 +301,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let product: IntId = try await client
                 .database
-                .rpc(fn: "fnc__create_product", params: newProductParams)
+                .rpc(fn: .createProduct, params: newProductParams)
                 .select(columns: "id")
                 .limit(count: 1)
                 .single()
@@ -327,7 +327,7 @@ struct SupabaseProductRepository: ProductRepository {
             try await client
                 .database
                 .rpc(
-                    fn: "fnc__merge_products",
+                    fn: .mergeProducts,
                     params: Product.MergeProductsParams(productId: productId, toProductId: toProductId)
                 )
                 .execute()
@@ -380,7 +380,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__edit_product", params: productEditParams)
+                .rpc(fn: .editProduct, params: productEditParams)
                 .execute()
                 .value
 
@@ -394,7 +394,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             try await client
                 .database
-                .rpc(fn: "fnc__verify_product", params: Product.VerifyRequest(id: id, isVerified: isVerified))
+                .rpc(fn: .verifyProduct, params: Product.VerifyRequest(id: id, isVerified: isVerified))
                 .single()
                 .execute()
 
@@ -408,7 +408,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let response: Summary = try await client
                 .database
-                .rpc(fn: "fnc__get_product_summary", params: Product.SummaryRequest(id: id))
+                .rpc(fn: .getProductSummary, params: Product.SummaryRequest(id: id))
                 .select()
                 .limit(count: 1)
                 .single()

@@ -366,13 +366,11 @@ struct Contributions: Codable, Sendable {
     }
 
     enum QueryPart {
-        case rpcName, value
+        case value
     }
 
     static func getQuery(_ queryType: QueryPart) -> String {
         switch queryType {
-        case .rpcName:
-            return "fnc__get_contributions_by_user"
         case .value:
             return "products, companies, brands, sub_brands, barcodes"
         }
@@ -398,13 +396,11 @@ struct CategoryStatistics: Identifiable, Codable, Sendable, CategoryProtocol {
     }
 
     enum QueryPart {
-        case rpcName, value
+        case value
     }
 
     static func getQuery(_ queryType: QueryPart) -> String {
         switch queryType {
-        case .rpcName:
-            return "fnc__get_category_stats"
         case .value:
             return "id, name, icon, count"
         }
@@ -431,13 +427,11 @@ struct SubcategoryStatistics: Identifiable, Codable, Sendable {
     }
 
     enum QueryPart {
-        case rpcName, value
+        case value
     }
 
     static func getQuery(_ queryType: QueryPart) -> String {
         switch queryType {
-        case .rpcName:
-            return "fnc__get_subcategory_stats"
         case .value:
             return "id, name, count"
         }
