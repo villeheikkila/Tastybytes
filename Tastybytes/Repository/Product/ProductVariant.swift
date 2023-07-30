@@ -10,7 +10,7 @@ struct ProductVariant: Identifiable, Codable, Hashable, Sendable {
 
 extension ProductVariant {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "product_variants"
+        let tableName = Database.Table.productVariants.rawValue
         let saved = "id"
 
         switch queryType {

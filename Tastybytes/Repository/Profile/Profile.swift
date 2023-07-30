@@ -53,7 +53,7 @@ struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
 
 extension Profile {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "profiles"
+        let tableName = Database.Table.profiles.rawValue
         let minimal = "id, is_private, preferred_name, avatar_file, joined_at"
         let saved =
             "id, first_name, last_name, username, avatar_file, name_display, preferred_name, is_private, is_onboarded, joined_at"
@@ -293,7 +293,7 @@ struct ProfileSettings: Identifiable, Codable, Hashable, Sendable {
 
 extension ProfileSettings {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "profile_settings"
+        let tableName = Database.Table.profileSettings.rawValue
         let saved =
             """
             id, send_reaction_notifications, send_tagged_check_in_notifications,\

@@ -144,7 +144,7 @@ extension ProductBarcode {
 
 extension ProductBarcode {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "product_barcodes"
+        let tableName = Database.Table.productBarcodes.rawValue
         let saved = "id, barcode, type"
 
         switch queryType {

@@ -35,7 +35,7 @@ struct Notification: Identifiable, Hashable {
 
 extension Notification {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "notifications"
+        let tableName = Database.Table.notifications.rawValue
         let saved = "id, message, created_at, seen_at"
 
         switch queryType {
@@ -140,7 +140,7 @@ extension Notification {
         }
 
         static func getQuery(_ queryType: QueryType) -> String {
-            let tableName = "check_in_tagged_profiles"
+            let tableName = Database.Table.checkInTaggedProfiles.rawValue
             let saved = "id"
 
             switch queryType {
@@ -248,7 +248,7 @@ struct ProfilePushNotification: Codable, Identifiable {
     }
 
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "profile_push_notifications"
+        let tableName = Database.Table.profilePushNotifications.rawValue
         let saved =
             "firebase_registration_token, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications, send_friend_request_notifications, send_comment_notifications"
 

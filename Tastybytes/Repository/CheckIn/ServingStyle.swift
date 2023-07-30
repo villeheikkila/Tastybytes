@@ -14,7 +14,7 @@ struct ServingStyle: Identifiable, Hashable, Codable, Sendable {
 
 extension ServingStyle {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "serving_styles"
+        let tableName = Database.Table.servingStyles.rawValue
         let saved = "id, name"
 
         switch queryType {

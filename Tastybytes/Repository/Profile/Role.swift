@@ -12,7 +12,7 @@ struct Role: Identifiable, Codable, Hashable, Sendable {
 
 extension Role {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "roles"
+        let tableName = Database.Table.roles.rawValue
         let saved = "id, name"
 
         switch queryType {

@@ -10,7 +10,7 @@ struct CheckInReaction: Identifiable, Codable, Hashable, Sendable {
 
 extension CheckInReaction {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "check_in_reactions"
+        let tableName = Database.Table.checkInReactions.rawValue
         let saved = "id"
 
         switch queryType {

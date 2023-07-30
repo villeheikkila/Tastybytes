@@ -24,7 +24,7 @@ struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     var imageUrl: URL? {
         guard let imageFile else { return nil }
         return URL(
-            bucketId: CheckIn.getQuery(.imageBucket),
+            bucketId: Database.Bucket.checkIns.rawValue,
             fileName: "\(profile.id.uuidString.lowercased())/\(imageFile)"
         )
     }
@@ -181,14 +181,13 @@ struct CheckIn: Identifiable, Hashable, Codable, Sendable {
 
 extension CheckIn {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "check_ins"
+        let tableName = Database.Table.checkIns.rawValue
         let fromFriendsView = "view_check_ins_from_friends"
         let image = "id, image_file, blur_hash, created_by"
         let saved = "id, rating, review, image_file, check_in_at, blur_hash"
         let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
         let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
         let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
-        let bucketId = "check-ins"
 
         switch queryType {
         case .tableName:
@@ -204,8 +203,6 @@ extension CheckIn {
             case .you:
                 return "view__check_ins_from_current_user"
             }
-        case .imageBucket:
-            return bucketId
         case let .joined(withTableName):
             return queryWithTableName(
                 tableName,
@@ -236,7 +233,6 @@ extension CheckIn {
         case tableName
         case segmentedView(CheckInSegment)
         case fromFriendsView
-        case imageBucket
         case joined(_ withTableName: Bool)
         case image(_ withTableName: Bool)
     }
@@ -252,7 +248,7 @@ extension CheckIn {
         var imageUrl: URL? {
             guard let imageFile else { return nil }
             return URL(
-                bucketId: CheckIn.getQuery(.imageBucket),
+                bucketId: Database.Bucket.checkIns.rawValue,
                 fileName: "\(createdBy.uuidString.lowercased())/\(imageFile)"
             )
         }

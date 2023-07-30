@@ -100,7 +100,7 @@ struct Report: Codable, Identifiable {
 
 extension Report {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "reports"
+        let tableName = Database.Table.reports.rawValue
         let saved = "id, message"
 
         switch queryType {

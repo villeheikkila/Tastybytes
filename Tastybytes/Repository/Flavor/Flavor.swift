@@ -9,7 +9,7 @@ struct Flavor: Identifiable, Codable, Hashable, Sendable {
 
 extension Flavor {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "flavors"
+        let tableName = Database.Table.flavors.rawValue
         let saved = "id, name"
 
         switch queryType {

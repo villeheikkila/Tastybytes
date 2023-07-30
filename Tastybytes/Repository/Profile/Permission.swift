@@ -10,7 +10,7 @@ struct Permission: Identifiable, Codable, Hashable, Sendable {
 
 extension Permission {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "permissions"
+        let tableName = Database.Table.permissions.rawValue
         let saved = "id, name"
 
         switch queryType {

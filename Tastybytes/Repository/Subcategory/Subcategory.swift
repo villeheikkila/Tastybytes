@@ -22,7 +22,7 @@ struct Subcategory: Identifiable, Codable, Hashable, Sendable, SubcategoryProtoc
 
 extension Subcategory {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "subcategories"
+        let tableName = Database.Table.subcategories.rawValue
         let saved = "id, name, is_verified"
 
         switch queryType {

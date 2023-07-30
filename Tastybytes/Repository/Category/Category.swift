@@ -18,8 +18,8 @@ struct Category: Identifiable, Codable, Hashable, CategoryProtocol {
 
 extension Category {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "categories"
-        let servingStyleTableName = "category_serving_styles"
+        let tableName = Database.Table.categories.rawValue
+        let servingStyleTableName = Database.Table.categoryServingStyles.rawValue
         let saved = "id, name, icon"
 
         switch queryType {

@@ -2,7 +2,7 @@ struct Document: Codable, Sendable {
     let document: String
 
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "documents"
+        let tableName = Database.Table.documents.rawValue
         let saved = "document"
 
         switch queryType {

@@ -28,7 +28,7 @@ enum ProfileWishlist {
     }
 
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "profile_wishlist_items"
+        let tableName = Database.Table.profileWishlistItems.rawValue
         let saved = "created_by"
 
         switch queryType {

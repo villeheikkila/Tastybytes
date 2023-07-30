@@ -20,12 +20,12 @@ struct Product: Identifiable, Codable, Hashable, Sendable {
 
 extension Product {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "products"
+        let tableName = Database.Table.products.rawValue
         let saved = Product.CodingKeys.allCases
             .compactMap { k in k.stringValue }
             .joinComma()
         // let saved = "id, name, description, logo_file, is_verified, is_discontinued"
-        let logoBucketId = "product-logos"
+        let logoBucketId = Database.Bucket.productLogos.rawValue
 
         switch queryType {
         case .tableName:
@@ -652,7 +652,6 @@ extension Product {
         }
     }
 }
-
 
 extension CaseIterable where Self: RawRepresentable, Self.RawValue == String {
     static var allValues: [String] {

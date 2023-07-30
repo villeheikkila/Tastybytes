@@ -74,7 +74,7 @@ extension Friend {
 
 extension Friend {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "friends"
+        let tableName = Database.Table.friends.rawValue
         let joined =
             """
               id, status, sender:user_id_1 (\(Profile.getQuery(.minimal(false)))),\

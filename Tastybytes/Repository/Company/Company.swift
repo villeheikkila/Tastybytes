@@ -27,7 +27,7 @@ struct Company: Identifiable, Codable, Hashable, CompanyLogo {
 
 extension Company {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "companies"
+        let tableName = Database.Table.companies.rawValue
         let editSuggestionTable = "company_edit_suggestions"
         let saved = "id, name, logo_file, is_verified"
         let logoBucketId = "logos"
@@ -43,7 +43,11 @@ extension Company {
         case let .saved(withTableName):
             return queryWithTableName(tableName, saved, withTableName)
         case let .joinedBrandSubcategoriesOwner(withTableName):
-            return queryWithTableName(tableName, [saved, owner, Brand.getQuery(.joined(true))].joinComma(), withTableName)
+            return queryWithTableName(
+                tableName,
+                [saved, owner, Brand.getQuery(.joined(true))].joinComma(),
+                withTableName
+            )
         }
     }
 

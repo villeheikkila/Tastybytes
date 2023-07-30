@@ -16,7 +16,7 @@ struct CheckInComment: Identifiable, Hashable, Codable, Sendable {
 
 extension CheckInComment {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "check_in_comments"
+        let tableName = Database.Table.checkInComments.rawValue
         let saved = "id, content, created_at"
 
         switch queryType {

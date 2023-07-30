@@ -12,7 +12,7 @@ struct Country: Hashable, Codable, Sendable {
 
 extension Country {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "countries"
+        let tableName = Database.Table.countries.rawValue
         let saved = "country_code, name, emoji"
 
         switch queryType {

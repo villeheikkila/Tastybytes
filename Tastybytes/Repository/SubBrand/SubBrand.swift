@@ -32,7 +32,7 @@ struct SubBrand: Identifiable, Hashable, Codable, Sendable, Comparable, SubBrand
 
 extension SubBrand {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "sub_brands"
+        let tableName = Database.Table.subBrands.rawValue
         let saved = "id, name, is_verified"
 
         switch queryType {

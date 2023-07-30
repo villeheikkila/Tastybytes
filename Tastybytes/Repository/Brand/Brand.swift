@@ -16,7 +16,7 @@ extension BrandProtocol {
 
 enum Brand {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "brands"
+        let tableName = Database.Table.brands.rawValue
         let saved = "id, name, is_verified, logo_file"
         let logosBucketId = "brand-logos"
 

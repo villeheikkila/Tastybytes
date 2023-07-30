@@ -16,17 +16,5 @@ enum BrandLike {
             case id = "p_brand_id"
         }
     }
-
-    static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "brand_likes"
-
-        switch queryType {
-        case .tableName:
-            return tableName
-        }
-    }
-
-    enum QueryType {
-        case tableName
-    }
 }
+

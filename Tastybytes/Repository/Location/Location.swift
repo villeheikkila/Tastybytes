@@ -66,7 +66,7 @@ struct Location: Identifiable, Codable, Hashable, Sendable {
 
 extension Location {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "locations"
+        let tableName = Database.Table.locations.rawValue
         let saved = "id, name, title, longitude, latitude, country_code"
 
         switch queryType {
