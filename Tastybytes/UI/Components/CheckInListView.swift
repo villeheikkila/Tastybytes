@@ -34,6 +34,17 @@ extension CheckInListView {
 enum CheckInSegment: String, CaseIterable {
     case everyone, friends, you
 
+    var table: Database.Table {
+        switch self {
+        case .everyone:
+            return .checkIns
+        case .friends:
+            return .viewCheckInsFromFriends
+        case .you:
+            return .viewCheckInsFromCurrentUser
+        }
+    }
+
     var emptyContentView: some View {
         switch self {
         case .everyone:

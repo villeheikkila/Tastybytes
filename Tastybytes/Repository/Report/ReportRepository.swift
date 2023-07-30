@@ -12,7 +12,7 @@ struct SupabaseReportRepository: ReportRepository {
         do {
             try await client
                 .database
-                .from(Report.getQuery(.tableName))
+                .from(.reports)
                 .insert(values: report, returning: .none)
                 .execute()
 

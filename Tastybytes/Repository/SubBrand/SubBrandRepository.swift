@@ -15,7 +15,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         do {
             let response: SubBrand = try await client
                 .database
-                .from(SubBrand.getQuery(.tableName))
+                .from(.subBrands)
                 .insert(values: newSubBrand, returning: .representation)
                 .select(columns: SubBrand.getQuery(.saved(false)))
                 .single()
@@ -32,7 +32,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         do {
             let baseQuery = client
                 .database
-                .from(SubBrand.getQuery(.tableName))
+                .from(.subBrands)
 
             switch updateRequest {
             case let .brand(update):
@@ -57,7 +57,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         do {
             try await client
                 .database
-                .from(SubBrand.getQuery(.tableName))
+                .from(.subBrands)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -86,7 +86,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         do {
             let response: [SubBrand.JoinedBrand] = try await client
                 .database
-                .from(SubBrand.getQuery(.tableName))
+                .from(.subBrands)
                 .select(columns: SubBrand.getQuery(.joinedBrand(false)))
                 .eq(column: "is_verified", value: false)
                 .order(column: "created_at", ascending: false)

@@ -36,7 +36,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: Location = try await client
                 .database
-                .from(Location.getQuery(.tableName))
+                .from(.locations)
                 .select(columns: Location.getQuery(.joined(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
@@ -55,7 +55,7 @@ struct SupabaseLocationRepository: LocationRepository {
             let response: [Location] = try await client
                 .database
                 // TODO: Create a proper view for this
-                .from("view__recent_locations_from_current_user")
+                .from(.viewRecentLocationsFromCurrentUser)
                 .select(columns: Location.getQuery(.joined(false)))
                 .order(column: "created_at", ascending: false)
                 .execute()
@@ -71,7 +71,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: [Location] = try await client
                 .database
-                .from("view__recent_locations_from_current_user")
+                .from(.viewRecentLocationsFromCurrentUser)
                 .select(columns: Location.getQuery(.joined(false)))
                 .limit(count: 5)
                 .order(column: "created_at", ascending: false)
@@ -104,7 +104,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             try await client
                 .database
-                .from(Location.getQuery(.tableName))
+                .from(.locations)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -119,7 +119,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: [Location] = try await client
                 .database
-                .from(Location.getQuery(.tableName))
+                .from(.locations)
                 .select(columns: Location.getQuery(.joined(false)))
                 .textSearch(column: "name", query: searchTerm + ":*")
                 .execute()

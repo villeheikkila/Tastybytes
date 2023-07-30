@@ -14,7 +14,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         do {
             let response: [Category.JoinedSubcategoriesServingStyles] = try await client
                 .database
-                .from(Category.getQuery(.tableName))
+                .from(.categories)
                 .select(columns: Category.getQuery(.joinedSubcaategoriesServingStyles(false)))
                 .order(column: "name")
                 .execute()
@@ -30,7 +30,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         do {
             try await client
                 .database
-                .from(Category.getQuery(.tableName))
+                .from(.categories)
                 .insert(values: newCategory, returning: .representation)
                 .execute()
 
@@ -44,7 +44,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         do {
             try await client
                 .database
-                .from(Category.getQuery(.servingStyleTableName))
+                .from(.servingStyles)
                 .insert(values: Category.NewServingStyleRequest(categoryId: categoryId, servingStyleId: servingStyleId))
                 .execute()
 
@@ -58,7 +58,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         do {
             try await client
                 .database
-                .from(Category.getQuery(.servingStyleTableName))
+                .from(.servingStyles)
                 .delete()
                 .eq(column: "category_id", value: categoryId)
                 .eq(column: "serving_style_id", value: servingStyleId)

@@ -16,7 +16,7 @@ struct SupabaseFriendsRepository: FriendRepository {
         do {
             var queryBuilder = client
                 .database
-                .from(Friend.getQuery(.tableName))
+                .from(.friends)
                 .select(columns: Friend.getQuery(.joined(false)))
                 .or(filters: "user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
 
@@ -46,7 +46,7 @@ struct SupabaseFriendsRepository: FriendRepository {
         do {
             let response: Friend = try await client
                 .database
-                .from(Friend.getQuery(.tableName))
+                .from(.friends)
                 .insert(values: newFriend, returning: .representation)
                 .select(columns: Friend.getQuery(.joined(false)))
                 .single()
@@ -63,7 +63,7 @@ struct SupabaseFriendsRepository: FriendRepository {
         do {
             let response: Friend = try await client
                 .database
-                .from(Friend.getQuery(.tableName))
+                .from(.friends)
                 .update(values: friendUpdate, returning: .representation)
                 .eq(column: "id", value: id)
                 .select(columns: Friend.getQuery(.joined(false)))
@@ -81,7 +81,7 @@ struct SupabaseFriendsRepository: FriendRepository {
         do {
             try await client
                 .database
-                .from(Friend.getQuery(.tableName))
+                .from(.friends)
                 .delete()
                 .eq(column: "id", value: id)
                 .select()

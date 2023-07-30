@@ -46,7 +46,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let queryBuilder = client
                 .database
-                .from(CheckIn.getQuery(.tableName))
+                .from(.checkIns)
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "created_by", value: id.uuidString.lowercased())
                 .order(column: "id", ascending: false)
@@ -73,7 +73,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response: [CheckIn] = try await client
                 .database
-                .from(CheckIn.getQuery(.segmentedView(segment)))
+                .from(segment.table)
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "product_id", value: id)
                 .order(column: "created_at", ascending: false)
@@ -91,7 +91,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response: [CheckIn.Image] = try await client
                 .database
-                .from(CheckIn.getQuery(.tableName))
+                .from(.checkIns)
                 .select(columns: CheckIn.getQuery(.image(false)))
                 .eq(column: "created_by", value: id)
                 .order(column: "created_at", ascending: false)
@@ -109,7 +109,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response: [CheckIn.Image] = try await client
                 .database
-                .from(CheckIn.getQuery(.tableName))
+                .from(.checkIns)
                 .select(columns: CheckIn.getQuery(.image(false)))
                 .eq(column: by.column, value: by.id)
                 .notEquals(column: "image_file", value: "null")
@@ -130,7 +130,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response: [CheckIn] = try await client
                 .database
-                .from(CheckIn.getQuery(.segmentedView(segment)))
+                .from(segment.table)
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "location_id", value: locationId.uuidString)
                 .order(column: "created_at", ascending: false)
@@ -148,7 +148,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response: CheckIn = try await client
                 .database
-                .from(CheckIn.getQuery(.tableName))
+                .from(.checkIns)
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
@@ -200,7 +200,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             try await client
                 .database
-                .from(CheckIn.getQuery(.tableName))
+                .from(.checkIns)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -248,7 +248,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
             _ = try await client
                 .storage
-                .from(id: CheckIn.getQuery(.imageBucket))
+                .from(.checkIns)
                 .upload(
                     path: "\(userId.uuidString.lowercased())/\(fileName)",
                     file: file,

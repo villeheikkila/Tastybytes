@@ -64,7 +64,7 @@ struct SupabaseProductRepository: ProductRepository {
     {
         var queryBuilder = client
             .database
-            .from("view__product_ratings")
+            .from(.viewProductRatings)
             .select(columns: Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
 
         if let categoryFilterId {
@@ -104,7 +104,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let response: [Product.Joined] = try await client
                 .database
-                .from(Product.getQuery(.tableName))
+                .from(.products)
                 .select(columns: Product.getQuery(.joinedBrandSubcategoriesCreator(false)))
                 .eq(column: "is_verified", value: false)
                 .order(column: "created_at", ascending: false)
@@ -121,7 +121,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let response: [ProductBarcode.Joined] = try await client
                 .database
-                .from(ProductBarcode.getQuery(.tableName))
+                .from(.productBarcodes)
                 .select(columns: ProductBarcode.getQuery(.joined(false)))
                 .eq(column: "barcode", value: barcode.barcode)
                 .eq(column: "type", value: barcode.type.rawValue)
@@ -138,7 +138,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let response: Product.Joined = try await client
                 .database
-                .from(Product.getQuery(.tableName))
+                .from(.products)
                 .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
@@ -174,7 +174,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             try await client
                 .database
-                .from(ProfileWishlist.getQuery(.tableName))
+                .from(.profileWishlistItems)
                 .insert(values: ProfileWishlist.New(productId: productId))
                 .single()
                 .execute()
@@ -189,7 +189,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             try await client
                 .database
-                .from(ProfileWishlist.getQuery(.tableName))
+                .from(.profileWishlistItems)
                 .delete()
                 .eq(column: "product_id", value: productId)
                 .execute()
@@ -204,7 +204,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let reponse: [ProfileWishlist.Joined] = try await client
                 .database
-                .from(ProfileWishlist.getQuery(.tableName))
+                .from(.profileWishlistItems)
                 .select(columns: ProfileWishlist.getQuery(.joined(false)))
                 .eq(column: "created_by", value: profileId.uuidString)
                 .execute()
@@ -220,7 +220,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let response: [Product.Joined] = try await client
                 .database
-                .from("view__profile_product_ratings")
+                .from(.viewProfileProductRatings)
                 .select(columns: Product.getQuery(.joinedBrandSubcategoriesProfileRatings(false)))
                 .eq(column: "check_in_created_by", value: id.uuidString)
                 .execute()
@@ -236,27 +236,9 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let response: [Product.Joined] = try await client
                 .database
-                .from(Product.getQuery(.tableName))
+                .from(.products)
                 .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
                 .eq(column: "created_by", value: id.uuidString)
-                .execute()
-                .value
-
-            return .success(response)
-        } catch {
-            return .failure(error)
-        }
-    }
-
-    func getByUserId(userId: Int) async -> Result<Product.Joined, Error> {
-        do {
-            let response: Product.Joined = try await client
-                .database
-                .from("product_user_ratings")
-                .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
-                .eq(column: "id", value: userId)
-                .limit(count: 1)
-                .single()
                 .execute()
                 .value
 
@@ -273,7 +255,7 @@ struct SupabaseProductRepository: ProductRepository {
 
             _ = try await client
                 .storage
-                .from(id: Product.getQuery(.logoBucket))
+                .from(.logos)
                 .upload(path: fileName, file: file, fileOptions: nil)
 
             return .success(fileName)
@@ -286,7 +268,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             try await client
                 .database
-                .from(Product.getQuery(.tableName))
+                .from(.products)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -342,7 +324,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             try await client
                 .database
-                .from(ProductDuplicateSuggestion.getQuery(.tableName))
+                .from(.productDuplicateSuggestions)
                 .insert(
                     values: Product.DuplicateRequest(productId: productId, duplicateOfProductId: duplicateOfProductId),
                     returning: .none
@@ -362,7 +344,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             try await client
                 .database
-                .from("product_edit_suggestions")
+                .from(.productEditSuggestions)
                 .insert(
                     values: productEditSuggestionParams,
                     returning: .none

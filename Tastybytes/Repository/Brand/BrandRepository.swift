@@ -25,7 +25,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             let response: Brand.JoinedSubBrandsProducts = try await client
                 .database
-                .from(Brand.getQuery(.tableName))
+                .from(.brands)
                 .select(columns: Brand.getQuery(.joined(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
@@ -43,7 +43,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             let response: Brand.JoinedSubBrandsProductsCompany = try await client
                 .database
-                .from(Brand.getQuery(.tableName))
+                .from(.brands)
                 .select(columns: Brand.getQuery(.joinedSubBrandsCompany(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
@@ -61,7 +61,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             let response: [Brand.JoinedSubBrandsProductsCompany] = try await client
                 .database
-                .from(Brand.getQuery(.tableName))
+                .from(.brands)
                 .select(columns: Brand.getQuery(.joinedSubBrandsCompany(false)))
                 .eq(column: "is_verified", value: false)
                 .order(column: "created_at", ascending: false)
@@ -78,7 +78,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             let response: [Brand.JoinedSubBrands] = try await client
                 .database
-                .from(Brand.getQuery(.tableName))
+                .from(.brands)
                 .select(columns: Brand.getQuery(.joinedSubBrands(false)))
                 .eq(column: "brand_owner_id", value: brandOwnerId)
                 .order(column: "name")
@@ -95,7 +95,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             let response: Brand.JoinedSubBrands = try await client
                 .database
-                .from(Brand.getQuery(.tableName))
+                .from(.brands)
                 .insert(values: newBrand, returning: .representation)
                 .select(columns: Brand.getQuery(.joinedSubBrands(false)))
                 .single()
@@ -130,7 +130,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             try await client
                 .database
-                .from(BrandLike.getQuery(.tableName))
+                .from(.brandLikes)
                 .insert(values: BrandLike.New(brandId: brandId))
                 .single()
                 .execute()
@@ -145,7 +145,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             try await client
                 .database
-                .from(BrandLike.getQuery(.tableName))
+                .from(.brandLikes)
                 .delete()
                 .eq(column: "brand_id", value: brandId)
                 .execute()
@@ -174,7 +174,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             try await client
                 .database
-                .from(Brand.getQuery(.tableName))
+                .from(.brands)
                 .update(values: updateRequest)
                 .eq(column: "id", value: updateRequest.id)
                 .execute()
@@ -189,7 +189,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             try await client
                 .database
-                .from(Brand.getQuery(.tableName))
+                .from(.brands)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -204,7 +204,7 @@ struct SupabaseBrandRepository: BrandRepository {
         do {
             let response: Summary = try await client
                 .database
-                .from("view__brand_ratings")
+                .from(.viewBrandRatings)
                 .select()
                 .eq(column: "id", value: id)
                 .limit(count: 1)
@@ -225,7 +225,7 @@ struct SupabaseBrandRepository: BrandRepository {
 
             _ = try await client
                 .storage
-                .from(id: Brand.getQuery(.logosBucket))
+                .from(.logos)
                 .upload(path: fileName, file: file, fileOptions: nil)
 
             return .success(fileName)

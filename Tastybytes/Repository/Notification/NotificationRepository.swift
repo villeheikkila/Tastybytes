@@ -22,7 +22,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         do {
             let response: [Notification] = try await client
                 .database
-                .from(Notification.getQuery(.tableName))
+                .from(.notifications)
                 .select(columns: Notification.getQuery(.joined))
                 .gt(column: "id", value: afterId ?? 0)
                 .order(column: "id", ascending: false)
@@ -39,7 +39,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         do {
             let response = try await client
                 .database
-                .from(Notification.getQuery(.tableName))
+                .from(.notifications)
                 .select(columns: "id", head: true, count: .exact)
                 .is(column: "seen_at", value: "null")
                 .execute()
@@ -76,7 +76,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         do {
             let response: ProfilePushNotification = try await client
                 .database
-                .from(ProfilePushNotification.getQuery(.tableName))
+                .from(.profilePushNotifications)
                 .update(values: updateRequest, returning: .representation)
                 .eq(column: "firebase_registration_token", value: updateRequest.id)
                 .select(columns: ProfilePushNotification.getQuery(.saved(false)))
@@ -157,7 +157,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         do {
             try await client
                 .database
-                .from(Notification.getQuery(.tableName))
+                .from(.notifications)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -172,7 +172,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         do {
             try await client
                 .database
-                .from(Notification.getQuery(.tableName))
+                .from(.notifications)
                 .delete()
                 // DELETE requires a where clause, add something that always returns true
                 // Security policies make sure that everything can be deleted

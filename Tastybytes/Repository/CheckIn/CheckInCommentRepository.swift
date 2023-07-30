@@ -15,7 +15,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         do {
             let result: CheckInComment = try await client
                 .database
-                .from(CheckInComment.getQuery(.tableName))
+                .from(.checkInComments)
                 .insert(values: newCheckInComment, returning: .representation)
                 .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
                 .limit(count: 1)
@@ -33,7 +33,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         do {
             let response: CheckInComment = try await client
                 .database
-                .from(CheckInComment.getQuery(.tableName))
+                .from(.checkInComments)
                 .update(values: updateCheckInComment, returning: .representation)
                 .eq(column: "id", value: updateCheckInComment.id)
                 .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
@@ -51,7 +51,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         do {
             let response: [CheckInComment] = try await client
                 .database
-                .from(CheckInComment.getQuery(.tableName))
+                .from(.checkInComments)
                 .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
                 .eq(column: "check_in_id", value: id)
                 .order(column: "created_at")
@@ -68,7 +68,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         do {
             try await client
                 .database
-                .from(CheckInComment.getQuery(.tableName))
+                .from(.checkInComments)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()

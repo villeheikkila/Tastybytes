@@ -23,7 +23,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response: Company = try await client
                 .database
-                .from(Company.getQuery(.tableName))
+                .from(.companies)
                 .select(columns: Company.getQuery(.saved(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
@@ -41,7 +41,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response: Company.Joined = try await client
                 .database
-                .from(Company.getQuery(.tableName))
+                .from(.companies)
                 .select(columns: Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
@@ -59,7 +59,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response: Company = try await client
                 .database
-                .from(Company.getQuery(.tableName))
+                .from(.companies)
                 .insert(values: newCompany, returning: .representation)
                 .select(columns: Company.getQuery(.saved(false)))
                 .single()
@@ -79,7 +79,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
             _ = try await client
                 .storage
-                .from(id: Company.getQuery(.logoBucket))
+                .from(.logos)
                 .upload(path: fileName, file: file, fileOptions: nil)
 
             return .success(fileName)
@@ -92,7 +92,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response: [Company] = try await client
                 .database
-                .from(Company.getQuery(.tableName))
+                .from(.companies)
                 .select(columns: Company.getQuery(.saved(false)))
                 .eq(column: "is_verified", value: false)
                 .order(column: "created_at", ascending: false)
@@ -109,7 +109,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response: Company.Joined = try await client
                 .database
-                .from(Company.getQuery(.tableName))
+                .from(.companies)
                 .update(values: updateRequest)
                 .eq(column: "id", value: updateRequest.id)
                 .select(columns: Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
@@ -127,7 +127,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             try await client
                 .database
-                .from(Company.getQuery(.editSuggestionTable))
+                .from(.companyEditSuggestions)
                 .insert(values: updateRequest)
                 .execute()
 
@@ -141,7 +141,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             try await client
                 .database
-                .from(Company.getQuery(.tableName))
+                .from(.companies)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -175,7 +175,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
             let response: [Company] = try await client
                 .database
-                .from(Company.getQuery(.tableName))
+                .from(.companies)
                 .select(columns: Company.getQuery(.saved(false)))
                 .textSearch(column: "name", query: searchString)
                 .execute()

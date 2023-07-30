@@ -14,7 +14,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         do {
             let response: Subcategory = try await client
                 .database
-                .from(Subcategory.getQuery(.tableName))
+                .from(.subcategories)
                 .insert(values: newSubcategory, returning: .representation)
                 .select(columns: Subcategory.getQuery(.saved(false)))
                 .single()
@@ -31,7 +31,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         do {
             try await client
                 .database
-                .from(Subcategory.getQuery(.tableName))
+                .from(.subcategories)
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -46,7 +46,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         do {
             try await client
                 .database
-                .from(Subcategory.getQuery(.tableName))
+                .from(.subcategories)
                 .update(values: updateRequest)
                 .eq(column: "id", value: updateRequest.id)
                 .execute()

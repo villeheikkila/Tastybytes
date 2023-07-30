@@ -25,7 +25,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let response: Profile = try await client
                 .database
-                .from(Profile.getQuery(.tableName))
+                .from(.profiles)
                 .select(columns: Profile.getQuery(.minimal(false)))
                 .eq(column: "id", value: id.uuidString.lowercased())
                 .limit(count: 1)
@@ -60,7 +60,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let response: Profile.Extended = try await client
                 .database
-                .from(Profile.getQuery(.tableName))
+                .from(.profiles)
                 .update(
                     values: update,
                     returning: .representation
@@ -86,7 +86,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let response: ProfileSettings = try await client
                 .database
-                .from(ProfileSettings.getQuery(.tableName))
+                .from(.profileSettings)
                 .update(
                     values: update,
                     returning: .representation
@@ -180,7 +180,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let query = client
                 .database
-                .from(Profile.getQuery(.tableName))
+                .from(.profiles)
                 .select(columns: Profile.getQuery(.minimal(false)))
                 .ilike(column: "search", value: "%\(searchTerm)%")
 
@@ -205,7 +205,7 @@ struct SupabaseProfileRepository: ProfileRepository {
 
             _ = try await client
                 .storage
-                .from(id: Profile.getQuery(.avatarBucket))
+                .from(.avatars)
                 .upload(
                     path: "\(userId.uuidString.lowercased())/\(fileName)",
                     file: file,

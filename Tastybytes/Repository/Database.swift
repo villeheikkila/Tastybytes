@@ -1,5 +1,6 @@
 import Foundation
 import PostgREST
+import SupabaseStorage
 
 enum Database {
     enum Table: String {
@@ -102,6 +103,14 @@ enum Database {
         case verifySubBrand = "fnc__verify_sub_brand"
         case verifySubcategory = "fnc__verify_subcategory"
     }
+
+    enum Bucket: String {
+        case productLogos = "product-logos"
+        case logos
+        case checkIns = "check-ins"
+        case brandLogos = "brand-logos"
+        case avatars
+    }
 }
 
 extension PostgrestClient {
@@ -122,5 +131,11 @@ extension PostgrestClient {
         count: CountOption? = nil
     ) -> PostgrestTransformBuilder {
         rpc(fn: fn.rawValue, count: count)
+    }
+}
+
+extension SupabaseStorageClient {
+    func from(_ id: Database.Bucket) -> StorageFileApi {
+        from(id: id.rawValue)
     }
 }
