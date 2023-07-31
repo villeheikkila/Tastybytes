@@ -292,10 +292,13 @@ struct DiscoverScreen: View {
         guard let barcode else { return }
         switch await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
         case .success:
-            self.barcode = nil
-            self.addBarcodeTo = nil
-            showAddBarcodeConfirmation = false
+            await MainActor.run {
+                self.barcode = nil
+                self.addBarcodeTo = nil
+                showAddBarcodeConfirmation = false
+            }
             feedbackManager.toggle(.success("Barcode added!"))
+            router.navigate(screen: .product(addBarcodeTo))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
