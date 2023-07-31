@@ -186,6 +186,19 @@ struct ProductScreen: View {
                     showUnverifyProductConfirmation = true
                 })
                 Divider()
+                RouterLink(
+                    "Open Company",
+                    systemSymbol: .network,
+                    screen: .company(product.subBrand.brand.brandOwner)
+                )
+                RouterLink("Open Product", systemSymbol: .grid, screen: .product(product))
+                RouterLink("Open Brand", systemSymbol: .cart, screen: .fetchBrand(product.subBrand.brand))
+                RouterLink(
+                    "Open Sub-brand",
+                    systemSymbol: .cart,
+                    screen: .fetchSubBrand(product.subBrand)
+                )
+                Divider()
                 if profileManager.hasPermission(.canEditCompanies) {
                     RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
                         await refresh()
