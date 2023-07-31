@@ -37,10 +37,9 @@ extension View {
                 }
             }
             Divider()
-            RouterLink("Open Check-in", systemSymbol: .checkmarkCircle, screen: .checkIn(checkIn))
             RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
             RouterLink(
-                "Open Company",
+                "Open Brand Owner",
                 systemSymbol: .network,
                 screen: .company(checkIn.product.subBrand.brand.brandOwner)
             )

@@ -146,7 +146,7 @@ struct CheckInScreen: View {
                 }
                 Divider()
                 RouterLink(
-                    "Open Company",
+                    "Open Brand Owner",
                     systemSymbol: .network,
                     screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )

@@ -292,6 +292,12 @@ struct BrandScreen: View {
                     showBrandUnverificationConfirmation = true
                 })
                 Divider()
+                RouterLink(
+                    "Open Brand Owner",
+                    systemSymbol: .network,
+                    screen: .company(brand.brandOwner)
+                )
+                Divider()
                 Button("Group Products By", systemSymbol: .listBulletIndent) {
                     showProductGroupingPicker = true
                 }
