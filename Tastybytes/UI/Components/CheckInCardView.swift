@@ -197,13 +197,16 @@ struct CheckInCardView: View {
             FlavorsView(flavors: checkIn.flavors)
 
             if let purchaseLocation = checkIn.purchaseLocation {
-                Text("Purchased from __\(purchaseLocation.name)__")
-                    .if(!loadedFrom.isLoadedFromLocation(purchaseLocation)) { view in
-                        view.accessibilityAddTraits(.isLink)
-                            .onTapGesture {
-                                router.navigate(screen: .location(purchaseLocation))
-                            }
-                    }
+                HStack {
+                    Text("Purchased from __\(purchaseLocation.name)__")
+                        .if(!loadedFrom.isLoadedFromLocation(purchaseLocation)) { view in
+                            view.accessibilityAddTraits(.isLink)
+                                .onTapGesture {
+                                    router.navigate(screen: .location(purchaseLocation))
+                                }
+                        }
+                    Spacer()
+                }
             }
         }
         .if(loadedFrom != .checkIn) { view in
