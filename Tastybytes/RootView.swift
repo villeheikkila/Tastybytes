@@ -1,5 +1,6 @@
 import GoTrue
 import OSLog
+import StoreKit
 import Supabase
 import SwiftUI
 import TipKit
@@ -15,6 +16,7 @@ struct RootView: View {
     @State private var appDataManager: AppDataManager
     @State private var friendManager: FriendManager
     @State private var imageUploadManager: ImageUploadManager
+    @State private var subscriptionManager = SubscriptionManager()
     @AppStorage(.colorScheme) var colorScheme: String = "system"
     @State private var authEvent: AuthChangeEvent?
     @State private var orientation: UIDeviceOrientation
@@ -61,6 +63,7 @@ struct RootView: View {
         .environment(friendManager)
         .environment(permissionManager)
         .environment(imageUploadManager)
+        .environment(subscriptionManager)
         .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
         .detectOrientation($orientation)
         .environment(\.orientation, orientation)
@@ -109,10 +112,14 @@ extension EnvironmentValues {
 }
 
 struct AuthenticatedContent: View {
+    private let logger = Logger(category: "AuthenticatedContent")
+    @State private var status: EntitlementTaskState<SubscriptionStatus> = .loading
     @Environment(ProfileManager.self) private var profileManager
     @Environment(FriendManager.self) private var friendManager
     @Environment(NotificationManager.self) private var notificationManager
+    @Environment(SubscriptionManager.self) private var subscriptionManager
     @Environment(\.scenePhase) private var phase
+    @Environment(\.productSubscriptionIds) private var productSubscriptionIds
     @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
 
     var body: some View {
@@ -149,6 +156,30 @@ struct AuthenticatedContent: View {
             .task {
                 await friendManager.initialize(profile: profileManager.profile)
                 await notificationManager.getUnreadCount()
+            }
+            .onAppear(perform: {
+                ProductSubscription.createSharedInstance()
+            })
+            .subscriptionStatusTask(for: productSubscriptionIds.group) { taskStatus in
+                self.status = await taskStatus.map { statuses in
+                    await ProductSubscription.shared.status(
+                        for: statuses,
+                        ids: productSubscriptionIds
+                    )
+                }
+                switch self.status {
+                case let .failure(error):
+                    subscriptionManager.subscriptionStatus = .notSubscribed
+                    logger.error("Failed to check subscription status: \(error)")
+                case let .success(status):
+                    subscriptionManager.subscriptionStatus = status
+                case .loading: break
+                @unknown default: break
+                }
+            }
+            .task {
+                await ProductSubscription.shared.observeTransactionUpdates()
+                await ProductSubscription.shared.checkForUnfinishedTransactions()
             }
         }
     }

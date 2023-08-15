@@ -51,7 +51,7 @@ enum Sheet: Identifiable, Equatable {
     case categoryPickerSheet(category: Binding<Category.JoinedSubcategoriesServingStyles?>)
     case mergeLocationSheet(location: Location)
     case productLogo(product: Product.Joined, onUpload: () async -> Void)
-    case support
+    case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
 
     @ViewBuilder var view: some View {
@@ -124,8 +124,8 @@ enum Sheet: Identifiable, Equatable {
             CheckInDatePickerSheet(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn)
         case let .categoryPickerSheet(category: category):
             CategoryPickerSheet(category: category)
-        case .support:
-            SupportSheet()
+        case .subscribe:
+            SubscriptionSheet()
         case let .mergeLocationSheet(location: location):
             MergeLocationSheet(location: location)
         case let .productLogo(product, onUpload):
@@ -150,8 +150,8 @@ enum Sheet: Identifiable, Equatable {
 
     var background: Material {
         switch self {
-        case .support, .checkIn:
-            .ultraThin
+        case .subscribe, .checkIn:
+            .thickMaterial
         case .productFilter, .nameTag, .barcodeScanner, .checkInDatePicker:
             .thickMaterial
         default:
@@ -238,7 +238,7 @@ enum Sheet: Identifiable, Equatable {
             "check_in_date_picker"
         case .categoryPickerSheet:
             "category_picker"
-        case .support:
+        case .subscribe:
             "support"
         case let .mergeLocationSheet(location):
             "location_management_\(location.hashValue)"

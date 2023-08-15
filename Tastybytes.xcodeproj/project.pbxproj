@@ -45,7 +45,7 @@
 		5C20A52529AC8AB800ABBA74 /* BarcodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */; };
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
 		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
-		5C234F0A29F5BBB9003F2283 /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0929F5BBB9003F2283 /* SupportScreen.swift */; };
+		5C234F0A29F5BBB9003F2283 /* SubscriptionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0929F5BBB9003F2283 /* SubscriptionSheet.swift */; };
 		5C234F132A0163AA003F2283 /* CheckInDatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */; };
 		5C25AEB429031F9C00793607 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* Date+Extension.swift */; };
 		5C25AEB62903FBDE00793607 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB52903FBDE00793607 /* Role.swift */; };
@@ -225,6 +225,11 @@
 		5CDCAE262A33C0B600EA7824 /* LocationShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDCAE252A33C0B600EA7824 /* LocationShareLinkView.swift */; };
 		5CDCAE282A34596400EA7824 /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDCAE272A34596400EA7824 /* WrappingHStack.swift */; };
 		5CDCAE2A2A345B7B00EA7824 /* FlavorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDCAE292A345B7B00EA7824 /* FlavorsView.swift */; };
+		5CE83CEA2A8BD91C00B71178 /* ProductSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE83CE92A8BD91C00B71178 /* ProductSubscription.swift */; };
+		5CE83CEC2A8BD95100B71178 /* SubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE83CEB2A8BD95100B71178 /* SubscriptionStatus.swift */; };
+		5CE83CEE2A8BDCAA00B71178 /* SubscriptionProductIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE83CED2A8BDCAA00B71178 /* SubscriptionProductIdentifier.swift */; };
+		5CE83CF12A8BEFF900B71178 /* SubscriptionStoreContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE83CF02A8BEFF900B71178 /* SubscriptionStoreContent.swift */; };
+		5CE83CF32A8BF12000B71178 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE83CF22A8BF12000B71178 /* SubscriptionManager.swift */; };
 		5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008B291FCB71003DE697 /* SplashScreenView.swift */; };
 		5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */; };
 		5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutScreen.swift */; };
@@ -291,7 +296,7 @@
 		5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeUtils.swift; sourceTree = "<group>"; };
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
 		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
-		5C234F0929F5BBB9003F2283 /* SupportScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportScreen.swift; sourceTree = "<group>"; };
+		5C234F0929F5BBB9003F2283 /* SubscriptionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionSheet.swift; sourceTree = "<group>"; };
 		5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInDatePickerSheet.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		5C25AEB52903FBDE00793607 /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
@@ -471,6 +476,12 @@
 		5CDCAE252A33C0B600EA7824 /* LocationShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationShareLinkView.swift; sourceTree = "<group>"; };
 		5CDCAE272A34596400EA7824 /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappingHStack.swift; sourceTree = "<group>"; };
 		5CDCAE292A345B7B00EA7824 /* FlavorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorsView.swift; sourceTree = "<group>"; };
+		5CE83CE92A8BD91C00B71178 /* ProductSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSubscription.swift; sourceTree = "<group>"; };
+		5CE83CEB2A8BD95100B71178 /* SubscriptionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionStatus.swift; sourceTree = "<group>"; };
+		5CE83CED2A8BDCAA00B71178 /* SubscriptionProductIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionProductIdentifier.swift; sourceTree = "<group>"; };
+		5CE83CEF2A8BEAEC00B71178 /* Store.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Store.storekit; sourceTree = "<group>"; };
+		5CE83CF02A8BEFF900B71178 /* SubscriptionStoreContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionStoreContent.swift; sourceTree = "<group>"; };
+		5CE83CF22A8BF12000B71178 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		5CE9008B291FCB71003DE697 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenManager.swift; sourceTree = "<group>"; };
 		5CE9008F291FE7C1003DE697 /* TastybytesRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesRelease.entitlements; sourceTree = "<group>"; };
@@ -780,8 +791,8 @@
 		5C46E8652911E2CD0008F142 /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
+				5CE83CE82A8BD8ED00B71178 /* Subscription */,
 				5CDC9F9A29E3EB5500B6082F /* Sheet.swift */,
-				5C234F0929F5BBB9003F2283 /* SupportScreen.swift */,
 				5CDC9F8629E350E700B6082F /* AddCategory */,
 				5CDC9F8D29E3D8B100B6082F /* AddSubcategory */,
 				5C7C359B299AC519009A3C09 /* BarcodeManagement */,
@@ -1288,6 +1299,19 @@
 			path = EditCompany;
 			sourceTree = "<group>";
 		};
+		5CE83CE82A8BD8ED00B71178 /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				5C234F0929F5BBB9003F2283 /* SubscriptionSheet.swift */,
+				5CE83CE92A8BD91C00B71178 /* ProductSubscription.swift */,
+				5CE83CEB2A8BD95100B71178 /* SubscriptionStatus.swift */,
+				5CE83CED2A8BDCAA00B71178 /* SubscriptionProductIdentifier.swift */,
+				5CE83CF02A8BEFF900B71178 /* SubscriptionStoreContent.swift */,
+				5CE83CF22A8BF12000B71178 /* SubscriptionManager.swift */,
+			);
+			path = Subscription;
+			sourceTree = "<group>";
+		};
 		5CFB562D28F5969300F13A1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1337,6 +1361,7 @@
 		5CFEE56A28ED69B100A8DD66 = {
 			isa = PBXGroup;
 			children = (
+				5CE83CEF2A8BEAEC00B71178 /* Store.storekit */,
 				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
 				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
 				5CFEE57528ED69B100A8DD66 /* Tastybytes */,
@@ -1502,6 +1527,7 @@
 				5CED432228FAC01C003F8194 /* UserSheet.swift in Sources */,
 				5C25C68829956BD400C07953 /* WebShape.swift in Sources */,
 				5CED432C28FD69DE003F8194 /* CompanySearchSheet.swift in Sources */,
+				5CE83CF32A8BF12000B71178 /* SubscriptionManager.swift in Sources */,
 				5CD10A5728F98D490001CFC2 /* Product.swift in Sources */,
 				5C7C3585299AC166009A3C09 /* CheckInCommentView.swift in Sources */,
 				5CAC998D2A36247E003729C6 /* FullScreenCameraModifier.swift in Sources */,
@@ -1524,6 +1550,7 @@
 				5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
 				5C25C672299561BD00C07953 /* ProfileOnboarding.swift in Sources */,
+				5CE83CEE2A8BDCAA00B71178 /* SubscriptionProductIdentifier.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */,
 				5C7503C12A3902A000069E59 /* SendMailView.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
@@ -1540,6 +1567,7 @@
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
 				5CDCAE262A33C0B600EA7824 /* LocationShareLinkView.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* Main.swift in Sources */,
+				5CE83CF12A8BEFF900B71178 /* SubscriptionStoreContent.swift in Sources */,
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
 				5CD7234E29F46442003DA030 /* CurrentProfileScreen.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
@@ -1598,7 +1626,7 @@
 				5C25AEBA29053B7E00793607 /* CompanyScreen.swift in Sources */,
 				5CF895212A45A12400A40A66 /* ProfileWishlistScreen.swift in Sources */,
 				5C7C3580299AC0A6009A3C09 /* AuthenticationInput.swift in Sources */,
-				5C234F0A29F5BBB9003F2283 /* SupportScreen.swift in Sources */,
+				5C234F0A29F5BBB9003F2283 /* SubscriptionSheet.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
 				5CED433228FD76BB003F8194 /* SubBrandSheet.swift in Sources */,
 				5CB4E03029E08AFB00135ADA /* ReportRepository.swift in Sources */,
@@ -1672,6 +1700,7 @@
 				5C32C41429ED9F9C008CE8A9 /* ErrorScreen.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5C0595EE2A38B9CB0067F46C /* EmptyActivityFeed.swift in Sources */,
+				5CE83CEA2A8BD91C00B71178 /* ProductSubscription.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,
 				5C25C6702995616D00C07953 /* WelcomeOnboarding.swift in Sources */,
 				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
@@ -1693,6 +1722,7 @@
 				5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */,
 				5CDC9F9B29E3EB5500B6082F /* Sheet.swift in Sources */,
 				5C61E83D29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift in Sources */,
+				5CE83CEC2A8BD95100B71178 /* SubscriptionStatus.swift in Sources */,
 				5C7C35E6299AE0E1009A3C09 /* CheckInReactionNotificationView.swift in Sources */,
 				5C0E364E2923C8CD0072EFBD /* ProfileManager.swift in Sources */,
 				5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */,

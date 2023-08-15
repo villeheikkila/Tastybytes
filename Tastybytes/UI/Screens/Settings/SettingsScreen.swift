@@ -12,6 +12,16 @@ struct SettingsScreen: View {
         .listStyle(.insetGrouped)
         .navigationBarTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
+        .toolbar { toolbarContent }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            RouterLink("Subscribe to Premium", systemSymbol: .crownFill, sheet: .subscribe)
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+                .foregroundColor(.yellow)
+        }
     }
 
     @ViewBuilder private var settingsSection: some View {
