@@ -3,7 +3,6 @@ import OSLog
 import StoreKit
 import Supabase
 import SwiftUI
-import TipKit
 
 struct RootView: View {
     private let logger = Logger(category: "RootView")
@@ -134,11 +133,6 @@ struct AuthenticatedContent: View {
                 } else {
                     TabsView()
                 }
-            }
-            .task {
-                try? await Tips.configure(options: {
-                    DisplayFrequency(.daily)
-                })
             }
             .onChange(of: phase) { _, newPhase in
                 if newPhase == .active {

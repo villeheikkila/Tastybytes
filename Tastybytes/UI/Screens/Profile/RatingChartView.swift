@@ -1,6 +1,5 @@
 import Charts
 import SwiftUI
-import TipKit
 
 struct RatingChartView: View {
     @Environment(Router.self) private var router
@@ -68,26 +67,5 @@ struct RatingChartView: View {
             }
             .frame(height: 100)
         }
-        .popoverTip(RatingChartTip())
-    }
-}
-
-struct RatingChartTip: Tip {
-    static let appOpenedCount = Event(id: "appOpenedCount")
-
-    var rules: [Rule] {
-        #Rule(Self.appOpenedCount) { $0.donations.count >= 5 }
-    }
-
-    var title: Text {
-        Text("Find products by rating")
-    }
-
-    var message: Text? {
-        Text("Long press on a rating to find rated products")
-    }
-
-    var asset: Image? {
-        Image(systemSymbol: .starLeadinghalfFilled)
     }
 }

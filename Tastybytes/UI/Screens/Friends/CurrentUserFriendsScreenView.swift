@@ -143,7 +143,6 @@ struct CurrentUserFriendsScreen: View {
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)
-            .popoverTip(NameTagTip())
 
             RouterLink("Add friend", systemSymbol: .plus, sheet: .userSheet(mode: .add, onSubmit: {
                 feedbackManager.toggle(.success("Friend Request Sent!"))

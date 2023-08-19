@@ -1,5 +1,4 @@
 import SwiftUI
-import TipKit
 
 struct NameTagSheet: View {
     @Environment(ProfileManager.self) private var profileManager
@@ -54,19 +53,5 @@ struct NameTagSheet: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             ProfileShareLinkView(profile: profileManager.profile)
         }
-    }
-}
-
-struct NameTagTip: Tip {
-    var title: Text {
-        Text("Share your profile")
-    }
-
-    var message: Text? {
-        Text("Connect with others by sharing your name tag")
-    }
-
-    var asset: Image? {
-        Image(systemSymbol: .qrcodeViewfinder)
     }
 }
