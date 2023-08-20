@@ -1,4 +1,5 @@
 import MapKit
+import Model
 import OSLog
 import SwiftUI
 

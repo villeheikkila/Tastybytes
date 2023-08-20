@@ -1,3 +1,4 @@
+import Model
 import OSLog
 import SwiftUI
 
@@ -9,7 +10,7 @@ struct ProductFilterSheet: View {
     private let logger = Logger(category: "SeachFilterSheet")
     @Environment(AppDataManager.self) private var appDataManager
     @Environment(\.dismiss) private var dismiss
-    @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles?
+    @State private var categoryFilter: Model.Category.JoinedSubcategoriesServingStyles?
     @State private var subcategoryFilter: Subcategory?
     @State private var sortBy: Product.Filter.SortBy?
     @State private var onlyNonCheckedIn = false
@@ -36,7 +37,7 @@ struct ProductFilterSheet: View {
             if sections.contains(.category) {
                 Section("Category") {
                     Picker(selection: $categoryFilter) {
-                        Text("Select All").tag(Category.JoinedSubcategoriesServingStyles?(nil))
+                        Text("Select All").tag(Model.Category.JoinedSubcategoriesServingStyles?(nil))
                         ForEach(appDataManager.categories) { category in
                             Text(category.name).tag(Optional(category))
                         }
@@ -96,7 +97,8 @@ struct ProductFilterSheet: View {
     }
 
     func getFilter() -> Product.Filter? {
-        guard !(categoryFilter == nil && subcategoryFilter == nil && onlyNonCheckedIn == false && sortBy == nil) else { return nil }
+        guard !(categoryFilter == nil && subcategoryFilter == nil && onlyNonCheckedIn == false && sortBy == nil)
+        else { return nil }
         return Product.Filter(
             category: categoryFilter,
             subcategory: subcategoryFilter,

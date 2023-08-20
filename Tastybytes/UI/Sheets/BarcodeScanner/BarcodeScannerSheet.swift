@@ -1,4 +1,5 @@
 import AVFoundation
+import Model
 import SwiftUI
 
 struct BarcodeScannerSheet: View {

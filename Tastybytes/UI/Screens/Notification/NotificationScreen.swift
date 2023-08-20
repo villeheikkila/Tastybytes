@@ -1,3 +1,4 @@
+import Model
 import SwiftUI
 
 struct NotificationScreen: View {
@@ -8,7 +9,7 @@ struct NotificationScreen: View {
 
     @State var filter: NotificationType?
 
-    var filteredNotifications: [Notification] {
+    var filteredNotifications: [Model.Notification] {
         notificationManager.notifications.filter { notification in
             if self.filter == nil {
                 return true

@@ -1,3 +1,4 @@
+import Model
 import OSLog
 import SwiftUI
 

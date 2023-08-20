@@ -1,5 +1,6 @@
 import Charts
 import MapKit
+import Model
 import OSLog
 import PhotosUI
 import SwiftUI

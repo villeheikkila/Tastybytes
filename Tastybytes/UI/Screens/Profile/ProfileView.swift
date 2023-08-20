@@ -1,4 +1,5 @@
 import Charts
+import Model
 import OSLog
 import PhotosUI
 import SwiftUI

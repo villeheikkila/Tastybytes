@@ -1,3 +1,4 @@
+import Model
 import OSLog
 import SwiftUI
 
@@ -26,38 +27,6 @@ extension CheckInListView {
                 true
             default:
                 false
-            }
-        }
-    }
-}
-
-enum CheckInSegment: String, CaseIterable {
-    case everyone, friends, you
-
-    var table: Database.Table {
-        switch self {
-        case .everyone:
-            return .checkIns
-        case .friends:
-            return .viewCheckInsFromFriends
-        case .you:
-            return .viewCheckInsFromCurrentUser
-        }
-    }
-
-    var emptyContentView: some View {
-        switch self {
-        case .everyone:
-            ContentUnavailableView {
-                Label("Be first to check-in!", systemSymbol: .listStar)
-            }
-        case .friends:
-            ContentUnavailableView {
-                Label("No check-ins from friends", systemSymbol: .listStar)
-            }
-        case .you:
-            ContentUnavailableView {
-                Label("You haven't check-in yet", systemSymbol: .listStar)
             }
         }
     }
@@ -344,3 +313,23 @@ struct CheckInListView<Header>: View where Header: View {
         }
     }
 }
+
+extension CheckInSegment {
+    var emptyContentView: some View {
+        switch self {
+        case .everyone:
+            ContentUnavailableView {
+                Label("Be first to check-in!", systemSymbol: .listStar)
+            }
+        case .friends:
+            ContentUnavailableView {
+                Label("No check-ins from friends", systemSymbol: .listStar)
+            }
+        case .you:
+            ContentUnavailableView {
+                Label("You haven't check-in yet", systemSymbol: .listStar)
+            }
+        }
+    }
+}
+

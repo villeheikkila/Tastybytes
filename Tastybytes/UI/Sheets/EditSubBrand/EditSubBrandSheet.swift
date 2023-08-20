@@ -1,3 +1,4 @@
+import Model
 import OSLog
 import PhotosUI
 import SwiftUI
@@ -106,7 +107,10 @@ struct EditSubBrandSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))")
+            logger
+                .error(
+                    "Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))"
+                )
         }
     }
 

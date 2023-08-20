@@ -1,7 +1,8 @@
+import Model
 import SwiftUI
 
 struct SummaryView: View {
-    let summary: Summary?
+    public let summary: Summary?
 
     var body: some View {
         Grid(alignment: .leading) {
@@ -11,7 +12,11 @@ struct SummaryView: View {
             Divider().gridCellUnsizedAxes(.horizontal)
             SummaryRow(title: "Friends", count: summary?.friendsTotalCheckIns, rating: summary?.friendsAverageRating)
             Divider().gridCellUnsizedAxes(.horizontal)
-            SummaryRow(title: "You", count: summary?.currentUserTotalCheckIns, rating: summary?.currentUserAverageRating)
+            SummaryRow(
+                title: "You",
+                count: summary?.currentUserTotalCheckIns,
+                rating: summary?.currentUserAverageRating
+            )
         }
     }
 

@@ -1,3 +1,4 @@
+import Model
 import OSLog
 import SwiftUI
 
@@ -36,11 +37,17 @@ struct DuplicateProductScreen: View {
                             router.navigate(screen: .product(product))
                         }
                         .swipeActions {
-                            ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifyProduct(product) }).tint(.green)
+                            ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifyProduct(product) })
+                                .tint(.green)
                             RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
                                 await loadProducts()
                             })).tint(.yellow)
-                            Button("Delete", systemSymbol: .trash, role: .destructive, action: { deleteProduct = product })
+                            Button(
+                                "Delete",
+                                systemSymbol: .trash,
+                                role: .destructive,
+                                action: { deleteProduct = product }
+                            )
                         }
                 }
             }
@@ -66,8 +73,8 @@ struct DuplicateProductScreen: View {
             }
         #endif
             .task {
-                await loadProducts()
-            }
+                    await loadProducts()
+                }
     }
 
     func verifyProduct(_ product: Product.Joined) async {

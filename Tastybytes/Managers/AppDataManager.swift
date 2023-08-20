@@ -1,3 +1,4 @@
+import Model
 import Observation
 import OSLog
 import SwiftUI
@@ -5,7 +6,7 @@ import SwiftUI
 @Observable
 final class AppDataManager {
     private let logger = Logger(category: "AppDataManager")
-    var categories = [Category.JoinedSubcategoriesServingStyles]()
+    var categories = [Model.Category.JoinedSubcategoriesServingStyles]()
     var flavors = [Flavor]()
     var aboutPage: AboutPage? = nil
 
@@ -137,7 +138,7 @@ final class AppDataManager {
     }
 
     func addCategory(name: String) async {
-        switch await repository.category.insert(newCategory: Category.NewRequest(name: name)) {
+        switch await repository.category.insert(newCategory: Model.Category.NewRequest(name: name)) {
         case .success:
             await loadCategories()
         case let .failure(error):
@@ -147,7 +148,7 @@ final class AppDataManager {
         }
     }
 
-    func addSubcategory(category: Category.JoinedSubcategoriesServingStyles, name: String) async {
+    func addSubcategory(category: Model.Category.JoinedSubcategoriesServingStyles, name: String) async {
         switch await repository.subcategory
             .insert(newSubcategory: Subcategory
                 .NewRequest(name: name, category: category))

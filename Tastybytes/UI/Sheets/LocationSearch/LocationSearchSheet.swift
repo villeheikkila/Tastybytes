@@ -1,6 +1,7 @@
 import CoreLocation
 import Foundation
 import MapKit
+import Model
 import Observation
 import OSLog
 import SwiftUI

@@ -1,4 +1,5 @@
 import Charts
+import Model
 import SwiftUI
 
 struct RatingChartView: View {

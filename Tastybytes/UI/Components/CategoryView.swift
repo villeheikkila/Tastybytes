@@ -1,11 +1,12 @@
+import Model
 import SwiftUI
 
 struct CategoryView: View {
-    let category: Category
+    let category: Model.Category
     let subcategories: [SubcategoryProtocol]
     let servingStyle: ServingStyle?
 
-    init(category: Category, subcategories: [SubcategoryProtocol], servingStyle: ServingStyle? = nil) {
+    init(category: Model.Category, subcategories: [SubcategoryProtocol], servingStyle: ServingStyle? = nil) {
         self.category = category
         self.subcategories = subcategories
         self.servingStyle = servingStyle

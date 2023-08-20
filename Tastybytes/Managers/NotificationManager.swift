@@ -1,5 +1,6 @@
 import Firebase
 import FirebaseMessaging
+import Model
 import Observation
 import OSLog
 import SwiftUI
@@ -7,7 +8,7 @@ import SwiftUI
 @Observable
 final class NotificationManager {
     private let logger = Logger(category: "NotificationManager")
-    private(set) var notifications = [Notification]()
+    private(set) var notifications = [Model.Notification]()
 
     var pushNotificationSettings: ProfilePushNotification? = nil
     var unreadCount: Int = 0
@@ -80,7 +81,7 @@ final class NotificationManager {
         case .success:
             await MainActor.run {
                 withAnimation {
-                    self.notifications = [Notification]()
+                    self.notifications = [Model.Notification]()
                 }
             }
         case let .failure(error):
@@ -162,7 +163,7 @@ final class NotificationManager {
         }
     }
 
-    func markAsRead(_ notification: Notification) async {
+    func markAsRead(_ notification: Model.Notification) async {
         switch await repository.notification.markRead(id: notification.id) {
         case let .success(updatedNotification):
             notifications.replace(notification, with: updatedNotification)
@@ -190,7 +191,7 @@ final class NotificationManager {
         }
     }
 
-    func deleteNotifications(notification: Notification) async {
+    func deleteNotifications(notification: Model.Notification) async {
         switch await repository.notification.delete(id: notification.id) {
         case .success:
             await MainActor.run {

@@ -1,3 +1,4 @@
+import Model
 import OSLog
 import SwiftUI
 
@@ -14,9 +15,9 @@ struct CategoryServingStyleSheet: View {
         }
     }
 
-    let category: Category.JoinedSubcategoriesServingStyles
+    let category: Model.Category.JoinedSubcategoriesServingStyles
 
-    init(category: Category.JoinedSubcategoriesServingStyles) {
+    init(category: Model.Category.JoinedSubcategoriesServingStyles) {
         self.category = category
         _servingStyles = State(wrappedValue: category.servingStyles)
     }

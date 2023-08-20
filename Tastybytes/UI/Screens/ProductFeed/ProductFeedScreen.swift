@@ -1,3 +1,4 @@
+import Model
 import OSLog
 import SwiftUI
 
@@ -8,7 +9,7 @@ struct ProductFeedScreen: View {
     @Environment(Router.self) private var router
     @Environment(AppDataManager.self) private var appDataManager
     @State private var products = [Product.Joined]()
-    @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles? {
+    @State private var categoryFilter: Model.Category.JoinedSubcategoriesServingStyles? {
         didSet {
             Task { await refresh() }
         }

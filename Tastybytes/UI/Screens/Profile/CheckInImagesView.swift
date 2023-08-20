@@ -1,3 +1,4 @@
+import Model
 import NukeUI
 import OSLog
 import SwiftUI

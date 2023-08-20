@@ -1,5 +1,7 @@
+import Model
 import OSLog
 import SwiftUI
+
 struct ProfileStatisticsView: View {
     private let logger = Logger(category: "ProfileStatisticsView")
     @Environment(Repository.self) private var repository
@@ -38,8 +40,8 @@ struct ProfileStatisticsView: View {
             }
         #endif
             .task {
-                await loadStatistics()
-            }
+                    await loadStatistics()
+                }
     }
 
     func loadStatistics() async {
@@ -79,8 +81,12 @@ struct SubcategoryStatisticsView: View {
                 RouterLink(screen: .profileProductsByFilter(
                     profile,
                     Product
-                        .Filter(category: category.category, subcategory: subcategory.subcategory, onlyNonCheckedIn: false,
-                                sortBy: Product.Filter.SortBy.highestRated)
+                        .Filter(
+                            category: category.category,
+                            subcategory: subcategory.subcategory,
+                            onlyNonCheckedIn: false,
+                            sortBy: Product.Filter.SortBy.highestRated
+                        )
                 )) {
                     HStack {
                         Text(subcategory.name)
