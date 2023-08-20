@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C0488642A92248B00CA5B83 /* TastybytesClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C0488632A92248B00CA5B83 /* TastybytesClient */; };
 		5C0595EE2A38B9CB0067F46C /* EmptyActivityFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */; };
 		5C0595F22A38C9A50067F46C /* ProductShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595F12A38C9A50067F46C /* ProductShareLinkView.swift */; };
 		5C0595F42A38D05A0067F46C /* LabeledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595F32A38D05A0067F46C /* LabeledTextField.swift */; };
@@ -45,6 +46,7 @@
 		5C20A52529AC8AB800ABBA74 /* BarcodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */; };
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
 		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
+		5C23349C2A925DEF00A26F0D /* Model in Frameworks */ = {isa = PBXBuildFile; productRef = 5C23349B2A925DEF00A26F0D /* Model */; };
 		5C234F0A29F5BBB9003F2283 /* SubscriptionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0929F5BBB9003F2283 /* SubscriptionSheet.swift */; };
 		5C234F132A0163AA003F2283 /* CheckInDatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */; };
 		5C25AEB429031F9C00793607 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* Date+Extension.swift */; };
@@ -259,6 +261,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C0488612A92243B00CA5B83 /* TastybytesClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TastybytesClient; path = Packages/TastybytesClient; sourceTree = "<group>"; };
 		5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyActivityFeed.swift; sourceTree = "<group>"; };
 		5C0595F12A38C9A50067F46C /* ProductShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductShareLinkView.swift; sourceTree = "<group>"; };
 		5C0595F32A38D05A0067F46C /* LabeledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextField.swift; sourceTree = "<group>"; };
@@ -296,6 +299,7 @@
 		5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeUtils.swift; sourceTree = "<group>"; };
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
 		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
+		5C2334992A925DB900A26F0D /* Model */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Model; path = Packages/Model; sourceTree = "<group>"; };
 		5C234F0929F5BBB9003F2283 /* SubscriptionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionSheet.swift; sourceTree = "<group>"; };
 		5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInDatePickerSheet.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -520,7 +524,9 @@
 				5C964DC32A2D021F00805199 /* SFSafeSymbols in Frameworks */,
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C5882752A687B2A00851FA7 /* NukeUI in Frameworks */,
+				5C0488642A92248B00CA5B83 /* TastybytesClient in Frameworks */,
 				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
+				5C23349C2A925DEF00A26F0D /* Model in Frameworks */,
 				5C5882732A687B2A00851FA7 /* Nuke in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,13 +540,6 @@
 				5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */,
 			);
 			path = ContentUnavailable;
-			sourceTree = "<group>";
-		};
-		5C08B6DE28ED7956009218D7 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		5C09BECC29A54B1600331AEB /* Fonts */ = {
@@ -1364,9 +1363,10 @@
 				5CE83CEF2A8BEAEC00B71178 /* Store.storekit */,
 				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
 				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
+				5C2334992A925DB900A26F0D /* Model */,
+				5C0488612A92243B00CA5B83 /* TastybytesClient */,
 				5CFEE57528ED69B100A8DD66 /* Tastybytes */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
-				5C08B6DE28ED7956009218D7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1432,6 +1432,8 @@
 				5C964DC22A2D021F00805199 /* SFSafeSymbols */,
 				5C5882722A687B2A00851FA7 /* Nuke */,
 				5C5882742A687B2A00851FA7 /* NukeUI */,
+				5C0488632A92248B00CA5B83 /* TastybytesClient */,
+				5C23349B2A925DEF00A26F0D /* Model */,
 			);
 			productName = tasted;
 			productReference = 5CFEE57328ED69B100A8DD66 /* Tastybytes.app */;
@@ -1467,6 +1469,8 @@
 				5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5C964DC12A2D021F00805199 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */,
+				5C0488622A92248B00CA5B83 /* XCLocalSwiftPackageReference "Packages/TastybytesClient" */,
+				5C23349A2A925DEF00A26F0D /* XCLocalSwiftPackageReference "Packages/Model" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -1996,6 +2000,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		5C0488622A92248B00CA5B83 /* XCLocalSwiftPackageReference "Packages/TastybytesClient" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/TastybytesClient;
+		};
+		5C23349A2A925DEF00A26F0D /* XCLocalSwiftPackageReference "Packages/Model" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Model;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -2040,6 +2055,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5C0488632A92248B00CA5B83 /* TastybytesClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TastybytesClient;
+		};
 		5C08B6DF28ED7956009218D7 /* Supabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */;
@@ -2049,6 +2068,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		5C23349B2A925DEF00A26F0D /* Model */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Model;
 		};
 		5C5882722A687B2A00851FA7 /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;
