@@ -3,7 +3,7 @@ import OSLog
 import SwiftUI
 
 @Observable
-final class SheetEnvironmentModel {
+final class SheetManager {
     private let logger = Logger(category: "SheetEnvironmentModel")
     var sheet: Sheet? = nil
     var nestedSheet: Sheet? = nil

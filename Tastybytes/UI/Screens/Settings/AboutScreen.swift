@@ -71,7 +71,7 @@ struct AboutScreen: View {
                 if let githubUrl = URL(string: aboutPage.githubUrl) {
                     Link(destination: githubUrl) {
                         HStack {
-                            GitHubShape()
+                            Image("github")
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
@@ -84,7 +84,7 @@ struct AboutScreen: View {
                 if let portfolioUrl = URL(string: aboutPage.portfolioUrl) {
                     Link(destination: portfolioUrl) {
                         HStack {
-                            WebShape()
+                            Image(systemSymbol: .network)
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
@@ -97,7 +97,7 @@ struct AboutScreen: View {
                 if let linkedInUrl = URL(string: aboutPage.linkedInUrl) {
                     Link(destination: linkedInUrl) {
                         HStack {
-                            LinkedInShape()
+                            Image("linkedin")
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)

@@ -14,7 +14,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
     var shortcutItem: UIApplicationShortcutItem {
         switch self {
         case .activity:
-            UIApplicationShortcutItem(
+            .init(
                 type: "Activity",
                 localizedTitle: "Activity",
                 localizedSubtitle: "",
@@ -22,7 +22,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
                 userInfo: ["name": "activity" as NSSecureCoding]
             )
         case .discover:
-            UIApplicationShortcutItem(
+            .init(
                 type: "Discover",
                 localizedTitle: "Discover",
                 localizedSubtitle: "",
@@ -30,7 +30,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
                 userInfo: ["name": "discover" as NSSecureCoding]
             )
         case .notifications:
-            UIApplicationShortcutItem(
+            .init(
                 type: "Notifications",
                 localizedTitle: "Notifications",
                 localizedSubtitle: "",
@@ -38,7 +38,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
                 userInfo: ["name": "notifications" as NSSecureCoding]
             )
         case .profile:
-            UIApplicationShortcutItem(
+            .init(
                 type: "Profile",
                 localizedTitle: "Profile",
                 localizedSubtitle: "",

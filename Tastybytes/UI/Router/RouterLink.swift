@@ -3,7 +3,7 @@ import SwiftUI
 
 struct RouterLink<LabelView: View>: View {
     @Environment(Router.self) private var router
-    @Environment(SheetEnvironmentModel.self) private var sheetEnvironmentModel
+    @Environment(SheetManager.self) private var sheetEnvironmentModel
 
     let screen: Screen?
     let sheet: Sheet?

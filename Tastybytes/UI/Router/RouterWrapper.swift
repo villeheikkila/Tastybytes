@@ -7,7 +7,7 @@ struct RouterWrapper<Content: View>: View {
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var router: Router
-    @State private var sheetEnvironmentModel = SheetEnvironmentModel()
+    @State private var sheetEnvironmentModel = SheetManager()
 
     let content: (_ router: Router) -> Content
 

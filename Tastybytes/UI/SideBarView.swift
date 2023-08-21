@@ -36,7 +36,7 @@ struct SideBarView: View {
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(\.orientation) private var orientation
-    @State private var sheetEnvironmentModel = SheetEnvironmentModel()
+    @State private var sheetEnvironmentModel = SheetManager()
     @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
     @State private var selection: SiderBarTab? = SiderBarTab.activity {
         didSet {

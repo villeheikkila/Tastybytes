@@ -203,7 +203,7 @@ struct ProductMutationInnerView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(SheetEnvironmentModel.self) private var sheetEnvironmentModel
+    @Environment(SheetManager.self) private var sheetEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?

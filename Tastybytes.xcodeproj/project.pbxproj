@@ -44,9 +44,6 @@
 		5C25C66D29941B9F00C07953 /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C66C29941B9F00C07953 /* OnboardingScreen.swift */; };
 		5C25C6702995616D00C07953 /* WelcomeOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C66F2995616D00C07953 /* WelcomeOnboarding.swift */; };
 		5C25C672299561BD00C07953 /* ProfileOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C671299561BD00C07953 /* ProfileOnboarding.swift */; };
-		5C25C68429956B8500C07953 /* LinkedInShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68329956B8500C07953 /* LinkedInShape.swift */; };
-		5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68529956BAF00C07953 /* GitHubShape.swift */; };
-		5C25C68829956BD400C07953 /* WebShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68729956BD400C07953 /* WebShape.swift */; };
 		5C25C68A299572B700C07953 /* FinalOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C689299572B700C07953 /* FinalOnboarding.swift */; };
 		5C25C68C2996D22400C07953 /* EditSubBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68B2996D22400C07953 /* EditSubBrandSheet.swift */; };
 		5C25C68E29991BEF00C07953 /* BarcodeManagementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68D29991BEF00C07953 /* BarcodeManagementSheet.swift */; };
@@ -230,9 +227,6 @@
 		5C25C66C29941B9F00C07953 /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
 		5C25C66F2995616D00C07953 /* WelcomeOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeOnboarding.swift; sourceTree = "<group>"; };
 		5C25C671299561BD00C07953 /* ProfileOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileOnboarding.swift; sourceTree = "<group>"; };
-		5C25C68329956B8500C07953 /* LinkedInShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedInShape.swift; sourceTree = "<group>"; };
-		5C25C68529956BAF00C07953 /* GitHubShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubShape.swift; sourceTree = "<group>"; };
-		5C25C68729956BD400C07953 /* WebShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebShape.swift; sourceTree = "<group>"; };
 		5C25C689299572B700C07953 /* FinalOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalOnboarding.swift; sourceTree = "<group>"; };
 		5C25C68B2996D22400C07953 /* EditSubBrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubBrandSheet.swift; sourceTree = "<group>"; };
 		5C25C68D29991BEF00C07953 /* BarcodeManagementSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementSheet.swift; sourceTree = "<group>"; };
@@ -479,16 +473,6 @@
 				5C0595F52A38D12B0067F46C /* PrivacySettingsPage.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		5C25C68229956B7A00C07953 /* Shapes */ = {
-			isa = PBXGroup;
-			children = (
-				5C25C68329956B8500C07953 /* LinkedInShape.swift */,
-				5C25C68529956BAF00C07953 /* GitHubShape.swift */,
-				5C25C68729956BD400C07953 /* WebShape.swift */,
-			);
-			path = Shapes;
 			sourceTree = "<group>";
 		};
 		5C32C40829E71463008CE8A9 /* Router */ = {
@@ -856,7 +840,6 @@
 				5C12B4342902C9D0001EE549 /* TabsView.swift */,
 				5CD7234B29F4628B003DA030 /* SideBarView.swift */,
 				5C32C40829E71463008CE8A9 /* Router */,
-				5C25C68229956B7A00C07953 /* Shapes */,
 				5C09BECC29A54B1600331AEB /* Fonts */,
 				5CFB562D28F5969300F13A1E /* Components */,
 				5CD10A5F28F99CF60001CFC2 /* Screens */,
@@ -1177,7 +1160,6 @@
 				5CDC9F9929E3E1EE00B6082F /* EditCompanySheet.swift in Sources */,
 				5C6E106B2A1E014100079F8E /* TabIdentifier.swift in Sources */,
 				5CED432228FAC01C003F8194 /* UserSheet.swift in Sources */,
-				5C25C68829956BD400C07953 /* WebShape.swift in Sources */,
 				5CED432C28FD69DE003F8194 /* CompanySearchSheet.swift in Sources */,
 				5CE83CF32A8BF12000B71178 /* SubscriptionManager.swift in Sources */,
 				5C7C3585299AC166009A3C09 /* CheckInCommentView.swift in Sources */,
@@ -1234,7 +1216,6 @@
 				5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */,
 				5C7C3578299ABFBD009A3C09 /* FriendListItemView.swift in Sources */,
 				5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */,
-				5C25C68429956B8500C07953 /* LinkedInShape.swift in Sources */,
 				5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreen.swift in Sources */,
 				5C20A51429AA6AA700ABBA74 /* VerificationScreen.swift in Sources */,
@@ -1315,7 +1296,6 @@
 				5C61E83D29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift in Sources */,
 				5CE83CEC2A8BD95100B71178 /* SubscriptionStatus.swift in Sources */,
 				5C7C35E6299AE0E1009A3C09 /* CheckInReactionNotificationView.swift in Sources */,
-				5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */,
 				5C9FD5652A36686600ED2CEF /* CheckInContextMenu.swift in Sources */,
 				5CA006CD2992D0CF003CC307 /* CreateQRCodeView.swift in Sources */,
 				5CDC9F8529E136A500B6082F /* CheckInEntityView.swift in Sources */,
