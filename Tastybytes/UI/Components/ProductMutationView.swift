@@ -1,4 +1,4 @@
-import Model
+import Models
 import OSLog
 import SwiftUI
 
@@ -82,7 +82,7 @@ struct ProductMutationView: View {
 
     func loadFromBrand(
         _ brand: Brand.JoinedSubBrandsProductsCompany,
-        categories: [Model.Category.JoinedSubcategoriesServingStyles]
+        categories: [Models.Category.JoinedSubcategoriesServingStyles]
     ) {
         initialValues = ProductMutationInitialValues(
             category: categories.first(where: { $0.name == "beverage" }),
@@ -104,7 +104,7 @@ struct ProductMutationView: View {
     func loadFromSubBrand(
         brand: Brand.JoinedSubBrandsProductsCompany,
         subBrand: SubBrand.JoinedProduct,
-        categories: [Model.Category.JoinedSubcategoriesServingStyles]
+        categories: [Models.Category.JoinedSubcategoriesServingStyles]
     ) {
         let subBrandsFromBrand = brand.subBrands
             .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
@@ -124,7 +124,7 @@ struct ProductMutationView: View {
 
     func loadValuesFromExistingProduct(
         _ initialProduct: Product.Joined,
-        categories: [Model.Category.JoinedSubcategoriesServingStyles]
+        categories: [Models.Category.JoinedSubcategoriesServingStyles]
     ) async {
         switch await repository.brand
             .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
@@ -163,7 +163,7 @@ struct ProductMutationView: View {
 
 private struct ProductMutationInitialValues {
     let subcategories: [Subcategory]
-    let category: Model.Category.JoinedSubcategoriesServingStyles?
+    let category: Models.Category.JoinedSubcategoriesServingStyles?
     let brandOwner: Company?
     let brand: Brand.JoinedSubBrands?
     let subBrand: SubBrandProtocol?
@@ -175,7 +175,7 @@ private struct ProductMutationInitialValues {
 
     init(
         subcategories: [Subcategory] = [],
-        category: Model.Category.JoinedSubcategoriesServingStyles? = nil,
+        category: Models.Category.JoinedSubcategoriesServingStyles? = nil,
         brandOwner: Company? = nil,
         brand: Brand.JoinedSubBrands? = nil,
         subBrand: SubBrandProtocol? = nil,
@@ -206,7 +206,7 @@ struct ProductMutationInnerView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var subcategories: [Subcategory]
-    @State private var category: Model.Category.JoinedSubcategoriesServingStyles?
+    @State private var category: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var brandOwner: Company? {
         didSet {
             brand = nil

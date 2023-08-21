@@ -1,4 +1,4 @@
-import Model
+import Models
 import Observation
 import OSLog
 import SwiftUI

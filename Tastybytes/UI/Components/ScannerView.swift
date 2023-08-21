@@ -1,5 +1,5 @@
 import AVFoundation
-import Model
+import Models
 import SwiftUI
 
 struct ScannerView: UIViewControllerRepresentable {

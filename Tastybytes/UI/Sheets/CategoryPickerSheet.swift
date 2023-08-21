@@ -1,4 +1,4 @@
-import Model
+import Models
 import OSLog
 import SwiftUI
 
@@ -7,10 +7,10 @@ private let logger = Logger(category: "CategoryPickerSheet")
 struct CategoryPickerSheet: View {
     @Environment(AppDataManager.self) private var appDataManager
     @Environment(\.dismiss) private var dismiss
-    @Binding var category: Model.Category.JoinedSubcategoriesServingStyles?
+    @Binding var category: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var searchTerm = ""
 
-    var shownCategories: [Model.Category.JoinedSubcategoriesServingStyles] {
+    var shownCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
         appDataManager.categories
             .filter { category in
                 searchTerm.isEmpty || category.name.contains(searchTerm) || category.subcategories

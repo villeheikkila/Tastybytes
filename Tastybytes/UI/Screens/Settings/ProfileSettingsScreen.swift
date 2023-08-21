@@ -1,4 +1,4 @@
-import Model
+import Models
 import PhotosUI
 import SwiftUI
 

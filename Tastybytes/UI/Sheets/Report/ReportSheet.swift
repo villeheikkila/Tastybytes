@@ -1,5 +1,5 @@
 import AlertToast
-import Model
+import Models
 import OSLog
 import SwiftUI
 

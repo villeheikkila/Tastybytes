@@ -1,4 +1,4 @@
-import Model
+import Models
 import NukeUI
 import OSLog
 import SwiftUI
@@ -553,7 +553,7 @@ private struct ProductsByCategory: Identifiable {
         category.id
     }
 
-    let category: Model.Category
+    let category: Models.Category
     var products: [Product.Joined]
 }
 

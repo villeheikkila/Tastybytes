@@ -1,4 +1,4 @@
-import Model
+import Models
 import OSLog
 import SwiftUI
 
@@ -13,7 +13,7 @@ struct SubcategorySheet: View {
     @State private var showAddSubcategory = false
     @State private var newSubcategoryName = ""
     @State private var searchTerm = ""
-    let category: Model.Category.JoinedSubcategoriesServingStyles
+    let category: Models.Category.JoinedSubcategoriesServingStyles
 
     private let maxSubcategories = 4
 

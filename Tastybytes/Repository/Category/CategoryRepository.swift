@@ -1,8 +1,8 @@
-import Model
+import Models
 import Supabase
 
 protocol CategoryRepository {
-    func getAllWithSubcategoriesServingStyles() async -> Result<[Model.Category.JoinedSubcategoriesServingStyles], Error>
+    func getAllWithSubcategoriesServingStyles() async -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error>
     func insert(newCategory: Category.NewRequest) async -> Result<Void, Error>
     func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error>
     func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error>
@@ -11,9 +11,9 @@ protocol CategoryRepository {
 struct SupabaseCategoryRepository: CategoryRepository {
     let client: SupabaseClient
 
-    func getAllWithSubcategoriesServingStyles() async -> Result<[Model.Category.JoinedSubcategoriesServingStyles], Error> {
+    func getAllWithSubcategoriesServingStyles() async -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error> {
         do {
-            let response: [Model.Category.JoinedSubcategoriesServingStyles] = try await client
+            let response: [Models.Category.JoinedSubcategoriesServingStyles] = try await client
                 .database
                 .from(.categories)
                 .select(columns: Category.getQuery(.joinedSubcaategoriesServingStyles(false)))

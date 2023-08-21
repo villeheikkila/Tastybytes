@@ -1,5 +1,5 @@
 import Foundation
-import Model
+import Models
 import PostgREST
 import Supabase
 

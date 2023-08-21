@@ -13,7 +13,7 @@ struct CameraView: View {
     var body: some View {
         GeometryReader { geometry in
             GeometryReader { imageGeometry in
-                if let image = cameraModel.viewfinderImage {
+                if let image = cameraModels.viewfinderImage {
                     image
                         .resizable()
                         .scaledToFill()
@@ -36,7 +36,7 @@ struct CameraView: View {
             .ignoresSafeArea()
         }
         .task {
-            await cameraModel.camera.start()
+            await cameraModels.camera.start()
         }
     }
 
@@ -44,11 +44,11 @@ struct CameraView: View {
         HStack(spacing: 60) {
             Spacer()
             CameraControlButton(title: "Close Camera", systemSymbol: .xmark, action: { isPresented = false })
-            TakePhotoButton(title: "Take Photo", action: { cameraModel.camera.takePhoto() })
+            TakePhotoButton(title: "Take Photo", action: { cameraModels.camera.takePhoto() })
             CameraControlButton(
                 title: "Switch Camera",
                 systemSymbol: .arrowTriangle2Circlepath,
-                action: { cameraModel.camera.switchCaptureDevice() }
+                action: { cameraModels.camera.switchCaptureDevice() }
             )
             Spacer()
         }

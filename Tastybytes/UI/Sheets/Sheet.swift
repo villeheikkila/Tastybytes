@@ -1,4 +1,4 @@
-import Model
+import Models
 import SwiftUI
 
 enum Sheet: Identifiable, Equatable {
@@ -19,7 +19,7 @@ enum Sheet: Identifiable, Equatable {
     case addBrand(brandOwner: Company, mode: BrandSheet.Mode)
     case subcategory(
         subcategories: Binding<[Subcategory]>,
-        category: Model.Category.JoinedSubcategoriesServingStyles
+        category: Models.Category.JoinedSubcategoriesServingStyles
     )
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany)
@@ -41,7 +41,7 @@ enum Sheet: Identifiable, Equatable {
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
                                 onSelect: (_ servingStyle: ServingStyle) async -> Void)
-    case categoryServingStyle(category: Model.Category.JoinedSubcategoriesServingStyles)
+    case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
     case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) async -> Void)
     case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case addCategory(onSubmit: (_ newCategoryName: String) async -> Void)
@@ -49,7 +49,7 @@ enum Sheet: Identifiable, Equatable {
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
     case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
-    case categoryPickerSheet(category: Binding<Model.Category.JoinedSubcategoriesServingStyles?>)
+    case categoryPickerSheet(category: Binding<Models.Category.JoinedSubcategoriesServingStyles?>)
     case mergeLocationSheet(location: Location)
     case productLogo(product: Product.Joined, onUpload: () async -> Void)
     case subscribe

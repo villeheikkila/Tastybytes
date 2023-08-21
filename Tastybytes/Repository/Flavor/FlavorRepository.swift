@@ -1,4 +1,4 @@
-import Model
+import Models
 import Supabase
 
 protocol FlavorRepository {

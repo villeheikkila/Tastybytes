@@ -1,4 +1,4 @@
-import Model
+import Models
 import SwiftUI
 
 struct CompanyShareLinkView: View {

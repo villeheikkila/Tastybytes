@@ -41,7 +41,6 @@
 		5C20A52529AC8AB800ABBA74 /* BarcodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */; };
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
 		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
-		5C23349C2A925DEF00A26F0D /* Model in Frameworks */ = {isa = PBXBuildFile; productRef = 5C23349B2A925DEF00A26F0D /* Model */; };
 		5C234F0A29F5BBB9003F2283 /* SubscriptionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0929F5BBB9003F2283 /* SubscriptionSheet.swift */; };
 		5C234F132A0163AA003F2283 /* CheckInDatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */; };
 		5C25AEB429031F9C00793607 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* Date+Extension.swift */; };
@@ -186,6 +185,7 @@
 		5CD7234E29F46442003DA030 /* CurrentProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD7234D29F46442003DA030 /* CurrentProfileScreen.swift */; };
 		5CD8D35329CA5B2D001C5930 /* FriendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD8D35229CA5B2D001C5930 /* FriendManager.swift */; };
 		5CD8D35529CDF58F001C5930 /* AppDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD8D35429CDF58F001C5930 /* AppDataManager.swift */; };
+		5CDB8BA32A92AAE800F73123 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 5CDB8BA22A92AAE800F73123 /* Models */; };
 		5CDC9F8529E136A500B6082F /* CheckInEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8429E136A500B6082F /* CheckInEntityView.swift */; };
 		5CDC9F8A29E3D89600B6082F /* AddCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8929E3D89600B6082F /* AddCategorySheet.swift */; };
 		5CDC9F8C29E3D8AB00B6082F /* AddSubcategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8B29E3D8AB00B6082F /* AddSubcategorySheet.swift */; };
@@ -233,7 +233,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5C0488612A92243B00CA5B83 /* TastybytesClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TastybytesClient; path = Packages/TastybytesClient; sourceTree = "<group>"; };
 		5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyActivityFeed.swift; sourceTree = "<group>"; };
 		5C0595F12A38C9A50067F46C /* ProductShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductShareLinkView.swift; sourceTree = "<group>"; };
 		5C0595F32A38D05A0067F46C /* LabeledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextField.swift; sourceTree = "<group>"; };
@@ -267,7 +266,6 @@
 		5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeUtils.swift; sourceTree = "<group>"; };
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
 		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
-		5C2334992A925DB900A26F0D /* Model */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Model; path = Packages/Model; sourceTree = "<group>"; };
 		5C234F0929F5BBB9003F2283 /* SubscriptionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionSheet.swift; sourceTree = "<group>"; };
 		5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInDatePickerSheet.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -412,6 +410,8 @@
 		5CD7234D29F46442003DA030 /* CurrentProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentProfileScreen.swift; sourceTree = "<group>"; };
 		5CD8D35229CA5B2D001C5930 /* FriendManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendManager.swift; sourceTree = "<group>"; };
 		5CD8D35429CDF58F001C5930 /* AppDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataManager.swift; sourceTree = "<group>"; };
+		5CDB8BA02A92A99F00F73123 /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Models; path = Packages/Models; sourceTree = "<group>"; };
+		5CDB8BA42A932FFC00F73123 /* Repositories */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Repositories; path = Packages/Repositories; sourceTree = "<group>"; };
 		5CDC9F8429E136A500B6082F /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
 		5CDC9F8929E3D89600B6082F /* AddCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategorySheet.swift; sourceTree = "<group>"; };
 		5CDC9F8B29E3D8AB00B6082F /* AddSubcategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubcategorySheet.swift; sourceTree = "<group>"; };
@@ -470,7 +470,7 @@
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C5882752A687B2A00851FA7 /* NukeUI in Frameworks */,
 				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
-				5C23349C2A925DEF00A26F0D /* Model in Frameworks */,
+				5CDB8BA32A92AAE800F73123 /* Models in Frameworks */,
 				5C5882732A687B2A00851FA7 /* Nuke in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1272,8 +1272,8 @@
 				5CE83CEF2A8BEAEC00B71178 /* Store.storekit */,
 				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
 				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
-				5C2334992A925DB900A26F0D /* Model */,
-				5C0488612A92243B00CA5B83 /* TastybytesClient */,
+				5CDB8BA42A932FFC00F73123 /* Repositories */,
+				5CDB8BA02A92A99F00F73123 /* Models */,
 				5CFEE57528ED69B100A8DD66 /* Tastybytes */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
 			);
@@ -1341,7 +1341,7 @@
 				5C964DC22A2D021F00805199 /* SFSafeSymbols */,
 				5C5882722A687B2A00851FA7 /* Nuke */,
 				5C5882742A687B2A00851FA7 /* NukeUI */,
-				5C23349B2A925DEF00A26F0D /* Model */,
+				5CDB8BA22A92AAE800F73123 /* Models */,
 			);
 			productName = tasted;
 			productReference = 5CFEE57328ED69B100A8DD66 /* Tastybytes.app */;
@@ -1379,6 +1379,7 @@
 				5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */,
 				5C0488622A92248B00CA5B83 /* XCLocalSwiftPackageReference "Packages/TastybytesClient" */,
 				5C23349A2A925DEF00A26F0D /* XCLocalSwiftPackageReference "Packages/Model" */,
+				5CDB8BA12A92AAE800F73123 /* XCLocalSwiftPackageReference "Packages/Models" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -1890,6 +1891,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/Model;
 		};
+		5CDB8BA12A92AAE800F73123 /* XCLocalSwiftPackageReference "Packages/Models" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Models;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1946,10 +1951,6 @@
 			package = 5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
 		};
-		5C23349B2A925DEF00A26F0D /* Model */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Model;
-		};
 		5C5882722A687B2A00851FA7 /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */;
@@ -1964,6 +1965,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5C964DC12A2D021F00805199 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
 			productName = SFSafeSymbols;
+		};
+		5CDB8BA22A92AAE800F73123 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Models;
 		};
 		5CED432428FBF6B0003F8194 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;

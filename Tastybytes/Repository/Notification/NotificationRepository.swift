@@ -1,8 +1,8 @@
-import Model
+import Models
 import Supabase
 
 protocol NotificationRepository {
-    func getAll(afterId: Int?) async -> Result<[Model.Notification], Error>
+    func getAll(afterId: Int?) async -> Result<[Models.Notification], Error>
     func getUnreadCount() async -> Result<Int, Error>
     func refreshPushNotificationToken(token: Profile.PushNotificationToken) async
         -> Result<ProfilePushNotification, Error>
@@ -10,8 +10,8 @@ protocol NotificationRepository {
         -> Result<ProfilePushNotification, Error>
     func markRead(id: Int) async -> Result<Notification, Error>
     func markAllRead() async -> Result<Void, Error>
-    func markAllFriendRequestsAsRead() async -> Result<[Model.Notification], Error>
-    func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Model.Notification], Error>
+    func markAllFriendRequestsAsRead() async -> Result<[Models.Notification], Error>
+    func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Models.Notification], Error>
     func delete(id: Int) async -> Result<Void, Error>
     func deleteAll() async -> Result<Void, Error>
 }
@@ -19,9 +19,9 @@ protocol NotificationRepository {
 struct SupabaseNotificationRepository: NotificationRepository {
     let client: SupabaseClient
 
-    func getAll(afterId: Int? = nil) async -> Result<[Model.Notification], Error> {
+    func getAll(afterId: Int? = nil) async -> Result<[Models.Notification], Error> {
         do {
-            let response: [Model.Notification] = try await client
+            let response: [Models.Notification] = try await client
                 .database
                 .from(.notifications)
                 .select(columns: Notification.getQuery(.joined))
@@ -121,9 +121,9 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    func markAllFriendRequestsAsRead() async -> Result<[Model.Notification], Error> {
+    func markAllFriendRequestsAsRead() async -> Result<[Models.Notification], Error> {
         do {
-            let response: [Model.Notification] = try await client
+            let response: [Models.Notification] = try await client
                 .database
                 .rpc(fn: .markFriendRequestNotificationAsRead)
                 .select(columns: Notification.getQuery(.joined))
@@ -136,9 +136,9 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Model.Notification], Error> {
+    func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Models.Notification], Error> {
         do {
-            let response: [Model.Notification] = try await client
+            let response: [Models.Notification] = try await client
                 .database
                 .rpc(
                     fn: .markCheckInNotificationAsRead,
