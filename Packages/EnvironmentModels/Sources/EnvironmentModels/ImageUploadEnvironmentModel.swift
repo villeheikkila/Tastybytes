@@ -5,19 +5,19 @@ import Repositories
 import SwiftUI
 
 @Observable
-class ImageUploadEnvironmentModel {
-    var uploadedImageForCheckIn: CheckIn? = nil
+public class ImageUploadEnvironmentModel {
+    public var uploadedImageForCheckIn: CheckIn? = nil
     private let logger = Logger(category: "PermissionEnvironmentModel")
 
     private let repository: Repository
     private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         self.repository = repository
         self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
-    func uploadCheckInImage(checkIn: CheckIn, image: UIImage) {
+    public func uploadCheckInImage(checkIn: CheckIn, image: UIImage) {
         Task {
             guard let data = image.jpegData(compressionQuality: 0.1) else { return }
             switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {

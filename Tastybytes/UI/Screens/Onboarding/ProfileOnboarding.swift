@@ -1,3 +1,4 @@
+import EnvironmentModels
 import Models
 import SwiftUI
 
@@ -49,7 +50,8 @@ struct ProfileOnboarding: View {
                     .onChange(of: username, debounceTime: 0.3) { newValue in
                         guard newValue.count >= 3 else { return }
                         Task {
-                            usernameIsAvailable = await profileEnvironmentModel.checkIfUsernameIsAvailable(username: newValue)
+                            usernameIsAvailable = await profileEnvironmentModel
+                                .checkIfUsernameIsAvailable(username: newValue)
                             isLoading = false
                         }
                     }

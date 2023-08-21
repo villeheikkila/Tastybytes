@@ -1,3 +1,4 @@
+import EnvironmentModels
 import GoTrue
 import OSLog
 import Repositories
@@ -27,13 +28,20 @@ struct RootView: View {
         self.supabaseClient = supabaseClient
         _repository = State(wrappedValue: repository)
         _notificationEnvironmentModel =
-            State(wrappedValue: NotificationEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
-        _profileEnvironmentModel = State(wrappedValue: ProfileEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
-        _appDataEnvironmentModel = State(wrappedValue: AppDataEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
+            State(wrappedValue: NotificationEnvironmentModel(repository: repository,
+                                                             feedbackEnvironmentModel: feedbackEnvironmentModel))
+        _profileEnvironmentModel =
+            State(wrappedValue: ProfileEnvironmentModel(repository: repository,
+                                                        feedbackEnvironmentModel: feedbackEnvironmentModel))
+        _appDataEnvironmentModel =
+            State(wrappedValue: AppDataEnvironmentModel(repository: repository,
+                                                        feedbackEnvironmentModel: feedbackEnvironmentModel))
         _imageUploadEnvironmentModel =
-            State(wrappedValue: ImageUploadEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
+            State(wrappedValue: ImageUploadEnvironmentModel(repository: repository,
+                                                            feedbackEnvironmentModel: feedbackEnvironmentModel))
         _friendEnvironmentModel =
-            State(wrappedValue: FriendEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
+            State(wrappedValue: FriendEnvironmentModel(repository: repository,
+                                                       feedbackEnvironmentModel: feedbackEnvironmentModel))
         _orientation = State(wrappedValue: UIDevice.current.orientation)
         self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }

@@ -1,3 +1,4 @@
+import EnvironmentModels
 import Models
 import SwiftUI
 
@@ -9,9 +10,12 @@ struct BlockedUsersScreen: View {
     var body: some View {
         List {
             ForEach(friendEnvironmentModel.blockedUsers) { friend in
-                BlockedUserListItemView(profile: friend.getFriend(userId: profileEnvironmentModel.profile.id), onUnblockUser: {
-                    await friendEnvironmentModel.unblockUser(friend)
-                })
+                BlockedUserListItemView(
+                    profile: friend.getFriend(userId: profileEnvironmentModel.profile.id),
+                    onUnblockUser: {
+                        await friendEnvironmentModel.unblockUser(friend)
+                    }
+                )
             }
         }
         .listStyle(.insetGrouped)

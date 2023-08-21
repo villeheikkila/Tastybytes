@@ -7,22 +7,22 @@ import Repositories
 import SwiftUI
 
 @Observable
-final class NotificationEnvironmentModel {
+public final class NotificationEnvironmentModel {
     private let logger = Logger(category: "NotificationEnvironmentModel")
-    private(set) var notifications = [Models.Notification]()
+    public var notifications = [Models.Notification]()
 
-    var pushNotificationSettings: ProfilePushNotification? = nil
-    var unreadCount: Int = 0
+    public var pushNotificationSettings: ProfilePushNotification? = nil
+    public var unreadCount: Int = 0
 
     private let repository: Repository
     private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         self.repository = repository
         self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
-    func getUnreadFriendRequestCount() -> Int {
+    public func getUnreadFriendRequestCount() -> Int {
         notifications
             .filter { notification in
                 switch notification.content {
@@ -35,7 +35,7 @@ final class NotificationEnvironmentModel {
             .count
     }
 
-    func getUnreadCount() async {
+    public func getUnreadCount() async {
         switch await repository.notification.getUnreadCount() {
         case let .success(count):
             await MainActor.run {
@@ -50,7 +50,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func refresh(reset: Bool = false, withFeedback: Bool = false) async {
+    public func refresh(reset: Bool = false, withFeedback: Bool = false) async {
         if reset, withFeedback {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
@@ -77,7 +77,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func deleteAll() async {
+    public func deleteAll() async {
         switch await repository.notification.deleteAll() {
         case .success:
             await MainActor.run {
@@ -92,7 +92,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func markAllAsRead() async {
+    public func markAllAsRead() async {
         switch await repository.notification.markAllRead() {
         case .success:
             let markedAsSeenNotifications = notifications.map { notification in
@@ -111,7 +111,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func markAllFriendRequestsAsRead() async {
+    public func markAllFriendRequestsAsRead() async {
         let containsFriendRequests = notifications.contains(where: { $0.isFriendRequest })
 
         if containsFriendRequests {
@@ -132,7 +132,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func markCheckInAsRead(checkIn: CheckIn) async {
+    public func markCheckInAsRead(checkIn: CheckIn) async {
         let containsCheckIn = notifications.contains(where: { notification in
             switch notification.content {
             case let .checkInReaction(cir):
@@ -164,7 +164,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func markAsRead(_ notification: Models.Notification) async {
+    public func markAsRead(_ notification: Models.Notification) async {
         switch await repository.notification.markRead(id: notification.id) {
         case let .success(updatedNotification):
             notifications.replace(notification, with: updatedNotification)
@@ -175,7 +175,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func deleteFromIndex(at: IndexSet) async {
+    public func deleteFromIndex(at: IndexSet) async {
         guard let index = at.first else { return }
         let notificationId = notifications[index].id
         switch await repository.notification.delete(id: notificationId) {
@@ -192,7 +192,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func deleteNotifications(notification: Models.Notification) async {
+    public func deleteNotifications(notification: Models.Notification) async {
         switch await repository.notification.delete(id: notification.id) {
         case .success:
             await MainActor.run {
@@ -207,10 +207,10 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func updatePushNotificationSettingsForDevice(sendReactionNotifications: Bool? = nil,
-                                                 sendTaggedCheckInNotifications: Bool? = nil,
-                                                 sendFriendRequestNotifications: Bool? = nil,
-                                                 sendCheckInCommentNotifications: Bool? = nil) async
+    public func updatePushNotificationSettingsForDevice(sendReactionNotifications: Bool? = nil,
+                                                        sendTaggedCheckInNotifications: Bool? = nil,
+                                                        sendFriendRequestNotifications: Bool? = nil,
+                                                        sendCheckInCommentNotifications: Bool? = nil) async
     {
         guard let updateRequest = pushNotificationSettings?.copyWith(
             sendReactionNotifications: sendReactionNotifications,
@@ -228,7 +228,7 @@ final class NotificationEnvironmentModel {
         }
     }
 
-    func refreshAPNS() {
+    public func refreshAPNS() {
         Messaging.messaging().token { token, error in
             if let error {
                 let logger = Logger(category: "Messaging")

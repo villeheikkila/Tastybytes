@@ -1,3 +1,4 @@
+import EnvironmentModels
 import Models
 import PhotosUI
 import SwiftUI
@@ -47,7 +48,8 @@ struct ProfileSettingsScreen: View {
                     .onChange(of: username, debounceTime: 0.3) { newValue in
                         guard newValue.count >= 3 else { return }
                         Task {
-                            usernameIsAvailable = await profileEnvironmentModel.checkIfUsernameIsAvailable(username: newValue)
+                            usernameIsAvailable = await profileEnvironmentModel
+                                .checkIfUsernameIsAvailable(username: newValue)
                             isLoading = false
                         }
                     }
@@ -56,11 +58,14 @@ struct ProfileSettingsScreen: View {
             LabeledTextField(title: "Last Name", text: $lastName)
 
             if profileEnvironmentModel.hasChanged(username: username, firstName: firstName, lastName: lastName) {
-                ProgressButton("Update", action: { await profileEnvironmentModel.updateProfile(update: Profile.UpdateRequest(
-                    username: username,
-                    firstName: firstName,
-                    lastName: lastName
-                ), withFeedback: true) }).disabled(!canUpdateUsername)
+                ProgressButton(
+                    "Update",
+                    action: { await profileEnvironmentModel.updateProfile(update: Profile.UpdateRequest(
+                        username: username,
+                        firstName: firstName,
+                        lastName: lastName
+                    ), withFeedback: true) }
+                ).disabled(!canUpdateUsername)
             }
         } header: {
             Text("Identity")

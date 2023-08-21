@@ -1,31 +1,7 @@
+import Models
 import SwiftUI
 
-enum Tab: Int, Identifiable, Hashable, CaseIterable {
-    case activity, discover, notifications, admin, profile
-
-    var id: Int {
-        rawValue
-    }
-
-    var cachesPath: String {
-        switch self {
-        case .activity:
-            "activity"
-        case .discover:
-            "discover"
-        case .notifications:
-            "notifications"
-        case .admin:
-            "admin"
-        case .profile:
-            "profile"
-        }
-    }
-
-    var cachesDirectoryPath: URL {
-        URL.cachesDirectory.appending(path: cachesPath)
-    }
-
+extension Tab {
     @ViewBuilder
     func view(selectedTab: Binding<Tab>, _ resetNavigationOnTab: Binding<Tab?>) -> some View {
         switch self {

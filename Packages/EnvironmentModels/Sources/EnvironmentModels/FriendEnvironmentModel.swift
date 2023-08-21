@@ -7,37 +7,37 @@ import SwiftUI
 private let logger = Logger(category: "FriendsScreen")
 
 @Observable
-final class FriendEnvironmentModel {
-    var friends = [Friend]()
+public final class FriendEnvironmentModel {
+    public var friends = [Friend]()
 
-    var profile: Profile? = nil
+    public var profile: Profile? = nil
 
     private let repository: Repository
     private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         self.repository = repository
         self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
-    var acceptedFriends: [Profile] {
+    public var acceptedFriends: [Profile] {
         guard let profile else { return [] }
         return friends.filter { $0.status == .accepted }.compactMap { $0.getFriend(userId: profile.id) }
     }
 
-    var blockedUsers: [Friend] {
+    public var blockedUsers: [Friend] {
         friends.filter { $0.status == .blocked }
     }
 
-    var acceptedOrPendingFriends: [Friend] {
+    public var acceptedOrPendingFriends: [Friend] {
         friends.filter { $0.status != .blocked }
     }
 
-    var pendingFriends: [Friend] {
+    public var pendingFriends: [Friend] {
         friends.filter { $0.status == .pending }
     }
 
-    func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
+    public func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
         switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
         case let .success(newFriend):
             await MainActor.run {
@@ -56,7 +56,7 @@ final class FriendEnvironmentModel {
         }
     }
 
-    func updateFriendRequest(friend: Friend, newStatus: Friend.Status) async {
+    public func updateFriendRequest(friend: Friend, newStatus: Friend.Status) async {
         let friendUpdate = Friend.UpdateRequest(
             sender: friend.sender,
             receiver: friend.receiver,
@@ -81,7 +81,7 @@ final class FriendEnvironmentModel {
         }
     }
 
-    func removeFriendRequest(_ friend: Friend) async {
+    public func removeFriendRequest(_ friend: Friend) async {
         switch await repository.friend.delete(id: friend.id) {
         case .success:
             await MainActor.run {
@@ -96,22 +96,22 @@ final class FriendEnvironmentModel {
         }
     }
 
-    func hasNoFriendStatus(friend: Profile) -> Bool {
+    public func hasNoFriendStatus(friend: Profile) -> Bool {
         guard let profile else { return false }
         return !friends.contains(where: { $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    func isFriend(_ friend: Profile) -> Bool {
+    public func isFriend(_ friend: Profile) -> Bool {
         guard let profile else { return false }
         return friends.contains(where: { $0.status == .accepted && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    func isPendingUserApproval(_ friend: Profile) -> Friend? {
+    public func isPendingUserApproval(_ friend: Profile) -> Friend? {
         guard let profile else { return nil }
         return friends.first(where: { $0.status == .pending && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    func refresh(withFeedback: Bool = false) async {
+    public func refresh(withFeedback: Bool = false) async {
         guard let profile else { return }
         switch await repository.friend.getByUserId(
             userId: profile.id,
@@ -131,13 +131,13 @@ final class FriendEnvironmentModel {
         }
     }
 
-    func initialize(profile: Profile) async {
+    public func initialize(profile: Profile) async {
         logger.info("Initializing friend manager")
         self.profile = profile
         await refresh()
     }
 
-    func unblockUser(_ friend: Friend) async {
+    public func unblockUser(_ friend: Friend) async {
         switch await repository.friend.delete(id: friend.id) {
         case .success:
             await MainActor.run {
@@ -153,7 +153,7 @@ final class FriendEnvironmentModel {
         }
     }
 
-    func blockUser(user: Profile, onSuccess: @escaping () -> Void) async {
+    public func blockUser(user: Profile, onSuccess: @escaping () -> Void) async {
         guard let profile else { return }
         if let friend = friends.first(where: { $0.getFriend(userId: profile.id) == user }) {
             await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)

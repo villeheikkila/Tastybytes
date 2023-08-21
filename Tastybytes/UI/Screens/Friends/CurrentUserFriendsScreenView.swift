@@ -1,3 +1,4 @@
+import EnvironmentModels
 import Models
 import SwiftUI
 
@@ -50,7 +51,10 @@ struct CurrentUserFriendsScreen: View {
                                     .labelStyle(.iconOnly)
                                     .accessibilityAddTraits(.isButton)
                                     .onTapGesture { Task {
-                                        await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                                        await friendEnvironmentModel.updateFriendRequest(
+                                            friend: friend,
+                                            newStatus: .accepted
+                                        )
                                     }
                                     }
                             }
@@ -63,7 +67,11 @@ struct CurrentUserFriendsScreen: View {
                             ProgressButton(
                                 "Accept friend request",
                                 systemSymbol: .personBadgePlus,
-                                action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                                action: {
+                                    await friendEnvironmentModel.updateFriendRequest(
+                                        friend: friend,
+                                        newStatus: .accepted
+                                    )
                                 }
                             )
                             .tint(.green)
@@ -77,7 +85,9 @@ struct CurrentUserFriendsScreen: View {
                         ProgressButton(
                             "Block",
                             systemSymbol: .person2Slash,
-                            action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked) }
+                            action: {
+                                await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
+                            }
                         )
                     }.imageScale(.large)
                 }
@@ -91,7 +101,8 @@ struct CurrentUserFriendsScreen: View {
                     ProgressButton(
                         "Block",
                         systemSymbol: .person2Slash,
-                        action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked) }
+                        action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
+                        }
                     )
                 }
             }

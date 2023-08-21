@@ -6,38 +6,38 @@ import Repositories
 import SwiftUI
 
 @Observable
-final class ProfileEnvironmentModel: ObservableObject {
+public final class ProfileEnvironmentModel: ObservableObject {
     private let logger = Logger(category: "ProfileEnvironmentModel")
-    private(set) var isLoggedIn = false
+    public var isLoggedIn = false
 
     // Profile Settings
-    var showFullName = false
-    var isPrivateProfile = true
+    public var showFullName = false
+    public var isPrivateProfile = true
 
     // Account Settings
-    var email = ""
+    public var email = ""
 
     // Application Settings
     var initialValuesLoaded = false
-    var reactionNotifications = true
-    var friendRequestNotifications = true
-    var checkInTagNotifications = true
-    var sendCommentNotifications = true
+    public var reactionNotifications = true
+    public var friendRequestNotifications = true
+    public var checkInTagNotifications = true
+    public var sendCommentNotifications = true
 
     // AppIcon
-    var appIcon: AppIcon = .ramune
+    public var appIcon: AppIcon = .ramune
 
     private let repository: Repository
     private let feedbackEnvironmentModel: FeedbackEnvironmentModel
     private var extendedProfile: Profile.Extended? = nil
 
-    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         self.repository = repository
         self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
     // Getters
-    var profile: Profile {
+    public var profile: Profile {
         if let extendedProfile {
             return extendedProfile.profile
         } else {
@@ -45,7 +45,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    var id: UUID {
+    public var id: UUID {
         if let extendedProfile {
             return extendedProfile.id
         } else {
@@ -53,7 +53,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    var username: String {
+    public var username: String {
         if let extendedProfile {
             return extendedProfile.username ?? ""
         } else {
@@ -61,7 +61,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    var firstName: String? {
+    public var firstName: String? {
         if let extendedProfile {
             return extendedProfile.firstName
         } else {
@@ -69,7 +69,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    var lastName: String? {
+    public var lastName: String? {
         if let extendedProfile {
             return extendedProfile.lastName
         } else {
@@ -77,7 +77,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    var isOnboarded: Bool {
+    public var isOnboarded: Bool {
         if let extendedProfile {
             return extendedProfile.isOnboarded
         } else {
@@ -86,25 +86,25 @@ final class ProfileEnvironmentModel: ObservableObject {
     }
 
     // Access Control
-    func hasPermission(_ permission: PermissionName) -> Bool {
+    public func hasPermission(_ permission: PermissionName) -> Bool {
         guard let roles = extendedProfile?.roles else { return false }
         let permissions = roles.flatMap(\.permissions)
         return permissions.contains(where: { $0.name == permission.rawValue })
     }
 
-    func hasRole(_ role: RoleName) -> Bool {
+    public func hasRole(_ role: RoleName) -> Bool {
         guard let roles = extendedProfile?.roles else { return false }
         return roles.contains(where: { $0.name == role.rawValue })
     }
 
-    func hasChanged(username: String, firstName: String, lastName: String) -> Bool {
+    public func hasChanged(username: String, firstName: String, lastName: String) -> Bool {
         guard let extendedProfile else { return false }
         return !(username == extendedProfile.username &&
             firstName == extendedProfile.firstName ?? "" &&
             lastName == extendedProfile.lastName ?? "")
     }
 
-    func initialize() async {
+    public func initialize() async {
         logger.notice("Initializing user data")
         switch await repository.profile.getCurrentUser() {
         case let .success(currentUserProfile):
@@ -135,7 +135,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func checkIfUsernameIsAvailable(username: String) async -> Bool {
+    public func checkIfUsernameIsAvailable(username: String) async -> Bool {
         switch await repository.profile.checkIfUsernameIsAvailable(username: username) {
         case let .success(isAvailable):
             return isAvailable
@@ -145,10 +145,10 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func updateNotificationSettings(sendReactionNotifications: Bool? = nil,
-                                    sendTaggedCheckInNotifications: Bool? = nil,
-                                    sendFriendRequestNotifications: Bool? = nil,
-                                    sendCheckInCommentNotifications: Bool? = nil) async
+    public func updateNotificationSettings(sendReactionNotifications: Bool? = nil,
+                                           sendTaggedCheckInNotifications: Bool? = nil,
+                                           sendFriendRequestNotifications: Bool? = nil,
+                                           sendCheckInCommentNotifications: Bool? = nil) async
     {
         let update = ProfileSettings.UpdateRequest(
             sendReactionNotifications: sendReactionNotifications,
@@ -166,7 +166,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func logOut() async {
+    public func logOut() async {
         switch await repository.auth.logOut() {
         case .success():
             clearTemporaryData()
@@ -178,7 +178,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func updatePassword(newPassword: String) async {
+    public func updatePassword(newPassword: String) async {
         if case let .failure(error) = await repository.auth.updatePassword(newPassword: newPassword) {
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackEnvironmentModel.toggle(.error(.unexpected))
@@ -186,7 +186,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func sendEmailVerificationLink() async {
+    public func sendEmailVerificationLink() async {
         if case let .failure(error) = await repository.auth.sendEmailVerification(email: email) {
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackEnvironmentModel.toggle(.error(.unexpected))
@@ -194,7 +194,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func deleteCurrentAccount(onAccountDeletion: @escaping () -> Void) async {
+    public func deleteCurrentAccount(onAccountDeletion: @escaping () -> Void) async {
         switch await repository.profile.deleteCurrentAccount() {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -206,7 +206,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func uploadAvatar(newAvatar: PhotosPickerItem) async {
+    public func uploadAvatar(newAvatar: PhotosPickerItem) async {
         guard let data = await newAvatar.getJPEG() else { return }
         guard let extendedProfile else { return }
         switch await repository.profile.uploadAvatar(userId: extendedProfile.id, data: data) {
@@ -219,7 +219,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func updateProfile(
+    public func updateProfile(
         update: Profile.UpdateRequest,
         withFeedback: Bool
     ) async {
@@ -242,7 +242,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func onboardingUpdate() async {
+    public func onboardingUpdate() async {
         let update = Profile.UpdateRequest(
             isOnboarded: true
         )
@@ -259,7 +259,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func updatePrivacySettings() async {
+    public func updatePrivacySettings() async {
         let update = Profile.UpdateRequest(isPrivate: isPrivateProfile)
         switch await repository.profile.update(
             update: update
@@ -273,7 +273,7 @@ final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    func updateDisplaySettings() async {
+    public func updateDisplaySettings() async {
         let update = Profile.UpdateRequest(
             showFullName: showFullName
         )

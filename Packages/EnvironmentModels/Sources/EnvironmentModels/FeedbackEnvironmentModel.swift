@@ -4,20 +4,20 @@ import Observation
 import SwiftUI
 
 @Observable
-final class FeedbackEnvironmentModel {
-    var show = false
-    var toast = AlertToast(type: .regular, title: "")
+public final class FeedbackEnvironmentModel {
+    public var show = false
+    public var toast = AlertToast(type: .regular, title: "")
 
     private let selectionFeedbackGenerator = UISelectionFeedbackGenerator()
     private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
     private let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
 
-    init() {
+    public init() {
         selectionFeedbackGenerator.prepare()
         impactFeedbackGenerator.prepare()
     }
 
-    func toggle(_ type: ToastType, disableHaptics: Bool = false) {
+    public func toggle(_ type: ToastType, disableHaptics: Bool = false) {
         switch type {
         case let .success(title):
             toast = AlertToast(type: .complete(.green), title: title)
@@ -42,13 +42,13 @@ final class FeedbackEnvironmentModel {
         }
     }
 
-    func wrapWithHaptics(_ asyncFunction: @escaping () async -> Void) async {
+    public func wrapWithHaptics(_ asyncFunction: @escaping () async -> Void) async {
         trigger(.impact(intensity: .low))
         await asyncFunction()
         trigger(.impact(intensity: .high))
     }
 
-    func trigger(_ type: HapticType) {
+    public func trigger(_ type: HapticType) {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
 
         switch type {
@@ -66,7 +66,7 @@ final class FeedbackEnvironmentModel {
     }
 }
 
-extension FeedbackEnvironmentModel {
+public extension FeedbackEnvironmentModel {
     enum ErrorType {
         case unexpected, custom(String)
     }
@@ -78,7 +78,7 @@ extension FeedbackEnvironmentModel {
     }
 
     enum HapticType {
-        enum Intensity {
+        public enum Intensity {
             case low, high
         }
 

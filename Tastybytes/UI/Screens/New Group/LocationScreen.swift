@@ -1,4 +1,5 @@
 import Charts
+import EnvironmentModels
 import MapKit
 import Models
 import OSLog

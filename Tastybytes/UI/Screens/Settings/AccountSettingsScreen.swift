@@ -1,3 +1,4 @@
+import EnvironmentModels
 import OSLog
 import PhotosUI
 import Repositories
@@ -135,8 +136,11 @@ struct AccountSettingsScreen: View {
                 .disableAutocorrection(true)
 
             if showEmailConfirmation {
-                ProgressButton("Send Verification Link", action: { await profileEnvironmentModel.sendEmailVerificationLink() })
-                    .transition(.slide)
+                ProgressButton(
+                    "Send Verification Link",
+                    action: { await profileEnvironmentModel.sendEmailVerificationLink() }
+                )
+                .transition(.slide)
             }
 
         } header: {

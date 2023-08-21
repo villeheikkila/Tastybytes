@@ -1,3 +1,4 @@
+import EnvironmentModels
 import Models
 import OSLog
 import Repositories
@@ -35,12 +36,17 @@ struct UserSheet: View {
                     HStack {
                         if mode == .add {
                             HStack {
-                                if !friendEnvironmentModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
+                                if !friendEnvironmentModel.friends
+                                    .contains(where: { $0.containsUser(userId: profile.id) })
+                                {
                                     ProgressButton("Add as a friend", systemSymbol: .personBadgePlus, action: {
-                                        await friendEnvironmentModel.sendFriendRequest(receiver: profile.id, onSuccess: {
-                                            dismiss()
-                                            onSubmit()
-                                        })
+                                        await friendEnvironmentModel.sendFriendRequest(
+                                            receiver: profile.id,
+                                            onSuccess: {
+                                                dismiss()
+                                                onSubmit()
+                                            }
+                                        )
                                     })
                                     .labelStyle(.iconOnly)
                                     .imageScale(.large)
@@ -48,7 +54,9 @@ struct UserSheet: View {
                             }
                         }
                         if mode == .block {
-                            if !friendEnvironmentModel.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
+                            if !friendEnvironmentModel.blockedUsers
+                                .contains(where: { $0.containsUser(userId: profile.id) })
+                            {
                                 ProgressButton(
                                     "Block",
                                     systemSymbol: .personFillXmark,

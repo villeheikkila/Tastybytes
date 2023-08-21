@@ -1,4 +1,5 @@
 import AuthenticationServices
+import EnvironmentModels
 import OSLog
 import Supabase
 import SwiftUI

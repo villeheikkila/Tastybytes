@@ -1,3 +1,5 @@
+import EnvironmentModels
+import Models
 import SwiftUI
 
 enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {

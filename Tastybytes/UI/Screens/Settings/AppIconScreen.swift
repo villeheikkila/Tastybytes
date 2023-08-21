@@ -1,3 +1,5 @@
+import EnvironmentModels
+import Models
 import SwiftUI
 
 struct AppIconScreen: View {
@@ -36,68 +38,6 @@ struct AppIconScreen: View {
         }
         .onAppear {
             selection = getCurrentAppIcon()
-        }
-    }
-}
-
-@MainActor
-func getCurrentAppIcon() -> AppIcon {
-    if let alternateAppIcon = UIApplication.shared.alternateIconName {
-        return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
-    } else {
-        return AppIcon.ramune
-    }
-}
-
-enum AppIcon: String {
-    case ramune = "AppIcon"
-    case cola = "AppIconCola"
-    case juice = "AppIconJuice"
-    case energyDrink = "AppIconEnergyDrink"
-    case kombucha = "AppIconKombucha"
-
-    var logo: ImageResource {
-        switch self {
-        case .ramune:
-            .projectLogo
-        case .cola:
-            .projectLogoCola
-        case .energyDrink:
-            .projectLogoEnergyDrink
-        case .juice:
-            .juice
-        case .kombucha:
-            .projectLogoKombucha
-        }
-    }
-
-    var label: String {
-        switch self {
-        case .ramune:
-            "Ramune"
-        case .juice:
-            "Juice"
-        case .energyDrink:
-            "Energy Drink"
-        case .kombucha:
-            "Kombucha"
-        case .cola:
-            "Cola"
-        }
-    }
-
-    var icon: ImageResource {
-        switch self {
-        case .ramune:
-            return .ramune
-        case .juice:
-            return .juice
-        case .energyDrink:
-            return .energyDrink
-        case .kombucha:
-            return .kombucha
-        case .cola:
-            return .cola
         }
     }
 }

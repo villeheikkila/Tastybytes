@@ -2,14 +2,16 @@ import Observation
 import SwiftUI
 
 @Observable
-final class SplashScreenEnvironmentModel {
-    enum SplashScreenState {
+public final class SplashScreenEnvironmentModel {
+    public init() {}
+
+    public enum SplashScreenState {
         case showing, dismissing, finished
     }
 
-    var state: SplashScreenState = .showing
+    public var state: SplashScreenState = .showing
 
-    func dismiss() async {
+    public func dismiss() async {
         if state == .showing {
             state = .dismissing
             try? await Task.sleep(for: Duration.seconds(0.5))

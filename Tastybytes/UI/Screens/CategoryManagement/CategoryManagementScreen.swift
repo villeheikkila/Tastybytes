@@ -1,3 +1,4 @@
+import EnvironmentModels
 import Models
 import OSLog
 import SwiftUI
@@ -37,7 +38,10 @@ struct CategoryManagementScreen: View {
                                 "Add Subcategory",
                                 systemSymbol: .plus,
                                 sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                                    await appDataEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
+                                    await appDataEnvironmentModel.addSubcategory(
+                                        category: category,
+                                        name: newSubcategoryName
+                                    )
                                 })
                             )
                         } label: {

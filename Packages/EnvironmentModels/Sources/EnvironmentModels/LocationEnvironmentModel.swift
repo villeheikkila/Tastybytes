@@ -3,12 +3,12 @@ import MapKit
 import Observation
 
 @Observable
-final class LocationEnvironmentModel: NSObject {
+public final class LocationEnvironmentModel: NSObject {
     private let locationEnvironmentModel = CLLocationManager()
 
-    var location: CLLocation? = nil
+    public var location: CLLocation? = nil
 
-    override init() {
+    override public init() {
         super.init()
         locationEnvironmentModel.desiredAccuracy = kCLLocationAccuracyBest
         locationEnvironmentModel.distanceFilter = kCLDistanceFilterNone

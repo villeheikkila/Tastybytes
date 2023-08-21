@@ -5,18 +5,20 @@ import PhotosUI
 import SwiftUI
 
 @Observable
-final class PermissionEnvironmentModel {
+public final class PermissionEnvironmentModel {
     private let logger = Logger(category: "PermissionEnvironmentModel")
     private let locationEnvironmentModel = CLLocationManager()
     private let notificationEnvironmentModel = UNUserNotificationCenter.current()
 
-    var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
-    var cameraStatus: AVAuthorizationStatus = .notDetermined
-    var photoLibraryStatus: PHAuthorizationStatus = .notDetermined
-    var locationsStatus: CLAuthorizationStatus = .notDetermined
+    public var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
+    public var cameraStatus: AVAuthorizationStatus = .notDetermined
+    public var photoLibraryStatus: PHAuthorizationStatus = .notDetermined
+    public var locationsStatus: CLAuthorizationStatus = .notDetermined
+
+    public init() {}
 
     // push notifications
-    func requestPushNotificationAuthorization() {
+    public func requestPushNotificationAuthorization() {
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         notificationEnvironmentModel.requestAuthorization(
             options: authOptions
@@ -25,7 +27,7 @@ final class PermissionEnvironmentModel {
         }
     }
 
-    func getCurrentPushNotificationPermissionAuthorization() {
+    public func getCurrentPushNotificationPermissionAuthorization() {
         notificationEnvironmentModel.getNotificationSettings(completionHandler: { settings in
             DispatchQueue.main.async { [unowned self] in
                 pushNotificationStatus = settings.authorizationStatus
@@ -34,7 +36,7 @@ final class PermissionEnvironmentModel {
     }
 
     // camera
-    func requestCameraAuthorization() {
+    public func requestCameraAuthorization() {
         AVCaptureDevice.requestAccess(for: .video) { _ in
             DispatchQueue.main.async {
                 self.cameraStatus = .authorized
@@ -42,16 +44,16 @@ final class PermissionEnvironmentModel {
         }
     }
 
-    func getCurrentCameraPermissionAuthorization() {
+    public func getCurrentCameraPermissionAuthorization() {
         cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
     }
 
     // photo library
-    func getCurrentPhotoLibraryAuthorization() {
+    public func getCurrentPhotoLibraryAuthorization() {
         photoLibraryStatus = PHPhotoLibrary.authorizationStatus()
     }
 
-    func requestPhotoLibraryAuthorization() {
+    public func requestPhotoLibraryAuthorization() {
         PHPhotoLibrary.requestAuthorization { status in
             DispatchQueue.main.async {
                 self.photoLibraryStatus = status
@@ -60,15 +62,15 @@ final class PermissionEnvironmentModel {
     }
 
     // location
-    func getCurrentLocationAuthorization() {
+    public func getCurrentLocationAuthorization() {
         locationsStatus = locationEnvironmentModel.authorizationStatus
     }
 
-    func requestLocationAuthorization() {
+    public func requestLocationAuthorization() {
         locationEnvironmentModel.requestWhenInUseAuthorization()
     }
 
-    func initialize() {
+    public func initialize() {
         getCurrentPushNotificationPermissionAuthorization()
         getCurrentCameraPermissionAuthorization()
         getCurrentPhotoLibraryAuthorization()

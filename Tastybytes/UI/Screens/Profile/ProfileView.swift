@@ -1,4 +1,5 @@
 import Charts
+import EnvironmentModels
 import Models
 import OSLog
 import PhotosUI
@@ -89,7 +90,9 @@ struct ProfileView: View {
                 } else if let friend = friendEnvironmentModel.isPendingUserApproval(profile) {
                     ProgressButton(
                         "Accept Friend Request",
-                        action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted) }
+                        action: {
+                            await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                        }
                     )
                 }
             }

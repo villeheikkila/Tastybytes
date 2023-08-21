@@ -1,4 +1,5 @@
 import CoreLocation
+import EnvironmentModels
 import Foundation
 import MapKit
 import Models

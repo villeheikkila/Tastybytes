@@ -5,21 +5,21 @@ import Repositories
 import SwiftUI
 
 @Observable
-final class AppDataEnvironmentModel {
+public final class AppDataEnvironmentModel {
     private let logger = Logger(category: "AppDataEnvironmentModel")
-    var categories = [Models.Category.JoinedSubcategoriesServingStyles]()
-    var flavors = [Flavor]()
-    var aboutPage: AboutPage? = nil
+    public var categories = [Models.Category.JoinedSubcategoriesServingStyles]()
+    public var flavors = [Flavor]()
+    public var aboutPage: AboutPage? = nil
 
     private let repository: Repository
     private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         self.repository = repository
         self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
-    func initialize(reset: Bool = false) async {
+    public func initialize(reset: Bool = false) async {
         guard reset || flavors.isEmpty || categories.isEmpty else { return }
         logger.notice("Initializing app data")
         async let aboutPagePromise = repository.document.getAboutPage()
@@ -66,7 +66,7 @@ final class AppDataEnvironmentModel {
     }
 
     // Flavors
-    func addFlavor(name: String) async {
+    public func addFlavor(name: String) async {
         switch await repository.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
         case let .success(newFlavor):
             await MainActor.run {
@@ -81,7 +81,7 @@ final class AppDataEnvironmentModel {
         }
     }
 
-    func deleteFlavor(_ flavor: Flavor) async {
+    public func deleteFlavor(_ flavor: Flavor) async {
         switch await repository.flavor.delete(id: flavor.id) {
         case .success:
             await MainActor.run {
@@ -96,7 +96,7 @@ final class AppDataEnvironmentModel {
         }
     }
 
-    func refreshFlavors() async {
+    public func refreshFlavors() async {
         switch await repository.flavor.getAll() {
         case let .success(flavors):
             await MainActor.run {
@@ -113,7 +113,7 @@ final class AppDataEnvironmentModel {
     }
 
     // Categories
-    func verifySubcategory(_ subcategory: Subcategory, isVerified: Bool) async {
+    public func verifySubcategory(_ subcategory: Subcategory, isVerified: Bool) async {
         switch await repository.subcategory.verification(id: subcategory.id, isVerified: isVerified) {
         case .success:
             await loadCategories()
@@ -127,7 +127,7 @@ final class AppDataEnvironmentModel {
         }
     }
 
-    func deleteSubcategory(_ deleteSubcategory: SubcategoryProtocol) async {
+    public func deleteSubcategory(_ deleteSubcategory: SubcategoryProtocol) async {
         switch await repository.subcategory.delete(id: deleteSubcategory.id) {
         case .success:
             await loadCategories()
@@ -138,7 +138,7 @@ final class AppDataEnvironmentModel {
         }
     }
 
-    func addCategory(name: String) async {
+    public func addCategory(name: String) async {
         switch await repository.category.insert(newCategory: Models.Category.NewRequest(name: name)) {
         case .success:
             await loadCategories()
@@ -149,7 +149,7 @@ final class AppDataEnvironmentModel {
         }
     }
 
-    func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String) async {
+    public func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String) async {
         switch await repository.subcategory
             .insert(newSubcategory: Subcategory
                 .NewRequest(name: name, category: category))
@@ -169,7 +169,7 @@ final class AppDataEnvironmentModel {
         }
     }
 
-    func loadCategories() async {
+    public func loadCategories() async {
         switch await repository.category.getAllWithSubcategoriesServingStyles() {
         case let .success(categories):
             await MainActor.run {

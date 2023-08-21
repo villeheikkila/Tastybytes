@@ -1,3 +1,4 @@
+import EnvironmentModels
 import PhotosUI
 import SwiftUI
 
@@ -21,7 +22,11 @@ struct AvatarOnboarding: View {
                         matching: .images,
                         photoLibrary: .shared()
                     ) {
-                        AvatarView(avatarUrl: profileEnvironmentModel.profile.avatarUrl, size: 140, id: profileEnvironmentModel.id)
+                        AvatarView(
+                            avatarUrl: profileEnvironmentModel.profile.avatarUrl,
+                            size: 140,
+                            id: profileEnvironmentModel.id
+                        )
                     }
                     .onChange(of: selectedItem) { _, newValue in
                         guard let newValue else { return }

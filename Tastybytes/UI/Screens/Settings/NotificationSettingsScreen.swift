@@ -1,3 +1,4 @@
+import EnvironmentModels
 import SwiftUI
 
 enum NotificationDeliveryType: String, CaseIterable {
@@ -95,18 +96,22 @@ struct NotificationSettingsScreen: View {
         }
         .task {
             if !initialValuesLoaded {
-                reactioNotificationDeliveryType = profileEnvironmentModel.reactionNotifications ? notificationEnvironmentModel
+                reactioNotificationDeliveryType = profileEnvironmentModel
+                    .reactionNotifications ? notificationEnvironmentModel
                     .pushNotificationSettings?
                     .sendReactionNotifications ?? false ? .pushNotification : .inApp : .disabled
-                checkInNotificationDeliveryType = profileEnvironmentModel.checkInTagNotifications ? notificationEnvironmentModel
+                checkInNotificationDeliveryType = profileEnvironmentModel
+                    .checkInTagNotifications ? notificationEnvironmentModel
                     .pushNotificationSettings?
                     .sendTaggedCheckInNotifications ?? false ? .pushNotification : .inApp :
                     .disabled
-                friendRequestNotificationDeliveryType = profileEnvironmentModel.friendRequestNotifications ? notificationEnvironmentModel
+                friendRequestNotificationDeliveryType = profileEnvironmentModel
+                    .friendRequestNotifications ? notificationEnvironmentModel
                     .pushNotificationSettings?
                     .sendFriendRequestNotifications ?? false ? .pushNotification : .inApp :
                     .disabled
-                checkInCommentNotificationsDeliveryType = profileEnvironmentModel.sendCommentNotifications ? notificationEnvironmentModel
+                checkInCommentNotificationsDeliveryType = profileEnvironmentModel
+                    .sendCommentNotifications ? notificationEnvironmentModel
                     .pushNotificationSettings?
                     .sendCheckInCommentNotifications ?? false ? .pushNotification : .inApp :
                     .disabled
