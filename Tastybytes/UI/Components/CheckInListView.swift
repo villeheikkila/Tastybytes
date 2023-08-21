@@ -35,11 +35,11 @@ extension CheckInListView {
 
 struct CheckInListView<Header>: View where Header: View {
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(SplashScreenManager.self) private var splashScreenManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @Environment(ImageUploadManager.self) private var imageUploadManager
+    @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @State private var scrollProxy: ScrollViewProxy?
     @State private var showDeleteCheckInConfirmationDialog = false
     @State private var showDeleteConfirmationFor: CheckIn? {
@@ -110,7 +110,7 @@ struct CheckInListView<Header>: View where Header: View {
                             .listRowSeparator(.hidden)
                             .checkInContextMenu(
                                 router: router,
-                                profileManager: profileManager,
+                                profileEnvironmentModel: profileEnvironmentModel,
                                 checkIn: checkIn,
                                 onCheckInUpdate: { updatedCheckIn in
                                     onCheckInUpdate(updatedCheckIn)
@@ -180,9 +180,9 @@ struct CheckInListView<Header>: View where Header: View {
                 .task {
                         await getInitialData()
                     }
-                    .onChange(of: imageUploadManager.uploadedImageForCheckIn) { _, newValue in
+                    .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
                         if let updatedCheckIn = newValue {
-                            imageUploadManager.uploadedImageForCheckIn = nil
+                            imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
                             if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
                                 checkIns[index] = updatedCheckIn
                             }
@@ -214,7 +214,7 @@ struct CheckInListView<Header>: View where Header: View {
         case .product:
             .product
         case .activityFeed:
-            .activity(profileManager.profile)
+            .activity(profileEnvironmentModel.profile)
         }
     }
 
@@ -226,8 +226,8 @@ struct CheckInListView<Header>: View where Header: View {
         isRefreshing = true
         page = 0
         checkIns = [CheckIn]()
-        feedbackManager.trigger(.impact(intensity: .low))
-        await fetchFeedItems(onComplete: { _ in feedbackManager.trigger(.impact(intensity: .high)) })
+        feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+        await fetchFeedItems(onComplete: { _ in feedbackEnvironmentModel.trigger(.impact(intensity: .high)) })
         isRefreshing = false
         await onRefresh()
     }
@@ -238,10 +238,10 @@ struct CheckInListView<Header>: View where Header: View {
             withAnimation {
                 checkIns.remove(object: checkIn)
             }
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -254,8 +254,8 @@ struct CheckInListView<Header>: View where Header: View {
     func getInitialData() async {
         guard !initialLoadCompleted else { return }
         await fetchFeedItems(onComplete: { _ in
-            if splashScreenManager.state != .finished {
-                await splashScreenManager.dismiss()
+            if splashScreenEnvironmentModel.state != .finished {
+                await splashScreenEnvironmentModel.dismiss()
                 initialLoadCompleted = true
             }
         })
@@ -286,7 +286,7 @@ struct CheckInListView<Header>: View where Header: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
         }
     }

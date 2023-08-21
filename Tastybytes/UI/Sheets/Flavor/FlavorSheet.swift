@@ -2,8 +2,8 @@ import Models
 import SwiftUI
 
 struct FlavorSheet: View {
-    @Environment(AppDataManager.self) private var appDataManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var pickedFlavors: [Flavor]
     @State private var searchTerm = ""
@@ -66,9 +66,9 @@ struct FlavorSheet: View {
 
     private var filteredFlavors: [Flavor] {
         if searchTerm.isEmpty {
-            return appDataManager.flavors
+            return appDataEnvironmentModel.flavors
         } else {
-            return appDataManager.flavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
+            return appDataEnvironmentModel.flavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
         }
     }
 
@@ -78,7 +78,7 @@ struct FlavorSheet: View {
         } else if pickedFlavors.count < maxFlavors {
             pickedFlavors.append(flavor)
         } else {
-            feedbackManager.toggle(.warning("You can only add \(maxFlavors) flavors"))
+            feedbackEnvironmentModel.toggle(.warning("You can only add \(maxFlavors) flavors"))
         }
     }
 }

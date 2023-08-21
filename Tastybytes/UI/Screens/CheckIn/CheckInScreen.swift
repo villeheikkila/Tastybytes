@@ -11,9 +11,9 @@ struct CheckInScreen: View {
     private let logger = Logger(category: "CheckInScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(NotificationManager.self) private var notificationManager
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState private var focusedField: Focusable?
     @State private var checkIn: CheckIn
     @State private var checkInComments = [CheckInComment]()
@@ -61,7 +61,7 @@ struct CheckInScreen: View {
                 .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
                 .checkInContextMenu(
                     router: router,
-                    profileManager: profileManager,
+                    profileEnvironmentModel: profileEnvironmentModel,
                     checkIn: checkIn,
                     onCheckInUpdate: { checkIn in
                         self.checkIn = checkIn
@@ -125,7 +125,7 @@ struct CheckInScreen: View {
         }
         .task {
             await loadCheckInComments()
-            await notificationManager.markCheckInAsRead(checkIn: checkIn)
+            await notificationEnvironmentModel.markCheckInAsRead(checkIn: checkIn)
         }
     }
 
@@ -134,7 +134,7 @@ struct CheckInScreen: View {
             Menu {
                 ControlGroup {
                     CheckInShareLinkView(checkIn: checkIn)
-                    if checkIn.profile.id == profileManager.id {
+                    if checkIn.profile.id == profileEnvironmentModel.id {
                         RouterLink("Edit", systemSymbol: .pencil, sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
                             checkIn = updatedCheckIn
                         }))
@@ -160,12 +160,12 @@ struct CheckInScreen: View {
                     screen: .fetchSubBrand(checkIn.product.subBrand)
                 )
                 Divider()
-                if profileManager.id != checkIn.profile.id {
+                if profileEnvironmentModel.id != checkIn.profile.id {
                     ReportButton(entity: .checkIn(checkIn))
                 }
-                if profileManager.hasRole(.moderator) {
+                if profileEnvironmentModel.hasRole(.moderator) {
                     Menu {
-                        if profileManager.hasPermission(.canDeleteCheckInsAsModerator) {
+                        if profileEnvironmentModel.hasPermission(.canDeleteCheckInsAsModerator) {
                             Button("Delete as Moderator", systemSymbol: .trashFill, role: .destructive) {
                                 toDeleteCheckInAsModerator = checkIn
                             }
@@ -187,7 +187,7 @@ struct CheckInScreen: View {
             CheckInCommentView(comment: comment)
                 .listRowSeparator(.hidden)
                 .contextMenu {
-                    if comment.profile == profileManager.profile {
+                    if comment.profile == profileEnvironmentModel.profile {
                         Button("Edit", systemSymbol: .pencil) {
                             withAnimation {
                                 editComment = comment
@@ -200,9 +200,9 @@ struct CheckInScreen: View {
                         ReportButton(entity: .comment(comment))
                     }
                     Divider()
-                    if profileManager.hasRole(.moderator) {
+                    if profileEnvironmentModel.hasRole(.moderator) {
                         Menu {
-                            if profileManager.hasPermission(.canDeleteComments) {
+                            if profileEnvironmentModel.hasPermission(.canDeleteComments) {
                                 Button("Delete as Moderator", systemSymbol: .trashFill, role: .destructive) {
                                     deleteAsCheckInCommentAsModerator = comment
                                 }
@@ -241,13 +241,13 @@ struct CheckInScreen: View {
     func deleteCheckIn(_ checkIn: CheckIn) async {
         switch await repository.checkIn.delete(id: checkIn.id) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             await MainActor.run {
                 router.removeLast()
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -262,7 +262,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load check-in comments'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -280,7 +280,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to update comment \(editComment.id)'. Error: \(error) (\(#file):\(#line))")
         }
         editCommentText = ""
@@ -296,7 +296,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete comment '\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -311,7 +311,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete comment as moderator'\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -324,7 +324,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -343,7 +343,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to send comment. Error: \(error) (\(#file):\(#line))")
         }
     }

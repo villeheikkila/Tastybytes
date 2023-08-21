@@ -7,7 +7,7 @@ struct DuplicateProductScreen: View {
     private let logger = Logger(category: "ProductVerificationScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var products = [Product.Joined]()
     @State private var deleteProduct: Product.Joined? {
         didSet {
@@ -68,7 +68,7 @@ struct DuplicateProductScreen: View {
         .navigationBarTitle("Unverified Products")
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await feedbackManager.wrapWithHaptics {
+                await feedbackEnvironmentModel.wrapWithHaptics {
                     await loadProducts()
                 }
             }
@@ -88,7 +88,7 @@ struct DuplicateProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to verify product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -96,13 +96,13 @@ struct DuplicateProductScreen: View {
     func deleteProduct(_ product: Product.Joined) async {
         switch await repository.product.delete(id: product.id) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             await MainActor.run {
                 router.removeLast()
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -117,7 +117,7 @@ struct DuplicateProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("fetching flavors failed. Error: \(error) (\(#file):\(#line))")
         }
     }

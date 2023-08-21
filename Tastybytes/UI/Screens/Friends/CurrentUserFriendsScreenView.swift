@@ -2,10 +2,10 @@ import Models
 import SwiftUI
 
 struct CurrentUserFriendsScreen: View {
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FriendManager.self) private var friendManager
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(NotificationManager.self) private var notificationManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @State private var friendToBeRemoved: Friend? {
         didSet {
             showRemoveFriendConfirmation = true
@@ -18,17 +18,17 @@ struct CurrentUserFriendsScreen: View {
 
     var filteredFriends: [Friend] {
         if searchTerm.isEmpty {
-            return friendManager.acceptedOrPendingFriends
+            return friendEnvironmentModel.acceptedOrPendingFriends
         }
-        return friendManager.acceptedOrPendingFriends.filter { friend in
-            friend.getFriend(userId: profileManager.id).preferredName.contains(searchTerm)
+        return friendEnvironmentModel.acceptedOrPendingFriends.filter { friend in
+            friend.getFriend(userId: profileEnvironmentModel.id).preferredName.contains(searchTerm)
         }
     }
 
     var body: some View {
         List {
             ForEach(filteredFriends) { friend in
-                FriendListItemView(profile: friend.getFriend(userId: profileManager.profile.id)) {
+                FriendListItemView(profile: friend.getFriend(userId: profileEnvironmentModel.profile.id)) {
                     HStack {
                         if friend.status == Friend.Status.pending {
                             Text("(\(friend.status.rawValue.capitalized))")
@@ -36,7 +36,7 @@ struct CurrentUserFriendsScreen: View {
                                 .foregroundColor(.primary)
                         }
                         Spacer()
-                        if friend.isPending(userId: profileManager.profile.id) {
+                        if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                             HStack(alignment: .center) {
                                 Label("Remove friend request", systemSymbol: .personFillXmark)
                                     .imageScale(.large)
@@ -50,7 +50,7 @@ struct CurrentUserFriendsScreen: View {
                                     .labelStyle(.iconOnly)
                                     .accessibilityAddTraits(.isButton)
                                     .onTapGesture { Task {
-                                        await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted)
+                                        await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
                                     }
                                     }
                             }
@@ -59,11 +59,11 @@ struct CurrentUserFriendsScreen: View {
                 }
                 .swipeActions {
                     Group {
-                        if friend.isPending(userId: profileManager.profile.id) {
+                        if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                             ProgressButton(
                                 "Accept friend request",
                                 systemSymbol: .personBadgePlus,
-                                action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted)
+                                action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
                                 }
                             )
                             .tint(.green)
@@ -77,7 +77,7 @@ struct CurrentUserFriendsScreen: View {
                         ProgressButton(
                             "Block",
                             systemSymbol: .person2Slash,
-                            action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
+                            action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked) }
                         )
                     }.imageScale(.large)
                 }
@@ -91,23 +91,23 @@ struct CurrentUserFriendsScreen: View {
                     ProgressButton(
                         "Block",
                         systemSymbol: .person2Slash,
-                        action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
+                        action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked) }
                     )
                 }
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Friends (\(friendManager.friends.count))")
+        .navigationTitle("Friends (\(friendEnvironmentModel.friends.count))")
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await friendManager.refresh(withFeedback: true)
+                await friendEnvironmentModel.refresh(withFeedback: true)
             }
         #endif
             .task {
-                    await friendManager.refresh(withFeedback: false)
-                    await notificationManager.markAllFriendRequestsAsRead()
+                    await friendEnvironmentModel.refresh(withFeedback: false)
+                    await notificationEnvironmentModel.markAllFriendRequestsAsRead()
                 }
                 .toolbar {
                     toolbarContent
@@ -122,10 +122,10 @@ struct CurrentUserFriendsScreen: View {
                     presenting: friendToBeRemoved
                 ) { presenting in
                     ProgressButton(
-                        "Remove \(presenting.getFriend(userId: profileManager.id).preferredName) from friends",
+                        "Remove \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName) from friends",
                         role: .destructive,
                         action: {
-                            await friendManager.removeFriendRequest(presenting)
+                            await friendEnvironmentModel.removeFriendRequest(presenting)
                         }
                     )
                 }
@@ -138,7 +138,7 @@ struct CurrentUserFriendsScreen: View {
                 systemSymbol: .qrcode,
                 sheet: .nameTag(onSuccess: { profileId in
                     Task {
-                        await friendManager.sendFriendRequest(receiver: profileId)
+                        await friendEnvironmentModel.sendFriendRequest(receiver: profileId)
                     }
                 })
             )
@@ -146,7 +146,7 @@ struct CurrentUserFriendsScreen: View {
             .imageScale(.large)
 
             RouterLink("Add friend", systemSymbol: .plus, sheet: .userSheet(mode: .add, onSubmit: {
-                feedbackManager.toggle(.success("Friend Request Sent!"))
+                feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
             }))
             .labelStyle(.iconOnly)
             .imageScale(.large)

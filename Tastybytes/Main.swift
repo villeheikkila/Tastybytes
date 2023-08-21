@@ -14,7 +14,7 @@ var selectedQuickAction: UIApplicationShortcutItem?
 struct Main: App {
     private let logger = Logger(category: "Main")
     @Environment(\.scenePhase) private var phase
-    @Bindable private var feedbackManager = FeedbackManager()
+    @Bindable private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self)
     var appDelegate
 
@@ -25,7 +25,7 @@ struct Main: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView(supabaseClient: supabaseClient, feedbackManager: feedbackManager)
+            RootView(supabaseClient: supabaseClient, feedbackEnvironmentModel: feedbackEnvironmentModel)
         }
         .onChange(of: phase) { _, newPhase in
             switch newPhase {

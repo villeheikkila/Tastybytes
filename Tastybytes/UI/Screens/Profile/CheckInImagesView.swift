@@ -7,7 +7,7 @@ import SwiftUI
 struct CheckInImagesView: View {
     private let logger = Logger(category: "CheckInImagesView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInImages = [CheckIn.Image]()
     @State private var isLoading = false
     @State private var page = 0
@@ -50,7 +50,7 @@ struct CheckInImagesView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error(
                     "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"

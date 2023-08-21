@@ -3,7 +3,7 @@ import SwiftUI
 
 struct RouterLink<LabelView: View>: View {
     @Environment(Router.self) private var router
-    @Environment(SheetManager.self) private var sheetManager
+    @Environment(SheetEnvironmentModel.self) private var sheetEnvironmentModel
 
     let screen: Screen?
     let sheet: Sheet?
@@ -33,7 +33,7 @@ struct RouterLink<LabelView: View>: View {
                     if let screen {
                         router.navigate(screen: screen)
                     } else if let sheet {
-                        sheetManager.navigate(sheet: sheet)
+                        sheetEnvironmentModel.navigate(sheet: sheet)
                     }
                 }
         } else if let screen {
@@ -54,7 +54,7 @@ struct RouterLink<LabelView: View>: View {
                 .contentShape(Rectangle())
             }
         } else if let sheet {
-            Button(action: { sheetManager.navigate(sheet: sheet) }, label: { label })
+            Button(action: { sheetEnvironmentModel.navigate(sheet: sheet) }, label: { label })
         }
     }
 }

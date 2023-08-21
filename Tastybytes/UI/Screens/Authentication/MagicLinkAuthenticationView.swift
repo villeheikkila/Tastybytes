@@ -5,7 +5,7 @@ import SwiftUI
 struct MagicLinkAuthenticationView: View {
     private let logger = Logger(category: "MagicLinkAuthenticationView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var email = ""
     @State private var isLoading = false
@@ -38,9 +38,9 @@ struct MagicLinkAuthenticationView: View {
             await MainActor.run {
                 dismiss()
             }
-            feedbackManager.toggle(.success("Magic link sent!"))
+            feedbackEnvironmentModel.toggle(.success("Magic link sent!"))
         case let .failure(error):
-            feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+            feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
             logger
                 .error(
                     "Error occured when trying to log in with magic link. Error: \(error) (\(#file):\(#line))"

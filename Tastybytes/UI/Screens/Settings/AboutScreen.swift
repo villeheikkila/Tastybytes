@@ -6,8 +6,8 @@ import SwiftUI
 private let logger = Logger(category: "AboutScreen")
 
 struct AboutScreen: View {
-    @Environment(AppDataManager.self) private var appDataManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.requestReview) var requestReview
     @State private var email = Email.feedback
 
@@ -46,9 +46,9 @@ struct AboutScreen: View {
             sheet: .sendEmail(email: $email, callback: { result in
                 switch result {
                 case let .success(successResult) where successResult == MFMailComposeResult.sent:
-                    feedbackManager.toggle(.success("Thanks for the feedback!"))
+                    feedbackEnvironmentModel.toggle(.success("Thanks for the feedback!"))
                 case .failure:
-                    feedbackManager.toggle(.error(.unexpected))
+                    feedbackEnvironmentModel.toggle(.error(.unexpected))
                 default:
                     return
                 }
@@ -60,7 +60,7 @@ struct AboutScreen: View {
     }
 
     @ViewBuilder var aboutSection: some View {
-        if let aboutPage = appDataManager.aboutPage {
+        if let aboutPage = appDataEnvironmentModel.aboutPage {
             Section {
                 Text(aboutPage.summary)
             }

@@ -6,8 +6,8 @@ import SwiftUI
 struct CompanySearchSheet: View {
     private let logger = Logger(category: "CompanySearchSheet")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchResults = [Company]()
     @State private var status: Status?
@@ -32,7 +32,7 @@ struct CompanySearchSheet: View {
             if showEmptyResults {
                 Section {
                     Text("No companies found with the searched name.")
-                    if profileManager.hasPermission(.canCreateCompanies) {
+                    if profileEnvironmentModel.hasPermission(.canCreateCompanies) {
                         Button("Create new company", action: { createNew() })
                     }
                 }
@@ -44,7 +44,7 @@ struct CompanySearchSheet: View {
                 })
             }
 
-            if profileManager.hasPermission(.canCreateCompanies), !showEmptyResults {
+            if profileEnvironmentModel.hasPermission(.canCreateCompanies), !showEmptyResults {
                 switch status {
                 case .searched:
                     Section("Didn't find the company you were looking for?") {
@@ -97,7 +97,7 @@ struct CompanySearchSheet: View {
             status = Status.searched
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to search companies. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -106,11 +106,11 @@ struct CompanySearchSheet: View {
         let newCompany = Company.NewRequest(name: companyName)
         switch await repository.company.insert(newCompany: newCompany) {
         case let .success(newCompany):
-            feedbackManager.toggle(.success("New Company Created!"))
+            feedbackEnvironmentModel.toggle(.success("New Company Created!"))
             onSuccess(newCompany)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to create new company'. Error: \(error) (\(#file):\(#line))")
         }
     }

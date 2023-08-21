@@ -5,12 +5,12 @@ import SwiftUI
 struct CurrentProfileScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Binding var scrollToTop: Int
 
     var body: some View {
-        ProfileView(profile: profileManager.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
-            .navigationTitle(profileManager.profile.preferredName)
+        ProfileView(profile: profileEnvironmentModel.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
+            .navigationTitle(profileEnvironmentModel.profile.preferredName)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 toolbarContent

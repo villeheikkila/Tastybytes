@@ -13,8 +13,8 @@ struct OnboardingScreen: View {
         }
     }
 
-    @Environment(SplashScreenManager.self) private var splashScreenManager
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @FocusState private var focusedField: OnboardField?
     @State private var currentTab = Tab.welcome
 
@@ -25,11 +25,11 @@ struct OnboardingScreen: View {
         })) {
             WelcomeOnboarding(currentTab: $currentTab) {
                 withAnimation {
-                    currentTab = profileManager.isOnboarded ? Tab.permission : .profile
+                    currentTab = profileEnvironmentModel.isOnboarded ? Tab.permission : .profile
                 }
             }
             .tag(Tab.welcome)
-            if !profileManager.isOnboarded {
+            if !profileEnvironmentModel.isOnboarded {
                 ProfileOnboarding(focusedField: _focusedField, currentTab: $currentTab)
                     .tag(Tab.profile)
                 AvatarOnboarding(currentTab: $currentTab)
@@ -43,7 +43,7 @@ struct OnboardingScreen: View {
         .tabViewStyle(.page)
         .indexViewStyle(.page(backgroundDisplayMode: .never))
         .task {
-            await splashScreenManager.dismiss()
+            await splashScreenEnvironmentModel.dismiss()
         }
     }
 }

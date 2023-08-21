@@ -3,11 +3,11 @@ import SwiftUI
 
 struct FriendSheet: View {
     @Binding var taggedFriends: [Profile]
-    @Environment(FriendManager.self) private var friendManager
+    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        List(friendManager.acceptedFriends) { friend in
+        List(friendEnvironmentModel.acceptedFriends) { friend in
             HStack {
                 AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
                 Text(friend.preferredName)

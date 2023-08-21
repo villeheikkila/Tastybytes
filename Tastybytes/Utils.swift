@@ -50,16 +50,16 @@ func clearTemporaryData() {
     UserDefaults.standard.removeObject(for: .selectedTab)
 
     // Reset NavigationStack restoration
-    let fileManager = FileManager.default
+    let fileEnvironmentModel = FileManager.default
     let filesToDelete = Tab.allCases.map(\.cachesPath)
     do {
-        let directoryContents = try fileManager.contentsOfDirectory(
+        let directoryContents = try fileEnvironmentModel.contentsOfDirectory(
             at: URL.cachesDirectory,
             includingPropertiesForKeys: nil,
             options: []
         )
         for file in directoryContents where filesToDelete.contains(file.lastPathComponent) {
-            try fileManager.removeItem(at: file)
+            try fileEnvironmentModel.removeItem(at: file)
         }
     } catch {
         logger.error("Failed to delete navigation stack state restoration files. Error: \(error) (\(#file):\(#line))")

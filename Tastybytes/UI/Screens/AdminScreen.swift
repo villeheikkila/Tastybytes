@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AdminScreen: View {
-    @Environment(SplashScreenManager.self) private var splashScreenManager
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
 
     var body: some View {
         List {
@@ -13,7 +13,7 @@ struct AdminScreen: View {
         .listStyle(.insetGrouped)
         .navigationBarTitle("Admin")
         .task {
-            await splashScreenManager.dismiss()
+            await splashScreenEnvironmentModel.dismiss()
         }
     }
 }

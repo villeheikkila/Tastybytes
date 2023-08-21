@@ -1,16 +1,16 @@
 import SwiftUI
 
 struct TabsView: View {
-    @Environment(NotificationManager.self) private var notificationManager
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @AppStorage(.selectedTab) private var selection = Tab.activity
     @State private var resetNavigationOnTab: Tab?
 
     private let switchTabGestureRangeDistance: Double = 50
 
     private var shownTabs: [Tab] {
-        if profileManager.hasRole(.admin) {
+        if profileEnvironmentModel.hasRole(.admin) {
             [.activity, .discover, .notifications, .admin, .profile]
         } else {
             [.activity, .discover, .notifications, .profile]
@@ -25,14 +25,14 @@ struct TabsView: View {
                    selection.rawValue < shownTabs.count - 1
                 {
                     if let tab = Tab(rawValue: selection.rawValue + 1) {
-                        feedbackManager.trigger(.selection)
+                        feedbackEnvironmentModel.trigger(.selection)
                         selection = tab
                     }
                 } else if value.translation.width > switchTabGestureRangeDistance,
                           value.translation.width < 3 * switchTabGestureRangeDistance, selection.rawValue > 0
                 {
                     if let tab = Tab(rawValue: selection.rawValue - 1) {
-                        feedbackManager.trigger(.selection)
+                        feedbackEnvironmentModel.trigger(.selection)
                         selection = tab
                     }
                 }
@@ -43,7 +43,7 @@ struct TabsView: View {
         TabView(selection: .init(get: {
             selection
         }, set: { newTab in
-            feedbackManager.trigger(.selection)
+            feedbackEnvironmentModel.trigger(.selection)
             if newTab == selection {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                     resetNavigationOnTab = selection
@@ -72,7 +72,7 @@ struct TabsView: View {
     private func getBadgeByTab(_ tab: Tab) -> Int {
         switch tab {
         case .notifications:
-            notificationManager.unreadCount
+            notificationEnvironmentModel.unreadCount
         default:
             0
         }

@@ -3,10 +3,10 @@ import SwiftUI
 
 struct PermissionOnboarding: View {
     @Binding var currentTab: OnboardingScreen.Tab
-    @Environment(PermissionManager.self) private var permissionManager
+    @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
 
     var pushNotificationButtonTitle: String {
-        switch permissionManager.pushNotificationStatus {
+        switch permissionEnvironmentModel.pushNotificationStatus {
         case .authorized, .provisional:
             return "Allowed"
         case .denied:
@@ -17,7 +17,7 @@ struct PermissionOnboarding: View {
     }
 
     var photoLibraryButtonTitle: String {
-        switch permissionManager.photoLibraryStatus {
+        switch permissionEnvironmentModel.photoLibraryStatus {
         case .authorized:
             return "Allowed"
         case .denied:
@@ -28,7 +28,7 @@ struct PermissionOnboarding: View {
     }
 
     var cameraButtonTitle: String {
-        switch permissionManager.cameraStatus {
+        switch permissionEnvironmentModel.cameraStatus {
         case .authorized:
             return "Allowed"
         case .denied:
@@ -39,7 +39,7 @@ struct PermissionOnboarding: View {
     }
 
     var locationButtonTitle: String {
-        switch permissionManager.locationsStatus {
+        switch permissionEnvironmentModel.locationsStatus {
         case .authorized, .authorizedAlways, .authorizedWhenInUse:
             return "Allowed"
         case .denied:
@@ -62,7 +62,7 @@ struct PermissionOnboarding: View {
                 buttonTitle: pushNotificationButtonTitle,
                 systemSymbol: .bellFill,
                 action: {
-                    permissionManager.requestPushNotificationAuthorization()
+                    permissionEnvironmentModel.requestPushNotificationAuthorization()
                 }
             )
             PermissionListRow(
@@ -71,7 +71,7 @@ struct PermissionOnboarding: View {
                 buttonTitle: photoLibraryButtonTitle,
                 systemSymbol: .photo,
                 action: {
-                    permissionManager.requestPhotoLibraryAuthorization()
+                    permissionEnvironmentModel.requestPhotoLibraryAuthorization()
                 }
             )
             PermissionListRow(
@@ -80,7 +80,7 @@ struct PermissionOnboarding: View {
                 buttonTitle: cameraButtonTitle,
                 systemSymbol: .camera,
                 action: {
-                    permissionManager.requestCameraAuthorization()
+                    permissionEnvironmentModel.requestCameraAuthorization()
                 }
             )
             PermissionListRow(
@@ -89,7 +89,7 @@ struct PermissionOnboarding: View {
                 buttonTitle: locationButtonTitle,
                 systemSymbol: .locationFillViewfinder,
                 action: {
-                    permissionManager.requestLocationAuthorization()
+                    permissionEnvironmentModel.requestLocationAuthorization()
                 }
             )
         }
@@ -105,7 +105,7 @@ struct PermissionOnboarding: View {
             }
         }))
         .task {
-            permissionManager.initialize()
+            permissionEnvironmentModel.initialize()
         }
     }
 }

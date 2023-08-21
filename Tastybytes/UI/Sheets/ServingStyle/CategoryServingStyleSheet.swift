@@ -6,7 +6,7 @@ import SwiftUI
 struct CategoryServingStyleSheet: View {
     private let logger = Logger(category: "CategoryServingStyleSheet")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var servingStyles: [ServingStyle]
     @State private var showDeleteServingStyleConfirmation = false
@@ -90,7 +90,7 @@ struct CategoryServingStyleSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to add serving style to category'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -106,10 +106,10 @@ struct CategoryServingStyleSheet: View {
                     servingStyles.remove(object: servingStyle)
                 }
             }
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

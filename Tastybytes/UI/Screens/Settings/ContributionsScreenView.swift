@@ -6,8 +6,8 @@ import SwiftUI
 struct ContributionsScreen: View {
     private let logger = Logger(category: "ContributionsScreen")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var contributions: Contributions?
 
     var body: some View {
@@ -48,7 +48,7 @@ struct ContributionsScreen: View {
         .navigationTitle("Your Contributions")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            await loadContributions(userId: profileManager.id)
+            await loadContributions(userId: profileEnvironmentModel.id)
         }
     }
 
@@ -62,7 +62,7 @@ struct ContributionsScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load contributions. Error: \(error) (\(#file):\(#line))")
         }
     }

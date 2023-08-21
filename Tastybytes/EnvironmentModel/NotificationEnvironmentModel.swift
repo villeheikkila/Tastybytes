@@ -7,19 +7,19 @@ import Repositories
 import SwiftUI
 
 @Observable
-final class NotificationManager {
-    private let logger = Logger(category: "NotificationManager")
+final class NotificationEnvironmentModel {
+    private let logger = Logger(category: "NotificationEnvironmentModel")
     private(set) var notifications = [Models.Notification]()
 
     var pushNotificationSettings: ProfilePushNotification? = nil
     var unreadCount: Int = 0
 
     private let repository: Repository
-    private let feedbackManager: FeedbackManager
+    private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(repository: Repository, feedbackManager: FeedbackManager) {
+    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         self.repository = repository
-        self.feedbackManager = feedbackManager
+        self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
     func getUnreadFriendRequestCount() -> Int {
@@ -45,14 +45,14 @@ final class NotificationManager {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to get all unread notifications. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     func refresh(reset: Bool = false, withFeedback: Bool = false) async {
         if reset, withFeedback {
-            feedbackManager.trigger(.impact(intensity: .low))
+            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
         switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
         case let .success(newNotifications):
@@ -64,7 +64,7 @@ final class NotificationManager {
                         .count
 
                     if withFeedback {
-                        feedbackManager.trigger(.notification(.success))
+                        feedbackEnvironmentModel.trigger(.notification(.success))
                     }
                 } else {
                     notifications.append(contentsOf: newNotifications)
@@ -72,7 +72,7 @@ final class NotificationManager {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -87,7 +87,7 @@ final class NotificationManager {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete all notifications. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -106,7 +106,7 @@ final class NotificationManager {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to mark all notifications as read. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -126,7 +126,7 @@ final class NotificationManager {
                 }
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackManager.toggle(.error(.unexpected))
+                feedbackEnvironmentModel.toggle(.error(.unexpected))
                 logger.error("Failed to mark all friend requests as read. Error: \(error) (\(#file):\(#line))")
             }
         }
@@ -158,7 +158,7 @@ final class NotificationManager {
                 }
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackManager.toggle(.error(.unexpected))
+                feedbackEnvironmentModel.toggle(.error(.unexpected))
                 logger.error("Failed to mark check-in as read \(checkIn.id). Error: \(error) (\(#file):\(#line))")
             }
         }
@@ -170,7 +170,7 @@ final class NotificationManager {
             notifications.replace(notification, with: updatedNotification)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to mark '\(notification.id)' as read. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -187,7 +187,7 @@ final class NotificationManager {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete notification. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -202,7 +202,7 @@ final class NotificationManager {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete notification '\(notification.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -223,7 +223,7 @@ final class NotificationManager {
             self.pushNotificationSettings = pushNotificationSettings
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to update push notification settings for device. Error: \(error) (\(#file):\(#line))")
         }
     }

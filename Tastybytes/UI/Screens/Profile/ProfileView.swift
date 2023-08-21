@@ -8,11 +8,11 @@ import SwiftUI
 struct ProfileView: View {
     private let logger = Logger(category: "ProfileView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FriendManager.self) private var friendManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(Router.self) private var router
-    @Environment(SplashScreenManager.self) private var splashScreenManager
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Binding private var scrollToTop: Int
     @State private var profile: Profile
     @State private var profileSummary: ProfileSummary?
@@ -30,7 +30,7 @@ struct ProfileView: View {
     }
 
     var showInFull: Bool {
-        isShownInFull || friendManager.isFriend(profile)
+        isShownInFull || friendEnvironmentModel.isFriend(profile)
     }
 
     var body: some View {
@@ -55,7 +55,7 @@ struct ProfileView: View {
     @ViewBuilder private var privateProfile: some View {
         privateProfileSign
         if !isCurrentUser,
-           !friendManager.isFriend(profile) || friendManager.isPendingUserApproval(profile) != nil
+           !friendEnvironmentModel.isFriend(profile) || friendEnvironmentModel.isPendingUserApproval(profile) != nil
         {
             friendActionSection
         }
@@ -69,7 +69,7 @@ struct ProfileView: View {
             ratingSummary
             joinedAtSection
             if !isCurrentUser,
-               !friendManager.isFriend(profile) || friendManager.isPendingUserApproval(profile) != nil
+               !friendEnvironmentModel.isFriend(profile) || friendEnvironmentModel.isPendingUserApproval(profile) != nil
             {
                 friendActionSection
             }
@@ -81,15 +81,15 @@ struct ProfileView: View {
         HStack {
             Spacer()
             Group {
-                if friendManager.hasNoFriendStatus(friend: profile) {
+                if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
                     ProgressButton(
                         "Send Friend Request",
-                        action: { await friendManager.sendFriendRequest(receiver: profile.id) }
+                        action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
                     )
-                } else if let friend = friendManager.isPendingUserApproval(profile) {
+                } else if let friend = friendEnvironmentModel.isPendingUserApproval(profile) {
                     ProgressButton(
                         "Accept Friend Request",
-                        action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }
+                        action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted) }
                     )
                 }
             }
@@ -145,7 +145,7 @@ struct ProfileView: View {
                     }
             }
             .onChange(of: selectedItem) { _, newValue in
-                Task { await uploadAvatar(userId: profileManager.id, newAvatar: newValue) }
+                Task { await uploadAvatar(userId: profileEnvironmentModel.id, newAvatar: newValue) }
             }
             Spacer()
             if showInFull {
@@ -160,7 +160,7 @@ struct ProfileView: View {
         .task {
             if profileSummary == nil {
                 await getSummary()
-                await splashScreenManager.dismiss()
+                await splashScreenEnvironmentModel.dismiss()
             }
         }
         .contextMenu {
@@ -208,7 +208,7 @@ struct ProfileView: View {
             RouterLink(
                 "Friends",
                 systemSymbol: .personCropRectangleStack,
-                screen: profileManager.profile == profile ? .currentUserFriends : .friends(profile)
+                screen: profileEnvironmentModel.profile == profile ? .currentUserFriends : .friends(profile)
             )
             RouterLink("Check-ins", systemSymbol: .checkmarkRectangle, screen: .profileProducts(profile))
             RouterLink("Statistics", systemSymbol: .chartBarXaxis, screen: .profileStatistics(profile))
@@ -234,7 +234,7 @@ struct ProfileView: View {
             )
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("uplodaing avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -249,7 +249,7 @@ struct ProfileView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
     }

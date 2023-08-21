@@ -5,10 +5,10 @@ import PhotosUI
 import SwiftUI
 
 @Observable
-final class PermissionManager {
-    private let logger = Logger(category: "PermissionManager")
-    private let locationManager = CLLocationManager()
-    private let notificationManager = UNUserNotificationCenter.current()
+final class PermissionEnvironmentModel {
+    private let logger = Logger(category: "PermissionEnvironmentModel")
+    private let locationEnvironmentModel = CLLocationManager()
+    private let notificationEnvironmentModel = UNUserNotificationCenter.current()
 
     var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
     var cameraStatus: AVAuthorizationStatus = .notDetermined
@@ -18,7 +18,7 @@ final class PermissionManager {
     // push notifications
     func requestPushNotificationAuthorization() {
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        notificationManager.requestAuthorization(
+        notificationEnvironmentModel.requestAuthorization(
             options: authOptions
         ) { _, _ in
             self.getCurrentPushNotificationPermissionAuthorization()
@@ -26,7 +26,7 @@ final class PermissionManager {
     }
 
     func getCurrentPushNotificationPermissionAuthorization() {
-        notificationManager.getNotificationSettings(completionHandler: { settings in
+        notificationEnvironmentModel.getNotificationSettings(completionHandler: { settings in
             DispatchQueue.main.async { [unowned self] in
                 pushNotificationStatus = settings.authorizationStatus
             }
@@ -61,11 +61,11 @@ final class PermissionManager {
 
     // location
     func getCurrentLocationAuthorization() {
-        locationsStatus = locationManager.authorizationStatus
+        locationsStatus = locationEnvironmentModel.authorizationStatus
     }
 
     func requestLocationAuthorization() {
-        locationManager.requestWhenInUseAuthorization()
+        locationEnvironmentModel.requestWhenInUseAuthorization()
     }
 
     func initialize() {

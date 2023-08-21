@@ -1,5 +1,5 @@
 import SwiftUI
 
-@Observable class SubscriptionManager {
+@Observable class SubscriptionEnvironmentModel {
     var subscriptionStatus: SubscriptionStatus = .notSubscribed
 }

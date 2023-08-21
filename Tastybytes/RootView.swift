@@ -9,33 +9,33 @@ struct RootView: View {
     private let logger = Logger(category: "RootView")
     let supabaseClient: SupabaseClient
     @State private var repository: Repository
-    @State private var splashScreenManager = SplashScreenManager()
-    @State private var permissionManager = PermissionManager()
-    @State private var profileManager: ProfileManager
-    @State private var notificationManager: NotificationManager
-    @State private var appDataManager: AppDataManager
-    @State private var friendManager: FriendManager
-    @State private var imageUploadManager: ImageUploadManager
-    @State private var subscriptionManager = SubscriptionManager()
+    @State private var splashScreenEnvironmentModel = SplashScreenEnvironmentModel()
+    @State private var permissionEnvironmentModel = PermissionEnvironmentModel()
+    @State private var profileEnvironmentModel: ProfileEnvironmentModel
+    @State private var notificationEnvironmentModel: NotificationEnvironmentModel
+    @State private var appDataEnvironmentModel: AppDataEnvironmentModel
+    @State private var friendEnvironmentModel: FriendEnvironmentModel
+    @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
+    @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel()
     @AppStorage(.colorScheme) var colorScheme: String = "system"
     @State private var authEvent: AuthChangeEvent?
     @State private var orientation: UIDeviceOrientation
-    let feedbackManager: FeedbackManager
+    let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(supabaseClient: SupabaseClient, feedbackManager: FeedbackManager) {
+    init(supabaseClient: SupabaseClient, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         let repository = Repository(supabaseClient: supabaseClient)
         self.supabaseClient = supabaseClient
         _repository = State(wrappedValue: repository)
-        _notificationManager =
-            State(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
-        _profileManager = State(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
-        _appDataManager = State(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
-        _imageUploadManager =
-            State(wrappedValue: ImageUploadManager(repository: repository, feedbackManager: feedbackManager))
-        _friendManager =
-            State(wrappedValue: FriendManager(repository: repository, feedbackManager: feedbackManager))
+        _notificationEnvironmentModel =
+            State(wrappedValue: NotificationEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
+        _profileEnvironmentModel = State(wrappedValue: ProfileEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
+        _appDataEnvironmentModel = State(wrappedValue: AppDataEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
+        _imageUploadEnvironmentModel =
+            State(wrappedValue: ImageUploadEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
+        _friendEnvironmentModel =
+            State(wrappedValue: FriendEnvironmentModel(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel))
         _orientation = State(wrappedValue: UIDevice.current.orientation)
-        self.feedbackManager = feedbackManager
+        self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
     var body: some View {
@@ -50,20 +50,20 @@ struct RootView: View {
             default:
                 AuthenticationScreen()
             }
-            if !isMac(), splashScreenManager.state != .finished {
+            if !isMac(), splashScreenEnvironmentModel.state != .finished {
                 SplashScreen()
             }
         }
         .environment(repository)
-        .environment(splashScreenManager)
-        .environment(notificationManager)
-        .environment(profileManager)
-        .environment(feedbackManager)
-        .environment(appDataManager)
-        .environment(friendManager)
-        .environment(permissionManager)
-        .environment(imageUploadManager)
-        .environment(subscriptionManager)
+        .environment(splashScreenEnvironmentModel)
+        .environment(notificationEnvironmentModel)
+        .environment(profileEnvironmentModel)
+        .environment(feedbackEnvironmentModel)
+        .environment(appDataEnvironmentModel)
+        .environment(friendEnvironmentModel)
+        .environment(permissionEnvironmentModel)
+        .environment(imageUploadEnvironmentModel)
+        .environment(subscriptionEnvironmentModel)
         .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
         .detectOrientation($orientation)
         .environment(\.orientation, orientation)
@@ -73,7 +73,7 @@ struct RootView: View {
             }
         }
         .task {
-            await appDataManager.initialize()
+            await appDataEnvironmentModel.initialize()
         }
         .task {
             for await authEventChange in supabaseClient.auth.authEventChange {
@@ -82,8 +82,8 @@ struct RootView: View {
                 }
                 switch authEvent {
                 case .signedIn:
-                    await profileManager.initialize()
-                    notificationManager.refreshAPNS()
+                    await profileEnvironmentModel.initialize()
+                    notificationEnvironmentModel.refreshAPNS()
                 default:
                     break
                 }
@@ -114,16 +114,16 @@ extension EnvironmentValues {
 struct AuthenticatedContent: View {
     private let logger = Logger(category: "AuthenticatedContent")
     @State private var status: EntitlementTaskState<SubscriptionStatus> = .loading
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FriendManager.self) private var friendManager
-    @Environment(NotificationManager.self) private var notificationManager
-    @Environment(SubscriptionManager.self) private var subscriptionManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
+    @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
     @Environment(\.scenePhase) private var phase
     @Environment(\.productSubscriptionIds) private var productSubscriptionIds
     @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
 
     var body: some View {
-        if !profileManager.isLoggedIn {
+        if !profileEnvironmentModel.isLoggedIn {
             EmptyView()
         } else if !isOnboardedOnDevice {
             OnboardingScreen()
@@ -137,7 +137,7 @@ struct AuthenticatedContent: View {
             }
             .onChange(of: phase) { _, newPhase in
                 if newPhase == .active {
-                    Task { await notificationManager.getUnreadCount()
+                    Task { await notificationEnvironmentModel.getUnreadCount()
                     }
                 }
             }
@@ -146,11 +146,11 @@ struct AuthenticatedContent: View {
             { notification in
                 guard let userInfo = notification.userInfo, let aps = userInfo["aps"] as? [String: Any],
                       let unreadCount = aps["badge"] as? Int else { return }
-                notificationManager.unreadCount = unreadCount
+                notificationEnvironmentModel.unreadCount = unreadCount
             }
             .task {
-                await friendManager.initialize(profile: profileManager.profile)
-                await notificationManager.getUnreadCount()
+                await friendEnvironmentModel.initialize(profile: profileEnvironmentModel.profile)
+                await notificationEnvironmentModel.getUnreadCount()
             }
             .onAppear(perform: {
                 ProductSubscription.createSharedInstance()
@@ -164,10 +164,10 @@ struct AuthenticatedContent: View {
                 }
                 switch self.status {
                 case let .failure(error):
-                    subscriptionManager.subscriptionStatus = .notSubscribed
+                    subscriptionEnvironmentModel.subscriptionStatus = .notSubscribed
                     logger.error("Failed to check subscription status: \(error)")
                 case let .success(status):
-                    subscriptionManager.subscriptionStatus = status
+                    subscriptionEnvironmentModel.subscriptionStatus = status
                 case .loading: break
                 @unknown default: break
                 }

@@ -6,8 +6,8 @@ import SwiftUI
 struct ReactionsView: View {
     private let logger = Logger(category: "ReactionsView")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInReactions = [CheckInReaction]()
     @State private var isLoading = false
 
@@ -31,7 +31,7 @@ struct ReactionsView: View {
                 systemSymbol: .handThumbsup
             )
             .labelStyle(.iconOnly)
-            .symbolVariant(hasReacted(profileManager.profile) ? .fill : .none)
+            .symbolVariant(hasReacted(profileEnvironmentModel.profile) ? .fill : .none)
             .imageScale(.large)
             .foregroundColor(Color(.systemYellow))
         }
@@ -55,7 +55,7 @@ struct ReactionsView: View {
 
     func toggleReaction() async {
         isLoading = true
-        if let reaction = checkInReactions.first(where: { $0.profile.id == profileManager.id }) {
+        if let reaction = checkInReactions.first(where: { $0.profile.id == profileEnvironmentModel.id }) {
             switch await repository.checkInReactions.delete(id: reaction.id) {
             case .success:
                 await MainActor.run {
@@ -63,10 +63,10 @@ struct ReactionsView: View {
                         checkInReactions.remove(object: reaction)
                     }
                 }
-                feedbackManager.trigger(.impact(intensity: .low))
+                feedbackEnvironmentModel.trigger(.impact(intensity: .low))
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackManager.toggle(.error(.unexpected))
+                feedbackEnvironmentModel.toggle(.error(.unexpected))
                 logger.error("removing check-in reaction \(reaction.id) failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
@@ -79,13 +79,13 @@ struct ReactionsView: View {
                         checkInReactions.append(checkInReaction)
                     }
                 }
-                feedbackManager.trigger(.notification(.success))
+                feedbackEnvironmentModel.trigger(.notification(.success))
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackManager.toggle(.error(.unexpected))
+                feedbackEnvironmentModel.toggle(.error(.unexpected))
                 logger
                     .error(
-                        "adding check-in reaction for check-in \(checkIn.id) by \(profileManager.id) failed:\(error.localizedDescription)"
+                        "adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed:\(error.localizedDescription)"
                     )
             }
         }

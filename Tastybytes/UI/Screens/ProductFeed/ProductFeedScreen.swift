@@ -6,9 +6,9 @@ import SwiftUI
 struct ProductFeedScreen: View {
     private let logger = Logger(category: "ProductFeedView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @Environment(AppDataManager.self) private var appDataManager
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @State private var products = [Product.Joined]()
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles? {
         didSet {
@@ -60,7 +60,7 @@ struct ProductFeedScreen: View {
         .listStyle(.plain)
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await feedbackManager.wrapWithHaptics {
+                await feedbackEnvironmentModel.wrapWithHaptics {
                     await refresh()
                 }
             }
@@ -81,7 +81,7 @@ struct ProductFeedScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarTitleMenu {
             Button(feed.label, action: { categoryFilter = nil })
-            ForEach(appDataManager.categories) { category in
+            ForEach(appDataEnvironmentModel.categories) { category in
                 Button(category.name, action: { categoryFilter = category })
             }
         }
@@ -112,7 +112,7 @@ struct ProductFeedScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
         }
     }

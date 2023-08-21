@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AddCategorySheet: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(AppDataManager.self) private var appDataManager
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @State private var newCategoryName = ""
 
     let onSubmit: (_ newCategoryName: String) async -> Void
@@ -11,7 +11,7 @@ struct AddCategorySheet: View {
         Form {
             TextField("Name", text: $newCategoryName)
             ProgressButton("Add", action: {
-                await appDataManager.addCategory(name: newCategoryName)
+                await appDataEnvironmentModel.addCategory(name: newCategoryName)
                 await MainActor.run {
                     dismiss()
                 }

@@ -8,8 +8,8 @@ import SwiftUI
 struct ProductLogoSheet: View {
     private let logger = Logger(category: "ProductLogoSheet")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var selectedLogo: PhotosPickerItem? {
         didSet {
@@ -81,7 +81,7 @@ struct ProductLogoSheet: View {
             logoFile = filename
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Uplodaing product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

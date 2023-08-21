@@ -10,8 +10,8 @@ struct LocationScreen: View {
     private let logger = Logger(category: "LocationScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var scrollToTop: Int = 0
     @State private var summary: Summary?
     @State private var showDeleteLocationConfirmation = false
@@ -74,14 +74,14 @@ struct LocationScreen: View {
                 LocationShareLinkView(location: location)
                 Divider()
 
-                if profileManager.hasRole(.admin) {
+                if profileEnvironmentModel.hasRole(.admin) {
                     Menu {
-                        if profileManager.hasPermission(.canMergeLocations) {
+                        if profileEnvironmentModel.hasPermission(.canMergeLocations) {
                             RouterLink(sheet: .mergeLocationSheet(location: location), label: {
                                 Label("Merge to...", systemSymbol: .docOnDoc)
                             })
                         }
-                        if profileManager.hasPermission(.canDeleteProducts) {
+                        if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                             Button(
                                 "Delete",
                                 systemSymbol: .trashFill,
@@ -111,7 +111,7 @@ struct LocationScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to get summary. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -120,10 +120,10 @@ struct LocationScreen: View {
         switch await repository.location.delete(id: location.id) {
         case .success:
             router.reset()
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")
         }
     }

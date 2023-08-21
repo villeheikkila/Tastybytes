@@ -6,8 +6,8 @@ import SwiftUI
 struct BrandSheet: View {
     private let logger = Logger(category: "BrandSheet")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
@@ -33,7 +33,7 @@ struct BrandSheet: View {
                 }
             }
 
-            if profileManager.hasPermission(.canCreateBrands) {
+            if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                 Section("Add new brand for \(brandOwner.name)") {
                     ScanTextField(title: "Name", text: $brandName)
                     ProgressButton("Create", action: { await createNewBrand() })
@@ -66,7 +66,7 @@ struct BrandSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load brands for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -74,7 +74,7 @@ struct BrandSheet: View {
     func createNewBrand() async {
         switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
         case let .success(brandWithSubBrands):
-            feedbackManager.toggle(.success("New Brand Created!"))
+            feedbackEnvironmentModel.toggle(.success("New Brand Created!"))
             if mode == .new {
                 router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
             }
@@ -84,7 +84,7 @@ struct BrandSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to create new brand for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")
         }
     }

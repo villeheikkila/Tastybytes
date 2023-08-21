@@ -6,7 +6,7 @@ import SwiftUI
 struct ProfileWishlistScreen: View {
     private let logger = Logger(category: "ProfileWishlistScreen")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var products: [Product.Joined] = []
     @State private var searchTerm = ""
     @State private var initialDataLoaded = false
@@ -62,7 +62,7 @@ struct ProfileWishlistScreen: View {
     func removeFromWishlist(product: Product.Joined) async {
         switch await repository.product.removeFromWishlist(productId: product.id) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             await MainActor.run {
                 withAnimation {
                     products.remove(object: product)
@@ -85,7 +85,7 @@ struct ProfileWishlistScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error(
                     "Error occured while loading wishlist items. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"

@@ -2,21 +2,21 @@ import Models
 import SwiftUI
 
 struct BlockedUsersScreen: View {
-    @Environment(FriendManager.self) private var friendManager
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
 
     var body: some View {
         List {
-            ForEach(friendManager.blockedUsers) { friend in
-                BlockedUserListItemView(profile: friend.getFriend(userId: profileManager.profile.id), onUnblockUser: {
-                    await friendManager.unblockUser(friend)
+            ForEach(friendEnvironmentModel.blockedUsers) { friend in
+                BlockedUserListItemView(profile: friend.getFriend(userId: profileEnvironmentModel.profile.id), onUnblockUser: {
+                    await friendEnvironmentModel.unblockUser(friend)
                 })
             }
         }
         .listStyle(.insetGrouped)
         .background {
-            if friendManager.blockedUsers.isEmpty {
+            if friendEnvironmentModel.blockedUsers.isEmpty {
                 ContentUnavailableView {
                     Label("You haven't blocked any users", systemSymbol: .personFillXmark)
                 }
@@ -29,7 +29,7 @@ struct BlockedUsersScreen: View {
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-            await friendManager.refresh(withFeedback: true)
+            await friendEnvironmentModel.refresh(withFeedback: true)
         }
         #endif
     }
@@ -38,7 +38,7 @@ struct BlockedUsersScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
                 RouterLink("Show block user sheet", systemSymbol: .plus, sheet: .userSheet(mode: .block, onSubmit: {
-                    feedbackManager.toggle(.success("User blocked"))
+                    feedbackEnvironmentModel.toggle(.success("User blocked"))
                 }))
                 .labelStyle(.iconOnly)
                 .imageScale(.large)

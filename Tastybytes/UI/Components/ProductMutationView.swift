@@ -6,8 +6,8 @@ import SwiftUI
 struct ProductMutationView: View {
     private let logger = Logger(category: "ProductMutationView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(AppDataManager.self) private var appDataManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var initialValues: ProductMutationInitialValues?
 
@@ -69,14 +69,14 @@ struct ProductMutationView: View {
     func loadMissingData() async {
         switch mode {
         case let .edit(initialProduct), let .editSuggestion(initialProduct):
-            await loadValuesFromExistingProduct(initialProduct, categories: appDataManager.categories)
+            await loadValuesFromExistingProduct(initialProduct, categories: appDataEnvironmentModel.categories)
         case let .addToBrand(brand):
-            loadFromBrand(brand, categories: appDataManager.categories)
+            loadFromBrand(brand, categories: appDataEnvironmentModel.categories)
         case let .addToSubBrand(brand, subBrand):
-            loadFromSubBrand(brand: brand, subBrand: subBrand, categories: appDataManager.categories)
+            loadFromSubBrand(brand: brand, subBrand: subBrand, categories: appDataEnvironmentModel.categories)
         case .new:
             initialValues = ProductMutationInitialValues(
-                category: appDataManager.categories.first(where: { $0.name == "beverage" })
+                category: appDataEnvironmentModel.categories.first(where: { $0.name == "beverage" })
             )
         }
     }
@@ -153,7 +153,7 @@ struct ProductMutationView: View {
             )
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error(
                     "Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))"
@@ -202,8 +202,8 @@ struct ProductMutationInnerView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(SheetManager.self) private var sheetManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(SheetEnvironmentModel.self) private var sheetEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var subcategories: [Subcategory]
@@ -304,7 +304,7 @@ struct ProductMutationInnerView: View {
 
             Button(action: {
                 if let category {
-                    sheetManager.navigate(sheet: .subcategory(
+                    sheetEnvironmentModel.navigate(sheet: .subcategory(
                         subcategories: $subcategories,
                         category: category
                     ))
@@ -436,7 +436,7 @@ struct ProductMutationInnerView: View {
         )
         switch await repository.product.create(newProductParams: newProductParams) {
         case let .success(newProduct):
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             router.navigate(screen: .product(newProduct))
             await onSuccess(newProduct)
             if isSheet {
@@ -446,7 +446,7 @@ struct ProductMutationInnerView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to create new product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -464,7 +464,7 @@ struct ProductMutationInnerView: View {
 
         let diffFromCurrent = editSuggestion.diff(from: product)
         guard let diffFromCurrent else {
-            feedbackManager.toggle(.warning("There is nothing to edit"))
+            feedbackEnvironmentModel.toggle(.warning("There is nothing to edit"))
             return
         }
 
@@ -474,11 +474,11 @@ struct ProductMutationInnerView: View {
         case .success:
             await MainActor.run {
                 dismiss()
-                feedbackManager.toggle(.success("Edit suggestion sent!"))
+                feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error(
                     "Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))"
@@ -502,7 +502,7 @@ struct ProductMutationInnerView: View {
 
         switch await repository.product.editProduct(productEditParams: productEditParams) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             await MainActor.run {
                 dismiss()
             }
@@ -511,7 +511,7 @@ struct ProductMutationInnerView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -3,7 +3,7 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileSettingsScreen: View {
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var username = ""
     @State private var firstName = ""
     @State private var lastName = ""
@@ -22,9 +22,9 @@ struct ProfileSettingsScreen: View {
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            username = profileManager.username
-            firstName = profileManager.firstName ?? ""
-            lastName = profileManager.lastName ?? ""
+            username = profileEnvironmentModel.username
+            firstName = profileEnvironmentModel.firstName ?? ""
+            lastName = profileEnvironmentModel.lastName ?? ""
         }
     }
 
@@ -47,7 +47,7 @@ struct ProfileSettingsScreen: View {
                     .onChange(of: username, debounceTime: 0.3) { newValue in
                         guard newValue.count >= 3 else { return }
                         Task {
-                            usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: newValue)
+                            usernameIsAvailable = await profileEnvironmentModel.checkIfUsernameIsAvailable(username: newValue)
                             isLoading = false
                         }
                     }
@@ -55,8 +55,8 @@ struct ProfileSettingsScreen: View {
             LabeledTextField(title: "First Name", text: $firstName)
             LabeledTextField(title: "Last Name", text: $lastName)
 
-            if profileManager.hasChanged(username: username, firstName: firstName, lastName: lastName) {
-                ProgressButton("Update", action: { await profileManager.updateProfile(update: Profile.UpdateRequest(
+            if profileEnvironmentModel.hasChanged(username: username, firstName: firstName, lastName: lastName) {
+                ProgressButton("Update", action: { await profileEnvironmentModel.updateProfile(update: Profile.UpdateRequest(
                     username: username,
                     firstName: firstName,
                     lastName: lastName
@@ -73,10 +73,10 @@ struct ProfileSettingsScreen: View {
     private var profileDisplaySettings: some View {
         Section {
             Toggle("Use Full Name Instead of Username", isOn: .init(get: {
-                profileManager.showFullName
+                profileEnvironmentModel.showFullName
             }, set: { newValue in
-                profileManager.showFullName = newValue
-                Task { await profileManager.updateDisplaySettings() }
+                profileEnvironmentModel.showFullName = newValue
+                Task { await profileEnvironmentModel.updateDisplaySettings() }
             }))
         } footer: {
             Text("This only takes effect if both first name and last name are provided.")

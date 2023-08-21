@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct ProfileScreen: View {
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var scrollToTop = 0
 
     let profile: Profile
@@ -11,7 +11,7 @@ struct ProfileScreen: View {
         ProfileView(
             profile: profile,
             scrollToTop: $scrollToTop,
-            isCurrentUser: profileManager.id == profile.id
+            isCurrentUser: profileEnvironmentModel.id == profile.id
         )
         .navigationTitle(profile.preferredName)
         .toolbar {

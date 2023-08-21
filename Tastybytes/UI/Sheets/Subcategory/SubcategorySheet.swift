@@ -6,9 +6,9 @@ import SwiftUI
 struct SubcategorySheet: View {
     private let logger = Logger(category: "SubcategorySheet")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(AppDataManager.self) private var appDataManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var subcategories: [Subcategory]
     @State private var showAddSubcategory = false
@@ -47,7 +47,7 @@ struct SubcategorySheet: View {
             TextField("TextField", text: $newSubcategoryName)
             Button("Cancel", role: .cancel, action: {})
             ProgressButton("Create", action: {
-                await appDataManager.addSubcategory(category: category, name: newSubcategoryName)
+                await appDataEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
             })
         })
     }
@@ -56,7 +56,7 @@ struct SubcategorySheet: View {
         ToolbarItemGroup(placement: .primaryAction) {
             Button("Done", role: .cancel, action: { dismiss() }).bold()
         }
-        if profileManager.hasPermission(.canDeleteBrands) {
+        if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button("Add subcategory", systemSymbol: .plus, action: { showAddSubcategory.toggle() })
                     .labelStyle(.iconOnly)
@@ -75,7 +75,7 @@ struct SubcategorySheet: View {
                 subcategories.append(subcategory)
             }
         } else {
-            feedbackManager.toggle(.warning("You can only add \(maxSubcategories) subcategories"))
+            feedbackEnvironmentModel.toggle(.warning("You can only add \(maxSubcategories) subcategories"))
         }
     }
 }

@@ -3,9 +3,9 @@ import SwiftUI
 
 struct RouterWrapper<Content: View>: View {
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var router: Router
-    @State private var sheetManager = SheetManager()
+    @State private var sheetEnvironmentModel = SheetEnvironmentModel()
 
     let content: (_ router: Router) -> Content
 
@@ -15,7 +15,7 @@ struct RouterWrapper<Content: View>: View {
     }
 
     var body: some View {
-        @Bindable var feedbackManager = feedbackManager
+        @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
         @Bindable var router = router
         NavigationStack(path: $router.path) {
             content(router)
@@ -28,7 +28,7 @@ struct RouterWrapper<Content: View>: View {
                 router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
             }
         }
-        .sheet(item: $sheetManager.sheet) { sheet in
+        .sheet(item: $sheetEnvironmentModel.sheet) { sheet in
             NavigationStack {
                 sheet.view
             }
@@ -36,11 +36,11 @@ struct RouterWrapper<Content: View>: View {
             .presentationCornerRadius(sheet.cornerRadius)
             .presentationBackground(sheet.background)
             .presentationDragIndicator(.visible)
-            .sheet(item: $sheetManager.nestedSheet, content: { nestedSheet in
+            .sheet(item: $sheetEnvironmentModel.nestedSheet, content: { nestedSheet in
                 NavigationStack {
                     nestedSheet.view
-                        .toast(isPresenting: $feedbackManager.show) {
-                            feedbackManager.toast
+                        .toast(isPresenting: $feedbackEnvironmentModel.show) {
+                            feedbackEnvironmentModel.toast
                         }
                 }
                 .presentationDetents(nestedSheet.detents)
@@ -48,15 +48,15 @@ struct RouterWrapper<Content: View>: View {
                 .presentationBackground(nestedSheet.background)
                 .presentationDragIndicator(.visible)
             })
-            .toast(isPresenting: $feedbackManager.show) {
-                feedbackManager.toast
+            .toast(isPresenting: $feedbackEnvironmentModel.show) {
+                feedbackEnvironmentModel.toast
             }
         }
-        .toast(isPresenting: $feedbackManager.show) {
-            feedbackManager.toast
+        .toast(isPresenting: $feedbackEnvironmentModel.show) {
+            feedbackEnvironmentModel.toast
         }
         .environment(router)
-        .environment(sheetManager)
+        .environment(sheetEnvironmentModel)
         .onChange(of: router.path) {
             router.storeState()
         }

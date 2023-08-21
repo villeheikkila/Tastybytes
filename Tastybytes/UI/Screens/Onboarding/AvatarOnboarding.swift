@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 struct AvatarOnboarding: View {
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @FocusState var focusedField: OnboardField?
     @State private var selectedItem: PhotosPickerItem?
     @Binding var currentTab: OnboardingScreen.Tab
@@ -21,11 +21,11 @@ struct AvatarOnboarding: View {
                         matching: .images,
                         photoLibrary: .shared()
                     ) {
-                        AvatarView(avatarUrl: profileManager.profile.avatarUrl, size: 140, id: profileManager.id)
+                        AvatarView(avatarUrl: profileEnvironmentModel.profile.avatarUrl, size: 140, id: profileEnvironmentModel.id)
                     }
                     .onChange(of: selectedItem) { _, newValue in
                         guard let newValue else { return }
-                        Task { await profileManager.uploadAvatar(newAvatar: newValue) }
+                        Task { await profileEnvironmentModel.uploadAvatar(newAvatar: newValue) }
                     }
                     Spacer()
                 }

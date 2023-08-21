@@ -7,8 +7,8 @@ private let logger = Logger(category: "AccountSettingsScreen")
 
 struct AccountSettingsScreen: View {
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var showDeleteConfirmation = false
     @State private var showEmailConfirmation = false
     @State private var showPasswordConfirmation = false
@@ -41,7 +41,7 @@ struct AccountSettingsScreen: View {
     }
 
     var body: some View {
-        @Bindable var profileManager = profileManager
+        @Bindable var profileEnvironmentModel = profileEnvironmentModel
         Form {
             emailSection
             updatePassword
@@ -57,13 +57,13 @@ struct AccountSettingsScreen: View {
                 transaction.disablesAnimations = true
             }
         }
-        .onChange(of: profileManager.email) {
+        .onChange(of: profileEnvironmentModel.email) {
             withAnimation {
-                showEmailConfirmation = email != profileManager.email
+                showEmailConfirmation = email != profileEnvironmentModel.email
             }
         }
         .onAppear {
-            email = profileManager.email
+            email = profileEnvironmentModel.email
         }
         .fileExporter(isPresented: $showingExporter,
                       document: csvExport,
@@ -72,9 +72,9 @@ struct AccountSettingsScreen: View {
         { result in
             switch result {
             case .success:
-                feedbackManager.toggle(.success("Data was exported as CSV"))
+                feedbackEnvironmentModel.toggle(.success("Data was exported as CSV"))
             case .failure:
-                feedbackManager.toggle(.error(.custom("Error occurred while trying to export data")))
+                feedbackEnvironmentModel.toggle(.error(.custom("Error occurred while trying to export data")))
             }
         }
         .confirmationDialog(
@@ -86,7 +86,7 @@ struct AccountSettingsScreen: View {
                 "Delete Account",
                 role: .destructive,
                 action: {
-                    await profileManager.deleteCurrentAccount(onAccountDeletion: {
+                    await profileEnvironmentModel.deleteCurrentAccount(onAccountDeletion: {
                         showAccountDeleteScreen = true
                     })
                 }
@@ -115,7 +115,7 @@ struct AccountSettingsScreen: View {
             if showPasswordConfirmation {
                 ProgressButton(
                     "Update password",
-                    action: { await profileManager.updatePassword(newPassword: newPassword) }
+                    action: { await profileEnvironmentModel.updatePassword(newPassword: newPassword) }
                 )
             }
         } header: {
@@ -135,7 +135,7 @@ struct AccountSettingsScreen: View {
                 .disableAutocorrection(true)
 
             if showEmailConfirmation {
-                ProgressButton("Send Verification Link", action: { await profileManager.sendEmailVerificationLink() })
+                ProgressButton("Send Verification Link", action: { await profileEnvironmentModel.sendEmailVerificationLink() })
                     .transition(.slide)
             }
 
@@ -172,7 +172,7 @@ struct AccountSettingsScreen: View {
             showingExporter = true
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to export check-in csv. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -5,8 +5,8 @@ import SwiftUI
 struct AuthenticationScreen: View {
     private let logger = Logger(category: "AuthenticationScreen")
     @Environment(Repository.self) private var repository
-    @Environment(SplashScreenManager.self) private var splashScreenManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var showAlternativeSignInMethods = false
     @State var authenticationScene: AuthenticationScene?
 
@@ -14,7 +14,7 @@ struct AuthenticationScreen: View {
         "Visit [Privacy Policy](\(Config.privacyPolicyUrl)) to learn how your personal data is processed."
 
     var body: some View {
-        @Bindable var feedbackManager = feedbackManager
+        @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
         VStack(alignment: .center, spacing: 20) {
             Spacing(height: 30)
             projectLogo
@@ -33,10 +33,10 @@ struct AuthenticationScreen: View {
             .interactiveDismissDisabled(true)
         }
         .task {
-            await splashScreenManager.dismiss()
+            await splashScreenEnvironmentModel.dismiss()
         }
-        .toast(isPresenting: $feedbackManager.show) {
-            feedbackManager.toast
+        .toast(isPresenting: $feedbackEnvironmentModel.show) {
+            feedbackEnvironmentModel.toast
         }
     }
 

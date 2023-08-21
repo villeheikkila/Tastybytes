@@ -7,17 +7,17 @@ import SwiftUI
 private let logger = Logger(category: "FriendsScreen")
 
 @Observable
-final class FriendManager {
+final class FriendEnvironmentModel {
     var friends = [Friend]()
 
     var profile: Profile? = nil
 
     private let repository: Repository
-    private let feedbackManager: FeedbackManager
+    private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(repository: Repository, feedbackManager: FeedbackManager) {
+    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         self.repository = repository
-        self.feedbackManager = feedbackManager
+        self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
     var acceptedFriends: [Profile] {
@@ -45,13 +45,13 @@ final class FriendManager {
                     self.friends.append(newFriend)
                 }
             }
-            feedbackManager.toggle(.success("Friend Request Sent!"))
+            feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
             if let onSuccess {
                 onSuccess()
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed add new friend '\(receiver)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -74,7 +74,7 @@ final class FriendManager {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error(
                 "Failed to update friend request. Error: \(error) (\(#file):\(#line))"
             )
@@ -91,7 +91,7 @@ final class FriendManager {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to remove friend request '\(friend.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -122,11 +122,11 @@ final class FriendManager {
                 self.friends = friends
             }
             if withFeedback {
-                feedbackManager.trigger(.notification(.success))
+                feedbackEnvironmentModel.trigger(.notification(.success))
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -148,7 +148,7 @@ final class FriendManager {
             logger.notice("Friend manager initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to unblock user \(friend.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -168,7 +168,7 @@ final class FriendManager {
                 onSuccess()
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackManager.toggle(.error(.unexpected))
+                feedbackEnvironmentModel.toggle(.error(.unexpected))
                 logger.error("Failed to block user \(user.id). Error: \(error) (\(#file):\(#line))")
             }
         }

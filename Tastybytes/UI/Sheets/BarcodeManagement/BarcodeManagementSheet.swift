@@ -6,7 +6,7 @@ import SwiftUI
 struct BarcodeManagementSheet: View {
     private let logger = Logger(category: "BarcodeManagementSheet")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
 
@@ -19,13 +19,13 @@ struct BarcodeManagementSheet: View {
                     .swipeActions {
                         ProgressButton("Delete", systemSymbol: .trashFill, role: .destructive, action: {
                             await deleteBarcode(barcode)
-                            feedbackManager.trigger(.notification(.success))
+                            feedbackEnvironmentModel.trigger(.notification(.success))
                         })
                     }
                     .contextMenu {
                         ProgressButton("Delete", systemSymbol: .trashFill, role: .destructive, action: {
                             await deleteBarcode(barcode)
-                            feedbackManager.trigger(.notification(.success))
+                            feedbackEnvironmentModel.trigger(.notification(.success))
                         })
                     }
             }
@@ -55,7 +55,7 @@ struct BarcodeManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -70,7 +70,7 @@ struct BarcodeManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }

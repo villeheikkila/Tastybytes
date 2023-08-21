@@ -11,7 +11,7 @@ struct DuplicateProductSheet: View {
     }
 
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var products = [Product.Joined]()
     @State private var showMergeToProductConfirmation = false
@@ -87,13 +87,13 @@ struct DuplicateProductSheet: View {
             duplicateOfProductId: to.id
         ) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             await MainActor.run {
                 dismiss()
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error(
                     "reporting duplicate product \(product.id) of \(to.id) failed. error: \(error)"
@@ -104,13 +104,13 @@ struct DuplicateProductSheet: View {
     func mergeProducts(_ to: Product.Joined) async {
         switch await repository.product.mergeProducts(productId: product.id, toProductId: to.id) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             await MainActor.run {
                 dismiss()
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -123,7 +123,7 @@ struct DuplicateProductSheet: View {
             products = searchResults.filter { $0.id != product.id }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }

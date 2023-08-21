@@ -6,9 +6,9 @@ import SwiftUI
 struct FriendsScreen: View {
     private let logger = Logger(category: "FriendsScreen")
     @Environment(Repository.self) private var repository
-    @Environment(FriendManager.self) private var friendManager
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var friends: [Friend]
     @State private var searchTerm = ""
 
@@ -31,7 +31,7 @@ struct FriendsScreen: View {
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await feedbackManager.wrapWithHaptics {
+                await feedbackEnvironmentModel.wrapWithHaptics {
                     await loadFriends()
                 }
             }
@@ -48,11 +48,11 @@ struct FriendsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            if friendManager.hasNoFriendStatus(friend: profile) {
+            if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
                 ProgressButton(
                     "Add friend",
                     systemSymbol: .personFillBadgePlus,
-                    action: { await friendManager.sendFriendRequest(receiver: profile.id) }
+                    action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
                 )
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
@@ -69,7 +69,7 @@ struct FriendsScreen: View {
             self.friends = friends
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load friends' . Error: \(error) (\(#file):\(#line))")
         }
     }

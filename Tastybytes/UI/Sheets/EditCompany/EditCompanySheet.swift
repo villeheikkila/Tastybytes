@@ -8,8 +8,8 @@ import SwiftUI
 struct EditCompanySheet: View {
     private let logger = Logger(category: "EditCompanySheet")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var company: Company
     @State private var newCompanyName = ""
@@ -63,7 +63,7 @@ struct EditCompanySheet: View {
 
     @MainActor
     @ViewBuilder var companyPhotoSection: some View {
-        if profileManager.hasPermission(.canAddCompanyLogo) {
+        if profileEnvironmentModel.hasPermission(.canAddCompanyLogo) {
             Section("Logo") {
                 PhotosPicker(
                     selection: $selectedItem,
@@ -111,7 +111,7 @@ struct EditCompanySheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -124,7 +124,7 @@ struct EditCompanySheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to send company edit suggestion. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -141,7 +141,7 @@ struct EditCompanySheet: View {
             )
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

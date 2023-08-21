@@ -8,8 +8,8 @@ import SwiftUI
 struct EditBrandSheet: View {
     private let logger = Logger(category: "EditBrandSheet")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var name: String
     @State private var brandOwner: Company
@@ -38,7 +38,7 @@ struct EditBrandSheet: View {
 
     var body: some View {
         Form {
-            if profileManager.hasPermission(.canAddBrandLogo) {
+            if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
                 Section("Logo") {
                     PhotosPicker(
                         selection: $selectedLogo,
@@ -106,11 +106,11 @@ struct EditBrandSheet: View {
             .update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id))
         {
         case .success:
-            feedbackManager.toggle(.success("Brand updated!"))
+            feedbackEnvironmentModel.toggle(.success("Brand updated!"))
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to edit brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -122,7 +122,7 @@ struct EditBrandSheet: View {
             await onUpdate()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

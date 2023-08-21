@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct FinalOnboarding: View {
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
 
     var body: some View {
         List {}
             .modifier(OnboardingContinueButtonModifier(title: "Welcome!", onClick: {
                 Task {
-                    await profileManager.onboardingUpdate()
+                    await profileEnvironmentModel.onboardingUpdate()
                     isOnboardedOnDevice = true
                 }
             }))

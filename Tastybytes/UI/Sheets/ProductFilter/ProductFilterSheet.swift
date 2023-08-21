@@ -8,7 +8,7 @@ struct ProductFilterSheet: View {
     }
 
     private let logger = Logger(category: "SeachFilterSheet")
-    @Environment(AppDataManager.self) private var appDataManager
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var subcategoryFilter: Subcategory?
@@ -38,7 +38,7 @@ struct ProductFilterSheet: View {
                 Section("Category") {
                     Picker(selection: $categoryFilter) {
                         Text("Select All").tag(Models.Category.JoinedSubcategoriesServingStyles?(nil))
-                        ForEach(appDataManager.categories) { category in
+                        ForEach(appDataEnvironmentModel.categories) { category in
                             Text(category.name).tag(Optional(category))
                         }
                     } label: {

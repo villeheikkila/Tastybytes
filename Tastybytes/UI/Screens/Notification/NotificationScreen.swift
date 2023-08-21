@@ -2,15 +2,15 @@ import Models
 import SwiftUI
 
 struct NotificationScreen: View {
-    @Environment(NotificationManager.self) private var notificationManager
-    @Environment(SplashScreenManager.self) private var splashScreenManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Binding var scrollToTop: Int
 
     @State var filter: NotificationType?
 
     var filteredNotifications: [Models.Notification] {
-        notificationManager.notifications.filter { notification in
+        notificationEnvironmentModel.notifications.filter { notification in
             if self.filter == nil {
                 return true
             } else {
@@ -40,7 +40,7 @@ struct NotificationScreen: View {
                             MessageNotificationView(message: message)
                                 .accessibilityAddTraits(.isButton)
                                 .onTapGesture {
-                                    Task { await notificationManager.markAsRead(notification) }
+                                    Task { await notificationEnvironmentModel.markAsRead(notification) }
                                 }
                         case let .friendRequest(friendRequest):
                             FriendRequestNotificationView(friend: friendRequest)
@@ -57,12 +57,12 @@ struct NotificationScreen: View {
                     .listRowBackground(notification.seenAt == nil ? nil : Color(.systemGray5))
                 }
                 .onDelete(perform: { index in Task {
-                    await notificationManager.deleteFromIndex(at: index)
+                    await notificationEnvironmentModel.deleteFromIndex(at: index)
                 } })
             }
             #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await notificationManager.refresh(reset: true, withFeedback: true)
+                await notificationEnvironmentModel.refresh(reset: true, withFeedback: true)
             }
             #endif
             .onChange(of: scrollToTop) {
@@ -75,10 +75,10 @@ struct NotificationScreen: View {
                 }
         }
         .task {
-            await notificationManager.refresh(reset: true)
+            await notificationEnvironmentModel.refresh(reset: true)
         }
         .task {
-            await splashScreenManager.dismiss()
+            await splashScreenEnvironmentModel.dismiss()
         }
         .navigationTitle(filter?.label ?? "Notifications")
         .navigationBarTitleDisplayMode(.inline)
@@ -92,12 +92,12 @@ struct NotificationScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 ProgressButton("Mark all read", systemSymbol: .envelopeOpen, action: {
-                    feedbackManager.trigger(.impact(intensity: .low))
-                    await notificationManager.markAllAsRead()
+                    feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+                    await notificationEnvironmentModel.markAllAsRead()
                 })
                 ProgressButton("Delete all", systemSymbol: .trash, action: {
-                    feedbackManager.trigger(.impact(intensity: .low))
-                    await notificationManager.deleteAll()
+                    feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+                    await notificationEnvironmentModel.deleteAll()
                 })
             } label: {
                 Label("Options menu", systemSymbol: .ellipsis)

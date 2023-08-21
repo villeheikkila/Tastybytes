@@ -7,7 +7,7 @@ import SwiftUI
 struct ReportSheet: View {
     private let logger = Logger(category: "ReportSheet")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var reasonText = ""
 
@@ -69,10 +69,10 @@ struct ReportSheet: View {
             await MainActor.run {
                 dismiss()
             }
-            feedbackManager.toggle(.success("Report submitted!"))
+            feedbackEnvironmentModel.toggle(.success("Report submitted!"))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Submitting report failed. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -4,7 +4,7 @@ import SwiftUI
 extension View {
     func checkInContextMenu(
         router: Router,
-        profileManager: ProfileManager,
+        profileEnvironmentModel: ProfileEnvironmentModel,
         checkIn: CheckIn,
         onCheckInUpdate: @escaping (CheckIn) -> Void,
         onDelete: @escaping (CheckIn) -> Void
@@ -12,7 +12,7 @@ extension View {
         contextMenu {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
-                if checkIn.profile.id == profileManager.id {
+                if checkIn.profile.id == profileEnvironmentModel.id {
                     RouterLink(
                         "Edit",
                         systemSymbol: .pencil,

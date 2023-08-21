@@ -4,8 +4,8 @@ import SwiftUI
 
 struct CategoryManagementScreen: View {
     private let logger = Logger(category: "CategoryManagementScreen")
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(AppDataManager.self) private var appDataManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @State private var showDeleteSubcategoryConfirmation = false
     @State private var verifySubcategory: Subcategory?
     @State private var deleteSubcategory: Subcategory? {
@@ -16,7 +16,7 @@ struct CategoryManagementScreen: View {
 
     var body: some View {
         List {
-            ForEach(appDataManager.categories) { category in
+            ForEach(appDataEnvironmentModel.categories) { category in
                 Section {
                     ForEach(category.subcategories) { subcategory in
                         HStack {
@@ -37,7 +37,7 @@ struct CategoryManagementScreen: View {
                                 "Add Subcategory",
                                 systemSymbol: .plus,
                                 sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                                    await appDataManager.addSubcategory(category: category, name: newSubcategoryName)
+                                    await appDataEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
                                 })
                             )
                         } label: {
@@ -57,8 +57,8 @@ struct CategoryManagementScreen: View {
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-            await feedbackManager.wrapWithHaptics {
-                await appDataManager.initialize(reset: true)
+            await feedbackEnvironmentModel.wrapWithHaptics {
+                await appDataEnvironmentModel.initialize(reset: true)
             }
         }
         #endif
@@ -70,7 +70,7 @@ struct CategoryManagementScreen: View {
             ProgressButton(
                 "Delete \(presenting.name)",
                 role: .destructive,
-                action: { await appDataManager.deleteSubcategory(presenting) }
+                action: { await appDataEnvironmentModel.deleteSubcategory(presenting) }
             )
         }
     }
@@ -81,7 +81,7 @@ struct CategoryManagementScreen: View {
                 "Add Category",
                 systemSymbol: .plus,
                 sheet: .addCategory(onSubmit: { _ in
-                    feedbackManager.toggle(.success("Category created!"))
+                    feedbackEnvironmentModel.toggle(.success("Category created!"))
                 })
             )
             .labelStyle(.iconOnly)

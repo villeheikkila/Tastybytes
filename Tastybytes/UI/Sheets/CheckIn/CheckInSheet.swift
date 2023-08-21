@@ -8,10 +8,10 @@ import SwiftUI
 struct CheckInSheet: View {
     private let logger = Logger(category: "CheckInSheet")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(AppDataManager.self) private var appDataManager
-    @Environment(ImageUploadManager.self) private var imageUploadManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var showPhotoMenu = false
@@ -106,7 +106,7 @@ struct CheckInSheet: View {
             toolbarContent
         }
         .onAppear {
-            servingStyles = appDataManager.categories.first(where: { $0.id == product.category.id })?
+            servingStyles = appDataEnvironmentModel.categories.first(where: { $0.id == product.category.id })?
                 .servingStyles ?? []
         }
     }
@@ -199,7 +199,7 @@ struct CheckInSheet: View {
                 purchaseLocation = location
             }
 
-            if profileManager.hasPermission(.canSetCheckInDate) {
+            if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
                 RouterLink(sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn)) {
                     Text(isLegacyCheckIn ? "Legacy Check-in" :
                         "Checked-in \(checkInAt.customFormat(.relativeTime).lowercased())")
@@ -240,7 +240,7 @@ struct CheckInSheet: View {
                         }
                     }
                 }
-                feedbackManager.trigger(.notification(.success))
+                feedbackEnvironmentModel.trigger(.notification(.success))
                 await MainActor.run {
                     dismiss()
                 }
@@ -269,12 +269,12 @@ struct CheckInSheet: View {
         switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
         case let .success(updatedCheckIn):
             if let image {
-                imageUploadManager.uploadCheckInImage(checkIn: updatedCheckIn, image: image)
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: image)
             }
             await onUpdate(updatedCheckIn)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -297,12 +297,12 @@ struct CheckInSheet: View {
         switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
         case let .success(newCheckIn):
             if let image {
-                imageUploadManager.uploadCheckInImage(checkIn: newCheckIn, image: image)
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, image: image)
             }
             await onCreation(newCheckIn)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
         }
     }

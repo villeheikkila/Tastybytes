@@ -2,7 +2,7 @@ import Observation
 import SwiftUI
 
 @Observable
-final class SplashScreenManager {
+final class SplashScreenEnvironmentModel {
     enum SplashScreenState {
         case showing, dismissing, finished
     }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsScreen: View {
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 
     var body: some View {
         List {
@@ -53,7 +53,7 @@ struct SettingsScreen: View {
             )
             RouterLink("About", systemSymbol: .at, color: .blue, screen: .about)
         } footer: {
-            if profileManager.hasRole(.pro) {
+            if profileEnvironmentModel.hasRole(.pro) {
                 HStack {
                     Spacer()
                     Text("You have \(Config.appName) Pro. Thank you!")
@@ -66,7 +66,7 @@ struct SettingsScreen: View {
     @ViewBuilder private var logOutSection: some View {
         Section {
             ProgressButton(action: {
-                await profileManager.logOut()
+                await profileEnvironmentModel.logOut()
             }, label: {
                 Spacer()
                 Text("Sign Out")
@@ -79,11 +79,11 @@ struct SettingsScreen: View {
 }
 
 struct AppIconLabelRow: View {
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 
     var body: some View {
         HStack {
-            Image(profileManager.appIcon.icon)
+            Image(profileEnvironmentModel.appIcon.icon)
                 .resizable()
                 .cornerRadius(8)
                 .frame(width: 30, height: 30)
@@ -92,8 +92,8 @@ struct AppIconLabelRow: View {
                 .accessibilityHidden(true)
             Text("App Icon")
             Spacer()
-            if profileManager.appIcon != .ramune {
-                Text(profileManager.appIcon.label)
+            if profileEnvironmentModel.appIcon != .ramune {
+                Text(profileEnvironmentModel.appIcon.label)
                     .foregroundColor(.secondary)
             }
         }

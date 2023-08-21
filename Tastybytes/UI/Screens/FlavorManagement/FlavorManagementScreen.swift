@@ -1,16 +1,16 @@
 import SwiftUI
 
 struct FlavorManagementScreen: View {
-    @Environment(AppDataManager.self) private var appDataManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
 
     var body: some View {
         List {
-            ForEach(appDataManager.flavors) { flavor in
+            ForEach(appDataEnvironmentModel.flavors) { flavor in
                 Text(flavor.label)
                     .swipeActions {
                         ProgressButton("Delete", systemSymbol: .trash, role: .destructive, action: {
-                            await appDataManager.deleteFlavor(flavor)
+                            await appDataEnvironmentModel.deleteFlavor(flavor)
                         })
                     }
             }
@@ -22,7 +22,7 @@ struct FlavorManagementScreen: View {
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-            await appDataManager.refreshFlavors()
+            await appDataEnvironmentModel.refreshFlavors()
         }
         #endif
     }
@@ -30,7 +30,7 @@ struct FlavorManagementScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
             RouterLink("Add flavors", systemSymbol: .plus, sheet: .newFlavor(onSubmit: { newFlavor in
-                await appDataManager.addFlavor(name: newFlavor)
+                await appDataEnvironmentModel.addFlavor(name: newFlavor)
             })).labelStyle(.iconOnly)
         }
     }

@@ -5,8 +5,8 @@ import SwiftUI
 struct EmailPasswordAuthenticationView: View {
     private let logger = Logger(category: "EmailPasswordAuthenticationView")
     @Environment(Repository.self) private var repository
-    @Environment(SplashScreenManager.self) private var splashScreenManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Field?
     @State private var scene: AuthenticationScene.Scene = .signIn
@@ -127,7 +127,7 @@ struct EmailPasswordAuthenticationView: View {
                         dismiss()
                     }
                 case let .failure(error):
-                    feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+                    feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
                     logger
                         .error(
                             "Error occured when trying to sign in. Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))"
@@ -139,10 +139,10 @@ struct EmailPasswordAuthenticationView: View {
                     await MainActor.run {
                         dismiss()
                     }
-                    feedbackManager.toggle(.success("Confirmation email has been sent!"))
+                    feedbackEnvironmentModel.toggle(.success("Confirmation email has been sent!"))
                     onSignUp()
                 case let .failure(error):
-                    feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+                    feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
                     logger.error("Error occured when trying to sign up. Error: \(error) (\(#file):\(#line))")
                 }
             case .resetPassword:
@@ -151,10 +151,10 @@ struct EmailPasswordAuthenticationView: View {
                     await MainActor.run {
                         dismiss()
                     }
-                    feedbackManager.toggle(.success("Confirmation email has been sent!"))
+                    feedbackEnvironmentModel.toggle(.success("Confirmation email has been sent!"))
                     onSignUp()
                 case let .failure(error):
-                    feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+                    feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
                     logger.error("Error occured when trying to reset password. Error: \(error) (\(#file):\(#line))")
                 }
             case .forgotPassword:
@@ -163,9 +163,9 @@ struct EmailPasswordAuthenticationView: View {
                     await MainActor.run {
                         dismiss()
                     }
-                    feedbackManager.toggle(.success("Password reset email sent!"))
+                    feedbackEnvironmentModel.toggle(.success("Password reset email sent!"))
                 case let .failure(error):
-                    feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+                    feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
                     logger
                         .error(
                             "Error occured when trying to send forgot password link. Error: \(error) (\(#file):\(#line))"

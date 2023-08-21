@@ -2,8 +2,8 @@ import Models
 import SwiftUI
 
 struct ProfileOnboarding: View {
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState var focusedField: OnboardField?
     @State private var username = ""
     @State private var firstName = ""
@@ -49,7 +49,7 @@ struct ProfileOnboarding: View {
                     .onChange(of: username, debounceTime: 0.3) { newValue in
                         guard newValue.count >= 3 else { return }
                         Task {
-                            usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: newValue)
+                            usernameIsAvailable = await profileEnvironmentModel.checkIfUsernameIsAvailable(username: newValue)
                             isLoading = false
                         }
                     }
@@ -67,17 +67,17 @@ struct ProfileOnboarding: View {
 
             Section {
                 Toggle("Use your full name instead of username", isOn: .init(get: {
-                    profileManager.showFullName
+                    profileEnvironmentModel.showFullName
                 }, set: { newValue in
-                    profileManager.showFullName = newValue
-                    Task { await profileManager.updateDisplaySettings() }
+                    profileEnvironmentModel.showFullName = newValue
+                    Task { await profileEnvironmentModel.updateDisplaySettings() }
                 }))
             }
             .opacity(firstName.isEmpty || lastName.isEmpty ? 0 : 1)
         }
         .modifier(OnboardingContinueButtonModifier(title: "Continue", isDisabled: !canProgressToNextStep, onClick: {
             Task {
-                await profileManager.updateProfile(
+                await profileEnvironmentModel.updateProfile(
                     update: Profile.UpdateRequest(username: username, firstName: firstName,
                                                   lastName: lastName),
                     withFeedback: false
@@ -95,10 +95,10 @@ struct ProfileOnboarding: View {
         .simultaneousGesture(DragGesture())
         .accessibility(hidden: true)
         .task {
-            username = profileManager.username
-            firstName = profileManager.firstName ?? ""
-            lastName = profileManager.lastName ?? ""
-            usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: username)
+            username = profileEnvironmentModel.username
+            firstName = profileEnvironmentModel.firstName ?? ""
+            lastName = profileEnvironmentModel.lastName ?? ""
+            usernameIsAvailable = await profileEnvironmentModel.checkIfUsernameIsAvailable(username: username)
         }
     }
 }

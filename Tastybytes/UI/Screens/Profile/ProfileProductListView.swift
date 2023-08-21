@@ -6,7 +6,7 @@ import SwiftUI
 struct ProfileProductListView: View {
     private let logger = Logger(category: "ProfileProductListView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var products: [Product.Joined] = []
     @State private var searchTerm = ""
     @State private var productFilter: Product.Filter?
@@ -143,7 +143,7 @@ struct ProfileProductListView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Error occured while loading products. Error: \(error) (\(#file):\(#line))")
         }
     }

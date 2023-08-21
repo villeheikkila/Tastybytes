@@ -7,8 +7,8 @@ import SwiftUI
 struct EditSubBrandSheet: View {
     private let logger = Logger(category: "EditSubBrandSheet")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var showMergeSubBrandsConfirmation = false
     @State private var newSubBrandName: String
@@ -83,7 +83,7 @@ struct EditSubBrandSheet: View {
                 role: .destructive,
                 action: {
                     await mergeToSubBrand(subBrand: subBrand, onSuccess: {
-                        feedbackManager.trigger(.notification(.success))
+                        feedbackEnvironmentModel.trigger(.notification(.success))
                         await onUpdate()
                     })
                 }
@@ -107,7 +107,7 @@ struct EditSubBrandSheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error(
                     "Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))"
@@ -120,11 +120,11 @@ struct EditSubBrandSheet: View {
             .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
         {
         case .success:
-            feedbackManager.toggle(.success("Sub-brand updated!"))
+            feedbackEnvironmentModel.toggle(.success("Sub-brand updated!"))
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
         }
     }

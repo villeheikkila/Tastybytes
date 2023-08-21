@@ -2,7 +2,7 @@ import SFSafeSymbols
 import SwiftUI
 
 struct VerificationButton: View {
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     let isVerified: Bool
     let verify: () async -> Void
     let unverify: () async -> Void
@@ -14,7 +14,7 @@ struct VerificationButton: View {
     }
 
     var body: some View {
-        if profileManager.hasPermission(.canVerify) {
+        if profileEnvironmentModel.hasPermission(.canVerify) {
             ProgressButton(label, systemSymbol: systemSymbol, action: { await action() })
         } else {
             Label(label, systemSymbol: systemSymbol)

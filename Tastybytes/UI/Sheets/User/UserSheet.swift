@@ -7,9 +7,9 @@ private let logger = Logger(category: "UserSheet")
 
 struct UserSheet: View {
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FriendManager.self) private var friendManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchText: String = ""
     @State private var searchResults = [Profile]()
@@ -35,9 +35,9 @@ struct UserSheet: View {
                     HStack {
                         if mode == .add {
                             HStack {
-                                if !friendManager.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
+                                if !friendEnvironmentModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
                                     ProgressButton("Add as a friend", systemSymbol: .personBadgePlus, action: {
-                                        await friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
+                                        await friendEnvironmentModel.sendFriendRequest(receiver: profile.id, onSuccess: {
                                             dismiss()
                                             onSubmit()
                                         })
@@ -48,11 +48,11 @@ struct UserSheet: View {
                             }
                         }
                         if mode == .block {
-                            if !friendManager.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
+                            if !friendEnvironmentModel.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
                                 ProgressButton(
                                     "Block",
                                     systemSymbol: .personFillXmark,
-                                    action: { await friendManager.blockUser(user: profile, onSuccess: {
+                                    action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: {
                                         onSubmit()
                                         dismiss()
                                     })
@@ -71,7 +71,7 @@ struct UserSheet: View {
         }
         .searchable(text: $searchText)
         .disableAutocorrection(true)
-        .onSubmit(of: .search) { Task { await searchUsers(currentUserId: profileManager.id) }
+        .onSubmit(of: .search) { Task { await searchUsers(currentUserId: profileEnvironmentModel.id) }
         }
     }
 
@@ -92,7 +92,7 @@ struct UserSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed searching users. Error: \(error) (\(#file):\(#line))")
         }
     }

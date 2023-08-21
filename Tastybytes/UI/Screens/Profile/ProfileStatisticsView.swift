@@ -6,7 +6,7 @@ import SwiftUI
 struct ProfileStatisticsView: View {
     private let logger = Logger(category: "ProfileStatisticsView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var categoryStatistics = [CategoryStatistics]()
 
     let profile: Profile
@@ -55,7 +55,7 @@ struct ProfileStatisticsView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed loading category statistics. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -64,7 +64,7 @@ struct ProfileStatisticsView: View {
 struct SubcategoryStatisticsView: View {
     private let logger = Logger(category: "SubcategoryStatistics")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var subcategoryStatistics = [SubcategoryStatistics]()
     @State private var isLoading = false
 
@@ -126,7 +126,7 @@ struct SubcategoryStatisticsView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed loading subcategory statistics. Error: \(error) (\(#file):\(#line))")
         }
         isLoading = false

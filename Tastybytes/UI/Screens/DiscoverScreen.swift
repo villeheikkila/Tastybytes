@@ -7,9 +7,9 @@ struct DiscoverScreen: View {
     private let logger = Logger(category: "SearchListView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(SplashScreenManager.self) private var splashScreenManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @State private var scrollProxy: ScrollViewProxy?
     @State private var searchTerm: String = ""
     @State private var products = [Product.Joined]()
@@ -78,7 +78,7 @@ struct DiscoverScreen: View {
         }
         .navigationTitle("Discover")
         .task {
-            await splashScreenManager.dismiss()
+            await splashScreenEnvironmentModel.dismiss()
         }
         .toolbar {
             toolbarContent
@@ -214,7 +214,7 @@ struct DiscoverScreen: View {
                     .id(product.id)
             }
         }
-        if isSearched, profileManager.hasPermission(.canCreateProducts) {
+        if isSearched, profileEnvironmentModel.hasPermission(.canCreateProducts) {
             Section("Didn't find a product you were looking for?") {
                 HStack {
                     Text("Add new")
@@ -247,7 +247,7 @@ struct DiscoverScreen: View {
                 .labelStyle(.iconOnly)
             }
             ToolbarItemGroup(placement: .topBarTrailing) {
-                if profileManager.hasPermission(.canAddBarcodes) {
+                if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                     RouterLink(
                         "Scan a barcode",
                         systemSymbol: .barcodeViewfinder,
@@ -299,11 +299,11 @@ struct DiscoverScreen: View {
                 self.addBarcodeTo = nil
                 showAddBarcodeConfirmation = false
             }
-            feedbackManager.toggle(.success("Barcode added!"))
+            feedbackEnvironmentModel.toggle(.success("Barcode added!"))
             router.navigate(screen: .product(addBarcodeTo))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error(
                     "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed. error: \(error)"
@@ -320,7 +320,7 @@ struct DiscoverScreen: View {
             isSearched = true
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("searching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -333,7 +333,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("searching profiles failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -353,7 +353,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error("searching products with barcode \(barcode.barcode) failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -369,7 +369,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("searching companies failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -382,7 +382,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("searching locations failed. Error: \(error) (\(#file):\(#line))")
         }
     }

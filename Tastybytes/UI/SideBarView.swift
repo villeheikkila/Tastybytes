@@ -28,13 +28,13 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
 }
 
 struct SideBarView: View {
-    @Environment(NotificationManager.self) private var notificationManager
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(AppDataManager.self) private var appDataManager
-    @Environment(SplashScreenManager.self) private var splashScreenManager
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(\.orientation) private var orientation
-    @State private var sheetManager = SheetManager()
+    @State private var sheetEnvironmentModel = SheetEnvironmentModel()
     @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
     @State private var selection: SiderBarTab? = SiderBarTab.activity {
         didSet {
@@ -48,7 +48,7 @@ struct SideBarView: View {
     @State private var router = Router(tab: Tab.activity)
 
     private var shownTabs: [SiderBarTab] {
-        if profileManager.hasRole(.admin) {
+        if profileEnvironmentModel.hasRole(.admin) {
             SiderBarTab.allCases
         } else {
             SiderBarTab.allCases.filter { $0 != .admin }
@@ -64,7 +64,7 @@ struct SideBarView: View {
     }
 
     var body: some View {
-        @Bindable var feedbackManager = feedbackManager
+        @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
         NavigationSplitView(columnVisibility: .constant(columnVisibility)) {
             List(selection: $selection) {
                 HStack(alignment: .firstTextBaseline) {
@@ -75,7 +75,7 @@ struct SideBarView: View {
                 Color.clear.frame(width: 0, height: 12)
                 ForEach(shownTabs) { newTab in
                     Button(action: {
-                        feedbackManager.trigger(.selection)
+                        feedbackEnvironmentModel.trigger(.selection)
                         if newTab == selection {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                                 scrollToTop += 1
@@ -111,12 +111,12 @@ struct SideBarView: View {
                 case .friends:
                     CurrentUserFriendsScreen()
                         .task {
-                            await splashScreenManager.dismiss()
+                            await splashScreenEnvironmentModel.dismiss()
                         }
                 case .settings:
                     SettingsScreen()
                         .task {
-                            await splashScreenManager.dismiss()
+                            await splashScreenEnvironmentModel.dismiss()
                         }
                 case nil:
                     EmptyView()
@@ -136,12 +136,12 @@ struct SideBarView: View {
             selection = storedSelection
         }
         .environment(router)
-        .environment(sheetManager)
-        .environment(appDataManager)
-        .toast(isPresenting: $feedbackManager.show) {
-            feedbackManager.toast
+        .environment(sheetEnvironmentModel)
+        .environment(appDataEnvironmentModel)
+        .toast(isPresenting: $feedbackEnvironmentModel.show) {
+            feedbackEnvironmentModel.toast
         }
-        .sheet(item: $sheetManager.sheet) { sheet in
+        .sheet(item: $sheetEnvironmentModel.sheet) { sheet in
             NavigationStack {
                 sheet.view
             }
@@ -150,14 +150,14 @@ struct SideBarView: View {
             .presentationCornerRadius(sheet.cornerRadius)
             .presentationDragIndicator(.visible)
             .environment(router)
-            .environment(sheetManager)
-            .environment(profileManager)
-            .environment(appDataManager)
-            .environment(feedbackManager)
-            .toast(isPresenting: $feedbackManager.show) {
-                feedbackManager.toast
+            .environment(sheetEnvironmentModel)
+            .environment(profileEnvironmentModel)
+            .environment(appDataEnvironmentModel)
+            .environment(feedbackEnvironmentModel)
+            .toast(isPresenting: $feedbackEnvironmentModel.show) {
+                feedbackEnvironmentModel.toast
             }
-            .sheet(item: $sheetManager.nestedSheet, content: { nestedSheet in
+            .sheet(item: $sheetEnvironmentModel.nestedSheet, content: { nestedSheet in
                 NavigationStack {
                     nestedSheet.view
                 }
@@ -166,12 +166,12 @@ struct SideBarView: View {
                 .presentationCornerRadius(nestedSheet.cornerRadius)
                 .presentationDragIndicator(.visible)
                 .environment(router)
-                .environment(sheetManager)
-                .environment(profileManager)
-                .environment(appDataManager)
-                .environment(feedbackManager)
-                .toast(isPresenting: $feedbackManager.show) {
-                    feedbackManager.toast
+                .environment(sheetEnvironmentModel)
+                .environment(profileEnvironmentModel)
+                .environment(appDataEnvironmentModel)
+                .environment(feedbackEnvironmentModel)
+                .toast(isPresenting: $feedbackEnvironmentModel.show) {
+                    feedbackEnvironmentModel.toast
                 }
             })
         }
@@ -180,7 +180,7 @@ struct SideBarView: View {
     private func getBadgeByTab(_ tab: Tab) -> Int {
         switch tab {
         case .notifications:
-            notificationManager.unreadCount
+            notificationEnvironmentModel.unreadCount
         default:
             0
         }

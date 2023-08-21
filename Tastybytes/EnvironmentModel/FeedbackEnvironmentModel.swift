@@ -4,7 +4,7 @@ import Observation
 import SwiftUI
 
 @Observable
-final class FeedbackManager {
+final class FeedbackEnvironmentModel {
     var show = false
     var toast = AlertToast(type: .regular, title: "")
 
@@ -66,7 +66,7 @@ final class FeedbackManager {
     }
 }
 
-extension FeedbackManager {
+extension FeedbackEnvironmentModel {
     enum ErrorType {
         case unexpected, custom(String)
     }

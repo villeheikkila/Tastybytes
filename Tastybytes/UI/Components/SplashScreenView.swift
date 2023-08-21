@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SplashScreen: View {
-    @Environment(SplashScreenManager.self) private var splashScreenManager
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @State private var dismissAnimation = false
     @State private var startFadeoutAnimation = false
     @State private var size = 0.8
@@ -31,7 +31,7 @@ struct SplashScreen: View {
 
     @MainActor
     private func updateAnimation() {
-        switch splashScreenManager.state {
+        switch splashScreenEnvironmentModel.state {
         case .showing:
             withAnimation(.easeIn(duration: 1.2)) {
                 size = 0.9

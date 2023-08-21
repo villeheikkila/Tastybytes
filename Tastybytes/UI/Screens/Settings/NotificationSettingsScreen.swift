@@ -11,8 +11,8 @@ enum NotificationDeliveryType: String, CaseIterable {
 }
 
 struct NotificationSettingsScreen: View {
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(NotificationManager.self) private var notificationManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @State private var initialValuesLoaded = false
     @State private var reactioNotificationDeliveryType: NotificationDeliveryType = .disabled
     @State private var checkInNotificationDeliveryType: NotificationDeliveryType = .disabled
@@ -59,54 +59,54 @@ struct NotificationSettingsScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: reactioNotificationDeliveryType) { _, newState in
             Task {
-                await notificationManager
+                await notificationEnvironmentModel
                     .updatePushNotificationSettingsForDevice(sendReactionNotifications: newState ==
                         .pushNotification)
-                await profileManager
+                await profileEnvironmentModel
                     .updateNotificationSettings(sendReactionNotifications: newState != .disabled)
             }
         }
         .onChange(of: checkInNotificationDeliveryType) { _, newState in
             Task {
-                await notificationManager
+                await notificationEnvironmentModel
                     .updatePushNotificationSettingsForDevice(sendTaggedCheckInNotifications: newState ==
                         .pushNotification)
-                await profileManager
+                await profileEnvironmentModel
                     .updateNotificationSettings(sendTaggedCheckInNotifications: newState != .disabled)
             }
         }
         .onChange(of: friendRequestNotificationDeliveryType) { _, newState in
             Task {
-                await notificationManager
+                await notificationEnvironmentModel
                     .updatePushNotificationSettingsForDevice(sendFriendRequestNotifications: newState ==
                         .pushNotification)
-                await profileManager
+                await profileEnvironmentModel
                     .updateNotificationSettings(sendFriendRequestNotifications: newState != .disabled)
             }
         }
         .onChange(of: checkInCommentNotificationsDeliveryType) { _, newState in
             Task {
-                await notificationManager
+                await notificationEnvironmentModel
                     .updatePushNotificationSettingsForDevice(sendCheckInCommentNotifications: newState ==
                         .pushNotification)
-                await profileManager
+                await profileEnvironmentModel
                     .updateNotificationSettings(sendCheckInCommentNotifications: newState != .disabled)
             }
         }
         .task {
             if !initialValuesLoaded {
-                reactioNotificationDeliveryType = profileManager.reactionNotifications ? notificationManager
+                reactioNotificationDeliveryType = profileEnvironmentModel.reactionNotifications ? notificationEnvironmentModel
                     .pushNotificationSettings?
                     .sendReactionNotifications ?? false ? .pushNotification : .inApp : .disabled
-                checkInNotificationDeliveryType = profileManager.checkInTagNotifications ? notificationManager
+                checkInNotificationDeliveryType = profileEnvironmentModel.checkInTagNotifications ? notificationEnvironmentModel
                     .pushNotificationSettings?
                     .sendTaggedCheckInNotifications ?? false ? .pushNotification : .inApp :
                     .disabled
-                friendRequestNotificationDeliveryType = profileManager.friendRequestNotifications ? notificationManager
+                friendRequestNotificationDeliveryType = profileEnvironmentModel.friendRequestNotifications ? notificationEnvironmentModel
                     .pushNotificationSettings?
                     .sendFriendRequestNotifications ?? false ? .pushNotification : .inApp :
                     .disabled
-                checkInCommentNotificationsDeliveryType = profileManager.sendCommentNotifications ? notificationManager
+                checkInCommentNotificationsDeliveryType = profileEnvironmentModel.sendCommentNotifications ? notificationEnvironmentModel
                     .pushNotificationSettings?
                     .sendCheckInCommentNotifications ?? false ? .pushNotification : .inApp :
                     .disabled

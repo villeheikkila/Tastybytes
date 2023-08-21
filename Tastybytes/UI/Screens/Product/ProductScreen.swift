@@ -7,8 +7,8 @@ private let logger = Logger(category: "ProductScreen")
 
 struct ProductScreen: View {
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @State private var scrollToTop: Int = 0
     @State private var product: Product.Joined
@@ -170,9 +170,9 @@ struct ProductScreen: View {
                     RouterLink("Check-in", systemSymbol: .plus, sheet: .newCheckIn(product, onCreation: { _ in
                         await refreshCheckIns()
                     }))
-                    .disabled(!profileManager.hasPermission(.canCreateCheckIns))
+                    .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     ProductShareLinkView(product: product)
-                    if profileManager.hasPermission(.canAddBarcodes) {
+                    if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                         RouterLink(
                             "Add",
                             systemSymbol: .barcodeViewfinder,
@@ -201,7 +201,7 @@ struct ProductScreen: View {
                     screen: .company(product.subBrand.brand.brandOwner)
                 )
                 Divider()
-                if profileManager.hasPermission(.canEditCompanies) {
+                if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
                         await refresh()
                     }))
@@ -214,10 +214,10 @@ struct ProductScreen: View {
                 }
 
                 RouterLink(sheet: .duplicateProduct(
-                    mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+                    mode: profileEnvironmentModel.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                     product: product
                 ), label: {
-                    if profileManager.hasPermission(.canMergeProducts) {
+                    if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                         Label("Merge to...", systemSymbol: .docOnDoc)
                     } else {
                         Label("Mark as Duplicate", systemSymbol: .docOnDoc)
@@ -225,17 +225,17 @@ struct ProductScreen: View {
                 })
 
                 Menu {
-                    if profileManager.hasPermission(.canDeleteBarcodes) {
+                    if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
                         RouterLink("Barcodes", systemSymbol: .barcode, sheet: .barcodeManagement(product: product))
                     }
 
-                    if profileManager.hasPermission(.canAddProductLogo) {
+                    if profileEnvironmentModel.hasPermission(.canAddProductLogo) {
                         RouterLink("Edit Logo", systemSymbol: .photo, sheet: .productLogo(product: product, onUpload: {
                             await refresh()
                         }))
                     }
 
-                    if profileManager.hasPermission(.canDeleteProducts) {
+                    if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                         Button(
                             "Delete",
                             systemSymbol: .trashFill,
@@ -263,7 +263,7 @@ struct ProductScreen: View {
             self.summary = summary
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -278,7 +278,7 @@ struct ProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -296,7 +296,7 @@ struct ProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to refresh product by id. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -307,7 +307,7 @@ struct ProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -321,7 +321,7 @@ struct ProductScreen: View {
         if isOnWishlist {
             switch await repository.product.removeFromWishlist(productId: product.id) {
             case .success:
-                feedbackManager.trigger(.notification(.success))
+                feedbackEnvironmentModel.trigger(.notification(.success))
                 await MainActor.run {
                     withAnimation {
                         isOnWishlist = false
@@ -334,7 +334,7 @@ struct ProductScreen: View {
         } else {
             switch await repository.product.addToWishlist(productId: product.id) {
             case .success:
-                feedbackManager.trigger(.notification(.success))
+                feedbackEnvironmentModel.trigger(.notification(.success))
                 await MainActor.run {
                     withAnimation {
                         isOnWishlist = true
@@ -350,11 +350,11 @@ struct ProductScreen: View {
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {
         switch await repository.product.verification(id: product.id, isVerified: isVerified) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             await refresh()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -362,11 +362,11 @@ struct ProductScreen: View {
     func deleteProduct(_ product: Product.Joined) async {
         switch await repository.product.delete(id: product.id) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             router.removeLast()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -374,10 +374,10 @@ struct ProductScreen: View {
     func addBarcodeToProduct(_ barcode: Barcode) async {
         switch await repository.productBarcode.addToProduct(product: product, barcode: barcode) {
         case .success:
-            feedbackManager.toggle(.success("Barcode added!"))
+            feedbackEnvironmentModel.toggle(.success("Barcode added!"))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -397,7 +397,7 @@ struct ProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger
                 .error(
                     "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"

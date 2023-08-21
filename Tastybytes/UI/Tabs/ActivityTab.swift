@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ActivityTab: View {
-    @Environment(NotificationManager.self) private var notificationManager
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @State private var scrollToTop: Int = 0
     @Binding var resetNavigationOnTab: Tab?
     @Binding var selectedTab: Tab
@@ -32,7 +32,7 @@ struct ActivityTab: View {
             RouterLink("Friends page", systemSymbol: .person2, screen: .currentUserFriends)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
-                .customBadge(notificationManager.getUnreadFriendRequestCount())
+                .customBadge(notificationEnvironmentModel.getUnreadFriendRequestCount())
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             RouterLink("Settings page", systemSymbol: .gear, screen: .settings)

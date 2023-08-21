@@ -8,8 +8,8 @@ private let logger = Logger(category: "BrandScreen")
 
 struct BrandScreen: View {
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var summary: Summary?
@@ -105,7 +105,7 @@ struct BrandScreen: View {
             .listStyle(.plain)
             #if !targetEnvironment(macCatalyst)
                 .refreshable {
-                    await feedbackManager.wrapWithHaptics {
+                    await feedbackEnvironmentModel.wrapWithHaptics {
                         await refresh()
                     }
                 }
@@ -212,14 +212,14 @@ struct BrandScreen: View {
                             toUnverifySubBrand = subBrand
                         })
                         Divider()
-                        if profileManager.hasPermission(.canCreateProducts) {
+                        if profileEnvironmentModel.hasPermission(.canCreateProducts) {
                             RouterLink(
                                 "Add Product",
                                 systemSymbol: .plus,
                                 sheet: .addProductToSubBrand(brand: brand, subBrand: subBrand)
                             )
                         }
-                        if profileManager.hasPermission(.canEditBrands), subBrand.name != nil {
+                        if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
                             RouterLink(
                                 "Edit",
                                 systemSymbol: .pencil,
@@ -229,7 +229,7 @@ struct BrandScreen: View {
                             )
                         }
                         ReportButton(entity: .subBrand(brand, subBrand))
-                        if profileManager.hasPermission(.canDeleteBrands) {
+                        if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                             Button(
                                 "Delete",
                                 systemSymbol: .trashFill,
@@ -279,10 +279,10 @@ struct BrandScreen: View {
             Menu {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
-                    if profileManager.hasPermission(.canCreateProducts) {
+                    if profileEnvironmentModel.hasPermission(.canCreateProducts) {
                         RouterLink("Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
                     }
-                    if profileManager.hasPermission(.canEditBrands) {
+                    if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         RouterLink("Edit", systemSymbol: .pencil, sheet: .editBrand(brand: brand, onUpdate: {
                             await refresh()
                         }))
@@ -304,7 +304,7 @@ struct BrandScreen: View {
                     showProductGroupingPicker = true
                 }
                 ReportButton(entity: .brand(brand))
-                if profileManager.hasPermission(.canDeleteBrands) {
+                if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                     Button(
                         "Delete",
                         systemSymbol: .trashFill,
@@ -333,7 +333,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -344,7 +344,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Request for brand with \(brandId) failed. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -370,7 +370,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -385,7 +385,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load like status. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -400,10 +400,10 @@ struct BrandScreen: View {
                 brandOwner: brand.brandOwner,
                 subBrands: brand.subBrands
             )
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -412,7 +412,7 @@ struct BrandScreen: View {
         if isLikedByCurrentUser {
             switch await repository.brand.unlikeBrand(brandId: brand.id) {
             case .success:
-                feedbackManager.trigger(.notification(.success))
+                feedbackEnvironmentModel.trigger(.notification(.success))
                 await MainActor.run {
                     withAnimation {
                         self.isLikedByCurrentUser = false
@@ -425,7 +425,7 @@ struct BrandScreen: View {
         } else {
             switch await repository.brand.likeBrand(brandId: brand.id) {
             case .success:
-                feedbackManager.trigger(.notification(.success))
+                feedbackEnvironmentModel.trigger(.notification(.success))
                 await MainActor.run {
                     withAnimation {
                         self.isLikedByCurrentUser = true
@@ -442,10 +442,10 @@ struct BrandScreen: View {
         switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
         case .success:
             await refresh()
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -454,10 +454,10 @@ struct BrandScreen: View {
         switch await repository.brand.delete(id: brand.id) {
         case .success:
             router.reset()
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -467,18 +467,18 @@ struct BrandScreen: View {
         switch await repository.subBrand.delete(id: toDeleteSubBrand.id) {
         case .success:
             await refresh()
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete brand '\(toDeleteSubBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }
 
 private struct ProductRow: View {
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var showDeleteProductConfirmationDialog = false
@@ -498,18 +498,18 @@ private struct ProductRow: View {
                 .padding(2)
                 .contextMenu {
                     RouterLink(sheet: .duplicateProduct(
-                        mode: profileManager
+                        mode: profileEnvironmentModel
                             .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                         product: product
                     ), label: {
-                        if profileManager.hasPermission(.canMergeProducts) {
+                        if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                             Label("Merge to...", systemSymbol: .docOnDoc)
                         } else {
                             Label("Mark as Duplicate", systemSymbol: .docOnDoc)
                         }
                     })
 
-                    if profileManager.hasPermission(.canDeleteProducts) {
+                    if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                         Button(
                             "Delete",
                             systemSymbol: .trashFill,
@@ -537,13 +537,13 @@ private struct ProductRow: View {
     func deleteProduct(_ product: Product.Joined) async {
         switch await repository.product.delete(id: product.id) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             await MainActor.run {
                 router.removeLast()
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }

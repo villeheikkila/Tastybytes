@@ -8,8 +8,8 @@ import SwiftUI
 struct CompanyScreen: View {
     private let logger = Logger(category: "CompanyScreen")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @State private var company: Company
     @State private var companyJoined: Company.Joined?
@@ -56,7 +56,7 @@ struct CompanyScreen: View {
         .listStyle(.plain)
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await feedbackManager.wrapWithHaptics {
+                await feedbackEnvironmentModel.wrapWithHaptics {
                     await getBrandsAndSummary()
                 }
             }
@@ -117,26 +117,26 @@ struct CompanyScreen: View {
         Menu {
             ControlGroup {
                 CompanyShareLinkView(company: company)
-                if profileManager.hasPermission(.canCreateBrands) {
+                if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                     RouterLink(
                         "Brand",
                         systemSymbol: .plus,
                         sheet: .addBrand(brandOwner: company, mode: .new)
                     )
                 }
-                if profileManager.hasPermission(.canEditCompanies) {
+                if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     RouterLink("Edit", systemSymbol: .pencil, sheet: .editCompany(company: company, onSuccess: {
-                        await feedbackManager.wrapWithHaptics {
+                        await feedbackEnvironmentModel.wrapWithHaptics {
                             await getBrandsAndSummary()
                         }
-                        feedbackManager.toggle(.success("Company updated"))
+                        feedbackEnvironmentModel.toggle(.success("Company updated"))
                     }))
                 } else {
                     RouterLink(
                         "Edit Suggestion",
                         systemSymbol: .pencil,
                         sheet: .companyEditSuggestion(company: company, onSuccess: {
-                            feedbackManager.toggle(.success("Edit suggestion sent!"))
+                            feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
                         })
                     )
                 }
@@ -148,7 +148,7 @@ struct CompanyScreen: View {
             })
             Divider()
             ReportButton(entity: .company(company))
-            if profileManager.hasPermission(.canDeleteCompanies) {
+            if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
                 Button(
                     "Delete",
                     systemSymbol: .trashFill,
@@ -172,7 +172,7 @@ struct CompanyScreen: View {
             companyJoined = company
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to refresh data for company. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -181,7 +181,7 @@ struct CompanyScreen: View {
             self.summary = summary
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load summary for company. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -189,11 +189,11 @@ struct CompanyScreen: View {
     func deleteCompany(_ company: Company) async {
         switch await repository.company.delete(id: company.id) {
         case .success:
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
             router.reset()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -204,7 +204,7 @@ struct CompanyScreen: View {
             company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }

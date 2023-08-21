@@ -9,7 +9,7 @@ private let logger = Logger(category: "ProfileLocationsScreen")
 struct ProfileLocationsScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInLocations = [Location]()
     @State private var selectedLocation: Location?
 
@@ -73,7 +73,7 @@ struct ProfileLocationsScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed loading check-in locations statistics. Error: \(error) (\(#file):\(#line))")
         }
     }

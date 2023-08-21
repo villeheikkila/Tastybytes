@@ -10,9 +10,9 @@ import SwiftUI
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var searchResults = [Location]()
-    @State private var locationManager = LocationManager()
+    @State private var locationEnvironmentModel = LocationEnvironmentModel()
     @State private var recentLocations = [Location]()
     @State private var nearbyLocations = [Location]()
     @State private var currentLocation: CLLocation?
@@ -84,7 +84,7 @@ struct LocationSearchSheet: View {
         .task {
             await getRecentLocations()
         }
-        .onChange(of: locationManager.location) { _, latestLocation in
+        .onChange(of: locationEnvironmentModel.location) { _, latestLocation in
             guard nearbyLocations.isEmpty else { return }
             self.currentLocation = latestLocation
             Task { await getSuggestions(latestLocation) }
@@ -108,7 +108,7 @@ struct LocationSearchSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load recemt locations. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -124,7 +124,7 @@ struct LocationSearchSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load location suggestions. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -133,7 +133,7 @@ struct LocationSearchSheet: View {
 struct LocationRow: View {
     private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
 
     let location: Location
@@ -178,7 +178,7 @@ struct LocationRow: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
         }
     }

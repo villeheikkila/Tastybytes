@@ -6,7 +6,7 @@ import SwiftUI
 struct ServingStyleManagementSheet: View {
     private let logger = Logger(category: "ServingStyleManagementSheet")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var servingStyles = [ServingStyle]()
     @State private var servingStyleName = ""
@@ -106,7 +106,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to load all serving styles. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -122,7 +122,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to create new serving style. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -135,10 +135,10 @@ struct ServingStyleManagementSheet: View {
                     servingStyles.remove(object: servingStyle)
                 }
             }
-            feedbackManager.trigger(.notification(.success))
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -156,7 +156,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
+            feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Failed to edit '\(editServingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

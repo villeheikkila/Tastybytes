@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NameTagSheet: View {
-    @Environment(ProfileManager.self) private var profileManager
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var showNameTagScanner = false
 
@@ -10,7 +10,7 @@ struct NameTagSheet: View {
     var body: some View {
         VStack(spacing: 20) {
             if !showNameTagScanner {
-                CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileManager.id).url.absoluteString)
+                CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileEnvironmentModel.id).url.absoluteString)
                 Button(action: { showNameTagScanner.toggle() }, label: {
                     HStack {
                         Spacer()
@@ -51,7 +51,7 @@ struct NameTagSheet: View {
                 .bold()
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ProfileShareLinkView(profile: profileManager.profile)
+            ProfileShareLinkView(profile: profileEnvironmentModel.profile)
         }
     }
 }

@@ -5,16 +5,16 @@ import Repositories
 import SwiftUI
 
 @Observable
-class ImageUploadManager {
+class ImageUploadEnvironmentModel {
     var uploadedImageForCheckIn: CheckIn? = nil
-    private let logger = Logger(category: "PermissionManager")
+    private let logger = Logger(category: "PermissionEnvironmentModel")
 
     private let repository: Repository
-    private let feedbackManager: FeedbackManager
+    private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(repository: Repository, feedbackManager: FeedbackManager) {
+    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         self.repository = repository
-        self.feedbackManager = feedbackManager
+        self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
     func uploadCheckInImage(checkIn: CheckIn, image: UIImage) {
@@ -27,7 +27,7 @@ class ImageUploadManager {
                 }
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackManager.toggle(.error(.unexpected))
+                feedbackEnvironmentModel.toggle(.error(.unexpected))
                 logger.error("Failed to upload image to check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
             }
         }
