@@ -1,6 +1,7 @@
-import OSLog
-import SwiftUI
 import Models
+import OSLog
+import Repositories
+import SwiftUI
 
 private let logger = Logger(category: "ProductScreen")
 

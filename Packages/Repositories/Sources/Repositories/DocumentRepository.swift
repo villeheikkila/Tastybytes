@@ -1,14 +1,14 @@
 import Models
 import Supabase
 
-protocol DocumentRepository {
+public protocol DocumentRepository {
     func getAboutPage() async -> Result<AboutPage, Error>
 }
 
-struct SupabaseDocumentRepository: DocumentRepository {
+public struct SupabaseDocumentRepository: DocumentRepository {
     let client: SupabaseClient
 
-    func getAboutPage() async -> Result<AboutPage, Error> {
+    public func getAboutPage() async -> Result<AboutPage, Error> {
         do {
             let response: Document.About = try await client
                 .database

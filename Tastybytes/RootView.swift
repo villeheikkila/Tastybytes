@@ -1,5 +1,6 @@
 import GoTrue
 import OSLog
+import Repositories
 import StoreKit
 import Supabase
 import SwiftUI

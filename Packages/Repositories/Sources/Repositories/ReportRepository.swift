@@ -2,14 +2,14 @@ import Foundation
 import Models
 import Supabase
 
-protocol ReportRepository {
+public protocol ReportRepository {
     func insert(report: Report.NewRequest) async -> Result<Void, Error>
 }
 
-struct SupabaseReportRepository: ReportRepository {
+public struct SupabaseReportRepository: ReportRepository {
     let client: SupabaseClient
 
-    func insert(report: Report.NewRequest) async -> Result<Void, Error> {
+    public func insert(report: Report.NewRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database

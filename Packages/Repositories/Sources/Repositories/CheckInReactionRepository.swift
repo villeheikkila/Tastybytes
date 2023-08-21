@@ -1,15 +1,15 @@
 import Models
 import Supabase
 
-protocol CheckInReactionsRepository {
+public protocol CheckInReactionsRepository {
     func insert(newCheckInReaction: CheckInReaction.NewRequest) async -> Result<CheckInReaction, Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
-struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
+public struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     let client: SupabaseClient
 
-    func insert(newCheckInReaction: CheckInReaction.NewRequest) async -> Result<CheckInReaction, Error> {
+    public func insert(newCheckInReaction: CheckInReaction.NewRequest) async -> Result<CheckInReaction, Error> {
         do {
             let response: CheckInReaction = try await client
                 .database
@@ -26,7 +26,7 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
         }
     }
 
-    func delete(id: Int) async -> Result<Void, Error> {
+    public func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database

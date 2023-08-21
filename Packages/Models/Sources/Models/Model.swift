@@ -38,26 +38,6 @@ extension Date {
     }
 }
 
-extension String? {
-    var isNilOrEmpty: Bool {
-        // swiftlint:disable empty_string
-        self == nil || self == ""
-        // swiftlint:enable empty_string
-    }
-}
-
-extension String? {
-    var orEmpty: String {
-        self ?? ""
-    }
-}
-
-extension Array {
-    func joinOptionalSpace<T>() -> String where T: ExpressibleByStringLiteral, Element == T? {
-        compactMap { $0 as? String }.joined(separator: " ")
-    }
-}
-
 class CustomDateFormatter {
     enum Format {
         case fileNameSuffix, relativeTime, timestampTz, date
@@ -128,6 +108,26 @@ class CustomDateFormatter {
             dateFormatter.dateFormat = "yyyy-MM-dd"
             return dateFormatter.date(from: string)
         }
+    }
+}
+
+extension String? {
+    var isNilOrEmpty: Bool {
+        // swiftlint:disable empty_string
+        self == nil || self == ""
+        // swiftlint:enable empty_string
+    }
+}
+
+extension String? {
+    var orEmpty: String {
+        self ?? ""
+    }
+}
+
+extension Array {
+    func joinOptionalSpace<T>() -> String where T: ExpressibleByStringLiteral, Element == T? {
+        compactMap { $0 as? String }.joined(separator: " ")
     }
 }
 

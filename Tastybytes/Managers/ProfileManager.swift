@@ -2,6 +2,7 @@ import Models
 import Observation
 import OSLog
 import PhotosUI
+import Repositories
 import SwiftUI
 
 @Observable

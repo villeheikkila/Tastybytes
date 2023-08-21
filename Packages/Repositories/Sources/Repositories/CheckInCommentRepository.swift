@@ -1,7 +1,7 @@
 import Models
 import Supabase
 
-protocol CheckInCommentRepository {
+public protocol CheckInCommentRepository {
     func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error>
     func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error>
     func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error>
@@ -9,10 +9,10 @@ protocol CheckInCommentRepository {
     func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error>
 }
 
-struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
+public struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     let client: SupabaseClient
 
-    func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
+    public func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
         do {
             let result: CheckInComment = try await client
                 .database
@@ -30,7 +30,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
+    public func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
         do {
             let response: CheckInComment = try await client
                 .database
@@ -48,7 +48,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error> {
+    public func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error> {
         do {
             let response: [CheckInComment] = try await client
                 .database
@@ -65,7 +65,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    func deleteById(id: Int) async -> Result<Void, Error> {
+    public func deleteById(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -80,7 +80,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error> {
+    public func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error> {
         do {
             try await client
                 .database

@@ -5,7 +5,7 @@ import SwiftUI
 
 @Observable
 final class CameraModel {
-    let logger = Logger(category: "CameraDataModel")
+    let logger = Logger(category: "CameraModel")
     let camera = Camera()
     var viewfinderImage: Image? = nil
     var thumbnailImage: Image? = nil

@@ -3,17 +3,17 @@ import Models
 import PostgREST
 import Supabase
 
-protocol FriendRepository {
+public protocol FriendRepository {
     func getByUserId(userId: UUID, status: Friend.Status?) async -> Result<[Friend], Error>
     func insert(newFriend: Friend.NewRequest) async -> Result<Friend, Error>
     func update(id: Int, friendUpdate: Friend.UpdateRequest) async -> Result<Friend, Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
-struct SupabaseFriendsRepository: FriendRepository {
+public struct SupabaseFriendsRepository: FriendRepository {
     let client: SupabaseClient
 
-    func getByUserId(userId: UUID, status: Friend.Status?) async -> Result<[Friend], Error> {
+    public func getByUserId(userId: UUID, status: Friend.Status?) async -> Result<[Friend], Error> {
         do {
             var queryBuilder = client
                 .database
@@ -43,7 +43,7 @@ struct SupabaseFriendsRepository: FriendRepository {
         }
     }
 
-    func insert(newFriend: Friend.NewRequest) async -> Result<Friend, Error> {
+    public func insert(newFriend: Friend.NewRequest) async -> Result<Friend, Error> {
         do {
             let response: Friend = try await client
                 .database
@@ -60,7 +60,7 @@ struct SupabaseFriendsRepository: FriendRepository {
         }
     }
 
-    func update(id: Int, friendUpdate: Friend.UpdateRequest) async -> Result<Friend, Error> {
+    public func update(id: Int, friendUpdate: Friend.UpdateRequest) async -> Result<Friend, Error> {
         do {
             let response: Friend = try await client
                 .database
@@ -78,7 +78,7 @@ struct SupabaseFriendsRepository: FriendRepository {
         }
     }
 
-    func delete(id: Int) async -> Result<Void, Error> {
+    public func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database

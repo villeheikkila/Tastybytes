@@ -1,17 +1,17 @@
 import Models
 import Supabase
 
-protocol SubcategoryRepository {
+public protocol SubcategoryRepository {
     func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func update(updateRequest: Subcategory.UpdateRequest) async -> Result<Void, Error>
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
 }
 
-struct SupabaseSubcategoryRepository: SubcategoryRepository {
+public struct SupabaseSubcategoryRepository: SubcategoryRepository {
     let client: SupabaseClient
 
-    func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
+    public func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
         do {
             let response: Subcategory = try await client
                 .database
@@ -28,7 +28,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         }
     }
 
-    func delete(id: Int) async -> Result<Void, Error> {
+    public func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -43,7 +43,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         }
     }
 
-    func update(updateRequest: Subcategory.UpdateRequest) async -> Result<Void, Error> {
+    public func update(updateRequest: Subcategory.UpdateRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -58,7 +58,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         }
     }
 
-    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
+    public func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
                 .database

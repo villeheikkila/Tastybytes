@@ -1,7 +1,7 @@
 import Models
 import Supabase
 
-protocol SubBrandRepository {
+public protocol SubBrandRepository {
     func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error>
     func update(updateRequest: SubBrand.Update) async -> Result<Void, Error>
     func delete(id: Int) async -> Result<Void, Error>
@@ -9,10 +9,10 @@ protocol SubBrandRepository {
     func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error>
 }
 
-struct SupabaseSubBrandRepository: SubBrandRepository {
+public struct SupabaseSubBrandRepository: SubBrandRepository {
     let client: SupabaseClient
 
-    func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error> {
+    public func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error> {
         do {
             let response: SubBrand = try await client
                 .database
@@ -29,7 +29,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    func update(updateRequest: SubBrand.Update) async -> Result<Void, Error> {
+    public func update(updateRequest: SubBrand.Update) async -> Result<Void, Error> {
         do {
             let baseQuery = client
                 .database
@@ -54,7 +54,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    func delete(id: Int) async -> Result<Void, Error> {
+    public func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -69,7 +69,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
+    public func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -83,7 +83,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error> {
+    public func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error> {
         do {
             let response: [SubBrand.JoinedBrand] = try await client
                 .database

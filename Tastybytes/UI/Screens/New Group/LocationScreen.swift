@@ -3,6 +3,7 @@ import MapKit
 import Models
 import OSLog
 import PhotosUI
+import Repositories
 import SwiftUI
 
 struct LocationScreen: View {

@@ -2,6 +2,7 @@ import Charts
 import Models
 import OSLog
 import PhotosUI
+import Repositories
 import SwiftUI
 
 struct ProfileView: View {

@@ -2,6 +2,7 @@ import Models
 import NukeUI
 import OSLog
 import PhotosUI
+import Repositories
 import SwiftUI
 
 struct ProductLogoSheet: View {

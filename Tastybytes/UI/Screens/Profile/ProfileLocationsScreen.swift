@@ -1,6 +1,7 @@
 import MapKit
 import Models
 import OSLog
+import Repositories
 import SwiftUI
 
 private let logger = Logger(category: "ProfileLocationsScreen")

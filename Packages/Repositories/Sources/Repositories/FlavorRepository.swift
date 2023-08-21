@@ -1,16 +1,16 @@
 import Models
 import Supabase
 
-protocol FlavorRepository {
+public protocol FlavorRepository {
     func getAll() async -> Result<[Flavor], Error>
     func insert(newFlavor: Flavor.NewRequest) async -> Result<Flavor, Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
-struct SupabaseFlavorRepository: FlavorRepository {
+public struct SupabaseFlavorRepository: FlavorRepository {
     let client: SupabaseClient
 
-    func getAll() async -> Result<[Flavor], Error> {
+    public func getAll() async -> Result<[Flavor], Error> {
         do {
             let response: [Flavor] = try await client
                 .database
@@ -26,7 +26,7 @@ struct SupabaseFlavorRepository: FlavorRepository {
         }
     }
 
-    func insert(newFlavor: Flavor.NewRequest) async -> Result<Flavor, Error> {
+    public func insert(newFlavor: Flavor.NewRequest) async -> Result<Flavor, Error> {
         do {
             let response: Flavor = try await client
                 .database
@@ -43,7 +43,7 @@ struct SupabaseFlavorRepository: FlavorRepository {
         }
     }
 
-    func delete(id: Int) async -> Result<Void, Error> {
+    public func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database

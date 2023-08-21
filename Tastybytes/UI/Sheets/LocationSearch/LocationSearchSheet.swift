@@ -4,6 +4,7 @@ import MapKit
 import Models
 import Observation
 import OSLog
+import Repositories
 import SwiftUI
 
 struct LocationSearchSheet: View {

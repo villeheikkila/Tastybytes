@@ -3,6 +3,7 @@ import OSLog
 import Supabase
 import SwiftUI
 @_spi(Experimental) import GoTrue
+import Repositories
 
 struct SignInWithAppleView: View {
     private let logger = Logger(category: "SignInWithAppleView")

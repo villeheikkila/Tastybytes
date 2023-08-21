@@ -1,16 +1,16 @@
 import Models
 import Supabase
 
-protocol ProductBarcodeRepository {
+public protocol ProductBarcodeRepository {
     func getByProductId(id: Int) async -> Result<[ProductBarcode.JoinedWithCreator], Error>
     func addToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
-struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
+public struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
     let client: SupabaseClient
 
-    func getByProductId(id: Int) async -> Result<[ProductBarcode.JoinedWithCreator], Error> {
+    public func getByProductId(id: Int) async -> Result<[ProductBarcode.JoinedWithCreator], Error> {
         do {
             let response: [ProductBarcode.JoinedWithCreator] = try await client
                 .database
@@ -26,7 +26,7 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
         }
     }
 
-    func addToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error> {
+    public func addToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error> {
         do {
             try await client
                 .database
@@ -43,7 +43,7 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
         }
     }
 
-    func delete(id: Int) async -> Result<Void, Error> {
+    public func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database

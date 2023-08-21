@@ -1,17 +1,17 @@
 import Models
 import Supabase
 
-protocol ServingStyleRepository {
+public protocol ServingStyleRepository {
     func getAll() async -> Result<[ServingStyle], Error>
     func insert(servingStyle: ServingStyle.NewRequest) async -> Result<ServingStyle, Error>
     func update(update: ServingStyle.UpdateRequest) async -> Result<ServingStyle, Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
-struct SupabaseServingStyleRepository: ServingStyleRepository {
+public struct SupabaseServingStyleRepository: ServingStyleRepository {
     let client: SupabaseClient
 
-    func getAll() async -> Result<[ServingStyle], Error> {
+    public func getAll() async -> Result<[ServingStyle], Error> {
         do {
             let response: [ServingStyle] = try await client
                 .database
@@ -26,7 +26,7 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
         }
     }
 
-    func insert(servingStyle: ServingStyle.NewRequest) async -> Result<ServingStyle, Error> {
+    public func insert(servingStyle: ServingStyle.NewRequest) async -> Result<ServingStyle, Error> {
         do {
             let response: ServingStyle = try await client
                 .database
@@ -43,7 +43,7 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
         }
     }
 
-    func delete(id: Int) async -> Result<Void, Error> {
+    public func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -58,7 +58,7 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
         }
     }
 
-    func update(update: ServingStyle.UpdateRequest) async -> Result<ServingStyle, Error> {
+    public func update(update: ServingStyle.UpdateRequest) async -> Result<ServingStyle, Error> {
         do {
             let response: ServingStyle = try await client
                 .database

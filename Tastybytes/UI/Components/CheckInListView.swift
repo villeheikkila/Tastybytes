@@ -1,5 +1,6 @@
 import Models
 import OSLog
+import Repositories
 import SwiftUI
 
 private let logger = Logger(category: "CheckInListView")
@@ -332,4 +333,3 @@ extension CheckInSegment {
         }
     }
 }
-

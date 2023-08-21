@@ -1,17 +1,19 @@
 import Models
 import Supabase
 
-protocol CategoryRepository {
-    func getAllWithSubcategoriesServingStyles() async -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error>
+public protocol CategoryRepository {
+    func getAllWithSubcategoriesServingStyles() async
+        -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error>
     func insert(newCategory: Category.NewRequest) async -> Result<Void, Error>
     func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error>
     func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error>
 }
 
-struct SupabaseCategoryRepository: CategoryRepository {
+public struct SupabaseCategoryRepository: CategoryRepository {
     let client: SupabaseClient
 
-    func getAllWithSubcategoriesServingStyles() async -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error> {
+    public func getAllWithSubcategoriesServingStyles() async
+    -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error> {
         do {
             let response: [Models.Category.JoinedSubcategoriesServingStyles] = try await client
                 .database
@@ -27,7 +29,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
-    func insert(newCategory: Category.NewRequest) async -> Result<Void, Error> {
+    public func insert(newCategory: Category.NewRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -41,7 +43,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
-    func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
+    public func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -55,7 +57,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
-    func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
+    public func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
