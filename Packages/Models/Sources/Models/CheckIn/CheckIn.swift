@@ -1,3 +1,4 @@
+import Extensions
 import Foundation
 
 public struct CheckIn: Identifiable, Hashable, Codable, Sendable {

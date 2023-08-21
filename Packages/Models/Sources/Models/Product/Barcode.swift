@@ -1,4 +1,5 @@
 import AVFoundation
+import Extensions
 
 public struct Barcode: Codable, Hashable, Sendable {
     enum CodingKeys: String, CodingKey {

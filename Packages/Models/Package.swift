@@ -15,11 +15,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "4.1.1")),
+        .package(name: "Extensions", path: "../Extensions"),
     ],
     targets: [
         .target(
             name: "Models",
-            dependencies: ["SFSafeSymbols"]
+            dependencies: ["SFSafeSymbols", .product(name: "Extensions", package: "Extensions")]
         ),
         .testTarget(
             name: "ModelsTests",

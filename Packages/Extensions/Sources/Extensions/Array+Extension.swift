@@ -1,11 +1,11 @@
-extension Array where Element: Equatable {
+public extension Array where Element: Equatable {
     mutating func remove(object: Element) {
         guard let index = firstIndex(of: object) else { return }
         remove(at: index)
     }
 }
 
-extension Array where Element: Equatable {
+public extension Array where Element: Equatable {
     mutating func replace(_ element: Element, with new: Element) {
         if let toReplace = firstIndex(where: { $0 == element }) {
             self[toReplace] = new
@@ -13,7 +13,7 @@ extension Array where Element: Equatable {
     }
 }
 
-extension Array {
+public extension Array {
     func unique(selector: (Element, Element) -> Bool) -> [Element] {
         reduce([Element]()) { result, element in
             if let last = result.last {
@@ -25,13 +25,13 @@ extension Array {
     }
 }
 
-extension [String] {
+public extension [String] {
     func joinComma() -> String {
         joined(separator: ", ")
     }
 }
 
-extension Array {
+public extension Array {
     func joinOptionalSpace<T>() -> String where T: ExpressibleByStringLiteral, Element == T? {
         compactMap { $0 as? String }.joined(separator: " ")
     }

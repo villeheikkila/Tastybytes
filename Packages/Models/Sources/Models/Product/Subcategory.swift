@@ -1,3 +1,5 @@
+import Extensions
+
 public protocol SubcategoryProtocol {
     var id: Int { get }
     var name: String { get }

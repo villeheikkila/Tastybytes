@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension String? {
+public extension String? {
     var isNilOrEmpty: Bool {
         // swiftlint:disable empty_string
         self == nil || self == ""
@@ -8,7 +8,7 @@ extension String? {
     }
 }
 
-extension String {
+public extension String {
     enum StrinLengthType {
         case normal
         case long
@@ -29,13 +29,13 @@ extension String {
     }
 }
 
-extension String? {
+public extension String? {
     var orEmpty: String {
         self ?? ""
     }
 }
 
-extension String {
+public extension String {
     func asQRCode() -> Data? {
         guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
         filter.setValue(data(using: .ascii, allowLossyConversion: false), forKey: "inputMessage")

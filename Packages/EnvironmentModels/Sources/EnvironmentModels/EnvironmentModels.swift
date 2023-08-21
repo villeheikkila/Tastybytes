@@ -1,31 +1,6 @@
 import Models
 import OSLog
-import PhotosUI
 import SwiftUI
-
-extension Logger {
-    init(category: String) {
-        self.init(
-            subsystem: Bundle.main.bundleIdentifier ?? "app",
-            category: category
-        )
-    }
-}
-
-extension Array where Element: Equatable {
-    mutating func remove(object: Element) {
-        guard let index = firstIndex(of: object) else { return }
-        remove(at: index)
-    }
-}
-
-extension Array where Element: Equatable {
-    mutating func replace(_ element: Element, with new: Element) {
-        if let toReplace = firstIndex(where: { $0 == element }) {
-            self[toReplace] = new
-        }
-    }
-}
 
 enum UserDefaultsKey: String, CaseIterable {
     case selectedTab = "selected_tab"
@@ -106,17 +81,5 @@ public func getCurrentAppIcon() -> AppIcon {
         return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
     } else {
         return AppIcon.ramune
-    }
-}
-
-public extension PhotosPickerItem {
-    func getJPEG() async -> Data? {
-        do {
-            guard let imageData = try await loadTransferable(type: Data.self) else { return nil }
-            guard let image = UIImage(data: imageData) else { return nil }
-            return image.jpegData(compressionQuality: 0.1)
-        } catch {
-            return nil
-        }
     }
 }

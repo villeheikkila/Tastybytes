@@ -1,6 +1,6 @@
 import UIKit
 
-extension UIImage {
+public extension UIImage {
     func resize(to newHeight: Double) -> UIImage? {
         let scale = newHeight / size.height
         let newWidth = size.width * scale
@@ -12,7 +12,7 @@ extension UIImage {
     }
 }
 
-extension UIImage {
+public extension UIImage {
     func blurHash(numberOfComponents components: (Int, Int)) -> String? {
         let pixelWidth = Int(round(size.width))
         let pixelHeight = Int(round(size.height))
@@ -175,7 +175,7 @@ private func pow(_ base: Int, _ exponent: Int) -> Int {
     (0 ..< exponent).reduce(1) { value, _ in value * base }
 }
 
-extension UIImage {
+public extension UIImage {
     convenience init?(blurHash: String, size: CGSize, punch: Float = 1) {
         guard blurHash.count >= 6 else { return nil }
 

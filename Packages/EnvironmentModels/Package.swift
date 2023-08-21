@@ -16,6 +16,7 @@ let package = Package(
     dependencies: [
         .package(name: "Repositories", path: "../Repositories"),
         .package(name: "Models", path: "../Models"),
+        .package(name: "Extensions", path: "../Extensions"),
         .package(
             url: "https://github.com/firebase/firebase-ios-sdk.git",
             .upToNextMajor(from: "10.13.0")
@@ -30,6 +31,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Repositories", package: "Repositories"),
                 .product(name: "Models", package: "Models"),
+                .product(name: "Extensions", package: "Extensions"),
                 .product(name: "FirebaseMessaging", package: "firebase-ios-sdk"),
                 .product(name: "AlertToast", package: "AlertToast"),
             ]

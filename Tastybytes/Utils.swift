@@ -1,3 +1,4 @@
+import Models
 import OSLog
 import PhotosUI
 import SwiftUI
@@ -25,10 +26,6 @@ struct CSVFile: FileDocument {
     }
 }
 
-func queryWithTableName(_ tableName: String, _ query: String, _ withTableName: Bool) -> String {
-    withTableName ? "\(tableName) (\(query))" : query
-}
-
 func isPadOrMac() -> Bool {
     [.pad, .mac].contains(UIDevice.current.userInterfaceIdiom)
 }
@@ -42,4 +39,11 @@ func getPagination(page: Int, size: Int) -> (Int, Int) {
     let from = page * limit
     let to = from + size
     return (from, to)
+}
+
+extension URL {
+    init?(bucketId: String, fileName: String) {
+        let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(fileName)"
+        self.init(string: urlString)
+    }
 }

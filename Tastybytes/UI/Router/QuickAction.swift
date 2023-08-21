@@ -1,3 +1,4 @@
+import Models
 import SwiftUI
 
 enum QuickAction: String, Hashable, CaseIterable, Identifiable {

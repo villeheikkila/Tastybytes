@@ -1,7 +1,7 @@
 import Foundation
 import OSLog
 
-extension Logger {
+public extension Logger {
     init(category: String) {
         self.init(
             subsystem: Bundle.main.bundleIdentifier ?? "app",

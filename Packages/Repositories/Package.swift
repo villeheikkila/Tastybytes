@@ -15,6 +15,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/supabase/supabase-swift.git", branch: "master"),
         .package(name: "Models", path: "../Models"),
+        .package(name: "Extensions", path: "../Extensions"),
     ],
     targets: [
         .target(
@@ -22,6 +23,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Supabase", package: "supabase-swift"),
                 .product(name: "Models", package: "Models"),
+                .product(name: "Extensions", package: "Extensions"),
             ]
         ),
     ]

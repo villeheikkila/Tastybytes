@@ -1,22 +1,6 @@
 import SwiftUI
 
-struct LocalizedAlertError: LocalizedError {
-    let underlyingError: LocalizedError
-    var errorDescription: String? {
-        underlyingError.errorDescription
-    }
-
-    var recoverySuggestion: String? {
-        underlyingError.recoverySuggestion
-    }
-
-    init?(error: Error?) {
-        guard let localizedError = error as? LocalizedError else { return nil }
-        underlyingError = localizedError
-    }
-}
-
-extension View {
+public extension View {
     @ViewBuilder
     func `if`(_ condition: @autoclosure () -> Bool, transform: (Self) -> some View) -> some View {
         if condition() {
@@ -27,11 +11,11 @@ extension View {
     }
 }
 
-struct RoundedCorner: Shape {
+public struct RoundedCorner: Shape {
     var radius: Double = .infinity
     var corners: UIRectCorner = .allCorners
 
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(
             roundedRect: rect,
             byRoundingCorners: corners,
@@ -41,13 +25,13 @@ struct RoundedCorner: Shape {
     }
 }
 
-extension View {
+public extension View {
     func cornerRadius(_ radius: Double, corners: UIRectCorner) -> some View {
         clipShape(RoundedCorner(radius: radius, corners: corners))
     }
 }
 
-extension View {
+public extension View {
     func onChange<Value>(
         of value: Value,
         debounceTime: TimeInterval,
@@ -74,7 +58,7 @@ private struct DebouncedChangeViewModifier<Value>: ViewModifier where Value: Equ
     }
 }
 
-extension Task {
+public extension Task {
     @discardableResult
     static func delayed(
         seconds: TimeInterval,
@@ -89,16 +73,16 @@ extension Task {
     }
 }
 
-extension View {
+public extension View {
     func detectOrientation(_ orientation: Binding<UIDeviceOrientation>) -> some View {
         modifier(DetectOrientation(orientation: orientation))
     }
 }
 
-struct DetectOrientation: ViewModifier {
+public struct DetectOrientation: ViewModifier {
     @Binding var orientation: UIDeviceOrientation
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
                 let fallback = UIScreen.main.bounds.height > UIScreen.main.bounds.width ? UIDeviceOrientation

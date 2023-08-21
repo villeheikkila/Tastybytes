@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-extension Color {
+public extension Color {
     init(seed: String) {
         var total = 0
         for unicodeScalar in seed.unicodeScalars {

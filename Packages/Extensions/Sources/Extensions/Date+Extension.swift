@@ -1,21 +1,15 @@
 import Foundation
 
-extension Date {
-    func customFormat(_ type: CustomDateFormatter.Format) -> String {
-        CustomDateFormatter.shared.format(date: self, type)
-    }
-}
-
-class CustomDateFormatter {
-    enum Format {
+public class CustomDateFormatter {
+    public enum Format {
         case fileNameSuffix, relativeTime, timestampTz, date
     }
 
-    enum ParseFormat {
+    public enum ParseFormat {
         case timestampTz, date
     }
 
-    static let shared = CustomDateFormatter()
+    public static let shared = CustomDateFormatter()
     private let formatter = DateFormatter()
 
     func format(date: Date, _ type: Format) -> String {
@@ -49,7 +43,7 @@ class CustomDateFormatter {
         }
     }
 
-    func parse(string: String, _ format: ParseFormat) -> Date? {
+    public func parse(string: String, _ format: ParseFormat) -> Date? {
         switch format {
         case .timestampTz:
             formatter.timeZone = TimeZone(abbreviation: "UTC")
@@ -62,6 +56,7 @@ class CustomDateFormatter {
             ]
 
             var date: Date?
+
             for formatString in formatStrings {
                 formatter.dateFormat = formatString
                 if let parsedDate = formatter.date(from: string) {
@@ -75,6 +70,27 @@ class CustomDateFormatter {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             return dateFormatter.date(from: string)
+        }
+    }
+}
+
+public extension Date {
+    func customFormat(_ type: CustomDateFormatter.Format) -> String {
+        CustomDateFormatter.shared.format(date: self, type)
+    }
+}
+
+public enum DateParsingError: Error {
+    case unsupportedFormat
+}
+
+public extension Date {
+    init?(timestamptzString: String) {
+        let date = CustomDateFormatter.shared.parse(string: timestamptzString, .timestampTz)
+        if let date {
+            self = date
+        } else {
+            return nil
         }
     }
 }
