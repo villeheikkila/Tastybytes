@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension View {
+public extension View {
     func fullScreenCamera(isPresented: Binding<Bool>, onCapture: @escaping (UIImage) -> Void) -> some View {
         fullScreenCover(isPresented: isPresented, content: {
             NavigationStack {
