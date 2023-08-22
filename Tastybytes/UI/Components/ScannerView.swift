@@ -264,7 +264,7 @@ extension ScannerView {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
             guard didFinishScanning == false else { return }
-            let result = Barcode(barcode: stringValue, type: readableObject.type)
+            let result = Barcode(barcode: stringValue, type: readableObject.type.rawValue)
             found(result)
             didFinishScanning = true
         }

@@ -97,6 +97,7 @@ public struct SupabaseProductRepository: ProductRepository {
                 return .success(response)
             }
         } catch {
+            print(error)
             return .failure(error)
         }
     }
@@ -125,7 +126,7 @@ public struct SupabaseProductRepository: ProductRepository {
                 .from(.productBarcodes)
                 .select(columns: ProductBarcode.getQuery(.joined(false)))
                 .eq(column: "barcode", value: barcode.barcode)
-                .eq(column: "type", value: barcode.type.rawValue)
+                .eq(column: "type", value: barcode.type)
                 .execute()
                 .value
 

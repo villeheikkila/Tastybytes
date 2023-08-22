@@ -21,10 +21,7 @@ public struct Product: Identifiable, Codable, Hashable, Sendable {
 public extension Product {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.products.rawValue
-        let saved = Product.CodingKeys.allCases
-            .compactMap { k in k.stringValue }
-            .joinComma()
-        // let saved = "id, name, description, logo_file, is_verified, is_discontinued"
+        let saved = "id, name, description, logo_file, is_verified, is_discontinued"
         let logoBucketId = Database.Bucket.productLogos.rawValue
 
         switch queryType {
@@ -341,7 +338,7 @@ public extension Product {
 
             if let barcode {
                 barcodeCode = barcode.barcode
-                barcodeType = barcode.type.rawValue
+                barcodeType = barcode.type
             } else {
                 barcodeCode = nil
                 barcodeType = nil

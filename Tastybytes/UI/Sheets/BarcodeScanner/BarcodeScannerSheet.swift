@@ -17,7 +17,7 @@ struct BarcodeScannerSheet: View {
                     TextField("Barcode (EAN13)", text: $barcodeInput)
                         .keyboardType(.decimalPad)
                     Button("Submit", action: {
-                        onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13))
+                        onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13.rawValue))
                         dismiss()
                     }).disabled(!isValidEAN13(input: barcodeInput))
                 }

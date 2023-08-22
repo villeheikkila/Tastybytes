@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Extensions",
     platforms: [
-        .iOS(.v17),
+        .iOS(.v17), .watchOS(.v10),
     ],
     products: [
         .library(
@@ -14,9 +14,13 @@ let package = Package(
             targets: ["Extensions"]
         ),
     ],
+    dependencies: [
+        .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "4.1.1")),
+    ],
     targets: [
         .target(
-            name: "Extensions"
+            name: "Extensions",
+            dependencies: [.product(name: "SFSafeSymbols", package: "SFSafeSymbols")]
         ),
         .testTarget(
             name: "ExtensionsTests",

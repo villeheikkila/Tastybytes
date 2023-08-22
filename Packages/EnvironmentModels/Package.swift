@@ -33,7 +33,7 @@ let package = Package(
                 .product(name: "Models", package: "Models"),
                 .product(name: "Extensions", package: "Extensions"),
                 .product(name: "FirebaseMessaging", package: "firebase-ios-sdk"),
-                .product(name: "AlertToast", package: "AlertToast"),
+                .product(name: "AlertToast", package: "AlertToast", condition: .when(platforms: [.iOS])),
             ]
         ),
         .testTarget(

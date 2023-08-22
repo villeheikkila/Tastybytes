@@ -4,76 +4,78 @@ import OSLog
 import PhotosUI
 import SwiftUI
 
-@Observable
-public final class PermissionEnvironmentModel {
-    private let logger = Logger(category: "PermissionEnvironmentModel")
-    private let locationEnvironmentModel = CLLocationManager()
-    private let notificationEnvironmentModel = UNUserNotificationCenter.current()
+#if !os(watchOS)
+    @Observable
+    public final class PermissionEnvironmentModel {
+        private let logger = Logger(category: "PermissionEnvironmentModel")
+        private let locationEnvironmentModel = CLLocationManager()
+        private let notificationEnvironmentModel = UNUserNotificationCenter.current()
 
-    public var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
-    public var cameraStatus: AVAuthorizationStatus = .notDetermined
-    public var photoLibraryStatus: PHAuthorizationStatus = .notDetermined
-    public var locationsStatus: CLAuthorizationStatus = .notDetermined
+        public var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
+        public var cameraStatus: AVAuthorizationStatus = .notDetermined
+        public var photoLibraryStatus: PHAuthorizationStatus = .notDetermined
+        public var locationsStatus: CLAuthorizationStatus = .notDetermined
 
-    public init() {}
+        public init() {}
 
-    // push notifications
-    public func requestPushNotificationAuthorization() {
-        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        notificationEnvironmentModel.requestAuthorization(
-            options: authOptions
-        ) { _, _ in
-            self.getCurrentPushNotificationPermissionAuthorization()
-        }
-    }
-
-    public func getCurrentPushNotificationPermissionAuthorization() {
-        notificationEnvironmentModel.getNotificationSettings(completionHandler: { settings in
-            DispatchQueue.main.async { [unowned self] in
-                pushNotificationStatus = settings.authorizationStatus
-            }
-        })
-    }
-
-    // camera
-    public func requestCameraAuthorization() {
-        AVCaptureDevice.requestAccess(for: .video) { _ in
-            DispatchQueue.main.async {
-                self.cameraStatus = .authorized
+        // push notifications
+        public func requestPushNotificationAuthorization() {
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            notificationEnvironmentModel.requestAuthorization(
+                options: authOptions
+            ) { _, _ in
+                self.getCurrentPushNotificationPermissionAuthorization()
             }
         }
-    }
 
-    public func getCurrentCameraPermissionAuthorization() {
-        cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
-    }
+        public func getCurrentPushNotificationPermissionAuthorization() {
+            notificationEnvironmentModel.getNotificationSettings(completionHandler: { settings in
+                DispatchQueue.main.async { [unowned self] in
+                    pushNotificationStatus = settings.authorizationStatus
+                }
+            })
+        }
 
-    // photo library
-    public func getCurrentPhotoLibraryAuthorization() {
-        photoLibraryStatus = PHPhotoLibrary.authorizationStatus()
-    }
-
-    public func requestPhotoLibraryAuthorization() {
-        PHPhotoLibrary.requestAuthorization { status in
-            DispatchQueue.main.async {
-                self.photoLibraryStatus = status
+        // camera
+        public func requestCameraAuthorization() {
+            AVCaptureDevice.requestAccess(for: .video) { _ in
+                DispatchQueue.main.async {
+                    self.cameraStatus = .authorized
+                }
             }
         }
-    }
 
-    // location
-    public func getCurrentLocationAuthorization() {
-        locationsStatus = locationEnvironmentModel.authorizationStatus
-    }
+        public func getCurrentCameraPermissionAuthorization() {
+            cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        }
 
-    public func requestLocationAuthorization() {
-        locationEnvironmentModel.requestWhenInUseAuthorization()
-    }
+        // photo library
+        public func getCurrentPhotoLibraryAuthorization() {
+            photoLibraryStatus = PHPhotoLibrary.authorizationStatus()
+        }
 
-    public func initialize() {
-        getCurrentPushNotificationPermissionAuthorization()
-        getCurrentCameraPermissionAuthorization()
-        getCurrentPhotoLibraryAuthorization()
-        getCurrentLocationAuthorization()
+        public func requestPhotoLibraryAuthorization() {
+            PHPhotoLibrary.requestAuthorization { status in
+                DispatchQueue.main.async {
+                    self.photoLibraryStatus = status
+                }
+            }
+        }
+
+        // location
+        public func getCurrentLocationAuthorization() {
+            locationsStatus = locationEnvironmentModel.authorizationStatus
+        }
+
+        public func requestLocationAuthorization() {
+            locationEnvironmentModel.requestWhenInUseAuthorization()
+        }
+
+        public func initialize() {
+            getCurrentPushNotificationPermissionAuthorization()
+            getCurrentCameraPermissionAuthorization()
+            getCurrentPhotoLibraryAuthorization()
+            getCurrentLocationAuthorization()
+        }
     }
-}
+#endif

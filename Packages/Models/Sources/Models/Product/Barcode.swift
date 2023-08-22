@@ -1,5 +1,5 @@
-import AVFoundation
 import Extensions
+import Foundation
 
 public struct Barcode: Codable, Hashable, Sendable {
     enum CodingKeys: String, CodingKey {
@@ -7,9 +7,9 @@ public struct Barcode: Codable, Hashable, Sendable {
     }
 
     public let barcode: String
-    public let type: AVMetadataObject.ObjectType
+    public let type: String
 
-    public init(barcode: String, type: AVMetadataObject.ObjectType) {
+    public init(barcode: String, type: String) {
         self.barcode = barcode
         self.type = type
     }
@@ -17,15 +17,13 @@ public struct Barcode: Codable, Hashable, Sendable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         barcode = try container.decode(String.self, forKey: .barcode)
-        let typeValue = try container.decode(String.self, forKey: .type)
-        let type = AVMetadataObject.ObjectType(rawValue: typeValue)
-        self.type = type
+        type = try container.decode(String.self, forKey: .type)
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(barcode, forKey: .barcode)
-        try container.encode(type.rawValue, forKey: .type)
+        try container.encode(type, forKey: .type)
     }
 }
 
@@ -36,20 +34,20 @@ public struct ProductBarcode: Identifiable, Hashable, Codable, Sendable {
 
     public let id: Int
     public let barcode: String
-    public let type: AVMetadataObject.ObjectType
+    public let type: String
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
         barcode = try values.decode(String.self, forKey: .barcode)
-        type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
+        type = try values.decode(String.self, forKey: .type)
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(barcode, forKey: .barcode)
-        try container.encode(type.rawValue, forKey: .type)
+        try container.encode(type, forKey: .type)
     }
 
     public func isBarcode(_ code: Barcode?) -> Bool {
@@ -70,7 +68,7 @@ public extension ProductBarcode {
 
         public init(product: Product.Joined, barcode: Barcode) {
             productId = product.id
-            type = barcode.type.rawValue
+            type = barcode.type
             self.barcode = barcode.barcode
         }
     }
@@ -78,7 +76,7 @@ public extension ProductBarcode {
     struct JoinedWithCreator: Identifiable, Hashable, Codable, Sendable {
         public let id: Int
         public let barcode: String
-        public let type: AVMetadataObject.ObjectType
+        public let type: String
         public let profile: Profile
         public let createdAt: Date
 
@@ -90,7 +88,7 @@ public extension ProductBarcode {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             id = try values.decode(Int.self, forKey: .id)
             barcode = try values.decode(String.self, forKey: .barcode)
-            type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
+            type = try values.decode(String.self, forKey: .type)
             profile = try values.decode(Profile.self, forKey: .profiles)
             let timestamp = try values.decode(String.self, forKey: .createdAt)
             if let createdAt = Date(timestamptzString: timestamp) {
@@ -104,7 +102,7 @@ public extension ProductBarcode {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(id, forKey: .id)
             try container.encode(barcode, forKey: .barcode)
-            try container.encode(type.rawValue, forKey: .type)
+            try container.encode(type, forKey: .type)
             try container.encode(profile, forKey: .profiles)
             try container.encode(createdAt, forKey: .createdAt)
         }
@@ -113,7 +111,7 @@ public extension ProductBarcode {
     struct Joined: Identifiable, Hashable, Codable, Sendable {
         public let id: Int
         public let barcode: String
-        public let type: AVMetadataObject.ObjectType
+        public let type: String
         public let product: Product.Joined
 
         public func isBarcode(_ code: Barcode?) -> Bool {
@@ -129,7 +127,7 @@ public extension ProductBarcode {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             id = try values.decode(Int.self, forKey: .id)
             barcode = try values.decode(String.self, forKey: .barcode)
-            type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
+            type = try values.decode(String.self, forKey: .type)
             product = try values.decode(Product.Joined.self, forKey: .product)
         }
 
@@ -137,7 +135,7 @@ public extension ProductBarcode {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(id, forKey: .id)
             try container.encode(barcode, forKey: .barcode)
-            try container.encode(type.rawValue, forKey: .type)
+            try container.encode(type, forKey: .type)
             try container.encode(product, forKey: .product)
         }
     }

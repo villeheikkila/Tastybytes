@@ -36,7 +36,6 @@ public struct SupabaseCheckInRepository: CheckInRepository {
                 .range(from: from, to: to)
                 .execute()
                 .value
-
             return .success(response)
         } catch {
             return .failure(error)

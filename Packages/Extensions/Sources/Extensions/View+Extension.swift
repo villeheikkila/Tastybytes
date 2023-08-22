@@ -73,21 +73,23 @@ public extension Task {
     }
 }
 
-public extension View {
-    func detectOrientation(_ orientation: Binding<UIDeviceOrientation>) -> some View {
-        modifier(DetectOrientation(orientation: orientation))
+#if !os(watchOS)
+    public extension View {
+        func detectOrientation(_ orientation: Binding<UIDeviceOrientation>) -> some View {
+            modifier(DetectOrientation(orientation: orientation))
+        }
     }
-}
 
-public struct DetectOrientation: ViewModifier {
-    @Binding var orientation: UIDeviceOrientation
+    public struct DetectOrientation: ViewModifier {
+        @Binding var orientation: UIDeviceOrientation
 
-    public func body(content: Content) -> some View {
-        content
-            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                let fallback = UIScreen.main.bounds.height > UIScreen.main.bounds.width ? UIDeviceOrientation
-                    .portrait : UIDeviceOrientation.landscapeRight
-                orientation = UIDevice.current.orientation == .unknown ? fallback : UIDevice.current.orientation
-            }
+        public func body(content: Content) -> some View {
+            content
+                .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                    let fallback = UIScreen.main.bounds.height > UIScreen.main.bounds.width ? UIDeviceOrientation
+                        .portrait : UIDeviceOrientation.landscapeRight
+                    orientation = UIDevice.current.orientation == .unknown ? fallback : UIDevice.current.orientation
+                }
+        }
     }
-}
+#endif
