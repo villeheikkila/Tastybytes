@@ -438,13 +438,13 @@ struct ProductMutationInnerView: View {
         switch await repository.product.create(newProductParams: newProductParams) {
         case let .success(newProduct):
             feedbackEnvironmentModel.trigger(.notification(.success))
-            router.navigate(screen: .product(newProduct))
-            await onSuccess(newProduct)
             if isSheet {
                 await MainActor.run {
                     dismiss()
                 }
             }
+            router.navigate(screen: .product(newProduct))
+            await onSuccess(newProduct)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackEnvironmentModel.toggle(.error(.unexpected))
