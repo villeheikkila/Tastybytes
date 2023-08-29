@@ -35,9 +35,6 @@
 		5C1A113D2A95107D00FF32F6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1A113C2A95107D00FF32F6 /* ContentView.swift */; };
 		5C1A113F2A95108100FF32F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C1A113E2A95108100FF32F6 /* Assets.xcassets */; };
 		5C1A11422A95108100FF32F6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C1A11412A95108100FF32F6 /* Preview Assets.xcassets */; };
-		5C1A114C2A95108100FF32F6 /* tastey_watchkitapp_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1A114B2A95108100FF32F6 /* tastey_watchkitapp_Watch_AppTests.swift */; };
-		5C1A11562A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1A11552A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITests.swift */; };
-		5C1A11582A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1A11572A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITestsLaunchTests.swift */; };
 		5C1A115B2A95108100FF32F6 /* Tastybytes.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5C1A11382A95107D00FF32F6 /* Tastybytes.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5C20A50D29AA316900ABBA74 /* CustomBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A50C29AA316900ABBA74 /* CustomBadge.swift */; };
 		5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */; };
@@ -186,6 +183,7 @@
 		5CED432E28FD6EA7003F8194 /* BrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432D28FD6EA7003F8194 /* BrandSheet.swift */; };
 		5CED433228FD76BB003F8194 /* SubBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433128FD76BB003F8194 /* SubBrandSheet.swift */; };
 		5CED433628FDA8B9003F8194 /* SubcategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433528FDA8B9003F8194 /* SubcategorySheet.swift */; };
+		5CEFCCD82A9E764800317BB8 /* NameTagTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEFCCD72A9E764800317BB8 /* NameTagTip.swift */; };
 		5CF0FA682A3D00FB00CC3B62 /* RatingChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF0FA672A3D00FB00CC3B62 /* RatingChartView.swift */; };
 		5CF0FA6A2A3D011400CC3B62 /* CheckInImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF0FA692A3D011400CC3B62 /* CheckInImagesView.swift */; };
 		5CF28FCC2A93F2C700FC5C49 /* Camera in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF28FCB2A93F2C700FC5C49 /* Camera */; };
@@ -199,20 +197,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5C1A11482A95108100FF32F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5CFEE56B28ED69B100A8DD66 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5C1A11372A95107D00FF32F6;
-			remoteInfo = "tastey.watchkitapp Watch App";
-		};
-		5C1A11522A95108100FF32F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5CFEE56B28ED69B100A8DD66 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5C1A11372A95107D00FF32F6;
-			remoteInfo = "tastey.watchkitapp Watch App";
-		};
 		5C1A11592A95108100FF32F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5CFEE56B28ED69B100A8DD66 /* Project object */;
@@ -265,11 +249,6 @@
 		5C1A113C2A95107D00FF32F6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5C1A113E2A95108100FF32F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C1A11412A95108100FF32F6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		5C1A11472A95108100FF32F6 /* tastey.watchkitapp Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "tastey.watchkitapp Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C1A114B2A95108100FF32F6 /* tastey_watchkitapp_Watch_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tastey_watchkitapp_Watch_AppTests.swift; sourceTree = "<group>"; };
-		5C1A11512A95108100FF32F6 /* tastey.watchkitapp Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "tastey.watchkitapp Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C1A11552A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tastey_watchkitapp_Watch_AppUITests.swift; sourceTree = "<group>"; };
-		5C1A11572A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tastey_watchkitapp_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		5C20A50C29AA316900ABBA74 /* CustomBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBadge.swift; sourceTree = "<group>"; };
 		5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminTab.swift; sourceTree = "<group>"; };
 		5C20A51129AA6A5000ABBA74 /* FlavorManagementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorManagementScreen.swift; sourceTree = "<group>"; };
@@ -416,6 +395,7 @@
 		5CED432D28FD6EA7003F8194 /* BrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheet.swift; sourceTree = "<group>"; };
 		5CED433128FD76BB003F8194 /* SubBrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandSheet.swift; sourceTree = "<group>"; };
 		5CED433528FDA8B9003F8194 /* SubcategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategorySheet.swift; sourceTree = "<group>"; };
+		5CEFCCD72A9E764800317BB8 /* NameTagTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagTip.swift; sourceTree = "<group>"; };
 		5CF0FA672A3D00FB00CC3B62 /* RatingChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingChartView.swift; sourceTree = "<group>"; };
 		5CF0FA692A3D011400CC3B62 /* CheckInImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImagesView.swift; sourceTree = "<group>"; };
 		5CF28FC92A93F2A800FC5C49 /* Camera */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Camera; path = Packages/Camera; sourceTree = "<group>"; };
@@ -437,20 +417,6 @@
 				5CB5B75B2A951C5700A409AE /* Extensions in Frameworks */,
 				5CB5B7592A951C5300A409AE /* Models in Frameworks */,
 				5CB5B7572A951C4E00A409AE /* Repositories in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5C1A11442A95108100FF32F6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5C1A114E2A95108100FF32F6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,23 +475,6 @@
 				5C1A11412A95108100FF32F6 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		5C1A114A2A95108100FF32F6 /* tastey.watchkitapp Watch AppTests */ = {
-			isa = PBXGroup;
-			children = (
-				5C1A114B2A95108100FF32F6 /* tastey_watchkitapp_Watch_AppTests.swift */,
-			);
-			path = "tastey.watchkitapp Watch AppTests";
-			sourceTree = "<group>";
-		};
-		5C1A11542A95108100FF32F6 /* tastey.watchkitapp Watch AppUITests */ = {
-			isa = PBXGroup;
-			children = (
-				5C1A11552A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITests.swift */,
-				5C1A11572A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITestsLaunchTests.swift */,
-			);
-			path = "tastey.watchkitapp Watch AppUITests";
 			sourceTree = "<group>";
 		};
 		5C20A51529AB527B00ABBA74 /* FlavorManagement */ = {
@@ -728,6 +677,7 @@
 				5C11ECB228EEEDEF00CCDE6A /* FriendsScreen.swift */,
 				5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */,
 				5C7C3577299ABFBD009A3C09 /* FriendListItemView.swift */,
+				5CEFCCD72A9E764800317BB8 /* NameTagTip.swift */,
 			);
 			path = Friends;
 			sourceTree = "<group>";
@@ -1115,8 +1065,6 @@
 				5CDB8BA02A92A99F00F73123 /* Models */,
 				5CFEE57528ED69B100A8DD66 /* Tastybytes */,
 				5C1A11392A95107D00FF32F6 /* tastey.watchkitapp Watch App */,
-				5C1A114A2A95108100FF32F6 /* tastey.watchkitapp Watch AppTests */,
-				5C1A11542A95108100FF32F6 /* tastey.watchkitapp Watch AppUITests */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
 				5CF28FCA2A93F2C700FC5C49 /* Frameworks */,
 			);
@@ -1127,8 +1075,6 @@
 			children = (
 				5CFEE57328ED69B100A8DD66 /* Tastybytes.app */,
 				5C1A11382A95107D00FF32F6 /* Tastybytes.app */,
-				5C1A11472A95108100FF32F6 /* tastey.watchkitapp Watch AppTests.xctest */,
-				5C1A11512A95108100FF32F6 /* tastey.watchkitapp Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1185,42 +1131,6 @@
 			productReference = 5C1A11382A95107D00FF32F6 /* Tastybytes.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5C1A11462A95108100FF32F6 /* tastey.watchkitapp Watch AppTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5C1A11642A95108100FF32F6 /* Build configuration list for PBXNativeTarget "tastey.watchkitapp Watch AppTests" */;
-			buildPhases = (
-				5C1A11432A95108100FF32F6 /* Sources */,
-				5C1A11442A95108100FF32F6 /* Frameworks */,
-				5C1A11452A95108100FF32F6 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5C1A11492A95108100FF32F6 /* PBXTargetDependency */,
-			);
-			name = "tastey.watchkitapp Watch AppTests";
-			productName = "tastey.watchkitapp Watch AppTests";
-			productReference = 5C1A11472A95108100FF32F6 /* tastey.watchkitapp Watch AppTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		5C1A11502A95108100FF32F6 /* tastey.watchkitapp Watch AppUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5C1A11652A95108100FF32F6 /* Build configuration list for PBXNativeTarget "tastey.watchkitapp Watch AppUITests" */;
-			buildPhases = (
-				5C1A114D2A95108100FF32F6 /* Sources */,
-				5C1A114E2A95108100FF32F6 /* Frameworks */,
-				5C1A114F2A95108100FF32F6 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5C1A11532A95108100FF32F6 /* PBXTargetDependency */,
-			);
-			name = "tastey.watchkitapp Watch AppUITests";
-			productName = "tastey.watchkitapp Watch AppUITests";
-			productReference = 5C1A11512A95108100FF32F6 /* tastey.watchkitapp Watch AppUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		5CFEE57228ED69B100A8DD66 /* Tastybytes */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5CFEE58128ED69B200A8DD66 /* Build configuration list for PBXNativeTarget "Tastybytes" */;
@@ -1266,14 +1176,6 @@
 					5C1A11372A95107D00FF32F6 = {
 						CreatedOnToolsVersion = 15.0;
 					};
-					5C1A11462A95108100FF32F6 = {
-						CreatedOnToolsVersion = 15.0;
-						TestTargetID = 5C1A11372A95107D00FF32F6;
-					};
-					5C1A11502A95108100FF32F6 = {
-						CreatedOnToolsVersion = 15.0;
-						TestTargetID = 5C1A11372A95107D00FF32F6;
-					};
 					5CFEE57228ED69B100A8DD66 = {
 						CreatedOnToolsVersion = 14.0;
 					};
@@ -1305,8 +1207,6 @@
 			targets = (
 				5CFEE57228ED69B100A8DD66 /* Tastybytes */,
 				5C1A11372A95107D00FF32F6 /* tastey.watchkitapp Watch App */,
-				5C1A11462A95108100FF32F6 /* tastey.watchkitapp Watch AppTests */,
-				5C1A11502A95108100FF32F6 /* tastey.watchkitapp Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1318,20 +1218,6 @@
 			files = (
 				5C1A11422A95108100FF32F6 /* Preview Assets.xcassets in Resources */,
 				5C1A113F2A95108100FF32F6 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5C1A11452A95108100FF32F6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5C1A114F2A95108100FF32F6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1355,23 +1241,6 @@
 			files = (
 				5C1A113D2A95107D00FF32F6 /* ContentView.swift in Sources */,
 				5C1A113B2A95107D00FF32F6 /* tastey_watchkitappApp.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5C1A11432A95108100FF32F6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5C1A114C2A95108100FF32F6 /* tastey_watchkitapp_Watch_AppTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5C1A114D2A95108100FF32F6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5C1A11562A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITests.swift in Sources */,
-				5C1A11582A95108100FF32F6 /* tastey_watchkitapp_Watch_AppUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1500,6 +1369,7 @@
 				5C6E106F2A1FDF8000079F8E /* CheckInCommentNotificationView.swift in Sources */,
 				5CCD4F602A32F09000320F2F /* CheckInShareLinkView.swift in Sources */,
 				5CF0FA6A2A3D011400CC3B62 /* CheckInImagesView.swift in Sources */,
+				5CEFCCD82A9E764800317BB8 /* NameTagTip.swift in Sources */,
 				5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */,
 				5CDCAE222A33BFF500EA7824 /* CompanyShareLinkView.swift in Sources */,
 				5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */,
@@ -1548,16 +1418,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5C1A11492A95108100FF32F6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5C1A11372A95107D00FF32F6 /* tastey.watchkitapp Watch App */;
-			targetProxy = 5C1A11482A95108100FF32F6 /* PBXContainerItemProxy */;
-		};
-		5C1A11532A95108100FF32F6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5C1A11372A95107D00FF32F6 /* tastey.watchkitapp Watch App */;
-			targetProxy = 5C1A11522A95108100FF32F6 /* PBXContainerItemProxy */;
-		};
 		5C1A115A2A95108100FF32F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5C1A11372A95107D00FF32F6 /* tastey.watchkitapp Watch App */;
@@ -1629,102 +1489,6 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-			};
-			name = Release;
-		};
-		5C1A115F2A95108100FF32F6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J9S7QG9SVR;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.villeheikkila.tastey-watchkitapp-Watch-AppTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tastey.watchkitapp Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/tastey.watchkitapp Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-			};
-			name = Debug;
-		};
-		5C1A11602A95108100FF32F6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J9S7QG9SVR;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.villeheikkila.tastey-watchkitapp-Watch-AppTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tastey.watchkitapp Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/tastey.watchkitapp Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-			};
-			name = Release;
-		};
-		5C1A11612A95108100FF32F6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J9S7QG9SVR;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.villeheikkila.tastey-watchkitapp-Watch-AppUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				TEST_TARGET_NAME = "tastey.watchkitapp Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-			};
-			name = Debug;
-		};
-		5C1A11622A95108100FF32F6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J9S7QG9SVR;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.villeheikkila.tastey-watchkitapp-Watch-AppUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				TEST_TARGET_NAME = "tastey.watchkitapp Watch App";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
@@ -1971,24 +1735,6 @@
 			buildConfigurations = (
 				5C1A115D2A95108100FF32F6 /* Debug */,
 				5C1A115E2A95108100FF32F6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5C1A11642A95108100FF32F6 /* Build configuration list for PBXNativeTarget "tastey.watchkitapp Watch AppTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5C1A115F2A95108100FF32F6 /* Debug */,
-				5C1A11602A95108100FF32F6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5C1A11652A95108100FF32F6 /* Build configuration list for PBXNativeTarget "tastey.watchkitapp Watch AppUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5C1A11612A95108100FF32F6 /* Debug */,
-				5C1A11622A95108100FF32F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

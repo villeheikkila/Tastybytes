@@ -5,6 +5,7 @@ import Repositories
 import StoreKit
 import Supabase
 import SwiftUI
+import TipKit
 
 struct RootView: View {
     private let logger = Logger(category: "RootView")
@@ -79,6 +80,9 @@ struct RootView: View {
             Task {
                 await loadSessionFromURL(url: url)
             }
+        }
+        .task {
+            try? Tips.configure([.displayFrequency(.daily)])
         }
         .task {
             await appDataEnvironmentModel.initialize()

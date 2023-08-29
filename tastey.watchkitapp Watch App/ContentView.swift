@@ -46,7 +46,6 @@ struct ContentView: View {
     init(supabaseClient: SupabaseClient) {
         let repository = Repository(supabaseClient: supabaseClient)
         self.supabaseClient = supabaseClient
-
         _repository = State(wrappedValue: repository)
     }
 
@@ -55,6 +54,9 @@ struct ContentView: View {
     var body: some View {
         ActivityFeed()
             .environment(repository)
+            .task {
+                await supabaseClient.auth.initialize()
+            }
     }
 }
 
