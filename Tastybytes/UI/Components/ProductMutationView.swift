@@ -322,7 +322,8 @@ struct ProductMutationInnerView: View {
                         }
                     }
                 }
-            }).disabled(category == nil)
+            })
+            .disabled(category == nil)
         }
         header: {
             Text("Category")
@@ -443,6 +444,7 @@ struct ProductMutationInnerView: View {
                     dismiss()
                 }
             }
+            router.removeLast()
             router.navigate(screen: .product(newProduct))
             await onSuccess(newProduct)
         case let .failure(error):
