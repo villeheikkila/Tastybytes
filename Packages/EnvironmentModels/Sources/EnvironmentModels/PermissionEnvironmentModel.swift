@@ -18,6 +18,10 @@ import SwiftUI
 
         public init() {}
 
+        public var hasLocationAccess: Bool {
+            locationsStatus == .authorizedWhenInUse || locationsStatus == .authorizedAlways
+        }
+
         // push notifications
         public func requestPushNotificationAuthorization() {
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]

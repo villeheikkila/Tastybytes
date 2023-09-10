@@ -105,9 +105,6 @@ struct PermissionOnboarding: View {
                 }
             }
         }))
-        .task {
-            permissionEnvironmentModel.initialize()
-        }
     }
 }
 

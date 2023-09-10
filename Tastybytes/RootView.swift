@@ -85,6 +85,9 @@ struct RootView: View {
             try? Tips.configure([.displayFrequency(.daily)])
         }
         .task {
+            permissionEnvironmentModel.initialize()
+        }
+        .task {
             await appDataEnvironmentModel.initialize()
         }
         .task {

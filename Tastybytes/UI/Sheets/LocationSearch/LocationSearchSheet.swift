@@ -12,6 +12,7 @@ struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @State private var searchResults = [Location]()
     @State private var locationEnvironmentModel = LocationEnvironmentModel()
     @State private var recentLocations = [Location]()
@@ -61,7 +62,7 @@ struct LocationSearchSheet: View {
                     }
                 }
             }
-            if !recentLocations.isEmpty, !hasSearched {
+            if permissionEnvironmentModel.hasLocationAccess, !recentLocations.isEmpty, !hasSearched {
                 Section("Nearby locations") {
                     ForEach(nearbyLocations) { location in
                         LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
@@ -84,6 +85,9 @@ struct LocationSearchSheet: View {
         })
         .task {
             await getRecentLocations()
+        }
+        .task {
+            locationEnvironmentModel.requestLocation()
         }
         .onChange(of: locationEnvironmentModel.location) { _, latestLocation in
             guard nearbyLocations.isEmpty else { return }
