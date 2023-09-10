@@ -125,4 +125,18 @@ public extension Location {
             case id = "p_location_id"
         }
     }
+
+    enum RecentLocation {
+        case checkIn
+        case purchase
+
+        public var view: Database.Table {
+            switch self {
+            case .checkIn:
+                .viewRecentLocationsFromCurrentUser
+            case .purchase:
+                .viewRecentPurchaseLocationsFromCurrentUser
+            }
+        }
+    }
 }

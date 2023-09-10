@@ -10,7 +10,7 @@ public protocol LocationRepository {
     func getCheckInLocations(userId: UUID) async -> Result<[Location], Error>
     func getSummaryById(id: UUID) async -> Result<Summary, Error>
     func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error>
-    func getRecentLocations() async -> Result<[Location], Error>
+    func getRecentLocations(category: Location.RecentLocation) async -> Result<[Location], Error>
     func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error>
 }
 
@@ -68,11 +68,11 @@ public struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func getRecentLocations() async -> Result<[Location], Error> {
+    public func getRecentLocations(category: Location.RecentLocation) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
                 .database
-                .from(.viewRecentLocationsFromCurrentUser)
+                .from(category.view)
                 .select(columns: Location.getQuery(.joined(false)))
                 .limit(count: 5)
                 .order(column: "created_at", ascending: false)

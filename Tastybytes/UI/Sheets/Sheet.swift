@@ -36,7 +36,7 @@ enum Sheet: Identifiable, Equatable {
     )
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)
-    case locationSearch(title: String, onSelect: (_ location: Location) -> Void)
+    case locationSearch(category: Location.RecentLocation, title: String, onSelect: (_ location: Location) -> Void)
     case legacyPhotoPicker(onSelection: (_ image: UIImage) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
@@ -99,8 +99,8 @@ enum Sheet: Identifiable, Equatable {
             FriendSheet(taggedFriends: taggedFriends)
         case let .flavors(pickedFlavors: pickedFlavors):
             FlavorSheet(pickedFlavors: pickedFlavors)
-        case let .locationSearch(title: title, onSelect: onSelect):
-            LocationSearchSheet(title: title, onSelect: onSelect)
+        case let .locationSearch(category: category, title: title, onSelect: onSelect):
+            LocationSearchSheet(category: category, title: title, onSelect: onSelect)
         case let .legacyPhotoPicker(onSelection: onSelection):
             LegacyPhotoPicker(onSelection: onSelection)
         case let .newFlavor(onSubmit: onSubmit):

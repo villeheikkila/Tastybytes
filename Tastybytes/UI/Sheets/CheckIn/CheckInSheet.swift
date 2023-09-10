@@ -193,11 +193,13 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("Location & Friends") {
-            LocationInputButton(title: "Check-in Location", selection: location) { location in
+            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location) { location in
                 self.location = location
             }
 
-            LocationInputButton(title: "Purchase Location", selection: purchaseLocation) { location in
+            LocationInputButton(category: .purchase, title: "Purchase Location",
+                                selection: purchaseLocation)
+            { location in
                 purchaseLocation = location
             }
 
@@ -322,12 +324,13 @@ extension CheckInSheet {
 }
 
 struct LocationInputButton: View {
+    let category: Location.RecentLocation
     let title: String
     let selection: Location?
     let onSelect: (_ location: Location) -> Void
 
     var body: some View {
-        RouterLink(sheet: .locationSearch(title: title, onSelect: onSelect), label: {
+        RouterLink(sheet: .locationSearch(category: category, title: title, onSelect: onSelect), label: {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
 

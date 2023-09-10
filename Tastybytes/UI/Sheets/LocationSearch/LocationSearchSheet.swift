@@ -22,12 +22,14 @@ struct LocationSearchSheet: View {
 
     @Environment(\.dismiss) private var dismiss
 
+    let category: Location.RecentLocation
     let title: String
     let onSelect: (_ location: Location) -> Void
 
-    init(title: String, onSelect: @escaping (_ location: Location) -> Void) {
+    init(category: Location.RecentLocation, title: String, onSelect: @escaping (_ location: Location) -> Void) {
         self.title = title
         self.onSelect = onSelect
+        self.category = category
     }
 
     var hasSearched: Bool {
@@ -104,7 +106,7 @@ struct LocationSearchSheet: View {
     }
 
     func getRecentLocations() async {
-        switch await repository.location.getRecentLocations() {
+        switch await repository.location.getRecentLocations(category: category) {
         case let .success(recentLocations):
             await MainActor.run {
                 withAnimation {
