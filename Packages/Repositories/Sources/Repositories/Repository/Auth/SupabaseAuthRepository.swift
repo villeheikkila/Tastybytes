@@ -1,3 +1,4 @@
+import Foundation
 import GoTrue
 import Supabase
 @_spi(Experimental) import GoTrue
@@ -19,6 +20,18 @@ struct SupabaseAuthRepository: AuthRepository {
             try await client
                 .auth
                 .signOut()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func signInFromUrl(url: URL) async -> Result<Void, Error> {
+        do {
+            try await client
+                .auth
+                .session(from: url)
 
             return .success(())
         } catch {

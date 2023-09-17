@@ -7,7 +7,7 @@ import SwiftUI
 
 struct CheckInImagesView: View {
     private let logger = Logger(category: "CheckInImagesView")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInImages = [CheckIn.Image]()
     @State private var isLoading = false
@@ -62,7 +62,7 @@ struct CheckInImagesView: View {
 
 struct CheckInImageCellView: View {
     @Environment(Router.self) private var router
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
 
     let checkInImage: CheckIn.Image
 

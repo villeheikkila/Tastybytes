@@ -1,30 +1,12 @@
 import EnvironmentModels
-import GoTrue
 import OSLog
 import Repositories
 import StoreKit
-import Supabase
 import SwiftUI
 import TipKit
 
-struct RepositoryKey: EnvironmentKey {
-    static var defaultValue: RepositoryProtocol? = nil
-}
-
-extension EnvironmentValues {
-    var repository: RepositoryProtocol {
-        get {
-            guard let currentValue = self[RepositoryKey.self]
-            else { fatalError("Repository has not been added to the environment") }
-            return currentValue
-        }
-        set { self[RepositoryKey.self] = newValue }
-    }
-}
-
 struct RootView: View {
     private let logger = Logger(category: "RootView")
-    let supabaseClient: SupabaseClient
     @State private var splashScreenEnvironmentModel = SplashScreenEnvironmentModel()
     @State private var permissionEnvironmentModel = PermissionEnvironmentModel()
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
@@ -36,11 +18,10 @@ struct RootView: View {
     @AppStorage(.colorScheme) var colorScheme: String = "system"
     @State private var authEvent: AuthChangeEvent?
     @State private var orientation: UIDeviceOrientation
+    @Environment(\.repository) private var repository
     let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    init(supabaseClient: SupabaseClient, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
-        let repository = Repository(supabaseClient: supabaseClient)
-        self.supabaseClient = supabaseClient
+    init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         _notificationEnvironmentModel =
             State(wrappedValue: NotificationEnvironmentModel(repository: repository,
                                                              feedbackEnvironmentModel: feedbackEnvironmentModel))
@@ -76,7 +57,6 @@ struct RootView: View {
                 SplashScreen()
             }
         }
-        .environment(\.repository, Repository(supabaseClient: supabaseClient))
         .environment(splashScreenEnvironmentModel)
         .environment(notificationEnvironmentModel)
         .environment(profileEnvironmentModel)
@@ -104,7 +84,7 @@ struct RootView: View {
             await appDataEnvironmentModel.initialize()
         }
         .task {
-            for await authEventChange in supabaseClient.auth.authEventChange {
+            for await authEventChange in repository.authEvent {
                 withAnimation {
                     authEvent = authEventChange
                 }
@@ -120,9 +100,8 @@ struct RootView: View {
     }
 
     func loadSessionFromURL(url: URL) async {
-        do {
-            _ = try await supabaseClient.auth.session(from: url)
-        } catch {
+        let result = await repository.auth.signInFromUrl(url: url)
+        if case let .failure(error) = result {
             logger.error("Failed to load session from url: \(url). Error: \(error) (\(#file):\(#line))")
         }
     }

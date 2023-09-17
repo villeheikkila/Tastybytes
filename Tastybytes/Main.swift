@@ -3,8 +3,22 @@ import Firebase
 import FirebaseMessaging
 import Models
 import OSLog
-import Supabase
+import Repositories
 import SwiftUI
+
+public struct RepositoryKey: EnvironmentKey {
+    public static var defaultValue: Repository = .init(
+        supabaseURL: Config.supabaseUrl,
+        supabaseKey: Config.supabaseAnonKey
+    )
+}
+
+public extension EnvironmentValues {
+    var repository: Repository {
+        get { self[RepositoryKey.self] }
+        set { self[RepositoryKey.self] = newValue }
+    }
+}
 
 /*
  This global variable is here to share state between AppDelegate, SceneDelegate and Main app
@@ -16,18 +30,15 @@ var selectedQuickAction: UIApplicationShortcutItem?
 struct Main: App {
     private let logger = Logger(category: "Main")
     @Environment(\.scenePhase) private var phase
+    @Environment(\.repository) private var repository
+
     @Bindable private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
     @UIApplicationDelegateAdaptor(AppDelegate.self)
     var appDelegate
 
-    private let supabaseClient = SupabaseClient(
-        supabaseURL: Config.supabaseUrl,
-        supabaseKey: Config.supabaseAnonKey
-    )
-
     var body: some Scene {
         WindowGroup {
-            RootView(supabaseClient: supabaseClient, feedbackEnvironmentModel: feedbackEnvironmentModel)
+            RootView(repository: repository, feedbackEnvironmentModel: feedbackEnvironmentModel)
         }
         .onChange(of: phase) { _, newPhase in
             switch newPhase {

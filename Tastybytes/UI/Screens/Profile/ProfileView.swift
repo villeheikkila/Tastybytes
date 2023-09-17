@@ -8,7 +8,7 @@ import SwiftUI
 
 struct ProfileView: View {
     private let logger = Logger(category: "ProfileView")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CheckInSheet: View {
     private let logger = Logger(category: "CheckInSheet")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel

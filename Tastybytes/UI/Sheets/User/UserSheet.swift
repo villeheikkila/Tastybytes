@@ -7,7 +7,7 @@ import SwiftUI
 private let logger = Logger(category: "UserSheet")
 
 struct UserSheet: View {
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

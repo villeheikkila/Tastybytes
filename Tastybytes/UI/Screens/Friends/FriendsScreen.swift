@@ -6,7 +6,7 @@ import SwiftUI
 
 struct FriendsScreen: View {
     private let logger = Logger(category: "FriendsScreen")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

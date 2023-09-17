@@ -1,4 +1,6 @@
+@_exported import enum GoTrue.AuthChangeEvent
 import Supabase
+import SwiftUI
 
 public protocol RepositoryProtocol {
     var profile: ProfileRepository { get }
@@ -23,6 +25,8 @@ public protocol RepositoryProtocol {
 }
 
 public struct Repository: RepositoryProtocol {
+    let client: SupabaseClient
+
     public let profile: ProfileRepository
     public let checkIn: CheckInRepository
     public let checkInComment: CheckInCommentRepository
@@ -43,25 +47,32 @@ public struct Repository: RepositoryProtocol {
     public let document: DocumentRepository
     public let report: ReportRepository
 
-    public init(supabaseClient: SupabaseClient) {
-        profile = SupabaseProfileRepository(client: supabaseClient)
-        checkIn = SupabaseCheckInRepository(client: supabaseClient)
-        checkInComment = SupabaseCheckInCommentRepository(client: supabaseClient)
-        checkInReactions = SupabaseCheckInReactionsRepository(client: supabaseClient)
-        product = SupabaseProductRepository(client: supabaseClient)
-        productBarcode = SupabaseProductBarcodeRepository(client: supabaseClient)
-        auth = SupabaseAuthRepository(client: supabaseClient)
-        company = SupabaseCompanyRepository(client: supabaseClient)
-        friend = SupabaseFriendsRepository(client: supabaseClient)
-        category = SupabaseCategoryRepository(client: supabaseClient)
-        subcategory = SupabaseSubcategoryRepository(client: supabaseClient)
-        servingStyle = SupabaseServingStyleRepository(client: supabaseClient)
-        brand = SupabaseBrandRepository(client: supabaseClient)
-        subBrand = SupabaseSubBrandRepository(client: supabaseClient)
-        flavor = SupabaseFlavorRepository(client: supabaseClient)
-        notification = SupabaseNotificationRepository(client: supabaseClient)
-        location = SupabaseLocationRepository(client: supabaseClient)
-        document = SupabaseDocumentRepository(client: supabaseClient)
-        report = SupabaseReportRepository(client: supabaseClient)
+    public var authEvent: AsyncStream<AuthChangeEvent> {
+        client.auth.authEventChange
+    }
+
+    public init(supabaseURL: URL,
+                supabaseKey: String)
+    {
+        client = SupabaseClient(supabaseURL: supabaseURL, supabaseKey: supabaseKey)
+        profile = SupabaseProfileRepository(client: client)
+        checkIn = SupabaseCheckInRepository(client: client)
+        checkInComment = SupabaseCheckInCommentRepository(client: client)
+        checkInReactions = SupabaseCheckInReactionsRepository(client: client)
+        product = SupabaseProductRepository(client: client)
+        productBarcode = SupabaseProductBarcodeRepository(client: client)
+        auth = SupabaseAuthRepository(client: client)
+        company = SupabaseCompanyRepository(client: client)
+        friend = SupabaseFriendsRepository(client: client)
+        category = SupabaseCategoryRepository(client: client)
+        subcategory = SupabaseSubcategoryRepository(client: client)
+        servingStyle = SupabaseServingStyleRepository(client: client)
+        brand = SupabaseBrandRepository(client: client)
+        subBrand = SupabaseSubBrandRepository(client: client)
+        flavor = SupabaseFlavorRepository(client: client)
+        notification = SupabaseNotificationRepository(client: client)
+        location = SupabaseLocationRepository(client: client)
+        document = SupabaseDocumentRepository(client: client)
+        report = SupabaseReportRepository(client: client)
     }
 }

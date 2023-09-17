@@ -169,8 +169,10 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public func logOut() async {
         switch await repository.auth.logOut() {
         case .success():
-            clearTemporaryData()
-            UserDefaults().reset()
+            await MainActor.run {
+                clearTemporaryData()
+                UserDefaults().reset()
+            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackEnvironmentModel.toggle(.error(.unexpected))

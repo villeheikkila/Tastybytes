@@ -11,6 +11,21 @@ import Repositories
 import Supabase
 import SwiftUI
 
+public struct RepositoryKey: EnvironmentKey {
+    public static var defaultValue: RepositoryProtocol? = nil
+}
+
+public extension EnvironmentValues {
+    var repository: RepositoryProtocol {
+        get {
+            guard let currentValue = self[RepositoryKey.self]
+            else { fatalError("Repository has not been added to the environment") }
+            return currentValue
+        }
+        set { self[RepositoryKey.self] = newValue }
+    }
+}
+
 enum Route: CaseIterable, Identifiable {
     var id: String {
         switch self {
@@ -41,19 +56,16 @@ enum Route: CaseIterable, Identifiable {
 
 struct ContentView: View {
     let supabaseClient: SupabaseClient
-    @State private var repository: Repository
 
     init(supabaseClient: SupabaseClient) {
-        let repository = Repository(supabaseClient: supabaseClient)
         self.supabaseClient = supabaseClient
-        _repository = State(wrappedValue: repository)
     }
 
     @State var selected: Route? = .activity
 
     var body: some View {
         ActivityFeed()
-            .environment(repository)
+            .environment(\.repository, Repository(supabaseURL: Config.supabaseUrl, supabaseKey: Config.supabaseAnonKey))
             .task {
                 await supabaseClient.auth.initialize()
             }
@@ -88,7 +100,7 @@ struct ActivityFeed: View {
     }
 
     let logger = Logger(category: "ActivityFeed")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @State private var isLoading = false
     @State private var initialLoadCompleted = false
     @State private var page = 0

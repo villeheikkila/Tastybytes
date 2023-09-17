@@ -6,7 +6,7 @@ import SwiftUI
 
 struct BrandSheet: View {
     private let logger = Logger(category: "BrandSheet")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router

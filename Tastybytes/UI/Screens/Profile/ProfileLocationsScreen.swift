@@ -8,7 +8,7 @@ import SwiftUI
 private let logger = Logger(category: "ProfileLocationsScreen")
 
 struct ProfileLocationsScreen: View {
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInLocations = [Location]()

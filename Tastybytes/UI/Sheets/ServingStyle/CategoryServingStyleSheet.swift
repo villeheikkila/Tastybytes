@@ -6,7 +6,7 @@ import SwiftUI
 
 struct CategoryServingStyleSheet: View {
     private let logger = Logger(category: "CategoryServingStyleSheet")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var servingStyles: [ServingStyle]

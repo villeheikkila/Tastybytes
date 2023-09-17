@@ -6,7 +6,7 @@ import SwiftUI
 
 struct MergeLocationSheet: View {
     private let logger = Logger(category: "MergeLocationSheet")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var locations = [Location]()

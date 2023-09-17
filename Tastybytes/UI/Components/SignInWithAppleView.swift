@@ -9,7 +9,7 @@ import Repositories
 struct SignInWithAppleView: View {
     private let logger = Logger(category: "SignInWithAppleView")
     @Environment(\.colorScheme) var colorScheme
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
 
     var body: some View {

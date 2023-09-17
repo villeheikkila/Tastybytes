@@ -49,7 +49,9 @@ final class Router {
         path.removeLast()
     }
 
-    func fetchAndNavigateTo(_ repository: Repository, _ destination: NavigatablePath, resetStack: Bool = false) {
+    func fetchAndNavigateTo(_ repository: RepositoryProtocol, _ destination: NavigatablePath,
+                            resetStack: Bool = false)
+    {
         Task {
             switch destination {
             case let .product(id):

@@ -8,7 +8,7 @@ import SwiftUI
 private let logger = Logger(category: "BrandScreen")
 
 struct BrandScreen: View {
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
@@ -480,7 +480,7 @@ struct BrandScreen: View {
 private struct ProductRow: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(Router.self) private var router
     @State private var showDeleteProductConfirmationDialog = false
     @State private var productToDelete: Product.Joined? {

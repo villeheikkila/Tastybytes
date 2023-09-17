@@ -6,7 +6,7 @@ import SwiftUI
 
 struct AuthenticationScreen: View {
     private let logger = Logger(category: "AuthenticationScreen")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var showAlternativeSignInMethods = false

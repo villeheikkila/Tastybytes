@@ -1,7 +1,9 @@
+import Foundation
 import Supabase
 
 public protocol AuthRepository {
     func getUser() async -> Result<User, Error>
+    func signInFromUrl(url: URL) async -> Result<Void, Error>
     func logOut() async -> Result<Void, Error>
     func sendEmailVerification(email: String) async -> Result<Void, Error>
     func sendMagicLink(email: String) async -> Result<Void, Error>

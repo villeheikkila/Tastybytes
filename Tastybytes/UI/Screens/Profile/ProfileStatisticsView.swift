@@ -6,7 +6,7 @@ import SwiftUI
 
 struct ProfileStatisticsView: View {
     private let logger = Logger(category: "ProfileStatisticsView")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var categoryStatistics = [CategoryStatistics]()
 
@@ -64,7 +64,7 @@ struct ProfileStatisticsView: View {
 
 struct SubcategoryStatisticsView: View {
     private let logger = Logger(category: "SubcategoryStatistics")
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var subcategoryStatistics = [SubcategoryStatistics]()
     @State private var isLoading = false

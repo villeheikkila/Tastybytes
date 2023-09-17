@@ -8,7 +8,7 @@ import SwiftUI
 private let logger = Logger(category: "AccountSettingsScreen")
 
 struct AccountSettingsScreen: View {
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var showDeleteConfirmation = false

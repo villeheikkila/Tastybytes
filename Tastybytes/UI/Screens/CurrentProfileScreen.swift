@@ -4,7 +4,7 @@ import Repositories
 import SwiftUI
 
 struct CurrentProfileScreen: View {
-    @Environment(Repository.self) private var repository
+    @Environment(\.repository) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Binding var scrollToTop: Int
