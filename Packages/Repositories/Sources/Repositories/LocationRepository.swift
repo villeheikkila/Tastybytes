@@ -165,3 +165,41 @@ public struct SupabaseLocationRepository: LocationRepository {
         }
     }
 }
+
+public extension Country {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = Database.Table.countries.rawValue
+        let saved = "country_code, name, emoji"
+
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        }
+    }
+
+    enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
+    }
+}
+
+public extension Location {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = Database.Table.locations.rawValue
+        let saved = "id, name, title, longitude, latitude, country_code"
+
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .joined(withTableName):
+            return queryWithTableName(tableName, [saved, Country.getQuery(.saved(true))].joinComma(), withTableName)
+        }
+    }
+
+    enum QueryType {
+        case tableName
+        case joined(_ withTableName: Bool)
+    }
+}

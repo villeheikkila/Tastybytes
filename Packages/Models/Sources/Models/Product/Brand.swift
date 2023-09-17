@@ -1,5 +1,7 @@
 import Foundation
 
+public enum Brand {}
+
 public protocol BrandProtocol {
     var id: Int { get }
     var name: String { get }
@@ -10,43 +12,7 @@ public protocol BrandProtocol {
 public extension BrandProtocol {
     var logoUrl: URL? {
         guard let logoFile else { return nil }
-        return URL(bucketId: Brand.getQuery(.logosBucket), fileName: logoFile)
-    }
-}
-
-public enum Brand {
-    public static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.brands.rawValue
-        let saved = "id, name, is_verified, logo_file"
-        let logosBucketId = "brand-logos"
-
-        switch queryType {
-        case .tableName:
-            return tableName
-        case .logosBucket:
-            return logosBucketId
-        case let .joinedSubBrands(withTableName):
-            return queryWithTableName(tableName, [saved, SubBrand.getQuery(.saved(true))].joinComma(), withTableName)
-        case let .joined(withTableName):
-            return queryWithTableName(tableName, [saved, SubBrand.getQuery(.joined(true))].joinComma(), withTableName)
-        case let .joinedCompany(withTableName):
-            return queryWithTableName(tableName, [saved, Company.getQuery(.saved(true))].joinComma(), withTableName)
-        case let .joinedSubBrandsCompany(withTableName):
-            return queryWithTableName(
-                tableName,
-                [saved, SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true))].joinComma(),
-                withTableName
-            )
-        }
-    }
-
-    public enum QueryType {
-        case tableName
-        case logosBucket
-        case joined(_ withTableName: Bool)
-        case joinedSubBrands(_ withTableName: Bool)
-        case joinedCompany(_ withTableName: Bool)
-        case joinedSubBrandsCompany(_ withTableName: Bool)
+        return URL(bucketId: "brand-logos", fileName: logoFile)
     }
 }
 

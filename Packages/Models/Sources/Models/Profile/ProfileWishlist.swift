@@ -34,25 +34,4 @@ public enum ProfileWishlist {
             case id = "p_product_id"
         }
     }
-
-    public static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.profileWishlistItems.rawValue
-        let saved = "created_by"
-
-        switch queryType {
-        case .tableName:
-            return tableName
-        case let .joined(withTableName):
-            return queryWithTableName(
-                tableName,
-                [saved, Product.getQuery(.joinedBrandSubcategories(true))].joinComma(),
-                withTableName
-            )
-        }
-    }
-
-    public enum QueryType {
-        case tableName
-        case joined(_ withTableName: Bool)
-    }
 }

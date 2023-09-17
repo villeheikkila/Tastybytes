@@ -235,3 +235,39 @@ public struct SupabaseBrandRepository: BrandRepository {
         }
     }
 }
+
+public extension Brand {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = Database.Table.brands.rawValue
+        let saved = "id, name, is_verified, logo_file"
+        let logosBucketId = "brand-logos"
+
+        switch queryType {
+        case .tableName:
+            return tableName
+        case .logosBucket:
+            return logosBucketId
+        case let .joinedSubBrands(withTableName):
+            return queryWithTableName(tableName, [saved, SubBrand.getQuery(.saved(true))].joinComma(), withTableName)
+        case let .joined(withTableName):
+            return queryWithTableName(tableName, [saved, SubBrand.getQuery(.joined(true))].joinComma(), withTableName)
+        case let .joinedCompany(withTableName):
+            return queryWithTableName(tableName, [saved, Company.getQuery(.saved(true))].joinComma(), withTableName)
+        case let .joinedSubBrandsCompany(withTableName):
+            return queryWithTableName(
+                tableName,
+                [saved, SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true))].joinComma(),
+                withTableName
+            )
+        }
+    }
+
+    enum QueryType {
+        case tableName
+        case logosBucket
+        case joined(_ withTableName: Bool)
+        case joinedSubBrands(_ withTableName: Bool)
+        case joinedCompany(_ withTableName: Bool)
+        case joinedSubBrandsCompany(_ withTableName: Bool)
+    }
+}

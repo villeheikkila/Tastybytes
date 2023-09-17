@@ -8,25 +8,6 @@ public struct Permission: Identifiable, Codable, Hashable, Sendable {
     }
 }
 
-public extension Permission {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.permissions.rawValue
-        let saved = "id, name"
-
-        switch queryType {
-        case .tableName:
-            return tableName
-        case let .saved(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
-        }
-    }
-
-    enum QueryType {
-        case tableName
-        case saved(_ withTableName: Bool)
-    }
-}
-
 public enum PermissionName: String, Codable, Equatable, Sendable {
     case canDeleteProducts = "can_delete_products"
     case canDeleteCompanies = "can_delete_companies"

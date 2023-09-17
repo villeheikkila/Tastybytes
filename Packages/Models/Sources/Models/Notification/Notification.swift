@@ -34,31 +34,6 @@ public struct Notification: Identifiable, Hashable {
     }
 }
 
-public extension Notification {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.notifications.rawValue
-        let saved = "id, message, created_at, seen_at"
-
-        switch queryType {
-        case .tableName:
-            return tableName
-        case .joined:
-            return [
-                saved,
-                CheckInReaction.getQuery(.joinedProfileCheckIn(true)),
-                CheckInTaggedProfiles.getQuery(.joined(true)),
-                Friend.getQuery(.joined(true)),
-                CheckInComment.getQuery(.joinedCheckIn(true)),
-            ].joinComma()
-        }
-    }
-
-    enum QueryType {
-        case tableName
-        case joined
-    }
-}
-
 extension Notification: Codable {
     enum CodingKeys: String, CodingKey {
         case id
@@ -138,27 +113,6 @@ public extension Notification {
         enum CodingKeys: String, CodingKey {
             case id
             case checkIn = "check_ins"
-        }
-
-        public static func getQuery(_ queryType: QueryType) -> String {
-            let tableName = Database.Table.checkInTaggedProfiles.rawValue
-            let saved = "id"
-
-            switch queryType {
-            case .tableName:
-                return tableName
-            case let .joined(withTableName):
-                return queryWithTableName(
-                    tableName,
-                    [saved, CheckIn.getQuery(.joined(true))].joinComma(),
-                    withTableName
-                )
-            }
-        }
-
-        public enum QueryType {
-            case tableName
-            case joined(_ withTableName: Bool)
         }
     }
 
@@ -254,23 +208,5 @@ public struct ProfilePushNotification: Codable, Identifiable {
                                     .sendFriendRequestNotifications,
                                 sendCheckInCommentNotifications: sendCheckInCommentNotifications ?? self
                                     .sendCheckInCommentNotifications)
-    }
-
-    public static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.profilePushNotifications.rawValue
-        let saved =
-            "firebase_registration_token, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications, send_friend_request_notifications, send_comment_notifications"
-
-        switch queryType {
-        case .tableName:
-            return tableName
-        case let .saved(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
-        }
-    }
-
-    public enum QueryType {
-        case tableName
-        case saved(_ withTableName: Bool)
     }
 }

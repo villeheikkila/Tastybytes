@@ -67,25 +67,6 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
 }
 
 public extension Location {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.locations.rawValue
-        let saved = "id, name, title, longitude, latitude, country_code"
-
-        switch queryType {
-        case .tableName:
-            return tableName
-        case let .joined(withTableName):
-            return queryWithTableName(tableName, [saved, Country.getQuery(.saved(true))].joinComma(), withTableName)
-        }
-    }
-
-    enum QueryType {
-        case tableName
-        case joined(_ withTableName: Bool)
-    }
-}
-
-public extension Location {
     struct MergeLocationParams: Codable, Sendable {
         public init(locationId: UUID, toLocationId: UUID) {
             self.locationId = locationId

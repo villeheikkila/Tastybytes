@@ -205,3 +205,38 @@ public struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 }
+
+public extension Company {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = Database.Table.companies.rawValue
+        let editSuggestionTable = "company_edit_suggestions"
+        let saved = "id, name, logo_file, is_verified"
+        let logoBucketId = "logos"
+        let owner = queryWithTableName(tableName, saved, true)
+
+        switch queryType {
+        case .tableName:
+            return tableName
+        case .editSuggestionTable:
+            return editSuggestionTable
+        case .logoBucket:
+            return logoBucketId
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        case let .joinedBrandSubcategoriesOwner(withTableName):
+            return queryWithTableName(
+                tableName,
+                [saved, owner, Brand.getQuery(.joined(true))].joinComma(),
+                withTableName
+            )
+        }
+    }
+
+    enum QueryType {
+        case tableName
+        case editSuggestionTable
+        case logoBucket
+        case saved(_ withTableName: Bool)
+        case joinedBrandSubcategoriesOwner(_ withTableName: Bool)
+    }
+}
