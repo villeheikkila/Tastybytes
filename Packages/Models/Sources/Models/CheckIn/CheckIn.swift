@@ -389,3 +389,7 @@ public extension CheckIn {
         }
     }
 }
+
+public enum CheckInSegment: String, CaseIterable {
+    case everyone, friends, you
+}

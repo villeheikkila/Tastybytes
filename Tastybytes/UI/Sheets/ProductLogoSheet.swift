@@ -38,7 +38,7 @@ struct ProductLogoSheet: View {
                     photoLibrary: .shared()
                 ) {
                     if let logoFile, let logoUrl = URL(
-                        bucketId: .productLogos,
+                        bucket: .productLogos,
                         fileName: logoFile
                     ) {
                         LazyImage(url: logoUrl) { state in

@@ -1,0 +1,16 @@
+import Foundation
+import Models
+
+public protocol CompanyRepository {
+    func getById(id: Int) async -> Result<Company, Error>
+    func getJoinedById(id: Int) async -> Result<Company.Joined, Error>
+    func getUnverified() async -> Result<[Company], Error>
+    func insert(newCompany: Company.NewRequest) async -> Result<Company, Error>
+    func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error>
+    func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error>
+    func delete(id: Int) async -> Result<Void, Error>
+    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
+    func search(searchTerm: String) async -> Result<[Company], Error>
+    func getSummaryById(id: Int) async -> Result<Summary, Error>
+    func uploadLogo(companyId: Int, data: Data) async -> Result<String, Error>
+}
