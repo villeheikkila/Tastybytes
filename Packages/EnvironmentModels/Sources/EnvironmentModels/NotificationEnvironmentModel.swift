@@ -1,5 +1,3 @@
-import Firebase
-import FirebaseMessaging
 import Models
 import Observation
 import OSLog
@@ -228,28 +226,28 @@ public final class NotificationEnvironmentModel {
         }
     }
 
-    public func refreshAPNS() {
-        Messaging.messaging().token { token, error in
-            if let error {
-                let logger = Logger(category: "Messaging")
-                logger.error("Failed to fetch FCM registration token. Error: \(error) (\(#file):\(#line))")
-            } else if let token {
-                Task {
-                    let logger = Logger(category: "PushNotificationToken")
-                    switch await self.repository.notification
-                        .refreshPushNotificationToken(token: Profile
-                            .PushNotificationToken(firebaseRegistrationToken: token))
-                    {
-                    case let .success(pushNotificationSettings):
-                        self.pushNotificationSettings = pushNotificationSettings
-                    case let .failure(error):
-                        logger
-                            .error(
-                                "Failed to save FCM token (\(String(describing: token))). Error: \(error) (\(#file):\(#line))"
-                            )
-                    }
-                }
-            }
-        }
-    }
+//    public func refreshAPNS() {
+//        Messaging.messaging().token { token, error in
+//            if let error {
+//                let logger = Logger(category: "Messaging")
+//                logger.error("Failed to fetch FCM registration token. Error: \(error) (\(#file):\(#line))")
+//            } else if let token {
+//                Task {
+//                    let logger = Logger(category: "PushNotificationToken")
+//                    switch await self.repository.notification
+//                        .refreshPushNotificationToken(token: Profile
+//                            .PushNotificationToken(firebaseRegistrationToken: token))
+//                    {
+//                    case let .success(pushNotificationSettings):
+//                        self.pushNotificationSettings = pushNotificationSettings
+//                    case let .failure(error):
+//                        logger
+//                            .error(
+//                                "Failed to save FCM token (\(String(describing: token))). Error: \(error) (\(#file):\(#line))"
+//                            )
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

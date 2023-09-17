@@ -29,7 +29,6 @@
 		5C12B4352902C9D0001EE549 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4342902C9D0001EE549 /* TabsView.swift */; };
 		5C12B4372902CA04001EE549 /* NotificationTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationTab.swift */; };
 		5C131CEB2A022C14007ADA1B /* CategoryPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C131CEA2A022C13007ADA1B /* CategoryPickerSheet.swift */; };
-		5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5C13F21A291A7C3A00599892 /* FirebaseMessaging */; };
 		5C1A113B2A95107D00FF32F6 /* tastey_watchkitappApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1A113A2A95107D00FF32F6 /* tastey_watchkitappApp.swift */; };
 		5C1A113D2A95107D00FF32F6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1A113C2A95107D00FF32F6 /* ContentView.swift */; };
 		5C1A113F2A95108100FF32F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C1A113E2A95108100FF32F6 /* Assets.xcassets */; };
@@ -427,7 +426,6 @@
 				5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */,
 				5C2B3F672A93B06500946CC6 /* EnvironmentModels in Frameworks */,
 				5C964DC32A2D021F00805199 /* SFSafeSymbols in Frameworks */,
-				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C5882752A687B2A00851FA7 /* NukeUI in Frameworks */,
 				5CDB8BA72A93316800F73123 /* Repositories in Frameworks */,
 				5CDB8BA32A92AAE800F73123 /* Models in Frameworks */,
@@ -1146,7 +1144,6 @@
 			name = Tastybytes;
 			packageProductDependencies = (
 				5CED432428FBF6B0003F8194 /* AlertToast */,
-				5C13F21A291A7C3A00599892 /* FirebaseMessaging */,
 				5C964DC22A2D021F00805199 /* SFSafeSymbols */,
 				5C5882722A687B2A00851FA7 /* Nuke */,
 				5C5882742A687B2A00851FA7 /* NukeUI */,
@@ -1819,11 +1816,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5C13F21A291A7C3A00599892 /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
-		};
 		5C2B3F662A93B06500946CC6 /* EnvironmentModels */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = EnvironmentModels;

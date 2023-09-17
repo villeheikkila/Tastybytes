@@ -91,7 +91,7 @@ struct RootView: View {
                 switch authEvent {
                 case .signedIn:
                     await profileEnvironmentModel.initialize()
-                    notificationEnvironmentModel.refreshAPNS()
+                // notificationEnvironmentModel.refreshAPNS()
                 default:
                     break
                 }

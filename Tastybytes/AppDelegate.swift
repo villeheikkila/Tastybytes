@@ -1,6 +1,4 @@
 import EnvironmentModels
-import Firebase
-import FirebaseMessaging
 import OSLog
 import SwiftUI
 
@@ -11,16 +9,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        URLCache.shared.memoryCapacity = 50_000_000
-        URLCache.shared.diskCapacity = 1_000_000_000
-
-        FirebaseApp.configure()
-        FirebaseConfiguration.shared.setLoggerLevel(.min)
         UNUserNotificationCenter.current().delegate = self
 
         application.registerForRemoteNotifications()
-        Messaging.messaging().delegate = self
-
         return true
     }
 
@@ -62,7 +53,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification) async -> UNNotificationPresentationOptions
     {
         let userInfo = notification.request.content.userInfo
-        Messaging.messaging().appDidReceiveMessage(userInfo)
         NotificationCenter.default.post(
             name: NSNotification.Name(rawValue: "PushNotificationReceived"),
             object: nil,
@@ -80,28 +70,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         if let deepLink = userInfo["link"] as? String, let url = URL(string: deepLink) {
             UIApplication.shared.open(url)
         }
-        Messaging.messaging().appDidReceiveMessage(userInfo)
         completionHandler()
     }
 
     func application(
         _: UIApplication,
-        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
-    ) {
-        Messaging.messaging().apnsToken = deviceToken
-    }
-}
-
-extension AppDelegate: MessagingDelegate {
-    func messaging(
-        _: Messaging,
-        didReceiveRegistrationToken fcmToken: String?
-    ) {
-        let tokenDict = ["token": fcmToken ?? ""]
-        NotificationCenter.default.post(
-            name: Firebase.Notification.Name("FCMToken"),
-            object: nil,
-            userInfo: tokenDict
-        )
-    }
+        didRegisterForRemoteNotificationsWithDeviceToken _: Data
+    ) {}
 }
