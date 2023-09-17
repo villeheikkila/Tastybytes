@@ -287,7 +287,7 @@ public enum CheckInImageQueryType {
     }
 }
 
-public extension CheckIn {
+extension CheckIn {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.checkIns.rawValue
         let fromFriendsView = "view_check_ins_from_friends"
@@ -346,7 +346,7 @@ public extension CheckIn {
     }
 }
 
-public extension Models.Notification.CheckInTaggedProfiles {
+extension Models.Notification.CheckInTaggedProfiles {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.checkInTaggedProfiles.rawValue
         let saved = "id"
@@ -381,5 +381,25 @@ public enum CheckInSegment: String, CaseIterable {
         case .you:
             return .viewCheckInsFromCurrentUser
         }
+    }
+}
+
+public extension CheckIn {
+    var imageUrl: URL? {
+        guard let imageFile else { return nil }
+        return URL(
+            bucketId: .checkIns,
+            fileName: "\(profile.id.uuidString.lowercased())/\(imageFile)"
+        )
+    }
+}
+
+public extension CheckIn.Image {
+    var imageUrl: URL? {
+        guard let imageFile else { return nil }
+        return URL(
+            bucketId: .checkIns,
+            fileName: "\(createdBy.uuidString.lowercased())/\(imageFile)"
+        )
     }
 }

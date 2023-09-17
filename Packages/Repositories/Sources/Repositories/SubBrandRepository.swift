@@ -101,7 +101,7 @@ public struct SupabaseSubBrandRepository: SubBrandRepository {
     }
 }
 
-public extension SubBrand {
+extension SubBrand {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.subBrands.rawValue
         let saved = "id, name, is_verified"

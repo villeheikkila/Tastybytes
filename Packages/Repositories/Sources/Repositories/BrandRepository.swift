@@ -236,7 +236,7 @@ public struct SupabaseBrandRepository: BrandRepository {
     }
 }
 
-public extension Brand {
+extension Brand {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.brands.rawValue
         let saved = "id, name, is_verified, logo_file"
@@ -269,5 +269,12 @@ public extension Brand {
         case joinedSubBrands(_ withTableName: Bool)
         case joinedCompany(_ withTableName: Bool)
         case joinedSubBrandsCompany(_ withTableName: Bool)
+    }
+}
+
+public extension BrandProtocol {
+    var logoUrl: URL? {
+        guard let logoFile else { return nil }
+        return URL(bucketId: .brandLogos, fileName: logoFile)
     }
 }

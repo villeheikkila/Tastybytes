@@ -96,7 +96,7 @@ public struct SupabaseFriendsRepository: FriendRepository {
     }
 }
 
-public extension Friend {
+extension Friend {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.friends.rawValue
         let joined =

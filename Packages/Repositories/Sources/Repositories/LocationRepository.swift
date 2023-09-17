@@ -166,7 +166,7 @@ public struct SupabaseLocationRepository: LocationRepository {
     }
 }
 
-public extension Country {
+extension Country {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.countries.rawValue
         let saved = "country_code, name, emoji"
@@ -185,7 +185,7 @@ public extension Country {
     }
 }
 
-public extension Location {
+extension Location {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.locations.rawValue
         let saved = "id, name, title, longitude, latitude, country_code"
@@ -204,7 +204,7 @@ public extension Location {
     }
 }
 
-public extension Location.RecentLocation {
+extension Location.RecentLocation {
     var view: Database.Table {
         switch self {
         case .checkIn:

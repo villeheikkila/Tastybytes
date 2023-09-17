@@ -9,13 +9,6 @@ public protocol BrandProtocol {
     var isVerified: Bool { get }
 }
 
-public extension BrandProtocol {
-    var logoUrl: URL? {
-        guard let logoFile else { return nil }
-        return URL(bucketId: "brand-logos", fileName: logoFile)
-    }
-}
-
 public extension Brand {
     struct JoinedSubBrands: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
         public init(id: Int, name: String, logoFile: String? = nil, isVerified: Bool, subBrands: [SubBrand]) {

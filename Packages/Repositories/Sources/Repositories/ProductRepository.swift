@@ -406,7 +406,7 @@ public struct SupabaseProductRepository: ProductRepository {
     }
 }
 
-public extension Product {
+extension Product {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.products.rawValue
         let saved = "id, name, description, logo_file, is_verified, is_discontinued"
@@ -481,7 +481,7 @@ public extension Product {
     }
 }
 
-public extension ProductVariant {
+extension ProductVariant {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.productVariants.rawValue
         let saved = "id"
@@ -497,7 +497,7 @@ public extension ProductVariant {
     }
 }
 
-public extension ProductDuplicateSuggestion {
+extension ProductDuplicateSuggestion {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "product_duplicate_suggestions"
         let saved = "product_id, duplicate_of_product_id"
@@ -513,5 +513,12 @@ public extension ProductDuplicateSuggestion {
     enum QueryType {
         case tableName
         case saved(_ withTableName: Bool)
+    }
+}
+
+public extension Product.Joined {
+    var logoUrl: URL? {
+        guard let logoFile else { return nil }
+        return URL(bucketId: .productLogos, fileName: logoFile)
     }
 }

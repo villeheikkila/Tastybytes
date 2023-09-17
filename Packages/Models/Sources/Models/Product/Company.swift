@@ -4,13 +4,6 @@ public protocol CompanyLogo {
     var logoFile: String? { get }
 }
 
-public extension CompanyLogo {
-    var logoUrl: URL? {
-        guard let logoFile else { return nil }
-        return URL(bucketId: "logos", fileName: logoFile)
-    }
-}
-
 public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogo {
     public init(id: Int, name: String, logoFile: String? = nil, isVerified: Bool) {
         self.id = id

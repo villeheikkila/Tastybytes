@@ -252,7 +252,7 @@ public struct SupabaseProfileRepository: ProfileRepository {
     }
 }
 
-public extension Profile {
+extension Profile {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.profiles.rawValue
         let minimal = "id, is_private, preferred_name, avatar_file, joined_at"
@@ -284,7 +284,7 @@ public extension Profile {
     }
 }
 
-public extension Role {
+extension Role {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.roles.rawValue
         let saved = "id, name"
@@ -303,7 +303,7 @@ public extension Role {
     }
 }
 
-public extension Permission {
+extension Permission {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.permissions.rawValue
         let saved = "id, name"
@@ -322,7 +322,7 @@ public extension Permission {
     }
 }
 
-public extension ProfileWishlist {
+extension ProfileWishlist {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.profileWishlistItems.rawValue
         let saved = "created_by"
@@ -345,7 +345,7 @@ public extension ProfileWishlist {
     }
 }
 
-public extension ProfileSettings {
+extension ProfileSettings {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.profileSettings.rawValue
         let saved =
@@ -368,7 +368,7 @@ public extension ProfileSettings {
     }
 }
 
-public extension CategoryStatistics {
+extension CategoryStatistics {
     enum QueryPart {
         case value
     }
@@ -381,7 +381,7 @@ public extension CategoryStatistics {
     }
 }
 
-public extension Contributions {
+extension Contributions {
     enum QueryPart {
         case value
     }
@@ -394,7 +394,7 @@ public extension Contributions {
     }
 }
 
-public extension SubcategoryStatistics {
+extension SubcategoryStatistics {
     enum QueryPart {
         case value
     }
@@ -404,5 +404,12 @@ public extension SubcategoryStatistics {
         case .value:
             return "id, name, count"
         }
+    }
+}
+
+public extension AvatarURL {
+    var avatarUrl: URL? {
+        guard let avatarFile else { return nil }
+        return URL(bucketId: .avatars, fileName: "\(id.uuidString.lowercased())/\(avatarFile)")
     }
 }

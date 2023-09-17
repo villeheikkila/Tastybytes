@@ -22,14 +22,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         [rating == nil, review.isNilOrEmpty, flavors.isEmpty, purchaseLocation == nil].allSatisfy { $0 }
     }
 
-    public var imageUrl: URL? {
-        guard let imageFile else { return nil }
-        return URL(
-            bucketId: "check-ins",
-            fileName: "\(profile.id.uuidString.lowercased())/\(imageFile)"
-        )
-    }
-
     public init(
         id: Int,
         rating: Double? = nil,
@@ -202,14 +194,6 @@ public extension CheckIn {
         public let createdBy: UUID
         public let imageFile: String?
         public let blurHash: BlurHash?
-
-        public var imageUrl: URL? {
-            guard let imageFile else { return nil }
-            return URL(
-                bucketId: "check-ins",
-                fileName: "\(createdBy.uuidString.lowercased())/\(imageFile)"
-            )
-        }
 
         enum CodingKeys: String, CodingKey {
             case id

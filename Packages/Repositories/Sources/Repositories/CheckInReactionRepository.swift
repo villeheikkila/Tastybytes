@@ -40,7 +40,7 @@ public struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     }
 }
 
-public extension CheckInReaction {
+extension CheckInReaction {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.checkInReactions.rawValue
         let saved = "id"

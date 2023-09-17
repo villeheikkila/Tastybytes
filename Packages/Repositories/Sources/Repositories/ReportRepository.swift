@@ -24,7 +24,7 @@ public struct SupabaseReportRepository: ReportRepository {
     }
 }
 
-public extension Report {
+extension Report {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.reports.rawValue
         let saved = "id, message"

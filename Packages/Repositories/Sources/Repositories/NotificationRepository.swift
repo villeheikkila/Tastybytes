@@ -187,7 +187,7 @@ public struct SupabaseNotificationRepository: NotificationRepository {
     }
 }
 
-public extension Notification {
+extension Notification {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.notifications.rawValue
         let saved = "id, message, created_at, seen_at"
@@ -212,7 +212,7 @@ public extension Notification {
     }
 }
 
-public extension ProfilePushNotification {
+extension ProfilePushNotification {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.profilePushNotifications.rawValue
         let saved =

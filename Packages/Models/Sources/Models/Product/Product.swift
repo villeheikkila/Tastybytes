@@ -337,11 +337,6 @@ public extension Product {
         public let createdAt: String?
         public let isDiscontinued: Bool
 
-        public var logoUrl: URL? {
-            guard let logoFile else { return nil }
-            return URL(bucketId: "product-logos", fileName: logoFile)
-        }
-
         public func getDisplayName(_ part: NameParts) -> String {
             switch part {
             case .full:

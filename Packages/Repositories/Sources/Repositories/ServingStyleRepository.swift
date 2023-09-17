@@ -79,7 +79,7 @@ public struct SupabaseServingStyleRepository: ServingStyleRepository {
     }
 }
 
-public extension ServingStyle {
+extension ServingStyle {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.servingStyles.rawValue
         let saved = "id, name"

@@ -74,7 +74,7 @@ public struct SupabaseCategoryRepository: CategoryRepository {
     }
 }
 
-public extension Category {
+extension Category {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.categories.rawValue
         let servingStyleTableName = Database.Table.categoryServingStyles.rawValue

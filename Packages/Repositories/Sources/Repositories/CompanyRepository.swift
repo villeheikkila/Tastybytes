@@ -206,7 +206,7 @@ public struct SupabaseCompanyRepository: CompanyRepository {
     }
 }
 
-public extension Company {
+extension Company {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.companies.rawValue
         let editSuggestionTable = "company_edit_suggestions"
@@ -238,5 +238,12 @@ public extension Company {
         case logoBucket
         case saved(_ withTableName: Bool)
         case joinedBrandSubcategoriesOwner(_ withTableName: Bool)
+    }
+}
+
+public extension CompanyLogo {
+    var logoUrl: URL? {
+        guard let logoFile else { return nil }
+        return URL(bucketId: .logos, fileName: logoFile)
     }
 }

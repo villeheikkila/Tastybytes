@@ -58,16 +58,15 @@ public func clearTemporaryData() {
     // Reset tab restoration
     UserDefaults.standard.removeObject(for: .selectedTab)
 
-    // Reset NavigationStack restoration
+    // Clear caches folder
     let fileEnvironmentModel = FileManager.default
-    let filesToDelete = Tab.allCases.map(\.cachesPath)
     do {
         let directoryContents = try fileEnvironmentModel.contentsOfDirectory(
             at: URL.cachesDirectory,
             includingPropertiesForKeys: nil,
             options: []
         )
-        for file in directoryContents where filesToDelete.contains(file.lastPathComponent) {
+        for file in directoryContents {
             try fileEnvironmentModel.removeItem(at: file)
         }
     } catch {

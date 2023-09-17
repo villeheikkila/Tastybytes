@@ -59,7 +59,7 @@ public struct SupabaseFlavorRepository: FlavorRepository {
     }
 }
 
-public extension Flavor {
+extension Flavor {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.flavors.rawValue
         let saved = "id, name"

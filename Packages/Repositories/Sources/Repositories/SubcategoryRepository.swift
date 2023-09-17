@@ -73,7 +73,7 @@ public struct SupabaseSubcategoryRepository: SubcategoryRepository {
     }
 }
 
-public extension Subcategory {
+extension Subcategory {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.subcategories.rawValue
         let saved = "id, name, is_verified"

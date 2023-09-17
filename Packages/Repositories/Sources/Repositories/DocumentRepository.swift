@@ -26,7 +26,7 @@ public struct SupabaseDocumentRepository: DocumentRepository {
     }
 }
 
-public extension Document {
+extension Document {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.documents.rawValue
         let saved = "document"

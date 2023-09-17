@@ -6,13 +6,6 @@ public protocol AvatarURL {
     var avatarFile: String? { get }
 }
 
-public extension AvatarURL {
-    var avatarUrl: URL? {
-        guard let avatarFile else { return nil }
-        return URL(bucketId: "avatars", fileName: "\(id.uuidString.lowercased())/\(avatarFile)")
-    }
-}
-
 public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
     public let id: UUID
     public let preferredName: String

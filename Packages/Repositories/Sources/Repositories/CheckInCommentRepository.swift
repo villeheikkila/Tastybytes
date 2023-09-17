@@ -97,7 +97,7 @@ public struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     }
 }
 
-public extension CheckInComment {
+extension CheckInComment {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.checkInComments.rawValue
         let saved = "id, content, created_at"

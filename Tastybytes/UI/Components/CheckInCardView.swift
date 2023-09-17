@@ -1,5 +1,6 @@
 import Models
 import NukeUI
+import Repositories
 import SwiftUI
 
 struct CheckInCardView: View {
