@@ -91,7 +91,7 @@ struct VerificationScreen: View {
         ForEach(companies) { company in
             RouterLink(company.name, screen: .company(company))
                 .swipeActions {
-                    ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifyCompany(company) })
+                    ProgressButton("Verify", systemImage: "checkmark", action: { await verifyCompany(company) })
                         .tint(.green)
                 }
         }
@@ -108,7 +108,7 @@ struct VerificationScreen: View {
             }
             .accessibilityAddTraits(.isButton)
             .swipeActions {
-                ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifySubBrand(subBrand) })
+                ProgressButton("Verify", systemImage: "checkmark", action: { await verifySubBrand(subBrand) })
                     .tint(.green)
             }
         }
@@ -124,7 +124,7 @@ struct VerificationScreen: View {
                 }
             }
             .swipeActions {
-                ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifyBrand(brand) }).tint(.green)
+                ProgressButton("Verify", systemImage: "checkmark", action: { await verifyBrand(brand) }).tint(.green)
             }
         }
     }
@@ -149,12 +149,12 @@ struct VerificationScreen: View {
                         router.navigate(screen: .product(product))
                     }
                     .swipeActions {
-                        ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifyProduct(product) })
+                        ProgressButton("Verify", systemImage: "checkmark", action: { await verifyProduct(product) })
                             .tint(.green)
-                        RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
+                        RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
                             await loadData(refresh: true)
                         })).tint(.yellow)
-                        Button("Delete", systemSymbol: .trash, role: .destructive, action: { deleteProduct = product })
+                        Button("Delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })
                     }
             }
         }

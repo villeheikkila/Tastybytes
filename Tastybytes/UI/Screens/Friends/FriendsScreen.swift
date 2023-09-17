@@ -52,7 +52,7 @@ struct FriendsScreen: View {
             if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
                 ProgressButton(
                     "Add friend",
-                    systemSymbol: .personFillBadgePlus,
+                    systemImage: "person.fill.badge.plus",
                     action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
                 )
                 .labelStyle(.iconOnly)

@@ -92,16 +92,16 @@ struct NotificationScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
-                ProgressButton("Mark all read", systemSymbol: .envelopeOpen, action: {
+                ProgressButton("Mark all read", systemImage: "envelope.open", action: {
                     feedbackEnvironmentModel.trigger(.impact(intensity: .low))
                     await notificationEnvironmentModel.markAllAsRead()
                 })
-                ProgressButton("Delete all", systemSymbol: .trash, action: {
+                ProgressButton("Delete all", systemImage: "trash", action: {
                     feedbackEnvironmentModel.trigger(.impact(intensity: .low))
                     await notificationEnvironmentModel.deleteAll()
                 })
             } label: {
-                Label("Options menu", systemSymbol: .ellipsis)
+                Label("Options menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }
@@ -111,7 +111,7 @@ struct NotificationScreen: View {
                     filter = nil
                 }
             } label: {
-                Label("Show All", systemSymbol: .bellFill)
+                Label("Show All", systemImage: "bell.fill")
             }
             Divider()
             ForEach(NotificationType.allCases) { type in
@@ -120,7 +120,7 @@ struct NotificationScreen: View {
                         filter = type
                     }
                 } label: {
-                    Label(type.label, systemSymbol: type.systemSymbol)
+                    Label(type.label, systemImage: type.systemImage)
                 }
             }
         }

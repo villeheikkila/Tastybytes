@@ -1,5 +1,4 @@
 import EnvironmentModels
-import SFSafeSymbols
 import SwiftUI
 
 struct PermissionOnboarding: View {
@@ -61,7 +60,7 @@ struct PermissionOnboarding: View {
                 title: "Notification",
                 subtitle: "Notifications for reactions, tags and comments",
                 buttonTitle: pushNotificationButtonTitle,
-                systemSymbol: .bellFill,
+                systemName: "bell.fill",
                 action: {
                     permissionEnvironmentModel.requestPushNotificationAuthorization()
                 }
@@ -70,7 +69,7 @@ struct PermissionOnboarding: View {
                 title: "Photo Library",
                 subtitle: "Add photos to your check-ins",
                 buttonTitle: photoLibraryButtonTitle,
-                systemSymbol: .photo,
+                systemName: "photo",
                 action: {
                     permissionEnvironmentModel.requestPhotoLibraryAuthorization()
                 }
@@ -79,7 +78,7 @@ struct PermissionOnboarding: View {
                 title: "Camera",
                 subtitle: "Take photos for your check-ins",
                 buttonTitle: cameraButtonTitle,
-                systemSymbol: .camera,
+                systemName: "camera",
                 action: {
                     permissionEnvironmentModel.requestCameraAuthorization()
                 }
@@ -88,7 +87,7 @@ struct PermissionOnboarding: View {
                 title: "Location",
                 subtitle: "Find nearby locations for your check-ins",
                 buttonTitle: locationButtonTitle,
-                systemSymbol: .locationFillViewfinder,
+                systemName: "location.fill.viewfinder",
                 action: {
                     permissionEnvironmentModel.requestLocationAuthorization()
                 }
@@ -112,12 +111,12 @@ private struct PermissionListRow: View {
     let title: String
     let subtitle: String
     let buttonTitle: String
-    let systemSymbol: SFSymbol
+    let systemName: String
     let action: () -> Void
 
     var body: some View {
         HStack {
-            Image(systemSymbol: systemSymbol)
+            Image(systemName: systemName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(Color.blue)

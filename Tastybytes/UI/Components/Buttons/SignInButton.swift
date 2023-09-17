@@ -1,4 +1,3 @@
-import SFSafeSymbols
 import SwiftUI
 
 struct SignInButton: View {
@@ -14,12 +13,12 @@ struct SignInButton: View {
             }
         }
 
-        var symbol: SFSymbol {
+        var systemName: String {
             switch self {
             case .magicLink:
-                .envelopeFill
+                "envelope.fill"
             case .password:
-                .keyFill
+                "key.fill"
             }
         }
 
@@ -39,7 +38,7 @@ struct SignInButton: View {
     var body: some View {
         Button(action: { action() }, label: {
             HStack(spacing: 6) {
-                Image(systemSymbol: type.symbol)
+                Image(systemName: type.systemName)
                     .imageScale(.small)
                 Text(type.text)
                     .fontWeight(.semibold)

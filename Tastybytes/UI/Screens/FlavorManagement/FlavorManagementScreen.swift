@@ -10,7 +10,7 @@ struct FlavorManagementScreen: View {
             ForEach(appDataEnvironmentModel.flavors) { flavor in
                 Text(flavor.label)
                     .swipeActions {
-                        ProgressButton("Delete", systemSymbol: .trash, role: .destructive, action: {
+                        ProgressButton("Delete", systemImage: "trash", role: .destructive, action: {
                             await appDataEnvironmentModel.deleteFlavor(flavor)
                         })
                     }
@@ -30,7 +30,7 @@ struct FlavorManagementScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
-            RouterLink("Add flavors", systemSymbol: .plus, sheet: .newFlavor(onSubmit: { newFlavor in
+            RouterLink("Add flavors", systemImage: "plus", sheet: .newFlavor(onSubmit: { newFlavor in
                 await appDataEnvironmentModel.addFlavor(name: newFlavor)
             })).labelStyle(.iconOnly)
         }

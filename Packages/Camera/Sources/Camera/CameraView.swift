@@ -1,4 +1,3 @@
-import SFSafeSymbols
 import SwiftUI
 
 struct CameraView: View {
@@ -43,11 +42,11 @@ struct CameraView: View {
     private var cameraControls: some View {
         HStack(spacing: 60) {
             Spacer()
-            CameraControlButton(title: "Close Camera", systemSymbol: .xmark, action: { isPresented = false })
+            CameraControlButton(title: "Close Camera", systemImage: "xmark", action: { isPresented = false })
             TakePhotoButton(title: "Take Photo", action: { cameraModel.camera.takePhoto() })
             CameraControlButton(
                 title: "Switch Camera",
-                systemSymbol: .arrowTriangle2Circlepath,
+                systemImage: "arrow.triangle.2.circlepath",
                 action: { cameraModel.camera.switchCaptureDevice() }
             )
             Spacer()
@@ -82,11 +81,11 @@ private struct TakePhotoButton: View {
 
 private struct CameraControlButton: View {
     let title: LocalizedStringKey
-    let systemSymbol: SFSymbol
+    let systemImage: String
     let action: () -> Void
 
     var body: some View {
-        Button(title, systemSymbol: systemSymbol, action: action)
+        Button(title, systemImage: systemImage, action: action)
             .font(.system(size: 36, weight: .bold))
             .foregroundColor(.white)
     }

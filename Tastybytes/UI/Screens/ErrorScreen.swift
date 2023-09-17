@@ -5,7 +5,7 @@ struct ErrorScreen: View {
 
     var body: some View {
         VStack {
-            Image(systemSymbol: .exclamationmarkTriangle)
+            Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 60))
                 .foregroundColor(.red)
             Text("Oops!")

@@ -19,7 +19,7 @@ struct SettingsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("Subscribe to Premium", systemSymbol: .crownFill, sheet: .subscribe)
+            RouterLink("Subscribe to Premium", systemImage: "crown.fill", sheet: .subscribe)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
                 .foregroundColor(.yellow)
@@ -28,20 +28,20 @@ struct SettingsScreen: View {
 
     @ViewBuilder private var settingsSection: some View {
         Section {
-            RouterLink("Profile", systemSymbol: .personFill, color: .indigo, screen: .profileSettings)
-            RouterLink("Account", systemSymbol: .gear, color: .gray, screen: .accountSettings)
-            RouterLink("Privacy", systemSymbol: .keyFill, color: .yellow, screen: .privacySettings)
-            RouterLink("Appearance", systemSymbol: .paintbrushFill, color: .blue, screen: .appearanaceSettings)
+            RouterLink("Profile", systemName: "person.fill", color: .indigo, screen: .profileSettings)
+            RouterLink("Account", systemName: "gear", color: .gray, screen: .accountSettings)
+            RouterLink("Privacy", systemName: "key.fill", color: .yellow, screen: .privacySettings)
+            RouterLink("Appearance", systemName: "paintbrush.fill", color: .blue, screen: .appearanaceSettings)
             RouterLink(
                 "Notifications",
-                systemSymbol: .bellBadgeFill,
+                systemName: "bell.badge.fill",
                 color: .red,
                 screen: .notificationSettingsScreen
             )
             RouterLink(screen: .appIcon, label: {
                 AppIconLabelRow()
             })
-            RouterLink("Blocked Users", systemSymbol: .personFillXmark, color: .green, screen: .blockedUsers)
+            RouterLink("Blocked Users", systemName: "person.fill.xmark", color: .green, screen: .blockedUsers)
         }
     }
 
@@ -49,11 +49,11 @@ struct SettingsScreen: View {
         Section {
             RouterLink(
                 "Your Contributions",
-                systemSymbol: .plus,
+                systemName: "plus",
                 color: .teal,
                 screen: .contributions
             )
-            RouterLink("About", systemSymbol: .at, color: .blue, screen: .about)
+            RouterLink("About", systemName: "at", color: .blue, screen: .about)
         } footer: {
             if profileEnvironmentModel.hasRole(.pro) {
                 HStack {

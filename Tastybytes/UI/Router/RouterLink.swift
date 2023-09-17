@@ -1,4 +1,3 @@
-import SFSafeSymbols
 import SwiftUI
 
 struct RouterLink<LabelView: View>: View {
@@ -76,40 +75,40 @@ extension RouterLink where LabelView == Text {
 }
 
 extension RouterLink where LabelView == Label<Text, Image> {
-    init(_ titleKey: String, systemSymbol: SFSymbol, screen: Screen, asTapGesture: Bool = false) {
+    init(_ titleKey: String, systemImage: String, screen: Screen, asTapGesture: Bool = false) {
         self.init(screen: screen, asTapGesture: asTapGesture, label: {
-            Label(titleKey, systemSymbol: systemSymbol)
+            Label(titleKey, systemImage: systemImage)
         })
     }
 }
 
 extension RouterLink where LabelView == Label<Text, Image> {
-    init(_ titleKey: String, systemSymbol: SFSymbol, sheet: Sheet, asTapGesture: Bool = false) {
+    init(_ titleKey: String, systemImage: String, sheet: Sheet, asTapGesture: Bool = false) {
         self.init(sheet: sheet, asTapGesture: asTapGesture, label: {
-            Label(titleKey, systemSymbol: systemSymbol)
+            Label(titleKey, systemImage: systemImage)
         })
     }
 }
 
 extension RouterLink where LabelView == LinkIconLabel {
-    init(_ titleKey: String, systemSymbol: SFSymbol, color: Color, screen: Screen, asTapGesture: Bool = false) {
+    init(_ titleKey: String, systemName: String, color: Color, screen: Screen, asTapGesture: Bool = false) {
         self.init(screen: screen, asTapGesture: asTapGesture, label: {
-            LinkIconLabel(titleKey: titleKey, systemSymbol: systemSymbol, color: color)
+            LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
         })
     }
 }
 
 extension RouterLink where LabelView == LinkIconLabel {
-    init(_ titleKey: String, systemSymbol: SFSymbol, color: Color, sheet: Sheet, asTapGesture: Bool = false) {
+    init(_ titleKey: String, systemName: String, color: Color, sheet: Sheet, asTapGesture: Bool = false) {
         self.init(sheet: sheet, asTapGesture: asTapGesture, label: {
-            LinkIconLabel(titleKey: titleKey, systemSymbol: systemSymbol, color: color)
+            LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
         })
     }
 }
 
 struct LinkIconLabel: View {
     let titleKey: String
-    let systemSymbol: SFSymbol
+    let systemName: String
     let color: Color
 
     var body: some View {
@@ -118,7 +117,7 @@ struct LinkIconLabel: View {
                 Rectangle()
                     .fill(color.gradient)
                     .clipShape(.circle)
-                Image(systemSymbol: systemSymbol)
+                Image(systemName: systemName)
                     .foregroundColor(.white)
             }
             .frame(width: 30, height: 30, alignment: .center)

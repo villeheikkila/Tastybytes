@@ -11,7 +11,7 @@ struct CloseButtonView: View {
                 .fill(Color(.secondarySystemBackground))
                 .frame(width: 30, height: 30)
                 .overlay(
-                    Image(systemSymbol: .xmark)
+                    Image(systemName: "xmark")
                         .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(.secondary)
                 )

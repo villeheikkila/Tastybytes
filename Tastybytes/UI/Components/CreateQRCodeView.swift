@@ -11,7 +11,7 @@ struct CreateQRCodeView: View {
                     .accessibilityLabel("qr code")
 
             } else {
-                Image(systemSymbol: .qrcode)
+                Image(systemName: "qrcode")
                     .resizable()
                     .accessibilityLabel("placeholder qr code")
             }

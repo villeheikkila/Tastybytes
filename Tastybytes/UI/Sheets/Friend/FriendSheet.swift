@@ -13,7 +13,7 @@ struct FriendSheet: View {
                 AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
                 Text(friend.preferredName)
                 Spacer()
-                Label("Tag friend", systemSymbol: .checkmark)
+                Label("Tag friend", systemImage: "checkmark")
                     .labelStyle(.iconOnly)
                     .opacity(taggedFriends.contains(friend) ? 1 : 0)
             }

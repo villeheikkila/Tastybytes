@@ -31,7 +31,7 @@ struct SubcategorySheet: View {
                         HStack {
                             Text(subcategory.name)
                             Spacer()
-                            Label("Selected subcategory", systemSymbol: .checkmark)
+                            Label("Selected subcategory", systemImage: "checkmark")
                                 .labelStyle(.iconOnly)
                                 .opacity(subcategories.contains(subcategory) ? 1 : 0)
                         }
@@ -59,7 +59,7 @@ struct SubcategorySheet: View {
         }
         if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
             ToolbarItemGroup(placement: .topBarLeading) {
-                Button("Add subcategory", systemSymbol: .plus, action: { showAddSubcategory.toggle() })
+                Button("Add subcategory", systemImage: "plus", action: { showAddSubcategory.toggle() })
                     .labelStyle(.iconOnly)
                     .bold()
             }

@@ -12,14 +12,14 @@ struct RatingView: View {
     var body: some View {
         HStack(spacing: 2) {
             ForEach(0 ... 4, id: \.self) { i in
-                Image(systemSymbol: .star)
+                Image(systemName: "star")
                     .resizable()
                     .foregroundColor(.yellow)
                     .overlay(
                         GeometryReader { geo in
                             let paintedPortion = min(5, max(0, rating - Double(i)))
                             let width = geo.size.width * paintedPortion + (paintedPortion > 0.75 ? 8 : 0)
-                            Image(systemSymbol: .starFill)
+                            Image(systemName: "star.fill")
                                 .resizable()
                                 .foregroundColor(.yellow)
                                 .mask(

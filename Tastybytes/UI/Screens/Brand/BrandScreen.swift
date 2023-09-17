@@ -216,14 +216,14 @@ struct BrandScreen: View {
                         if profileEnvironmentModel.hasPermission(.canCreateProducts) {
                             RouterLink(
                                 "Add Product",
-                                systemSymbol: .plus,
+                                systemImage: "plus",
                                 sheet: .addProductToSubBrand(brand: brand, subBrand: subBrand)
                             )
                         }
                         if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
                             RouterLink(
                                 "Edit",
-                                systemSymbol: .pencil,
+                                systemImage: "pencil",
                                 sheet: .editSubBrand(brand: brand, subBrand: subBrand, onUpdate: {
                                     await refresh()
                                 })
@@ -233,14 +233,14 @@ struct BrandScreen: View {
                         if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                             Button(
                                 "Delete",
-                                systemSymbol: .trashFill,
+                                systemImage: "trash.fill",
                                 role: .destructive,
                                 action: { toDeleteSubBrand = subBrand }
                             )
                             .disabled(subBrand.isVerified)
                         }
                     } label: {
-                        Label("Options menu", systemSymbol: .ellipsis)
+                        Label("Options menu", systemImage: "ellipsis")
                             .labelStyle(.iconOnly)
                             .frame(width: 24, height: 24)
                     }
@@ -273,7 +273,7 @@ struct BrandScreen: View {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ProgressButton(isLikedByCurrentUser ? "Unlike" : "Like", systemSymbol: .heart, action: {
+            ProgressButton(isLikedByCurrentUser ? "Unlike" : "Like", systemImage: "heart", action: {
                 await toggleLike()
             })
             .symbolVariant(isLikedByCurrentUser ? .fill : .none)
@@ -281,10 +281,10 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        RouterLink("Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
+                        RouterLink("Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand))
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
-                        RouterLink("Edit", systemSymbol: .pencil, sheet: .editBrand(brand: brand, onUpdate: {
+                        RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: brand, onUpdate: {
                             await refresh()
                         }))
                     }
@@ -297,25 +297,25 @@ struct BrandScreen: View {
                 Divider()
                 RouterLink(
                     "Open Brand Owner",
-                    systemSymbol: .network,
+                    systemImage: "network",
                     screen: .company(brand.brandOwner)
                 )
                 Divider()
-                Button("Group Products By", systemSymbol: .listBulletIndent) {
+                Button("Group Products By", systemImage: "list.bullet.indent") {
                     showProductGroupingPicker = true
                 }
                 ReportButton(entity: .brand(brand))
                 if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                     Button(
                         "Delete",
-                        systemSymbol: .trashFill,
+                        systemImage: "trash.fill",
                         role: .destructive,
                         action: { showDeleteBrandConfirmationDialog = true }
                     )
                     .disabled(brand.isVerified)
                 }
             } label: {
-                Label("Options menu", systemSymbol: .ellipsis)
+                Label("Options menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }
@@ -504,16 +504,16 @@ private struct ProductRow: View {
                         product: product
                     ), label: {
                         if profileEnvironmentModel.hasPermission(.canMergeProducts) {
-                            Label("Merge to...", systemSymbol: .docOnDoc)
+                            Label("Merge to...", systemImage: "doc.on.doc")
                         } else {
-                            Label("Mark as Duplicate", systemSymbol: .docOnDoc)
+                            Label("Mark as Duplicate", systemImage: "doc.on.doc")
                         }
                     })
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                         Button(
                             "Delete",
-                            systemSymbol: .trashFill,
+                            systemImage: "trash.fill",
                             role: .destructive,
                             action: { productToDelete = product }
                         )

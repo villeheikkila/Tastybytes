@@ -39,14 +39,14 @@ struct CurrentUserFriendsScreen: View {
                         Spacer()
                         if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                             HStack(alignment: .center) {
-                                Label("Remove friend request", systemSymbol: .personFillXmark)
+                                Label("Remove friend request", systemImage: "person.fill.xmark")
                                     .imageScale(.large)
                                     .labelStyle(.iconOnly)
                                     .accessibilityAddTraits(.isButton)
                                     .onTapGesture {
                                         friendToBeRemoved = friend
                                     }
-                                Label("Accept friend request", systemSymbol: .personBadgePlus)
+                                Label("Accept friend request", systemImage: "person.badge.plus")
                                     .imageScale(.large)
                                     .labelStyle(.iconOnly)
                                     .accessibilityAddTraits(.isButton)
@@ -66,7 +66,7 @@ struct CurrentUserFriendsScreen: View {
                         if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                             ProgressButton(
                                 "Accept friend request",
-                                systemSymbol: .personBadgePlus,
+                                systemImage: "person.badge.plus",
                                 action: {
                                     await friendEnvironmentModel.updateFriendRequest(
                                         friend: friend,
@@ -78,13 +78,13 @@ struct CurrentUserFriendsScreen: View {
                         }
                         Button(
                             "Delete",
-                            systemSymbol: .personFillXmark,
+                            systemImage: "person.fill.xmark",
                             role: .destructive,
                             action: { friendToBeRemoved = friend }
                         )
                         ProgressButton(
                             "Block",
-                            systemSymbol: .person2Slash,
+                            systemImage: "person.2.slash",
                             action: {
                                 await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
                             }
@@ -94,13 +94,13 @@ struct CurrentUserFriendsScreen: View {
                 .contextMenu {
                     Button(
                         "Delete",
-                        systemSymbol: .personFillXmark,
+                        systemImage: "person.fill.xmark",
                         role: .destructive,
                         action: { friendToBeRemoved = friend }
                     )
                     ProgressButton(
                         "Block",
-                        systemSymbol: .person2Slash,
+                        systemImage: "person.2.slash",
                         action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
                         }
                     )
@@ -146,7 +146,7 @@ struct CurrentUserFriendsScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             RouterLink(
                 "Show name tag or send friend request by QR code",
-                systemSymbol: .qrcode,
+                systemImage: "qrcode",
                 sheet: .nameTag(onSuccess: { profileId in
                     Task {
                         await friendEnvironmentModel.sendFriendRequest(receiver: profileId)
@@ -157,7 +157,7 @@ struct CurrentUserFriendsScreen: View {
             .imageScale(.large)
             .popoverTip(NameTagTip())
 
-            RouterLink("Add friend", systemSymbol: .plus, sheet: .userSheet(mode: .add, onSubmit: {
+            RouterLink("Add friend", systemImage: "plus", sheet: .userSheet(mode: .add, onSubmit: {
                 feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
             }))
             .labelStyle(.iconOnly)

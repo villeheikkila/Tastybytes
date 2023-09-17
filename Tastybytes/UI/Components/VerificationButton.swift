@@ -1,5 +1,4 @@
 import EnvironmentModels
-import SFSafeSymbols
 import SwiftUI
 
 struct VerificationButton: View {
@@ -9,16 +8,16 @@ struct VerificationButton: View {
     let unverify: () async -> Void
 
     var label: String { isVerified ? "Verified" : "Not Verified Yet" }
-    var systemSymbol: SFSymbol { isVerified ? .checkmarkCircle : .xCircle }
+    var systemImage: String { isVerified ? "checkmark.circle" : "x.circle" }
     var action: () async -> Void {
         isVerified ? unverify : verify
     }
 
     var body: some View {
         if profileEnvironmentModel.hasPermission(.canVerify) {
-            ProgressButton(label, systemSymbol: systemSymbol, action: { await action() })
+            ProgressButton(label, systemImage: systemImage, action: { await action() })
         } else {
-            Label(label, systemSymbol: systemSymbol)
+            Label(label, systemImage: systemImage)
         }
     }
 }

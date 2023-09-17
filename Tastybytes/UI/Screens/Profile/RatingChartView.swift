@@ -89,6 +89,6 @@ struct RatingChartTip: Tip {
     }
 
     var asset: Image? {
-        Image(systemSymbol: .starLeadinghalfFilled)
+        Image(systemName: "star.leadinghalf.filled")
     }
 }

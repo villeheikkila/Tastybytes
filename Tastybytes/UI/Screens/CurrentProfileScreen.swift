@@ -20,12 +20,12 @@ struct CurrentProfileScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
-            RouterLink("Show name tag", systemSymbol: .qrcode, sheet: .nameTag(onSuccess: { profileId in
+            RouterLink("Show name tag", systemImage: "qrcode", sheet: .nameTag(onSuccess: { profileId in
                 router.fetchAndNavigateTo(repository, .profile(id: profileId))
             }))
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("Settings page", systemSymbol: .gear, screen: .settings)
+            RouterLink("Settings page", systemImage: "gear", screen: .settings)
         }
     }
 }

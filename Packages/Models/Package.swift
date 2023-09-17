@@ -14,13 +14,11 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "4.1.1")),
         .package(name: "Extensions", path: "../Extensions"),
     ],
     targets: [
         .target(
-            name: "Models",
-            dependencies: ["SFSafeSymbols", .product(name: "Extensions", package: "Extensions")]
+            name: "Models"
         ),
         .testTarget(
             name: "ModelsTests",

@@ -27,7 +27,7 @@ struct ProfileOnboarding: View {
             HStack {
                 Spacer()
 
-                Image(systemSymbol: .rectangleAndPencilAndEllipsis)
+                Image(systemName: "rectangle.and.pencil.and.ellipsis")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 100)

@@ -22,7 +22,7 @@ struct AppIconScreen: View {
 
                 Spacer()
 
-                Label("Selected", systemSymbol: .checkmark)
+                Label("Selected", systemImage: "checkmark")
                     .labelStyle(.iconOnly)
                     .opacity(appIcon == selection ? 1 : 0)
             }

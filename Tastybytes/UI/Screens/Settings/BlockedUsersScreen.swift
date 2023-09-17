@@ -22,7 +22,7 @@ struct BlockedUsersScreen: View {
         .background {
             if friendEnvironmentModel.blockedUsers.isEmpty {
                 ContentUnavailableView {
-                    Label("You haven't blocked any users", systemSymbol: .personFillXmark)
+                    Label("You haven't blocked any users", systemImage: "person.fill.xmark")
                 }
             }
         }
@@ -41,7 +41,7 @@ struct BlockedUsersScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
-                RouterLink("Show block user sheet", systemSymbol: .plus, sheet: .userSheet(mode: .block, onSubmit: {
+                RouterLink("Show block user sheet", systemImage: "plus", sheet: .userSheet(mode: .block, onSubmit: {
                     feedbackEnvironmentModel.toggle(.success("User blocked"))
                 }))
                 .labelStyle(.iconOnly)
@@ -62,7 +62,7 @@ struct BlockedUserListItemView: View {
                 HStack {
                     Text(profile.preferredName)
                     Spacer()
-                    ProgressButton("Unblock", systemSymbol: .handRaisedSlashFill, action: { await onUnblockUser() })
+                    ProgressButton("Unblock", systemImage: "hand.raised.slash.fill", action: { await onUnblockUser() })
                 }
             }
         }

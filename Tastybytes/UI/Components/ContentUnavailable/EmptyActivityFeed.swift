@@ -3,7 +3,7 @@ import SwiftUI
 struct EmptyActivityFeed: View {
     var body: some View {
         ContentUnavailableView {
-            Label("Activity feed is empty", systemSymbol: .listStar)
+            Label("Activity feed is empty", systemImage: "list.start")
         } description: {
             Text("Start by adding friends or by making your check-in!")
         }

@@ -95,7 +95,7 @@ struct ProductScreen: View {
             HStack(spacing: 0) {
                 RouterLink(
                     "Check-in!",
-                    systemSymbol: .checkmarkCircle,
+                    systemImage: "checkmark.circle",
                     sheet: .newCheckIn(product, onCreation: { _ in
                         await refreshCheckIns()
                     }),
@@ -106,7 +106,7 @@ struct ProductScreen: View {
                 .background(Color.accentColor)
                 .foregroundColor(.white)
                 .cornerRadius(4, corners: [.topLeft, .bottomLeft])
-                ProgressButton("Wishlist", systemSymbol: .star, actionOptions: []) {
+                ProgressButton("Wishlist", systemImage: "star", actionOptions: []) {
                     await toggleWishlist()
                 }
                 .symbolVariant(isOnWishlist ? .fill : .none)
@@ -168,7 +168,7 @@ struct ProductScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 ControlGroup {
-                    RouterLink("Check-in", systemSymbol: .plus, sheet: .newCheckIn(product, onCreation: { _ in
+                    RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in
                         await refreshCheckIns()
                     }))
                     .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
@@ -176,7 +176,7 @@ struct ProductScreen: View {
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                         RouterLink(
                             "Add",
-                            systemSymbol: .barcodeViewfinder,
+                            systemImage: "barcode.viewfinder",
                             sheet: .barcodeScanner(onComplete: { barcode in
                                 Task { await addBarcodeToProduct(barcode) }
                             })
@@ -189,27 +189,27 @@ struct ProductScreen: View {
                     showUnverifyProductConfirmation = true
                 })
                 Divider()
-                RouterLink("Open Product", systemSymbol: .grid, screen: .product(product))
+                RouterLink("Open Product", systemImage: "grid", screen: .product(product))
                 RouterLink(
                     "Open Sub-brand",
-                    systemSymbol: .cart,
+                    systemImage: "cart",
                     screen: .fetchSubBrand(product.subBrand)
                 )
-                RouterLink("Open Brand", systemSymbol: .cart, screen: .fetchBrand(product.subBrand.brand))
+                RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(product.subBrand.brand))
                 RouterLink(
                     "Open Brand Owner",
-                    systemSymbol: .network,
+                    systemImage: "network",
                     screen: .company(product.subBrand.brand.brandOwner)
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
+                    RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
                         await refresh()
                     }))
                 } else {
                     RouterLink(
                         "Edit Suggestion",
-                        systemSymbol: .pencil,
+                        systemImage: "pencil",
                         sheet: .productEditSuggestion(product: product)
                     )
                 }
@@ -219,19 +219,19 @@ struct ProductScreen: View {
                     product: product
                 ), label: {
                     if profileEnvironmentModel.hasPermission(.canMergeProducts) {
-                        Label("Merge to...", systemSymbol: .docOnDoc)
+                        Label("Merge to...", systemImage: "doc.on.doc")
                     } else {
-                        Label("Mark as Duplicate", systemSymbol: .docOnDoc)
+                        Label("Mark as Duplicate", systemImage: "doc.on.doc")
                     }
                 })
 
                 Menu {
                     if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
-                        RouterLink("Barcodes", systemSymbol: .barcode, sheet: .barcodeManagement(product: product))
+                        RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: product))
                     }
 
                     if profileEnvironmentModel.hasPermission(.canAddProductLogo) {
-                        RouterLink("Edit Logo", systemSymbol: .photo, sheet: .productLogo(product: product, onUpload: {
+                        RouterLink("Edit Logo", systemImage: "photo", sheet: .productLogo(product: product, onUpload: {
                             await refresh()
                         }))
                     }
@@ -239,20 +239,20 @@ struct ProductScreen: View {
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                         Button(
                             "Delete",
-                            systemSymbol: .trashFill,
+                            systemImage: "trash.fill",
                             role: .destructive,
                             action: { showDeleteProductConfirmationDialog = true }
                         )
                         .disabled(product.isVerified)
                     }
                 } label: {
-                    Label("Admin", systemSymbol: .gear)
+                    Label("Admin", systemImage: "gear")
                         .labelStyle(.iconOnly)
                 }
 
                 ReportButton(entity: .product(product))
             } label: {
-                Label("Options menu", systemSymbol: .ellipsis)
+                Label("Options menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }

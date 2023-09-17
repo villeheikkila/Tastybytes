@@ -79,24 +79,24 @@ struct LocationScreen: View {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canMergeLocations) {
                             RouterLink(sheet: .mergeLocationSheet(location: location), label: {
-                                Label("Merge to...", systemSymbol: .docOnDoc)
+                                Label("Merge to...", systemImage: "doc.on.doc")
                             })
                         }
                         if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                             Button(
                                 "Delete",
-                                systemSymbol: .trashFill,
+                                systemImage: "trash.fill",
                                 role: .destructive,
                                 action: { showDeleteLocationConfirmation.toggle() }
                             )
                         }
                     } label: {
-                        Label("Admin", systemSymbol: .gear)
+                        Label("Admin", systemImage: "gear")
                             .labelStyle(.iconOnly)
                     }
                 }
             } label: {
-                Label("Options menu", systemSymbol: .ellipsis)
+                Label("Options menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }

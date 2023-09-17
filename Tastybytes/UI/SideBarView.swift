@@ -12,19 +12,19 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
     @ViewBuilder var label: some View {
         switch self {
         case .activity:
-            Label("Activity", systemSymbol: .listStar)
+            Label("Activity", systemImage: "list.start")
         case .discover:
-            Label("Discover", systemSymbol: .magnifyingglass)
+            Label("Discover", systemImage: "magnifyingglass")
         case .notifications:
-            Label("Notifications", systemSymbol: .bell)
+            Label("Notifications", systemImage: "bell")
         case .admin:
-            Label("Admin", systemSymbol: .exclamationmarkLockFill)
+            Label("Admin", systemImage: "exclamationmark.lock.fill")
         case .profile:
-            Label("Profile", systemSymbol: .personFill)
+            Label("Profile", systemImage: "person.fill")
         case .friends:
-            Label("Friends", systemSymbol: .person2Fill)
+            Label("Friends", systemImage: "person.2.fill")
         case .settings:
-            Label("Settings", systemSymbol: .gearshapeFill)
+            Label("Settings", systemImage: "gearshape.fill")
         }
     }
 }

@@ -121,12 +121,12 @@ struct CompanyScreen: View {
                 if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                     RouterLink(
                         "Brand",
-                        systemSymbol: .plus,
+                        systemImage: "plus",
                         sheet: .addBrand(brandOwner: company, mode: .new)
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    RouterLink("Edit", systemSymbol: .pencil, sheet: .editCompany(company: company, onSuccess: {
+                    RouterLink("Edit", systemImage: "pencil", sheet: .editCompany(company: company, onSuccess: {
                         await feedbackEnvironmentModel.wrapWithHaptics {
                             await getBrandsAndSummary()
                         }
@@ -135,7 +135,7 @@ struct CompanyScreen: View {
                 } else {
                     RouterLink(
                         "Edit Suggestion",
-                        systemSymbol: .pencil,
+                        systemImage: "pencil",
                         sheet: .companyEditSuggestion(company: company, onSuccess: {
                             feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
                         })
@@ -152,14 +152,14 @@ struct CompanyScreen: View {
             if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
                 Button(
                     "Delete",
-                    systemSymbol: .trashFill,
+                    systemImage: "trash.fill",
                     role: .destructive,
                     action: { showDeleteCompanyConfirmationDialog = true }
                 )
                 .disabled(company.isVerified)
             }
         } label: {
-            Label("Options menu", systemSymbol: .ellipsis)
+            Label("Options menu", systemImage: "ellipsis")
                 .labelStyle(.iconOnly)
         }
     }

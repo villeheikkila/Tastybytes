@@ -179,17 +179,17 @@ struct DiscoverScreen: View {
                 Group {
                     RouterLink(
                         Product.FeedType.trending.label,
-                        systemSymbol: .chartLineUptrendXyaxis,
+                        systemImage: "chart.line.uptrend.xyaxis",
                         screen: .productFeed(.trending)
                     )
                     RouterLink(
                         Product.FeedType.topRated.label,
-                        systemSymbol: .lineHorizontalStarFillLineHorizontal,
+                        systemImage: "line.horizontal.star.fill.line.horizontal",
                         screen: .productFeed(.topRated)
                     )
                     RouterLink(
                         Product.FeedType.latest.label,
-                        systemSymbol: .boltHorizontalCircle,
+                        systemImage: "bolt.horizontal.circle",
                         screen: .productFeed(.latest)
                     )
                 }
@@ -199,7 +199,7 @@ struct DiscoverScreen: View {
             ForEach(products) { product in
                 ProductItemView(product: product, extras: [.checkInCheck, .rating])
                     .swipeActions {
-                        RouterLink("Check-in", systemSymbol: .plus, sheet: .newCheckIn(product, onCreation: { checkIn in
+                        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { checkIn in
                             router.navigate(screen: .checkIn(checkIn))
                         })).tint(.green)
                     }
@@ -239,7 +239,7 @@ struct DiscoverScreen: View {
             ToolbarItemGroup(placement: .topBarLeading) {
                 RouterLink(
                     "Show filters",
-                    systemSymbol: .line3HorizontalDecreaseCircle,
+                    systemImage: "line.3.horizontal.decrease.circle",
                     sheet: .productFilter(initialFilter: productFilter, sections: [.category, .checkIns],
                                           onApply: { filter in
                                               productFilter = filter
@@ -251,7 +251,7 @@ struct DiscoverScreen: View {
                 if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                     RouterLink(
                         "Scan a barcode",
-                        systemSymbol: .barcodeViewfinder,
+                        systemImage: "barcode.viewfinder",
                         sheet: .barcodeScanner(onComplete: { barcode in
                             Task { await searchProductsByBardcode(barcode) }
                         })

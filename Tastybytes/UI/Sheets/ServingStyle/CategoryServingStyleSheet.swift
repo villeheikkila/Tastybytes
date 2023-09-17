@@ -33,7 +33,7 @@ struct CategoryServingStyleSheet: View {
                 .swipeActions {
                     Button(
                         "Delete",
-                        systemSymbol: .trash,
+                        systemImage: "trash",
                         role: .destructive,
                         action: { toDeleteServingStyle = servingStyle }
                     )
@@ -68,7 +68,7 @@ struct CategoryServingStyleSheet: View {
         ToolbarItemGroup(placement: .primaryAction) {
             RouterLink(
                 "Add Serving Style",
-                systemSymbol: .plus,
+                systemImage: "plus",
                 sheet: .servingStyleManagement(
                     pickedServingStyles: $servingStyles,
                     onSelect: { servingStyle in

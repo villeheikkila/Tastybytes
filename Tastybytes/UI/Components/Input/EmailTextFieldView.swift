@@ -6,7 +6,7 @@ struct EmailTextFieldView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Image(systemSymbol: .envelope)
+                Image(systemName: "envelope")
                     .accessibility(hidden: true)
                 TextField("Email address", text: $email)
                     .keyboardType(.emailAddress)

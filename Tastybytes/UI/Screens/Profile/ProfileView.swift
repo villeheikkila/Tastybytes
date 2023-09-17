@@ -107,7 +107,7 @@ struct ProfileView: View {
             HStack {
                 Spacer()
                 VStack(spacing: 8) {
-                    Image(systemSymbol: .eyeSlashCircle)
+                    Image(systemName: "eye.slash.circle")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 32, height: 32)
@@ -138,7 +138,7 @@ struct ProfileView: View {
                                          matching: .images,
                                          photoLibrary: .shared())
                             {
-                                Image(systemSymbol: .pencilCircleFill)
+                                Image(systemName: "pencil.circle.fill")
                                     .symbolRenderingMode(.multicolor)
                                     .font(.system(size: 24))
                                     .foregroundColor(.accentColor)
@@ -210,14 +210,14 @@ struct ProfileView: View {
         Group {
             RouterLink(
                 "Friends",
-                systemSymbol: .personCropRectangleStack,
+                systemImage: "person.crop.rectangle.stack",
                 screen: profileEnvironmentModel.profile == profile ? .currentUserFriends : .friends(profile)
             )
-            RouterLink("Check-ins", systemSymbol: .checkmarkRectangle, screen: .profileProducts(profile))
-            RouterLink("Statistics", systemSymbol: .chartBarXaxis, screen: .profileStatistics(profile))
-            RouterLink("Wishlist", systemSymbol: .heart, screen: .profileWishlist(profile))
+            RouterLink("Check-ins", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
+            RouterLink("Statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))
+            RouterLink("Wishlist", systemImage: "heart", screen: .profileWishlist(profile))
             if isCurrentUser {
-                RouterLink("Locations", systemSymbol: .map, screen: .profileLocations(profile))
+                RouterLink("Locations", systemImage: "map", screen: .profileLocations(profile))
             }
         }
         .font(.subheadline)

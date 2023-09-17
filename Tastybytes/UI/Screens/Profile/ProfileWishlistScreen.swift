@@ -31,7 +31,7 @@ struct ProfileWishlistScreen: View {
                 .swipeActions(allowsFullSwipe: true) {
                     ProgressButton(
                         "Delete",
-                        systemSymbol: .xmark,
+                        systemImage: "xmark",
                         role: .destructive,
                         action: {
                             await removeFromWishlist(product: product)
@@ -45,7 +45,7 @@ struct ProfileWishlistScreen: View {
         .background {
             if isEmpty {
                 ContentUnavailableView {
-                    Label("Wishlist is empty", systemSymbol: .listStar)
+                    Label("Wishlist is empty", systemImage: "list.start")
                 }
             }
         }

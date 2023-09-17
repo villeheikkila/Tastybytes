@@ -31,12 +31,12 @@ struct CategoryManagementScreen: View {
                         Menu {
                             RouterLink(
                                 "Edit Serving Styles",
-                                systemSymbol: .pencil,
+                                systemImage: "pencil",
                                 sheet: .categoryServingStyle(category: category)
                             )
                             RouterLink(
                                 "Add Subcategory",
-                                systemSymbol: .plus,
+                                systemImage: "plus",
                                 sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
                                     await appDataEnvironmentModel.addSubcategory(
                                         category: category,
@@ -45,7 +45,7 @@ struct CategoryManagementScreen: View {
                                 })
                             )
                         } label: {
-                            Label("Options menu", systemSymbol: .ellipsis)
+                            Label("Options menu", systemImage: "ellipsis")
                                 .labelStyle(.iconOnly)
                                 .frame(width: 24, height: 24)
                         }
@@ -83,7 +83,7 @@ struct CategoryManagementScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             RouterLink(
                 "Add Category",
-                systemSymbol: .plus,
+                systemImage: "plus",
                 sheet: .addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("Category created!"))
                 })

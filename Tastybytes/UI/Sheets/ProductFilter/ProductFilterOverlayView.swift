@@ -16,7 +16,7 @@ struct ProductFilterOverlayView: View {
                             Text(category.name).bold()
                         }
                         if filters.category != nil, filters.subcategory != nil {
-                            Image(systemSymbol: .arrowtriangleForward)
+                            Image(systemName: "arrowtriangle.forward")
                                 .accessibility(hidden: true)
                         }
                         if let subcategory = filters.subcategory {
@@ -39,7 +39,7 @@ struct ProductFilterOverlayView: View {
                     }
                 }
                 Spacer()
-                Button("Reset filter", systemSymbol: .xCircle, action: { onReset() })
+                Button("Reset filter", systemImage: "x.circle", action: { onReset() })
                     .labelStyle(.iconOnly)
                     .imageScale(.large)
             }

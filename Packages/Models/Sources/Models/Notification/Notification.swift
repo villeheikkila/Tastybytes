@@ -1,6 +1,5 @@
 import Extensions
 import Foundation
-import SFSafeSymbols
 
 public struct Notification: Identifiable, Hashable {
     public enum Content: Hashable {
@@ -163,18 +162,18 @@ public enum NotificationType: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    public var systemSymbol: SFSymbol {
+    public var systemImage: String {
         switch self {
         case .message:
-            .bell
+            "bell"
         case .friendRequest:
-            .personBadgePlus
+            "person.badge.plus"
         case .taggedCheckIn:
-            .tag
+            "tag"
         case .checkInReaction:
-            .handThumbsup
+            "hand.thumbsup"
         case .checkInComment:
-            .bubbleLeft
+            "bubble.left"
         }
     }
 }

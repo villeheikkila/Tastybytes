@@ -25,7 +25,7 @@ struct ProfileScreen: View {
             Menu {
                 ProfileShareLinkView(profile: profile)
             } label: {
-                Label("Options menu", systemSymbol: .ellipsis)
+                Label("Options menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }

@@ -7,7 +7,7 @@ struct AccountDeletedScreen: View {
             HStack {
                 Spacer()
                 VStack(spacing: 18) {
-                    Image(systemSymbol: .trashCircle)
+                    Image(systemName: "trash.circle")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 60, height: 60)

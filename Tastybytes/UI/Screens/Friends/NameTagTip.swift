@@ -10,6 +10,6 @@ struct NameTagTip: Tip {
     }
 
     var asset: Image? {
-        Image(systemSymbol: .qrcodeViewfinder)
+        Image(systemName: "qrcode.viewfinder")
     }
 }

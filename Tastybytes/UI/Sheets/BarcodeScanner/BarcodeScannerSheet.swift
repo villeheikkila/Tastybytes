@@ -43,11 +43,11 @@ struct BarcodeScannerSheet: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Group {
                 Button(showBarcodeTextField ? "Show scanner" : "Add barcode manually",
-                       systemSymbol: showBarcodeTextField ? .barcodeViewfinder : .characterCursorIbeam,
+                       systemImage: showBarcodeTextField ? "barcode.viewfinder" : "character.cursor.ibeam",
                        action: { withAnimation { showBarcodeTextField.toggle() } })
 
                 Button("Turn the torch \(isTorchOn ? "off" : "on")",
-                       systemSymbol: isTorchOn ? .flashlightOnFill : .flashlightOffFill,
+                       systemImage: isTorchOn ? "flashlight.on.fill" : "flashlight.off.fill",
                        action: { withAnimation { isTorchOn.toggle() } })
             }
             .labelStyle(.iconOnly)

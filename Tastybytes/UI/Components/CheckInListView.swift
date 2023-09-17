@@ -195,12 +195,12 @@ struct CheckInListView<Header>: View where Header: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
-            RouterLink("Friends Page", systemSymbol: .person2, screen: .currentUserFriends)
+            RouterLink("Friends Page", systemImage: "person.2", screen: .currentUserFriends)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("Settings Page", systemSymbol: .gear, screen: .settings)
+            RouterLink("Settings Page", systemImage: "gear", screen: .settings)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
         }
@@ -321,15 +321,15 @@ extension CheckInSegment {
         switch self {
         case .everyone:
             ContentUnavailableView {
-                Label("Be first to check-in!", systemSymbol: .listStar)
+                Label("Be first to check-in!", systemImage: "list.start")
             }
         case .friends:
             ContentUnavailableView {
-                Label("No check-ins from friends", systemSymbol: .listStar)
+                Label("No check-ins from friends", systemImage: "list.start")
             }
         case .you:
             ContentUnavailableView {
-                Label("You haven't check-in yet", systemSymbol: .listStar)
+                Label("You haven't check-in yet", systemImage: "list.start")
             }
         }
     }

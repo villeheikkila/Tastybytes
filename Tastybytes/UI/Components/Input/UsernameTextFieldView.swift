@@ -6,7 +6,7 @@ struct UsernameTextFieldView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Image(systemSymbol: .person)
+                Image(systemName: "person")
                     .accessibility(hidden: true)
                 TextField("Username", text: $username)
                     .textContentType(.username)

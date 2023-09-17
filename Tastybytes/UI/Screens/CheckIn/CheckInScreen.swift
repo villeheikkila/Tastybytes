@@ -136,12 +136,12 @@ struct CheckInScreen: View {
                 ControlGroup {
                     CheckInShareLinkView(checkIn: checkIn)
                     if checkIn.profile.id == profileEnvironmentModel.id {
-                        RouterLink("Edit", systemSymbol: .pencil, sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                        RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
                             checkIn = updatedCheckIn
                         }))
                         Button(
                             "Delete",
-                            systemSymbol: .trashFill,
+                            systemImage: "trash.fill",
                             role: .destructive,
                             action: { showDeleteConfirmation = true }
                         )
@@ -150,14 +150,14 @@ struct CheckInScreen: View {
                 Divider()
                 RouterLink(
                     "Open Brand Owner",
-                    systemSymbol: .network,
+                    systemImage: "network",
                     screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )
-                RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
-                RouterLink("Open Brand", systemSymbol: .cart, screen: .fetchBrand(checkIn.product.subBrand.brand))
+                RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
+                RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
                 RouterLink(
                     "Open Sub-brand",
-                    systemSymbol: .cart,
+                    systemImage: "cart",
                     screen: .fetchSubBrand(checkIn.product.subBrand)
                 )
                 Divider()
@@ -167,17 +167,17 @@ struct CheckInScreen: View {
                 if profileEnvironmentModel.hasRole(.moderator) {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canDeleteCheckInsAsModerator) {
-                            Button("Delete as Moderator", systemSymbol: .trashFill, role: .destructive) {
+                            Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
                                 toDeleteCheckInAsModerator = checkIn
                             }
                         }
                     } label: {
-                        Label("Moderation", systemSymbol: .gear)
+                        Label("Moderation", systemImage: "gear")
                             .labelStyle(.iconOnly)
                     }
                 }
             } label: {
-                Label("Options menu", systemSymbol: .ellipsis)
+                Label("Options menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }
@@ -189,12 +189,12 @@ struct CheckInScreen: View {
                 .listRowSeparator(.hidden)
                 .contextMenu {
                     if comment.profile == profileEnvironmentModel.profile {
-                        Button("Edit", systemSymbol: .pencil) {
+                        Button("Edit", systemImage: "pencil") {
                             withAnimation {
                                 editComment = comment
                             }
                         }
-                        ProgressButton("Delete", systemSymbol: .trashFill, role: .destructive) {
+                        ProgressButton("Delete", systemImage: "trash.fill", role: .destructive) {
                             await deleteComment(comment)
                         }
                     } else {
@@ -204,12 +204,12 @@ struct CheckInScreen: View {
                     if profileEnvironmentModel.hasRole(.moderator) {
                         Menu {
                             if profileEnvironmentModel.hasPermission(.canDeleteComments) {
-                                Button("Delete as Moderator", systemSymbol: .trashFill, role: .destructive) {
+                                Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
                                     deleteAsCheckInCommentAsModerator = comment
                                 }
                             }
                         } label: {
-                            Label("Moderation", systemSymbol: .gear)
+                            Label("Moderation", systemImage: "gear")
                                 .labelStyle(.iconOnly)
                         }
                     }
@@ -228,7 +228,7 @@ struct CheckInScreen: View {
         HStack {
             TextField("Leave a comment!", text: $commentText)
                 .focused($focusedField, equals: .checkInComment)
-            ProgressButton("Send the comment", systemSymbol: .paperplaneFill, action: { await sendComment() })
+            ProgressButton("Send the comment", systemImage: "paperplane.fill", action: { await sendComment() })
                 .labelStyle(.iconOnly)
                 .disabled(isInvalidComment())
         }

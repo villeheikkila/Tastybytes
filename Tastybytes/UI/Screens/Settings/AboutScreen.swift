@@ -43,7 +43,7 @@ struct AboutScreen: View {
     @ViewBuilder var support: some View {
         RouterLink(
             "Send Feedback",
-            systemSymbol: .envelope,
+            systemName: "envelope",
             color: .green,
             sheet: .sendEmail(email: $email, callback: { result in
                 switch result {
@@ -56,7 +56,7 @@ struct AboutScreen: View {
                 }
             })
         )
-        ProgressButton("Rate \(Config.appName)", systemSymbol: .heart, color: .red, action: {
+        ProgressButton("Rate \(Config.appName)", systemName: "heart", color: .red, action: {
             await requestReview()
         })
     }
@@ -84,7 +84,7 @@ struct AboutScreen: View {
                 if let portfolioUrl = URL(string: aboutPage.portfolioUrl) {
                     Link(destination: portfolioUrl) {
                         HStack {
-                            Image(systemSymbol: .network)
+                            Image(systemName: "network")
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
@@ -116,7 +116,7 @@ struct AboutScreen: View {
             HStack {
                 Spacer()
                 HStack(alignment: .center) {
-                    Label("Copyright", systemSymbol: .cCircle)
+                    Label("Copyright", systemImage: "c.circle")
                         .labelStyle(.iconOnly)
                         .font(.caption).bold()
 

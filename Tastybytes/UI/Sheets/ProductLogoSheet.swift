@@ -49,12 +49,12 @@ struct ProductLogoSheet: View {
                                     .frame(width: 52, height: 52)
                                     .accessibility(hidden: true)
                             } else {
-                                Image(systemSymbol: .photo)
+                                Image(systemName: "photo")
                                     .accessibility(hidden: true)
                             }
                         }
                     } else {
-                        Image(systemSymbol: .photo)
+                        Image(systemName: "photo")
                             .accessibility(hidden: true)
                     }
                 }

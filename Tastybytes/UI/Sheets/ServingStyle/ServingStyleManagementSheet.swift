@@ -39,16 +39,16 @@ struct ServingStyleManagementSheet: View {
                         Text(servingStyle.label)
                         Spacer()
                         if pickedServingStyles.contains(servingStyle) {
-                            Label("Picked serving style", systemSymbol: .checkmark)
+                            Label("Picked serving style", systemImage: "checkmark")
                                 .labelStyle(.iconOnly)
                         }
                     }
                 })
                 .swipeActions {
-                    Button("Edit", systemSymbol: .pencil, action: { editServingStyle = servingStyle }).tint(.yellow)
+                    Button("Edit", systemImage: "pencil", action: { editServingStyle = servingStyle }).tint(.yellow)
                     Button(
                         "Delete",
-                        systemSymbol: .trash,
+                        systemImage: "trash",
                         role: .destructive,
                         action: { toDeleteServingStyle = servingStyle }
                     )

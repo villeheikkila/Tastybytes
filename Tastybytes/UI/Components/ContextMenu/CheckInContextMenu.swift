@@ -16,21 +16,21 @@ extension View {
                 if checkIn.profile.id == profileEnvironmentModel.id {
                     RouterLink(
                         "Edit",
-                        systemSymbol: .pencil,
+                        systemImage: "pencil",
                         sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
                             onCheckInUpdate(updatedCheckIn)
                         })
                     )
                     Button(
                         "Delete",
-                        systemSymbol: .trashFill,
+                        systemImage: "trash.fill",
                         role: .destructive,
                         action: { onDelete(checkIn) }
                     )
                 } else {
                     RouterLink(
                         "Check-in",
-                        systemSymbol: .pencil,
+                        systemImage: "pencil",
                         sheet: .newCheckIn(checkIn.product, onCreation: { checkIn in
                             router.navigate(screen: .checkIn(checkIn))
                         })
@@ -39,33 +39,33 @@ extension View {
                 }
             }
             Divider()
-            RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
+            RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
             RouterLink(
                 "Open Brand Owner",
-                systemSymbol: .network,
+                systemImage: "network",
                 screen: .company(checkIn.product.subBrand.brand.brandOwner)
             )
             RouterLink(
                 "Open Brand",
-                systemSymbol: .cart,
+                systemImage: "cart",
                 screen: .fetchBrand(checkIn.product.subBrand.brand)
             )
             RouterLink(
                 "Open Sub-brand",
-                systemSymbol: .cart,
+                systemImage: "cart",
                 screen: .fetchSubBrand(checkIn.product.subBrand)
             )
             if let location = checkIn.location {
                 RouterLink(
                     "Open Location",
-                    systemSymbol: .network,
+                    systemImage: "network",
                     screen: .location(location)
                 )
             }
             if let purchaseLocation = checkIn.purchaseLocation {
                 RouterLink(
                     "Open Purchase Location",
-                    systemSymbol: .network,
+                    systemImage: "network",
                     screen: .location(purchaseLocation)
                 )
             }
