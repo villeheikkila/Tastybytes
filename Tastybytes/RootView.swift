@@ -7,10 +7,24 @@ import Supabase
 import SwiftUI
 import TipKit
 
+struct RepositoryKey: EnvironmentKey {
+    static var defaultValue: RepositoryProtocol? = nil
+}
+
+extension EnvironmentValues {
+    var repository: RepositoryProtocol {
+        get {
+            guard let currentValue = self[RepositoryKey.self]
+            else { fatalError("Repository has not been added to the environment") }
+            return currentValue
+        }
+        set { self[RepositoryKey.self] = newValue }
+    }
+}
+
 struct RootView: View {
     private let logger = Logger(category: "RootView")
     let supabaseClient: SupabaseClient
-    @State private var repository: Repository
     @State private var splashScreenEnvironmentModel = SplashScreenEnvironmentModel()
     @State private var permissionEnvironmentModel = PermissionEnvironmentModel()
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
@@ -27,7 +41,6 @@ struct RootView: View {
     init(supabaseClient: SupabaseClient, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
         let repository = Repository(supabaseClient: supabaseClient)
         self.supabaseClient = supabaseClient
-        _repository = State(wrappedValue: repository)
         _notificationEnvironmentModel =
             State(wrappedValue: NotificationEnvironmentModel(repository: repository,
                                                              feedbackEnvironmentModel: feedbackEnvironmentModel))
@@ -63,7 +76,7 @@ struct RootView: View {
                 SplashScreen()
             }
         }
-        .environment(repository)
+        .environment(\.repository, Repository(supabaseClient: supabaseClient))
         .environment(splashScreenEnvironmentModel)
         .environment(notificationEnvironmentModel)
         .environment(profileEnvironmentModel)

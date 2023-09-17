@@ -110,7 +110,6 @@ struct ActivityFeed: View {
 
     func fetchFeedItems(onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {
         let (from, to) = getPagination(page: page, size: pageSize)
-        print("hei")
 
         isLoading = true
 
