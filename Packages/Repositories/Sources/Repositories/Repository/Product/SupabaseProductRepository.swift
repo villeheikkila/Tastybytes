@@ -6,7 +6,7 @@ import SupabaseStorage
 struct SupabaseProductRepository: ProductRepository {
     let client: SupabaseClient
 
-    public func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error> {
+    func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error> {
         let queryBuilder = client
             .database
             .rpc(
@@ -35,8 +35,8 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func getFeed(_ type: Product.FeedType, from: Int, to: Int,
-                        categoryFilterId: Int?) async -> Result<[Product.Joined], Error>
+    func getFeed(_ type: Product.FeedType, from: Int, to: Int,
+                 categoryFilterId: Int?) async -> Result<[Product.Joined], Error>
     {
         var queryBuilder = client
             .database
@@ -77,7 +77,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func getUnverified() async -> Result<[Product.Joined], Error> {
+    func getUnverified() async -> Result<[Product.Joined], Error> {
         do {
             let response: [Product.Joined] = try await client
                 .database
@@ -94,7 +94,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func search(barcode: Barcode) async -> Result<[Product.Joined], Error> {
+    func search(barcode: Barcode) async -> Result<[Product.Joined], Error> {
         do {
             let response: [ProductBarcode.Joined] = try await client
                 .database
@@ -111,7 +111,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func getById(id: Int) async -> Result<Product.Joined, Error> {
+    func getById(id: Int) async -> Result<Product.Joined, Error> {
         do {
             let response: Product.Joined = try await client
                 .database
@@ -129,7 +129,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func checkIfOnWishlist(id: Int) async -> Result<Bool, Error> {
+    func checkIfOnWishlist(id: Int) async -> Result<Bool, Error> {
         do {
             let response: Bool = try await client
                 .database
@@ -147,7 +147,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func addToWishlist(productId: Int) async -> Result<Void, Error> {
+    func addToWishlist(productId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -162,7 +162,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func removeFromWishlist(productId: Int) async -> Result<Void, Error> {
+    func removeFromWishlist(productId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -177,7 +177,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func getWishlistItems(profileId: UUID) async -> Result<[ProfileWishlist.Joined], Error> {
+    func getWishlistItems(profileId: UUID) async -> Result<[ProfileWishlist.Joined], Error> {
         do {
             let reponse: [ProfileWishlist.Joined] = try await client
                 .database
@@ -193,7 +193,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func getByProfile(id: UUID) async -> Result<[Product.Joined], Error> {
+    func getByProfile(id: UUID) async -> Result<[Product.Joined], Error> {
         do {
             let response: [Product.Joined] = try await client
                 .database
@@ -209,7 +209,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error> {
+    func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error> {
         do {
             let response: [Product.Joined] = try await client
                 .database
@@ -225,7 +225,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func uploadLogo(productId: Int, data: Data) async -> Result<String, Error> {
+    func uploadLogo(productId: Int, data: Data) async -> Result<String, Error> {
         do {
             let fileName = "\(productId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
             let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
@@ -241,7 +241,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func delete(id: Int) async -> Result<Void, Error> {
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -256,7 +256,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error> {
+    func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error> {
         do {
             let product: IntId = try await client
                 .database
@@ -281,7 +281,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error> {
+    func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -297,7 +297,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async -> Result<Void, Error> {
+    func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -315,7 +315,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func createUpdateSuggestion(productEditSuggestionParams: Product
+    func createUpdateSuggestion(productEditSuggestionParams: Product
         .EditSuggestionRequest) async -> Result<Void, Error>
     {
         do {
@@ -335,7 +335,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error> {
+    func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -349,7 +349,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
+    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -363,7 +363,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    public func getSummaryById(id: Int) async -> Result<Summary, Error> {
+    func getSummaryById(id: Int) async -> Result<Summary, Error> {
         do {
             let response: Summary = try await client
                 .database

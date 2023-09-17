@@ -4,7 +4,7 @@ import Supabase
 struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     let client: SupabaseClient
 
-    public func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
+    func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
         do {
             let result: CheckInComment = try await client
                 .database
@@ -22,7 +22,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    public func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
+    func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
         do {
             let response: CheckInComment = try await client
                 .database
@@ -40,7 +40,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    public func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error> {
+    func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error> {
         do {
             let response: [CheckInComment] = try await client
                 .database
@@ -57,7 +57,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    public func deleteById(id: Int) async -> Result<Void, Error> {
+    func deleteById(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -72,7 +72,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    public func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error> {
+    func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error> {
         do {
             try await client
                 .database

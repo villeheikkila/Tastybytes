@@ -6,7 +6,7 @@ import SupabaseStorage
 struct SupabaseCompanyRepository: CompanyRepository {
     let client: SupabaseClient
 
-    public func getById(id: Int) async -> Result<Company, Error> {
+    func getById(id: Int) async -> Result<Company, Error> {
         do {
             let response: Company = try await client
                 .database
@@ -24,7 +24,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func getJoinedById(id: Int) async -> Result<Company.Joined, Error> {
+    func getJoinedById(id: Int) async -> Result<Company.Joined, Error> {
         do {
             let response: Company.Joined = try await client
                 .database
@@ -42,7 +42,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func insert(newCompany: Company.NewRequest) async -> Result<Company, Error> {
+    func insert(newCompany: Company.NewRequest) async -> Result<Company, Error> {
         do {
             let response: Company = try await client
                 .database
@@ -59,7 +59,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func uploadLogo(companyId: Int, data: Data) async -> Result<String, Error> {
+    func uploadLogo(companyId: Int, data: Data) async -> Result<String, Error> {
         do {
             let fileName = "\(companyId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
             let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
@@ -75,7 +75,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func getUnverified() async -> Result<[Company], Error> {
+    func getUnverified() async -> Result<[Company], Error> {
         do {
             let response: [Company] = try await client
                 .database
@@ -92,7 +92,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error> {
+    func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error> {
         do {
             let response: Company.Joined = try await client
                 .database
@@ -110,7 +110,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error> {
+    func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -124,7 +124,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func delete(id: Int) async -> Result<Void, Error> {
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -139,7 +139,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
+    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -153,7 +153,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func search(searchTerm: String) async -> Result<[Company], Error> {
+    func search(searchTerm: String) async -> Result<[Company], Error> {
         do {
             let searchString = searchTerm
                 .split(separator: " ")
@@ -174,7 +174,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    public func getSummaryById(id: Int) async -> Result<Summary, Error> {
+    func getSummaryById(id: Int) async -> Result<Summary, Error> {
         do {
             let response: Summary = try await client
                 .database

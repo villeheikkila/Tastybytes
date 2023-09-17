@@ -4,7 +4,7 @@ import Supabase
 struct SupabaseDocumentRepository: DocumentRepository {
     let client: SupabaseClient
 
-    public func getAboutPage() async -> Result<AboutPage, Error> {
+    func getAboutPage() async -> Result<AboutPage, Error> {
         do {
             let response: Document.About = try await client
                 .database

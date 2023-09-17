@@ -5,7 +5,7 @@ import Supabase
 struct SupabaseLocationRepository: LocationRepository {
     let client: SupabaseClient
 
-    public func insert(location: Location) async -> Result<Location, Error> {
+    func insert(location: Location) async -> Result<Location, Error> {
         do {
             let result: Location = try await client
                 .database
@@ -21,7 +21,7 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func getById(id: UUID) async -> Result<Location, Error> {
+    func getById(id: UUID) async -> Result<Location, Error> {
         do {
             let response: Location = try await client
                 .database
@@ -39,7 +39,7 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func getCheckInLocations(userId _: UUID) async -> Result<[Location], Error> {
+    func getCheckInLocations(userId _: UUID) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
                 .database
@@ -56,7 +56,7 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func getRecentLocations(category: Location.RecentLocation) async -> Result<[Location], Error> {
+    func getRecentLocations(category: Location.RecentLocation) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
                 .database
@@ -73,7 +73,7 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error> {
+    func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
                 .database
@@ -89,7 +89,7 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func delete(id: UUID) async -> Result<Void, Error> {
+    func delete(id: UUID) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -104,7 +104,7 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func search(searchTerm: String) async -> Result<[Location], Error> {
+    func search(searchTerm: String) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
                 .database
@@ -120,7 +120,7 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func getSummaryById(id: UUID) async -> Result<Summary, Error> {
+    func getSummaryById(id: UUID) async -> Result<Summary, Error> {
         do {
             let response: Summary = try await client
                 .database
@@ -137,7 +137,7 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
-    public func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error> {
+    func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error> {
         do {
             try await client
                 .database

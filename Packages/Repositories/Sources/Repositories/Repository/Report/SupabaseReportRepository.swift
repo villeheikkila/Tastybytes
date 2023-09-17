@@ -5,7 +5,7 @@ import Supabase
 struct SupabaseReportRepository: ReportRepository {
     let client: SupabaseClient
 
-    public func insert(report: Report.NewRequest) async -> Result<Void, Error> {
+    func insert(report: Report.NewRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database

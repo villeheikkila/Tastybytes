@@ -4,7 +4,7 @@ import Supabase
 struct SupabaseNotificationRepository: NotificationRepository {
     let client: SupabaseClient
 
-    public func getAll(afterId: Int? = nil) async -> Result<[Models.Notification], Error> {
+    func getAll(afterId: Int? = nil) async -> Result<[Models.Notification], Error> {
         do {
             let response: [Models.Notification] = try await client
                 .database
@@ -21,7 +21,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func getUnreadCount() async -> Result<Int, Error> {
+    func getUnreadCount() async -> Result<Int, Error> {
         do {
             let response = try await client
                 .database
@@ -37,7 +37,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func refreshPushNotificationToken(token: Profile
+    func refreshPushNotificationToken(token: Profile
         .PushNotificationToken) async -> Result<ProfilePushNotification, Error>
     {
         do {
@@ -56,7 +56,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
+    func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
         -> Result<ProfilePushNotification, Error>
     {
         do {
@@ -76,7 +76,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func markRead(id: Int) async -> Result<Notification, Error> {
+    func markRead(id: Int) async -> Result<Notification, Error> {
         do {
             let response: Notification = try await client
                 .database
@@ -93,7 +93,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func markAllRead() async -> Result<Void, Error> {
+    func markAllRead() async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -106,7 +106,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func markAllFriendRequestsAsRead() async -> Result<[Models.Notification], Error> {
+    func markAllFriendRequestsAsRead() async -> Result<[Models.Notification], Error> {
         do {
             let response: [Models.Notification] = try await client
                 .database
@@ -121,7 +121,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Models.Notification], Error> {
+    func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Models.Notification], Error> {
         do {
             let response: [Models.Notification] = try await client
                 .database
@@ -139,7 +139,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func delete(id: Int) async -> Result<Void, Error> {
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -154,7 +154,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    public func deleteAll() async -> Result<Void, Error> {
+    func deleteAll() async -> Result<Void, Error> {
         do {
             try await client
                 .database

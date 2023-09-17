@@ -4,7 +4,7 @@ import Supabase
 struct SupabaseServingStyleRepository: ServingStyleRepository {
     let client: SupabaseClient
 
-    public func getAll() async -> Result<[ServingStyle], Error> {
+    func getAll() async -> Result<[ServingStyle], Error> {
         do {
             let response: [ServingStyle] = try await client
                 .database
@@ -19,7 +19,7 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
         }
     }
 
-    public func insert(servingStyle: ServingStyle.NewRequest) async -> Result<ServingStyle, Error> {
+    func insert(servingStyle: ServingStyle.NewRequest) async -> Result<ServingStyle, Error> {
         do {
             let response: ServingStyle = try await client
                 .database
@@ -36,7 +36,7 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
         }
     }
 
-    public func delete(id: Int) async -> Result<Void, Error> {
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -51,7 +51,7 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
         }
     }
 
-    public func update(update: ServingStyle.UpdateRequest) async -> Result<ServingStyle, Error> {
+    func update(update: ServingStyle.UpdateRequest) async -> Result<ServingStyle, Error> {
         do {
             let response: ServingStyle = try await client
                 .database

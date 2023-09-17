@@ -6,7 +6,7 @@ import SupabaseStorage
 struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
 
-    public func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error> {
+    func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
                 .database
@@ -21,7 +21,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error> {
+    func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error> {
         do {
             let queryBuilder = client
                 .database
@@ -48,7 +48,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func getByProductId(id: Int, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error> {
+    func getByProductId(id: Int, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
                 .database
@@ -66,7 +66,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[CheckIn.Image], Error> {
+    func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[CheckIn.Image], Error> {
         do {
             let response: [CheckIn.Image] = try await client
                 .database
@@ -84,8 +84,8 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func getCheckInImages(by: CheckInImageQueryType, from: Int,
-                                 to: Int) async -> Result<[CheckIn.Image], Error>
+    func getCheckInImages(by: CheckInImageQueryType, from: Int,
+                          to: Int) async -> Result<[CheckIn.Image], Error>
     {
         do {
             let response: [CheckIn.Image] = try await client
@@ -105,8 +105,8 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func getByLocation(locationId: UUID, segment: CheckInSegment, from: Int,
-                              to: Int) async -> Result<[CheckIn], Error>
+    func getByLocation(locationId: UUID, segment: CheckInSegment, from: Int,
+                       to: Int) async -> Result<[CheckIn], Error>
     {
         do {
             let response: [CheckIn] = try await client
@@ -125,7 +125,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func getById(id: Int) async -> Result<CheckIn, Error> {
+    func getById(id: Int) async -> Result<CheckIn, Error> {
         do {
             let response: CheckIn = try await client
                 .database
@@ -143,7 +143,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error> {
+    func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error> {
         do {
             let createdCheckIn: IntId = try await client
                 .database
@@ -160,7 +160,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error> {
+    func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error> {
         do {
             let response: CheckIn = try await client
                 .database
@@ -177,7 +177,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func delete(id: Int) async -> Result<Void, Error> {
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -192,7 +192,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func deleteAsModerator(checkIn: CheckIn) async -> Result<Void, Error> {
+    func deleteAsModerator(checkIn: CheckIn) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -205,7 +205,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error> {
+    func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error> {
         do {
             let response: ProfileSummary = try await client
                 .database
@@ -222,7 +222,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    public func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<String, Error> {
+    func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<String, Error> {
         do {
             let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
             let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")

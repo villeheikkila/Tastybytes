@@ -4,7 +4,7 @@ import Supabase
 struct SupabaseCategoryRepository: CategoryRepository {
     let client: SupabaseClient
 
-    public func getAllWithSubcategoriesServingStyles() async
+    func getAllWithSubcategoriesServingStyles() async
     -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error> {
         do {
             let response: [Models.Category.JoinedSubcategoriesServingStyles] = try await client
@@ -21,7 +21,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
-    public func insert(newCategory: Category.NewRequest) async -> Result<Void, Error> {
+    func insert(newCategory: Category.NewRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -35,7 +35,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
-    public func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
+    func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -49,7 +49,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
-    public func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
+    func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database

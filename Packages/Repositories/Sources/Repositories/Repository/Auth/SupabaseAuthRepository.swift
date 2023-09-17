@@ -5,7 +5,7 @@ import Supabase
 struct SupabaseAuthRepository: AuthRepository {
     let client: SupabaseClient
 
-    public func getUser() async -> Result<User, Error> {
+    func getUser() async -> Result<User, Error> {
         do {
             let response = try await client.auth.session.user
             return .success(response)
@@ -14,7 +14,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    public func logOut() async -> Result<Void, Error> {
+    func logOut() async -> Result<Void, Error> {
         do {
             try await client
                 .auth
@@ -26,7 +26,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    public func signInWithApple(token: String) async -> Result<Void, Error> {
+    func signInWithApple(token: String) async -> Result<Void, Error> {
         do {
             try await client.auth.signInWithIdToken(
                 credentials: .init(
@@ -41,7 +41,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    public func sendMagicLink(email: String) async -> Result<Void, Error> {
+    func sendMagicLink(email: String) async -> Result<Void, Error> {
         do {
             try await client
                 .auth
@@ -53,7 +53,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    public func signUp(username: String, email: String, password: String) async -> Result<Void, Error> {
+    func signUp(username: String, email: String, password: String) async -> Result<Void, Error> {
         do {
             try await client
                 .auth
@@ -65,7 +65,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    public func updatePassword(newPassword: String) async -> Result<Void, Error> {
+    func updatePassword(newPassword: String) async -> Result<Void, Error> {
         do {
             try await client
                 .auth.update(user: UserAttributes(password: newPassword))
@@ -75,7 +75,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    public func signIn(email: String, password: String) async -> Result<Void, Error> {
+    func signIn(email: String, password: String) async -> Result<Void, Error> {
         do {
             try await client
                 .auth
@@ -87,7 +87,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    public func sendPasswordResetEmail(email: String) async -> Result<Void, Error> {
+    func sendPasswordResetEmail(email: String) async -> Result<Void, Error> {
         do {
             try await client
                 .auth
@@ -99,7 +99,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    public func sendEmailVerification(email: String) async -> Result<Void, Error> {
+    func sendEmailVerification(email: String) async -> Result<Void, Error> {
         do {
             try await client
                 .auth

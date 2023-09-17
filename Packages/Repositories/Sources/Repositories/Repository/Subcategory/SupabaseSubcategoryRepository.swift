@@ -4,7 +4,7 @@ import Supabase
 struct SupabaseSubcategoryRepository: SubcategoryRepository {
     let client: SupabaseClient
 
-    public func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
+    func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
         do {
             let response: Subcategory = try await client
                 .database
@@ -21,7 +21,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         }
     }
 
-    public func delete(id: Int) async -> Result<Void, Error> {
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -36,7 +36,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         }
     }
 
-    public func update(updateRequest: Subcategory.UpdateRequest) async -> Result<Void, Error> {
+    func update(updateRequest: Subcategory.UpdateRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -51,7 +51,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         }
     }
 
-    public func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
+    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
                 .database

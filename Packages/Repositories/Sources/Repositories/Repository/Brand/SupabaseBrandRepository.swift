@@ -6,7 +6,7 @@ import SupabaseStorage
 struct SupabaseBrandRepository: BrandRepository {
     let client: SupabaseClient
 
-    public func getById(id: Int) async -> Result<Brand.JoinedSubBrandsProducts, Error> {
+    func getById(id: Int) async -> Result<Brand.JoinedSubBrandsProducts, Error> {
         do {
             let response: Brand.JoinedSubBrandsProducts = try await client
                 .database
@@ -24,7 +24,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func getJoinedById(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error> {
+    func getJoinedById(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error> {
         do {
             let response: Brand.JoinedSubBrandsProductsCompany = try await client
                 .database
@@ -42,7 +42,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func getUnverified() async -> Result<[Brand.JoinedSubBrandsProductsCompany], Error> {
+    func getUnverified() async -> Result<[Brand.JoinedSubBrandsProductsCompany], Error> {
         do {
             let response: [Brand.JoinedSubBrandsProductsCompany] = try await client
                 .database
@@ -59,7 +59,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error> {
+    func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error> {
         do {
             let response: [Brand.JoinedSubBrands] = try await client
                 .database
@@ -76,7 +76,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error> {
+    func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error> {
         do {
             let response: Brand.JoinedSubBrands = try await client
                 .database
@@ -93,7 +93,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func isLikedByCurrentUser(id: Int) async -> Result<Bool, Error> {
+    func isLikedByCurrentUser(id: Int) async -> Result<Bool, Error> {
         do {
             let response: Bool = try await client
                 .database
@@ -111,7 +111,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func likeBrand(brandId: Int) async -> Result<Void, Error> {
+    func likeBrand(brandId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -126,7 +126,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func unlikeBrand(brandId: Int) async -> Result<Void, Error> {
+    func unlikeBrand(brandId: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -141,7 +141,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
+    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -155,7 +155,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error> {
+    func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -170,7 +170,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func delete(id: Int) async -> Result<Void, Error> {
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -185,7 +185,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func getSummaryById(id: Int) async -> Result<Summary, Error> {
+    func getSummaryById(id: Int) async -> Result<Summary, Error> {
         do {
             let response: Summary = try await client
                 .database
@@ -203,7 +203,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    public func uploadLogo(brandId: Int, data: Data) async -> Result<String, Error> {
+    func uploadLogo(brandId: Int, data: Data) async -> Result<String, Error> {
         do {
             let fileName = "\(brandId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
             let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")

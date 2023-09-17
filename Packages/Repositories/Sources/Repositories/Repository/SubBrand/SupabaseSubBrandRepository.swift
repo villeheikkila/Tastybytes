@@ -4,7 +4,7 @@ import Supabase
 struct SupabaseSubBrandRepository: SubBrandRepository {
     let client: SupabaseClient
 
-    public func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error> {
+    func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error> {
         do {
             let response: SubBrand = try await client
                 .database
@@ -21,7 +21,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    public func update(updateRequest: SubBrand.Update) async -> Result<Void, Error> {
+    func update(updateRequest: SubBrand.Update) async -> Result<Void, Error> {
         do {
             let baseQuery = client
                 .database
@@ -46,7 +46,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    public func delete(id: Int) async -> Result<Void, Error> {
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -61,7 +61,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    public func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
+    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -75,7 +75,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    public func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error> {
+    func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error> {
         do {
             let response: [SubBrand.JoinedBrand] = try await client
                 .database

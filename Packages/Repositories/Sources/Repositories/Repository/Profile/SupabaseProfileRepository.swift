@@ -7,7 +7,7 @@ import SupabaseStorage
 struct SupabaseProfileRepository: ProfileRepository {
     let client: SupabaseClient
 
-    public func getById(id: UUID) async -> Result<Profile, Error> {
+    func getById(id: UUID) async -> Result<Profile, Error> {
         do {
             let response: Profile = try await client
                 .database
@@ -25,7 +25,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func getCurrentUser() async -> Result<Profile.Extended, Error> {
+    func getCurrentUser() async -> Result<Profile.Extended, Error> {
         do {
             let response: Profile.Extended = try await client
                 .database
@@ -42,7 +42,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func update(update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error> {
+    func update(update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error> {
         do {
             let response: Profile.Extended = try await client
                 .database
@@ -68,7 +68,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error> {
+    func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error> {
         do {
             let response: ProfileSettings = try await client
                 .database
@@ -94,7 +94,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func getContributions(userId: UUID) async -> Result<Contributions, Error> {
+    func getContributions(userId: UUID) async -> Result<Contributions, Error> {
         do {
             let response: Contributions = try await client
                 .database
@@ -111,7 +111,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error> {
+    func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error> {
         do {
             let response: [CategoryStatistics] = try await client
                 .database
@@ -129,7 +129,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func getSubcategoryStatistics(userId: UUID,
+    func getSubcategoryStatistics(userId: UUID,
                                          categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
     {
         do {
@@ -149,7 +149,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func currentUserExport() async -> Result<String, Error> {
+    func currentUserExport() async -> Result<String, Error> {
         do {
             let csv: String = try await client
                 .database
@@ -164,7 +164,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func search(searchTerm: String, currentUserId: UUID? = nil) async -> Result<[Profile], Error> {
+    func search(searchTerm: String, currentUserId: UUID? = nil) async -> Result<[Profile], Error> {
         do {
             let query = client
                 .database
@@ -186,7 +186,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error> {
+    func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error> {
         do {
             let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
             let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
@@ -206,7 +206,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func deleteCurrentAccount() async -> Result<Void, Error> {
+    func deleteCurrentAccount() async -> Result<Void, Error> {
         do {
             try await client
                 .database
@@ -219,7 +219,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    public func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error> {
+    func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error> {
         do {
             let result: Bool = try await client
                 .database
