@@ -1,7 +1,7 @@
 import Foundation
 
-public enum Database {
-    public enum Table: String {
+enum Database {
+    enum Table: String {
         case brandLikes = "brand_likes"
         case profileWishlistItems = "profile_wishlist_items"
         case products
@@ -55,7 +55,7 @@ public enum Database {
         case viewRecentPurchaseLocationsFromCurrentUser = "view__recent_purchase_locations_from_current_user"
     }
 
-    public enum Function: String {
+    enum Function: String {
         case acceptFriendRequest = "fnc__accept_friend_request"
         case checkIfUsernameIsAvailable = "fnc__check_if_username_is_available"
         case createCheckIn = "fnc__create_check_in"
@@ -102,12 +102,12 @@ public enum Database {
         case verifySubBrand = "fnc__verify_sub_brand"
         case verifySubcategory = "fnc__verify_subcategory"
     }
+}
 
-    public enum Bucket: String {
-        case productLogos = "product-logos"
-        case logos
-        case checkIns = "check-ins"
-        case brandLogos = "brand-logos"
-        case avatars
-    }
+public enum Bucket: String {
+    case productLogos = "product-logos"
+    case logos
+    case checkIns = "check-ins"
+    case brandLogos = "brand-logos"
+    case avatars
 }

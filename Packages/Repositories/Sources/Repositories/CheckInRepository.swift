@@ -372,7 +372,7 @@ extension Models.Notification.CheckInTaggedProfiles {
 public enum CheckInSegment: String, CaseIterable {
     case everyone, friends, you
 
-    public var table: Database.Table {
+    var table: Database.Table {
         switch self {
         case .everyone:
             return .checkIns
