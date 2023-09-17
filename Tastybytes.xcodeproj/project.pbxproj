@@ -11,7 +11,6 @@
 		5C0595F22A38C9A50067F46C /* ProductShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595F12A38C9A50067F46C /* ProductShareLinkView.swift */; };
 		5C0595F42A38D05A0067F46C /* LabeledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595F32A38D05A0067F46C /* LabeledTextField.swift */; };
 		5C0595F62A38D12B0067F46C /* PrivacySettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595F52A38D12B0067F46C /* PrivacySettingsPage.swift */; };
-		5C08B6E028ED7956009218D7 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 5C08B6DF28ED7956009218D7 /* Supabase */; };
 		5C09BEC929A53E0100331AEB /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C09BEC829A53E0100331AEB /* CategoryView.swift */; };
 		5C09BECB29A54AF800331AEB /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C09BECA29A54AF800331AEB /* Comfortaa-Bold.ttf */; };
 		5C0E364C292308080072EFBD /* AuthenticationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364B292308080072EFBD /* AuthenticationScreen.swift */; };
@@ -431,7 +430,6 @@
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C5882752A687B2A00851FA7 /* NukeUI in Frameworks */,
 				5CDB8BA72A93316800F73123 /* Repositories in Frameworks */,
-				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
 				5CDB8BA32A92AAE800F73123 /* Models in Frameworks */,
 				5CF28FCC2A93F2C700FC5C49 /* Camera in Frameworks */,
 				5C5882732A687B2A00851FA7 /* Nuke in Frameworks */,
@@ -1147,7 +1145,6 @@
 			);
 			name = Tastybytes;
 			packageProductDependencies = (
-				5C08B6DF28ED7956009218D7 /* Supabase */,
 				5CED432428FBF6B0003F8194 /* AlertToast */,
 				5C13F21A291A7C3A00599892 /* FirebaseMessaging */,
 				5C964DC22A2D021F00805199 /* SFSafeSymbols */,
@@ -1822,11 +1819,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5C08B6DF28ED7956009218D7 /* Supabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */;
-			productName = Supabase;
-		};
 		5C13F21A291A7C3A00599892 /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
