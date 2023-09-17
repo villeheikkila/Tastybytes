@@ -368,3 +368,18 @@ public extension Models.Notification.CheckInTaggedProfiles {
         case joined(_ withTableName: Bool)
     }
 }
+
+public enum CheckInSegment: String, CaseIterable {
+    case everyone, friends, you
+
+    public var table: Database.Table {
+        switch self {
+        case .everyone:
+            return .checkIns
+        case .friends:
+            return .viewCheckInsFromFriends
+        case .you:
+            return .viewCheckInsFromCurrentUser
+        }
+    }
+}

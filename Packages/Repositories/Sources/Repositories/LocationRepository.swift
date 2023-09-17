@@ -203,3 +203,14 @@ public extension Location {
         case joined(_ withTableName: Bool)
     }
 }
+
+public extension Location.RecentLocation {
+    var view: Database.Table {
+        switch self {
+        case .checkIn:
+            .viewRecentLocationsFromCurrentUser
+        case .purchase:
+            .viewRecentPurchaseLocationsFromCurrentUser
+        }
+    }
+}

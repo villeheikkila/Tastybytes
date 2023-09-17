@@ -25,7 +25,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public var imageUrl: URL? {
         guard let imageFile else { return nil }
         return URL(
-            bucketId: Database.Bucket.checkIns.rawValue,
+            bucketId: "check-ins",
             fileName: "\(profile.id.uuidString.lowercased())/\(imageFile)"
         )
     }
@@ -206,7 +206,7 @@ public extension CheckIn {
         public var imageUrl: URL? {
             guard let imageFile else { return nil }
             return URL(
-                bucketId: Database.Bucket.checkIns.rawValue,
+                bucketId: "check-ins",
                 fileName: "\(createdBy.uuidString.lowercased())/\(imageFile)"
             )
         }
@@ -402,21 +402,6 @@ public extension CheckIn {
             } else {
                 self.checkInAt = nil
             }
-        }
-    }
-}
-
-public enum CheckInSegment: String, CaseIterable {
-    case everyone, friends, you
-
-    public var table: Database.Table {
-        switch self {
-        case .everyone:
-            return .checkIns
-        case .friends:
-            return .viewCheckInsFromFriends
-        case .you:
-            return .viewCheckInsFromCurrentUser
         }
     }
 }

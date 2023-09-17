@@ -1,16 +1,5 @@
 import Foundation
 
-func queryWithTableName(_ tableName: String, _ query: String, _ withTableName: Bool) -> String {
-    withTableName ? "\(tableName) (\(query))" : query
-}
-
-extension URL {
-    init?(bucketId: String, fileName: String) {
-        let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(fileName)"
-        self.init(string: urlString)
-    }
-}
-
 public enum Database {
     public enum Table: String {
         case brandLikes = "brand_likes"
