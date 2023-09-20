@@ -1,10 +1,10 @@
 import Models
 import SwiftUI
 
-struct ServingStyleLabelView: View {
+public struct ServingStyleLabelView: View {
     let servingStyle: ServingStyle
 
-    var body: some View {
+    public var body: some View {
         HStack {
             Text(servingStyle.label)
                 .font(.caption)

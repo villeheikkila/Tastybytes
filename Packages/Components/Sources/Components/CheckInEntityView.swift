@@ -2,10 +2,14 @@ import Models
 import NukeUI
 import SwiftUI
 
-struct CheckInEntityView: View {
+public struct CheckInEntityView: View {
     let checkIn: CheckIn
 
-    var body: some View {
+    public init(checkIn: CheckIn) {
+        self.checkIn = checkIn
+    }
+
+    public var body: some View {
         VStack {
             VStack {
                 header

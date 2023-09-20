@@ -95,23 +95,3 @@ extension CheckInSegment {
         }
     }
 }
-
-public extension CheckIn {
-    var imageUrl: URL? {
-        guard let imageFile else { return nil }
-        return URL(
-            bucket: .checkIns,
-            fileName: "\(profile.id.uuidString.lowercased())/\(imageFile)"
-        )
-    }
-}
-
-public extension CheckIn.Image {
-    var imageUrl: URL? {
-        guard let imageFile else { return nil }
-        return URL(
-            bucket: .checkIns,
-            fileName: "\(createdBy.uuidString.lowercased())/\(imageFile)"
-        )
-    }
-}

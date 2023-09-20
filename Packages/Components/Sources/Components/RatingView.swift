@@ -1,15 +1,15 @@
 import SwiftUI
 
-struct RatingView: View {
+public struct RatingView: View {
     let rating: Double
     let type: StarType
 
-    init(rating: Double, type: StarType = .large) {
+    public init(rating: Double, type: StarType = .large) {
         self.rating = rating
         self.type = type
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 2) {
             ForEach(0 ... 4, id: \.self) { i in
                 Image(systemName: "star")

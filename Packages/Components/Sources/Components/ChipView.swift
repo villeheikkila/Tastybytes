@@ -1,9 +1,9 @@
 import SwiftUI
 
-struct ChipView: View {
-    let title: String
+public struct ChipView: View {
+    public let title: String
 
-    var body: some View {
+    public var body: some View {
         HStack {
             Text(title).font(.caption2).bold()
         }

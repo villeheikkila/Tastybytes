@@ -1,16 +1,16 @@
 import Models
 import SwiftUI
 
-struct CategoryNameView: View {
+public struct CategoryNameView: View {
     let category: CategoryProtocol
     let withBorder: Bool
 
-    init(category: CategoryProtocol, withBorder: Bool = true) {
+    public init(category: CategoryProtocol, withBorder: Bool = true) {
         self.category = category
         self.withBorder = withBorder
     }
 
-    var body: some View {
+    public var body: some View {
         HStack {
             Group {
                 Text(category.icon)

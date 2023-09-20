@@ -165,3 +165,10 @@ public extension Brand {
         }
     }
 }
+
+public extension BrandProtocol {
+    var logoUrl: URL? {
+        guard let logoFile else { return nil }
+        return URL(bucket: .brandLogos, fileName: logoFile)
+    }
+}

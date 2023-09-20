@@ -1,5 +1,4 @@
 import Foundation
-import Models
 
 public extension URL {
     init?(bucket: Bucket, fileName: String) {

@@ -3,15 +3,15 @@ import Models
 import SwiftUI
 import UIKit
 
-typealias SendMailCallback = ((Result<MFMailComposeResult, Error>) -> Void)?
+public typealias SendMailCallback = ((Result<MFMailComposeResult, Error>) -> Void)?
 
-struct SendEmailView: UIViewControllerRepresentable {
+public struct SendEmailView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentation
     @Binding var email: Email
 
     let callback: SendMailCallback
 
-    class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+    public class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
         @Binding var presentation: PresentationMode
         @Binding var data: Email
 
@@ -26,9 +26,9 @@ struct SendEmailView: UIViewControllerRepresentable {
             self.callback = callback
         }
 
-        func mailComposeController(_: MFMailComposeViewController,
-                                   didFinishWith result: MFMailComposeResult,
-                                   error: Error?)
+        public func mailComposeController(_: MFMailComposeViewController,
+                                          didFinishWith result: MFMailComposeResult,
+                                          error: Error?)
         {
             if let error = error {
                 callback?(.failure(error))
@@ -39,11 +39,11 @@ struct SendEmailView: UIViewControllerRepresentable {
         }
     }
 
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(presentation: presentation, data: $email, callback: callback)
     }
 
-    func makeUIViewController(context: UIViewControllerRepresentableContext<SendEmailView>)
+    public func makeUIViewController(context: UIViewControllerRepresentableContext<SendEmailView>)
     -> MFMailComposeViewController {
         let mvc = MFMailComposeViewController()
         mvc.mailComposeDelegate = context.coordinator
@@ -54,20 +54,26 @@ struct SendEmailView: UIViewControllerRepresentable {
         return mvc
     }
 
-    func updateUIViewController(_: MFMailComposeViewController,
-                                context _: UIViewControllerRepresentableContext<SendEmailView>) {}
+    public func updateUIViewController(_: MFMailComposeViewController,
+                                       context _: UIViewControllerRepresentableContext<SendEmailView>) {}
 
     static var canSendMail: Bool {
         MFMailComposeViewController.canSendMail()
     }
 }
 
-struct Email: Sendable {
+public struct Email: Sendable {
+    public init(adress: String, subject: String, body: String) {
+        self.adress = adress
+        self.subject = subject
+        self.body = body
+    }
+
     let adress: String
     let subject: String
     let body: String
 
-    static let feedback = Email(adress: Config.feedbackEmail,
-                                subject: "Feedback for \(Config.appName)",
-                                body: "")
+    public static let feedback = Email(adress: Config.feedbackEmail,
+                                       subject: "Feedback for \(Config.appName)",
+                                       body: "")
 }

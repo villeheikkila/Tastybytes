@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct MaterialOverlay<RootView: View>: View {
-    enum Alignment {
+public struct MaterialOverlay<RootView: View>: View {
+    public enum Alignment {
         case top, bottom
     }
 
     let view: RootView
     let alignment: Alignment
 
-    init(
+    public init(
         alignment: Alignment,
         @ViewBuilder view: @escaping () -> RootView
     ) {
@@ -16,7 +16,7 @@ struct MaterialOverlay<RootView: View>: View {
         self.alignment = alignment
     }
 
-    var body: some View {
+    public var body: some View {
         VStack {
             if alignment == .bottom {
                 Spacer()

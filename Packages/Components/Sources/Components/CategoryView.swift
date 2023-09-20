@@ -1,18 +1,18 @@
 import Models
 import SwiftUI
 
-struct CategoryView: View {
+public struct CategoryView: View {
     let category: Models.Category
     let subcategories: [SubcategoryProtocol]
     let servingStyle: ServingStyle?
 
-    init(category: Models.Category, subcategories: [SubcategoryProtocol], servingStyle: ServingStyle? = nil) {
+    public init(category: Models.Category, subcategories: [SubcategoryProtocol], servingStyle: ServingStyle? = nil) {
         self.category = category
         self.subcategories = subcategories
         self.servingStyle = servingStyle
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 4) {
             CategoryNameView(category: category)
             ForEach(subcategories, id: \.id) { subcategory in

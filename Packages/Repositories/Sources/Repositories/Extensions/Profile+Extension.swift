@@ -151,10 +151,3 @@ extension SubcategoryStatistics {
         }
     }
 }
-
-public extension AvatarURL {
-    var avatarUrl: URL? {
-        guard let avatarFile else { return nil }
-        return URL(bucket: .avatars, fileName: "\(id.uuidString.lowercased())/\(avatarFile)")
-    }
-}

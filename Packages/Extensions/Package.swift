@@ -14,6 +14,7 @@ let package = Package(
             targets: ["Extensions"]
         ),
     ],
+    
     targets: [
         .target(
             name: "Extensions"

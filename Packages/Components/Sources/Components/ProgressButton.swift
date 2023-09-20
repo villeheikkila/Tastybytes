@@ -1,9 +1,9 @@
 import OSLog
 import SwiftUI
 
-struct ProgressButton<LabelView: View>: View {
+public struct ProgressButton<LabelView: View>: View {
     private let logger = Logger(category: "ProgressButton")
-    enum ActionOption: CaseIterable {
+    public enum ActionOption: CaseIterable {
         case disableButton
         case showProgressView
     }
@@ -13,7 +13,7 @@ struct ProgressButton<LabelView: View>: View {
     var actionOptions = Set(ActionOption.allCases)
     @ViewBuilder var label: () -> LabelView
 
-    init(
+    public init(
         role: ButtonRole? = nil,
         action: @escaping () async -> Void,
         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
@@ -28,7 +28,7 @@ struct ProgressButton<LabelView: View>: View {
     @State private var isDisabled = false
     @State private var isLoading = false
 
-    var body: some View {
+    public var body: some View {
         Button(role: role, action: { buttonAction() }, label: { buttonLabel })
             .disabled(isDisabled)
     }
@@ -68,7 +68,7 @@ struct ProgressButton<LabelView: View>: View {
     }
 }
 
-extension ProgressButton where LabelView == Text {
+public extension ProgressButton where LabelView == Text {
     init(_ label: String,
          role: ButtonRole? = nil,
          actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
@@ -80,7 +80,7 @@ extension ProgressButton where LabelView == Text {
     }
 }
 
-extension ProgressButton where LabelView == Label<Text, Image> {
+public extension ProgressButton where LabelView == Label<Text, Image> {
     init(_ title: String, systemImage: String,
          role: ButtonRole? = nil,
          actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
@@ -92,7 +92,7 @@ extension ProgressButton where LabelView == Label<Text, Image> {
     }
 }
 
-extension ProgressButton where LabelView == LinkIconLabel {
+public extension ProgressButton where LabelView == LinkIconLabel {
     init(
         _ titleKey: String,
         systemName: String,
@@ -102,6 +102,28 @@ extension ProgressButton where LabelView == LinkIconLabel {
     ) {
         self.init(action: action) {
             LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
+        }
+    }
+}
+
+public struct LinkIconLabel: View {
+    let titleKey: String
+    let systemName: String
+    let color: Color
+
+    public var body: some View {
+        HStack {
+            ZStack {
+                Rectangle()
+                    .fill(color.gradient)
+                    .clipShape(.circle)
+                Image(systemName: systemName)
+                    .foregroundColor(.white)
+            }
+            .frame(width: 30, height: 30, alignment: .center)
+            .padding(.trailing, 8)
+            .accessibilityHidden(true)
+            Text(titleKey)
         }
     }
 }

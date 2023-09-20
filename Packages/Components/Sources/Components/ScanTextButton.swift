@@ -1,13 +1,13 @@
 import SwiftUI
 
-struct ScanTextButton: View {
+public struct ScanTextButton: View {
     private let responder: ScanTextResponder
 
-    init(text: Binding<String>) {
+    public init(text: Binding<String>) {
         responder = ScanTextResponder(title: text)
     }
 
-    var body: some View {
+    public var body: some View {
         if responder.canCaptureTextFromCamera {
             Button {
                 responder.captureTextFromCamera(nil)

@@ -31,10 +31,3 @@ extension Company {
         case joinedBrandSubcategoriesOwner(_ withTableName: Bool)
     }
 }
-
-public extension CompanyLogo {
-    var logoUrl: URL? {
-        guard let logoFile else { return nil }
-        return URL(bucket: .logos, fileName: logoFile)
-    }
-}

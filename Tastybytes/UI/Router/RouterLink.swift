@@ -1,3 +1,4 @@
+import Components
 import SwiftUI
 
 struct RouterLink<LabelView: View>: View {
@@ -103,27 +104,5 @@ extension RouterLink where LabelView == LinkIconLabel {
         self.init(sheet: sheet, asTapGesture: asTapGesture, label: {
             LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
         })
-    }
-}
-
-struct LinkIconLabel: View {
-    let titleKey: String
-    let systemName: String
-    let color: Color
-
-    var body: some View {
-        HStack {
-            ZStack {
-                Rectangle()
-                    .fill(color.gradient)
-                    .clipShape(.circle)
-                Image(systemName: systemName)
-                    .foregroundColor(.white)
-            }
-            .frame(width: 30, height: 30, alignment: .center)
-            .padding(.trailing, 8)
-            .accessibilityHidden(true)
-            Text(titleKey)
-        }
     }
 }

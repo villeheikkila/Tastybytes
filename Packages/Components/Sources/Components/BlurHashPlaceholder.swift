@@ -2,13 +2,13 @@ import Extensions
 import Models
 import SwiftUI
 
-struct BlurHashPlaceholder: View {
+public struct BlurHashPlaceholder: View {
     let blurHash: CheckIn.BlurHash?
     let height: Double
     @State private var image: UIImage?
     @State private var task: Task<Void, Never>?
 
-    var body: some View {
+    public var body: some View {
         Group {
             if let image {
                 Image(uiImage: image)

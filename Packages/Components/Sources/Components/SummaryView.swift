@@ -1,10 +1,10 @@
 import Models
 import SwiftUI
 
-struct SummaryView: View {
+public struct SummaryView: View {
     public let summary: Summary?
 
-    var body: some View {
+    public var body: some View {
         Grid(alignment: .leading) {
             header
             Divider().gridCellUnsizedAxes(.horizontal)

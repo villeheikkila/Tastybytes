@@ -106,10 +106,3 @@ extension ProductDuplicateSuggestion {
         case saved(_ withTableName: Bool)
     }
 }
-
-public extension Product.Joined {
-    var logoUrl: URL? {
-        guard let logoFile else { return nil }
-        return URL(bucket: .productLogos, fileName: logoFile)
-    }
-}

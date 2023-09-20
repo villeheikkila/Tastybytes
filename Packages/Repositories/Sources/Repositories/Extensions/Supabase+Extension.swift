@@ -25,7 +25,7 @@ extension PostgrestClient {
 }
 
 extension SupabaseStorageClient {
-    func from(_ id: Bucket) -> StorageFileApi {
+    func from(_ id: Models.Bucket) -> StorageFileApi {
         from(id: id.rawValue)
     }
 }

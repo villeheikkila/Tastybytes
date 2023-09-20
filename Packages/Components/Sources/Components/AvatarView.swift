@@ -1,12 +1,18 @@
 import NukeUI
 import SwiftUI
 
-struct AvatarView: View {
+public struct AvatarView: View {
+    public init(avatarUrl: URL? = nil, size: Double, id: UUID) {
+        self.avatarUrl = avatarUrl
+        self.size = size
+        self.id = id
+    }
+
     let avatarUrl: URL?
     let size: Double
     let id: UUID
 
-    var body: some View {
+    public var body: some View {
         if let avatarUrl {
             LazyImage(url: avatarUrl) { state in
                 if let image = state.image {

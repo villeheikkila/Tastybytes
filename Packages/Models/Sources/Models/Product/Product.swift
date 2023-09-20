@@ -579,3 +579,10 @@ extension CaseIterable where Self: RawRepresentable, Self.RawValue == String {
         return allCases.map { $0.rawValue }
     }
 }
+
+public extension Product.Joined {
+    var logoUrl: URL? {
+        guard let logoFile else { return nil }
+        return URL(bucket: .productLogos, fileName: logoFile)
+    }
+}

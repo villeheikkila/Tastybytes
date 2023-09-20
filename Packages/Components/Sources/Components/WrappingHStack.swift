@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct WrappingHStack: Layout {
-    struct Cache {
+public struct WrappingHStack: Layout {
+    public struct Cache {
         var minSize: CGSize
         var rows: (Int, [Row])?
     }
 
-    var alignment: Alignment
-    var horizontalSpacing: CGFloat?
-    var verticalSpacing: CGFloat?
+    public var alignment: Alignment
+    public var horizontalSpacing: CGFloat?
+    public var verticalSpacing: CGFloat?
 
     @inlinable init(alignment: Alignment = .center,
                     horizontalSpacing: CGFloat? = nil,
@@ -19,24 +19,24 @@ struct WrappingHStack: Layout {
         self.verticalSpacing = verticalSpacing
     }
 
-    static var layoutProperties: LayoutProperties {
+    public static var layoutProperties: LayoutProperties {
         var properties = LayoutProperties()
         properties.stackOrientation = .horizontal
 
         return properties
     }
 
-    func makeCache(subviews: Subviews) -> Cache {
+    public func makeCache(subviews: Subviews) -> Cache {
         Cache(minSize: minSize(subviews: subviews))
     }
 
-    func updateCache(_ cache: inout Cache, subviews: Subviews) {
+    public func updateCache(_ cache: inout Cache, subviews: Subviews) {
         cache.minSize = minSize(subviews: subviews)
     }
 
-    func sizeThatFits(proposal: ProposedViewSize,
-                      subviews: Subviews,
-                      cache: inout Cache) -> CGSize
+    public func sizeThatFits(proposal: ProposedViewSize,
+                             subviews: Subviews,
+                             cache: inout Cache) -> CGSize
     {
         let rows = arrangeRows(proposal: proposal, subviews: subviews, cache: &cache)
 
@@ -52,10 +52,10 @@ struct WrappingHStack: Layout {
         return CGSize(width: width, height: height)
     }
 
-    func placeSubviews(in bounds: CGRect,
-                       proposal: ProposedViewSize,
-                       subviews: Subviews,
-                       cache: inout Cache)
+    public func placeSubviews(in bounds: CGRect,
+                              proposal: ProposedViewSize,
+                              subviews: Subviews,
+                              cache: inout Cache)
     {
         let rows = arrangeRows(proposal: proposal, subviews: subviews, cache: &cache)
 
@@ -73,7 +73,7 @@ struct WrappingHStack: Layout {
     }
 }
 
-extension WrappingHStack {
+public extension WrappingHStack {
     struct Row {
         var elements: [(index: Int, size: CGSize, xOffset: CGFloat)] = []
         var yOffset: CGFloat = .zero

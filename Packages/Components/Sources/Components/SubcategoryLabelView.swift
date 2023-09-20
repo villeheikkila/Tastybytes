@@ -1,10 +1,10 @@
 import Models
 import SwiftUI
 
-struct SubcategoryLabelView: View {
+public struct SubcategoryLabelView: View {
     let subcategory: SubcategoryProtocol
 
-    var body: some View {
+    public var body: some View {
         Text(subcategory.name)
             .font(.caption)
             .fontWeight(.bold)
