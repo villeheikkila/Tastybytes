@@ -1,10 +1,8 @@
 import AuthenticationServices
 import EnvironmentModels
 import OSLog
-import Supabase
-import SwiftUI
-@_spi(Experimental) import GoTrue
 import Repositories
+import SwiftUI
 
 struct SignInWithAppleView: View {
     private let logger = Logger(category: "SignInWithAppleView")
