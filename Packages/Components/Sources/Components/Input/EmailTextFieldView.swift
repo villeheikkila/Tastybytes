@@ -1,9 +1,13 @@
 import SwiftUI
 
-struct EmailTextFieldView: View {
+public struct EmailTextFieldView: View {
     @Binding var email: String
 
-    var body: some View {
+    public init(email: Binding<String>) {
+        _email = email
+    }
+
+    public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: "envelope")

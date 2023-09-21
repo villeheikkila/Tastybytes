@@ -37,7 +37,7 @@ public struct RatingView: View {
     }
 }
 
-enum StarType {
+public enum StarType {
     case large, small
 
     var size: Double {

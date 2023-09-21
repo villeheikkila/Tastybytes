@@ -1,10 +1,14 @@
 import PhotosUI
 import SwiftUI
 
-struct LegacyPhotoPicker: UIViewControllerRepresentable {
+public struct LegacyPhotoPicker: UIViewControllerRepresentable {
     let onSelection: (_ image: UIImage) -> Void
 
-    func makeUIViewController(context: Context) -> PHPickerViewController {
+    public init(onSelection: @escaping (_ image: UIImage) -> Void) {
+        self.onSelection = onSelection
+    }
+
+    public func makeUIViewController(context: Context) -> PHPickerViewController {
         var config = PHPickerConfiguration()
         config.filter = .images
         let picker = PHPickerViewController(configuration: config)
@@ -12,24 +16,24 @@ struct LegacyPhotoPicker: UIViewControllerRepresentable {
         return picker
     }
 
-    func updateUIViewController(_: PHPickerViewController, context _: Context) {}
+    public func updateUIViewController(_: PHPickerViewController, context _: Context) {}
 
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(self, onSelection: onSelection)
     }
 }
 
-extension LegacyPhotoPicker {
+public extension LegacyPhotoPicker {
     final class Coordinator: NSObject, PHPickerViewControllerDelegate {
         let parent: LegacyPhotoPicker
         let onSelection: (_ image: UIImage) -> Void
 
-        init(_ parent: LegacyPhotoPicker, onSelection: @escaping (_ image: UIImage) -> Void) {
+        public init(_ parent: LegacyPhotoPicker, onSelection: @escaping (_ image: UIImage) -> Void) {
             self.parent = parent
             self.onSelection = onSelection
         }
 
-        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
             picker.dismiss(animated: true)
 
             guard let provider = results.first?.itemProvider else { return }

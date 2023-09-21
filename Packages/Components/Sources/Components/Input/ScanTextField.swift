@@ -1,10 +1,15 @@
 import SwiftUI
 
-struct ScanTextField: View {
+public struct ScanTextField: View {
     let title: String
     @Binding var text: String
 
-    var body: some View {
+    public init(title: String, text: Binding<String>) {
+        self.title = title
+        _text = text
+    }
+
+    public var body: some View {
         HStack {
             TextField(title, text: $text, axis: .vertical)
             Spacer()

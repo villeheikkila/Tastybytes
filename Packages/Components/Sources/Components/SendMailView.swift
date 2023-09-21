@@ -11,6 +11,11 @@ public struct SendEmailView: UIViewControllerRepresentable {
 
     let callback: SendMailCallback
 
+    public init(email: Binding<Email>, callback: SendMailCallback = nil) {
+        _email = email
+        self.callback = callback
+    }
+
     public class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
         @Binding var presentation: PresentationMode
         @Binding var data: Email

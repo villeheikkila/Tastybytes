@@ -2,12 +2,12 @@ import AVFoundation
 import Models
 import SwiftUI
 
-struct ScannerView: UIViewControllerRepresentable {
+public struct ScannerView: UIViewControllerRepresentable {
     let completion: (Result<Barcode, ScanError>) -> Void
     let scanTypes: [AVMetadataObject.ObjectType]
     let isTorchOn: Bool
 
-    init(
+    public init(
         scanTypes: [AVMetadataObject.ObjectType],
         completion: @escaping (Result<Barcode, ScanError>) -> Void,
         isTorchOn: Bool = false
@@ -17,11 +17,11 @@ struct ScannerView: UIViewControllerRepresentable {
         self.isTorchOn = isTorchOn
     }
 
-    func makeUIViewController(context _: Context) -> Controller {
+    public func makeUIViewController(context _: Context) -> Controller {
         Controller(parentView: self)
     }
 
-    func updateUIViewController(_ uiViewController: Controller, context _: Context) {
+    public func updateUIViewController(_ uiViewController: Controller, context _: Context) {
         uiViewController.parentView = self
         uiViewController.updateViewController(
             isTorchOn: isTorchOn
@@ -29,7 +29,7 @@ struct ScannerView: UIViewControllerRepresentable {
     }
 }
 
-extension ScannerView {
+public extension ScannerView {
     enum ScanError: Error {
         case badInput
         case badOutput
@@ -55,14 +55,14 @@ extension ScannerView {
             super.init(coder: coder)
         }
 
-        override func viewDidLoad() {
+        override public func viewDidLoad() {
             super.viewDidLoad()
             addOrientationDidChangeObserver()
             setBackgroundColor()
             handleCameraPermission()
         }
 
-        override func viewWillLayoutSubviews() {
+        override public func viewWillLayoutSubviews() {
             previewLayer?.frame = view.layer.bounds
         }
 
@@ -74,12 +74,12 @@ extension ScannerView {
             connection.videoOrientation = AVCaptureVideoOrientation(rawValue: orientation.rawValue) ?? .portrait
         }
 
-        override func viewDidAppear(_ animated: Bool) {
+        override public func viewDidAppear(_ animated: Bool) {
             super.viewDidAppear(animated)
             updateOrientation()
         }
 
-        override func viewWillAppear(_ animated: Bool) {
+        override public func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             setupSession()
         }
@@ -191,7 +191,7 @@ extension ScannerView {
             }
         }
 
-        override func viewDidDisappear(_ animated: Bool) {
+        override public func viewDidDisappear(_ animated: Bool) {
             super.viewDidDisappear(animated)
 
             if captureSession?.isRunning == true {
@@ -205,15 +205,15 @@ extension ScannerView {
             NotificationCenter.default.removeObserver(self)
         }
 
-        override var prefersStatusBarHidden: Bool {
+        override public var prefersStatusBarHidden: Bool {
             true
         }
 
-        override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
             .all
         }
 
-        override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
+        override public func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
             guard touches.first?.view == view,
                   let touchPoint = touches.first,
                   let device = AVCaptureDevice.default(for: .video),
@@ -255,7 +255,7 @@ extension ScannerView {
             lastTime = Date(timeIntervalSince1970: 0)
         }
 
-        func metadataOutput(
+        public func metadataOutput(
             _: AVCaptureMetadataOutput,
             didOutput metadataObjects: [AVMetadataObject],
             from _: AVCaptureConnection
