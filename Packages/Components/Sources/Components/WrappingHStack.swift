@@ -10,9 +10,9 @@ public struct WrappingHStack: Layout {
     public var horizontalSpacing: CGFloat?
     public var verticalSpacing: CGFloat?
 
-    @inlinable init(alignment: Alignment = .center,
-                    horizontalSpacing: CGFloat? = nil,
-                    verticalSpacing: CGFloat? = nil)
+    @inlinable public init(alignment: Alignment = .center,
+                           horizontalSpacing: CGFloat? = nil,
+                           verticalSpacing: CGFloat? = nil)
     {
         self.alignment = alignment
         self.horizontalSpacing = horizontalSpacing

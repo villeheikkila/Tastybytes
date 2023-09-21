@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Models
 import SwiftUI
 
 struct NameTagSheet: View {

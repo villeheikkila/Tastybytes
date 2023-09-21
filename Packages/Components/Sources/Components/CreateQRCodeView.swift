@@ -1,9 +1,13 @@
 import SwiftUI
 
-struct CreateQRCodeView: View {
+public struct CreateQRCodeView: View {
     let qrCodeText: String
 
-    var body: some View {
+    public init(qrCodeText: String) {
+        self.qrCodeText = qrCodeText
+    }
+
+    public var body: some View {
         Group {
             if let qrCode = qrCodeText.asQRCode(), let uiImage = UIImage(data: qrCode) {
                 Image(uiImage: uiImage)

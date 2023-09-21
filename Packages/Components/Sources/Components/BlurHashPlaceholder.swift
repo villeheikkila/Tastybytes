@@ -8,6 +8,11 @@ public struct BlurHashPlaceholder: View {
     @State private var image: UIImage?
     @State private var task: Task<Void, Never>?
 
+    public init(blurHash: CheckIn.BlurHash? = nil, height: Double) {
+        self.blurHash = blurHash
+        self.height = height
+    }
+
     public var body: some View {
         Group {
             if let image {

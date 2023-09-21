@@ -111,6 +111,12 @@ public struct LinkIconLabel: View {
     let systemName: String
     let color: Color
 
+    public init(titleKey: String, systemName: String, color: Color) {
+        self.titleKey = titleKey
+        self.systemName = systemName
+        self.color = color
+    }
+
     public var body: some View {
         HStack {
             ZStack {

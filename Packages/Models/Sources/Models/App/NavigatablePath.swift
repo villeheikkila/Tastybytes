@@ -1,8 +1,7 @@
-import Models
 import OSLog
 import SwiftUI
 
-enum NavigatablePath {
+public enum NavigatablePath {
     case product(id: Int)
     case productWithBarcode(id: Int, barcode: Barcode)
     case checkIn(id: Int)
@@ -28,9 +27,13 @@ enum NavigatablePath {
         }
     }
 
-    var url: URL {
+    public var url: URL {
         // swiftlint:disable force_unwrapping
         URL(string: urlString)!
         // swiftlint:enable force_unwrapping
     }
+}
+
+public enum PathIdentifier: Hashable {
+    case checkins, products, profiles, companies, locations, brands
 }

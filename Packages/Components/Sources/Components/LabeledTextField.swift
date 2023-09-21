@@ -1,17 +1,17 @@
 import SwiftUI
 
-struct LabeledTextField: View {
+public struct LabeledTextField: View {
     let title: String
     let placeholder: String?
     @Binding var text: String
 
-    init(title: String, placeholder: String? = nil, text: Binding<String>) {
+    public init(title: String, placeholder: String? = nil, text: Binding<String>) {
         self.title = title
         self.placeholder = placeholder
         _text = text
     }
 
-    var body: some View {
+    public var body: some View {
         HStack {
             Text(title)
                 .foregroundColor(.secondary)

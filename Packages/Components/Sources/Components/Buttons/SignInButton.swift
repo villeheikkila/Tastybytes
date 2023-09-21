@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct SignInButton: View {
-    enum SignInButtonStyle {
+public struct SignInButton: View {
+    public enum SignInButtonStyle {
         case password, magicLink
 
         var text: String {
@@ -35,7 +35,12 @@ struct SignInButton: View {
     let type: SignInButtonStyle
     let action: () -> Void
 
-    var body: some View {
+    public init(type: SignInButton.SignInButtonStyle, action: @escaping () -> Void) {
+        self.type = type
+        self.action = action
+    }
+
+    public var body: some View {
         Button(action: { action() }, label: {
             HStack(spacing: 6) {
                 Image(systemName: type.systemName)

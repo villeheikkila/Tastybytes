@@ -1,9 +1,13 @@
 import SwiftUI
 
-struct UsernameTextFieldView: View {
+public struct UsernameTextFieldView: View {
     @Binding var username: String
 
-    var body: some View {
+    public init(username: Binding<String>) {
+        _username = username
+    }
+
+    public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: "person")

@@ -4,6 +4,10 @@ import SwiftUI
 public struct SummaryView: View {
     public let summary: Summary?
 
+    public init(summary: Summary? = nil) {
+        self.summary = summary
+    }
+
     public var body: some View {
         Grid(alignment: .leading) {
             header

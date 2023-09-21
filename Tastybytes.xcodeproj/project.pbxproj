@@ -45,7 +45,6 @@
 		5C2B3F672A93B06500946CC6 /* EnvironmentModels in Frameworks */ = {isa = PBXBuildFile; productRef = 5C2B3F662A93B06500946CC6 /* EnvironmentModels */; };
 		5C32C40A29E714AD008CE8A9 /* RouterWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40929E714AD008CE8A9 /* RouterWrapper.swift */; };
 		5C32C40C29E7150D008CE8A9 /* RouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40B29E7150D008CE8A9 /* RouterLink.swift */; };
-		5C32C40E29E715B2008CE8A9 /* NavigatablePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */; };
 		5C32C41429ED9F9C008CE8A9 /* ErrorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C41329ED9F9C008CE8A9 /* ErrorScreen.swift */; };
 		5C32C41629F0394B008CE8A9 /* NotificationSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C41529F0394B008CE8A9 /* NotificationSettingsScreen.swift */; };
 		5C353CC029A249660067C4EE /* ProductFilterOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */; };
@@ -220,7 +219,6 @@
 		5C2B3F682A93B08900946CC6 /* EnvironmentModels */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = EnvironmentModels; path = Packages/EnvironmentModels; sourceTree = "<group>"; };
 		5C32C40929E714AD008CE8A9 /* RouterWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterWrapper.swift; sourceTree = "<group>"; };
 		5C32C40B29E7150D008CE8A9 /* RouterLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterLink.swift; sourceTree = "<group>"; };
-		5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatablePath.swift; sourceTree = "<group>"; };
 		5C32C41329ED9F9C008CE8A9 /* ErrorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorScreen.swift; sourceTree = "<group>"; };
 		5C32C41529F0394B008CE8A9 /* NotificationSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsScreen.swift; sourceTree = "<group>"; };
 		5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterOverlayView.swift; sourceTree = "<group>"; };
@@ -236,12 +234,6 @@
 		5C3D54B32ABB82BF00DAE4F3 /* SignInWithAppleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInWithAppleView.swift; sourceTree = "<group>"; };
 		5C3D54B52ABB82D400DAE4F3 /* SplashScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		5C3D54B72ABB82EF00DAE4F3 /* VerificationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationButton.swift; sourceTree = "<group>"; };
-		5C3D54BA2ABB86B000DAE4F3 /* ProfileShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileShareLinkView.swift; sourceTree = "<group>"; };
-		5C3D54BB2ABB86B000DAE4F3 /* LocationShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationShareLinkView.swift; sourceTree = "<group>"; };
-		5C3D54BC2ABB86B000DAE4F3 /* BrandShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandShareLinkView.swift; sourceTree = "<group>"; };
-		5C3D54BD2ABB86B000DAE4F3 /* CheckInShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInShareLinkView.swift; sourceTree = "<group>"; };
-		5C3D54BE2ABB86B000DAE4F3 /* CompanyShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyShareLinkView.swift; sourceTree = "<group>"; };
-		5C3D54BF2ABB86B000DAE4F3 /* ProductShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductShareLinkView.swift; sourceTree = "<group>"; };
 		5C3D8274298D5F3300E861DC /* AccountSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreen.swift; sourceTree = "<group>"; };
 		5C43238029898A4C0085522E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5C46E8662911E5860008F142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -466,7 +458,6 @@
 				5CBC244F297C54B900A0002B /* Router.swift */,
 				5C32C40929E714AD008CE8A9 /* RouterWrapper.swift */,
 				5C32C40B29E7150D008CE8A9 /* RouterLink.swift */,
-				5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */,
 				5C6E10682A1E011700079F8E /* PathIdentifier.swift */,
 				5C6E106A2A1E014100079F8E /* TabIdentifier.swift */,
 				5C6E105D2A1D137500079F8E /* SheetManager.swift */,
@@ -490,19 +481,6 @@
 				5C3D54AC2ABB822100DAE4F3 /* CheckInContextMenu.swift */,
 			);
 			path = ContextMenu;
-			sourceTree = "<group>";
-		};
-		5C3D54B92ABB86B000DAE4F3 /* ShareLink */ = {
-			isa = PBXGroup;
-			children = (
-				5C3D54BA2ABB86B000DAE4F3 /* ProfileShareLinkView.swift */,
-				5C3D54BB2ABB86B000DAE4F3 /* LocationShareLinkView.swift */,
-				5C3D54BC2ABB86B000DAE4F3 /* BrandShareLinkView.swift */,
-				5C3D54BD2ABB86B000DAE4F3 /* CheckInShareLinkView.swift */,
-				5C3D54BE2ABB86B000DAE4F3 /* CompanyShareLinkView.swift */,
-				5C3D54BF2ABB86B000DAE4F3 /* ProductShareLinkView.swift */,
-			);
-			path = ShareLink;
 			sourceTree = "<group>";
 		};
 		5C46E8652911E2CD0008F142 /* Sheets */ = {
@@ -901,7 +879,6 @@
 		5CFB562D28F5969300F13A1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				5C3D54B92ABB86B000DAE4F3 /* ShareLink */,
 				5C3D54AB2ABB822100DAE4F3 /* ContextMenu */,
 				5C663F22292DFF66006F9A97 /* AppLogoView.swift */,
 				5C663F24292E0100006F9A97 /* AppNameView.swift */,
@@ -1203,7 +1180,6 @@
 				5CA375682A13D4C3000DF444 /* AccountDeletedScreen.swift in Sources */,
 				5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */,
 				5C7C3593299AC426009A3C09 /* ScalingButton.swift in Sources */,
-				5C32C40E29E715B2008CE8A9 /* NavigatablePath.swift in Sources */,
 				5C58826C2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift in Sources */,
 				5C7C35E0299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift in Sources */,
 				5C32C40C29E7150D008CE8A9 /* RouterLink.swift in Sources */,

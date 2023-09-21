@@ -1,14 +1,18 @@
 import Models
 import SwiftUI
 
-struct ProfileShareLinkView: View {
+public struct ProfileShareLinkView: View {
     let profile: Profile
+
+    public init(profile: Profile) {
+        self.profile = profile
+    }
 
     private var title: String {
         profile.preferredName
     }
 
-    var body: some View {
+    public var body: some View {
         ShareLink("Share", item: NavigatablePath.profile(id: profile.id).url, preview: SharePreview(title))
     }
 }

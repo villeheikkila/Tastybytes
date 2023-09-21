@@ -4,6 +4,10 @@ import SwiftUI
 public struct SubcategoryLabelView: View {
     let subcategory: SubcategoryProtocol
 
+    public init(subcategory: SubcategoryProtocol) {
+        self.subcategory = subcategory
+    }
+
     public var body: some View {
         Text(subcategory.name)
             .font(.caption)

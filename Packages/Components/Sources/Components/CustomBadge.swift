@@ -18,10 +18,10 @@ struct Badge: View {
     }
 }
 
-struct BadgeViewModifier: ViewModifier {
+public struct BadgeViewModifier: ViewModifier {
     let badgeCount: Int
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .if(badgeCount != 0, transform: { view in
                 view.overlay(alignment: .topTrailing) {
@@ -31,7 +31,7 @@ struct BadgeViewModifier: ViewModifier {
     }
 }
 
-extension View {
+public extension View {
     func customBadge(_ badgeCount: Int) -> some View {
         modifier(BadgeViewModifier(badgeCount: badgeCount))
     }

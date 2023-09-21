@@ -1,10 +1,6 @@
 import Models
 import SwiftUI
 
-enum PathIdentifier: Hashable {
-    case checkins, products, profiles, companies, locations, brands
-}
-
 extension URL {
     var isUniversalLink: Bool {
         scheme == "https"

@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct RatingPickerView: View {
-    enum IncrementType {
+public struct RatingPickerView: View {
+    public enum IncrementType {
         case small, large
 
         var divider: Double {
@@ -21,7 +21,15 @@ struct RatingPickerView: View {
 
     let incrementType: IncrementType
 
-    var body: some View {
+    public init(
+        rating: Binding<Double>,
+        incrementType: IncrementType
+    ) {
+        _rating = rating
+        self.incrementType = incrementType
+    }
+
+    public var body: some View {
         ZStack {
             HStack {
                 ForEach(0 ... 4, id: \.self) { i in
