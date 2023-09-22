@@ -1,7 +1,6 @@
 import Components
 import EnvironmentModels
 import Models
-import NukeUI
 import OSLog
 import Repositories
 import SwiftUI
@@ -257,7 +256,7 @@ struct BrandScreen: View {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
                 if let logoUrl = brand.logoUrl {
-                    LazyImage(url: logoUrl) { state in
+                    RemoteImage(url: logoUrl) { state in
                         if let image = state.image {
                             image
                                 .resizable()

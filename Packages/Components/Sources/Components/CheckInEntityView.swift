@@ -1,5 +1,4 @@
 import Models
-import NukeUI
 import SwiftUI
 
 public struct CheckInEntityView: View {
@@ -43,7 +42,7 @@ public struct CheckInEntityView: View {
     @ViewBuilder private var checkInImage: some View {
         if let imageUrl = checkIn.imageUrl {
             HStack {
-                LazyImage(url: imageUrl) { state in
+                RemoteImage(url: imageUrl) { state in
                     if let image = state.image {
                         image
                             .resizable()

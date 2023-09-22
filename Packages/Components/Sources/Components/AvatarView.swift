@@ -1,4 +1,3 @@
-import NukeUI
 import SwiftUI
 
 public struct AvatarView: View {
@@ -14,7 +13,7 @@ public struct AvatarView: View {
 
     public var body: some View {
         if let avatarUrl {
-            LazyImage(url: avatarUrl) { state in
+            RemoteImage(url: avatarUrl) { state in
                 if let image = state.image {
                     image.resizable()
                 } else {

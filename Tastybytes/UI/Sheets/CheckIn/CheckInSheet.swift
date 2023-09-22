@@ -2,7 +2,6 @@ import Camera
 import Components
 import EnvironmentModels
 import Models
-import NukeUI
 import OSLog
 import PhotosUI
 import Repositories
@@ -134,7 +133,7 @@ struct CheckInSheet: View {
                             .shadow(radius: 4)
                             .accessibilityLabel("Image of the check-in")
                     } else if let imageUrl = editCheckIn?.imageUrl {
-                        LazyImage(url: imageUrl) { state in
+                        RemoteImage(url: imageUrl) { state in
                             if let image = state.image {
                                 image
                                     .resizable()

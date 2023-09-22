@@ -1,6 +1,5 @@
 import Components
 import Models
-import NukeUI
 import Repositories
 import SwiftUI
 
@@ -21,7 +20,7 @@ struct ProductItemView: View {
     var body: some View {
         HStack(spacing: 24) {
             if extras.contains(.logo), let logoUrl = product.logoUrl {
-                LazyImage(url: logoUrl) { state in
+                RemoteImage(url: logoUrl) { state in
                     if let image = state.image {
                         image
                             .resizable()

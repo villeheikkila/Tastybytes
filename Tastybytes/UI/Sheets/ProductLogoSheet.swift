@@ -1,6 +1,6 @@
+import Components
 import EnvironmentModels
 import Models
-import NukeUI
 import OSLog
 import PhotosUI
 import Repositories
@@ -41,7 +41,7 @@ struct ProductLogoSheet: View {
                         bucket: .productLogos,
                         fileName: logoFile
                     ) {
-                        LazyImage(url: logoUrl) { state in
+                        RemoteImage(url: logoUrl) { state in
                             if let image = state.image {
                                 image
                                     .resizable()

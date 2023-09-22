@@ -1,7 +1,6 @@
 import Components
 import EnvironmentModels
 import Models
-import NukeUI
 import OSLog
 import Repositories
 import SwiftUI
@@ -69,7 +68,7 @@ struct CheckInImageCellView: View {
 
     var body: some View {
         HStack {
-            LazyImage(url: checkInImage.imageUrl) { state in
+            RemoteImage(url: checkInImage.imageUrl) { state in
                 if let image = state.image {
                     image
                         .resizable()

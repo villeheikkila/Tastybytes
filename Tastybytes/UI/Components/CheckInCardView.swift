@@ -1,6 +1,5 @@
 import Components
 import Models
-import NukeUI
 import Repositories
 import SwiftUI
 
@@ -79,7 +78,7 @@ struct CheckInCardView: View {
     @MainActor
     @ViewBuilder private var checkInImage: some View {
         if let imageUrl = checkIn.imageUrl {
-            LazyImage(url: imageUrl) { state in
+            RemoteImage(url: imageUrl) { state in
                 if let image = state.image {
                     image
                         .resizable()
@@ -95,7 +94,7 @@ struct CheckInCardView: View {
                                 .accessibility(addTraits: .isButton)
                         })
                         .popover(isPresented: $showFullPicture) {
-                            LazyImage(url: imageUrl) { state in
+                            RemoteImage(url: imageUrl) { state in
                                 if let image = state.image {
                                     image
                                         .resizable()
@@ -118,7 +117,7 @@ struct CheckInCardView: View {
     private var productSection: some View {
         HStack(spacing: spacing) {
             if let logoUrl = checkIn.product.logoUrl {
-                LazyImage(url: logoUrl) { state in
+                RemoteImage(url: logoUrl) { state in
                     if let image = state.image {
                         image
                             .resizable()

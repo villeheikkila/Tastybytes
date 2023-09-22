@@ -1,7 +1,6 @@
 import Components
 import EnvironmentModels
 import Models
-import NukeUI
 import OSLog
 import PhotosUI
 import Repositories
@@ -48,7 +47,7 @@ struct EditBrandSheet: View {
                         photoLibrary: .shared()
                     ) {
                         if let logoUrl = brand.logoUrl {
-                            LazyImage(url: logoUrl) { state in
+                            RemoteImage(url: logoUrl) { state in
                                 if let image = state.image {
                                     image
                                         .resizable()

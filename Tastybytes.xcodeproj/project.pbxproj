@@ -1032,10 +1032,7 @@
 			);
 			mainGroup = 5CFEE56A28ED69B100A8DD66;
 			packageReferences = (
-				5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */,
-				5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				5C964DC12A2D021F00805199 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */,
 				5CDB8BA12A92AAE800F73123 /* XCLocalSwiftPackageReference "Packages/Models" */,
 				5CDB8BA52A93316800F73123 /* XCLocalSwiftPackageReference "Packages/Repositories" */,
@@ -1586,14 +1583,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.13.0;
-			};
-		};
 		5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke";
@@ -1602,28 +1591,12 @@
 				minimumVersion = 12.1.3;
 			};
 		};
-		5C964DC12A2D021F00805199 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 		5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
-			};
-		};
-		5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/supabase-community/supabase-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
