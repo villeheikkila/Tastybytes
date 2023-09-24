@@ -63,8 +63,6 @@
 		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
 		5C58826A2A63DBB000851FA7 /* MagicLinkAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5882692A63DBB000851FA7 /* MagicLinkAuthenticationView.swift */; };
 		5C58826C2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C58826B2A63DBE800851FA7 /* EmailPasswordAuthenticationView.swift */; };
-		5C5882732A687B2A00851FA7 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 5C5882722A687B2A00851FA7 /* Nuke */; };
-		5C5882752A687B2A00851FA7 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5C5882742A687B2A00851FA7 /* NukeUI */; };
 		5C5D3AB42A3607890061B77D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5D3AB32A3607890061B77D /* RootView.swift */; };
 		5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */; };
 		5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */; };
@@ -350,11 +348,9 @@
 				5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */,
 				5CAE643B2ABB7D790053062F /* Components in Frameworks */,
 				5C2B3F672A93B06500946CC6 /* EnvironmentModels in Frameworks */,
-				5C5882752A687B2A00851FA7 /* NukeUI in Frameworks */,
 				5CDB8BA72A93316800F73123 /* Repositories in Frameworks */,
 				5CDB8BA32A92AAE800F73123 /* Models in Frameworks */,
 				5CF28FCC2A93F2C700FC5C49 /* Camera in Frameworks */,
-				5C5882732A687B2A00851FA7 /* Nuke in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -991,8 +987,6 @@
 			name = Tastybytes;
 			packageProductDependencies = (
 				5CED432428FBF6B0003F8194 /* AlertToast */,
-				5C5882722A687B2A00851FA7 /* Nuke */,
-				5C5882742A687B2A00851FA7 /* NukeUI */,
 				5CDB8BA22A92AAE800F73123 /* Models */,
 				5CDB8BA62A93316800F73123 /* Repositories */,
 				5C2B3F662A93B06500946CC6 /* EnvironmentModels */,
@@ -1033,7 +1027,6 @@
 			mainGroup = 5CFEE56A28ED69B100A8DD66;
 			packageReferences = (
 				5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */,
-				5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */,
 				5CDB8BA12A92AAE800F73123 /* XCLocalSwiftPackageReference "Packages/Models" */,
 				5CDB8BA52A93316800F73123 /* XCLocalSwiftPackageReference "Packages/Repositories" */,
 				5C2B3F652A93B06500946CC6 /* XCLocalSwiftPackageReference "Packages/EnvironmentModels" */,
@@ -1583,14 +1576,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kean/Nuke";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 12.1.3;
-			};
-		};
 		5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -1605,16 +1590,6 @@
 		5C2B3F662A93B06500946CC6 /* EnvironmentModels */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = EnvironmentModels;
-		};
-		5C5882722A687B2A00851FA7 /* Nuke */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = Nuke;
-		};
-		5C5882742A687B2A00851FA7 /* NukeUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5C5882712A687B2A00851FA7 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = NukeUI;
 		};
 		5C8FC74C2A93D33F00DF7CBC /* Extensions */ = {
 			isa = XCSwiftPackageProductDependency;
