@@ -137,7 +137,6 @@
 		5CE83CF32A8BF12000B71178 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE83CF22A8BF12000B71178 /* SubscriptionManager.swift */; };
 		5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutScreen.swift */; };
 		5CED432228FAC01C003F8194 /* UserSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432128FAC01C003F8194 /* UserSheet.swift */; };
-		5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5CED432428FBF6B0003F8194 /* AlertToast */; };
 		5CED432C28FD69DE003F8194 /* CompanySearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432B28FD69DE003F8194 /* CompanySearchSheet.swift */; };
 		5CED432E28FD6EA7003F8194 /* BrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432D28FD6EA7003F8194 /* BrandSheet.swift */; };
 		5CED433228FD76BB003F8194 /* SubBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433128FD76BB003F8194 /* SubBrandSheet.swift */; };
@@ -345,7 +344,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C8FC74D2A93D33F00DF7CBC /* Extensions in Frameworks */,
-				5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */,
 				5CAE643B2ABB7D790053062F /* Components in Frameworks */,
 				5C2B3F672A93B06500946CC6 /* EnvironmentModels in Frameworks */,
 				5CDB8BA72A93316800F73123 /* Repositories in Frameworks */,
@@ -986,7 +984,6 @@
 			);
 			name = Tastybytes;
 			packageProductDependencies = (
-				5CED432428FBF6B0003F8194 /* AlertToast */,
 				5CDB8BA22A92AAE800F73123 /* Models */,
 				5CDB8BA62A93316800F73123 /* Repositories */,
 				5C2B3F662A93B06500946CC6 /* EnvironmentModels */,
@@ -1026,7 +1023,6 @@
 			);
 			mainGroup = 5CFEE56A28ED69B100A8DD66;
 			packageReferences = (
-				5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				5CDB8BA12A92AAE800F73123 /* XCLocalSwiftPackageReference "Packages/Models" */,
 				5CDB8BA52A93316800F73123 /* XCLocalSwiftPackageReference "Packages/Repositories" */,
 				5C2B3F652A93B06500946CC6 /* XCLocalSwiftPackageReference "Packages/EnvironmentModels" */,
@@ -1576,14 +1572,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/elai950/AlertToast.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1618,11 +1606,6 @@
 		5CDB8BA62A93316800F73123 /* Repositories */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Repositories;
-		};
-		5CED432428FBF6B0003F8194 /* AlertToast */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */;
-			productName = AlertToast;
 		};
 		5CF28FCB2A93F2C700FC5C49 /* Camera */ = {
 			isa = XCSwiftPackageProductDependency;
