@@ -16,7 +16,6 @@ let package = Package(
     dependencies: [
         .package(name: "Models", path: "../Models"),
         .package(name: "Extensions", path: "../Extensions"),
-        .package(name: "Repositories", path: "../Repositories"),
         .package(url: "https://github.com/kean/Nuke.git", from: "12.1.6"),
 
     ],
@@ -25,7 +24,6 @@ let package = Package(
             name: "Components", dependencies: [
                 .product(name: "Models", package: "Models"),
                 .product(name: "Extensions", package: "Extensions"),
-                .product(name: "Repositories", package: "Repositories"),
                 .product(name: "Nuke", package: "Nuke"),
                 .product(name: "NukeUI", package: "Nuke"),
             ]
