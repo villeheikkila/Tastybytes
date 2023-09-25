@@ -32,7 +32,7 @@ struct AccountDeletedScreen: View {
                     }
                     .buttonStyle(.borderedProminent)
                 }
-                .padding([.leading, .trailing], 24)
+                .padding(.horizontal, 24)
                 Spacer()
             }
             Spacer()

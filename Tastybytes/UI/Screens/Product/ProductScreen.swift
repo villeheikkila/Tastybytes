@@ -151,7 +151,7 @@ struct ProductScreen: View {
                         }
                     }
                 }
-                .padding([.top, .bottom], 10)
+                .padding(.vertical, 10)
                 Spacer()
                 CloseButtonView {
                     loadedWithBarcode = nil
@@ -159,7 +159,7 @@ struct ProductScreen: View {
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
             }
-            .padding([.leading, .trailing], 10)
+            .padding(.horizontal, 10)
             .background(.thinMaterial)
             Spacer()
         }

@@ -27,7 +27,7 @@ public struct MaterialOverlay<RootView: View>: View {
                 VStack {
                     view
                 }
-                .padding([.top, .bottom], 10)
+                .padding(.vertical, 10)
                 Spacer()
             }
             .background(.ultraThinMaterial)

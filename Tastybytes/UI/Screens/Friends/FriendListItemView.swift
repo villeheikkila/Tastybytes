@@ -28,6 +28,6 @@ struct FriendListItemView<RootView: View>: View {
                 }
             }
         }
-        .padding([.top, .bottom], 3)
+        .padding(.vertical, 3)
     }
 }

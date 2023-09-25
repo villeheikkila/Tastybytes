@@ -82,7 +82,7 @@ struct AuthenticationModalView: View {
 
     var body: some View {
         authenticationScene.modal
-            .padding([.leading, .trailing], 16)
+            .padding(.horizontal, 16)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Text(authenticationScene.title)

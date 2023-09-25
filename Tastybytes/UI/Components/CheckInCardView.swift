@@ -21,16 +21,16 @@ struct CheckInCardView: View {
                 header
                 productSection
             }
-            .padding([.leading, .trailing], padding)
+            .padding(.horizontal, padding)
             checkInImage
             Group {
                 checkInSection
                 taggedProfilesSection
                 footer
             }
-            .padding([.leading, .trailing], padding)
+            .padding(.horizontal, padding)
         }
-        .padding([.top, .bottom], padding)
+        .padding(.vertical, padding)
         .background(colorScheme == .dark ? .thinMaterial : .ultraThin)
         .clipped()
         .cornerRadius(8)
@@ -109,7 +109,7 @@ struct CheckInCardView: View {
                 }
             }
             .frame(height: 200)
-            .padding([.top, .bottom], spacing)
+            .padding(.vertical, spacing)
         }
     }
 

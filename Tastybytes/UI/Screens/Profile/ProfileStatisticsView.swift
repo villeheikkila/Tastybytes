@@ -82,7 +82,7 @@ struct SubcategoryStatisticsView: View {
             if isLoading {
                 ProgressView()
                     .frame(maxWidth: .infinity)
-                    .padding([.top, .bottom], 8)
+                    .padding(.vertical, 8)
             }
             ForEach(subcategoryStatistics) { subcategory in
                 RouterLink(screen: .profileProductsByFilter(

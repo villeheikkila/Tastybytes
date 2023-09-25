@@ -138,7 +138,7 @@ struct DiscoverScreen: View {
                         }
                     }
                 }
-                .padding([.top, .bottom], 10)
+                .padding(.vertical, 10)
             }
             .id(profile.id)
             .alignmentGuide(.listRowSeparatorLeading) { _ in
