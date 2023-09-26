@@ -80,6 +80,7 @@ enum Database {
         case getProductSummary = "fnc__get_product_summary"
         case getProfileSummary = "fnc__get_profile_summary"
         case getSubcategoryStats = "fnc__get_subcategory_stats"
+        case getTimePeriodStatistics = "fnc__get_time_period_statistics"
         case isBrandLikedByCurrentUser = "fnc__is_brand_liked_by_current_user"
         case isOnCurrentUserWishlist = "fnc__is_on_current_user_wishlist"
         case markAllNotificationRead = "fnc__mark_all_notification_read"
@@ -103,4 +104,3 @@ enum Database {
         case verifySubcategory = "fnc__verify_subcategory"
     }
 }
-

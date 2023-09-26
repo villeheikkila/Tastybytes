@@ -130,7 +130,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
 
     func getSubcategoryStatistics(userId: UUID,
-                                         categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
+                                  categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
     {
         do {
             let response: [SubcategoryStatistics] = try await client
@@ -227,6 +227,26 @@ struct SupabaseProfileRepository: ProfileRepository {
                     fn: .checkIfUsernameIsAvailable,
                     params: Profile.UsernameCheckRequest(username: username)
                 )
+                .execute()
+                .value
+
+            return .success(result)
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func getTimePeriodStatistics(userId: UUID, timePeriod: TimePeriodStatistic.TimePeriod) async
+    -> Result<TimePeriodStatistic, Error> {
+        do {
+            let result: TimePeriodStatistic = try await client
+                .database
+                .rpc(
+                    fn: .getTimePeriodStatistics,
+                    params: TimePeriodStatistic.RequestParams(userId: userId, timePeriod: timePeriod)
+                )
+                .limit(count: 1)
+                .single()
                 .execute()
                 .value
 

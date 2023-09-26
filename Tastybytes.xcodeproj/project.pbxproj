@@ -22,6 +22,7 @@
 		5C12B4352902C9D0001EE549 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4342902C9D0001EE549 /* TabsView.swift */; };
 		5C12B4372902CA04001EE549 /* NotificationTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationTab.swift */; };
 		5C131CEB2A022C14007ADA1B /* CategoryPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C131CEA2A022C13007ADA1B /* CategoryPickerSheet.swift */; };
+		5C14E72D2AC32AB90000AB39 /* TimePeriodStatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C14E72C2AC32AB90000AB39 /* TimePeriodStatisticView.swift */; };
 		5C1A113B2A95107D00FF32F6 /* tastey_watchkitappApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1A113A2A95107D00FF32F6 /* tastey_watchkitappApp.swift */; };
 		5C1A113D2A95107D00FF32F6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1A113C2A95107D00FF32F6 /* ContentView.swift */; };
 		5C1A113F2A95108100FF32F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C1A113E2A95108100FF32F6 /* Assets.xcassets */; };
@@ -194,6 +195,7 @@
 		5C12B4362902CA04001EE549 /* NotificationTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTab.swift; sourceTree = "<group>"; };
 		5C131CEA2A022C13007ADA1B /* CategoryPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPickerSheet.swift; sourceTree = "<group>"; };
 		5C13F21E291A8D8E00599892 /* TastybytesDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesDebug.entitlements; sourceTree = "<group>"; };
+		5C14E72C2AC32AB90000AB39 /* TimePeriodStatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePeriodStatisticView.swift; sourceTree = "<group>"; };
 		5C1A11382A95107D00FF32F6 /* Tastybytes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tastybytes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C1A113A2A95107D00FF32F6 /* tastey_watchkitappApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tastey_watchkitappApp.swift; sourceTree = "<group>"; };
 		5C1A113C2A95107D00FF32F6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -565,6 +567,7 @@
 				5CF0FA672A3D00FB00CC3B62 /* RatingChartView.swift */,
 				5CF0FA692A3D011400CC3B62 /* CheckInImagesView.swift */,
 				5CF895202A45A12400A40A66 /* ProfileWishlistScreen.swift */,
+				5C14E72C2AC32AB90000AB39 /* TimePeriodStatisticView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -991,6 +994,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5CFEE58128ED69B200A8DD66 /* Build configuration list for PBXNativeTarget "Tastybytes" */;
 			buildPhases = (
+				5C14E72B2AC0C6FD0000AB39 /* Run Script */,
 				5CFEE56F28ED69B100A8DD66 /* Sources */,
 				5CFEE57028ED69B100A8DD66 /* Frameworks */,
 				5CFEE57128ED69B100A8DD66 /* Resources */,
@@ -1080,6 +1084,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5C14E72B2AC0C6FD0000AB39 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Tastybytes",
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "
+";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5C1A11342A95107D00FF32F6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1155,6 +1182,7 @@
 				5CBC2454297D3A5F00A0002B /* ProfileView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileTab.swift in Sources */,
 				5C11ECBD28EEF30600CCDE6A /* DiscoverTab.swift in Sources */,
+				5C14E72D2AC32AB90000AB39 /* TimePeriodStatisticView.swift in Sources */,
 				5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */,
 				5C7C3578299ABFBD009A3C09 /* FriendListItemView.swift in Sources */,
 				5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */,
@@ -1340,7 +1368,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1405,7 +1433,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

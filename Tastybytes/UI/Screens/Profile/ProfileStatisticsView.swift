@@ -36,7 +36,7 @@ struct ProfileStatisticsView: View {
             .headerProminence(.increased)
 
             Section {
-                StatisticsOverTimeView(profile: profile)
+                TimePeriodStatisticView(profile: profile)
             }
         }
         .listStyle(.insetGrouped)
@@ -137,44 +137,4 @@ struct SubcategoryStatisticsView: View {
         }
         isLoading = false
     }
-}
-
-struct StatisticsOverTimeView: View {
-    private let logger = Logger(category: "StatisticsOverTime")
-    @Environment(\.repository) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var timePeriod: StatisticsTimePeriod = .week
-
-    let profile: Profile
-
-    var body: some View {
-        Section {
-            Picker("Check-ins", selection: $timePeriod) {
-                ForEach(StatisticsTimePeriod.allCases, id: \.self) { segment in
-                    Text(segment.rawValue.capitalized)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding(.horizontal, 0)
-            StatisticsOverTimeRowView(timePeriod: timePeriod)
-        }
-    }
-}
-
-struct StatisticsOverTimeRowView: View {
-    let timePeriod: StatisticsTimePeriod
-
-    var body: some View {
-        HStack {
-            Text("Check-ins")
-            Spacer()
-            Text(String(1))
-        }
-        .font(.caption)
-        .bold()
-    }
-}
-
-public enum StatisticsTimePeriod: String, CaseIterable {
-    case week, month, year, all
 }

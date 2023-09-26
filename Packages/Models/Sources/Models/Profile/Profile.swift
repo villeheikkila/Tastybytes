@@ -332,6 +332,39 @@ public struct CategoryStatistics: Identifiable, Codable, Sendable, CategoryProto
     }
 }
 
+public struct TimePeriodStatistic: Codable, Sendable {
+    public enum TimePeriod: String, CaseIterable {
+        case week, month, year, all
+
+        public var label: String {
+            rawValue.capitalized
+        }
+    }
+
+    public let checkIns: Int
+    public let newUniqueProducts: Int
+
+    enum CodingKeys: String, CodingKey {
+        case checkIns = "check_ins"
+        case newUniqueProducts = "new_unique_products"
+    }
+
+    public struct RequestParams: Codable, Sendable {
+        public init(userId: UUID, timePeriod: TimePeriod) {
+            self.userId = userId
+            self.timePeriod = timePeriod.rawValue
+        }
+
+        public let userId: UUID
+        public let timePeriod: String
+
+        enum CodingKeys: String, CodingKey {
+            case userId = "p_user_id"
+            case timePeriod = "p_time_period"
+        }
+    }
+}
+
 public struct SubcategoryStatistics: Identifiable, Codable, Sendable {
     public let id: Int
     public let name: String

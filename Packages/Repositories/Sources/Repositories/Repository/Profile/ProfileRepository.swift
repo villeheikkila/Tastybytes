@@ -13,5 +13,7 @@ public protocol ProfileRepository {
     func getContributions(userId: UUID) async -> Result<Contributions, Error>
     func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error>
     func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
+    func getTimePeriodStatistics(userId: UUID, timePeriod: TimePeriodStatistic.TimePeriod) async
+        -> Result<TimePeriodStatistic, Error>
     func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error>
 }
