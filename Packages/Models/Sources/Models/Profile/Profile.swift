@@ -404,20 +404,15 @@ public extension Profile {
     }
 
     struct PushNotificationToken: Identifiable, Codable, Hashable, Sendable {
-        public var id: String { firebaseRegistrationToken }
-        public let firebaseRegistrationToken: String
+        public var id: String { deviceToken }
+        public let deviceToken: String
 
-        public init(firebaseRegistrationToken: String) {
-            self.firebaseRegistrationToken = firebaseRegistrationToken
+        public init(deviceToken: String) {
+            self.deviceToken = deviceToken
         }
 
         enum CodingKeys: String, CodingKey {
-            case firebaseRegistrationToken = "p_push_notification_token"
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(firebaseRegistrationToken, forKey: .firebaseRegistrationToken)
+            case deviceToken = "p_device_token"
         }
     }
 }

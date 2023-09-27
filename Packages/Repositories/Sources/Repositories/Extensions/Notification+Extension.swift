@@ -30,7 +30,7 @@ extension ProfilePushNotification {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.profilePushNotifications.rawValue
         let saved =
-            "firebase_registration_token, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications, send_friend_request_notifications, send_comment_notifications"
+            "device_token, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications, send_friend_request_notifications, send_comment_notifications"
 
         switch queryType {
         case .tableName:

@@ -64,7 +64,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 .database
                 .from(.profilePushNotifications)
                 .update(values: updateRequest, returning: .representation)
-                .eq(column: "firebase_registration_token", value: updateRequest.id)
+                .eq(column: "device_token", value: updateRequest.id)
                 .select(columns: ProfilePushNotification.getQuery(.saved(false)))
                 .single()
                 .execute()

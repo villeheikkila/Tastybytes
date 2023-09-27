@@ -89,7 +89,7 @@ enum Database {
         case markNotificationAsRead = "fnc__mark_notification_as_read"
         case mergeLocations = "fnc__merge_locations"
         case mergeProducts = "fnc__merge_products"
-        case refreshFirebaseAccessToken = "fnc__refresh_firebase_access_token"
+        case refreshDeviceToken = "fnc__refresh_device_token"
         case searchProducts = "fnc__search_products"
         case searchProfiles = "fnc__search_profiles"
         case softDeleteCheckInReaction = "fnc__soft_delete_check_in_reaction"

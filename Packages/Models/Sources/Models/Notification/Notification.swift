@@ -179,14 +179,16 @@ public enum NotificationType: String, CaseIterable, Identifiable, Sendable {
 }
 
 public struct ProfilePushNotification: Codable, Identifiable {
-    public let id: String
+    public var id: String { deviceToken }
+
+    public let deviceToken: String
     public let sendReactionNotifications: Bool
     public let sendTaggedCheckInNotifications: Bool
     public let sendFriendRequestNotifications: Bool
     public let sendCheckInCommentNotifications: Bool
 
     enum CodingKeys: String, CodingKey {
-        case id = "firebase_registration_token"
+        case deviceToken = "device_token"
         case sendReactionNotifications = "send_reaction_notifications"
         case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
         case sendFriendRequestNotifications = "send_friend_request_notifications"
@@ -199,7 +201,7 @@ public struct ProfilePushNotification: Codable, Identifiable {
         sendFriendRequestNotifications: Bool? = nil,
         sendCheckInCommentNotifications: Bool? = nil
     ) -> ProfilePushNotification {
-        ProfilePushNotification(id: id,
+        ProfilePushNotification(deviceToken: deviceToken,
                                 sendReactionNotifications: sendReactionNotifications ?? self.sendReactionNotifications,
                                 sendTaggedCheckInNotifications: sendTaggedCheckInNotifications ?? self
                                     .sendTaggedCheckInNotifications,
