@@ -10,6 +10,7 @@ private let logger = Logger(category: "RootView")
 struct AuthEventObserver: View {
     @State private var authEvent: AuthChangeEvent?
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(\.repository) private var repository
 
@@ -42,7 +43,8 @@ struct AuthEventObserver: View {
                 switch authEvent {
                 case .signedIn:
                     await profileEnvironmentModel.initialize()
-                // notificationEnvironmentModel.refreshAPNS()
+                    guard let deviceTokenForPusNotifications else { return }
+                    await notificationEnvironmentModel.refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
                 default:
                     break
                 }

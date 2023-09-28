@@ -3,7 +3,7 @@ import Models
 public protocol NotificationRepository {
     func getAll(afterId: Int?) async -> Result<[Models.Notification], Error>
     func getUnreadCount() async -> Result<Int, Error>
-    func refreshPushNotificationToken(token: Profile.PushNotificationToken) async
+    func refreshPushNotificationToken(deviceToken: String) async
         -> Result<ProfilePushNotification, Error>
     func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
         -> Result<ProfilePushNotification, Error>

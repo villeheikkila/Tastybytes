@@ -9,6 +9,7 @@ import SwiftUI
  TODO: Figure out a better way to pass this state.
  */
 var selectedQuickAction: UIApplicationShortcutItem?
+var deviceTokenForPusNotifications: String?
 
 private let logger = Logger(category: "Main")
 

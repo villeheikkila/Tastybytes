@@ -73,8 +73,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler()
     }
 
-    func application(
-        _: UIApplication,
-        didRegisterForRemoteNotificationsWithDeviceToken _: Data
-    ) {}
+    func application(_: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
+    {
+        let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
+        deviceTokenForPusNotifications = deviceTokenString
+    }
 }

@@ -226,28 +226,18 @@ public final class NotificationEnvironmentModel {
         }
     }
 
-//    public func refreshAPNS() {
-//        Messaging.messaging().token { token, error in
-//            if let error {
-//                let logger = Logger(category: "Messaging")
-//                logger.error("Failed to fetch FCM registration token. Error: \(error) (\(#file):\(#line))")
-//            } else if let token {
-//                Task {
-//                    let logger = Logger(category: "PushNotificationToken")
-//                    switch await self.repository.notification
-//                        .refreshPushNotificationToken(token: Profile
-//                            .PushNotificationToken(firebaseRegistrationToken: token))
-//                    {
-//                    case let .success(pushNotificationSettings):
-//                        self.pushNotificationSettings = pushNotificationSettings
-//                    case let .failure(error):
-//                        logger
-//                            .error(
-//                                "Failed to save FCM token (\(String(describing: token))). Error: \(error) (\(#file):\(#line))"
-//                            )
-//                    }
-//                }
-//            }
-//        }
-//    }
+    public func refreshDeviceToken(deviceToken: String) async {
+        switch await repository.notification
+            .refreshPushNotificationToken(deviceToken: deviceToken)
+        {
+        case let .success(pushNotificationSettings):
+            logger.notice("Device token refreshed: \(deviceToken)")
+            self.pushNotificationSettings = pushNotificationSettings
+        case let .failure(error):
+            logger
+                .error(
+                    "Failed to save device token (\(String(describing: deviceToken))). Error: \(error) (\(#file):\(#line))"
+                )
+        }
+    }
 }
