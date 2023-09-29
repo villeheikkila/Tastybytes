@@ -35,30 +35,18 @@ struct ProfileLocationsScreen: View {
             MapCompass()
         }
         .safeAreaInset(edge: .bottom, content: {
-            Group {
-                if let selectedLocation {
-                    HStack {
-                        Spacer()
-                        RouterLink("Open \(selectedLocation.name)", screen: .location(selectedLocation))
-                        Spacer()
-                    }
-                    .padding()
-                    .background(.ultraThinMaterial)
-                } else {
-                    // TODO: Remove this
-                    // This is only here to avoid a glitch where tab bar is not shown in full
-                    HStack {
-                        Spacer()
-                    }
-                    .padding(1)
+            if let selectedLocation {
+                HStack {
+                    Spacer()
+                    RouterLink("Open \(selectedLocation.name)", screen: .location(selectedLocation))
+                    Spacer()
                 }
+                .padding()
+                .background(.ultraThinMaterial)
             }
-            .background(.ultraThinMaterial)
         })
         .navigationTitle("Check-in Locations")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         .task {
             await loadCheckInlocations()
         }
