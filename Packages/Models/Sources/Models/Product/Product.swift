@@ -38,7 +38,12 @@ public extension Product {
         }
 
         public init(searchTerm: String, filter: Filter?) {
-            self.searchTerm = "\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))"
+            // Truncate multiple spaces to one and trim the ends
+            self.searchTerm = searchTerm
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .split(separator: " ")
+                .map { String($0) }
+                .joined(separator: " ")
 
             if let filter {
                 categoryName = filter.category?.name
