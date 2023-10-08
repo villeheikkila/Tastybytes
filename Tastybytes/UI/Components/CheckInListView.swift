@@ -258,8 +258,8 @@ struct CheckInListView<Header>: View where Header: View {
         await fetchFeedItems(onComplete: { _ in
             if splashScreenEnvironmentModel.state != .finished {
                 await splashScreenEnvironmentModel.dismiss()
-                initialLoadCompleted = true
             }
+            initialLoadCompleted = true
         })
     }
 
