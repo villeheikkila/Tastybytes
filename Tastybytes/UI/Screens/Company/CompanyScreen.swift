@@ -109,7 +109,8 @@ struct CompanyScreen: View {
                     .font(.headline)
             }
         }
-        ToolbarItem(placement: .topBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            CompanyShareLinkView(company: company)
             navigationBarMenu
         }
     }
@@ -117,7 +118,6 @@ struct CompanyScreen: View {
     private var navigationBarMenu: some View {
         Menu {
             ControlGroup {
-                CompanyShareLinkView(company: company)
                 if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                     RouterLink(
                         "Brand",

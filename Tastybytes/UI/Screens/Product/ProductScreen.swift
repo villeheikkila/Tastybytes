@@ -167,6 +167,7 @@ struct ProductScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
+            ProductShareLinkView(product: product)
             Menu {
                 ControlGroup {
                     RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in

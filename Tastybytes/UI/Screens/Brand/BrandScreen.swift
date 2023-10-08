@@ -277,6 +277,7 @@ struct BrandScreen: View {
                 await toggleLike()
             })
             .symbolVariant(isLikedByCurrentUser ? .fill : .none)
+            BrandShareLinkView(brand: brand)
             Menu {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
