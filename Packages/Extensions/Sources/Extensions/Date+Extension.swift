@@ -12,7 +12,7 @@ public class CustomDateFormatter {
     public static let shared = CustomDateFormatter()
     private let formatter = DateFormatter()
 
-    func format(date: Date, _ type: Format) -> String {
+    public func format(date: Date, _ type: Format) -> String {
         switch type {
         case .fileNameSuffix:
             formatter.dateFormat = "yyyy_MM_dd_HH_mm"
