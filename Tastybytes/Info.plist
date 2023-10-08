@@ -21,8 +21,6 @@
 			<string>Editor</string>
 		</dict>
 	</array>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>SUPABASE_ANON_KEY</key>
