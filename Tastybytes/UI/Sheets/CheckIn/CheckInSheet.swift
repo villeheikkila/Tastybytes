@@ -1,4 +1,3 @@
-import Camera
 import Components
 import EnvironmentModels
 import Models
@@ -96,14 +95,12 @@ struct CheckInSheet: View {
         } message: {
             Text("Pick a photo")
         }
-        .fullScreenCamera(isPresented: $showCamera, onCapture: { image in
-            Task {
-                await MainActor.run {
-                    self.image = image
-                    showCamera = false
-                }
-            }
-        })
+        .fullScreenCamera(isPresented: $showCamera, selectedImage: .init(get: {
+            nil
+        }, set: { image in
+            guard let image else { return }
+            self.image = image
+        }))
         .toolbar {
             toolbarContent
         }
