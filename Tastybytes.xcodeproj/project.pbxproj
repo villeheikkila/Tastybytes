@@ -146,7 +146,6 @@
 		5CEFCCD82A9E764800317BB8 /* NameTagTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEFCCD72A9E764800317BB8 /* NameTagTip.swift */; };
 		5CF0FA682A3D00FB00CC3B62 /* RatingChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF0FA672A3D00FB00CC3B62 /* RatingChartView.swift */; };
 		5CF0FA6A2A3D011400CC3B62 /* CheckInImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF0FA692A3D011400CC3B62 /* CheckInImagesView.swift */; };
-		5CF28FCC2A93F2C700FC5C49 /* Camera in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF28FCB2A93F2C700FC5C49 /* Camera */; };
 		5CF6882E2A3916C200F50263 /* ProfileLocationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF6882D2A3916C200F50263 /* ProfileLocationsScreen.swift */; };
 		5CF895212A45A12400A40A66 /* ProfileWishlistScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF895202A45A12400A40A66 /* ProfileWishlistScreen.swift */; };
 		5CFEE57728ED69B100A8DD66 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57628ED69B100A8DD66 /* Main.swift */; };
@@ -323,7 +322,6 @@
 		5CEFCCD72A9E764800317BB8 /* NameTagTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagTip.swift; sourceTree = "<group>"; };
 		5CF0FA672A3D00FB00CC3B62 /* RatingChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingChartView.swift; sourceTree = "<group>"; };
 		5CF0FA692A3D011400CC3B62 /* CheckInImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImagesView.swift; sourceTree = "<group>"; };
-		5CF28FC92A93F2A800FC5C49 /* Camera */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Camera; path = Packages/Camera; sourceTree = "<group>"; };
 		5CF6882D2A3916C200F50263 /* ProfileLocationsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLocationsScreen.swift; sourceTree = "<group>"; };
 		5CF895202A45A12400A40A66 /* ProfileWishlistScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWishlistScreen.swift; sourceTree = "<group>"; };
 		5CFEE57328ED69B100A8DD66 /* Tastybytes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tastybytes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -352,7 +350,6 @@
 				5C2B3F672A93B06500946CC6 /* EnvironmentModels in Frameworks */,
 				5CDB8BA72A93316800F73123 /* Repositories in Frameworks */,
 				5CDB8BA32A92AAE800F73123 /* Models in Frameworks */,
-				5CF28FCC2A93F2C700FC5C49 /* Camera in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -920,7 +917,6 @@
 				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
 				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
 				5CAE64392ABB7D580053062F /* Components */,
-				5CF28FC92A93F2A800FC5C49 /* Camera */,
 				5C8FC74A2A93D31F00DF7CBC /* Extensions */,
 				5C2B3F682A93B08900946CC6 /* EnvironmentModels */,
 				5CDB8BA42A932FFC00F73123 /* Repositories */,
@@ -1011,7 +1007,6 @@
 				5CDB8BA62A93316800F73123 /* Repositories */,
 				5C2B3F662A93B06500946CC6 /* EnvironmentModels */,
 				5C8FC74C2A93D33F00DF7CBC /* Extensions */,
-				5CF28FCB2A93F2C700FC5C49 /* Camera */,
 				5CAE643A2ABB7D790053062F /* Components */,
 			);
 			productName = tasted;
@@ -1651,10 +1646,6 @@
 		5CDB8BA62A93316800F73123 /* Repositories */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Repositories;
-		};
-		5CF28FCB2A93F2C700FC5C49 /* Camera */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Camera;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
