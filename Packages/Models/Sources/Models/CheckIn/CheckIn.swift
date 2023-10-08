@@ -159,10 +159,11 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         try container.encodeIfPresent(review, forKey: .review)
         try container.encodeIfPresent(imageFile, forKey: .imageFile)
         try container.encodeIfPresent(blurHash?.encoded, forKey: .blurHash)
+        var checkInAtString: String? = nil
         if let checkInAt {
-            let checkInAtString = CustomDateFormatter.shared.format(date: checkInAt, .timestampTz)
-            try container.encode(checkInAtString, forKey: .checkInAt)
+            checkInAtString = CustomDateFormatter.shared.format(date: checkInAt, .timestampTz)
         }
+        try container.encodeIfPresent(checkInAtString, forKey: .checkInAt)
         try container.encode(profile, forKey: .profile)
         try container.encode(product, forKey: .product)
         try container.encode(checkInReactions, forKey: .checkInReactions)
