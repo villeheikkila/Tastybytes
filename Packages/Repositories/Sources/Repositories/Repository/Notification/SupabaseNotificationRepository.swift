@@ -92,14 +92,16 @@ struct SupabaseNotificationRepository: NotificationRepository {
         }
     }
 
-    func markAllRead() async -> Result<Void, Error> {
+    func markAllRead() async -> Result<[Models.Notification], Error> {
         do {
-            try await client
+            let response: [Models.Notification] = try await client
                 .database
                 .rpc(fn: .markAllNotificationRead)
+                .select(columns: Notification.getQuery(.joined))
                 .execute()
+                .value
 
-            return .success(())
+            return .success(response)
         } catch {
             return .failure(error)
         }

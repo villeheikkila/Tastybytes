@@ -92,9 +92,10 @@ public final class NotificationEnvironmentModel {
 
     public func markAllAsRead() async {
         switch await repository.notification.markAllRead() {
-        case .success:
+        case let .success(readNotifications):
             let markedAsSeenNotifications = notifications.map { notification in
-                notification.seenAt == nil ? notification.copyWith(seenAt: Date()) : notification
+                let readNotification = readNotifications.first(where: { rn in rn.id == notification.id })
+                return readNotification ?? notification
             }
 
             await MainActor.run {

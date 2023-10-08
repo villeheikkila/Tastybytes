@@ -8,7 +8,7 @@ public protocol NotificationRepository {
     func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
         -> Result<ProfilePushNotification, Error>
     func markRead(id: Int) async -> Result<Notification, Error>
-    func markAllRead() async -> Result<Void, Error>
+    func markAllRead() async -> Result<[Models.Notification], Error>
     func markAllFriendRequestsAsRead() async -> Result<[Models.Notification], Error>
     func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Models.Notification], Error>
     func delete(id: Int) async -> Result<Void, Error>
