@@ -30,7 +30,7 @@ struct WelcomeOnboarding: View {
     let features: [FeatureItem] = [FeatureItem(
         title: "Activity Feed",
         description: "Find out what your friends have been tasting",
-        systemName: "list.start",
+        systemName: "list.star",
         color: .blue
     ),
     FeatureItem(

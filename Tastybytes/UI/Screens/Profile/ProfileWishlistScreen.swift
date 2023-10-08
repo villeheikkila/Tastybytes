@@ -46,7 +46,7 @@ struct ProfileWishlistScreen: View {
         .background {
             if isEmpty {
                 ContentUnavailableView {
-                    Label("Wishlist is empty", systemImage: "list.start")
+                    Label("Wishlist is empty", systemImage: "list.star")
                 }
             }
         }

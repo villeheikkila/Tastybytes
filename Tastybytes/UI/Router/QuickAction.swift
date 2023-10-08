@@ -18,7 +18,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
                 type: "Activity",
                 localizedTitle: "Activity",
                 localizedSubtitle: "",
-                icon: UIApplicationShortcutIcon(systemImageName: "list.start"),
+                icon: UIApplicationShortcutIcon(systemImageName: "list.star"),
                 userInfo: ["name": "activity" as NSSecureCoding]
             )
         case .discover:

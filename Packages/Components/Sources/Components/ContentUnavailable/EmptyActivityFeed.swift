@@ -5,7 +5,7 @@ public struct EmptyActivityFeed: View {
 
     public var body: some View {
         ContentUnavailableView {
-            Label("Activity feed is empty", systemImage: "list.start")
+            Label("Activity feed is empty", systemImage: "list.star")
         } description: {
             Text("Start by adding friends or by making your check-in!")
         }

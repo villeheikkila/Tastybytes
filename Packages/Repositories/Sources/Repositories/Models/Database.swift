@@ -45,7 +45,6 @@ enum Database {
         // views
         case viewCheckInsFromFriends = "view__check_ins_from_friends"
         case viewCheckInsFromCurrentUser = "view__check_ins_from_current_user"
-        case viewCheckInsFromFriendsWithoutUnderscore = "view_check_ins_from_friends"
         case viewSearchProductRatings = "view__search_product_ratings"
         case viewProfileProductRatings = "view__profile_product_ratings"
         case viewBrandRatings = "view__brand_ratings"

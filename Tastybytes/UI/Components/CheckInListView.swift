@@ -322,15 +322,15 @@ extension CheckInSegment {
         switch self {
         case .everyone:
             ContentUnavailableView {
-                Label("Be first to check-in!", systemImage: "list.start")
+                Label("Be first to check-in!", systemImage: "list.star")
             }
         case .friends:
             ContentUnavailableView {
-                Label("No check-ins from friends", systemImage: "list.start")
+                Label("No check-ins from friends", systemImage: "list.star")
             }
         case .you:
             ContentUnavailableView {
-                Label("You haven't check-in yet", systemImage: "list.start")
+                Label("You haven't check-in yet", systemImage: "list.star")
             }
         }
     }
