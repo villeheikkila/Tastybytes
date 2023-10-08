@@ -135,9 +135,9 @@ struct CheckInScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             CheckInShareLinkView(checkIn: checkIn)
             Menu {
-                ControlGroup {
-                    CheckInShareLinkView(checkIn: checkIn)
-                    if checkIn.profile.id == profileEnvironmentModel.id {
+                if checkIn.profile.id == profileEnvironmentModel.id {
+                    ControlGroup {
+                        CheckInShareLinkView(checkIn: checkIn)
                         RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
                             checkIn = updatedCheckIn
                         }))
