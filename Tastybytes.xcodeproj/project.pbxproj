@@ -990,7 +990,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5CFEE58128ED69B200A8DD66 /* Build configuration list for PBXNativeTarget "Tastybytes" */;
 			buildPhases = (
-				5C14E72B2AC0C6FD0000AB39 /* Run Script */,
 				5CFEE56F28ED69B100A8DD66 /* Sources */,
 				5CFEE57028ED69B100A8DD66 /* Frameworks */,
 				5CFEE57128ED69B100A8DD66 /* Resources */,
@@ -1078,29 +1077,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		5C14E72B2AC0C6FD0000AB39 /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Tastybytes",
-			);
-			name = "Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "
-";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5C1A11342A95107D00FF32F6 /* Sources */ = {

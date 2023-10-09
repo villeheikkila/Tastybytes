@@ -100,3 +100,6 @@ force_unwrapping:
   severity: error
 
 redundant_type_annotation: error
+
+excluded:
+  - .build
