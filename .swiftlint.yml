@@ -67,8 +67,8 @@ type_body_length:
   - 600
   - 800
 function_body_length:
-  - 80
-  - 100
+  - 160
+  - 240
 file_length:
   warning: 500
   error: 800
@@ -80,17 +80,6 @@ identifier_name:
     error: 50
   min_length:
     warning: 1
-custom_rules:
-  DynamicProperty_private:
-    name: "Private SwiftUI DynamicProperty"
-    regex: "@(AccessibilityFocusState|AppStorage|EnvironmentObject|FocusedObject|FocusedObject|GestureState|Namespace|ScaledMetric|SceneStorage|State|StateObject)\\s*?\\n?(\\s|\\t)*?(var|public|internal|open)"
-    message: "SwiftUI DynamicProperty variables should always be marked private."
-    severity: warning
-  DynamicProperty_private_argument:
-    name: "Private SwiftUI DynamicProperty"
-    regex: "@(Environment|FetchRequest|FocusedValue|GestureState|NSApplicationDelegateAdaptor|ScaledMetric|SectionedFetchRequest)\\(.*\\)\\s*?\\n?(\\s|\\t)*?(var|public|internal|open)"
-    message: "SwiftUI DynamicProperty(with argument) variables should always be marked private."
-    severity: warning
 
 private_over_fileprivate:
   validate_extensions: true

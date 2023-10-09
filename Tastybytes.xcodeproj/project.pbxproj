@@ -998,6 +998,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5C12357B2AD47A3900A96A3D /* PBXTargetDependency */,
 				5C1A115A2A95108100FF32F6 /* PBXTargetDependency */,
 			);
 			name = Tastybytes;
@@ -1045,6 +1046,7 @@
 				5C2B3F652A93B06500946CC6 /* XCLocalSwiftPackageReference "Packages/EnvironmentModels" */,
 				5C8FC74B2A93D33F00DF7CBC /* XCLocalSwiftPackageReference "Packages/Extensions" */,
 				5CAE64382ABB7D390053062F /* XCLocalSwiftPackageReference "Packages/Components" */,
+				5C1235782AD479F000A96A3D /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -1226,6 +1228,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5C12357B2AD47A3900A96A3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 5C12357A2AD47A3900A96A3D /* SwiftLintPlugin */;
+		};
 		5C1A115A2A95108100FF32F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5C1A11372A95107D00FF32F6 /* tastey.watchkitapp Watch App */;
@@ -1590,7 +1596,23 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		5C1235782AD479F000A96A3D /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.53.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		5C12357A2AD47A3900A96A3D /* SwiftLintPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C1235782AD479F000A96A3D /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintPlugin";
+		};
 		5C2B3F662A93B06500946CC6 /* EnvironmentModels */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = EnvironmentModels;

@@ -87,7 +87,7 @@ struct ReactionsView: View {
                 feedbackEnvironmentModel.toggle(.error(.unexpected))
                 logger
                     .error(
-                        "adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed:\(error.localizedDescription)"
+                        "adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed: \(error.localizedDescription)"
                     )
             }
         }
