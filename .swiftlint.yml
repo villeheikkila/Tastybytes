@@ -70,8 +70,8 @@ function_body_length:
   - 160
   - 240
 file_length:
-  warning: 500
-  error: 800
+  warning: 800
+  error: 1000
 type_name:
   min_length: 3
 identifier_name:

@@ -29,7 +29,7 @@ struct AccountSettingsScreen: View {
         }
     }
 
-    @State var csvExport: CSVFile? = nil {
+    @State var csvExport: CSVFile? {
         didSet {
             showingExporter.toggle()
         }

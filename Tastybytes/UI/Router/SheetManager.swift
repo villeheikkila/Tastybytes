@@ -5,8 +5,8 @@ import SwiftUI
 @Observable
 final class SheetManager {
     private let logger = Logger(category: "SheetEnvironmentModel")
-    var sheet: Sheet? = nil
-    var nestedSheet: Sheet? = nil
+    var sheet: Sheet?
+    var nestedSheet: Sheet?
 
     func navigate(sheet: Sheet) {
         if self.sheet != nil, nestedSheet != nil {

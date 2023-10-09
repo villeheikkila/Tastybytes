@@ -25,11 +25,11 @@ struct AccountDeletedScreen: View {
 
                     ProgressButton(action: {
                         exit(0)
-                    }) {
+                    }, label: {
                         Text("Quit the App")
                             .font(.headline)
                             .padding(.all, 8)
-                    }
+                    })
                     .buttonStyle(.borderedProminent)
                 }
                 .padding(.horizontal, 24)
