@@ -1,3 +1,4 @@
+import Components
 import EnvironmentModels
 import Models
 import OSLog
@@ -29,11 +30,7 @@ struct CategoryPickerSheet: View {
                     dismiss()
                 }, label: {
                     HStack(spacing: 12) {
-                        Group {
-                            Text(category.icon)
-                                .grayscale(1)
-                            Text(category.name)
-                        }
+                        CategoryNameView(category: category, withBorder: false)
                     }
                 })
             }

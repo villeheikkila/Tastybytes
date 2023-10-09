@@ -57,7 +57,6 @@ public extension ScannerView {
 
         override public func viewDidLoad() {
             super.viewDidLoad()
-            addOrientationDidChangeObserver()
             setBackgroundColor()
             handleCameraPermission()
         }
@@ -66,17 +65,8 @@ public extension ScannerView {
             previewLayer?.frame = view.layer.bounds
         }
 
-        @objc
-        func updateOrientation() {
-            guard let orientation = view.window?.windowScene?.interfaceOrientation else { return }
-            guard let connection = captureSession?.connections.last,
-                  connection.isVideoOrientationSupported else { return }
-            connection.videoOrientation = AVCaptureVideoOrientation(rawValue: orientation.rawValue) ?? .portrait
-        }
-
         override public func viewDidAppear(_ animated: Bool) {
             super.viewDidAppear(animated)
-            updateOrientation()
         }
 
         override public func viewWillAppear(_ animated: Bool) {
@@ -137,15 +127,6 @@ public extension ScannerView {
                 }
                 completion?()
             }
-        }
-
-        private func addOrientationDidChangeObserver() {
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(updateOrientation),
-                name: AVFoundation.Notification.Name("UIDeviceOrientationDidChangeNotification"),
-                object: nil
-            )
         }
 
         private func setBackgroundColor(_ color: UIColor = .black) {

@@ -322,7 +322,7 @@ public struct Contributions: Codable, Sendable {
 public struct CategoryStatistics: Identifiable, Codable, Sendable, CategoryProtocol {
     public let id: Int
     public let name: String
-    public let icon: String
+    public let icon: String?
     public let count: Int
 
     public struct CategoryStatisticsParams: Codable, Sendable {

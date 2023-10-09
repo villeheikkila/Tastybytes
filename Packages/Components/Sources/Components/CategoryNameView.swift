@@ -13,8 +13,10 @@ public struct CategoryNameView: View {
     public var body: some View {
         HStack {
             Group {
-                Text(category.icon)
-                    .grayscale(1)
+                if let icon = category.icon {
+                    Text(icon)
+                        .grayscale(1)
+                }
                 Text(category.name)
             }
             .font(.caption)

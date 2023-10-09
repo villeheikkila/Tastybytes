@@ -1,17 +1,21 @@
 public protocol CategoryProtocol {
     var id: Int { get }
     var name: String { get }
-    var icon: String { get }
+    var icon: String? { get }
 }
 
 public extension CategoryProtocol {
     var label: String {
-        "\(icon) \(name)"
+        if let icon {
+            return "\(icon) \(name)"
+        } else {
+            return name
+        }
     }
 }
 
 public struct Category: Identifiable, Codable, Hashable, Sendable, CategoryProtocol {
-    public init(id: Int, name: String, icon: String) {
+    public init(id: Int, name: String, icon: String?) {
         self.id = id
         self.name = name
         self.icon = icon
@@ -19,14 +23,14 @@ public struct Category: Identifiable, Codable, Hashable, Sendable, CategoryProto
 
     public let id: Int
     public let name: String
-    public let icon: String
+    public let icon: String?
 }
 
 public extension Category {
     struct JoinedSubcategoriesServingStyles: Identifiable, Codable, Hashable, Sendable, CategoryProtocol {
         public let id: Int
         public let name: String
-        public let icon: String
+        public let icon: String?
         public let subcategories: [Subcategory]
         public let servingStyles: [ServingStyle]
 
