@@ -338,19 +338,24 @@ struct ProductMutationInnerView: View {
 
     private var brandSection: some View {
         Section {
-            RouterLink(brandOwner?.name ?? "Company", sheet: .companySearch(onSelect: { company in
-                brandOwner = company
-            }))
+            PickerLinkRow(
+                label: "Brand Owner",
+                selection: brandOwner?.name,
+                sheet: .companySearch(onSelect: { company in
+                    brandOwner = company
+                })
+            )
 
             if let brandOwner {
-                RouterLink(
-                    brand?.name ?? "Brand",
+                PickerLinkRow(
+                    label: "Brand",
+                    selection: brand?.name,
                     sheet: .brand(brandOwner: brandOwner, brand: $brand, mode: .select)
                 )
             }
 
             if brand != nil {
-                Toggle("Has sub-brand?", isOn: .init(get: {
+                Toggle("Has a sub-brand?", isOn: .init(get: {
                     hasSubBrand
                 }, set: { newValue in
                     hasSubBrand = newValue
@@ -361,8 +366,9 @@ struct ProductMutationInnerView: View {
             }
 
             if hasSubBrand, let brand {
-                RouterLink(
-                    subBrand?.name ?? "Sub-brand",
+                PickerLinkRow(
+                    label: "Sub-brand",
+                    selection: subBrand?.name,
                     sheet: .subBrand(brandWithSubBrands: brand, subBrand: $subBrand)
                 )
             }
@@ -541,5 +547,23 @@ extension ProductMutationInnerView {
 
     enum Focusable {
         case name, description
+    }
+}
+
+struct PickerLinkRow: View {
+    let label: String
+    let selection: String?
+    let sheet: Sheet
+
+    var body: some View {
+        RouterLink(sheet: sheet) {
+            HStack {
+                Text(label)
+                Spacer()
+                if let selection {
+                    Text(selection)
+                }
+            }
+        }
     }
 }
