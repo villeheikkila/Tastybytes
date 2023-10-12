@@ -85,6 +85,7 @@ struct CheckInImageCellView: View {
             .onTapGesture {
                 router.fetchAndNavigateTo(repository, .checkIn(id: checkInImage.id))
             }
+            .accessibilityAddTraits(.isButton)
         }
     }
 }

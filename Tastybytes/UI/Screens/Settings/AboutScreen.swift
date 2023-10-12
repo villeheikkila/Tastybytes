@@ -73,6 +73,7 @@ struct AboutScreen: View {
                     Link(destination: githubUrl) {
                         HStack {
                             Image("github")
+                                .accessibilityHidden(true)
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
@@ -86,6 +87,7 @@ struct AboutScreen: View {
                     Link(destination: portfolioUrl) {
                         HStack {
                             Image(systemName: "network")
+                                .accessibilityHidden(true)
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
@@ -99,6 +101,7 @@ struct AboutScreen: View {
                     Link(destination: linkedInUrl) {
                         HStack {
                             Image("linkedin")
+                                .accessibilityHidden(true)
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)

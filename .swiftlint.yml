@@ -54,24 +54,19 @@ opt_in_rules:
   - function_default_parameter_at_end
   - pattern_matching_keywords
   - single_test_class
+
 disabled_rules:
   - opening_brace
   - nesting
   - cyclomatic_complexity
   - legacy_random
   - large_tuple
-line_length:
-  - 140
-  - 200
-type_body_length:
-  - 600
-  - 800
-function_body_length:
-  - 160
-  - 240
-file_length:
-  warning: 800
-  error: 1000
+  - file_length
+  - line_length
+  - type_body_length
+  - function_body_length
+  - closure_end_indentation
+
 type_name:
   min_length: 3
 identifier_name:

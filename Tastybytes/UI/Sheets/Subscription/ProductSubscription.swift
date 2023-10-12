@@ -4,7 +4,7 @@ import SwiftUI
 
 actor ProductSubscription {
     private let logger = Logger(category: "ProductSubscription")
-    private(set) static var shared: ProductSubscription!
+    private(set) static var shared: ProductSubscription! //  swiftlint:disable:this implicitly_unwrapped_optional
 
     private init() {}
 

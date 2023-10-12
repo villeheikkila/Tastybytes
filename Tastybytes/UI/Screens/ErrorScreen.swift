@@ -8,6 +8,7 @@ struct ErrorScreen: View {
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 60))
                 .foregroundColor(.red)
+                .accessibilityHidden(true)
             Text("Oops!")
                 .font(.title)
                 .bold()

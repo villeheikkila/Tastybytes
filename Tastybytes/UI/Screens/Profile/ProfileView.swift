@@ -140,6 +140,7 @@ struct ProfileView: View {
                                          photoLibrary: .shared())
                             {
                                 Image(systemName: "pencil.circle.fill")
+                                    .accessibilityHidden(true)
                                     .symbolRenderingMode(.multicolor)
                                     .font(.system(size: 24))
                                     .foregroundColor(.accentColor)
@@ -276,5 +277,6 @@ struct CheckInStatisticView: View {
         .onTapGesture {
             onTap()
         }
+        .accessibilityAddTraits(.isButton)
     }
 }
