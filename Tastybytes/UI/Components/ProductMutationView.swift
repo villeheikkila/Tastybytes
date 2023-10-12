@@ -206,10 +206,11 @@ struct ProductMutationInnerView: View {
     @Environment(Router.self) private var router
     @Environment(SheetManager.self) private var sheetEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var subcategories: Set<Int>
-    @State private var category: Models.Category.JoinedSubcategoriesServingStyles?
+    @State private var category: Int?
     @State private var brandOwner: Company? {
         didSet {
             brand = nil
@@ -251,7 +252,7 @@ struct ProductMutationInnerView: View {
         _barcode = State(wrappedValue: initialBarcode)
         self.onEdit = onEdit
         self.onCreate = onCreate
-        _category = State(initialValue: initialValues.category)
+        _category = State(initialValue: initialValues.category?.id)
         _subcategories = State(initialValue: Set(initialValues.subcategories.map(\.id)))
         _brandOwner = State(initialValue: initialValues.brandOwner)
         _brand = State(initialValue: initialValues.brand)
@@ -297,23 +298,27 @@ struct ProductMutationInnerView: View {
         .disabled(!isValid())
     }
 
+    private var selectedCategory: Models.Category.JoinedSubcategoriesServingStyles? {
+        appDataEnvironmentModel.categories.first(where: { $0.id == category })
+    }
+
     private var selectedSubcategories: [Subcategory] {
-        category?.subcategories
+        selectedCategory?.subcategories
             .filter { subcategories.contains($0.id) } ?? []
     }
 
     private var categorySection: some View {
         Section {
             RouterLink(
-                category?.name ?? "Pick a category",
+                selectedCategory?.name ?? "Pick a category",
                 sheet: .categoryPickerSheet(category: $category)
             )
 
             Button(action: {
-                if let category {
+                if let selectedCategory {
                     sheetEnvironmentModel.navigate(sheet: .subcategory(
                         subcategories: $subcategories,
-                        category: category
+                        category: selectedCategory
                     ))
                 }
             }, label: {
@@ -441,7 +446,7 @@ struct ProductMutationInnerView: View {
         let newProductParams = Product.NewRequest(
             name: name,
             description: description,
-            categoryId: category.id,
+            categoryId: category,
             brandId: brandId,
             subBrandId: subBrand?.id,
             subCategoryIds: Array(subcategories),
@@ -467,13 +472,13 @@ struct ProductMutationInnerView: View {
     }
 
     func createProductEditSuggestion(product: Product.Joined) async {
-        guard let subBrand, let category else { return }
+        guard let subBrand, let selectedCategory else { return }
         let editSuggestion = Product.EditSuggestionRequest(
             id: product.id,
             name: name,
             description: description,
             subBrand: subBrand,
-            category: category,
+            category: selectedCategory,
             isDiscontinued: isDiscontinued
         )
 
@@ -509,7 +514,7 @@ struct ProductMutationInnerView: View {
             productId: product.id,
             name: name,
             description: description,
-            categoryId: category.id,
+            categoryId: category,
             subBrandId: subBrandWithNil.id,
             subcategories: selectedSubcategories,
             isDiscontinued: isDiscontinued

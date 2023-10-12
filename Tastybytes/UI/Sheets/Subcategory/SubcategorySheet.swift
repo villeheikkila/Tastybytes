@@ -18,8 +18,6 @@ struct SubcategorySheet: View {
     @State private var searchTerm = ""
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
-    private let maxSubcategories = 4
-
     var shownSubcategories: [Subcategory] {
         category.subcategories.sorted().filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
     }
@@ -54,9 +52,5 @@ struct SubcategorySheet: View {
                     .bold()
             }
         }
-    }
-
-    private func onLimitReached() {
-        feedbackEnvironmentModel.toggle(.warning("You can only add \(maxSubcategories) subcategories"))
     }
 }

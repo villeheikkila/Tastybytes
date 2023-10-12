@@ -50,7 +50,7 @@ enum Sheet: Identifiable, Equatable {
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
     case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
-    case categoryPickerSheet(category: Binding<Models.Category.JoinedSubcategoriesServingStyles?>)
+    case categoryPickerSheet(category: Binding<Int?>)
     case mergeLocationSheet(location: Location)
     case productLogo(product: Product.Joined, onUpload: () async -> Void)
     case subscribe

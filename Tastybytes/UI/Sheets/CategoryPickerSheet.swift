@@ -9,7 +9,8 @@ private let logger = Logger(category: "CategoryPickerSheet")
 struct CategoryPickerSheet: View {
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @Binding var category: Models.Category.JoinedSubcategoriesServingStyles?
+    @Binding var category: Int?
+
     @State private var searchTerm = ""
 
     var shownCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
@@ -23,17 +24,11 @@ struct CategoryPickerSheet: View {
     }
 
     var body: some View {
-        List {
-            ForEach(shownCategories) { category in
-                Button(action: {
-                    self.category = category
-                    dismiss()
-                }, label: {
-                    HStack(spacing: 12) {
-                        CategoryNameView(category: category, withBorder: false)
-                    }
-                })
-            }
+        List(shownCategories, selection: $category) { category in
+            CategoryNameView(category: category, withBorder: false)
+        }
+        .onChange(of: category) {
+            dismiss()
         }
         .searchable(text: $searchTerm)
         .navigationTitle("Categories")
