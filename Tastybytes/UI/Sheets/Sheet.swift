@@ -19,7 +19,7 @@ enum Sheet: Identifiable, Equatable {
                mode: BrandSheet.Mode)
     case addBrand(brandOwner: Company, mode: BrandSheet.Mode)
     case subcategory(
-        subcategories: Binding<[Subcategory]>,
+        subcategories: Binding<Set<Int>>,
         category: Models.Category.JoinedSubcategoriesServingStyles
     )
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)

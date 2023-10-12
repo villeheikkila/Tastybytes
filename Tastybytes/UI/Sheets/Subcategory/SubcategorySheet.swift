@@ -12,7 +12,7 @@ struct SubcategorySheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @Binding var subcategories: [Subcategory]
+    @Binding var subcategories: Set<Int>
     @State private var showAddSubcategory = false
     @State private var newSubcategoryName = ""
     @State private var searchTerm = ""
@@ -25,21 +25,10 @@ struct SubcategorySheet: View {
     }
 
     var body: some View {
-        List {
-            Section("Subcategories of \(category.name)") {
-                ForEach(shownSubcategories) { subcategory in
-                    Button(action: { toggleSubcategory(subcategory: subcategory) }, label: {
-                        HStack {
-                            Text(subcategory.name)
-                            Spacer()
-                            Label("Selected subcategory", systemImage: "checkmark")
-                                .labelStyle(.iconOnly)
-                                .opacity(subcategories.contains(subcategory) ? 1 : 0)
-                        }
-                    })
-                }
-            }
+        List(shownSubcategories, selection: $subcategories) { subcategory in
+            Text(subcategory.name)
         }
+        .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
         .navigationTitle("Subcategories")
         .toolbar {
@@ -67,17 +56,7 @@ struct SubcategorySheet: View {
         }
     }
 
-    private func toggleSubcategory(subcategory: Subcategory) {
-        if subcategories.contains(subcategory) {
-            withAnimation {
-                subcategories.remove(object: subcategory)
-            }
-        } else if subcategories.count < maxSubcategories {
-            withAnimation {
-                subcategories.append(subcategory)
-            }
-        } else {
-            feedbackEnvironmentModel.toggle(.warning("You can only add \(maxSubcategories) subcategories"))
-        }
+    private func onLimitReached() {
+        feedbackEnvironmentModel.toggle(.warning("You can only add \(maxSubcategories) subcategories"))
     }
 }

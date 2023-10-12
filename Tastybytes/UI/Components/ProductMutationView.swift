@@ -208,7 +208,7 @@ struct ProductMutationInnerView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
-    @State private var subcategories: [Subcategory]
+    @State private var subcategories: Set<Int>
     @State private var category: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var brandOwner: Company? {
         didSet {
@@ -252,7 +252,7 @@ struct ProductMutationInnerView: View {
         self.onEdit = onEdit
         self.onCreate = onCreate
         _category = State(initialValue: initialValues.category)
-        _subcategories = State(initialValue: initialValues.subcategories)
+        _subcategories = State(initialValue: Set(initialValues.subcategories.map(\.id)))
         _brandOwner = State(initialValue: initialValues.brandOwner)
         _brand = State(initialValue: initialValues.brand)
         _hasSubBrand = State(initialValue: initialValues.hasSubBrand)
@@ -297,6 +297,11 @@ struct ProductMutationInnerView: View {
         .disabled(!isValid())
     }
 
+    private var selectedSubcategories: [Subcategory] {
+        category?.subcategories
+            .filter { subcategories.contains($0.id) } ?? []
+    }
+
     private var categorySection: some View {
         Section {
             RouterLink(
@@ -317,7 +322,7 @@ struct ProductMutationInnerView: View {
                         Text("Subcategories")
                     } else {
                         HStack(spacing: 4) {
-                            ForEach(subcategories) { subcategory in
+                            ForEach(selectedSubcategories) { subcategory in
                                 SubcategoryLabelView(subcategory: subcategory)
                             }
                         }
@@ -439,7 +444,7 @@ struct ProductMutationInnerView: View {
             categoryId: category.id,
             brandId: brandId,
             subBrandId: subBrand?.id,
-            subCategoryIds: subcategories.map(\.id),
+            subCategoryIds: Array(subcategories),
             isDiscontinued: isDiscontinued,
             barcode: barcode
         )
@@ -506,7 +511,7 @@ struct ProductMutationInnerView: View {
             description: description,
             categoryId: category.id,
             subBrandId: subBrandWithNil.id,
-            subcategories: subcategories,
+            subcategories: selectedSubcategories,
             isDiscontinued: isDiscontinued
         )
 
