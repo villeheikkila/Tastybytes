@@ -1,4 +1,5 @@
 import EnvironmentModels
+import Extensions
 import Models
 import SwiftUI
 
@@ -7,63 +8,15 @@ struct FlavorSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var pickedFlavors: [Flavor]
+    @State var pickedFlavorIds: Set<Int> = Set()
     @State private var searchTerm = ""
 
+    init(pickedFlavors: Binding<[Flavor]>) {
+        _pickedFlavors = pickedFlavors
+        _pickedFlavorIds = State(initialValue: Set(pickedFlavors.map(\.id)))
+    }
+
     private let maxFlavors = 4
-
-    var body: some View {
-        List {
-            if !pickedFlavors.isEmpty {
-                Section("Picked flavors") {
-                    ForEach(pickedFlavors) { pickedFlavor in
-                        Button(action: { toggleFlavor(pickedFlavor) }, label: {
-                            HStack {
-                                Text(pickedFlavor.name.capitalized)
-                                Spacer()
-                            }
-                        })
-                    }
-                }
-            }
-
-            if !searchTerm.isEmpty, !filteredFlavors.contains(where: { flavor in !pickedFlavors.contains(flavor) }) {
-                Section {
-                    Text("No flavors found with the search term")
-                }
-            }
-
-            Section {
-                ForEach(filteredFlavors.filter { !pickedFlavors.contains($0) }) { flavor in
-                    Button(action: { toggleFlavor(flavor) }, label: {
-                        HStack {
-                            Text(flavor.label)
-                            Spacer()
-                            if pickedFlavors.contains(flavor) {
-                                Label("Picked flavor", systemImage: "checkmark")
-                                    .labelStyle(.iconOnly)
-                            }
-                        }
-                    })
-                }
-            } header: {
-                if filteredFlavors.contains(where: { flavor in !pickedFlavors.contains(flavor) }) {
-                    Text("Available flavors")
-                }
-            }
-        }
-        .searchable(text: $searchTerm)
-        .navigationTitle("Flavors")
-        .toolbar {
-            toolbarContent
-        }
-    }
-
-    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Done", action: { dismiss() })
-                .bold()
-        }
-    }
 
     private var filteredFlavors: [Flavor] {
         if searchTerm.isEmpty {
@@ -73,13 +26,53 @@ struct FlavorSheet: View {
         }
     }
 
-    private func toggleFlavor(_ flavor: Flavor) {
-        if pickedFlavors.contains(flavor) {
-            pickedFlavors.remove(object: flavor)
-        } else if pickedFlavors.count < maxFlavors {
-            pickedFlavors.append(flavor)
-        } else {
-            feedbackEnvironmentModel.toggle(.warning("You can only add \(maxFlavors) flavors"))
+    private var sortedFlavors: [Flavor] {
+        filteredFlavors
+            .sorted { pickedFlavorIds.contains($0.id) && !pickedFlavorIds.contains($1.id) }
+    }
+
+    private var pickedFlavorIdsAsFlavors: [Flavor] {
+        pickedFlavorIds.compactMap { flavor in
+            appDataEnvironmentModel.flavors.first(where: { $0.id == flavor })
+        }
+    }
+
+    private var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && filteredFlavors.isEmpty
+    }
+
+    var body: some View {
+        List(sortedFlavors, selection: $pickedFlavorIds) { pickedFlavor in
+            Text(pickedFlavor.name.capitalized)
+        }
+        .environment(\.editMode, .constant(.active))
+        .searchable(text: $searchTerm)
+        .navigationTitle("Flavors")
+        .overlay {
+            if showContentUnavailableView {
+                ContentUnavailableView.search(text: searchTerm)
+            }
+        }
+        .onChange(of: pickedFlavorIds) { oldValue, newValue in
+            let added = newValue.addedValueTo(oldValue)
+            if let added, newValue.count > maxFlavors {
+                pickedFlavorIds.remove(added)
+                feedbackEnvironmentModel.toggle(.warning("You can only add \(maxFlavors) flavors"))
+                return
+            }
+        }
+        .onChange(of: pickedFlavorIds) {
+            pickedFlavors = pickedFlavorIdsAsFlavors
+        }
+        .toolbar {
+            toolbarContent
+        }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            Button("Done", action: { dismiss() })
+                .bold()
         }
     }
 }
