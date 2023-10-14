@@ -62,12 +62,12 @@ struct DiscoverScreen: View {
                     Text(scope.label).tag(scope)
                 }
             }
-            .disableAutocorrection(true)
-            .background {
+            .overlay {
                 if showContentUnavailableView {
-                    ContentUnavailableView.search(text: searchTerm)
+                    contentUnavailableView
                 }
             }
+            .disableAutocorrection(true)
             .onAppear {
                 scrollProxy = proxy
             }
@@ -227,7 +227,7 @@ struct DiscoverScreen: View {
                     .id(product.id)
             }
         }
-        if isSearched, profileEnvironmentModel.hasPermission(.canCreateProducts) {
+        if isSearched, !showContentUnavailableView, profileEnvironmentModel.hasPermission(.canCreateProducts) {
             Section("Didn't find a product you were looking for?") {
                 HStack {
                     Text("Add new")
@@ -269,6 +269,44 @@ struct DiscoverScreen: View {
                         })
                     )
                 }
+            }
+        }
+    }
+
+    @ViewBuilder
+    var contentUnavailableView: some View {
+        switch searchScope {
+        case .companies:
+            ContentUnavailableView {
+                Label("No Companies  found for \"\(searchTerm)\"", systemImage: "storefront")
+            } description: {
+                Text("Check the spelling or try a new search")
+            } actions: {
+                RouterLink("Create new product", screen: .addProduct(barcode))
+            }
+        case .locations:
+            ContentUnavailableView {
+                Label("No Locations found for \"\(searchTerm)\"", systemImage: "location.magnifyingglass")
+            } description: {
+                Text("Check the spelling or try a new search")
+            }
+        case .products:
+            ContentUnavailableView {
+                Label("No Products found for \"\(searchTerm)\"", systemImage: "bubbles.and.sparkles")
+            } description: {
+                Text("Check the spelling or try a new search")
+            } actions: {
+                Button("Create new product") {
+                    let barcodeCopy = barcode
+                    barcode = nil
+                    router.navigate(screen: .addProduct(barcodeCopy))
+                }
+            }
+        case .users:
+            ContentUnavailableView {
+                Label("No profiles found for \"\(searchTerm)\"", systemImage: "person.crop.circle.badge.questionmark")
+            } description: {
+                Text("Check the spelling or try a new search")
             }
         }
     }
