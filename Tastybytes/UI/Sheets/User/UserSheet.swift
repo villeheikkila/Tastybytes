@@ -13,7 +13,8 @@ struct UserSheet: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var searchText: String = ""
+    @State private var searchTerm: String = ""
+    @State private var isLoading = false
     @State private var searchResults = [Profile]()
 
     let onSubmit: () -> Void
@@ -25,6 +26,10 @@ struct UserSheet: View {
     ) {
         self.mode = mode
         self.onSubmit = onSubmit
+    }
+
+    private var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && !isLoading && searchResults.isEmpty
     }
 
     var body: some View {
@@ -74,11 +79,16 @@ struct UserSheet: View {
                 }
             }
         }
+        .overlay {
+            if showContentUnavailableView {
+                ContentUnavailableView.search(text: searchTerm)
+            }
+        }
         .navigationTitle("Search users")
         .toolbar {
             toolbarContent
         }
-        .searchable(text: $searchText)
+        .searchable(text: $searchTerm)
         .disableAutocorrection(true)
         .onSubmit(of: .search) { Task { await searchUsers(currentUserId: profileEnvironmentModel.id) }
         }
@@ -92,10 +102,12 @@ struct UserSheet: View {
     }
 
     func searchUsers(currentUserId: UUID) async {
-        switch await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
+        isLoading = true
+        switch await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId) {
         case let .success(searchResults):
             await MainActor.run {
                 withAnimation {
+                    self.isLoading = false
                     self.searchResults = searchResults
                 }
             }
