@@ -36,6 +36,10 @@ struct DiscoverScreen: View {
 
     @Binding var scrollToTop: Int
 
+    private var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && isSearched && currentScopeIsEmpty
+    }
+
     var body: some View {
         ScrollViewReader { proxy in
             List {
@@ -59,6 +63,11 @@ struct DiscoverScreen: View {
                 }
             }
             .disableAutocorrection(true)
+            .background {
+                if showContentUnavailableView {
+                    ContentUnavailableView.search(text: searchTerm)
+                }
+            }
             .onAppear {
                 scrollProxy = proxy
             }
@@ -68,6 +77,7 @@ struct DiscoverScreen: View {
             .onChange(of: searchScope) {
                 Task { await search() }
                 barcode = nil
+                isSearched = false
             }
             .onChange(of: searchTerm, debounceTime: 0.2) { _ in
                 Task { await search() }
@@ -176,7 +186,7 @@ struct DiscoverScreen: View {
             }
         }
 
-        if currentScopeIsEmpty {
+        if currentScopeIsEmpty && addBarcodeTo == nil && !isSearched {
             Section("Feeds") {
                 Group {
                     RouterLink(
@@ -283,7 +293,7 @@ struct DiscoverScreen: View {
         case .locations:
             locations.isEmpty
         case .products:
-            products.isEmpty && addBarcodeTo == nil && !isSearched
+            products.isEmpty
         case .users:
             profiles.isEmpty
         }
@@ -320,7 +330,6 @@ struct DiscoverScreen: View {
             withAnimation {
                 products = searchResults
             }
-            isSearched = true
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackEnvironmentModel.toggle(.error(.unexpected))
@@ -402,6 +411,7 @@ struct DiscoverScreen: View {
         case .locations:
             await searchLocations()
         }
+        isSearched = true
     }
 
     enum SearchScope: String, CaseIterable, Identifiable {
