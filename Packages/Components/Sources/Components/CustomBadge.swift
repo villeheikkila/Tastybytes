@@ -22,12 +22,11 @@ public struct BadgeViewModifier: ViewModifier {
     let badgeCount: Int
 
     public func body(content: Content) -> some View {
-        content
-            .if(badgeCount != 0, transform: { view in
-                view.overlay(alignment: .topTrailing) {
-                    Badge(badgeCount: badgeCount)
-                }
-            })
+        content.overlay(alignment: .topTrailing) {
+            if badgeCount != 0 {
+                Badge(badgeCount: badgeCount)
+            }
+        }
     }
 }
 

@@ -17,7 +17,7 @@ struct FriendSheet: View {
 
     private var shownProfiles: [Profile] {
         friendEnvironmentModel.acceptedFriends
-            .filter { searchTerm.isEmpty || $0.preferredName.contains(searchTerm) }
+            .filter { searchTerm.isEmpty || $0.preferredName.lowercased().contains(searchTerm.lowercased()) }
     }
 
     private var sortedShownProfiles: [Profile] {
