@@ -83,7 +83,7 @@ struct CheckInListView<Header>: View where Header: View {
     }
 
     var isContentUnavailable: Bool {
-        initialLoadCompleted && checkIns.isEmpty && showContentUnavailableView
+        initialLoadCompleted && checkIns.isEmpty && showContentUnavailableView && !isLoading
     }
 
     var body: some View {

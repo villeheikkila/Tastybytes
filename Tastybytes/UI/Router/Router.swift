@@ -7,6 +7,7 @@ import SwiftUI
 @Observable
 final class Router {
     private let logger = Logger(category: "Router")
+    private var isRestored = false
 
     var path: [Screen] = []
     let tab: Tab
@@ -17,9 +18,11 @@ final class Router {
     }
 
     func restoreState() {
+        guard !isRestored else { return }
         guard let data = try? Data(contentsOf: tab.cachesDirectoryPath) else { return }
         do {
             path = try JSONDecoder().decode([Screen].self, from: data)
+            isRestored = true
             logger.info("Navigation stack restored")
         } catch {
             logger.error("Failed to load stored navigation stack. Error \(error) (\(#file):\(#line))")
@@ -27,10 +30,13 @@ final class Router {
     }
 
     func storeState() {
-        do {
-            try JSONEncoder().encode(path).write(to: tab.cachesDirectoryPath)
-        } catch {
-            logger.error("Failed to store navigation stack. Error \(error) (\(#file):\(#line))")
+        Task.detached {
+            do {
+                try JSONEncoder().encode(self.path).write(to: self.tab.cachesDirectoryPath)
+                self.logger.info("Navigation stack stored")
+            } catch {
+                self.logger.error("Failed to store navigation stack. Error \(error) (\(#file):\(#line))")
+            }
         }
     }
 
@@ -39,14 +45,17 @@ final class Router {
             reset()
         }
         path.append(screen)
+        storeState()
     }
 
     func reset() {
         path = []
+        storeState()
     }
 
     func removeLast() {
         path.removeLast()
+        storeState()
     }
 
     func fetchAndNavigateTo(_ repository: RepositoryProtocol, _ destination: NavigatablePath,

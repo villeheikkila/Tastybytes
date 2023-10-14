@@ -19,6 +19,7 @@ struct ProductFeedScreen: View {
 
     @State private var page = 0
     @State private var isLoading = false
+    @State private var isRefreshing = false
 
     let feed: Product.FeedType
 
@@ -51,11 +52,6 @@ struct ProductFeedScreen: View {
                         }
                     }
             }
-            if isLoading {
-                ProgressView()
-                    .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-                    .listRowSeparator(.hidden)
-            }
         }
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
@@ -66,7 +62,12 @@ struct ProductFeedScreen: View {
                 }
             }
         #endif
-            .navigationTitle(title)
+            .overlay {
+                    if isLoading && !isRefreshing {
+                        ProgressView()
+                    }
+                }
+                .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar {
@@ -74,7 +75,7 @@ struct ProductFeedScreen: View {
                 }
                 .task {
                     if products.isEmpty {
-                        await refresh()
+                        await fetchProductFeedItems()
                     }
                 }
     }
@@ -91,7 +92,9 @@ struct ProductFeedScreen: View {
     func refresh() async {
         page = 0
         products = [Product.Joined]()
+        isRefreshing = true
         await fetchProductFeedItems()
+        isRefreshing = false
     }
 
     func fetchProductFeedItems(onComplete: (() -> Void)? = nil) async {
