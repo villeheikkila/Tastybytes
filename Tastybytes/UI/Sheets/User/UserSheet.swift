@@ -14,6 +14,7 @@ struct UserSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
+    @State private var searchedFor: String?
     @State private var isLoading = false
     @State private var searchResults = [Profile]()
 
@@ -80,8 +81,10 @@ struct UserSheet: View {
             }
         }
         .overlay {
-            if showContentUnavailableView {
-                ContentUnavailableView.search(text: searchTerm)
+            if showContentUnavailableView, let searchedFor {
+                ContentUnavailableView.search(text: searchedFor)
+            } else if isLoading {
+                ProgressView()
             }
         }
         .navigationTitle("Search users")
@@ -107,6 +110,7 @@ struct UserSheet: View {
         case let .success(searchResults):
             await MainActor.run {
                 withAnimation {
+                    self.searchedFor = searchTerm
                     self.isLoading = false
                     self.searchResults = searchResults
                 }
