@@ -4,36 +4,41 @@ import Models
 import SwiftUI
 
 struct FriendSheet: View {
-    @Binding var taggedFriends: [Profile]
+    @Binding private var taggedFriends: [Profile]
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
     @State private var selectedFriendIds: Set<UUID> = Set()
 
-    var shownFriends: [Profile] {
+    init(taggedFriends: Binding<[Profile]>) {
+        _taggedFriends = taggedFriends
+        _selectedFriendIds = State(initialValue: Set(taggedFriends.map(\.id)))
+    }
+
+    private var shownProfiles: [Profile] {
         friendEnvironmentModel.acceptedFriends
             .filter { searchTerm.isEmpty || $0.preferredName.contains(searchTerm) }
     }
 
-    var shownSortedFriends: [Profile] {
-        shownFriends.sorted { selectedFriendIds.contains($0.id) && !selectedFriendIds.contains($1.id) }
+    private var sortedShownProfiles: [Profile] {
+        shownProfiles.sorted { selectedFriendIds.contains($0.id) && !selectedFriendIds.contains($1.id) }
     }
 
-    var showContentUnavailableView: Bool {
-        !searchTerm.isEmpty && shownFriends.isEmpty
+    private var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && sortedShownProfiles.isEmpty
     }
 
-    var selectedFriendIdsAsFrieds: [Profile] {
+    private var selectedFriendIdsAsFrieds: [Profile] {
         selectedFriendIds.compactMap { flavor in
             friendEnvironmentModel.acceptedFriends.first(where: { $0.id == flavor })
         }
     }
 
     var body: some View {
-        List(shownSortedFriends, selection: $selectedFriendIds) { friend in
+        List(sortedShownProfiles, selection: $selectedFriendIds) { friend in
             HStack {
-                AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
-                Text(friend.preferredName)
+                AvatarView(avatarUrl: friend.avatarUrl, size: 48, id: friend.id)
+                Text(friend.preferredName).padding(.leading, 8)
                 Spacer()
             }
         }
@@ -44,7 +49,6 @@ struct FriendSheet: View {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
-        .buttonStyle(.plain)
         .navigationTitle("Friends")
         .toolbar {
             toolbarContent
@@ -58,16 +62,6 @@ struct FriendSheet: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Button("Done", action: { dismiss() })
                 .bold()
-        }
-    }
-
-    private func toggleFriend(friend: Profile) {
-        withAnimation {
-            if taggedFriends.contains(friend) {
-                taggedFriends.remove(object: friend)
-            } else {
-                taggedFriends.append(friend)
-            }
         }
     }
 }
