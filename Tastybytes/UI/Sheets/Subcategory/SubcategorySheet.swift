@@ -22,12 +22,21 @@ struct SubcategorySheet: View {
         category.subcategories.sorted().filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
     }
 
+    var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && shownSubcategories.isEmpty
+    }
+
     var body: some View {
         List(shownSubcategories, selection: $subcategories) { subcategory in
             Text(subcategory.name)
         }
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
+        .overlay {
+            if showContentUnavailableView {
+                ContentUnavailableView.search(text: searchTerm)
+            }
+        }
         .navigationTitle("Subcategories")
         .toolbar {
             toolbarContent

@@ -7,27 +7,50 @@ struct FriendSheet: View {
     @Binding var taggedFriends: [Profile]
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var searchTerm: String = ""
+    @State private var selectedFriendIds: Set<UUID> = Set()
+
+    var shownFriends: [Profile] {
+        friendEnvironmentModel.acceptedFriends
+            .filter { searchTerm.isEmpty || $0.preferredName.contains(searchTerm) }
+    }
+
+    var shownSortedFriends: [Profile] {
+        shownFriends.sorted { selectedFriendIds.contains($0.id) && !selectedFriendIds.contains($1.id) }
+    }
+
+    var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && shownFriends.isEmpty
+    }
+
+    var selectedFriendIdsAsFrieds: [Profile] {
+        selectedFriendIds.compactMap { flavor in
+            friendEnvironmentModel.acceptedFriends.first(where: { $0.id == flavor })
+        }
+    }
 
     var body: some View {
-        List(friendEnvironmentModel.acceptedFriends) { friend in
+        List(shownSortedFriends, selection: $selectedFriendIds) { friend in
             HStack {
                 AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
                 Text(friend.preferredName)
                 Spacer()
-                Label("Tag friend", systemImage: "checkmark")
-                    .labelStyle(.iconOnly)
-                    .opacity(taggedFriends.contains(friend) ? 1 : 0)
             }
-            .accessibilityAddTraits(.isButton)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                toggleFriend(friend: friend)
+        }
+        .environment(\.editMode, .constant(.active))
+        .searchable(text: $searchTerm)
+        .overlay {
+            if showContentUnavailableView {
+                ContentUnavailableView.search(text: searchTerm)
             }
         }
         .buttonStyle(.plain)
         .navigationTitle("Friends")
         .toolbar {
             toolbarContent
+        }
+        .onChange(of: selectedFriendIds) {
+            taggedFriends = selectedFriendIdsAsFrieds
         }
     }
 
