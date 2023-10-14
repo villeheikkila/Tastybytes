@@ -12,7 +12,7 @@ struct SubBrandSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var subBrandName = ""
-    @State private var searchText: String = ""
+    @State private var searchTerm: String = ""
     @Binding var subBrand: SubBrandProtocol?
 
     let brandWithSubBrands: Brand.JoinedSubBrands
@@ -21,7 +21,7 @@ struct SubBrandSheet: View {
         brandWithSubBrands.subBrands.sorted()
             .filter { sub in
                 guard let name = sub.name else { return false }
-                return searchText.isEmpty || name.contains(searchText) == true
+                return searchTerm.isEmpty || name.lowercased().contains(searchTerm.lowercased())
             }
     }
 
@@ -44,7 +44,12 @@ struct SubBrandSheet: View {
                 }
             }
         }
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .overlay {
+            if !searchTerm.isEmpty && filteredSubBrands.isEmpty {
+                ContentUnavailableView.search(text: searchTerm)
+            }
+        }
         .navigationTitle("Sub-brands")
         .toolbar {
             toolbarContent

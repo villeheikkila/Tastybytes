@@ -19,11 +19,10 @@ struct CurrentUserFriendsScreen: View {
     @State private var searchTerm = ""
 
     var filteredFriends: [Friend] {
-        if searchTerm.isEmpty {
-            return friendEnvironmentModel.acceptedOrPendingFriends
-        }
-        return friendEnvironmentModel.acceptedOrPendingFriends.filter { friend in
-            friend.getFriend(userId: profileEnvironmentModel.id).preferredName.contains(searchTerm)
+        friendEnvironmentModel.acceptedOrPendingFriends.filter { friend in
+            searchTerm.isEmpty ||
+                friend.getFriend(userId: profileEnvironmentModel.id).preferredName.lowercased()
+                .contains(searchTerm.lowercased())
         }
     }
 
@@ -109,6 +108,11 @@ struct CurrentUserFriendsScreen: View {
             }
         }
         .listStyle(.insetGrouped)
+        .overlay {
+            if !searchTerm.isEmpty && filteredFriends.isEmpty {
+                ContentUnavailableView.search(text: searchTerm)
+            }
+        }
         .navigationTitle("Friends (\(friendEnvironmentModel.friends.count))")
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))

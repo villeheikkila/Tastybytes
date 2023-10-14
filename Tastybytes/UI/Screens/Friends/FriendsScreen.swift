@@ -21,14 +21,27 @@ struct FriendsScreen: View {
         _friends = State(wrappedValue: initialFriends ?? [])
     }
 
+    private var filteredFriends: [Friend] {
+        friends.filter { f in
+            searchTerm.isEmpty ||
+                f.getFriend(userId: profile.id).preferredName.lowercased()
+                .contains(searchTerm.lowercased())
+        }
+    }
+
     var body: some View {
         List {
-            ForEach(friends) { friend in
+            ForEach(filteredFriends) { friend in
                 FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
             }
             .listStyle(.insetGrouped)
             .navigationTitle("Friends (\(friends.count))")
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .overlay {
+            if !searchTerm.isEmpty && filteredFriends.isEmpty {
+                ContentUnavailableView.search(text: searchTerm)
+            }
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)

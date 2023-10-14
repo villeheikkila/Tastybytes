@@ -15,9 +15,9 @@ struct CompanySearchSheet: View {
     @State private var status: Status?
     @State private var companyName = ""
     @State private var isLoading = false
-    @State private var searchText: String = "" {
+    @State private var searchTerm: String = "" {
         didSet {
-            if searchText.isEmpty {
+            if searchTerm.isEmpty {
                 searchResults = []
             }
         }
@@ -26,7 +26,7 @@ struct CompanySearchSheet: View {
     let onSelect: (_ company: Company) -> Void
 
     var showEmptyResults: Bool {
-        !isLoading && searchResults.isEmpty && status == .searched && !searchText.isEmpty
+        !isLoading && searchResults.isEmpty && status == .searched && !searchTerm.isEmpty
     }
 
     var body: some View {
@@ -68,13 +68,18 @@ struct CompanySearchSheet: View {
                 }
             }
         }
+        .overlay {
+            if !searchTerm.isEmpty && searchResults.isEmpty {
+                ContentUnavailableView.search(text: searchTerm)
+            }
+        }
         .navigationTitle("Search companies")
         .toolbar {
             toolbarContent
         }
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-        .onSubmit(of: .search) { Task { await searchCompanies(name: searchText) } }
-        .onChange(of: searchText, debounceTime: 0.5, perform: { newValue in
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .onSubmit(of: .search) { Task { await searchCompanies(name: searchTerm) } }
+        .onChange(of: searchTerm, debounceTime: 0.5, perform: { newValue in
             Task { await searchCompanies(name: newValue) }
         })
     }
@@ -87,13 +92,13 @@ struct CompanySearchSheet: View {
     }
 
     func createNew() {
-        companyName = searchText
+        companyName = searchTerm
         status = Status.add
     }
 
     func searchCompanies(name: String) async {
         guard name.count > 1 else { return }
-        switch await repository.company.search(searchTerm: searchText) {
+        switch await repository.company.search(searchTerm: searchTerm) {
         case let .success(searchResults):
             self.searchResults = searchResults
             status = Status.searched

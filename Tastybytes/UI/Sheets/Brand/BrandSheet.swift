@@ -14,14 +14,14 @@ struct BrandSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
     @State private var brandName = ""
-    @State private var searchText: String = ""
+    @State private var searchTerm: String = ""
     @Binding var brand: Brand.JoinedSubBrands?
 
     let brandOwner: Company
     let mode: Mode
 
     var filteredBrands: [Brand.JoinedSubBrands] {
-        brandsWithSubBrands.filter { searchText.isEmpty || $0.name.contains(searchText) == true }
+        brandsWithSubBrands.filter { searchTerm.isEmpty || $0.name.contains(searchTerm) == true }
     }
 
     var body: some View {
@@ -43,8 +43,13 @@ struct BrandSheet: View {
                 }
             }
         }
+        .overlay {
+            if !searchTerm.isEmpty && filteredBrands.isEmpty {
+                ContentUnavailableView.search(text: searchTerm)
+            }
+        }
         .navigationTitle("\(mode == .select ? "Select" : "Add") brand")
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .toolbar {
             toolbarContent
         }
