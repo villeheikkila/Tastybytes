@@ -130,10 +130,11 @@ struct DiscoverScreen: View {
         ForEach(profiles) { profile in
             RouterLink(screen: .profile(profile)) {
                 HStack(alignment: .center) {
-                    AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
+                    AvatarView(avatarUrl: profile.avatarUrl, size: 42, id: profile.id)
                     VStack {
                         HStack {
                             Text(profile.preferredName)
+                                .padding(.leading, 8)
                             Spacer()
                         }
                     }

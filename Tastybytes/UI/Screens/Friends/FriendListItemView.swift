@@ -16,10 +16,11 @@ struct FriendListItemView<RootView: View>: View {
     }
 
     var body: some View {
-        RouterLink(screen: .profile(profile), asTapGesture: true) {
+        RouterLink(screen: .profile(profile)) {
             HStack {
-                AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
+                AvatarView(avatarUrl: profile.avatarUrl, size: 42, id: profile.id)
                 Text(profile.preferredName)
+                    .padding(.leading, 8)
                     .foregroundColor(.primary)
                 if RootView.self == EmptyView.self {
                     Spacer()
