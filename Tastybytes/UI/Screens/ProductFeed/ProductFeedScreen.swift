@@ -52,6 +52,11 @@ struct ProductFeedScreen: View {
                         }
                     }
             }
+            if isLoading && !isRefreshing {
+                ProgressView()
+                    .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+                    .listRowSeparator(.hidden)
+            }
         }
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
@@ -62,12 +67,7 @@ struct ProductFeedScreen: View {
                 }
             }
         #endif
-            .overlay {
-                    if isLoading && !isRefreshing {
-                        ProgressView()
-                    }
-                }
-                .navigationTitle(title)
+            .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar {

@@ -61,11 +61,9 @@ struct ProfileProductListView: View {
     }
 
     var body: some View {
-        List {
-            ForEach(filteredProducts) { product in
-                RouterLink(screen: .product(product)) {
-                    ProductItemView(product: product, extras: [.rating])
-                }
+        List(filteredProducts) { product in
+            RouterLink(screen: .product(product)) {
+                ProductItemView(product: product, extras: [.rating])
             }
         }
         .listStyle(.plain)
