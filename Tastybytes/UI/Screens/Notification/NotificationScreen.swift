@@ -8,7 +8,6 @@ struct NotificationScreen: View {
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Binding var scrollToTop: Int
-
     @State var filter: NotificationType?
 
     var filteredNotifications: [Models.Notification] {

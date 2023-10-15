@@ -57,9 +57,7 @@ struct CompanyScreen: View {
         .listStyle(.plain)
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await feedbackEnvironmentModel.wrapWithHaptics {
-                    await getBrandsAndSummary()
-                }
+                await getBrandsAndSummary(withHaptics: true)
             }
         #endif
             .toolbar {
@@ -127,9 +125,7 @@ struct CompanyScreen: View {
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     RouterLink("Edit", systemImage: "pencil", sheet: .editCompany(company: company, onSuccess: {
-                        await feedbackEnvironmentModel.wrapWithHaptics {
-                            await getBrandsAndSummary()
-                        }
+                        await getBrandsAndSummary(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("Company updated"))
                     }))
                 } else {
@@ -164,13 +160,19 @@ struct CompanyScreen: View {
         }
     }
 
-    func getBrandsAndSummary() async {
+    func getBrandsAndSummary(withHaptics: Bool = false) async {
         async let companyPromise = repository.company.getJoinedById(id: company.id)
         async let summaryPromise = repository.company.getSummaryById(id: company.id)
 
+        if withHaptics {
+            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+        }
         switch await companyPromise {
         case let .success(company):
             companyJoined = company
+            if withHaptics {
+                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
+            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackEnvironmentModel.toggle(.error(.unexpected))

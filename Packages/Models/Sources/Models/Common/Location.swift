@@ -41,7 +41,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
         name = try container.decode(String.self, forKey: .name)
         title = try container.decodeIfPresent(String.self, forKey: .title)
         let longitude = try container.decode(Double.self, forKey: .longitude)

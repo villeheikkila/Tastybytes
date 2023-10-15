@@ -42,12 +42,6 @@ public final class FeedbackEnvironmentModel {
         }
     }
 
-    public func wrapWithHaptics(_ asyncFunction: @escaping () async -> Void) async {
-        trigger(.impact(intensity: .low))
-        await asyncFunction()
-        trigger(.impact(intensity: .high))
-    }
-
     public func trigger(_ type: HapticType) {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
 

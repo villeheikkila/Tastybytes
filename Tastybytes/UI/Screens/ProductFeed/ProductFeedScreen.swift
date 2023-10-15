@@ -48,7 +48,7 @@ struct ProductFeedScreen: View {
                     }
                     .onAppear {
                         if product == products.last, isLoading != true {
-                            Task { await fetchProductFeedItems() }
+                            Task { await fetchProductFeedItems(withHaptics: false) }
                         }
                     }
             }
@@ -62,9 +62,7 @@ struct ProductFeedScreen: View {
         .listStyle(.plain)
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await feedbackEnvironmentModel.wrapWithHaptics {
-                    await refresh()
-                }
+                await refresh()
             }
         #endif
             .navigationTitle(title)
@@ -75,7 +73,7 @@ struct ProductFeedScreen: View {
                 }
                 .task {
                     if products.isEmpty {
-                        await fetchProductFeedItems()
+                        await fetchProductFeedItems(withHaptics: false)
                     }
                 }
     }
@@ -93,14 +91,18 @@ struct ProductFeedScreen: View {
         page = 0
         products = [Product.Joined]()
         isRefreshing = true
-        await fetchProductFeedItems()
+        await fetchProductFeedItems(withHaptics: true)
         isRefreshing = false
     }
 
-    func fetchProductFeedItems(onComplete: (() -> Void)? = nil) async {
+    func fetchProductFeedItems(withHaptics: Bool, onComplete: (() -> Void)? = nil) async {
         let (from, to) = getPagination(page: page, size: pageSize)
 
         isLoading = true
+
+        if withHaptics {
+            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+        }
 
         switch await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
         case let .success(additionalProducts):
@@ -111,6 +113,9 @@ struct ProductFeedScreen: View {
             }
             page += 1
             isLoading = false
+            if withHaptics {
+                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
+            }
             if let onComplete {
                 onComplete()
             }

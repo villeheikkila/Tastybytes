@@ -70,9 +70,7 @@ struct DuplicateProductScreen: View {
         .navigationBarTitle("Unverified Products")
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await feedbackEnvironmentModel.wrapWithHaptics {
-                    await loadProducts()
-                }
+                await loadProducts(withHaptics: true)
             }
         #endif
             .task {
@@ -109,12 +107,18 @@ struct DuplicateProductScreen: View {
         }
     }
 
-    func loadProducts() async {
+    func loadProducts(withHaptics: Bool = false) async {
+        if withHaptics {
+            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+        }
         switch await repository.product.getUnverified() {
         case let .success(products):
             await MainActor.run {
                 withAnimation {
                     self.products = products
+                }
+                if withHaptics {
+                    feedbackEnvironmentModel.trigger(.notification(.success))
                 }
             }
         case let .failure(error):

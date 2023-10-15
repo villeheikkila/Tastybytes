@@ -46,9 +46,7 @@ struct FriendsScreen: View {
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await feedbackEnvironmentModel.wrapWithHaptics {
-                    await loadFriends()
-                }
+                await loadFriends()
             }
         #endif
             .task {
@@ -75,13 +73,19 @@ struct FriendsScreen: View {
         }
     }
 
-    func loadFriends() async {
+    func loadFriends(withHaptics: Bool = false) async {
+        if withHaptics {
+            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+        }
         switch await repository.friend.getByUserId(
             userId: profile.id,
             status: Friend.Status.accepted
         ) {
         case let .success(friends):
             self.friends = friends
+            if withHaptics {
+                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
+            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackEnvironmentModel.toggle(.error(.unexpected))

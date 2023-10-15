@@ -106,9 +106,7 @@ struct BrandScreen: View {
             .listStyle(.plain)
             #if !targetEnvironment(macCatalyst)
                 .refreshable {
-                    await feedbackEnvironmentModel.wrapWithHaptics {
-                        await refresh()
-                    }
+                    await refresh(withHaptics: true)
                 }
             #endif
                 .task {
@@ -322,16 +320,21 @@ struct BrandScreen: View {
         }
     }
 
-    func refresh() async {
+    func refresh(withHaptics: Bool = false) async {
         let brandId = brand.id
         async let summaryPromise = repository.brand.getSummaryById(id: brandId)
         async let brandPromise = repository.brand.getJoinedById(id: brandId)
         async let isLikedPromisePromise = repository.brand.isLikedByCurrentUser(id: brandId)
-
+        if withHaptics {
+            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+        }
         switch await summaryPromise {
         case let .success(summary):
             await MainActor.run {
                 self.summary = summary
+            }
+            if withHaptics {
+                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }

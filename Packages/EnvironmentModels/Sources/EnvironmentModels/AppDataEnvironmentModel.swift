@@ -19,12 +19,16 @@ public final class AppDataEnvironmentModel {
         self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
-    public func initialize(reset: Bool = false) async {
+    public func initialize(withHaptics: Bool = false, reset: Bool = false) async {
         guard reset || flavors.isEmpty || categories.isEmpty else { return }
         logger.notice("Initializing app data")
         async let aboutPagePromise = repository.document.getAboutPage()
         async let flavorPromise = repository.flavor.getAll()
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
+
+        if withHaptics {
+            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+        }
 
         switch await flavorPromise {
         case let .success(flavors):
@@ -32,6 +36,9 @@ public final class AppDataEnvironmentModel {
                 withAnimation {
                     self.flavors = flavors
                 }
+            }
+            if withHaptics {
+                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
             }
             logger.notice("App data (flavors) initialized")
         case let .failure(error):
