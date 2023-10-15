@@ -7,15 +7,13 @@ struct FlavorManagementScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
 
     var body: some View {
-        List {
-            ForEach(appDataEnvironmentModel.flavors) { flavor in
-                Text(flavor.label)
-                    .swipeActions {
-                        ProgressButton("Delete", systemImage: "trash", role: .destructive, action: {
-                            await appDataEnvironmentModel.deleteFlavor(flavor)
-                        })
-                    }
-            }
+        List(appDataEnvironmentModel.flavors) { flavor in
+            Text(flavor.label)
+                .swipeActions {
+                    ProgressButton("Delete", systemImage: "trash", role: .destructive, action: {
+                        await appDataEnvironmentModel.deleteFlavor(flavor)
+                    })
+                }
         }
         .listStyle(.insetGrouped)
         .navigationBarTitle("Flavors")

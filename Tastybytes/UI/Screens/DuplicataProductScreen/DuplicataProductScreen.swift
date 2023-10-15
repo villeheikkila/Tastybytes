@@ -20,39 +20,37 @@ struct DuplicateProductScreen: View {
     @State private var showDeleteProductConfirmationDialog = false
 
     var body: some View {
-        List {
-            ForEach(products) { product in
-                VStack {
-                    if let createdBy = product.createdBy {
-                        HStack {
-                            AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
-                            Text(createdBy.preferredName).font(.caption).bold()
-                            Spacer()
-                            if let createdAt = product.createdAt, let date = Date(timestamptzString: createdAt) {
-                                Text(date.customFormat(.relativeTime)).font(.caption).bold()
-                            }
+        List(products) { product in
+            VStack {
+                if let createdBy = product.createdBy {
+                    HStack {
+                        AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
+                        Text(createdBy.preferredName).font(.caption).bold()
+                        Spacer()
+                        if let createdAt = product.createdAt, let date = Date(timestamptzString: createdAt) {
+                            Text(date.customFormat(.relativeTime)).font(.caption).bold()
                         }
                     }
-                    ProductItemView(product: product)
-                        .contentShape(Rectangle())
-                        .accessibilityAddTraits(.isLink)
-                        .onTapGesture {
-                            router.navigate(screen: .product(product))
-                        }
-                        .swipeActions {
-                            ProgressButton("Verify", systemImage: "checkmark", action: { await verifyProduct(product) })
-                                .tint(.green)
-                            RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
-                                await loadProducts()
-                            })).tint(.yellow)
-                            Button(
-                                "Delete",
-                                systemImage: "trash",
-                                role: .destructive,
-                                action: { deleteProduct = product }
-                            )
-                        }
                 }
+                ProductItemView(product: product)
+                    .contentShape(Rectangle())
+                    .accessibilityAddTraits(.isLink)
+                    .onTapGesture {
+                        router.navigate(screen: .product(product))
+                    }
+                    .swipeActions {
+                        ProgressButton("Verify", systemImage: "checkmark", action: { await verifyProduct(product) })
+                            .tint(.green)
+                        RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
+                            await loadProducts()
+                        })).tint(.yellow)
+                        Button(
+                            "Delete",
+                            systemImage: "trash",
+                            role: .destructive,
+                            action: { deleteProduct = product }
+                        )
+                    }
             }
         }
         .listStyle(.plain)

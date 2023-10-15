@@ -27,71 +27,54 @@ struct CurrentUserFriendsScreen: View {
     }
 
     var body: some View {
-        List {
-            ForEach(filteredFriends) { friend in
-                FriendListItemView(profile: friend.getFriend(userId: profileEnvironmentModel.profile.id)) {
-                    HStack {
-                        if friend.status == Friend.Status.pending {
-                            Text("(\(friend.status.rawValue.capitalized))")
-                                .font(.footnote)
-                                .foregroundColor(.primary)
-                        }
-                        Spacer()
-                        if friend.isPending(userId: profileEnvironmentModel.profile.id) {
-                            HStack(alignment: .center) {
-                                Label("Remove friend request", systemImage: "person.fill.xmark")
-                                    .imageScale(.large)
-                                    .labelStyle(.iconOnly)
-                                    .accessibilityAddTraits(.isButton)
-                                    .onTapGesture {
-                                        friendToBeRemoved = friend
-                                    }
-                                Label("Accept friend request", systemImage: "person.badge.plus")
-                                    .imageScale(.large)
-                                    .labelStyle(.iconOnly)
-                                    .accessibilityAddTraits(.isButton)
-                                    .onTapGesture { Task {
-                                        await friendEnvironmentModel.updateFriendRequest(
-                                            friend: friend,
-                                            newStatus: .accepted
-                                        )
-                                    }
-                                    }
-                            }
-                        }
+        List(filteredFriends) { friend in
+            FriendListItemView(profile: friend.getFriend(userId: profileEnvironmentModel.profile.id)) {
+                HStack {
+                    if friend.status == Friend.Status.pending {
+                        Text("(\(friend.status.rawValue.capitalized))")
+                            .font(.footnote)
+                            .foregroundColor(.primary)
                     }
-                }
-                .swipeActions {
-                    Group {
-                        if friend.isPending(userId: profileEnvironmentModel.profile.id) {
-                            ProgressButton(
-                                "Accept friend request",
-                                systemImage: "person.badge.plus",
-                                action: {
+                    Spacer()
+                    if friend.isPending(userId: profileEnvironmentModel.profile.id) {
+                        HStack(alignment: .center) {
+                            Label("Remove friend request", systemImage: "person.fill.xmark")
+                                .imageScale(.large)
+                                .labelStyle(.iconOnly)
+                                .accessibilityAddTraits(.isButton)
+                                .onTapGesture {
+                                    friendToBeRemoved = friend
+                                }
+                            Label("Accept friend request", systemImage: "person.badge.plus")
+                                .imageScale(.large)
+                                .labelStyle(.iconOnly)
+                                .accessibilityAddTraits(.isButton)
+                                .onTapGesture { Task {
                                     await friendEnvironmentModel.updateFriendRequest(
                                         friend: friend,
                                         newStatus: .accepted
                                     )
                                 }
-                            )
-                            .tint(.green)
+                                }
                         }
-                        Button(
-                            "Delete",
-                            systemImage: "person.fill.xmark",
-                            role: .destructive,
-                            action: { friendToBeRemoved = friend }
-                        )
+                    }
+                }
+            }
+            .swipeActions {
+                Group {
+                    if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                         ProgressButton(
-                            "Block",
-                            systemImage: "person.2.slash",
+                            "Accept friend request",
+                            systemImage: "person.badge.plus",
                             action: {
-                                await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
+                                await friendEnvironmentModel.updateFriendRequest(
+                                    friend: friend,
+                                    newStatus: .accepted
+                                )
                             }
                         )
-                    }.imageScale(.large)
-                }
-                .contextMenu {
+                        .tint(.green)
+                    }
                     Button(
                         "Delete",
                         systemImage: "person.fill.xmark",
@@ -101,10 +84,25 @@ struct CurrentUserFriendsScreen: View {
                     ProgressButton(
                         "Block",
                         systemImage: "person.2.slash",
-                        action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
+                        action: {
+                            await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
                         }
                     )
-                }
+                }.imageScale(.large)
+            }
+            .contextMenu {
+                Button(
+                    "Delete",
+                    systemImage: "person.fill.xmark",
+                    role: .destructive,
+                    action: { friendToBeRemoved = friend }
+                )
+                ProgressButton(
+                    "Block",
+                    systemImage: "person.2.slash",
+                    action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
+                    }
+                )
             }
         }
         .listStyle(.insetGrouped)

@@ -111,7 +111,6 @@ struct ActivityFeed: View {
 
     var body: some View {
         List {
-            Text("hei")
             ForEach(checkIns) { checkIn in
                 Text(checkIn.product.name)
             }

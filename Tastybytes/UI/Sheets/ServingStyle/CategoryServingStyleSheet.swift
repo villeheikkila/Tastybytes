@@ -26,19 +26,17 @@ struct CategoryServingStyleSheet: View {
     }
 
     var body: some View {
-        List {
-            ForEach(servingStyles) { servingStyle in
-                HStack {
-                    Text(servingStyle.label)
-                }
-                .swipeActions {
-                    Button(
-                        "Delete",
-                        systemImage: "trash",
-                        role: .destructive,
-                        action: { toDeleteServingStyle = servingStyle }
-                    )
-                }
+        List(servingStyles) { servingStyle in
+            HStack {
+                Text(servingStyle.label)
+            }
+            .swipeActions {
+                Button(
+                    "Delete",
+                    systemImage: "trash",
+                    role: .destructive,
+                    action: { toDeleteServingStyle = servingStyle }
+                )
             }
         }
         .navigationTitle(category.name)

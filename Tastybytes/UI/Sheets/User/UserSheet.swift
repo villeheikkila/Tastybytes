@@ -34,47 +34,45 @@ struct UserSheet: View {
     }
 
     var body: some View {
-        List {
-            ForEach(searchResults) { profile in
+        List(searchResults) { profile in
+            HStack {
+                AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
+                Text(profile.preferredName)
+                Spacer()
                 HStack {
-                    AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
-                    Text(profile.preferredName)
-                    Spacer()
-                    HStack {
-                        if mode == .add {
-                            HStack {
-                                if !friendEnvironmentModel.friends
-                                    .contains(where: { $0.containsUser(userId: profile.id) })
-                                {
-                                    ProgressButton("Add as a friend", systemImage: "person.badge.plus", action: {
-                                        await friendEnvironmentModel.sendFriendRequest(
-                                            receiver: profile.id,
-                                            onSuccess: {
-                                                dismiss()
-                                                onSubmit()
-                                            }
-                                        )
-                                    })
-                                    .labelStyle(.iconOnly)
-                                    .imageScale(.large)
-                                }
-                            }
-                        }
-                        if mode == .block {
-                            if !friendEnvironmentModel.blockedUsers
+                    if mode == .add {
+                        HStack {
+                            if !friendEnvironmentModel.friends
                                 .contains(where: { $0.containsUser(userId: profile.id) })
                             {
-                                ProgressButton(
-                                    "Block",
-                                    systemImage: "person.fill.xmark",
-                                    action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: {
-                                        onSubmit()
-                                        dismiss()
-                                    })
-                                    }
-                                )
+                                ProgressButton("Add as a friend", systemImage: "person.badge.plus", action: {
+                                    await friendEnvironmentModel.sendFriendRequest(
+                                        receiver: profile.id,
+                                        onSuccess: {
+                                            dismiss()
+                                            onSubmit()
+                                        }
+                                    )
+                                })
+                                .labelStyle(.iconOnly)
                                 .imageScale(.large)
                             }
+                        }
+                    }
+                    if mode == .block {
+                        if !friendEnvironmentModel.blockedUsers
+                            .contains(where: { $0.containsUser(userId: profile.id) })
+                        {
+                            ProgressButton(
+                                "Block",
+                                systemImage: "person.fill.xmark",
+                                action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: {
+                                    onSubmit()
+                                    dismiss()
+                                })
+                                }
+                            )
+                            .imageScale(.large)
                         }
                     }
                 }

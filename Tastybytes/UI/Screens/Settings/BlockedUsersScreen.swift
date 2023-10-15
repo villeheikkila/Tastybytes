@@ -9,15 +9,13 @@ struct BlockedUsersScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
 
     var body: some View {
-        List {
-            ForEach(friendEnvironmentModel.blockedUsers) { friend in
-                BlockedUserListItemView(
-                    profile: friend.getFriend(userId: profileEnvironmentModel.profile.id),
-                    onUnblockUser: {
-                        await friendEnvironmentModel.unblockUser(friend)
-                    }
-                )
-            }
+        List(friendEnvironmentModel.blockedUsers) { friend in
+            BlockedUserListItemView(
+                profile: friend.getFriend(userId: profileEnvironmentModel.profile.id),
+                onUnblockUser: {
+                    await friendEnvironmentModel.unblockUser(friend)
+                }
+            )
         }
         .listStyle(.insetGrouped)
         .overlay {

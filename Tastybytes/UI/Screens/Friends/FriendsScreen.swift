@@ -30,14 +30,12 @@ struct FriendsScreen: View {
     }
 
     var body: some View {
-        List {
-            ForEach(filteredFriends) { friend in
-                FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
-            }
-            .listStyle(.insetGrouped)
-            .navigationTitle("Friends (\(friends.count))")
-            .navigationBarTitleDisplayMode(.inline)
+        List(filteredFriends) { friend in
+            FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
         }
+        .listStyle(.insetGrouped)
+        .navigationTitle("Friends (\(friends.count))")
+        .navigationBarTitleDisplayMode(.inline)
         .overlay {
             if !searchTerm.isEmpty && filteredFriends.isEmpty {
                 ContentUnavailableView.search(text: searchTerm)

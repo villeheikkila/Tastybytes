@@ -24,21 +24,19 @@ struct ProfileWishlistScreen: View {
     }
 
     var body: some View {
-        List {
-            ForEach(products) { product in
-                RouterLink(screen: .product(product)) {
-                    ProductItemView(product: product, extras: [.rating])
-                }
-                .swipeActions(allowsFullSwipe: true) {
-                    ProgressButton(
-                        "Delete",
-                        systemImage: "xmark",
-                        role: .destructive,
-                        action: {
-                            await removeFromWishlist(product: product)
-                        }
-                    )
-                }
+        List(products) { product in
+            RouterLink(screen: .product(product)) {
+                ProductItemView(product: product, extras: [.rating])
+            }
+            .swipeActions(allowsFullSwipe: true) {
+                ProgressButton(
+                    "Delete",
+                    systemImage: "xmark",
+                    role: .destructive,
+                    action: {
+                        await removeFromWishlist(product: product)
+                    }
+                )
             }
         }
         .listStyle(.plain)

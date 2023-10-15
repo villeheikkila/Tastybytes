@@ -27,13 +27,11 @@ struct MergeLocationSheet: View {
     }
 
     var body: some View {
-        List {
-            ForEach(shownLocations) { location in
-                Button(action: { mergeToLocation = location }, label: {
-                    Text(location.name)
-                })
-                .buttonStyle(.plain)
-            }
+        List(shownLocations) { location in
+            Button(action: { mergeToLocation = location }, label: {
+                Text(location.name)
+            })
+            .buttonStyle(.plain)
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: "Search for a duplicate location")

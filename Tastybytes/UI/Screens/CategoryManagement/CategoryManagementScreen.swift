@@ -17,43 +17,41 @@ struct CategoryManagementScreen: View {
     }
 
     var body: some View {
-        List {
-            ForEach(appDataEnvironmentModel.categories) { category in
-                Section {
-                    ForEach(category.subcategories) { subcategory in
-                        HStack {
-                            Text(subcategory.name)
-                        }
-                    }
-                } header: {
+        List(appDataEnvironmentModel.categories) { category in
+            Section {
+                ForEach(category.subcategories) { subcategory in
                     HStack {
-                        Text(category.name)
-                        Spacer()
-                        Menu {
-                            RouterLink(
-                                "Edit Serving Styles",
-                                systemImage: "pencil",
-                                sheet: .categoryServingStyle(category: category)
-                            )
-                            RouterLink(
-                                "Add Subcategory",
-                                systemImage: "plus",
-                                sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                                    await appDataEnvironmentModel.addSubcategory(
-                                        category: category,
-                                        name: newSubcategoryName
-                                    )
-                                })
-                            )
-                        } label: {
-                            Label("Options menu", systemImage: "ellipsis")
-                                .labelStyle(.iconOnly)
-                                .frame(width: 24, height: 24)
-                        }
+                        Text(subcategory.name)
                     }
                 }
-                .headerProminence(.increased)
+            } header: {
+                HStack {
+                    Text(category.name)
+                    Spacer()
+                    Menu {
+                        RouterLink(
+                            "Edit Serving Styles",
+                            systemImage: "pencil",
+                            sheet: .categoryServingStyle(category: category)
+                        )
+                        RouterLink(
+                            "Add Subcategory",
+                            systemImage: "plus",
+                            sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                                await appDataEnvironmentModel.addSubcategory(
+                                    category: category,
+                                    name: newSubcategoryName
+                                )
+                            })
+                        )
+                    } label: {
+                        Label("Options menu", systemImage: "ellipsis")
+                            .labelStyle(.iconOnly)
+                            .frame(width: 24, height: 24)
+                    }
+                }
             }
+            .headerProminence(.increased)
         }
         .listStyle(.insetGrouped)
         .navigationBarTitle("Categories")
