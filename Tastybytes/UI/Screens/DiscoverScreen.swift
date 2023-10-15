@@ -19,6 +19,7 @@ struct DiscoverScreen: View {
     @State private var companies = [Company]()
     @State private var locations = [Location]()
     @State private var isSearched = false
+    @State private var isLoading = false
     @State private var searchScope: SearchScope = .products
     @State private var barcode: Barcode?
     @State private var addBarcodeTo: Product.Joined? {
@@ -37,7 +38,7 @@ struct DiscoverScreen: View {
     @Binding var scrollToTop: Int
 
     private var showContentUnavailableView: Bool {
-        !searchTerm.isEmpty && isSearched && currentScopeIsEmpty
+        !searchTerm.isEmpty && isSearched && !isLoading && currentScopeIsEmpty
     }
 
     var body: some View {
@@ -367,6 +368,7 @@ struct DiscoverScreen: View {
         case let .success(searchResults):
             withAnimation {
                 products = searchResults
+                isLoading = false
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -380,6 +382,7 @@ struct DiscoverScreen: View {
         case let .success(searchResults):
             withAnimation {
                 profiles = searchResults
+                isLoading = false
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -415,6 +418,7 @@ struct DiscoverScreen: View {
             await MainActor.run {
                 withAnimation {
                     companies = searchResults
+                    isLoading = false
                 }
             }
         case let .failure(error):
@@ -429,6 +433,7 @@ struct DiscoverScreen: View {
         case let .success(searchResults):
             withAnimation {
                 locations = searchResults
+                isLoading = false
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -439,6 +444,7 @@ struct DiscoverScreen: View {
 
     func search() async {
         if searchTerm.count < 2 { return }
+        isLoading = true
         switch searchScope {
         case .products:
             await searchProducts()
