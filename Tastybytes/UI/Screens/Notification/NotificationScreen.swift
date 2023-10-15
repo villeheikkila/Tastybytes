@@ -15,19 +15,18 @@ struct NotificationScreen: View {
         notificationEnvironmentModel.notifications.filter { notification in
             if self.filter == nil {
                 return true
-            } else {
-                return switch notification.content {
-                case .checkInReaction:
-                    self.filter == .checkInReaction
-                case .friendRequest:
-                    self.filter == .friendRequest
-                case .message:
-                    self.filter == .message
-                case .checkInComment:
-                    self.filter == .checkInComment
-                case .taggedCheckIn:
-                    self.filter == .taggedCheckIn
-                }
+            }
+            return switch notification.content {
+            case .checkInReaction:
+                self.filter == .checkInReaction
+            case .friendRequest:
+                self.filter == .friendRequest
+            case .message:
+                self.filter == .message
+            case .checkInComment:
+                self.filter == .checkInComment
+            case .taggedCheckIn:
+                self.filter == .taggedCheckIn
             }
         }
     }
@@ -36,31 +35,25 @@ struct NotificationScreen: View {
         ScrollViewReader { scrollProxy in
             List {
                 ForEach(filteredNotifications) { notification in
-                    HStack {
-                        switch notification.content {
-                        case let .message(message):
-                            MessageNotificationView(message: message)
-                                .accessibilityAddTraits(.isButton)
-                                .onTapGesture {
-                                    Task { await notificationEnvironmentModel.markAsRead(notification) }
-                                }
-                        case let .friendRequest(friendRequest):
-                            FriendRequestNotificationView(friend: friendRequest)
-                        case let .taggedCheckIn(taggedCheckIn):
-                            TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
-                        case let .checkInComment(checkInComment):
-                            CheckInCommentNotificationView(checkInComment: checkInComment)
-                        case let .checkInReaction(checkInReaction):
-                            CheckInReactionNotificationView(checkInReaction: checkInReaction)
-                        }
-                        Spacer()
-                    }
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(notification.seenAt == nil ? nil : Color(.systemGray5))
+                    notification.notificationView
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(notification.seenAt == nil ? nil : Color(.systemGray5))
                 }
                 .onDelete(perform: { index in Task {
                     await notificationEnvironmentModel.deleteFromIndex(at: index)
                 } })
+            }
+            .overlay {
+                if filteredNotifications.isEmpty {
+                    ContentUnavailableView {
+                        Label(
+                            filter?.contentUnavailableViewProps.title ?? "You have no notifications",
+                            systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
+                        )
+                    } description: {
+                        Text(filter?.contentUnavailableViewProps.description ?? "")
+                    }
+                }
             }
             #if !targetEnvironment(macCatalyst)
             .refreshable {
@@ -126,4 +119,65 @@ struct NotificationScreen: View {
             }
         }
     }
+}
+
+extension Models.Notification {
+    @ViewBuilder
+    var notificationView: some View {
+        switch self.content {
+        case let .message(message):
+            MessageNotificationView(message: message)
+        case let .friendRequest(friendRequest):
+            FriendRequestNotificationView(friend: friendRequest)
+        case let .taggedCheckIn(taggedCheckIn):
+            TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
+        case let .checkInComment(checkInComment):
+            CheckInCommentNotificationView(checkInComment: checkInComment)
+        case let .checkInReaction(checkInReaction):
+            CheckInReactionNotificationView(checkInReaction: checkInReaction)
+        }
+    }
+}
+
+extension NotificationType {
+    var contentUnavailableViewProps: ContentUnavailableViewProps {
+        switch self {
+        case .checkInComment:
+            ContentUnavailableViewProps(
+                title: "No check-in comment notifications",
+                description: "",
+                icon: "tray"
+            )
+        case .checkInReaction:
+            ContentUnavailableViewProps(
+                title: "No check-in reaction notifications",
+                description: "",
+                icon: "tray"
+            )
+        case .friendRequest:
+            ContentUnavailableViewProps(
+                title: "No friend request notifications",
+                description: "",
+                icon: "tray"
+            )
+        case .message:
+            ContentUnavailableViewProps(
+                title: "No messages",
+                description: "",
+                icon: "tray"
+            )
+        case .taggedCheckIn:
+            ContentUnavailableViewProps(
+                title: "No check-in tag notifications",
+                description: "",
+                icon: "tray"
+            )
+        }
+    }
+}
+
+struct ContentUnavailableViewProps {
+    let title: String
+    let description: String
+    let icon: String
 }
