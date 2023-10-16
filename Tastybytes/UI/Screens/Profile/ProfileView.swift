@@ -21,8 +21,8 @@ struct ProfileView: View {
     @State private var selectedItem: PhotosPickerItem?
     private let topAnchor = 0
 
-    let isCurrentUser: Bool
-    let isShownInFull: Bool
+    private let isCurrentUser: Bool
+    private let isShownInFull: Bool
 
     init(profile: Profile, scrollToTop: Binding<Int>, isCurrentUser: Bool) {
         _scrollToTop = scrollToTop
@@ -175,6 +175,7 @@ struct ProfileView: View {
 
     private var ratingChart: some View {
         RatingChartView(profile: profile, profileSummary: profileSummary)
+            .padding(.vertical, 10)
     }
 
     private var ratingSummary: some View {
@@ -191,6 +192,7 @@ struct ProfileView: View {
             }
             Spacer()
         }
+        .padding(.vertical, 10)
     }
 
     private var joinedAtSection: some View {

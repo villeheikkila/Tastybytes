@@ -87,12 +87,12 @@ struct ProductScreen: View {
     }
 
     @ViewBuilder private var headerContent: some View {
-        Group {
+        VStack {
             if loadedWithBarcode != nil {
                 Spacer(minLength: 50)
             }
             ProductItemView(product: product, extras: [.companyLink, .logo])
-            SummaryView(summary: summary)
+            SummaryView(summary: summary).padding(.top, 4)
             HStack(spacing: 0) {
                 RouterLink(
                     "Check-in!",
@@ -116,8 +116,7 @@ struct ProductScreen: View {
                 .background(Color.orange)
                 .foregroundColor(.white)
                 .cornerRadius(3, corners: [.topRight, .bottomRight])
-            }
-            .listRowInsets(.init(top: 4, leading: 9, bottom: 6, trailing: 9))
+            }.padding(.top, 4)
 
             if !checkInImages.isEmpty {
                 ScrollView(.horizontal) {
@@ -134,10 +133,8 @@ struct ProductScreen: View {
                         }
                     }
                 }
-                .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
             }
-        }
-        .listRowSeparator(.hidden)
+        }.padding(.horizontal)
     }
 
     @ViewBuilder private var loadedFromBarcodeOverlay: some View {

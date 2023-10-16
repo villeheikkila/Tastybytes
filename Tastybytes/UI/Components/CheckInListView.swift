@@ -58,7 +58,6 @@ struct CheckInListView<Header>: View where Header: View {
     @State private var isRefreshing = false
     @State private var showCheckInsFrom: CheckInSegment = .everyone
     @State private var scrolledID: Int?
-
     @Binding private var scrollToTop: Int
 
     private let header: Header
