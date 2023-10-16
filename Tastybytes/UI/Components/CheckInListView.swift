@@ -58,11 +58,12 @@ struct CheckInListView<Header>: View where Header: View {
     @State private var isRefreshing = false
     @State private var showCheckInsFrom: CheckInSegment = .everyone
     @Binding private var scrollToTop: Int
+    @State private var scrolledID: Int?
 
     private let header: Header
     private let showContentUnavailableView: Bool
     private let onRefresh: () async -> Void
-    private let topAnchor: String?
+    private let topAnchor: Int?
     private let fetcher: Fetcher
     private let pageSize = 5
 
@@ -70,7 +71,7 @@ struct CheckInListView<Header>: View where Header: View {
         fetcher: Fetcher,
         scrollToTop: Binding<Int>,
         onRefresh: @escaping () async -> Void,
-        topAnchor: String? = nil,
+        topAnchor: Int? = nil,
         showContentUnavailableView: Bool = false,
         @ViewBuilder header: @escaping () -> Header
     ) {
@@ -87,110 +88,107 @@ struct CheckInListView<Header>: View where Header: View {
     }
 
     var body: some View {
-        ScrollViewReader { proxy in
-            GeometryReader { geometry in
-                List {
-                    header
-                    if fetcher.showCheckInSegmentationPicker {
-                        Picker("Show check-ins from", selection: $showCheckInsFrom) {
-                            ForEach(CheckInSegment.allCases, id: \.self) { segment in
-                                Text(segment.rawValue.capitalized)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-                        .listRowSeparator(.hidden)
+        ScrollView {
+            header
+            if fetcher.showCheckInSegmentationPicker {
+                Picker("Show check-ins from", selection: $showCheckInsFrom) {
+                    ForEach(CheckInSegment.allCases, id: \.self) { segment in
+                        Text(segment.rawValue.capitalized)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .listRowSeparator(.hidden)
 
-                        showCheckInsFrom.emptyContentView
-                            .listRowSeparator(.hidden)
-                            .opacity(!isLoading && uniqueCheckIns.isEmpty ? 1 : 0)
-                    }
-                    ForEach(uniqueCheckIns) { checkIn in
-                        let edgeInset = geometry.size.width < 450 ? 8 : (geometry.size.width - 450) / 2
-                        CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
-                            .listRowInsets(.init(top: 4, leading: edgeInset, bottom: 4, trailing: edgeInset))
-                            .listRowSeparator(.hidden)
-                            .checkInContextMenu(
-                                router: router,
-                                profileEnvironmentModel: profileEnvironmentModel,
-                                checkIn: checkIn,
-                                onCheckInUpdate: { updatedCheckIn in
-                                    onCheckInUpdate(updatedCheckIn)
-                                },
-                                onDelete: { checkIn in
-                                    showDeleteConfirmationFor = checkIn
-                                }
-                            )
-                            .if(showDeleteConfirmationFor == checkIn, transform: { view in
-                                view.confirmationDialog(
-                                    "Are you sure you want to delete check-in? The data will be permanently lost.",
-                                    isPresented: $showDeleteCheckInConfirmationDialog,
-                                    titleVisibility: .visible,
-                                    presenting: showDeleteConfirmationFor
-                                ) { presenting in
-                                    ProgressButton(
-                                        "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
-                                        role: .destructive,
-                                        action: { await deleteCheckIn(checkIn: presenting) }
-                                    )
-                                }
-                            })
-                            .onAppear {
-                                if checkIn == checkIns.last, isLoading != true {
-                                    Task {
-                                        await fetchFeedItems()
-                                    }
+                showCheckInsFrom.emptyContentView
+                    .listRowSeparator(.hidden)
+                    .opacity(!isLoading && uniqueCheckIns.isEmpty ? 1 : 0)
+            }
+            LazyVStack {
+                ForEach(uniqueCheckIns) { checkIn in
+                    CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
+                        .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
+                        .listRowSeparator(.hidden)
+                        .id(checkIn.id)
+                        .checkInContextMenu(
+                            router: router,
+                            profileEnvironmentModel: profileEnvironmentModel,
+                            checkIn: checkIn,
+                            onCheckInUpdate: { updatedCheckIn in
+                                onCheckInUpdate(updatedCheckIn)
+                            },
+                            onDelete: { checkIn in
+                                showDeleteConfirmationFor = checkIn
+                            }
+                        )
+                        .if(showDeleteConfirmationFor == checkIn, transform: { view in
+                            view.confirmationDialog(
+                                "Are you sure you want to delete check-in? The data will be permanently lost.",
+                                isPresented: $showDeleteCheckInConfirmationDialog,
+                                titleVisibility: .visible,
+                                presenting: showDeleteConfirmationFor
+                            ) { presenting in
+                                ProgressButton(
+                                    "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
+                                    role: .destructive,
+                                    action: { await deleteCheckIn(checkIn: presenting) }
+                                )
+                            }
+                        })
+                        .onAppear {
+                            if checkIn == checkIns.last, isLoading != true {
+                                Task {
+                                    await fetchFeedItems()
                                 }
                             }
-                    }
-                    if isLoading && !isRefreshing {
-                        ProgressView()
-                            .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-                            .listRowSeparator(.hidden)
-                    }
-                }
-                .scrollContentBackground(.hidden)
-                .scrollIndicators(.hidden)
-                .listStyle(.plain)
-                .onAppear {
-                    scrollProxy = proxy
-                }
-                .background {
-                    if isContentUnavailable {
-                        fetcher.emptyContentView
-                    }
-                }
-                .onChange(of: scrollToTop) {
-                    withAnimation {
-                        if let topAnchor {
-                            scrollProxy?.scrollTo(topAnchor, anchor: .top)
-                        } else if let first = checkIns.first {
-                            scrollProxy?.scrollTo(first.id, anchor: .top)
                         }
-                    }
                 }
-                .onChange(of: showCheckInsFrom) {
-                    Task {
-                        await segmentChanged()
-                    }
-                }
-                #if !targetEnvironment(macCatalyst)
-                .refreshable {
-                    await refresh()
-                }
-                #endif
-                .task {
-                        await getInitialData()
-                    }
-                    .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
-                        if let updatedCheckIn = newValue {
-                            imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                            if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
-                                checkIns[index] = updatedCheckIn
-                            }
-                        }
-                    }
+            }.scrollTargetLayout()
+
+            if isLoading && !isRefreshing {
+                ProgressView()
+                    .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+                    .listRowSeparator(.hidden)
             }
         }
+        .scrollPosition(id: $scrolledID)
+        .scrollContentBackground(.hidden)
+        .scrollIndicators(.hidden)
+        .listStyle(.plain)
+        .background {
+            if isContentUnavailable {
+                fetcher.emptyContentView
+            }
+        }
+        .onChange(of: scrollToTop) {
+            withAnimation {
+                if let topAnchor {
+                    scrolledID = topAnchor
+                } else if let first = checkIns.first {
+                    scrolledID = first.id
+                }
+            }
+        }
+        .onChange(of: showCheckInsFrom) {
+            Task {
+                await segmentChanged()
+            }
+        }
+        #if !targetEnvironment(macCatalyst)
+        .refreshable {
+            await refresh()
+        }
+        #endif
+        .task {
+                await getInitialData()
+            }
+            .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
+                if let updatedCheckIn = newValue {
+                    imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
+                    if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
+                        checkIns[index] = updatedCheckIn
+                    }
+                }
+            }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

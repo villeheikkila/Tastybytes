@@ -19,7 +19,7 @@ struct ProfileView: View {
     @State private var profile: Profile
     @State private var profileSummary: ProfileSummary?
     @State private var selectedItem: PhotosPickerItem?
-    private let topAnchor = "top"
+    private let topAnchor = 0
 
     let isCurrentUser: Bool
     let isShownInFull: Bool
