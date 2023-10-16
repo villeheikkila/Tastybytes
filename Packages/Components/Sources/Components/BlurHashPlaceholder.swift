@@ -14,7 +14,7 @@ public struct BlurHashPlaceholder: View {
     }
 
     public var body: some View {
-        Group {
+        HStack {
             if let image {
                 Image(uiImage: image)
                     .resizable()
