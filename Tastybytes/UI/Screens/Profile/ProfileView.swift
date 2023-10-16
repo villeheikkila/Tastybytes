@@ -224,6 +224,10 @@ struct ProfileView: View {
         }
         .font(.subheadline)
         .bold()
+        .foregroundColor(Color.blue)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(8.0)
     }
 
     func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) async {

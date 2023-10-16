@@ -57,8 +57,9 @@ struct CheckInListView<Header>: View where Header: View {
     @State private var showEmptyView = false
     @State private var isRefreshing = false
     @State private var showCheckInsFrom: CheckInSegment = .everyone
-    @Binding private var scrollToTop: Int
     @State private var scrolledID: Int?
+
+    @Binding private var scrollToTop: Int
 
     private let header: Header
     private let showContentUnavailableView: Bool
@@ -90,74 +91,14 @@ struct CheckInListView<Header>: View where Header: View {
     var body: some View {
         ScrollView {
             header
-            if fetcher.showCheckInSegmentationPicker {
-                Picker("Show check-ins from", selection: $showCheckInsFrom) {
-                    ForEach(CheckInSegment.allCases, id: \.self) { segment in
-                        Text(segment.rawValue.capitalized)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .listRowSeparator(.hidden)
-
-                showCheckInsFrom.emptyContentView
-                    .listRowSeparator(.hidden)
-                    .opacity(!isLoading && uniqueCheckIns.isEmpty ? 1 : 0)
-            }
-            LazyVStack {
-                ForEach(uniqueCheckIns) { checkIn in
-                    CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
-                        .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
-                        .listRowSeparator(.hidden)
-                        .id(checkIn.id)
-                        .checkInContextMenu(
-                            router: router,
-                            profileEnvironmentModel: profileEnvironmentModel,
-                            checkIn: checkIn,
-                            onCheckInUpdate: { updatedCheckIn in
-                                onCheckInUpdate(updatedCheckIn)
-                            },
-                            onDelete: { checkIn in
-                                showDeleteConfirmationFor = checkIn
-                            }
-                        )
-                        .if(showDeleteConfirmationFor == checkIn, transform: { view in
-                            view.confirmationDialog(
-                                "Are you sure you want to delete check-in? The data will be permanently lost.",
-                                isPresented: $showDeleteCheckInConfirmationDialog,
-                                titleVisibility: .visible,
-                                presenting: showDeleteConfirmationFor
-                            ) { presenting in
-                                ProgressButton(
-                                    "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
-                                    role: .destructive,
-                                    action: { await deleteCheckIn(checkIn: presenting) }
-                                )
-                            }
-                        })
-                        .onAppear {
-                            if checkIn == checkIns.last, isLoading != true {
-                                Task {
-                                    await fetchFeedItems()
-                                }
-                            }
-                        }
-                }
-            }.scrollTargetLayout()
-
-            if isLoading && !isRefreshing {
-                ProgressView()
-                    .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-                    .listRowSeparator(.hidden)
-            }
+            checkInSegments
+            checkInList
         }
         .scrollPosition(id: $scrolledID)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
-        .listStyle(.plain)
         .background {
-            if isContentUnavailable {
-                fetcher.emptyContentView
-            }
+            fetcher.emptyContentView.opacity(isContentUnavailable ? 1 : 0)
         }
         .onChange(of: scrollToTop) {
             withAnimation {
@@ -191,6 +132,68 @@ struct CheckInListView<Header>: View where Header: View {
             }
     }
 
+    @ViewBuilder
+    private var checkInList: some View {
+        LazyVStack {
+            ForEach(checkIns) { checkIn in
+                CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
+                    .id(checkIn.id)
+                    .checkInContextMenu(
+                        router: router,
+                        profileEnvironmentModel: profileEnvironmentModel,
+                        checkIn: checkIn,
+                        onCheckInUpdate: { updatedCheckIn in
+                            onCheckInUpdate(updatedCheckIn)
+                        },
+                        onDelete: { checkIn in
+                            showDeleteConfirmationFor = checkIn
+                        }
+                    )
+                    .if(showDeleteConfirmationFor == checkIn, transform: { view in
+                        view.confirmationDialog(
+                            "Are you sure you want to delete check-in? The data will be permanently lost.",
+                            isPresented: $showDeleteCheckInConfirmationDialog,
+                            titleVisibility: .visible,
+                            presenting: showDeleteConfirmationFor
+                        ) { presenting in
+                            ProgressButton(
+                                "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
+                                role: .destructive,
+                                action: { await deleteCheckIn(checkIn: presenting) }
+                            )
+                        }
+                    })
+                    .onAppear {
+                        if checkIn == checkIns.last, isLoading != true {
+                            Task {
+                                await fetchFeedItems()
+                            }
+                        }
+                    }
+            }
+
+            ProgressView()
+                .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+                .opacity(isLoading && !isRefreshing ? 1 : 0)
+        }
+        .scrollTargetLayout()
+    }
+
+    @ViewBuilder
+    private var checkInSegments: some View {
+        if fetcher.showCheckInSegmentationPicker {
+            Picker("Show check-ins from", selection: $showCheckInsFrom) {
+                ForEach(CheckInSegment.allCases, id: \.self) { segment in
+                    Text(segment.rawValue.capitalized)
+                }
+            }
+            .pickerStyle(.segmented)
+            if !isLoading && checkIns.isEmpty {
+                showCheckInsFrom.emptyContentView
+            }
+        }
+    }
+
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
             RouterLink("Friends Page", systemImage: "person.2", screen: .currentUserFriends)
@@ -217,18 +220,17 @@ struct CheckInListView<Header>: View where Header: View {
         }
     }
 
-    var uniqueCheckIns: [CheckIn] {
-        checkIns.unique(selector: { $0.id == $1.id })
-    }
-
     func refresh() async {
         isRefreshing = true
-        page = 0
-        checkIns = [CheckIn]()
         feedbackEnvironmentModel.trigger(.impact(intensity: .low))
-        await fetchFeedItems(onComplete: { _ in feedbackEnvironmentModel.trigger(.impact(intensity: .high)) })
-        isRefreshing = false
-        await onRefresh()
+        await fetchFeedItems(
+            reset: true,
+            onComplete: { _ in
+                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
+                isRefreshing = false
+                await onRefresh()
+            }
+        )
     }
 
     func deleteCheckIn(checkIn: CheckIn) async {
@@ -253,33 +255,32 @@ struct CheckInListView<Header>: View where Header: View {
     func getInitialData() async {
         guard !initialLoadCompleted else { return }
         await fetchFeedItems(onComplete: { _ in
-            if splashScreenEnvironmentModel.state != .finished {
-                await splashScreenEnvironmentModel.dismiss()
-            }
+            await splashScreenEnvironmentModel.dismiss()
             initialLoadCompleted = true
         })
     }
 
     func segmentChanged() async {
-        page = 0
-        checkIns = [CheckIn]()
-        await fetchFeedItems(onComplete: { _ in logger.notice("fetched") })
+        await fetchFeedItems(reset: true, onComplete: { _ in logger.notice("fetched") })
     }
 
-    func fetchFeedItems(onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {
-        let (from, to) = getPagination(page: page, size: pageSize)
+    func fetchFeedItems(reset: Bool = false, onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {
+        let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
 
         switch await checkInFetcher(from: from, to: to) {
-        case let .success(checkIns):
+        case let .success(fetchedCheckIns):
             await MainActor.run {
                 withAnimation {
-                    self.checkIns.append(contentsOf: checkIns)
+                    if reset {
+                        self.checkIns = fetchedCheckIns
+                    } else {
+                        self.checkIns.append(contentsOf: fetchedCheckIns)
+                    }
+                    isLoading = false
                 }
             }
             page += 1
-            isLoading = false
-
             if let onComplete {
                 await onComplete(checkIns)
             }

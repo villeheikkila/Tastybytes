@@ -42,49 +42,44 @@ struct DiscoverScreen: View {
     }
 
     var body: some View {
-        ScrollViewReader { proxy in
-            List {
-                switch searchScope {
-                case .products:
-                    productResults
-                case .companies:
-                    companyResults
-                case .users:
-                    profileResults
-                case .locations:
-                    locationResults
-                }
+        List {
+            switch searchScope {
+            case .products:
+                productResults
+            case .companies:
+                companyResults
+            case .users:
+                profileResults
+            case .locations:
+                locationResults
             }
-            .listStyle(.plain)
-            .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
-                        prompt: searchScope.prompt)
-            .searchScopes($searchScope, activation: .onSearchPresentation) {
-                ForEach(SearchScope.allCases) { scope in
-                    Text(scope.label).tag(scope)
-                }
+        }
+        .listStyle(.plain)
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
+                    prompt: searchScope.prompt)
+        .searchScopes($searchScope, activation: .onSearchPresentation) {
+            ForEach(SearchScope.allCases) { scope in
+                Text(scope.label).tag(scope)
             }
-            .overlay {
-                contentUnavailableView.opacity(showContentUnavailableView ? 1 : 0)
-            }
-            .disableAutocorrection(true)
-            .onAppear {
-                scrollProxy = proxy
-            }
-            .onSubmit(of: .search) {
-                Task { await search() }
-            }
-            .onChange(of: searchScope) {
-                Task { await search() }
-                barcode = nil
-                isSearched = false
-            }
-            .onChange(of: searchTerm, debounceTime: 0.2) { _ in
-                Task { await search() }
-            }
-            .onChange(of: searchTerm) { _, term in
-                if term.isEmpty {
-                    Task { await resetSearch() }
-                }
+        }
+        .overlay {
+            contentUnavailableView.opacity(showContentUnavailableView ? 1 : 0)
+        }
+        .disableAutocorrection(true)
+        .onSubmit(of: .search) {
+            Task { await search() }
+        }
+        .onChange(of: searchScope) {
+            Task { await search() }
+            barcode = nil
+            isSearched = false
+        }
+        .onChange(of: searchTerm, debounceTime: 0.2) { _ in
+            Task { await search() }
+        }
+        .onChange(of: searchTerm) { _, term in
+            if term.isEmpty {
+                Task { await resetSearch() }
             }
         }
         .navigationTitle("Discover")
