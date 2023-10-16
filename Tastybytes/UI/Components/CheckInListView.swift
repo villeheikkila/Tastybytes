@@ -66,7 +66,7 @@ struct CheckInListView<Header>: View where Header: View {
     private let onRefresh: () async -> Void
     private let topAnchor: Int?
     private let fetcher: Fetcher
-    private let pageSize = 5
+    private let pageSize = 10
 
     init(
         fetcher: Fetcher,
