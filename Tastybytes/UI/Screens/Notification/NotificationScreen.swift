@@ -43,16 +43,15 @@ struct NotificationScreen: View {
                 } })
             }
             .overlay {
-                if filteredNotifications.isEmpty {
-                    ContentUnavailableView {
-                        Label(
-                            filter?.contentUnavailableViewProps.title ?? "You have no notifications",
-                            systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
-                        )
-                    } description: {
-                        Text(filter?.contentUnavailableViewProps.description ?? "")
-                    }
+                ContentUnavailableView {
+                    Label(
+                        filter?.contentUnavailableViewProps.title ?? "You have no notifications",
+                        systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
+                    )
+                } description: {
+                    Text(filter?.contentUnavailableViewProps.description ?? "")
                 }
+                .opacity(filteredNotifications.isEmpty ? 1 : 0)
             }
             #if !targetEnvironment(macCatalyst)
             .refreshable {

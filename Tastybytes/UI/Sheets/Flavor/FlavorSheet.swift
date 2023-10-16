@@ -49,9 +49,8 @@ struct FlavorSheet: View {
         .searchable(text: $searchTerm)
         .navigationTitle("Flavors")
         .overlay {
-            if showContentUnavailableView {
-                ContentUnavailableView.search(text: searchTerm)
-            }
+            ContentUnavailableView.search(text: searchTerm)
+                .opacity(showContentUnavailableView ? 1 : 0)
         }
         .onChange(of: pickedFlavorIds) { oldValue, newValue in
             let added = newValue.addedValueTo(oldValue)

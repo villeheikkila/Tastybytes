@@ -24,6 +24,10 @@ struct BrandSheet: View {
         brandsWithSubBrands.filter { searchTerm.isEmpty || $0.name.contains(searchTerm) == true }
     }
 
+    var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && filteredBrands.isEmpty
+    }
+
     var body: some View {
         List {
             if mode == .select {
@@ -44,9 +48,8 @@ struct BrandSheet: View {
             }
         }
         .overlay {
-            if !searchTerm.isEmpty && filteredBrands.isEmpty {
-                ContentUnavailableView.search(text: searchTerm)
-            }
+            ContentUnavailableView.search(text: searchTerm)
+                .opacity(showContentUnavailableView ? 1 : 0)
         }
         .navigationTitle("\(mode == .select ? "Select" : "Add") brand")
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))

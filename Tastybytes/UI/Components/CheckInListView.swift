@@ -100,10 +100,9 @@ struct CheckInListView<Header>: View where Header: View {
                         .pickerStyle(.segmented)
                         .listRowSeparator(.hidden)
 
-                        if !isLoading && uniqueCheckIns.isEmpty {
-                            showCheckInsFrom.emptyContentView
-                                .listRowSeparator(.hidden)
-                        }
+                        showCheckInsFrom.emptyContentView
+                            .listRowSeparator(.hidden)
+                            .opacity(!isLoading && uniqueCheckIns.isEmpty ? 1 : 0)
                     }
                     ForEach(uniqueCheckIns) { checkIn in
                         let edgeInset = geometry.size.width < 450 ? 8 : (geometry.size.width - 450) / 2

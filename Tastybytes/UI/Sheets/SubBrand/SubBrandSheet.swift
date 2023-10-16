@@ -25,6 +25,10 @@ struct SubBrandSheet: View {
             }
     }
 
+    var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && filteredSubBrands.isEmpty
+    }
+
     var body: some View {
         List {
             ForEach(filteredSubBrands) { subBrand in
@@ -46,9 +50,8 @@ struct SubBrandSheet: View {
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .overlay {
-            if !searchTerm.isEmpty && filteredSubBrands.isEmpty {
-                ContentUnavailableView.search(text: searchTerm)
-            }
+            ContentUnavailableView.search(text: searchTerm)
+                .opacity(showContentUnavailableView ? 1 : 0)
         }
         .navigationTitle("Sub-brands")
         .toolbar {

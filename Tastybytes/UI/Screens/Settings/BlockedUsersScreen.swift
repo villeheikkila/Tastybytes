@@ -19,17 +19,16 @@ struct BlockedUsersScreen: View {
         }
         .listStyle(.insetGrouped)
         .overlay {
-            if friendEnvironmentModel.blockedUsers.isEmpty {
-                ContentUnavailableView {
-                    Label("You haven't blocked any users", systemImage: "person.fill.xmark")
-                } description: {
-                    Text("Blocked users can't see your check-ins or profile")
-                } actions: {
-                    RouterLink("Block user", sheet: .userSheet(mode: .block, onSubmit: {
-                        feedbackEnvironmentModel.toggle(.success("User blocked"))
-                    }))
-                }
+            ContentUnavailableView {
+                Label("You haven't blocked any users", systemImage: "person.fill.xmark")
+            } description: {
+                Text("Blocked users can't see your check-ins or profile")
+            } actions: {
+                RouterLink("Block user", sheet: .userSheet(mode: .block, onSubmit: {
+                    feedbackEnvironmentModel.toggle(.success("User blocked"))
+                }))
             }
+            .opacity(friendEnvironmentModel.blockedUsers.isEmpty ? 1 : 0)
         }
         .navigationTitle("Blocked Users")
         .navigationBarTitleDisplayMode(.inline)

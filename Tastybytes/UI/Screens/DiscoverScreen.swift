@@ -64,9 +64,7 @@ struct DiscoverScreen: View {
                 }
             }
             .overlay {
-                if showContentUnavailableView {
-                    contentUnavailableView
-                }
+                contentUnavailableView.opacity(showContentUnavailableView ? 1 : 0)
             }
             .disableAutocorrection(true)
             .onAppear {

@@ -29,6 +29,10 @@ struct CompanySearchSheet: View {
         !isLoading && searchResults.isEmpty && status == .searched && !searchTerm.isEmpty
     }
 
+    var showContentUnavailableView: Bool {
+        !searchTerm.isEmpty && searchResults.isEmpty
+    }
+
     var body: some View {
         List {
             if showEmptyResults {
@@ -69,9 +73,8 @@ struct CompanySearchSheet: View {
             }
         }
         .overlay {
-            if !searchTerm.isEmpty && searchResults.isEmpty {
-                ContentUnavailableView.search(text: searchTerm)
-            }
+            ContentUnavailableView.search(text: searchTerm)
+                .opacity(showContentUnavailableView ? 1 : 0)
         }
         .navigationTitle("Search companies")
         .toolbar {
