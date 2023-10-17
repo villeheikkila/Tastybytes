@@ -58,7 +58,8 @@ struct EnvironmentProvider: View {
             .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
             .detectOrientation($orientation)
             .environment(\.orientation, orientation)
-            .sensoryFeedback(.error, trigger: appDataEnvironmentModel.alertError)
+            .alertError($appDataEnvironmentModel.alertError)
+            .alertError($friendEnvironmentModel.alertError)
             .task {
                 try? Tips.configure([.displayFrequency(.daily)])
             }
