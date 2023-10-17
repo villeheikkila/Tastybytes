@@ -100,6 +100,12 @@ struct CheckInListView<Header>: View where Header: View {
         .scrollPosition(id: $scrolledID)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
+        .sensoryFeedback(trigger: checkIns) { _, newValue in
+            if initialLoadCompleted, !newValue.isEmpty {
+                return .success
+            }
+            return nil
+        }
         .background {
             fetcher.emptyContentView.opacity(isContentUnavailable ? 1 : 0)
         }
@@ -222,11 +228,9 @@ struct CheckInListView<Header>: View where Header: View {
 
     func refresh() async {
         isRefreshing = true
-        feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         await fetchFeedItems(
             reset: true,
             onComplete: { _ in
-                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
                 isRefreshing = false
                 await onRefresh()
             }
@@ -239,7 +243,6 @@ struct CheckInListView<Header>: View where Header: View {
             withAnimation {
                 checkIns.remove(object: checkIn)
             }
-            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackEnvironmentModel.toggle(.error(.unexpected))
@@ -267,7 +270,6 @@ struct CheckInListView<Header>: View where Header: View {
     func fetchFeedItems(reset: Bool = false, onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
-
         switch await checkInFetcher(from: from, to: to) {
         case let .success(fetchedCheckIns):
             await MainActor.run {
@@ -277,7 +279,6 @@ struct CheckInListView<Header>: View where Header: View {
                     } else {
                         self.checkIns.append(contentsOf: fetchedCheckIns)
                     }
-                    isLoading = false
                 }
             }
             page += 1
@@ -289,6 +290,7 @@ struct CheckInListView<Header>: View where Header: View {
             feedbackEnvironmentModel.toggle(.error(.unexpected))
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
         }
+        isLoading = false
     }
 
     func checkInFetcher(from: Int, to: Int) async -> Result<[CheckIn], Error> {
