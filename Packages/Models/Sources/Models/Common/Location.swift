@@ -51,22 +51,54 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         country = try container.decode(Country.self, forKey: .country)
     }
 
-    enum EncodingKeys: String, CodingKey {
-        case name = "p_name", title = "p_title", longitude = "p_longitude", latitude = "p_latitude",
-             countryCode = "p_country_code"
-    }
-
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: EncodingKeys.self)
+        var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(title, forKey: .title)
         try container.encode(location?.coordinate.latitude, forKey: .latitude)
         try container.encode(location?.coordinate.longitude, forKey: .longitude)
         try container.encode(countryCode, forKey: .countryCode)
+        try container.encode(country, forKey: .country)
+    }
+
+    public var newLocationRequest: NewLocationRequest {
+        NewLocationRequest(location: self)
     }
 }
 
 public extension Location {
+    struct NewLocationRequest: Identifiable, Encodable, Hashable, Sendable {
+        public let id: UUID
+        public let name: String
+        public let title: String?
+        public let location: CLLocation?
+        public let countryCode: String?
+        public let country: Country?
+
+        public init(location: Location) {
+            id = location.id
+            name = location.name
+            title = location.title
+            self.location = location.location
+            countryCode = location.countryCode
+            country = location.country
+        }
+
+        enum EncodingKeys: String, CodingKey {
+            case name = "p_name", title = "p_title", longitude = "p_longitude", latitude = "p_latitude",
+                 countryCode = "p_country_code"
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: EncodingKeys.self)
+            try container.encode(name, forKey: .name)
+            try container.encode(title, forKey: .title)
+            try container.encode(location?.coordinate.latitude, forKey: .latitude)
+            try container.encode(location?.coordinate.longitude, forKey: .longitude)
+            try container.encode(countryCode, forKey: .countryCode)
+        }
+    }
+
     struct MergeLocationParams: Codable, Sendable {
         public init(locationId: UUID, toLocationId: UUID) {
             self.locationId = locationId

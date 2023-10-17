@@ -9,7 +9,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let result: Location = try await client
                 .database
-                .rpc(fn: .getLocationInsertIfNotExist, params: location)
+                .rpc(fn: .getLocationInsertIfNotExist, params: location.newLocationRequest)
                 .select(columns: Location.getQuery(.joined(false)))
                 .single()
                 .execute()

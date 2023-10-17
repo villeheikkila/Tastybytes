@@ -92,6 +92,10 @@ struct CheckInListView<Header>: View where Header: View {
             header
             checkInSegments
             checkInList
+            if !isLoading && checkIns.isEmpty {
+                showCheckInsFrom.emptyContentView
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
         .scrollPosition(id: $scrolledID)
         .scrollContentBackground(.hidden)
@@ -187,9 +191,6 @@ struct CheckInListView<Header>: View where Header: View {
                 }
             }
             .pickerStyle(.segmented)
-            if !isLoading && checkIns.isEmpty {
-                showCheckInsFrom.emptyContentView
-            }
         }
     }
 
