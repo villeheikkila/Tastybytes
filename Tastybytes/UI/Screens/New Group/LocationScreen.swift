@@ -38,14 +38,10 @@ struct LocationScreen: View {
                         MapCompass()
                     }
                     .frame(height: 200)
-                    .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
-                    .listRowSeparator(.hidden)
                 }
                 Section {
                     SummaryView(summary: summary)
-                }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
+                }.padding(.horizontal).padding(.vertical, 4)
             }
         )
         .navigationTitle(location.name)

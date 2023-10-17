@@ -211,25 +211,27 @@ struct ProfileView: View {
     }
 
     @ViewBuilder private var links: some View {
-        Group {
-            RouterLink(
-                "Friends",
-                systemImage: "person.crop.rectangle.stack",
-                screen: profileEnvironmentModel.profile == profile ? .currentUserFriends : .friends(profile)
-            )
-            RouterLink("Check-ins", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
-            RouterLink("Statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))
-            RouterLink("Wishlist", systemImage: "heart", screen: .profileWishlist(profile))
-            if isCurrentUser {
-                RouterLink("Locations", systemImage: "map", screen: .profileLocations(profile))
+        VStack(spacing: 3) {
+            Group {
+                RouterLink(
+                    "Friends",
+                    systemImage: "person.crop.rectangle.stack",
+                    screen: profileEnvironmentModel.profile == profile ? .currentUserFriends : .friends(profile)
+                )
+                RouterLink("Check-ins", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
+                RouterLink("Statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))
+                RouterLink("Wishlist", systemImage: "heart", screen: .profileWishlist(profile))
+                if isCurrentUser {
+                    RouterLink("Locations", systemImage: "map", screen: .profileLocations(profile))
+                }
             }
+            .font(.subheadline)
+            .bold()
+            .foregroundColor(Color.blue)
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(8.0)
         }
-        .font(.subheadline)
-        .bold()
-        .foregroundColor(Color.blue)
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(8.0)
     }
 
     func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) async {
