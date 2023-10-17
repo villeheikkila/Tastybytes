@@ -20,28 +20,20 @@ struct EnvironmentProvider: View {
     @State private var authEvent: AuthChangeEvent?
     @State private var orientation: UIDeviceOrientation
     @Environment(\.repository) private var repository
-    @State private var feedbackEnvironmentModel: FeedbackEnvironmentModel
+    @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
 
     init(repository: Repository) {
-        let feedbackEnvironmentModel = FeedbackEnvironmentModel()
-        let notificationModel = NotificationEnvironmentModel(repository: repository)
-        let profileModel = ProfileEnvironmentModel(repository: repository)
-        let appDataModel = AppDataEnvironmentModel(repository: repository)
-        let imageUploadModel = ImageUploadEnvironmentModel(repository: repository)
-        let friendModel = FriendEnvironmentModel(repository: repository)
-
         _notificationEnvironmentModel =
-            State(wrappedValue: notificationModel)
+            State(wrappedValue: NotificationEnvironmentModel(repository: repository))
         _profileEnvironmentModel =
-            State(wrappedValue: profileModel)
+            State(wrappedValue: ProfileEnvironmentModel(repository: repository))
         _appDataEnvironmentModel =
-            State(wrappedValue: appDataModel)
+            State(wrappedValue: AppDataEnvironmentModel(repository: repository))
         _imageUploadEnvironmentModel =
-            State(wrappedValue: imageUploadModel)
+            State(wrappedValue: ImageUploadEnvironmentModel(repository: repository))
         _friendEnvironmentModel =
-            State(wrappedValue: friendModel)
+            State(wrappedValue: FriendEnvironmentModel(repository: repository))
         _orientation = State(wrappedValue: UIDevice.current.orientation)
-        _feedbackEnvironmentModel = State(wrappedValue: feedbackEnvironmentModel)
     }
 
     var body: some View {
@@ -58,6 +50,9 @@ struct EnvironmentProvider: View {
             .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
             .detectOrientation($orientation)
             .environment(\.orientation, orientation)
+            .alertError($appDataEnvironmentModel.alertError)
+            .alertError($notificationEnvironmentModel.alertError)
+            .alertError($profileEnvironmentModel.alertError)
             .alertError($appDataEnvironmentModel.alertError)
             .alertError($friendEnvironmentModel.alertError)
             .task {

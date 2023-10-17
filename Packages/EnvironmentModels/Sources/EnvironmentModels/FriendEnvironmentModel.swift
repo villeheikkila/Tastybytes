@@ -11,6 +11,7 @@ private let logger = Logger(category: "FriendsScreen")
 public final class FriendEnvironmentModel {
     public var friends = [Friend]()
     public var alertError: AlertError?
+    public var isRefreshing = false
 
     public var profile: Profile? = nil
 
@@ -110,7 +111,10 @@ public final class FriendEnvironmentModel {
         return friends.first(where: { $0.status == .pending && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    public func refresh() async {
+    public func refresh(withHaptics: Bool = false) async {
+        if withHaptics {
+            isRefreshing = true
+        }
         guard let profile else { return }
         switch await repository.friend.getByUserId(
             userId: profile.id,
@@ -124,6 +128,9 @@ public final class FriendEnvironmentModel {
             guard !error.localizedDescription.contains("cancelled") else { return }
             alertError = .init()
             logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
+        }
+        if withHaptics {
+            isRefreshing = false
         }
     }
 

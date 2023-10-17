@@ -43,7 +43,9 @@ struct NotificationScreen: View {
                     await notificationEnvironmentModel.deleteFromIndex(at: index)
                 } })
             }
-            .alertError($notificationEnvironmentModel.alertError)
+            .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
+                oldValue && !newValue
+            }
             .overlay {
                 ContentUnavailableView {
                     Label(
@@ -57,7 +59,7 @@ struct NotificationScreen: View {
             }
             #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await notificationEnvironmentModel.refresh(reset: true)
+                await notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
             }
             #endif
             .onChange(of: scrollToTop) {

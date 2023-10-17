@@ -9,6 +9,7 @@ import SwiftUI
 public final class NotificationEnvironmentModel {
     private let logger = Logger(category: "NotificationEnvironmentModel")
     public var notifications = [Models.Notification]()
+    public var isRefreshing = false
 
     public var pushNotificationSettings: ProfilePushNotification? = nil
     public var unreadCount: Int = 0
@@ -48,7 +49,10 @@ public final class NotificationEnvironmentModel {
         }
     }
 
-    public func refresh(reset: Bool = false) async {
+    public func refresh(reset: Bool = false, withHaptics: Bool = false) async {
+        if withHaptics {
+            isRefreshing = true
+        }
         switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
         case let .success(newNotifications):
             await MainActor.run {
@@ -65,6 +69,9 @@ public final class NotificationEnvironmentModel {
             guard !error.localizedDescription.contains("cancelled") else { return }
             alertError = .init()
             logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
+        }
+        if withHaptics {
+            isRefreshing = false
         }
     }
 

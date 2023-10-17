@@ -106,7 +106,9 @@ struct CurrentUserFriendsScreen: View {
             }
         }
         .listStyle(.insetGrouped)
-        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
+        .sensoryFeedback(.success, trigger: friendEnvironmentModel.isRefreshing) { oldValue, newValue in
+            oldValue && !newValue
+        }
         .overlay {
             if !searchTerm.isEmpty && filteredFriends.isEmpty {
                 ContentUnavailableView.search(text: searchTerm)
@@ -117,7 +119,7 @@ struct CurrentUserFriendsScreen: View {
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await friendEnvironmentModel.refresh()
+                await friendEnvironmentModel.refresh(withHaptics: true)
             }
         #endif
             .task {
