@@ -67,6 +67,16 @@ struct LocationScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            VStack {
+                Text(location.name)
+                    .font(.headline)
+                if let title = location.title {
+                    Text(title)
+                        .font(.caption)
+                }
+            }
+        }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 LocationShareLinkView(location: location)

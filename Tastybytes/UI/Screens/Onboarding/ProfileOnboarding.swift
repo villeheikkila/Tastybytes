@@ -26,7 +26,6 @@ struct ProfileOnboarding: View {
         Form {
             HStack {
                 Spacer()
-
                 Image(systemName: "rectangle.and.pencil.and.ellipsis")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
