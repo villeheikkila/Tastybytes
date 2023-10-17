@@ -93,3 +93,38 @@ public extension Task {
         }
     }
 #endif
+
+public struct AlertError: Identifiable, Equatable {
+    public let id: UUID
+    public let title: String
+
+    public init() {
+        title = "Unexpected error occured"
+        id = UUID()
+    }
+
+    public init(title: String) {
+        self.title = title
+        id = UUID()
+    }
+}
+
+struct AlertErrorModifier: ViewModifier {
+    @Binding var alertError: AlertError?
+
+    func body(content: Content) -> some View {
+        content
+            .sensoryFeedback(.error, trigger: alertError) { _, newValue in
+                newValue != nil
+            }
+            .alert(item: $alertError) { error in
+                Alert(title: Text(error.title))
+            }
+    }
+}
+
+public extension View {
+    func alertError(_ alertError: Binding<AlertError?>) -> some View {
+        modifier(AlertErrorModifier(alertError: alertError))
+    }
+}

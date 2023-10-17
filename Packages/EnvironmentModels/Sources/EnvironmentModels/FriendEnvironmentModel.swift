@@ -45,7 +45,7 @@ public final class FriendEnvironmentModel {
                     self.friends.append(newFriend)
                 }
             }
-            feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
+            // feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
             if let onSuccess {
                 onSuccess()
             }

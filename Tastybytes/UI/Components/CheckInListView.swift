@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -39,7 +40,6 @@ struct CheckInListView<Header>: View where Header: View {
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @State private var scrollProxy: ScrollViewProxy?
@@ -58,6 +58,7 @@ struct CheckInListView<Header>: View where Header: View {
     @State private var isRefreshing = false
     @State private var showCheckInsFrom: CheckInSegment = .everyone
     @State private var scrolledID: Int?
+    @State private var alertError: AlertError?
     @Binding private var scrollToTop: Int
 
     private let header: Header
@@ -100,15 +101,13 @@ struct CheckInListView<Header>: View where Header: View {
         .scrollPosition(id: $scrolledID)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
-        .sensoryFeedback(trigger: checkIns) { _, newValue in
-            if initialLoadCompleted, !newValue.isEmpty {
-                return .success
-            }
-            return nil
+        .sensoryFeedback(.success, trigger: checkIns) { _, newValue in
+            initialLoadCompleted && !newValue.isEmpty
         }
         .background {
             fetcher.emptyContentView.opacity(isContentUnavailable ? 1 : 0)
         }
+        .alertError($alertError)
         .onChange(of: scrollToTop) {
             withAnimation {
                 if let topAnchor {
@@ -245,7 +244,7 @@ struct CheckInListView<Header>: View where Header: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = AlertError(title: "Error occured while trying to delete a check-in. Please try again!")
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -287,7 +286,7 @@ struct CheckInListView<Header>: View where Header: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = AlertError(title: "Error occured while trying to load check-ins")
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
         }
         isLoading = false

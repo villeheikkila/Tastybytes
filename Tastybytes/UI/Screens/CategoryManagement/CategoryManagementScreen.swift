@@ -60,7 +60,7 @@ struct CategoryManagementScreen: View {
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-            await appDataEnvironmentModel.initialize(withHaptics: true, reset: true)
+            await appDataEnvironmentModel.initialize(reset: true)
         }
         #endif
         .confirmationDialog("Are you sure you want to delete subcategory?",

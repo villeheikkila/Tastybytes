@@ -1,3 +1,4 @@
+import Extensions
 import Models
 import Observation
 import OSLog
@@ -10,25 +11,19 @@ public final class AppDataEnvironmentModel {
     public var categories = [Models.Category.JoinedSubcategoriesServingStyles]()
     public var flavors = [Flavor]()
     public var aboutPage: AboutPage? = nil
-
+    public var alertError: AlertError?
     private let repository: Repository
-    private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    public init(repository: Repository) {
         self.repository = repository
-        self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
-    public func initialize(withHaptics: Bool = false, reset: Bool = false) async {
+    public func initialize(reset: Bool = false) async {
         guard reset || flavors.isEmpty || categories.isEmpty else { return }
         logger.notice("Initializing app data")
         async let aboutPagePromise = repository.document.getAboutPage()
         async let flavorPromise = repository.flavor.getAll()
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
-
-        if withHaptics {
-            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
-        }
 
         switch await flavorPromise {
         case let .success(flavors):
@@ -37,13 +32,10 @@ public final class AppDataEnvironmentModel {
                     self.flavors = flavors
                 }
             }
-            if withHaptics {
-                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
-            }
             logger.notice("App data (flavors) initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Fetching flavors failed. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -55,7 +47,7 @@ public final class AppDataEnvironmentModel {
             logger.notice("App data (categories) initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -67,7 +59,7 @@ public final class AppDataEnvironmentModel {
             logger.notice("App data (about page) initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Fetching about page failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -83,7 +75,7 @@ public final class AppDataEnvironmentModel {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete flavor. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -98,7 +90,7 @@ public final class AppDataEnvironmentModel {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete flavor: '\(flavor.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -111,10 +103,9 @@ public final class AppDataEnvironmentModel {
                     self.flavors = flavors
                 }
             }
-            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Fetching flavors failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -126,7 +117,7 @@ public final class AppDataEnvironmentModel {
             await loadCategories()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "Failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id). error: \(error)"
@@ -140,7 +131,7 @@ public final class AppDataEnvironmentModel {
             await loadCategories()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete subcategory \(deleteSubcategory.name). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -151,7 +142,7 @@ public final class AppDataEnvironmentModel {
             await loadCategories()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to add new category with name \(name). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -168,7 +159,7 @@ public final class AppDataEnvironmentModel {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "Failed to create subcategory '\(name)' to category \(category.name). Error: \(error) (\(#file):\(#line))"
@@ -184,7 +175,7 @@ public final class AppDataEnvironmentModel {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
         }
     }

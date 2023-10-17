@@ -30,8 +30,7 @@ struct EnvironmentProvider: View {
         let profileModel = ProfileEnvironmentModel(repository: repository,
                                                    feedbackEnvironmentModel: feedbackEnvironmentModel)
 
-        let appDataModel = AppDataEnvironmentModel(repository: repository,
-                                                   feedbackEnvironmentModel: feedbackEnvironmentModel)
+        let appDataModel = AppDataEnvironmentModel(repository: repository)
 
         let imageUploadModel = ImageUploadEnvironmentModel(repository: repository,
                                                            feedbackEnvironmentModel: feedbackEnvironmentModel)
@@ -67,6 +66,7 @@ struct EnvironmentProvider: View {
             .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
             .detectOrientation($orientation)
             .environment(\.orientation, orientation)
+            .sensoryFeedback(.error, trigger: appDataEnvironmentModel.alertError)
             .task {
                 try? Tips.configure([.displayFrequency(.daily)])
             }
