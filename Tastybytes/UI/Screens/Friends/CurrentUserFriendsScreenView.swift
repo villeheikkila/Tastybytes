@@ -117,11 +117,11 @@ struct CurrentUserFriendsScreen: View {
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await friendEnvironmentModel.refresh(withFeedback: true)
+                await friendEnvironmentModel.refresh()
             }
         #endif
             .task {
-                    await friendEnvironmentModel.refresh(withFeedback: false)
+                    await friendEnvironmentModel.refresh()
                     await notificationEnvironmentModel.markAllFriendRequestsAsRead()
                 }
                 .toolbar {

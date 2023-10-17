@@ -1,3 +1,4 @@
+import Extensions
 import Models
 import Observation
 import OSLog
@@ -6,15 +7,15 @@ import SwiftUI
 
 @Observable
 public class ImageUploadEnvironmentModel {
-    public var uploadedImageForCheckIn: CheckIn? = nil
     private let logger = Logger(category: "PermissionEnvironmentModel")
 
-    private let repository: Repository
-    private let feedbackEnvironmentModel: FeedbackEnvironmentModel
+    public var uploadedImageForCheckIn: CheckIn?
+    public var alertError: AlertError?
 
-    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    private let repository: Repository
+
+    public init(repository: Repository) {
         self.repository = repository
-        self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
     public func uploadCheckInImage(checkIn: CheckIn, image: UIImage) {
@@ -27,7 +28,7 @@ public class ImageUploadEnvironmentModel {
                 }
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackEnvironmentModel.toggle(.error(.unexpected))
+                alertError = .init()
                 logger.error("Failed to upload image to check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
             }
         }

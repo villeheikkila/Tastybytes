@@ -80,8 +80,7 @@ struct ProfileOnboarding: View {
             Task {
                 await profileEnvironmentModel.updateProfile(
                     update: Profile.UpdateRequest(username: username, firstName: firstName,
-                                                  lastName: lastName),
-                    withFeedback: false
+                                                  lastName: lastName)
                 )
             }
             withAnimation {

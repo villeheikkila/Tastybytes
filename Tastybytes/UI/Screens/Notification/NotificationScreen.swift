@@ -31,6 +31,7 @@ struct NotificationScreen: View {
     }
 
     var body: some View {
+        @Bindable var notificationEnvironmentModel = notificationEnvironmentModel
         ScrollViewReader { scrollProxy in
             List {
                 ForEach(filteredNotifications) { notification in
@@ -42,6 +43,7 @@ struct NotificationScreen: View {
                     await notificationEnvironmentModel.deleteFromIndex(at: index)
                 } })
             }
+            .alertError($notificationEnvironmentModel.alertError)
             .overlay {
                 ContentUnavailableView {
                     Label(
@@ -55,7 +57,7 @@ struct NotificationScreen: View {
             }
             #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await notificationEnvironmentModel.refresh(reset: true, withFeedback: true)
+                await notificationEnvironmentModel.refresh(reset: true)
             }
             #endif
             .onChange(of: scrollToTop) {

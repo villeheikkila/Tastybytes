@@ -1,3 +1,4 @@
+import Extensions
 import Models
 import Observation
 import OSLog
@@ -9,6 +10,7 @@ import SwiftUI
 public final class ProfileEnvironmentModel: ObservableObject {
     private let logger = Logger(category: "ProfileEnvironmentModel")
     public var isLoggedIn = false
+    public var alertError: AlertError?
 
     // Profile Settings
     public var showFullName = false
@@ -28,12 +30,10 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public var appIcon: AppIcon = .ramune
 
     private let repository: Repository
-    private let feedbackEnvironmentModel: FeedbackEnvironmentModel
     private var extendedProfile: Profile.Extended? = nil
 
-    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    public init(repository: Repository) {
         self.repository = repository
-        self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
     // Getters
@@ -130,7 +130,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             email = user.email.orEmpty
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to get current user data. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -161,7 +161,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             update: update
         ) {
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to update notification settings. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -175,7 +175,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to log out. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -183,7 +183,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public func updatePassword(newPassword: String) async {
         if case let .failure(error) = await repository.auth.updatePassword(newPassword: newPassword) {
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to update password. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -191,7 +191,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public func sendEmailVerificationLink() async {
         if case let .failure(error) = await repository.auth.sendEmailVerification(email: email) {
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to send email verification link. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -199,11 +199,10 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public func deleteCurrentAccount(onAccountDeletion: @escaping () -> Void) async {
         switch await repository.profile.deleteCurrentAccount() {
         case .success:
-            feedbackEnvironmentModel.trigger(.notification(.success))
             onAccountDeletion()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete current account. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -216,15 +215,12 @@ public final class ProfileEnvironmentModel: ObservableObject {
             self.extendedProfile = extendedProfile.copyWith(avatarFile: avatarFile)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("uplodaing avatar failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func updateProfile(
-        update: Profile.UpdateRequest,
-        withFeedback: Bool
-    ) async {
+    public func updateProfile(update: Profile.UpdateRequest) async {
         switch await repository.profile.update(
             update: update
         ) {
@@ -234,12 +230,9 @@ public final class ProfileEnvironmentModel: ObservableObject {
                 firstName: update.firstName,
                 lastName: update.lastName
             )
-            if withFeedback {
-                feedbackEnvironmentModel.toggle(.success("Profile updated!"))
-            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -256,7 +249,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             extendedProfile = extendedProfile?.copyWith(isOnboarded: true)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -270,7 +263,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             logger.log("updated privacy settings")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to update settings. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -286,7 +279,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             logger.log("updated display settings")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }

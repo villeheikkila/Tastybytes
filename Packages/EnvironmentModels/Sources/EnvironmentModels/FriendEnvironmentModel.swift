@@ -1,3 +1,4 @@
+import Extensions
 import Models
 import Observation
 import OSLog
@@ -9,15 +10,14 @@ private let logger = Logger(category: "FriendsScreen")
 @Observable
 public final class FriendEnvironmentModel {
     public var friends = [Friend]()
+    public var alertError: AlertError?
 
     public var profile: Profile? = nil
 
     private let repository: Repository
-    private let feedbackEnvironmentModel: FeedbackEnvironmentModel
 
-    public init(repository: Repository, feedbackEnvironmentModel: FeedbackEnvironmentModel) {
+    public init(repository: Repository) {
         self.repository = repository
-        self.feedbackEnvironmentModel = feedbackEnvironmentModel
     }
 
     public var acceptedFriends: [Profile] {
@@ -45,13 +45,12 @@ public final class FriendEnvironmentModel {
                     self.friends.append(newFriend)
                 }
             }
-            // feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
             if let onSuccess {
                 onSuccess()
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed add new friend '\(receiver)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -74,7 +73,7 @@ public final class FriendEnvironmentModel {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error(
                 "Failed to update friend request. Error: \(error) (\(#file):\(#line))"
             )
@@ -91,7 +90,7 @@ public final class FriendEnvironmentModel {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to remove friend request '\(friend.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -111,7 +110,7 @@ public final class FriendEnvironmentModel {
         return friends.first(where: { $0.status == .pending && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    public func refresh(withFeedback: Bool = false) async {
+    public func refresh() async {
         guard let profile else { return }
         switch await repository.friend.getByUserId(
             userId: profile.id,
@@ -121,12 +120,9 @@ public final class FriendEnvironmentModel {
             await MainActor.run {
                 self.friends = friends
             }
-            if withFeedback {
-                feedbackEnvironmentModel.trigger(.notification(.success))
-            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -148,7 +144,7 @@ public final class FriendEnvironmentModel {
             logger.notice("Friend manager initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to unblock user \(friend.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -168,7 +164,7 @@ public final class FriendEnvironmentModel {
                 onSuccess()
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackEnvironmentModel.toggle(.error(.unexpected))
+                alertError = .init()
                 logger.error("Failed to block user \(user.id). Error: \(error) (\(#file):\(#line))")
             }
         }

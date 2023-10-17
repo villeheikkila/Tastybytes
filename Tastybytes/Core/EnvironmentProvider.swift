@@ -24,19 +24,11 @@ struct EnvironmentProvider: View {
 
     init(repository: Repository) {
         let feedbackEnvironmentModel = FeedbackEnvironmentModel()
-        let notificationModel = NotificationEnvironmentModel(repository: repository,
-                                                             feedbackEnvironmentModel: feedbackEnvironmentModel)
-
-        let profileModel = ProfileEnvironmentModel(repository: repository,
-                                                   feedbackEnvironmentModel: feedbackEnvironmentModel)
-
+        let notificationModel = NotificationEnvironmentModel(repository: repository)
+        let profileModel = ProfileEnvironmentModel(repository: repository)
         let appDataModel = AppDataEnvironmentModel(repository: repository)
-
-        let imageUploadModel = ImageUploadEnvironmentModel(repository: repository,
-                                                           feedbackEnvironmentModel: feedbackEnvironmentModel)
-
-        let friendModel = FriendEnvironmentModel(repository: repository,
-                                                 feedbackEnvironmentModel: feedbackEnvironmentModel)
+        let imageUploadModel = ImageUploadEnvironmentModel(repository: repository)
+        let friendModel = FriendEnvironmentModel(repository: repository)
 
         _notificationEnvironmentModel =
             State(wrappedValue: notificationModel)

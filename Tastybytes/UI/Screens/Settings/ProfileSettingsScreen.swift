@@ -65,7 +65,7 @@ struct ProfileSettingsScreen: View {
                         username: username,
                         firstName: firstName,
                         lastName: lastName
-                    ), withFeedback: true) }
+                    )) }
                 ).disabled(!canUpdateUsername)
             }
         } header: {

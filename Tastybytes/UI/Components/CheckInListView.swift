@@ -89,6 +89,7 @@ struct CheckInListView<Header>: View where Header: View {
     }
 
     var body: some View {
+        @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         ScrollView {
             header
             checkInSegments
@@ -107,6 +108,7 @@ struct CheckInListView<Header>: View where Header: View {
         .background {
             fetcher.emptyContentView.opacity(isContentUnavailable ? 1 : 0)
         }
+        .alertError($imageUploadEnvironmentModel.alertError)
         .alertError($alertError)
         .onChange(of: scrollToTop) {
             withAnimation {

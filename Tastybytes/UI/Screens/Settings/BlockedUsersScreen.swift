@@ -38,7 +38,7 @@ struct BlockedUsersScreen: View {
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-            await friendEnvironmentModel.refresh(withFeedback: true)
+            await friendEnvironmentModel.refresh()
         }
         #endif
     }
