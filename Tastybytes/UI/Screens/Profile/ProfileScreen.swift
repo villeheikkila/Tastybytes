@@ -16,6 +16,7 @@ struct ProfileScreen: View {
             scrollToTop: $scrollToTop,
             isCurrentUser: profileEnvironmentModel.id == profile.id
         )
+        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .navigationTitle(profile.preferredName)
         .toolbar {
             toolbarContent

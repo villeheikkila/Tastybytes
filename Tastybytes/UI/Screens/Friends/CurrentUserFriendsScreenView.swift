@@ -106,6 +106,7 @@ struct CurrentUserFriendsScreen: View {
             }
         }
         .listStyle(.insetGrouped)
+        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .overlay {
             if !searchTerm.isEmpty && filteredFriends.isEmpty {
                 ContentUnavailableView.search(text: searchTerm)
@@ -161,7 +162,7 @@ struct CurrentUserFriendsScreen: View {
             .popoverTip(NameTagTip())
 
             RouterLink("Add friend", systemImage: "plus", sheet: .userSheet(mode: .add, onSubmit: {
-                feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
+                // feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
             }))
             .labelStyle(.iconOnly)
             .imageScale(.large)

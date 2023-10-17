@@ -41,6 +41,7 @@ struct FriendsScreen: View {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
+        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {

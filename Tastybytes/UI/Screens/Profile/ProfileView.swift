@@ -52,6 +52,7 @@ struct ProfileView: View {
                 }
             }
         )
+        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
     }
 
     @ViewBuilder private var privateProfile: some View {
