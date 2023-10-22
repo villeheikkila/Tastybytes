@@ -232,10 +232,10 @@ struct CheckInListView<Header>: View where Header: View {
         await fetchFeedItems(
             reset: true,
             onComplete: { _ in
-                isRefreshing = false
                 await onRefresh()
             }
         )
+        isRefreshing = false
     }
 
     func deleteCheckIn(checkIn: CheckIn) async {

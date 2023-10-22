@@ -6,7 +6,7 @@ import SwiftUI
 public final class FeedbackEnvironmentModel {
     public var show = false
     public var toast = AlertToast(type: .regular, title: "")
-    public var sensoryFeedback: SensoryFeedback?
+    public var sensoryFeedback: SensoryFeedbackEvent?
 
     public init() {}
 
@@ -28,22 +28,33 @@ public final class FeedbackEnvironmentModel {
         switch type {
         case let .impact(intensity):
             if let intensity {
-                sensoryFeedback = intensity == .low ? .impact(intensity: 0.3) : .impact(intensity: 0.7)
+                sensoryFeedback = intensity == .low ? SensoryFeedbackEvent(.impact(intensity: 0.3)) :
+                    SensoryFeedbackEvent(.impact(intensity: 0.7))
             } else {
-                sensoryFeedback = .impact
+                sensoryFeedback = SensoryFeedbackEvent(.impact)
             }
         case let .notification(type):
             switch type {
             case .error:
-                sensoryFeedback = .error
+                sensoryFeedback = SensoryFeedbackEvent(.error)
             case .success:
-                sensoryFeedback = .success
+                sensoryFeedback = SensoryFeedbackEvent(.success)
             case .warning:
-                sensoryFeedback = .warning
+                sensoryFeedback = SensoryFeedbackEvent(.warning)
             }
         case .selection:
-            sensoryFeedback = .selection
+            sensoryFeedback = SensoryFeedbackEvent(.selection)
         }
+    }
+}
+
+public struct SensoryFeedbackEvent: Identifiable, Equatable {
+    public let id: UUID
+    public let sensoryFeedback: SensoryFeedback
+
+    init(_ sensoryFeedback: SensoryFeedback) {
+        id = UUID()
+        self.sensoryFeedback = sensoryFeedback
     }
 }
 
