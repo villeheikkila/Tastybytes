@@ -1,7 +1,9 @@
-import UIKit
 
 #if os(macOS)
-    typealias UIImage = NSImage
+    import AppKit
+    public typealias UIImage = NSImage
+#else
+    import UIKit
 #endif
 
 public extension UIImage {
