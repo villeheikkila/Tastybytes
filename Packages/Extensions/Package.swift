@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Extensions",
     platforms: [
-        .iOS(.v17), .watchOS(.v10),
+        .iOS(.v17), .watchOS(.v10), .macOS(.v14),
     ],
     products: [
         .library(
@@ -14,7 +14,7 @@ let package = Package(
             targets: ["Extensions"]
         ),
     ],
-    
+
     targets: [
         .target(
             name: "Extensions"
