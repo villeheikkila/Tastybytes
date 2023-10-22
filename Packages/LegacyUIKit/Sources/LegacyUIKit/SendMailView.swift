@@ -1,5 +1,4 @@
 import MessageUI
-import Models
 import SwiftUI
 import UIKit
 
@@ -77,8 +76,4 @@ public struct Email: Sendable {
     let adress: String
     let subject: String
     let body: String
-
-    public static let feedback = Email(adress: Config.feedbackEmail,
-                                       subject: "Feedback for \(Config.appName)",
-                                       body: "")
 }

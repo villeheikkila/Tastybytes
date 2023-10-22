@@ -1,5 +1,9 @@
 import UIKit
 
+#if os(macOS)
+    typealias UIImage = NSImage
+#endif
+
 public extension UIImage {
     func resize(to newHeight: Double) -> UIImage? {
         let scale = newHeight / size.height

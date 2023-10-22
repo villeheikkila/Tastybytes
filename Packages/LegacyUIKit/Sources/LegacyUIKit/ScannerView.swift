@@ -1,5 +1,4 @@
 import AVFoundation
-import Models
 import SwiftUI
 
 public struct ScannerView: UIViewControllerRepresentable {
@@ -35,6 +34,11 @@ public extension ScannerView {
         case badOutput
         case initError(_ error: Error)
         case permissionDenied
+    }
+
+    struct Barcode: Hashable, Sendable {
+        public let barcode: String
+        public let type: String
     }
 
     final class Controller: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,

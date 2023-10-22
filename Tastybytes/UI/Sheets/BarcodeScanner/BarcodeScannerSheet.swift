@@ -1,5 +1,6 @@
 import AVFoundation
 import Components
+import LegacyUIKit
 import Models
 import SwiftUI
 
@@ -25,7 +26,7 @@ struct BarcodeScannerSheet: View {
             } else {
                 ScannerView(scanTypes: [.codabar, .code39, .ean8, .ean13], completion: { response in
                     if case let .success(result) = response {
-                        onComplete(result)
+                        onComplete(Barcode(barcode: result.barcode, type: result.type))
                         dismiss()
                     }
                 }, isTorchOn: isTorchOn)

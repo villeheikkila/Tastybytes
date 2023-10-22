@@ -1,6 +1,7 @@
 import Components
 import EnvironmentModels
 import Extensions
+import LegacyUIKit
 import MessageUI
 import Models
 import OSLog
@@ -138,4 +139,10 @@ struct AboutScreen: View {
             }
         }.listRowBackground(Color.clear)
     }
+}
+
+public extension Email {
+    static let feedback = Email(adress: Config.feedbackEmail,
+                                subject: "Feedback for \(Config.appName)",
+                                body: "")
 }

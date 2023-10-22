@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/gotrue-swift",
       "state" : {
-        "revision" : "4bf132d73d322ee5d6d648f02deb9f2bc19cc659",
-        "version" : "1.2.1"
+        "revision" : "e53731e21569b2e9ce6f58763ad0fbce8e2e7603",
+        "version" : "1.3.0"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/postgrest-swift",
       "state" : {
-        "revision" : "fb91f56ffcfe829c0cba2bfc180b1e669a8dd2e4",
-        "version" : "1.0.1"
+        "revision" : "e9dae74d410b13383bf804f84efc16700c5a61c1",
+        "version" : "1.0.2"
       }
     },
     {
