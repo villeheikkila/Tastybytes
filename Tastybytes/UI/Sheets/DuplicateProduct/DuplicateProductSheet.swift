@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -18,6 +19,7 @@ struct DuplicateProductSheet: View {
     @State private var products = [Product.Joined]()
     @State private var showMergeToProductConfirmation = false
     @State private var searchTerm = ""
+    @State private var alertError: AlertError?
     @State private var mergeToProduct: Product.Joined? {
         didSet {
             showMergeToProductConfirmation = true
@@ -56,6 +58,7 @@ struct DuplicateProductSheet: View {
         .onChange(of: searchTerm, debounceTime: 0.2) { newValue in
             Task { await searchProducts(name: newValue) }
         }
+        .alertError($alertError)
         .confirmationDialog("Product Merge Confirmation",
                             isPresented: $showMergeToProductConfirmation,
                             presenting: mergeToProduct)
@@ -95,7 +98,7 @@ struct DuplicateProductSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "reporting duplicate product \(product.id) of \(to.id) failed. error: \(error)"
@@ -112,7 +115,7 @@ struct DuplicateProductSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -125,7 +128,7 @@ struct DuplicateProductSheet: View {
             products = searchResults.filter { $0.id != product.id }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }

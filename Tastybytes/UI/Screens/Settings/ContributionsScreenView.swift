@@ -1,4 +1,5 @@
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -9,6 +10,7 @@ struct ContributionsScreen: View {
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var alertError: AlertError?
     @State private var contributions: Contributions?
 
     var body: some View {
@@ -48,6 +50,7 @@ struct ContributionsScreen: View {
         .listStyle(.insetGrouped)
         .navigationTitle("Your Contributions")
         .navigationBarTitleDisplayMode(.inline)
+        .alertError($alertError)
         .task {
             await loadContributions(userId: profileEnvironmentModel.id)
         }
@@ -63,7 +66,7 @@ struct ContributionsScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load contributions. Error: \(error) (\(#file):\(#line))")
         }
     }

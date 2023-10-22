@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -25,7 +26,7 @@ struct BrandScreen: View {
 
     @State private var showSubBrandUnverificationConfirmation = false
     @State private var showBrandUnverificationConfirmation = false
-
+    @State private var alertError: AlertError?
     @State private var showDeleteBrandConfirmationDialog = false
     @State private var brandToDelete: Brand.JoinedSubBrandsProducts? {
         didSet {
@@ -131,6 +132,7 @@ struct BrandScreen: View {
                     await verifySubBrand(presenting, isVerified: false)
                 })
             }
+            .alertError($alertError)
             .confirmationDialog("Unverify Brand",
                                 isPresented: $showBrandUnverificationConfirmation,
                                 presenting: brand)
@@ -338,7 +340,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -349,7 +351,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Request for brand with \(brandId) failed. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -375,7 +377,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -390,7 +392,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load like status. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -408,7 +410,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -450,7 +452,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -462,7 +464,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -475,7 +477,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete brand '\(toDeleteSubBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -486,6 +488,7 @@ private struct ProductRow: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.repository) private var repository
     @Environment(Router.self) private var router
+    @State private var alertError: AlertError?
     @State private var showDeleteProductConfirmationDialog = false
     @State private var productToDelete: Product.Joined? {
         didSet {
@@ -548,7 +551,7 @@ private struct ProductRow: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }

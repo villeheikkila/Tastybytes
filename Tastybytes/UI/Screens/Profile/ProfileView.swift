@@ -1,6 +1,7 @@
 import Charts
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import PhotosUI
@@ -19,6 +20,8 @@ struct ProfileView: View {
     @State private var profile: Profile
     @State private var profileSummary: ProfileSummary?
     @State private var selectedItem: PhotosPickerItem?
+    @State private var alertError: AlertError?
+
     private let topAnchor = 0
 
     private let isCurrentUser: Bool
@@ -53,6 +56,7 @@ struct ProfileView: View {
             }
         )
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
+        .alertError($alertError)
     }
 
     @ViewBuilder private var privateProfile: some View {
@@ -248,7 +252,7 @@ struct ProfileView: View {
             )
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("uplodaing avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -263,7 +267,7 @@ struct ProfileView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
     }

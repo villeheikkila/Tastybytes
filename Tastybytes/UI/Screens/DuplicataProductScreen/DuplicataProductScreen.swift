@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -11,6 +12,7 @@ struct DuplicateProductScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var products = [Product.Joined]()
+    @State private var alertError: AlertError?
     @State private var deleteProduct: Product.Joined? {
         didSet {
             showDeleteProductConfirmationDialog = true
@@ -54,6 +56,7 @@ struct DuplicateProductScreen: View {
             }
         }
         .listStyle(.plain)
+        .alertError($alertError)
         .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
                             isPresented: $showDeleteProductConfirmationDialog,
                             titleVisibility: .visible,
@@ -86,7 +89,7 @@ struct DuplicateProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -100,7 +103,7 @@ struct DuplicateProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -121,7 +124,7 @@ struct DuplicateProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("fetching flavors failed. Error: \(error) (\(#file):\(#line))")
         }
     }

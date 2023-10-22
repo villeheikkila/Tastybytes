@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -10,6 +11,7 @@ struct ProfileStatisticsView: View {
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var categoryStatistics = [CategoryStatistics]()
+    @State private var alertError: AlertError?
 
     let profile: Profile
 
@@ -46,7 +48,8 @@ struct ProfileStatisticsView: View {
                 await loadStatistics()
             }
         #endif
-            .task {
+            .alertError($alertError)
+                .task {
                     await loadStatistics()
                 }
     }
@@ -61,7 +64,7 @@ struct ProfileStatisticsView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed loading category statistics. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -73,6 +76,7 @@ struct SubcategoryStatisticsView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var subcategoryStatistics = [SubcategoryStatistics]()
     @State private var isLoading = false
+    @State private var alertError: AlertError?
 
     let profile: Profile
     let category: CategoryStatistics
@@ -115,6 +119,7 @@ struct SubcategoryStatisticsView: View {
             .font(.caption)
             .bold()
         }
+        .alertError($alertError)
         .task {
             await loadSubcategoryStatistics()
         }
@@ -132,7 +137,7 @@ struct SubcategoryStatisticsView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed loading subcategory statistics. Error: \(error) (\(#file):\(#line))")
         }
         isLoading = false

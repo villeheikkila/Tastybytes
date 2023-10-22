@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -15,6 +16,8 @@ struct BrandSheet: View {
     @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
     @State private var brandName = ""
     @State private var searchTerm: String = ""
+    @State private var alertError: AlertError?
+
     @Binding var brand: Brand.JoinedSubBrands?
 
     let brandOwner: Company
@@ -56,6 +59,7 @@ struct BrandSheet: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
         .task {
             await loadBrands(brandOwner)
         }
@@ -76,7 +80,7 @@ struct BrandSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load brands for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -94,7 +98,7 @@ struct BrandSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to create new brand for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")
         }
     }

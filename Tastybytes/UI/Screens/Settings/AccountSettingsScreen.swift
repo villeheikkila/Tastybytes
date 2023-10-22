@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import PhotosUI
@@ -36,6 +37,7 @@ struct AccountSettingsScreen: View {
     }
 
     @State var showingExporter = false
+    @State private var alertError: AlertError?
 
     private func passwordCheck() {
         withAnimation {
@@ -77,9 +79,10 @@ struct AccountSettingsScreen: View {
             case .success:
                 feedbackEnvironmentModel.toggle(.success("Data was exported as CSV"))
             case .failure:
-                feedbackEnvironmentModel.toggle(.error(.custom("Error occurred while trying to export data")))
+                alertError = .init(title: "Error occurred while trying to export data")
             }
         }
+        .alertError($alertError)
         .confirmationDialog(
             "Are you sure you want to permanently delete your account? All data will be lost.",
             isPresented: $showDeleteConfirmation,
@@ -178,7 +181,7 @@ struct AccountSettingsScreen: View {
             showingExporter = true
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to export check-in csv. Error: \(error) (\(#file):\(#line))")
         }
     }

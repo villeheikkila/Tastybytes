@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -11,6 +12,7 @@ struct ReportSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var reasonText = ""
+    @State private var alertError: AlertError?
 
     let entity: Report.Entity
 
@@ -33,6 +35,7 @@ struct ReportSheet: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -73,7 +76,7 @@ struct ReportSheet: View {
             feedbackEnvironmentModel.toggle(.success("Report submitted!"))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Submitting report failed. Error: \(error) (\(#file):\(#line))")
         }
     }

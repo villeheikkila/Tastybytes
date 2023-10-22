@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -15,6 +16,7 @@ struct CompanySearchSheet: View {
     @State private var status: Status?
     @State private var companyName = ""
     @State private var isLoading = false
+    @State private var alertError: AlertError?
     @State private var searchTerm: String = "" {
         didSet {
             if searchTerm.isEmpty {
@@ -85,6 +87,7 @@ struct CompanySearchSheet: View {
         .onChange(of: searchTerm, debounceTime: 0.5, perform: { newValue in
             Task { await searchCompanies(name: newValue) }
         })
+        .alertError($alertError)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -107,7 +110,7 @@ struct CompanySearchSheet: View {
             status = Status.searched
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to search companies. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -120,7 +123,7 @@ struct CompanySearchSheet: View {
             onSuccess(newCompany)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to create new company'. Error: \(error) (\(#file):\(#line))")
         }
     }

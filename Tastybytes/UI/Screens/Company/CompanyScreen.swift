@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import PhotosUI
@@ -17,6 +18,7 @@ struct CompanyScreen: View {
     @State private var summary: Summary?
     @State private var showUnverifyCompanyConfirmation = false
     @State private var showDeleteCompanyConfirmationDialog = false
+    @State private var alertError: AlertError?
 
     init(company: Company) {
         _company = State(wrappedValue: company)
@@ -71,6 +73,7 @@ struct CompanyScreen: View {
                 await verifyCompany(isVerified: false)
             })
         }
+        .alertError($alertError)
         .confirmationDialog("Delete Company Confirmation",
                             isPresented: $showDeleteCompanyConfirmationDialog,
                             presenting: company)
@@ -175,7 +178,7 @@ struct CompanyScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to refresh data for company. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -184,7 +187,7 @@ struct CompanyScreen: View {
             self.summary = summary
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load summary for company. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -196,7 +199,7 @@ struct CompanyScreen: View {
             router.reset()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -207,7 +210,7 @@ struct CompanyScreen: View {
             company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }

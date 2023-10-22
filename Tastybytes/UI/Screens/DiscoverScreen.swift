@@ -351,7 +351,7 @@ struct DiscoverScreen: View {
             router.navigate(screen: .product(addBarcodeTo))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed. error: \(error)"
@@ -368,7 +368,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("searching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -382,7 +382,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("searching profiles failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -402,7 +402,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error("searching products with barcode \(barcode.barcode) failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -419,7 +419,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("searching companies failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -433,7 +433,7 @@ struct DiscoverScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("searching locations failed. Error: \(error) (\(#file):\(#line))")
         }
     }

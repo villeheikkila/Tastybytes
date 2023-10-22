@@ -1,4 +1,5 @@
 import EnvironmentModels
+import Extensions
 import MapKit
 import Models
 import OSLog
@@ -13,6 +14,7 @@ struct ProfileLocationsScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInLocations = [Location]()
     @State private var selectedLocation: Location?
+    @State private var alertError: AlertError?
 
     let profile: Profile
 
@@ -47,6 +49,7 @@ struct ProfileLocationsScreen: View {
         })
         .navigationTitle("Check-in Locations")
         .navigationBarTitleDisplayMode(.inline)
+        .alertError($alertError)
         .task {
             await loadCheckInlocations()
         }
@@ -62,7 +65,7 @@ struct ProfileLocationsScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed loading check-in locations statistics. Error: \(error) (\(#file):\(#line))")
         }
     }

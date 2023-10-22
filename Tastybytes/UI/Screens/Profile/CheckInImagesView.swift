@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -12,6 +13,7 @@ struct CheckInImagesView: View {
     @State private var checkInImages = [CheckIn.Image]()
     @State private var isLoading = false
     @State private var page = 0
+    @State private var alertError: AlertError?
     private let pageSize = 10
 
     let queryType: CheckInImageQueryType
@@ -31,6 +33,7 @@ struct CheckInImagesView: View {
                 }
             }
         }
+        .alertError($alertError)
         .task {
             await fetchImages()
         }
@@ -51,7 +54,7 @@ struct CheckInImagesView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"

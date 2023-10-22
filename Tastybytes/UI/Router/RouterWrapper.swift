@@ -59,6 +59,7 @@ struct RouterWrapper<Content: View>: View {
         }
         .environment(router)
         .environment(sheetEnvironmentModel)
+        .sensoryFeedback(trigger: feedbackEnvironmentModel.sensoryFeedback) { _, newValue in newValue }
         .onChange(of: router.path) {
             router.storeState()
         }

@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -34,6 +35,7 @@ struct TimePeriodStatisticSegmentView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var timePeriodStatistics: TimePeriodStatistic?
     @State private var isLoading = false
+    @State private var alertError: AlertError?
 
     let profile: Profile
     let timePeriod: TimePeriodStatistic.TimePeriod
@@ -59,6 +61,7 @@ struct TimePeriodStatisticSegmentView: View {
                 .bold()
             }
         }
+        .alertError($alertError)
         .task(id: timePeriod) {
             await loadStatisticsForTimePeriod(timePeriod: timePeriod)
         }
@@ -76,7 +79,7 @@ struct TimePeriodStatisticSegmentView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed loading time period statistics. Error: \(error) (\(#file):\(#line))")
         }
         isLoading = false

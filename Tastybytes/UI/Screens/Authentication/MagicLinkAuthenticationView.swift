@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import OSLog
 import Repositories
 import SwiftUI
@@ -11,6 +12,7 @@ struct MagicLinkAuthenticationView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var email = ""
     @State private var isLoading = false
+    @State private var alertError: AlertError?
 
     var body: some View {
         VStack {
@@ -30,6 +32,7 @@ struct MagicLinkAuthenticationView: View {
                 )
             })
             .disabled(isLoading)
+            .alertError($alertError)
         }
     }
 
@@ -42,7 +45,7 @@ struct MagicLinkAuthenticationView: View {
             }
             feedbackEnvironmentModel.toggle(.success("Magic link sent!"))
         case let .failure(error):
-            feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
+            alertError = .init(title: error.localizedDescription)
             logger
                 .error(
                     "Error occured when trying to log in with magic link. Error: \(error) (\(#file):\(#line))"

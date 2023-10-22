@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -48,6 +49,8 @@ struct CheckInScreen: View {
         }
     }
 
+    @State private var alertError: AlertError?
+
     var orderedCheckInComments: [CheckInComment] {
         checkInComments.reversed()
     }
@@ -92,6 +95,7 @@ struct CheckInScreen: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
         .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
                             isPresented: $showDeleteConfirmation,
                             titleVisibility: .visible,
@@ -250,7 +254,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -265,7 +269,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load check-in comments'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -283,7 +287,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to update comment \(editComment.id)'. Error: \(error) (\(#file):\(#line))")
         }
         editCommentText = ""
@@ -299,7 +303,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete comment '\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -314,7 +318,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete comment as moderator'\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -327,7 +331,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -346,7 +350,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to send comment. Error: \(error) (\(#file):\(#line))")
         }
     }

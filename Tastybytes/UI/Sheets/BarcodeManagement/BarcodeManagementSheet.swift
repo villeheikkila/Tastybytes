@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -11,6 +12,7 @@ struct BarcodeManagementSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
+    @State private var alertError: AlertError?
 
     let product: Product.Joined
 
@@ -35,6 +37,7 @@ struct BarcodeManagementSheet: View {
         .task {
             await getBarcodes()
         }
+        .alertError($alertError)
         .navigationTitle("Barcodes")
         .toolbar {
             toolbarContent
@@ -57,7 +60,7 @@ struct BarcodeManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -72,7 +75,7 @@ struct BarcodeManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }

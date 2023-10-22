@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -20,6 +21,7 @@ struct ProductScreen: View {
     @State private var resetView: Int = 0
 
     @State private var loadedWithBarcode: Barcode?
+    @State private var alertError: AlertError?
 
     // check-in images
     @State private var checkInImages = [CheckIn.Image]()
@@ -65,6 +67,7 @@ struct ProductScreen: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
         .confirmationDialog("Unverify Product",
                             isPresented: $showUnverifyProductConfirmation,
                             presenting: product)
@@ -263,7 +266,7 @@ struct ProductScreen: View {
             self.summary = summary
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -278,7 +281,7 @@ struct ProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -296,7 +299,7 @@ struct ProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to refresh product by id. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -307,7 +310,7 @@ struct ProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -354,7 +357,7 @@ struct ProductScreen: View {
             await refresh()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -366,7 +369,7 @@ struct ProductScreen: View {
             router.removeLast()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -377,7 +380,7 @@ struct ProductScreen: View {
             feedbackEnvironmentModel.toggle(.success("Barcode added!"))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -397,7 +400,7 @@ struct ProductScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"

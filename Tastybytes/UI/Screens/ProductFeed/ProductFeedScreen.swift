@@ -1,4 +1,5 @@
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -20,6 +21,7 @@ struct ProductFeedScreen: View {
     @State private var page = 0
     @State private var isLoading = false
     @State private var isRefreshing = false
+    @State private var alertError: AlertError?
 
     let feed: Product.FeedType
 
@@ -48,7 +50,7 @@ struct ProductFeedScreen: View {
                     }
                     .onAppear {
                         if product == products.last, isLoading != true {
-                            Task { await fetchProductFeedItems(withHaptics: false) }
+                            Task { await fetchProductFeedItems() }
                         }
                     }
             }
@@ -71,9 +73,10 @@ struct ProductFeedScreen: View {
                 .toolbar {
                     toolbarContent
                 }
+                .alertError($alertError)
                 .task {
                     if products.isEmpty {
-                        await fetchProductFeedItems(withHaptics: false)
+                        await fetchProductFeedItems()
                     }
                 }
     }
@@ -91,18 +94,14 @@ struct ProductFeedScreen: View {
         page = 0
         products = [Product.Joined]()
         isRefreshing = true
-        await fetchProductFeedItems(withHaptics: true)
+        await fetchProductFeedItems()
         isRefreshing = false
     }
 
-    func fetchProductFeedItems(withHaptics: Bool, onComplete: (() -> Void)? = nil) async {
+    func fetchProductFeedItems(onComplete: (() -> Void)? = nil) async {
         let (from, to) = getPagination(page: page, size: pageSize)
 
         isLoading = true
-
-        if withHaptics {
-            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
-        }
 
         switch await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
         case let .success(additionalProducts):
@@ -113,15 +112,12 @@ struct ProductFeedScreen: View {
             }
             page += 1
             isLoading = false
-            if withHaptics {
-                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
-            }
             if let onComplete {
                 onComplete()
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("fetching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }

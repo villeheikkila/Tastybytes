@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import OSLog
 import Repositories
 import SwiftUI
@@ -16,6 +17,7 @@ struct EmailPasswordAuthenticationView: View {
     @State private var email = ""
     @State private var username = ""
     @State private var isValidNewPassword = false
+    @State private var alertError: AlertError?
     @State private var password = "" {
         didSet {
             passwordCheck()
@@ -68,6 +70,7 @@ struct EmailPasswordAuthenticationView: View {
             }
             actions
         }
+        .alertError($alertError)
     }
 
     private var primaryAction: some View {
@@ -129,7 +132,7 @@ struct EmailPasswordAuthenticationView: View {
                         dismiss()
                     }
                 case let .failure(error):
-                    feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
+                    alertError = .init(title: error.localizedDescription)
                     logger
                         .error(
                             "Error occured when trying to sign in. Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))"
@@ -144,7 +147,7 @@ struct EmailPasswordAuthenticationView: View {
                     feedbackEnvironmentModel.toggle(.success("Confirmation email has been sent!"))
                     onSignUp()
                 case let .failure(error):
-                    feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
+                    alertError = .init(title: error.localizedDescription)
                     logger.error("Error occured when trying to sign up. Error: \(error) (\(#file):\(#line))")
                 }
             case .resetPassword:
@@ -156,7 +159,7 @@ struct EmailPasswordAuthenticationView: View {
                     feedbackEnvironmentModel.toggle(.success("Confirmation email has been sent!"))
                     onSignUp()
                 case let .failure(error):
-                    feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
+                    alertError = .init(title: error.localizedDescription)
                     logger.error("Error occured when trying to reset password. Error: \(error) (\(#file):\(#line))")
                 }
             case .forgotPassword:
@@ -167,7 +170,7 @@ struct EmailPasswordAuthenticationView: View {
                     }
                     feedbackEnvironmentModel.toggle(.success("Password reset email sent!"))
                 case let .failure(error):
-                    feedbackEnvironmentModel.toggle(.error(.custom(error.localizedDescription)))
+                    alertError = .init(title: error.localizedDescription)
                     logger
                         .error(
                             "Error occured when trying to send forgot password link. Error: \(error) (\(#file):\(#line))"

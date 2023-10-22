@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -12,6 +13,7 @@ struct ProductMutationView: View {
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var initialValues: ProductMutationInitialValues?
+    @State private var alertError: AlertError?
 
     let mode: ProductMutationInnerView.Mode
     let onEdit: (() async -> Void)?
@@ -52,6 +54,7 @@ struct ProductMutationView: View {
             }
         }
         .navigationTitle(navigationTitle)
+        .alertError($alertError)
         .if(isSheet, transform: { view in
             view.toolbar {
                 toolbarContent
@@ -155,7 +158,7 @@ struct ProductMutationView: View {
             )
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))"
@@ -209,6 +212,7 @@ struct ProductMutationInnerView: View {
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
+    @State private var alertError: AlertError?
     @State private var subcategories: Set<Int>
     @State private var category: Int?
     @State private var brandOwner: Company? {
@@ -224,6 +228,7 @@ struct ProductMutationInnerView: View {
     @State private var name: String
     @State private var description: String
     @State private var isDiscontinued = false
+    @State private var isSuccess = false
     @State private var hasSubBrand: Bool {
         didSet {
             if oldValue == true {
@@ -279,6 +284,7 @@ struct ProductMutationInnerView: View {
             productSection
             action
         }
+        .sensoryFeedback(.success, trigger: isSuccess)
         .onChange(of: category) {
             subcategories = []
         }
@@ -455,7 +461,7 @@ struct ProductMutationInnerView: View {
         )
         switch await repository.product.create(newProductParams: newProductParams) {
         case let .success(newProduct):
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            isSuccess = true
             if isSheet {
                 await MainActor.run {
                     dismiss()
@@ -466,7 +472,7 @@ struct ProductMutationInnerView: View {
             await onSuccess(newProduct)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to create new product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -498,7 +504,7 @@ struct ProductMutationInnerView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))"
@@ -522,7 +528,7 @@ struct ProductMutationInnerView: View {
 
         switch await repository.product.editProduct(productEditParams: productEditParams) {
         case .success:
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            isSuccess = true
             await MainActor.run {
                 dismiss()
             }
@@ -531,7 +537,7 @@ struct ProductMutationInnerView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

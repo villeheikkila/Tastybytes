@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -12,6 +13,7 @@ struct ReactionsView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInReactions = [CheckInReaction]()
     @State private var isLoading = false
+    @State private var alertError: AlertError?
 
     let checkIn: CheckIn
 
@@ -39,6 +41,7 @@ struct ReactionsView: View {
         }
         .frame(maxWidth: 80, minHeight: size + 4)
         .contentShape(Rectangle())
+        .alertError($alertError)
         .if(!isLoading, transform: { view in
             view
                 .accessibilityAddTraits(.isButton)
@@ -49,6 +52,9 @@ struct ReactionsView: View {
                 }
         })
         .disabled(isLoading)
+        .sensoryFeedback(trigger: checkInReactions) { oldValue, newValue in
+            newValue.count > oldValue.count ? .success : .impact(weight: .light)
+        }
     }
 
     func hasReacted(_ profile: Profile) -> Bool {
@@ -65,10 +71,9 @@ struct ReactionsView: View {
                         checkInReactions.remove(object: reaction)
                     }
                 }
-                feedbackEnvironmentModel.trigger(.impact(intensity: .low))
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackEnvironmentModel.toggle(.error(.unexpected))
+                alertError = .init()
                 logger.error("removing check-in reaction \(reaction.id) failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
@@ -81,10 +86,9 @@ struct ReactionsView: View {
                         checkInReactions.append(checkInReaction)
                     }
                 }
-                feedbackEnvironmentModel.trigger(.notification(.success))
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
-                feedbackEnvironmentModel.toggle(.error(.unexpected))
+                alertError = .init()
                 logger
                     .error(
                         "adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed: \(error.localizedDescription)"

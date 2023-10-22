@@ -77,7 +77,6 @@ struct SideBarView: View {
                 Color.clear.frame(width: 0, height: 12)
                 ForEach(shownTabs) { newTab in
                     Button(action: {
-                        feedbackEnvironmentModel.trigger(.selection)
                         if newTab == selection {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                                 scrollToTop += 1
@@ -137,6 +136,7 @@ struct SideBarView: View {
         .onAppear {
             selection = storedSelection
         }
+        .sensoryFeedback(.selection, trigger: selection)
         .environment(router)
         .environment(sheetEnvironmentModel)
         .environment(appDataEnvironmentModel)

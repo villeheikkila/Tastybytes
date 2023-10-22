@@ -102,8 +102,8 @@ struct CheckInListView<Header>: View where Header: View {
         .scrollPosition(id: $scrolledID)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
-        .sensoryFeedback(.success, trigger: checkIns) { _, newValue in
-            initialLoadCompleted && !newValue.isEmpty
+        .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
+            oldValue && !newValue
         }
         .background {
             fetcher.emptyContentView.opacity(isContentUnavailable ? 1 : 0)

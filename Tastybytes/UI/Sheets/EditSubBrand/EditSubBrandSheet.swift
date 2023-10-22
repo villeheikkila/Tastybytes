@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import PhotosUI
@@ -24,6 +25,8 @@ struct EditSubBrandSheet: View {
             }
         }
     }
+
+    @State private var alertError: AlertError?
 
     let onUpdate: () async -> Void
     let brand: Brand.JoinedSubBrandsProductsCompany
@@ -74,6 +77,7 @@ struct EditSubBrandSheet: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
         .confirmationDialog(
             "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted",
             isPresented: $showMergeSubBrandsConfirmation,
@@ -109,7 +113,7 @@ struct EditSubBrandSheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))"
@@ -126,7 +130,7 @@ struct EditSubBrandSheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
         }
     }

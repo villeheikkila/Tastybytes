@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import PhotosUI
@@ -29,6 +30,7 @@ struct CheckInSheet: View {
     @State private var checkInAt: Date = .now
     @State private var isLegacyCheckIn: Bool
     @State private var blurHash: String?
+    @State private var alertError: AlertError?
     @State private var image: UIImage? {
         didSet {
             Task {
@@ -101,6 +103,7 @@ struct CheckInSheet: View {
             guard let image else { return }
             self.image = image
         }))
+        .alertError($alertError)
         .toolbar {
             toolbarContent
         }
@@ -275,7 +278,7 @@ struct CheckInSheet: View {
             await onUpdate(updatedCheckIn)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -303,7 +306,7 @@ struct CheckInSheet: View {
             await onCreation(newCheckIn)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
         }
     }

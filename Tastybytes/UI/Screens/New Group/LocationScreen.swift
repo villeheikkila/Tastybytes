@@ -1,6 +1,7 @@
 import Charts
 import Components
 import EnvironmentModels
+import Extensions
 import MapKit
 import Models
 import OSLog
@@ -17,6 +18,8 @@ struct LocationScreen: View {
     @State private var scrollToTop: Int = 0
     @State private var summary: Summary?
     @State private var showDeleteLocationConfirmation = false
+    @State private var alertError: AlertError?
+    @State private var isSuccess = false
 
     let location: Location
 
@@ -49,6 +52,7 @@ struct LocationScreen: View {
         .toolbar {
             toolbarContent
         }
+        .sensoryFeedback(.success, trigger: isSuccess)
         .confirmationDialog(
             "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost",
             isPresented: $showDeleteLocationConfirmation,
@@ -61,6 +65,7 @@ struct LocationScreen: View {
                 action: { await deleteLocation(presenting) }
             )
         }
+        .alertError($alertError)
         .task {
             await getSummary()
         }
@@ -119,7 +124,7 @@ struct LocationScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to get summary. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -128,10 +133,10 @@ struct LocationScreen: View {
         switch await repository.location.delete(id: location.id) {
         case .success:
             router.reset()
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            isSuccess = true
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")
         }
     }

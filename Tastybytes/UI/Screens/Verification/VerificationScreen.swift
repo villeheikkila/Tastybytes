@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -34,6 +35,7 @@ struct VerificationScreen: View {
     @State private var brands = [Brand.JoinedSubBrandsProductsCompany]()
     @State private var subBrands = [SubBrand.JoinedBrand]()
     @State private var verificationType: VerificationType = .products
+    @State private var alertError: AlertError?
     @State private var deleteProduct: Product.Joined? {
         didSet {
             showDeleteProductConfirmationDialog = true
@@ -67,6 +69,7 @@ struct VerificationScreen: View {
                 action: { await deleteProduct(presenting) }
             )
         }
+        .alertError($alertError)
         .navigationBarTitle("Unverified \(verificationType.label)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)
@@ -183,7 +186,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify brand \(brand.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -198,7 +201,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify brand \(subBrand.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -213,7 +216,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -228,7 +231,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -240,7 +243,7 @@ struct VerificationScreen: View {
             await loadData(refresh: true)
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -261,7 +264,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.localizedDescription.contains("cancelled") else { return }
-                    feedbackEnvironmentModel.toggle(.error(.unexpected))
+                    alertError = .init()
                     logger.error("Loading unverfied products failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -276,7 +279,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.localizedDescription.contains("cancelled") else { return }
-                    feedbackEnvironmentModel.toggle(.error(.unexpected))
+                    alertError = .init()
                     logger.error("Loading unverfied companies failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -291,7 +294,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.localizedDescription.contains("cancelled") else { return }
-                    feedbackEnvironmentModel.toggle(.error(.unexpected))
+                    alertError = .init()
                     logger.error("Loading unverfied brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -306,7 +309,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.localizedDescription.contains("cancelled") else { return }
-                    feedbackEnvironmentModel.toggle(.error(.unexpected))
+                    alertError = .init()
                     logger.error("Loading unverfied sub-brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }

@@ -71,10 +71,10 @@ public struct ProgressButton<LabelView: View>: View {
 public extension ProgressButton where LabelView == Text {
     init(_ label: String,
          role: ButtonRole? = nil,
-         actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
+         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action) {
+        self.init(role: role, action: action, actionOptions: actionOptions) {
             Text(label)
         }
     }
@@ -83,10 +83,10 @@ public extension ProgressButton where LabelView == Text {
 public extension ProgressButton where LabelView == Label<Text, Image> {
     init(_ title: String, systemImage: String,
          role: ButtonRole? = nil,
-         actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
+         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action) {
+        self.init(role: role, action: action, actionOptions: actionOptions) {
             Label(title, systemImage: systemImage)
         }
     }
@@ -97,10 +97,10 @@ public extension ProgressButton where LabelView == LinkIconLabel {
         _ titleKey: String,
         systemName: String,
         color: Color,
-        actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
+        actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
         action: @escaping () async -> Void
     ) {
-        self.init(action: action) {
+        self.init(action: action, actionOptions: actionOptions) {
             LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
         }
     }

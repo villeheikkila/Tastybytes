@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -13,6 +14,8 @@ struct FriendsScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var friends: [Friend]
     @State private var searchTerm = ""
+    @State private var alertError: AlertError?
+    @State private var isRefreshing = false
 
     let profile: Profile
 
@@ -41,7 +44,12 @@ struct FriendsScreen: View {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
-        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
+        .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
+            oldValue && !newValue
+        }
+        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends) { oldValue, newValue in
+            newValue.count > oldValue.count
+        }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {
@@ -56,6 +64,7 @@ struct FriendsScreen: View {
                 .toolbar {
                     toolbarContent
                 }
+                .alertError($alertError)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -72,22 +81,22 @@ struct FriendsScreen: View {
         }
     }
 
-    func loadFriends(withHaptics: Bool = false) async {
-        if withHaptics {
-            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
-        }
+    func refresh() async {
+        isRefreshing = true
+        await loadFriends()
+        isRefreshing = false
+    }
+
+    func loadFriends() async {
         switch await repository.friend.getByUserId(
             userId: profile.id,
             status: Friend.Status.accepted
         ) {
         case let .success(friends):
             self.friends = friends
-            if withHaptics {
-                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
-            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load friends' . Error: \(error) (\(#file):\(#line))")
         }
     }

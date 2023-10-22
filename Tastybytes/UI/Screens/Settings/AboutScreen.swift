@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import MessageUI
 import Models
 import OSLog
@@ -13,6 +14,7 @@ struct AboutScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.requestReview) var requestReview
     @State private var email = Email.feedback
+    @State private var alertError: AlertError?
 
     var body: some View {
         List {
@@ -25,6 +27,7 @@ struct AboutScreen: View {
         .listStyle(.insetGrouped)
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
+        .alertError($alertError)
     }
 
     var header: some View {
@@ -51,7 +54,7 @@ struct AboutScreen: View {
                 case let .success(successResult) where successResult == MFMailComposeResult.sent:
                     feedbackEnvironmentModel.toggle(.success("Thanks for the feedback!"))
                 case .failure:
-                    feedbackEnvironmentModel.toggle(.error(.unexpected))
+                    alertError = .init()
                 default:
                     return
                 }

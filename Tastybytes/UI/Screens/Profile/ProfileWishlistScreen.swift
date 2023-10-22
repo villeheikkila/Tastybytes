@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -12,6 +13,7 @@ struct ProfileWishlistScreen: View {
     @State private var products: [Product.Joined] = []
     @State private var searchTerm = ""
     @State private var initialDataLoaded = false
+    @State private var alertError: AlertError?
 
     let profile: Profile
 
@@ -52,6 +54,7 @@ struct ProfileWishlistScreen: View {
         .refreshable {
             await loadProducts()
         }
+        .alertError($alertError)
         .task {
             if !initialDataLoaded {
                 await loadProducts()
@@ -85,7 +88,7 @@ struct ProfileWishlistScreen: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger
                 .error(
                     "Error occured while loading wishlist items. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"

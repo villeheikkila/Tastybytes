@@ -1,6 +1,7 @@
 import Components
 import CoreLocation
 import EnvironmentModels
+import Extensions
 import Foundation
 import MapKit
 import Models
@@ -20,6 +21,7 @@ struct LocationSearchSheet: View {
     @State private var nearbyLocations = [Location]()
     @State private var currentLocation: CLLocation?
     @State private var searchText = ""
+    @State private var alertError: AlertError?
 
     @Environment(\.dismiss) private var dismiss
 
@@ -92,6 +94,7 @@ struct LocationSearchSheet: View {
         .task {
             locationEnvironmentModel.requestLocation()
         }
+        .alertError($alertError)
         .onChange(of: locationEnvironmentModel.location) { _, latestLocation in
             guard nearbyLocations.isEmpty else { return }
             self.currentLocation = latestLocation
@@ -116,7 +119,7 @@ struct LocationSearchSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load recemt locations. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -132,7 +135,7 @@ struct LocationSearchSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load location suggestions. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -143,6 +146,7 @@ struct LocationRow: View {
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var alertError: AlertError?
 
     let location: Location
     let currentLocation: CLLocation?
@@ -175,6 +179,7 @@ struct LocationRow: View {
                 }
             }
         })
+        .alertError($alertError)
     }
 
     func storeLocation(_ location: Location) async {
@@ -186,7 +191,7 @@ struct LocationRow: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
         }
     }

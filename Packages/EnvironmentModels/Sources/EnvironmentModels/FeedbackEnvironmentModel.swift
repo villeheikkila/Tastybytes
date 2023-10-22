@@ -1,5 +1,4 @@
 import AlertToast
-import CoreHaptics
 import Observation
 import SwiftUI
 
@@ -7,15 +6,9 @@ import SwiftUI
 public final class FeedbackEnvironmentModel {
     public var show = false
     public var toast = AlertToast(type: .regular, title: "")
+    public var sensoryFeedback: SensoryFeedback?
 
-    private let selectionFeedbackGenerator = UISelectionFeedbackGenerator()
-    private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
-    private let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
-
-    public init() {
-        selectionFeedbackGenerator.prepare()
-        impactFeedbackGenerator.prepare()
-    }
+    public init() {}
 
     public func toggle(_ type: ToastType, disableHaptics: Bool = false) {
         switch type {
@@ -28,34 +21,28 @@ public final class FeedbackEnvironmentModel {
         case let .warning(title):
             toast = AlertToast(type: .error(.red), title: title)
             show = true
-        case let .error(errorType):
-            var title = "Unexpected error occured"
-            if case let .custom(message) = errorType {
-                title = message
-            }
-
-            toast = AlertToast(displayMode: .hud, type: .error(.red), title: title)
-            show = true
-            if !disableHaptics {
-                trigger(.notification(.error))
-            }
         }
     }
 
     public func trigger(_ type: HapticType) {
-        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-
         switch type {
         case let .impact(intensity):
             if let intensity {
-                impactFeedbackGenerator.impactOccurred(intensity: intensity == .low ? 0.3 : 0.7)
+                sensoryFeedback = intensity == .low ? .impact(intensity: 0.3) : .impact(intensity: 0.7)
             } else {
-                impactFeedbackGenerator.impactOccurred()
+                sensoryFeedback = .impact
             }
         case let .notification(type):
-            notificationFeedbackGenerator.notificationOccurred(type)
+            switch type {
+            case .error:
+                sensoryFeedback = .error
+            case .success:
+                sensoryFeedback = .success
+            case .warning:
+                sensoryFeedback = .warning
+            }
         case .selection:
-            selectionFeedbackGenerator.selectionChanged()
+            sensoryFeedback = .selection
         }
     }
 }
@@ -67,8 +54,15 @@ public extension FeedbackEnvironmentModel {
 
     enum ToastType {
         case success(_ title: String)
-        case error(_ errorType: ErrorType)
         case warning(_ title: String)
+    }
+
+    enum FeedbackType: Int, @unchecked Sendable {
+        case success = 0
+
+        case warning = 1
+
+        case error = 2
     }
 
     enum HapticType {
@@ -77,7 +71,7 @@ public extension FeedbackEnvironmentModel {
         }
 
         case impact(intensity: Intensity?)
-        case notification(_ type: UINotificationFeedbackGenerator.FeedbackType)
+        case notification(_ type: FeedbackType)
         case selection
     }
 }

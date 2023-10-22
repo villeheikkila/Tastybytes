@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import PhotosUI
@@ -15,6 +16,8 @@ struct EditBrandSheet: View {
     @State private var name: String
     @State private var brandOwner: Company
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
+    @State private var newCompanyName = ""
+    @State private var alertError: AlertError?
     @State private var selectedLogo: PhotosPickerItem? {
         didSet {
             if selectedLogo != nil {
@@ -93,6 +96,7 @@ struct EditBrandSheet: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -111,7 +115,7 @@ struct EditBrandSheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to edit brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -123,7 +127,7 @@ struct EditBrandSheet: View {
             await onUpdate()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

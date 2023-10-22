@@ -1,4 +1,5 @@
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -12,6 +13,7 @@ struct ProfileProductListView: View {
     @State private var searchTerm = ""
     @State private var productFilter: Product.Filter?
     @State private var initialDataLoaded = false
+    @State private var alertError: AlertError?
 
     let profile: Profile
     let locked: Bool
@@ -79,6 +81,7 @@ struct ProfileProductListView: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
         .task {
             if !initialDataLoaded {
                 await loadProducts()
@@ -142,7 +145,7 @@ struct ProfileProductListView: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Error occured while loading products. Error: \(error) (\(#file):\(#line))")
         }
     }
