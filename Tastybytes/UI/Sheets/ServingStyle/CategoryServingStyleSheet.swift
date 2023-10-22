@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -12,6 +13,7 @@ struct CategoryServingStyleSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var servingStyles: [ServingStyle]
     @State private var showDeleteServingStyleConfirmation = false
+    @State private var alertError: AlertError?
     @State private var toDeleteServingStyle: ServingStyle? {
         didSet {
             showDeleteServingStyleConfirmation = true
@@ -44,6 +46,7 @@ struct CategoryServingStyleSheet: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
         .confirmationDialog(
             "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost",
             isPresented: $showDeleteServingStyleConfirmation,
@@ -90,7 +93,7 @@ struct CategoryServingStyleSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to add serving style to category'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -109,7 +112,7 @@ struct CategoryServingStyleSheet: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

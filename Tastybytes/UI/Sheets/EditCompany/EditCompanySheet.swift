@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import PhotosUI
@@ -9,11 +10,11 @@ import SwiftUI
 struct EditCompanySheet: View {
     private let logger = Logger(category: "EditCompanySheet")
     @Environment(\.repository) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var company: Company
     @State private var newCompanyName = ""
+    @State private var alertError: AlertError?
     @State private var selectedItem: PhotosPickerItem? {
         didSet {
             if selectedItem != nil {
@@ -50,6 +51,7 @@ struct EditCompanySheet: View {
                 .disabled(!newCompanyName.isValidLength(.normal))
             }
         }
+        .alertError($alertError)
         .navigationTitle(mode.navigationTitle)
         .toolbar {
             toolbarContent
@@ -112,7 +114,7 @@ struct EditCompanySheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -125,7 +127,7 @@ struct EditCompanySheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to send company edit suggestion. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -142,7 +144,7 @@ struct EditCompanySheet: View {
             )
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

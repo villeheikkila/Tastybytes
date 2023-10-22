@@ -45,17 +45,14 @@ final class Router {
             reset()
         }
         path.append(screen)
-        storeState()
     }
 
     func reset() {
         path = []
-        storeState()
     }
 
     func removeLast() {
         path.removeLast()
-        storeState()
     }
 
     func fetchAndNavigateTo(_ repository: RepositoryProtocol, _ destination: NavigatablePath,

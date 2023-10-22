@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -13,6 +14,7 @@ struct SubBrandSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var subBrandName = ""
     @State private var searchTerm: String = ""
+    @State private var alertError: AlertError?
     @Binding var subBrand: SubBrandProtocol?
 
     let brandWithSubBrands: Brand.JoinedSubBrands
@@ -53,6 +55,7 @@ struct SubBrandSheet: View {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
+        .alertError($alertError)
         .navigationTitle("Sub-brands")
         .toolbar {
             toolbarContent
@@ -78,7 +81,7 @@ struct SubBrandSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Saving sub-brand failed. Error: \(error) (\(#file):\(#line))")
         }
     }

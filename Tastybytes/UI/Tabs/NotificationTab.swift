@@ -4,7 +4,6 @@ import SwiftUI
 
 struct NotificationTab: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var scrollToTop: Int = 0
     @Binding var resetNavigationOnTab: Tab?
 

@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -13,6 +14,7 @@ struct ServingStyleManagementSheet: View {
     @State private var servingStyles = [ServingStyle]()
     @State private var servingStyleName = ""
     @State private var newServingStyleName = ""
+    @State private var alertError: AlertError?
     @State private var toDeleteServingStyle: ServingStyle? {
         didSet {
             showDeleteServingStyleConfirmation = true
@@ -108,7 +110,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to load all serving styles. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -124,7 +126,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to create new serving style. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -140,7 +142,7 @@ struct ServingStyleManagementSheet: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -158,7 +160,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Failed to edit '\(editServingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

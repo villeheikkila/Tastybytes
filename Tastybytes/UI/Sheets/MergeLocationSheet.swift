@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -9,6 +10,7 @@ struct MergeLocationSheet: View {
     private let logger = Logger(category: "MergeLocationSheet")
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var alertError: AlertError?
     @Environment(\.dismiss) private var dismiss
     @State private var locations = [Location]()
     @State private var mergeToLocation: Location? {
@@ -76,7 +78,7 @@ struct MergeLocationSheet: View {
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Merging location failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -88,7 +90,7 @@ struct MergeLocationSheet: View {
             locations = searchResults
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init()
             logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")
         }
     }

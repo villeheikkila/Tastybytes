@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import PhotosUI
@@ -10,8 +11,8 @@ struct ProductLogoSheet: View {
     private let logger = Logger(category: "ProductLogoSheet")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var alertError: AlertError?
     @State private var selectedLogo: PhotosPickerItem? {
         didSet {
             Task { await uploadLogo() }
@@ -62,6 +63,7 @@ struct ProductLogoSheet: View {
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
         }
+        .alertError($alertError)
         .navigationTitle("Product Logo")
         .toolbar {
             toolbarContent
@@ -82,7 +84,7 @@ struct ProductLogoSheet: View {
             logoFile = filename
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackEnvironmentModel.toggle(.error(.unexpected))
+            alertError = .init(title: "Uplodaing product logo failed.")
             logger.error("Uplodaing product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

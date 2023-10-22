@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -12,6 +13,7 @@ struct DiscoverScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
+    @State private var alertError: AlertError?
     @State private var scrollProxy: ScrollViewProxy?
     @State private var searchTerm: String = ""
     @State private var products = [Product.Joined]()
@@ -89,6 +91,7 @@ struct DiscoverScreen: View {
         .toolbar {
             toolbarContent
         }
+        .alertError($alertError)
         .confirmationDialog(
             "Add barcode confirmation",
             isPresented: $showAddBarcodeConfirmation,

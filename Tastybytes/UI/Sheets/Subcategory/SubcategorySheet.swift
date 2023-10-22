@@ -9,7 +9,6 @@ struct SubcategorySheet: View {
     private let logger = Logger(category: "SubcategorySheet")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var subcategories: Set<Int>

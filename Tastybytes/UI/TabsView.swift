@@ -4,7 +4,6 @@ import SwiftUI
 
 struct TabsView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @AppStorage(.selectedTab) private var selection = Tab.activity
     @State private var resetNavigationOnTab: Tab?
@@ -27,14 +26,12 @@ struct TabsView: View {
                    selection.rawValue < shownTabs.count - 1
                 {
                     if let tab = Tab(rawValue: selection.rawValue + 1) {
-                        feedbackEnvironmentModel.trigger(.selection)
                         selection = tab
                     }
                 } else if value.translation.width > switchTabGestureRangeDistance,
                           value.translation.width < 3 * switchTabGestureRangeDistance, selection.rawValue > 0
                 {
                     if let tab = Tab(rawValue: selection.rawValue - 1) {
-                        feedbackEnvironmentModel.trigger(.selection)
                         selection = tab
                     }
                 }
@@ -45,7 +42,6 @@ struct TabsView: View {
         TabView(selection: .init(get: {
             selection
         }, set: { newTab in
-            feedbackEnvironmentModel.trigger(.selection)
             if newTab == selection {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                     resetNavigationOnTab = selection
@@ -63,6 +59,7 @@ struct TabsView: View {
                     .badge(getBadgeByTab(tab))
             }
         }
+        .sensoryFeedback(.selection, trigger: selection)
         .simultaneousGesture(switchTabGesture)
         .onOpenURL { url in
             if let tab = url.tab {
