@@ -31,7 +31,8 @@ struct CheckInSheet: View {
     @State private var isLegacyCheckIn: Bool
     @State private var blurHash: String?
     @State private var alertError: AlertError?
-    @State private var image: UIImage? {
+    @State private var image: UIImage?
+    @State private var croppedImage: UIImage? {
         didSet {
             Task {
                 if let image, let hash = image.resize(to: 100)?
@@ -42,6 +43,8 @@ struct CheckInSheet: View {
             }
         }
     }
+
+    @State private var showImageCropper = false
 
     let onCreation: ((_ checkIn: CheckIn) async -> Void)?
     let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
@@ -102,7 +105,13 @@ struct CheckInSheet: View {
         }, set: { image in
             guard let image else { return }
             self.image = image
+            showImageCropper = true
         }))
+        .fullScreenImageCrop(
+            isPresented: $showImageCropper,
+            image: image,
+            croppedImage: $croppedImage
+        )
         .alertError($alertError)
         .toolbar {
             toolbarContent
@@ -122,11 +131,11 @@ struct CheckInSheet: View {
                     focusedField = nil
                 }
 
-            if image != nil || editCheckIn?.imageFile != nil {
+            if croppedImage != nil || editCheckIn?.imageFile != nil {
                 HStack {
                     Spacer()
-                    if let image {
-                        Image(uiImage: image)
+                    if let croppedImage {
+                        Image(uiImage: croppedImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(height: 150, alignment: .top)
@@ -272,8 +281,8 @@ struct CheckInSheet: View {
 
         switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
         case let .success(updatedCheckIn):
-            if let image {
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: image)
+            if let croppedImage {
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: croppedImage)
             }
             await onUpdate(updatedCheckIn)
         case let .failure(error):
@@ -300,8 +309,8 @@ struct CheckInSheet: View {
 
         switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
         case let .success(newCheckIn):
-            if let image {
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, image: image)
+            if let croppedImage {
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, image: croppedImage)
             }
             await onCreation(newCheckIn)
         case let .failure(error):
