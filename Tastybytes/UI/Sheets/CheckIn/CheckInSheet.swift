@@ -32,7 +32,7 @@ struct CheckInSheet: View {
     @State private var blurHash: String?
     @State private var alertError: AlertError?
     @State private var image: UIImage?
-    @State private var croppedImage: UIImage? {
+    @State private var finalImage: UIImage? {
         didSet {
             Task {
                 if let image, let hash = image.resize(to: 100)?
@@ -110,7 +110,7 @@ struct CheckInSheet: View {
         .fullScreenImageCrop(
             isPresented: $showImageCropper,
             image: image,
-            croppedImage: $croppedImage
+            finalImage: $finalImage
         )
         .alertError($alertError)
         .toolbar {
@@ -131,11 +131,11 @@ struct CheckInSheet: View {
                     focusedField = nil
                 }
 
-            if croppedImage != nil || editCheckIn?.imageFile != nil {
+            if finalImage != nil || editCheckIn?.imageFile != nil {
                 HStack {
                     Spacer()
-                    if let croppedImage {
-                        Image(uiImage: croppedImage)
+                    if let finalImage {
+                        Image(uiImage: finalImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(height: 150, alignment: .top)
@@ -281,8 +281,8 @@ struct CheckInSheet: View {
 
         switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
         case let .success(updatedCheckIn):
-            if let croppedImage {
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: croppedImage)
+            if let finalImage {
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: finalImage)
             }
             await onUpdate(updatedCheckIn)
         case let .failure(error):
@@ -309,8 +309,8 @@ struct CheckInSheet: View {
 
         switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
         case let .success(newCheckIn):
-            if let croppedImage {
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, image: croppedImage)
+            if let finalImage {
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, image: finalImage)
             }
             await onCreation(newCheckIn)
         case let .failure(error):

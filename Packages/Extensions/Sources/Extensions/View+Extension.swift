@@ -134,3 +134,10 @@ public extension View {
         modifier(AlertErrorModifier(alertError: alertError))
     }
 }
+
+public extension View {
+    @ViewBuilder
+    func frame(_ size: CGSize) -> some View {
+        frame(width: size.width, height: size.height)
+    }
+}
