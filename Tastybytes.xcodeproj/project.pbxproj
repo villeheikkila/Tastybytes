@@ -177,10 +177,6 @@
 		5C131CEA2A022C13007ADA1B /* CategoryPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPickerSheet.swift; sourceTree = "<group>"; };
 		5C13F21E291A8D8E00599892 /* TastybytesDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesDebug.entitlements; sourceTree = "<group>"; };
 		5C14E72C2AC32AB90000AB39 /* TimePeriodStatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePeriodStatisticView.swift; sourceTree = "<group>"; };
-		5C1A113A2A95107D00FF32F6 /* tastey_watchkitappApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tastey_watchkitappApp.swift; sourceTree = "<group>"; };
-		5C1A113C2A95107D00FF32F6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		5C1A113E2A95108100FF32F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		5C1A11412A95108100FF32F6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminTab.swift; sourceTree = "<group>"; };
 		5C20A51129AA6A5000ABBA74 /* FlavorManagementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorManagementScreen.swift; sourceTree = "<group>"; };
 		5C20A51329AA6AA700ABBA74 /* VerificationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationScreen.swift; sourceTree = "<group>"; };
@@ -262,7 +258,6 @@
 		5CB4E02929DF3A1700135ADA /* ReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSheet.swift; sourceTree = "<group>"; };
 		5CB4E03129E093AA00135ADA /* ReportButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportButtonView.swift; sourceTree = "<group>"; };
 		5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileProductListView.swift; sourceTree = "<group>"; };
-		5CB5B7642A953EB800A409AE /* tastey.watchkitapp Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "tastey.watchkitapp Watch App.entitlements"; sourceTree = "<group>"; };
 		5CBC244F297C54B900A0002B /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		5CBC2451297C60AE00A0002B /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		5CBC2453297D3A5F00A0002B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -335,26 +330,6 @@
 				5C09BECA29A54AF800331AEB /* Comfortaa-Bold.ttf */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		5C1A11392A95107D00FF32F6 /* tastey.watchkitapp Watch App */ = {
-			isa = PBXGroup;
-			children = (
-				5CB5B7642A953EB800A409AE /* tastey.watchkitapp Watch App.entitlements */,
-				5C1A113A2A95107D00FF32F6 /* tastey_watchkitappApp.swift */,
-				5C1A113C2A95107D00FF32F6 /* ContentView.swift */,
-				5C1A113E2A95108100FF32F6 /* Assets.xcassets */,
-				5C1A11402A95108100FF32F6 /* Preview Content */,
-			);
-			path = "tastey.watchkitapp Watch App";
-			sourceTree = "<group>";
-		};
-		5C1A11402A95108100FF32F6 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				5C1A11412A95108100FF32F6 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		5C20A51529AB527B00ABBA74 /* FlavorManagement */ = {
@@ -896,7 +871,6 @@
 				5CDB8BA42A932FFC00F73123 /* Repositories */,
 				5CDB8BA02A92A99F00F73123 /* Models */,
 				5CFEE57528ED69B100A8DD66 /* Tastybytes */,
-				5C1A11392A95107D00FF32F6 /* tastey.watchkitapp Watch App */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
 				5CF28FCA2A93F2C700FC5C49 /* Frameworks */,
 			);
