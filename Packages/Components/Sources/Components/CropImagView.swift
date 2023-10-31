@@ -55,7 +55,10 @@ struct CropView: View {
         }
 
         ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: { dismiss() }) {
+            Button(action: {
+                finalImage = image
+                dismiss()
+            }) {
                 Image(systemName: "xmark")
                     .font(.callout)
                     .fontWeight(.semibold)

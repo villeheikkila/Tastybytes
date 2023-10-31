@@ -15,13 +15,14 @@ struct DiscoverScreen: View {
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @State private var alertError: AlertError?
     @State private var scrollProxy: ScrollViewProxy?
-    @State private var searchTerm: String = ""
+    @State private var searchTerm = ""
     @State private var products = [Product.Joined]()
     @State private var profiles = [Profile]()
     @State private var companies = [Company]()
     @State private var locations = [Location]()
     @State private var isSearched = false
     @State private var isLoading = false
+    @State private var searchedFor = ""
     @State private var searchScope: SearchScope = .products
     @State private var barcode: Barcode?
     @State private var addBarcodeTo: Product.Joined? {
@@ -40,7 +41,7 @@ struct DiscoverScreen: View {
     @Binding var scrollToTop: Int
 
     private var showContentUnavailableView: Bool {
-        !searchTerm.isEmpty && isSearched && !isLoading && currentScopeIsEmpty
+        !searchedFor.isEmpty && isSearched && !isLoading && currentScopeIsEmpty
     }
 
     var body: some View {
@@ -275,7 +276,7 @@ struct DiscoverScreen: View {
         switch searchScope {
         case .companies:
             ContentUnavailableView {
-                Label("No Companies  found for \"\(searchTerm)\"", systemImage: "storefront")
+                Label("No Companies  found for \"\(searchedFor)\"", systemImage: "storefront")
             } description: {
                 Text("Check the spelling or try a new search")
             } actions: {
@@ -283,13 +284,13 @@ struct DiscoverScreen: View {
             }
         case .locations:
             ContentUnavailableView {
-                Label("No Locations found for \"\(searchTerm)\"", systemImage: "location.magnifyingglass")
+                Label("No Locations found for \"\(searchedFor)\"", systemImage: "location.magnifyingglass")
             } description: {
                 Text("Check the spelling or try a new search")
             }
         case .products:
             ContentUnavailableView {
-                Label("No Products found for \"\(searchTerm)\"", systemImage: "bubbles.and.sparkles")
+                Label("No Products found for \"\(searchedFor)\"", systemImage: "bubbles.and.sparkles")
             } description: {
                 Text("Check the spelling or try a new search")
             } actions: {
@@ -301,7 +302,7 @@ struct DiscoverScreen: View {
             }
         case .users:
             ContentUnavailableView {
-                Label("No profiles found for \"\(searchTerm)\"", systemImage: "person.crop.circle.badge.questionmark")
+                Label("No profiles found for \"\(searchedFor)\"", systemImage: "person.crop.circle.badge.questionmark")
             } description: {
                 Text("Check the spelling or try a new search")
             }
@@ -365,6 +366,7 @@ struct DiscoverScreen: View {
             withAnimation {
                 products = searchResults
                 isLoading = false
+                searchedFor = searchTerm
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -379,6 +381,7 @@ struct DiscoverScreen: View {
             withAnimation {
                 profiles = searchResults
                 isLoading = false
+                searchedFor = searchTerm
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -415,6 +418,7 @@ struct DiscoverScreen: View {
                 withAnimation {
                     companies = searchResults
                     isLoading = false
+                    searchedFor = searchTerm
                 }
             }
         case let .failure(error):
@@ -430,6 +434,7 @@ struct DiscoverScreen: View {
             withAnimation {
                 locations = searchResults
                 isLoading = false
+                searchedFor = searchTerm
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
