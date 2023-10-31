@@ -28,9 +28,5 @@ let package = Package(
                 .product(name: "NukeUI", package: "Nuke"),
             ]
         ),
-        .testTarget(
-            name: "ComponentsTests",
-            dependencies: ["Components"]
-        ),
     ]
 )

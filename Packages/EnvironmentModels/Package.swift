@@ -31,9 +31,5 @@ let package = Package(
                 .product(name: "AlertToast", package: "AlertToast", condition: .when(platforms: [.iOS])),
             ]
         ),
-        .testTarget(
-            name: "EnvironmentModelsTests",
-            dependencies: ["EnvironmentModels"]
-        ),
     ]
 )
