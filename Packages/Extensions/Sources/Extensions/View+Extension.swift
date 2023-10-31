@@ -73,26 +73,32 @@ public extension Task {
     }
 }
 
-#if !os(watchOS)
-    public extension View {
-        func detectOrientation(_ orientation: Binding<UIDeviceOrientation>) -> some View {
-            modifier(DetectOrientation(orientation: orientation))
+public extension View {
+    func detectOrientation(_ isPortrait: Binding<Bool>) -> some View {
+        modifier(DetectOrientation(isPortrait: isPortrait))
+    }
+}
+
+public struct DetectOrientation: ViewModifier {
+    @Binding var isPortrait: Bool
+
+    public func body(content: Content) -> some View {
+        content.onAppear {
+            #if os(iOS)
+                NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+                    .sink { _ in
+                        let isCurrentlyPortrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
+                        isPortrait = UIDevice.current
+                            .orientation == .unknown ? isCurrentlyPortrait :
+                            (UIDevice.current.orientation == .portrait || UIDevice.current
+                                .orientation == .portraitUpsideDown)
+                    }
+            #elseif os(macOS) || os(watchOS) || os(tvOS)
+                isPortrait = false
+            #endif
         }
     }
-
-    public struct DetectOrientation: ViewModifier {
-        @Binding var orientation: UIDeviceOrientation
-
-        public func body(content: Content) -> some View {
-            content
-                .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                    let fallback = UIScreen.main.bounds.height > UIScreen.main.bounds.width ? UIDeviceOrientation
-                        .portrait : UIDeviceOrientation.landscapeRight
-                    orientation = UIDevice.current.orientation == .unknown ? fallback : UIDevice.current.orientation
-                }
-        }
-    }
-#endif
+}
 
 public struct AlertError: Identifiable, Equatable {
     public let id: UUID

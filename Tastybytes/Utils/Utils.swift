@@ -41,13 +41,13 @@ func getPagination(page: Int, size: Int) -> (Int, Int) {
     return (from, to)
 }
 
-struct Orientation: EnvironmentKey {
-    static let defaultValue: UIDeviceOrientation = UIDevice.current.orientation
+struct IsPortrait: EnvironmentKey {
+    static let defaultValue = false
 }
 
 extension EnvironmentValues {
-    var orientation: UIDeviceOrientation {
-        get { self[Orientation.self] }
-        set { self[Orientation.self] = newValue }
+    var isPortrait: Bool {
+        get { self[IsPortrait.self] }
+        set { self[IsPortrait.self] = newValue }
     }
 }

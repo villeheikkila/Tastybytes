@@ -18,7 +18,7 @@ struct EnvironmentProvider: View {
     @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
     @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel()
     @State private var authEvent: AuthChangeEvent?
-    @State private var orientation: UIDeviceOrientation
+    @State private var isPortrait = false
     @Environment(\.repository) private var repository
     @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
 
@@ -33,7 +33,6 @@ struct EnvironmentProvider: View {
             State(wrappedValue: ImageUploadEnvironmentModel(repository: repository))
         _friendEnvironmentModel =
             State(wrappedValue: FriendEnvironmentModel(repository: repository))
-        _orientation = State(wrappedValue: UIDevice.current.orientation)
     }
 
     var body: some View {
@@ -48,8 +47,8 @@ struct EnvironmentProvider: View {
             .environment(imageUploadEnvironmentModel)
             .environment(subscriptionEnvironmentModel)
             .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
-            .detectOrientation($orientation)
-            .environment(\.orientation, orientation)
+            .detectOrientation($isPortrait)
+            .environment(\.isPortrait, isPortrait)
             .alertError($appDataEnvironmentModel.alertError)
             .alertError($notificationEnvironmentModel.alertError)
             .alertError($profileEnvironmentModel.alertError)

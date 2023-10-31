@@ -35,7 +35,7 @@ struct SideBarView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
-    @Environment(\.orientation) private var orientation
+    @Environment(\.isPortrait) private var isPortrait
     @State private var sheetEnvironmentModel = SheetManager()
     @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
     @State private var selection: SiderBarTab? = SiderBarTab.activity {
@@ -55,10 +55,6 @@ struct SideBarView: View {
         } else {
             SiderBarTab.allCases.filter { $0 != .admin }
         }
-    }
-
-    private var isPortrait: Bool {
-        [.portrait, .portraitUpsideDown].contains(orientation)
     }
 
     private var columnVisibility: NavigationSplitViewVisibility {
