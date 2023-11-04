@@ -110,7 +110,11 @@ struct CurrentUserFriendsScreen: View {
             oldValue && !newValue
         }
         .overlay {
-            if !searchTerm.isEmpty && filteredFriends.isEmpty {
+            if friendEnvironmentModel.friends.isEmpty {
+                ContentUnavailableView {
+                    Label("You don't have any friends yet", systemImage: "person.3")
+                }
+            } else if !searchTerm.isEmpty && filteredFriends.isEmpty {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
