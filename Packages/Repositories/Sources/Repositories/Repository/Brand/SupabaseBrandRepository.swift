@@ -1,7 +1,6 @@
 import Foundation
 import Models
 import Supabase
-import SupabaseStorage
 
 struct SupabaseBrandRepository: BrandRepository {
     let client: SupabaseClient
@@ -11,9 +10,9 @@ struct SupabaseBrandRepository: BrandRepository {
             let response: Brand.JoinedSubBrandsProducts = try await client
                 .database
                 .from(.brands)
-                .select(columns: Brand.getQuery(.joined(false)))
-                .eq(column: "id", value: id)
-                .limit(count: 1)
+                .select(Brand.getQuery(.joined(false)))
+                .eq("id", value: id)
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -29,9 +28,9 @@ struct SupabaseBrandRepository: BrandRepository {
             let response: Brand.JoinedSubBrandsProductsCompany = try await client
                 .database
                 .from(.brands)
-                .select(columns: Brand.getQuery(.joinedSubBrandsCompany(false)))
-                .eq(column: "id", value: id)
-                .limit(count: 1)
+                .select(Brand.getQuery(.joinedSubBrandsCompany(false)))
+                .eq("id", value: id)
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -47,9 +46,9 @@ struct SupabaseBrandRepository: BrandRepository {
             let response: [Brand.JoinedSubBrandsProductsCompany] = try await client
                 .database
                 .from(.brands)
-                .select(columns: Brand.getQuery(.joinedSubBrandsCompany(false)))
-                .eq(column: "is_verified", value: false)
-                .order(column: "created_at", ascending: false)
+                .select(Brand.getQuery(.joinedSubBrandsCompany(false)))
+                .eq("is_verified", value: false)
+                .order("created_at", ascending: false)
                 .execute()
                 .value
 
@@ -64,9 +63,9 @@ struct SupabaseBrandRepository: BrandRepository {
             let response: [Brand.JoinedSubBrands] = try await client
                 .database
                 .from(.brands)
-                .select(columns: Brand.getQuery(.joinedSubBrands(false)))
-                .eq(column: "brand_owner_id", value: brandOwnerId)
-                .order(column: "name")
+                .select(Brand.getQuery(.joinedSubBrands(false)))
+                .eq("brand_owner_id", value: brandOwnerId)
+                .order("name")
                 .execute()
                 .value
 
@@ -81,8 +80,8 @@ struct SupabaseBrandRepository: BrandRepository {
             let response: Brand.JoinedSubBrands = try await client
                 .database
                 .from(.brands)
-                .insert(values: newBrand, returning: .representation)
-                .select(columns: Brand.getQuery(.joinedSubBrands(false)))
+                .insert(newBrand, returning: .representation)
+                .select(Brand.getQuery(.joinedSubBrands(false)))
                 .single()
                 .execute()
                 .value
@@ -116,7 +115,7 @@ struct SupabaseBrandRepository: BrandRepository {
             try await client
                 .database
                 .from(.brandLikes)
-                .insert(values: BrandLike.New(brandId: brandId))
+                .insert(BrandLike.New(brandId: brandId))
                 .single()
                 .execute()
 
@@ -132,7 +131,7 @@ struct SupabaseBrandRepository: BrandRepository {
                 .database
                 .from(.brandLikes)
                 .delete()
-                .eq(column: "brand_id", value: brandId)
+                .eq("brand_id", value: brandId)
                 .execute()
 
             return .success(())
@@ -160,8 +159,8 @@ struct SupabaseBrandRepository: BrandRepository {
             try await client
                 .database
                 .from(.brands)
-                .update(values: updateRequest)
-                .eq(column: "id", value: updateRequest.id)
+                .update(updateRequest)
+                .eq("id", value: updateRequest.id)
                 .execute()
 
             return .success(())
@@ -176,7 +175,7 @@ struct SupabaseBrandRepository: BrandRepository {
                 .database
                 .from(.brands)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())
@@ -191,8 +190,8 @@ struct SupabaseBrandRepository: BrandRepository {
                 .database
                 .from(.viewBrandRatings)
                 .select()
-                .eq(column: "id", value: id)
-                .limit(count: 1)
+                .eq("id", value: id)
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -206,12 +205,12 @@ struct SupabaseBrandRepository: BrandRepository {
     func uploadLogo(brandId: Int, data: Data) async -> Result<String, Error> {
         do {
             let fileName = "\(brandId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
-            let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
+            let file = Storage.File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
 
             _ = try await client
                 .storage
                 .from(.logos)
-                .upload(path: fileName, file: file, fileOptions: nil)
+                .upload(path: fileName, file: file)
 
             return .success(fileName)
         } catch {

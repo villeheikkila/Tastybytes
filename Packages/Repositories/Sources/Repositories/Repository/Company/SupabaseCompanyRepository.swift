@@ -1,7 +1,6 @@
 import Foundation
 import Models
 import Supabase
-import SupabaseStorage
 
 struct SupabaseCompanyRepository: CompanyRepository {
     let client: SupabaseClient
@@ -11,9 +10,9 @@ struct SupabaseCompanyRepository: CompanyRepository {
             let response: Company = try await client
                 .database
                 .from(.companies)
-                .select(columns: Company.getQuery(.saved(false)))
-                .eq(column: "id", value: id)
-                .limit(count: 1)
+                .select(Company.getQuery(.saved(false)))
+                .eq("id", value: id)
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -29,9 +28,9 @@ struct SupabaseCompanyRepository: CompanyRepository {
             let response: Company.Joined = try await client
                 .database
                 .from(.companies)
-                .select(columns: Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
-                .eq(column: "id", value: id)
-                .limit(count: 1)
+                .select(Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
+                .eq("id", value: id)
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -47,8 +46,8 @@ struct SupabaseCompanyRepository: CompanyRepository {
             let response: Company = try await client
                 .database
                 .from(.companies)
-                .insert(values: newCompany, returning: .representation)
-                .select(columns: Company.getQuery(.saved(false)))
+                .insert(newCompany, returning: .representation)
+                .select(Company.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .value
@@ -67,7 +66,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             _ = try await client
                 .storage
                 .from(.logos)
-                .upload(path: fileName, file: file, fileOptions: nil)
+                .upload(path: fileName, file: file)
 
             return .success(fileName)
         } catch {
@@ -80,9 +79,9 @@ struct SupabaseCompanyRepository: CompanyRepository {
             let response: [Company] = try await client
                 .database
                 .from(.companies)
-                .select(columns: Company.getQuery(.saved(false)))
-                .eq(column: "is_verified", value: false)
-                .order(column: "created_at", ascending: false)
+                .select(Company.getQuery(.saved(false)))
+                .eq("is_verified", value: false)
+                .order("created_at", ascending: false)
                 .execute()
                 .value
 
@@ -97,9 +96,9 @@ struct SupabaseCompanyRepository: CompanyRepository {
             let response: Company.Joined = try await client
                 .database
                 .from(.companies)
-                .update(values: updateRequest)
-                .eq(column: "id", value: updateRequest.id)
-                .select(columns: Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
+                .update(updateRequest)
+                .eq("id", value: updateRequest.id)
+                .select(Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
                 .single()
                 .execute()
                 .value
@@ -115,7 +114,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             try await client
                 .database
                 .from(.companyEditSuggestions)
-                .insert(values: updateRequest)
+                .insert(updateRequest)
                 .execute()
 
             return .success(())
@@ -130,7 +129,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .database
                 .from(.companies)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())
@@ -163,8 +162,8 @@ struct SupabaseCompanyRepository: CompanyRepository {
             let response: [Company] = try await client
                 .database
                 .from(.companies)
-                .select(columns: Company.getQuery(.saved(false)))
-                .textSearch(column: "name", query: searchString)
+                .select(Company.getQuery(.saved(false)))
+                .textSearch("name", query: searchString)
                 .execute()
                 .value
 
@@ -180,7 +179,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .database
                 .rpc(fn: .getCompanySummary, params: Company.SummaryRequest(id: id))
                 .select()
-                .limit(count: 1)
+                .limit(1)
                 .single()
                 .execute()
                 .value

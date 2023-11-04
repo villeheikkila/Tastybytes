@@ -17,7 +17,6 @@ struct EnvironmentProvider: View {
     @State private var friendEnvironmentModel: FriendEnvironmentModel
     @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
     @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel()
-    @State private var authEvent: AuthChangeEvent?
     @State private var isPortrait = false
     @Environment(\.repository) private var repository
     @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()

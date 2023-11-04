@@ -10,7 +10,7 @@ struct SupabaseReportRepository: ReportRepository {
             try await client
                 .database
                 .from(.reports)
-                .insert(values: report, returning: .none)
+                .insert(report, returning: .none)
                 .execute()
 
             return .success(())

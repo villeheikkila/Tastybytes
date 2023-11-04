@@ -1,7 +1,6 @@
 import Foundation
-import GoTrue
+import Models
 import Supabase
-@_spi(Experimental) import GoTrue
 
 struct SupabaseAuthRepository: AuthRepository {
     let client: SupabaseClient
@@ -122,5 +121,36 @@ struct SupabaseAuthRepository: AuthRepository {
         } catch {
             return .failure(error)
         }
+    }
+
+    func authStateListener() async -> AsyncStream<AuthState> {
+        await client.auth.onAuthStateChange().compactMap { event, session in
+            switch event {
+            case .initialSession: session != nil ? AuthState.authenticated : .unauthenticated
+            case .signedIn: AuthState.authenticated
+            case .signedOut: AuthState.unauthenticated
+            case .passwordRecovery, .tokenRefreshed, .userUpdated, .userDeleted, .mfaChallengeVerified:
+                nil
+            }
+        }
+        .eraseToStream()
+    }
+}
+
+extension AsyncStream {
+    init<S: AsyncSequence>(_ sequence: S) where S.Element == Element {
+        var iterator: S.AsyncIterator?
+        self.init {
+            if iterator == nil {
+                iterator = sequence.makeAsyncIterator()
+            }
+            return try? await iterator?.next()
+        }
+    }
+}
+
+extension AsyncSequence {
+    func eraseToStream() -> AsyncStream<Element> {
+        AsyncStream(self)
     }
 }

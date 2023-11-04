@@ -9,8 +9,8 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
             let response: [ProductBarcode.JoinedWithCreator] = try await client
                 .database
                 .from(.productBarcodes)
-                .select(columns: ProductBarcode.getQuery(.joinedCreator(false)))
-                .eq(column: "product_id", value: id)
+                .select(ProductBarcode.getQuery(.joinedCreator(false)))
+                .eq("product_id", value: id)
                 .execute()
                 .value
 
@@ -25,10 +25,8 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
             try await client
                 .database
                 .from(.productBarcodes)
-                .insert(
-                    values: ProductBarcode.NewRequest(product: product, barcode: barcode),
-                    returning: .representation
-                )
+                .insert(ProductBarcode.NewRequest(product: product, barcode: barcode),
+                        returning: .representation)
                 .execute()
 
             return .success(barcode)
@@ -43,7 +41,7 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
                 .database
                 .from(.productBarcodes)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())

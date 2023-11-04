@@ -9,9 +9,9 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response: [Models.Notification] = try await client
                 .database
                 .from(.notifications)
-                .select(columns: Notification.getQuery(.joined))
-                .gt(column: "id", value: afterId ?? 0)
-                .order(column: "id", ascending: false)
+                .select(Notification.getQuery(.joined))
+                .gt("id", value: afterId ?? 0)
+                .order("id", ascending: false)
                 .execute()
                 .value
 
@@ -26,8 +26,8 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response = try await client
                 .database
                 .from(.notifications)
-                .select(columns: "id", head: true, count: .exact)
-                .is(column: "seen_at", value: "null")
+                .select("id", head: true, count: .exact)
+                .is("seen_at", value: "null")
                 .execute()
                 .count
 
@@ -43,8 +43,8 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 .database
                 .rpc(fn: .upsertDeviceToken, params: Profile
                     .PushNotificationToken(deviceToken: deviceToken))
-                .select(columns: ProfilePushNotification.getQuery(.saved(false)))
-                .limit(count: 1)
+                .select(ProfilePushNotification.getQuery(.saved(false)))
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -62,9 +62,9 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response: ProfilePushNotification = try await client
                 .database
                 .from(.profilePushNotifications)
-                .update(values: updateRequest, returning: .representation)
-                .eq(column: "device_token", value: updateRequest.id)
-                .select(columns: ProfilePushNotification.getQuery(.saved(false)))
+                .update(updateRequest, returning: .representation)
+                .eq("device_token", value: updateRequest.id)
+                .select(ProfilePushNotification.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .value
@@ -80,8 +80,8 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response: Notification = try await client
                 .database
                 .rpc(fn: .markNotificationAsRead, params: Notification.MarkReadRequest(id: id))
-                .select(columns: Notification.getQuery(.joined))
-                .limit(count: 1)
+                .select(Notification.getQuery(.joined))
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -97,7 +97,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response: [Models.Notification] = try await client
                 .database
                 .rpc(fn: .markAllNotificationRead)
-                .select(columns: Notification.getQuery(.joined))
+                .select(Notification.getQuery(.joined))
                 .execute()
                 .value
 
@@ -112,7 +112,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response: [Models.Notification] = try await client
                 .database
                 .rpc(fn: .markFriendRequestNotificationAsRead)
-                .select(columns: Notification.getQuery(.joined))
+                .select(Notification.getQuery(.joined))
                 .execute()
                 .value
 
@@ -130,7 +130,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
                     fn: .markCheckInNotificationAsRead,
                     params: Notification.MarkCheckInReadRequest(checkInId: checkInId)
                 )
-                .select(columns: Notification.getQuery(.joined))
+                .select(Notification.getQuery(.joined))
                 .execute()
                 .value
 
@@ -146,7 +146,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 .database
                 .from(.notifications)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())
@@ -163,7 +163,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 .delete()
                 // DELETE requires a where clause, add something that always returns true
                 // Security policies make sure that everything can be deleted
-                .neq(column: "id", value: 0)
+                .neq("id", value: 0)
                 .execute()
 
             return .success(())

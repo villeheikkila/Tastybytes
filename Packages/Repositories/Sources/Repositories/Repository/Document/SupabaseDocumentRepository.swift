@@ -9,8 +9,8 @@ struct SupabaseDocumentRepository: DocumentRepository {
             let response: Document.About = try await client
                 .database
                 .from(.documents)
-                .select(columns: Document.getQuery(.saved(false)))
-                .eq(column: "page_name", value: Document.Page.about.rawValue)
+                .select( Document.getQuery(.saved(false)))
+                .eq( "page_name", value: Document.Page.about.rawValue)
                 .single()
                 .execute()
                 .value

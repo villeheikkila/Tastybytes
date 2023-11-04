@@ -1,7 +1,6 @@
 import Foundation
 import Models
 import Supabase
-import SupabaseStorage
 
 struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
@@ -11,7 +10,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let response: [CheckIn] = try await client
                 .database
                 .rpc(fn: .getActivityFeed)
-                .select(columns: CheckIn.getQuery(.joined(false)))
+                .select(CheckIn.getQuery(.joined(false)))
                 .range(from: from, to: to)
                 .execute()
                 .value
@@ -23,12 +22,12 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error> {
         do {
-            let queryBuilder = client
+            let queryBuilder = await client
                 .database
                 .from(.checkIns)
-                .select(columns: CheckIn.getQuery(.joined(false)))
-                .eq(column: "created_by", value: id.uuidString.lowercased())
-                .order(column: "id", ascending: false)
+                .select(CheckIn.getQuery(.joined(false)))
+                .eq("created_by", value: id.uuidString.lowercased())
+                .order("id", ascending: false)
 
             switch queryType {
             case .all:
@@ -53,9 +52,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let response: [CheckIn] = try await client
                 .database
                 .from(segment.table)
-                .select(columns: CheckIn.getQuery(.joined(false)))
-                .eq(column: "product_id", value: id)
-                .order(column: "created_at", ascending: false)
+                .select(CheckIn.getQuery(.joined(false)))
+                .eq("product_id", value: id)
+                .order("created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
                 .value
@@ -71,9 +70,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let response: [CheckIn.Image] = try await client
                 .database
                 .from(.checkIns)
-                .select(columns: CheckIn.getQuery(.image(false)))
-                .eq(column: "created_by", value: id)
-                .order(column: "created_at", ascending: false)
+                .select(CheckIn.getQuery(.image(false)))
+                .eq("created_by", value: id)
+                .order("created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
                 .value
@@ -91,10 +90,10 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let response: [CheckIn.Image] = try await client
                 .database
                 .from(.checkIns)
-                .select(columns: CheckIn.getQuery(.image(false)))
-                .eq(column: by.column, value: by.id)
-                .notEquals(column: "image_file", value: "null")
-                .order(column: "created_at", ascending: false)
+                .select(CheckIn.getQuery(.image(false)))
+                .eq(by.column, value: by.id)
+                .notEquals("image_file", value: "null")
+                .order("created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
                 .value
@@ -112,9 +111,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let response: [CheckIn] = try await client
                 .database
                 .from(segment.table)
-                .select(columns: CheckIn.getQuery(.joined(false)))
-                .eq(column: "location_id", value: locationId.uuidString)
-                .order(column: "created_at", ascending: false)
+                .select(CheckIn.getQuery(.joined(false)))
+                .eq("location_id", value: locationId.uuidString)
+                .order("created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
                 .value
@@ -130,9 +129,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let response: CheckIn = try await client
                 .database
                 .from(.checkIns)
-                .select(columns: CheckIn.getQuery(.joined(false)))
-                .eq(column: "id", value: id)
-                .limit(count: 1)
+                .select(CheckIn.getQuery(.joined(false)))
+                .eq("id", value: id)
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -148,8 +147,8 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let createdCheckIn: IntId = try await client
                 .database
                 .rpc(fn: .createCheckIn, params: newCheckInParams)
-                .select(columns: "id")
-                .limit(count: 1)
+                .select("id")
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -165,8 +164,8 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let response: CheckIn = try await client
                 .database
                 .rpc(fn: .updateCheckIn, params: updateCheckInParams)
-                .select(columns: CheckIn.getQuery(.joined(false)))
-                .limit(count: 1)
+                .select(CheckIn.getQuery(.joined(false)))
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -183,7 +182,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .database
                 .from(.checkIns)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())
@@ -211,7 +210,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .database
                 .rpc(fn: .getProfileSummary, params: ProfileSummary.GetRequest(profileId: id))
                 .select()
-                .limit(count: 1)
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -232,8 +231,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .from(.checkIns)
                 .upload(
                     path: "\(userId.uuidString.lowercased())/\(fileName)",
-                    file: file,
-                    fileOptions: nil
+                    file: file
                 )
 
             return .success(fileName)

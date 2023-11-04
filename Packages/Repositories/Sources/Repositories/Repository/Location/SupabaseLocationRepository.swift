@@ -10,7 +10,7 @@ struct SupabaseLocationRepository: LocationRepository {
             let result: Location = try await client
                 .database
                 .rpc(fn: .getLocationInsertIfNotExist, params: location.newLocationRequest)
-                .select(columns: Location.getQuery(.joined(false)))
+                .select(Location.getQuery(.joined(false)))
                 .single()
                 .execute()
                 .value
@@ -26,9 +26,9 @@ struct SupabaseLocationRepository: LocationRepository {
             let response: Location = try await client
                 .database
                 .from(.locations)
-                .select(columns: Location.getQuery(.joined(false)))
-                .eq(column: "id", value: id)
-                .limit(count: 1)
+                .select(Location.getQuery(.joined(false)))
+                .eq("id", value: id)
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -45,8 +45,8 @@ struct SupabaseLocationRepository: LocationRepository {
                 .database
                 // TODO: Create a proper view for this
                 .from(.viewRecentLocationsFromCurrentUser)
-                .select(columns: Location.getQuery(.joined(false)))
-                .order(column: "created_at", ascending: false)
+                .select(Location.getQuery(.joined(false)))
+                .order("created_at", ascending: false)
                 .execute()
                 .value
 
@@ -61,9 +61,9 @@ struct SupabaseLocationRepository: LocationRepository {
             let response: [Location] = try await client
                 .database
                 .from(category.view)
-                .select(columns: Location.getQuery(.joined(false)))
-                .limit(count: 5)
-                .order(column: "created_at", ascending: false)
+                .select(Location.getQuery(.joined(false)))
+                .limit(5)
+                .order("created_at", ascending: false)
                 .execute()
                 .value
 
@@ -78,8 +78,8 @@ struct SupabaseLocationRepository: LocationRepository {
             let response: [Location] = try await client
                 .database
                 .rpc(fn: .getLocationSuggestions, params: location)
-                .select(columns: Location.getQuery(.joined(false)))
-                .limit(count: 10)
+                .select(Location.getQuery(.joined(false)))
+                .limit(10)
                 .execute()
                 .value
 
@@ -95,7 +95,7 @@ struct SupabaseLocationRepository: LocationRepository {
                 .database
                 .from(.locations)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())
@@ -109,8 +109,8 @@ struct SupabaseLocationRepository: LocationRepository {
             let response: [Location] = try await client
                 .database
                 .from(.locations)
-                .select(columns: Location.getQuery(.joined(false)))
-                .textSearch(column: "name", query: searchTerm + ":*")
+                .select(Location.getQuery(.joined(false)))
+                .textSearch("name", query: searchTerm + ":*")
                 .execute()
                 .value
 
@@ -126,7 +126,7 @@ struct SupabaseLocationRepository: LocationRepository {
                 .database
                 .rpc(fn: .getLocationSummary, params: Location.SummaryRequest(id: id))
                 .select()
-                .limit(count: 1)
+                .limit(1)
                 .single()
                 .execute()
                 .value

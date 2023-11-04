@@ -1,6 +1,5 @@
 import Foundation
 import Models
-import PostgREST
 import Supabase
 
 struct SupabaseFriendsRepository: FriendRepository {
@@ -8,19 +7,19 @@ struct SupabaseFriendsRepository: FriendRepository {
 
     func getByUserId(userId: UUID, status: Friend.Status?) async -> Result<[Friend], Error> {
         do {
-            var queryBuilder = client
+            var queryBuilder = await client
                 .database
                 .from(.friends)
-                .select(columns: Friend.getQuery(.joined(false)))
-                .or(filters: "user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
+                .select(Friend.getQuery(.joined(false)))
+                .or("user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
 
             if let status {
                 switch status {
                 case .blocked:
-                    queryBuilder = queryBuilder.eq(column: "status", value: status.rawValue)
-                        .eq(column: "blocked_by", value: userId)
+                    queryBuilder = queryBuilder.eq("status", value: status.rawValue)
+                        .eq("blocked_by", value: userId)
                 case .accepted:
-                    queryBuilder = queryBuilder.eq(column: "status", value: status.rawValue)
+                    queryBuilder = queryBuilder.eq("status", value: status.rawValue)
                 default:
                     ()
                 }
@@ -41,8 +40,8 @@ struct SupabaseFriendsRepository: FriendRepository {
             let response: Friend = try await client
                 .database
                 .from(.friends)
-                .insert(values: newFriend, returning: .representation)
-                .select(columns: Friend.getQuery(.joined(false)))
+                .insert(newFriend, returning: .representation)
+                .select(Friend.getQuery(.joined(false)))
                 .single()
                 .execute()
                 .value
@@ -58,9 +57,9 @@ struct SupabaseFriendsRepository: FriendRepository {
             let response: Friend = try await client
                 .database
                 .from(.friends)
-                .update(values: friendUpdate, returning: .representation)
-                .eq(column: "id", value: id)
-                .select(columns: Friend.getQuery(.joined(false)))
+                .update(friendUpdate, returning: .representation)
+                .eq("id", value: id)
+                .select(Friend.getQuery(.joined(false)))
                 .single()
                 .execute()
                 .value
@@ -77,7 +76,7 @@ struct SupabaseFriendsRepository: FriendRepository {
                 .database
                 .from(.friends)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .select()
                 .single()
                 .execute()

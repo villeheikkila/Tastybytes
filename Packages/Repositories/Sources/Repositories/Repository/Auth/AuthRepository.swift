@@ -1,7 +1,8 @@
 import Foundation
+import Models
 import Supabase
 
-public protocol AuthRepository {
+public protocol AuthRepository: Sendable {
     func getUser() async -> Result<User, Error>
     func signInFromUrl(url: URL) async -> Result<Void, Error>
     func logOut() async -> Result<Void, Error>
@@ -12,4 +13,6 @@ public protocol AuthRepository {
     func signInWithApple(token: String) async -> Result<Void, Error>
     func sendPasswordResetEmail(email: String) async -> Result<Void, Error>
     func updatePassword(newPassword: String) async -> Result<Void, Error>
+    func authStateListener() async -> AsyncStream<AuthState>
 }
+

@@ -1,7 +1,6 @@
 import Foundation
 import Models
-import PostgREST
-import SupabaseStorage
+import Supabase
 
 extension PostgrestClient {
     func from(_ table: Database.Table) -> PostgrestQueryBuilder {
@@ -12,20 +11,20 @@ extension PostgrestClient {
         fn: Database.Function,
         params: some Encodable,
         count: CountOption? = nil
-    ) -> PostgrestTransformBuilder {
-        rpc(fn: fn.rawValue, params: params, count: count)
+    ) throws -> PostgrestTransformBuilder {
+        try rpc(fn.rawValue, params: params, count: count)
     }
 
     func rpc(
         fn: Database.Function,
         count: CountOption? = nil
-    ) -> PostgrestTransformBuilder {
-        rpc(fn: fn.rawValue, count: count)
+    ) throws -> PostgrestTransformBuilder {
+        try rpc(fn.rawValue, count: count)
     }
 }
 
 extension SupabaseStorageClient {
     func from(_ id: Models.Bucket) -> StorageFileApi {
-        from(id: id.rawValue)
+        from(id.rawValue)
     }
 }

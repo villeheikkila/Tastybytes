@@ -9,7 +9,7 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
             let response: [ServingStyle] = try await client
                 .database
                 .from(.servingStyles)
-                .select(columns: ServingStyle.getQuery(.saved(false)))
+                .select(ServingStyle.getQuery(.saved(false)))
                 .execute()
                 .value
 
@@ -24,8 +24,8 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
             let response: ServingStyle = try await client
                 .database
                 .from(.servingStyles)
-                .insert(values: servingStyle, returning: .representation)
-                .select(columns: ServingStyle.getQuery(.saved(false)))
+                .insert(servingStyle, returning: .representation)
+                .select(ServingStyle.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .value
@@ -42,7 +42,7 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
                 .database
                 .from(.servingStyles)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())
@@ -57,10 +57,10 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
                 .database
                 .from(.servingStyles)
                 .update(
-                    values: update,
+                    update,
                     returning: .representation
                 )
-                .select(columns: ServingStyle.getQuery(.saved(false)))
+                .select(ServingStyle.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .value

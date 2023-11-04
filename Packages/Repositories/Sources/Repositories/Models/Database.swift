@@ -41,7 +41,6 @@ enum Database {
         case subBrandEditSuggestion = "sub_brand_edit_suggestion"
         case subBrands = "sub_brands"
         case subcategories
-
         // views
         case viewCheckInsFromFriends = "view__check_ins_from_friends"
         case viewCheckInsFromCurrentUser = "view__check_ins_from_current_user"

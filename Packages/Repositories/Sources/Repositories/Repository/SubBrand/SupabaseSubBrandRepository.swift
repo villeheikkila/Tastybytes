@@ -9,8 +9,8 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             let response: SubBrand = try await client
                 .database
                 .from(.subBrands)
-                .insert(values: newSubBrand, returning: .representation)
-                .select(columns: SubBrand.getQuery(.saved(false)))
+                .insert(newSubBrand, returning: .representation)
+                .select(SubBrand.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .value
@@ -23,20 +23,20 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
 
     func update(updateRequest: SubBrand.Update) async -> Result<Void, Error> {
         do {
-            let baseQuery = client
+            let baseQuery = await client
                 .database
                 .from(.subBrands)
 
             switch updateRequest {
             case let .brand(update):
                 try await baseQuery
-                    .update(values: update)
-                    .eq(column: "id", value: update.id)
+                    .update(update)
+                    .eq("id", value: update.id)
                     .execute()
             case let .name(update):
                 try await baseQuery
-                    .update(values: update)
-                    .eq(column: "id", value: update.id)
+                    .update(update)
+                    .eq("id", value: update.id)
                     .execute()
             }
 
@@ -52,7 +52,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
                 .database
                 .from(.subBrands)
                 .delete()
-                .eq(column: "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())
@@ -80,9 +80,9 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             let response: [SubBrand.JoinedBrand] = try await client
                 .database
                 .from(.subBrands)
-                .select(columns: SubBrand.getQuery(.joinedBrand(false)))
-                .eq(column: "is_verified", value: false)
-                .order(column: "created_at", ascending: false)
+                .select(SubBrand.getQuery(.joinedBrand(false)))
+                .eq("is_verified", value: false)
+                .order("created_at", ascending: false)
                 .execute()
                 .value
 

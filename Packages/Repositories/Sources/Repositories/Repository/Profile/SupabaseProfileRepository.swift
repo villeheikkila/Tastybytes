@@ -1,8 +1,6 @@
 import Foundation
 import Models
-import Realtime
 import Supabase
-import SupabaseStorage
 
 struct SupabaseProfileRepository: ProfileRepository {
     let client: SupabaseClient
@@ -12,9 +10,9 @@ struct SupabaseProfileRepository: ProfileRepository {
             let response: Profile = try await client
                 .database
                 .from(.profiles)
-                .select(columns: Profile.getQuery(.minimal(false)))
-                .eq(column: "id", value: id.uuidString.lowercased())
-                .limit(count: 1)
+                .select(Profile.getQuery(.minimal(false)))
+                .eq("id", value: id.uuidString.lowercased())
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -30,8 +28,8 @@ struct SupabaseProfileRepository: ProfileRepository {
             let response: Profile.Extended = try await client
                 .database
                 .rpc(fn: .getCurrentProfile)
-                .select(columns: Profile.getQuery(.extended(false)))
-                .limit(count: 1)
+                .select(Profile.getQuery(.extended(false)))
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -47,17 +45,14 @@ struct SupabaseProfileRepository: ProfileRepository {
             let response: Profile.Extended = try await client
                 .database
                 .from(.profiles)
-                .update(
-                    values: update,
-                    returning: .representation
-                )
+                .update(update, returning: .representation)
                 /*
                  Supabase responds with status code 46 if where clause is not specified for an update.
                  However we do not need top pass the real id here because it is assigned by trigger.
                  RLS makes sure that user can only ever update their own profiles.
                  */
-                .notEquals(column: "id", value: UUID().uuidString)
-                .select(columns: Profile.getQuery(.extended(false)))
+                .notEquals("id", value: UUID().uuidString)
+                .select(Profile.getQuery(.extended(false)))
                 .single()
                 .execute()
                 .value
@@ -73,17 +68,15 @@ struct SupabaseProfileRepository: ProfileRepository {
             let response: ProfileSettings = try await client
                 .database
                 .from(.profileSettings)
-                .update(
-                    values: update,
-                    returning: .representation
-                )
+                .update(update,
+                        returning: .representation)
                 /*
                  Supabase responds with status code 46 if where clause is not specified for an update.
                  However we do not need top pass the real id here because it is assigned by trigger.
                  RLS makes sure that user can only ever update their own profiles.
                  */
-                .notEquals(column: "id", value: UUID().uuidString)
-                .select(columns: ProfileSettings.getQuery(.saved(false)))
+                .notEquals("id", value: UUID().uuidString)
+                .select(ProfileSettings.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .value
@@ -99,8 +92,8 @@ struct SupabaseProfileRepository: ProfileRepository {
             let response: Contributions = try await client
                 .database
                 .rpc(fn: .getContributionsByUser, params: Contributions.ContributionsParams(id: userId))
-                .select(columns: Contributions.getQuery(.value))
-                .limit(count: 1)
+                .select(Contributions.getQuery(.value))
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -119,7 +112,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                     fn: .getCategoryStats,
                     params: CategoryStatistics.CategoryStatisticsParams(id: userId)
                 )
-                .select(columns: CategoryStatistics.getQuery(.value))
+                .select(CategoryStatistics.getQuery(.value))
                 .execute()
                 .value
 
@@ -139,7 +132,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                     fn: .getSubcategoryStats,
                     params: SubcategoryStatistics.SubcategoryStatisticsParams(userId: userId, categoryId: categoryId)
                 )
-                .select(columns: SubcategoryStatistics.getQuery(.value))
+                .select(SubcategoryStatistics.getQuery(.value))
                 .execute()
                 .value
 
@@ -166,15 +159,15 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func search(searchTerm: String, currentUserId: UUID? = nil) async -> Result<[Profile], Error> {
         do {
-            let query = client
+            let query = await client
                 .database
                 .from(.profiles)
-                .select(columns: Profile.getQuery(.minimal(false)))
-                .ilike(column: "search", value: "%\(searchTerm)%")
+                .select(Profile.getQuery(.minimal(false)))
+                .ilike("search", value: "%\(searchTerm)%")
 
             if let currentUserId {
                 let response: [Profile] = try await query
-                    .not(column: "id", operator: .eq, value: currentUserId.uuidString)
+                    .not("id", operator: .eq, value: currentUserId.uuidString)
                     .execute().value
                 return .success(response)
             }
@@ -196,8 +189,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .from(.avatars)
                 .upload(
                     path: "\(userId.uuidString.lowercased())/\(fileName)",
-                    file: file,
-                    fileOptions: nil
+                    file: file
                 )
 
             return .success(fileName)
@@ -245,7 +237,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                     fn: .getTimePeriodStatistics,
                     params: TimePeriodStatistic.RequestParams(userId: userId, timePeriod: timePeriod)
                 )
-                .limit(count: 1)
+                .limit(1)
                 .single()
                 .execute()
                 .value

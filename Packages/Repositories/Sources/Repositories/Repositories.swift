@@ -1,4 +1,3 @@
-@_exported import enum GoTrue.AuthChangeEvent
 import Supabase
 import SwiftUI
 
@@ -47,13 +46,7 @@ public struct Repository: RepositoryProtocol {
     public let document: DocumentRepository
     public let report: ReportRepository
 
-    public var authEvent: AsyncStream<AuthChangeEvent> {
-        client.auth.authEventChange
-    }
-
-    public init(supabaseURL: URL,
-                supabaseKey: String)
-    {
+    public init(supabaseURL: URL, supabaseKey: String) {
         client = SupabaseClient(supabaseURL: supabaseURL, supabaseKey: supabaseKey)
         profile = SupabaseProfileRepository(client: client)
         checkIn = SupabaseCheckInRepository(client: client)
