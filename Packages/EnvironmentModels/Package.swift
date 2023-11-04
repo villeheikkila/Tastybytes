@@ -16,10 +16,8 @@ let package = Package(
     dependencies: [
         .package(name: "Repositories", path: "../Repositories"),
         .package(name: "Models", path: "../Models"),
+        .package(name: "Components", path: "../Components"),
         .package(name: "Extensions", path: "../Extensions"),
-        .package(
-            url: "https://github.com/elai950/AlertToast.git", .upToNextMajor(from: "1.0.0")
-        ),
     ],
     targets: [
         .target(
@@ -27,8 +25,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Repositories", package: "Repositories"),
                 .product(name: "Models", package: "Models"),
+                .product(name: "Components", package: "Components"),
                 .product(name: "Extensions", package: "Extensions"),
-                .product(name: "AlertToast", package: "AlertToast", condition: .when(platforms: [.iOS])),
             ]
         ),
     ]

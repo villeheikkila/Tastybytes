@@ -1,11 +1,11 @@
-import AlertToast
+import Components
 import Observation
 import SwiftUI
 
 @Observable
 public final class FeedbackEnvironmentModel {
     public var show = false
-    public var toast = AlertToast(type: .regular, title: "")
+    public var toast = Toast(type: .regular, title: "")
     public var sensoryFeedback: SensoryFeedbackEvent?
 
     public init() {}
@@ -13,13 +13,13 @@ public final class FeedbackEnvironmentModel {
     public func toggle(_ type: ToastType, disableHaptics: Bool = false) {
         switch type {
         case let .success(title):
-            toast = AlertToast(type: .complete(.green), title: title)
+            toast = Toast(type: .complete(.green), title: title)
             show = true
             if !disableHaptics {
                 trigger(.notification(.success))
             }
         case let .warning(title):
-            toast = AlertToast(type: .error(.red), title: title)
+            toast = Toast(type: .error(.red), title: title)
             show = true
         }
     }

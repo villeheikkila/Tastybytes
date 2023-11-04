@@ -1,51 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "alerttoast",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/elai950/AlertToast.git",
-      "state" : {
-        "revision" : "b39252eacd159904afd7d718bba0afabb87f2f2f",
-        "version" : "1.3.9"
-      }
-    },
-    {
-      "identity" : "functions-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/supabase-community/functions-swift",
-      "state" : {
-        "revision" : "98878a6e3aebfeb6aaeda234db66d64196e4cf31",
-        "version" : "1.1.0"
-      }
-    },
-    {
-      "identity" : "get",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kean/Get",
-      "state" : {
-        "revision" : "12830cc64f31789ae6f4352d2d51d03a25fc3741",
-        "version" : "2.1.6"
-      }
-    },
-    {
-      "identity" : "getextensions",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/binaryscraping/GetExtensions",
-      "state" : {
-        "revision" : "aa20f38721142eb6592b2c8f11179d32d7d70ae3",
-        "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "gotrue-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/supabase-community/gotrue-swift",
-      "state" : {
-        "revision" : "4bf132d73d322ee5d6d648f02deb9f2bc19cc659",
-        "version" : "1.2.1"
-      }
-    },
-    {
       "identity" : "keychainaccess",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
@@ -55,30 +10,12 @@
       }
     },
     {
-      "identity" : "postgrest-swift",
+      "identity" : "nuke",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/supabase-community/postgrest-swift",
+      "location" : "https://github.com/kean/Nuke.git",
       "state" : {
-        "revision" : "fb91f56ffcfe829c0cba2bfc180b1e669a8dd2e4",
-        "version" : "1.0.1"
-      }
-    },
-    {
-      "identity" : "realtime-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/supabase-community/realtime-swift.git",
-      "state" : {
-        "revision" : "0b985c687fe963f6bd818ff77a35c27247b98bb4",
-        "version" : "0.0.2"
-      }
-    },
-    {
-      "identity" : "storage-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/supabase-community/storage-swift.git",
-      "state" : {
-        "revision" : "65cae9e1156711043cbdebb27b4df93cbef46a1b",
-        "version" : "0.1.4"
+        "revision" : "3f666f120b63ea7de57d42e9a7c9b47f8e7a290b",
+        "version" : "12.1.6"
       }
     },
     {
@@ -86,17 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase/supabase-swift.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "7088b85247c8e56317f0b22b9d60655e8f762fec"
-      }
-    },
-    {
-      "identity" : "urlqueryencoder",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kean/URLQueryEncoder",
-      "state" : {
-        "revision" : "4ce950479707ea109f229d7230ec074a133b15d7",
-        "version" : "0.2.1"
+        "branch" : "main",
+        "revision" : "75699fc369a15d53578f58acde3429abf4fdfa3a"
       }
     }
   ],
