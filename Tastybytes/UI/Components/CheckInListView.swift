@@ -88,13 +88,17 @@ struct CheckInListView<Header>: View where Header: View {
         initialLoadCompleted && checkIns.isEmpty && showContentUnavailableView && !isLoading
     }
 
+    var showSegmentContentUnavailableView: Bool {
+        !isLoading && checkIns.isEmpty && !isContentUnavailable && fetcher.showCheckInSegmentationPicker
+    }
+
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         ScrollView {
             header
             checkInSegments
             checkInList
-            if !isLoading && checkIns.isEmpty && !isContentUnavailable {
+            if showSegmentContentUnavailableView {
                 showCheckInsFrom.emptyContentView
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
