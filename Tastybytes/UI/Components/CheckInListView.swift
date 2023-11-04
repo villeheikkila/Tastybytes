@@ -94,7 +94,7 @@ struct CheckInListView<Header>: View where Header: View {
             header
             checkInSegments
             checkInList
-            if !isLoading && checkIns.isEmpty {
+            if !isLoading && checkIns.isEmpty && !isContentUnavailable {
                 showCheckInsFrom.emptyContentView
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }

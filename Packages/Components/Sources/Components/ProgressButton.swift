@@ -12,6 +12,7 @@ public struct ProgressButton<LabelView: View>: View {
     var action: () async -> Void
     var actionOptions = Set(ActionOption.allCases)
     @ViewBuilder var label: () -> LabelView
+    @State private var task: Task<Void, Never>?
 
     public init(
         role: ButtonRole? = nil,
@@ -38,7 +39,8 @@ public struct ProgressButton<LabelView: View>: View {
             isDisabled = true
         }
 
-        Task {
+        task = Task(priority: .userInitiated) {
+            defer { task = nil }
             var progressViewTask: Task<Void, Error>?
             if actionOptions.contains(.showProgressView) {
                 progressViewTask = Task {

@@ -30,6 +30,10 @@ struct NotificationScreen: View {
         }
     }
 
+    var showContentUnavailableView: Bool {
+        filteredNotifications.isEmpty && !notificationEnvironmentModel.isRefreshing
+    }
+
     var body: some View {
         @Bindable var notificationEnvironmentModel = notificationEnvironmentModel
         ScrollViewReader { scrollProxy in
@@ -55,7 +59,7 @@ struct NotificationScreen: View {
                 } description: {
                     Text(filter?.contentUnavailableViewProps.description ?? "")
                 }
-                .opacity(filteredNotifications.isEmpty ? 1 : 0)
+                .opacity(showContentUnavailableView ? 1 : 0)
             }
             #if !targetEnvironment(macCatalyst)
             .refreshable {
