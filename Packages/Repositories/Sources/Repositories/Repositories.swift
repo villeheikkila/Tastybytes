@@ -24,8 +24,6 @@ public protocol RepositoryProtocol {
 }
 
 public struct Repository: RepositoryProtocol {
-    let client: SupabaseClient
-
     public let profile: ProfileRepository
     public let checkIn: CheckInRepository
     public let checkInComment: CheckInCommentRepository
@@ -47,7 +45,7 @@ public struct Repository: RepositoryProtocol {
     public let report: ReportRepository
 
     public init(supabaseURL: URL, supabaseKey: String) {
-        client = SupabaseClient(supabaseURL: supabaseURL, supabaseKey: supabaseKey)
+        let client = SupabaseClient(supabaseURL: supabaseURL, supabaseKey: supabaseKey)
         profile = SupabaseProfileRepository(client: client)
         checkIn = SupabaseCheckInRepository(client: client)
         checkInComment = SupabaseCheckInCommentRepository(client: client)

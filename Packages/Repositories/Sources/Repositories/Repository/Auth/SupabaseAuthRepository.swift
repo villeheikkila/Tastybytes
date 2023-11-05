@@ -38,12 +38,13 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
-    func signInWithApple(token: String) async -> Result<Void, Error> {
+    func signInWithApple(token: String, nonce: String) async -> Result<Void, Error> {
         do {
             try await client.auth.signInWithIdToken(
                 credentials: .init(
                     provider: .apple,
-                    idToken: token
+                    idToken: token,
+                    nonce: nonce
                 )
             )
 
