@@ -19,11 +19,11 @@ struct AuthEventObserver: View {
             case .authenticated:
                 AuthenticatedContent()
             case .unauthenticated:
-                AuthenticationScreen(authenticationScene: .emailPassword(.resetPassword))
-                if !isMac(), splashScreenEnvironmentModel.state != .finished {
-                    SplashScreen()
-                }
+                AuthenticationScreen()
             case .none:
+                SplashScreen()
+            }
+            if !isMac(), splashScreenEnvironmentModel.state != .finished {
                 SplashScreen()
             }
         }
@@ -38,15 +38,13 @@ struct AuthEventObserver: View {
             }
         }
         .task {
-            Task {
-                for await state in await repository.auth.authStateListener() {
-                    await MainActor.run {
-                        self.authState = state
-                    }
-                    logger.debug("auth state changed: \(String(describing: state))")
-                    if Task.isCancelled {
-                        return
-                    }
+            for await state in await repository.auth.authStateListener() {
+                await MainActor.run {
+                    self.authState = state
+                }
+                logger.debug("auth state changed: \(String(describing: state))")
+                if Task.isCancelled {
+                    return
                 }
             }
         }

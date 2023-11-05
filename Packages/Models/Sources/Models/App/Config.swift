@@ -51,8 +51,10 @@ public enum Config {
         return baseUrl
     }()
 
-    public static let privacyPolicyUrl: String = {
-        guard let url = Config.infoDictionary[Keys.Plist.privacyPolicyUrl] as? String else {
+    public static let privacyPolicyUrl: URL = {
+        guard let urlString = Config.infoDictionary[Keys.Plist.privacyPolicyUrl] as? String,
+              let url = URL(string: urlString)
+        else {
             fatalError("Privacy policy url is not set in plist for this environment")
         }
         return url

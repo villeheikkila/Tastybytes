@@ -15,20 +15,8 @@ struct AccountSettingsScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var showDeleteConfirmation = false
     @State private var showEmailConfirmation = false
-    @State private var showPasswordConfirmation = false
     @State private var showAccountDeleteScreen = false
     @State private var email = ""
-    @State private var newPassword = "" {
-        didSet {
-            passwordCheck()
-        }
-    }
-
-    @State private var newPasswordConfirmation = "" {
-        didSet {
-            passwordCheck()
-        }
-    }
 
     @State var csvExport: CSVFile? {
         didSet {
@@ -39,17 +27,10 @@ struct AccountSettingsScreen: View {
     @State var showingExporter = false
     @State private var alertError: AlertError?
 
-    private func passwordCheck() {
-        withAnimation {
-            showPasswordConfirmation = newPassword == newPasswordConfirmation && newPassword.count >= 8
-        }
-    }
-
     var body: some View {
         @Bindable var profileEnvironmentModel = profileEnvironmentModel
         Form {
             emailSection
-            updatePassword
             deleteAccount
         }
         .navigationTitle("Account")
@@ -100,38 +81,6 @@ struct AccountSettingsScreen: View {
         }
     }
 
-    private var updatePassword: some View {
-        Section {
-            HStack {
-                Image(systemName: "key")
-                    .accessibility(hidden: true)
-                SecureField("New Password", text: $newPassword)
-                    .textContentType(.newPassword)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-            }
-            HStack {
-                Image(systemName: "key")
-                    .accessibility(hidden: true)
-                SecureField("Confirm New Password", text: $newPasswordConfirmation)
-                    .textContentType(.newPassword)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-            }
-            if showPasswordConfirmation {
-                ProgressButton(
-                    "Update password",
-                    action: { await profileEnvironmentModel.updatePassword(newPassword: newPassword) }
-                )
-            }
-        } header: {
-            Text("Change password")
-        } footer: {
-            Text("Password must be at least 8 characters")
-        }
-        .headerProminence(.increased)
-    }
-
     private var emailSection: some View {
         Section {
             TextField("Email", text: $email)
@@ -143,7 +92,9 @@ struct AccountSettingsScreen: View {
             if showEmailConfirmation {
                 ProgressButton(
                     "Send Verification Link",
-                    action: { await profileEnvironmentModel.sendEmailVerificationLink() }
+                    action: {
+                        // await profileEnvironmentModel.sendEmailVerificationLink()
+                    }
                 )
                 .transition(.slide)
             }

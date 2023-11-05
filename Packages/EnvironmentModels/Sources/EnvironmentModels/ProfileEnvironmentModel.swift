@@ -180,22 +180,6 @@ public final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    public func updatePassword(newPassword: String) async {
-        if case let .failure(error) = await repository.auth.updatePassword(newPassword: newPassword) {
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger.error("Failed to update password. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    public func sendEmailVerificationLink() async {
-        if case let .failure(error) = await repository.auth.sendEmailVerification(email: email) {
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger.error("Failed to send email verification link. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
     public func deleteCurrentAccount(onAccountDeletion: @escaping () -> Void) async {
         switch await repository.profile.deleteCurrentAccount() {
         case .success:

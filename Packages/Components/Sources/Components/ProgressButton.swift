@@ -6,6 +6,7 @@ public struct ProgressButton<LabelView: View>: View {
     public enum ActionOption: CaseIterable {
         case disableButton
         case showProgressView
+        case cancelActionOnDisappear
     }
 
     let role: ButtonRole?
@@ -17,7 +18,7 @@ public struct ProgressButton<LabelView: View>: View {
     public init(
         role: ButtonRole? = nil,
         action: @escaping () async -> Void,
-        actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
+        actionOptions: Set<ActionOption> = Set([.disableButton, .showProgressView]),
         @ViewBuilder label: @escaping () -> LabelView
     ) {
         self.role = role
@@ -32,6 +33,11 @@ public struct ProgressButton<LabelView: View>: View {
     public var body: some View {
         Button(role: role, action: { buttonAction() }, label: { buttonLabel })
             .disabled(isDisabled)
+            .onDisappear {
+                if actionOptions.contains(.cancelActionOnDisappear) {
+                    task?.cancel()
+                }
+            }
     }
 
     private func buttonAction() {
@@ -45,7 +51,7 @@ public struct ProgressButton<LabelView: View>: View {
             if actionOptions.contains(.showProgressView) {
                 progressViewTask = Task {
                     do {
-                        try await Task.sleep(nanoseconds: 150_000_000)
+                        try await Task.sleep(for: .seconds(1))
                         isLoading = true
                     } catch {
                         logger.info("Timer cancelled")

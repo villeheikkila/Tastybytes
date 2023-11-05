@@ -34,9 +34,14 @@ struct DiscoverScreen: View {
     @State private var showAddBarcodeConfirmation = false
     @State private var productFilter: Product.Filter? {
         didSet {
-            Task { await search() }
+            searchTask = Task {
+                searchTask?.cancel()
+                await search()
+            }
         }
     }
+
+    @State var searchTask: Task<Void, Never>?
 
     @Binding var scrollToTop: Int
 
@@ -70,15 +75,18 @@ struct DiscoverScreen: View {
         }
         .disableAutocorrection(true)
         .onSubmit(of: .search) {
-            Task { await search() }
+            searchTask?.cancel()
+            searchTask = Task { await search() }
         }
         .onChange(of: searchScope) {
-            Task { await search() }
+            searchTask?.cancel()
+            searchTask = Task { await search() }
             barcode = nil
             isSearched = false
         }
         .onChange(of: searchTerm, debounceTime: 0.2) { _ in
-            Task { await search() }
+            searchTask?.cancel()
+            searchTask = Task { await search() }
         }
         .onChange(of: searchTerm) { _, term in
             if term.isEmpty {
@@ -88,6 +96,9 @@ struct DiscoverScreen: View {
         .navigationTitle("Discover")
         .task {
             await splashScreenEnvironmentModel.dismiss()
+        }
+        .onDisappear {
+            searchTask?.cancel()
         }
         .toolbar {
             toolbarContent

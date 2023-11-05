@@ -76,19 +76,14 @@ struct VerificationScreen: View {
         .toolbar {
             toolbarContent
         }
-        .onChange(of: verificationType) {
-            Task {
-                await loadData()
-            }
+        .task(id: verificationType) {
+            await loadData()
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
             await loadData(refresh: true)
         }
         #endif
-        .task {
-                await loadData()
-            }
     }
 
     private var unverifiedCompanies: some View {

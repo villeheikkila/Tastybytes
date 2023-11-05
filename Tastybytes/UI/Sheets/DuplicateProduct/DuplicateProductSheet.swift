@@ -20,6 +20,7 @@ struct DuplicateProductSheet: View {
     @State private var showMergeToProductConfirmation = false
     @State private var searchTerm = ""
     @State private var alertError: AlertError?
+    @State var searchTask: Task<Void, Never>?
     @State private var mergeToProduct: Product.Joined? {
         didSet {
             showMergeToProductConfirmation = true
@@ -49,14 +50,19 @@ struct DuplicateProductSheet: View {
                     prompt: "Search for a duplicate product")
         .disableAutocorrection(true)
         .onSubmit(of: .search) {
-            Task { await searchProducts(name: searchTerm) }
+            searchTask?.cancel()
+            searchTask = Task { await searchProducts(name: searchTerm) }
         }
         .navigationTitle(mode == .mergeDuplicate ? "Merge duplicates" : "Mark as duplicate")
         .toolbar {
             toolbarContent
         }
+        .onDisappear {
+            searchTask?.cancel()
+        }
         .onChange(of: searchTerm, debounceTime: 0.2) { newValue in
-            Task { await searchProducts(name: newValue) }
+            searchTask?.cancel()
+            searchTask = Task { await searchProducts(name: newValue) }
         }
         .alertError($alertError)
         .confirmationDialog("Product Merge Confirmation",
