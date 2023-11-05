@@ -2,8 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>APP_NAME</key>
+	<string>${APP_NAME}</string>
 	<key>BASE_URL</key>
 	<string>${BASE_URL}</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -21,20 +25,18 @@
 			<string>Editor</string>
 		</dict>
 	</array>
+	<key>DEEP_LINK_BASE_URL</key>
+	<string>${DEEP_LINK_BASE_URL}</string>
+	<key>FEEDBACK_EMAIL</key>
+	<string>${FEEDBACK_EMAIL}</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>PRIVACY_POLICY_URL</key>
+	<string>${PRIVACY_POLICY_URL}</string>
 	<key>SUPABASE_ANON_KEY</key>
 	<string>${SUPABASE_ANON_KEY}</string>
 	<key>SUPABASE_URL</key>
 	<string>${SUPABASE_URL}</string>
-	<key>DEEP_LINK_BASE_URL</key>
-	<string>${DEEP_LINK_BASE_URL}</string>
-	<key>APP_NAME</key>
-	<string>${APP_NAME}</string>
-	<key>PRIVACY_POLICY_URL</key>
-	<string>${PRIVACY_POLICY_URL}</string>
-	<key>FEEDBACK_EMAIL</key>
-	<string>${FEEDBACK_EMAIL}</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Comfortaa-Bold.ttf</string>
