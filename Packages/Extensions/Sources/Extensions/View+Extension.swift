@@ -11,6 +11,12 @@ public extension View {
     }
 }
 
+public extension View {
+    func frame(size: CGSize) -> some View {
+        return frame(width: size.width, height: size.height)
+    }
+}
+
 public struct RoundedCorner: Shape {
     var radius: Double = .infinity
     var corners: UIRectCorner = .allCorners

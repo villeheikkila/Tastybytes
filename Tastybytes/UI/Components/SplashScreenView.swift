@@ -1,3 +1,4 @@
+import Components
 import EnvironmentModels
 import SwiftUI
 
@@ -34,7 +35,7 @@ struct SplashScreen: View {
     private func updateAnimation() {
         switch splashScreenEnvironmentModel.state {
         case .showing:
-            withAnimation(.easeIn(duration: 1.2)) {
+            withAnimation(.easeIn(duration: 1)) {
                 size = 0.9
                 opacity = 1.00
             }

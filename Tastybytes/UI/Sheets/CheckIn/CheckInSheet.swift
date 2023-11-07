@@ -91,11 +91,9 @@ struct CheckInSheet: View {
         .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
             Button("Camera", action: { showCamera.toggle() })
             RouterLink("Photo Gallery", sheet: .legacyPhotoPicker(onSelection: { image in
-                Task {
-                    await MainActor.run {
-                        self.image = image
-                    }
-                }
+                self.image = image
+                self.showImageCropper = true
+
             }))
         } message: {
             Text("Pick a photo")

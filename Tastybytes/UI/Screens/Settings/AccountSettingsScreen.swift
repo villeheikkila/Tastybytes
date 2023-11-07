@@ -43,7 +43,7 @@ struct AccountSettingsScreen: View {
                 transaction.disablesAnimations = true
             }
         }
-        .onChange(of: profileEnvironmentModel.email) {
+        .onChange(of: email) {
             withAnimation {
                 showEmailConfirmation = email != profileEnvironmentModel.email
             }
@@ -92,8 +92,9 @@ struct AccountSettingsScreen: View {
             if showEmailConfirmation {
                 ProgressButton(
                     "Send Verification Link",
+                    actionOptions: [],
                     action: {
-                        // await profileEnvironmentModel.sendEmailVerificationLink()
+                        await changeEmail()
                     }
                 )
                 .transition(.slide)
@@ -122,6 +123,17 @@ struct AccountSettingsScreen: View {
                     action: { showDeleteConfirmation = true }
                 ).foregroundColor(.red)
             }.fontWeight(.medium)
+        }
+    }
+
+    func changeEmail() async {
+        switch await repository.auth.sendEmailVerification(email: email) {
+        case .success:
+            feedbackEnvironmentModel.toggle(.success("Sent!"))
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            alertError = .init()
+            logger.error("Failed to change email. Error: \(error) (\(#file):\(#line))")
         }
     }
 

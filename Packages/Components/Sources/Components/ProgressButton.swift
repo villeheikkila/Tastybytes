@@ -11,7 +11,7 @@ public struct ProgressButton<LabelView: View>: View {
 
     let role: ButtonRole?
     var action: () async -> Void
-    var actionOptions = Set(ActionOption.allCases)
+    var actionOptions: Set<ActionOption> = Set([.disableButton, .showProgressView])
     @ViewBuilder var label: () -> LabelView
     @State private var task: Task<Void, Never>?
 

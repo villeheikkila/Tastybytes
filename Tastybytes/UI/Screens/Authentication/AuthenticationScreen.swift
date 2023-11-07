@@ -7,6 +7,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
+private let starsCount = 8
+
 struct AuthenticationScreen: View {
     private let logger = Logger(category: "AuthenticationScreen")
     @Environment(\.repository) private var repository
@@ -17,50 +19,69 @@ struct AuthenticationScreen: View {
         "Welcome to Tastybytes! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](\(Config.privacyPolicyUrl))"
 
     var body: some View {
-        VStack(alignment: .center, spacing: 20) {
-            Spacing(height: 30)
-            projectLogo
+        VStack(alignment: .center) {
             Spacer()
-
-            VStack(alignment: .leading, spacing: 12) {
-                SignInWithAppleView()
-                    .frame(height: 52)
-                Text(.init(privacyPolicyString))
-                    .font(.caption)
-                    .environment(\.openURL, OpenURLAction { url in
-                        openUrlInWebView = WebViewLink(title: "Privacy Policy", url: url)
-                        return .handled
-                    })
-            }
-            .padding(40)
-            .frame(maxWidth: 500)
-            .sheet(item: $openUrlInWebView) { link in
-                NavigationStack {
-                    WebView(url: link.url)
-                        .ignoresSafeArea()
-                        .navigationTitle(link.title)
-                        .toolbar {
-                            ToolbarItemGroup(placement: .topBarTrailing) {
-                                CloseButtonView { openUrlInWebView = nil }
-                            }
+            Spacer()
+            Spacer()
+            logo
+            Spacer()
+            Spacer()
+            Spacer()
+            actions
+            Spacer()
+        }
+        .background(
+            AppGradient(),
+            alignment: .bottom
+        )
+        .ignoresSafeArea(edges: .bottom)
+        .sheet(item: $openUrlInWebView) { link in
+            NavigationStack {
+                WebView(url: link.url)
+                    .ignoresSafeArea()
+                    .navigationTitle(link.title)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .topBarTrailing) {
+                            CloseButtonView { openUrlInWebView = nil }
                         }
-                        .navigationBarTitleDisplayMode(.inline)
-                }
+                    }
+                    .navigationBarTitleDisplayMode(.inline)
             }
-            .task {
-                await splashScreenEnvironmentModel.dismiss()
-            }
+        }
+        .task {
+            await splashScreenEnvironmentModel.dismiss()
         }
     }
 
-    private var projectLogo: some View {
+    private var logo: some View {
         VStack(alignment: .center, spacing: 20) {
-            AppLogoView()
+            HStack {
+                Spacer()
+                AppLogoView()
+                Spacer()
+            }
+            .background(
+                SparklesView()
+            )
             Text(Config.appName)
-                .font(Font.custom("Comfortaa-Bold", size: 32))
+                .font(Font.custom("Comfortaa-Bold", size: 38))
                 .bold()
-            Spacing(height: 12)
         }
+    }
+
+    private var actions: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SignInWithAppleView()
+                .frame(height: 52)
+            Text(.init(privacyPolicyString))
+                .font(.caption)
+                .environment(\.openURL, OpenURLAction { url in
+                    openUrlInWebView = WebViewLink(title: "Privacy Policy", url: url)
+                    return .handled
+                })
+        }
+        .padding(40)
+        .frame(maxWidth: 500)
     }
 }
 
