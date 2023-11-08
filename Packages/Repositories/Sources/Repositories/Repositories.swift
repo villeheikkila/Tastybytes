@@ -45,7 +45,11 @@ public struct Repository: RepositoryProtocol {
     public let report: ReportRepository
 
     public init(supabaseURL: URL, supabaseKey: String) {
-        let client = SupabaseClient(supabaseURL: supabaseURL, supabaseKey: supabaseKey)
+        let client = SupabaseClient(
+            supabaseURL: supabaseURL,
+            supabaseKey: supabaseKey,
+            options: .init(auth: .init(flowType: .implicit))
+        )
         profile = SupabaseProfileRepository(client: client)
         checkIn = SupabaseCheckInRepository(client: client)
         checkInComment = SupabaseCheckInCommentRepository(client: client)

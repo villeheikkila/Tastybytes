@@ -5,6 +5,7 @@ public struct RepositoryKey: EnvironmentKey {
     public static var defaultValue: Repository = .init(
         supabaseURL: Config.supabaseUrl,
         supabaseKey: Config.supabaseAnonKey
+        
     )
 }
 
