@@ -25,7 +25,13 @@ public final class AppDataEnvironmentModel {
         async let flavorPromise = repository.flavor.getAll()
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
 
-        switch await flavorPromise {
+        let (flavorResponse, categoryResponse, aboutPageResponse) = (
+            await flavorPromise,
+            await categoryPromise,
+            await aboutPagePromise
+        )
+
+        switch flavorResponse {
         case let .success(flavors):
             await MainActor.run {
                 withAnimation {
@@ -39,7 +45,7 @@ public final class AppDataEnvironmentModel {
             logger.error("Fetching flavors failed. Error: \(error) (\(#file):\(#line))")
         }
 
-        switch await categoryPromise {
+        switch categoryResponse {
         case let .success(categories):
             await MainActor.run {
                 self.categories = categories
@@ -51,7 +57,7 @@ public final class AppDataEnvironmentModel {
             logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
         }
 
-        switch await aboutPagePromise {
+        switch aboutPageResponse {
         case let .success(aboutPage):
             await MainActor.run {
                 self.aboutPage = aboutPage
