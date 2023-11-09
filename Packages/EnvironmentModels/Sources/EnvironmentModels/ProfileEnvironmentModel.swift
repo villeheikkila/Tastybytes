@@ -106,7 +106,12 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public func initialize() async {
         logger.notice("Initializing user data")
-        switch await repository.profile.getCurrentUser() {
+        async let profilePromise = await repository.profile.getCurrentUser()
+        async let userPromise = await repository.auth.getUser()
+
+        let (profileResult, userResult) = await (profilePromise, userPromise)
+
+        switch profileResult {
         case let .success(currentUserProfile):
             extendedProfile = currentUserProfile
             showFullName = currentUserProfile.nameDisplay == Profile.NameDisplay.fullName
@@ -125,7 +130,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             await logOut()
         }
 
-        switch await repository.auth.getUser() {
+        switch userResult {
         case let .success(user):
             email = user.email.orEmpty
         case let .failure(error):
