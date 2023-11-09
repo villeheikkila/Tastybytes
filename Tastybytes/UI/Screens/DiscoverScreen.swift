@@ -15,14 +15,12 @@ struct DiscoverScreen: View {
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @State private var alertError: AlertError?
     @State private var scrollProxy: ScrollViewProxy?
-    @State private var searchTerm = ""
     @State private var products = [Product.Joined]()
     @State private var profiles = [Profile]()
     @State private var companies = [Company]()
     @State private var locations = [Location]()
     @State private var isSearched = false
     @State private var isLoading = false
-    @State private var searchedFor = ""
     @State private var searchScope: SearchScope = .products
     @State private var barcode: Barcode?
     @State private var addBarcodeTo: Product.Joined? {
@@ -32,21 +30,19 @@ struct DiscoverScreen: View {
     }
 
     @State private var showAddBarcodeConfirmation = false
-    @State private var productFilter: Product.Filter? {
-        didSet {
-            searchTask = Task {
-                searchTask?.cancel()
-                await search()
-            }
-        }
-    }
+    @State private var productFilter: Product.Filter?
 
-    @State var searchTask: Task<Void, Never>?
+    @State private var searchTerm = ""
+    @State private var searchedFor = ""
+    @State private var searchedBarcode: Barcode?
+
+    @State var searchByBarcode: Barcode?
+    @State var searchKey: SearchKey?
 
     @Binding var scrollToTop: Int
 
     private var showContentUnavailableView: Bool {
-        !searchedFor.isEmpty && isSearched && !isLoading && currentScopeIsEmpty
+        (!searchedFor.isEmpty || searchedBarcode != nil) && isSearched && !isLoading && currentScopeIsEmpty
     }
 
     var body: some View {
@@ -75,30 +71,33 @@ struct DiscoverScreen: View {
         }
         .disableAutocorrection(true)
         .onSubmit(of: .search) {
-            searchTask?.cancel()
-            searchTask = Task { await search() }
+            searchKey = .init(searchTerm: searchTerm, searchScope: searchScope)
         }
         .onChange(of: searchScope) {
-            searchTask?.cancel()
-            searchTask = Task { await search() }
+            searchKey = .init(searchTerm: searchTerm, searchScope: searchScope)
             barcode = nil
             isSearched = false
         }
+        .onChange(of: productFilter) {
+            searchKey = .init(searchTerm: searchTerm, searchScope: searchScope)
+        }
         .onChange(of: searchTerm, debounceTime: 0.2) { _ in
-            searchTask?.cancel()
-            searchTask = Task { await search() }
+            searchKey = .init(searchTerm: searchTerm, searchScope: searchScope)
         }
         .onChange(of: searchTerm) { _, term in
             if term.isEmpty {
-                Task { await resetSearch() }
+                resetSearch()
             }
         }
         .navigationTitle("Discover")
         .task {
             await splashScreenEnvironmentModel.dismiss()
         }
-        .onDisappear {
-            searchTask?.cancel()
+        .task(id: searchKey) {
+            await search()
+        }
+        .task(id: searchByBarcode) {
+            await searchProductsByBardcode()
         }
         .toolbar {
             toolbarContent
@@ -274,7 +273,7 @@ struct DiscoverScreen: View {
                         "Scan a barcode",
                         systemImage: "barcode.viewfinder",
                         sheet: .barcodeScanner(onComplete: { barcode in
-                            Task { await searchProductsByBardcode(barcode) }
+                            searchByBarcode = barcode
                         })
                     )
                 }
@@ -300,15 +299,28 @@ struct DiscoverScreen: View {
                 Text("Check the spelling or try a new search")
             }
         case .products:
-            ContentUnavailableView {
-                Label("No Products found for \"\(searchedFor)\"", systemImage: "bubbles.and.sparkles")
-            } description: {
-                Text("Check the spelling or try a new search")
-            } actions: {
-                Button("Create new product") {
-                    let barcodeCopy = barcode
-                    barcode = nil
-                    router.navigate(screen: .addProduct(barcodeCopy))
+            if searchedBarcode != nil {
+                ContentUnavailableView {
+                    Label("No Products found with the barcode", systemImage: "bubbles.and.sparkles")
+                } actions: {
+                    Button("Create new product") {
+                        let barcodeCopy = barcode
+                        barcode = nil
+                        router.navigate(screen: .addProduct(barcodeCopy))
+                    }
+                }
+            } else {
+                ContentUnavailableView {
+                    Label("No Products found for \"\(searchedFor)\"", systemImage: "bubbles.and.sparkles")
+
+                } description: {
+                    Text("Check the spelling or try a new search")
+                } actions: {
+                    Button("Create new product") {
+                        let barcodeCopy = barcode
+                        barcode = nil
+                        router.navigate(screen: .addProduct(barcodeCopy))
+                    }
                 }
             }
         case .users:
@@ -320,17 +332,14 @@ struct DiscoverScreen: View {
         }
     }
 
-    func resetSearch() async {
-        do {
-            try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
-            withAnimation {
-                profiles = []
-                products = []
-                companies = []
-                locations = []
-                isSearched = false
-            }
-        } catch { logger.error("timer failed") }
+    func resetSearch() {
+        withAnimation {
+            profiles = []
+            products = []
+            companies = []
+            locations = []
+            isSearched = false
+        }
     }
 
     var currentScopeIsEmpty: Bool {
@@ -401,24 +410,30 @@ struct DiscoverScreen: View {
         }
     }
 
-    func searchProductsByBardcode(_ barcode: Barcode) async {
-        switch await repository.product.search(barcode: barcode) {
+    func searchProductsByBardcode() async {
+        guard let searchByBarcode else { return }
+        isLoading = true
+        switch await repository.product.search(barcode: searchByBarcode) {
         case let .success(searchResults):
-            self.barcode = barcode
             await MainActor.run {
                 withAnimation {
                     products = searchResults
                     isSearched = true
+                    searchedFor = ""
+                    searchedBarcode = searchByBarcode
+                    isLoading = false
                 }
             }
             if searchResults.count == 1, let result = searchResults.first {
-                router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
+                router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: searchByBarcode))
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             alertError = .init()
             logger
-                .error("searching products with barcode \(barcode.barcode) failed. Error: \(error) (\(#file):\(#line))")
+                .error(
+                    "searching products with barcode failed. Error: \(error) (\(#file):\(#line))"
+                )
         }
     }
 
@@ -468,6 +483,7 @@ struct DiscoverScreen: View {
             await searchLocations()
         }
         isSearched = true
+        searchedBarcode = nil
     }
 
     enum SearchScope: String, CaseIterable, Identifiable {
@@ -499,5 +515,10 @@ struct DiscoverScreen: View {
                 "Search locations"
             }
         }
+    }
+
+    struct SearchKey: Hashable {
+        let searchTerm: String
+        let searchScope: SearchScope
     }
 }
