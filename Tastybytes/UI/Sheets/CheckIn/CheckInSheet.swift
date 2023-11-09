@@ -32,18 +32,7 @@ struct CheckInSheet: View {
     @State private var blurHash: String?
     @State private var alertError: AlertError?
     @State private var image: UIImage?
-    @State private var finalImage: UIImage? {
-        didSet {
-            Task {
-                if let image, let hash = image.resize(to: 100)?
-                    .blurHash(numberOfComponents: (5, 5))
-                {
-                    blurHash = CheckIn.BlurHash(hash: hash, height: image.size.height, width: image.size.width).encoded
-                }
-            }
-        }
-    }
-
+    @State private var finalImage: UIImage?
     @State private var showImageCropper = false
 
     let onCreation: ((_ checkIn: CheckIn) async -> Void)?
@@ -113,6 +102,12 @@ struct CheckInSheet: View {
         .alertError($alertError)
         .toolbar {
             toolbarContent
+        }
+        .task(id: finalImage, priority: .background) {
+            if let finalImage, let hash = finalImage.resize(to: 100)?.blurHash(numberOfComponents: (5, 5)) {
+                blurHash = CheckIn
+                    .BlurHash(hash: hash, height: finalImage.size.height, width: finalImage.size.width).encoded
+            }
         }
         .onAppear {
             servingStyles = appDataEnvironmentModel.categories.first(where: { $0.id == product.category.id })?

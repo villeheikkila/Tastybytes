@@ -12,12 +12,7 @@ struct ProductFeedScreen: View {
     @Environment(Router.self) private var router
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @State private var products = [Product.Joined]()
-    @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles? {
-        didSet {
-            Task { await refresh() }
-        }
-    }
-
+    @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var page = 0
     @State private var isLoading = false
     @State private var isRefreshing = false
@@ -62,23 +57,26 @@ struct ProductFeedScreen: View {
         }
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
+        .task(id: categoryFilter) {
+            await refresh()
+        }
         #if !targetEnvironment(macCatalyst)
-            .refreshable {
-                await refresh()
-            }
+        .refreshable {
+            await refresh()
+        }
         #endif
-            .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .toolbar {
-                    toolbarContent
+        .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                toolbarContent
+            }
+            .alertError($alertError)
+            .task {
+                if products.isEmpty {
+                    await fetchProductFeedItems()
                 }
-                .alertError($alertError)
-                .task {
-                    if products.isEmpty {
-                        await fetchProductFeedItems()
-                    }
-                }
+            }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

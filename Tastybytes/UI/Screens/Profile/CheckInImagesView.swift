@@ -14,6 +14,8 @@ struct CheckInImagesView: View {
     @State private var isLoading = false
     @State private var page = 0
     @State private var alertError: AlertError?
+    @State private var loadImagesTask: Task<Void, Never>?
+
     private let pageSize = 10
 
     let queryType: CheckInImageQueryType
@@ -25,7 +27,7 @@ struct CheckInImagesView: View {
                     CheckInImageCellView(checkInImage: checkInImage)
                         .onAppear {
                             if checkInImage == checkInImages.last, isLoading != true {
-                                Task {
+                                loadImagesTask = Task {
                                     await fetchImages()
                                 }
                             }
@@ -34,6 +36,9 @@ struct CheckInImagesView: View {
             }
         }
         .alertError($alertError)
+        .onDisappear {
+            loadImagesTask?.cancel()
+        }
         .task {
             await fetchImages()
         }

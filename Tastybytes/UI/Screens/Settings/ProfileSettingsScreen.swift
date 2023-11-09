@@ -46,11 +46,12 @@ struct ProfileSettingsScreen: View {
                     .onChange(of: username) {
                         isLoading = true
                     }
-                    .onChange(of: username, debounceTime: 0.3) { newValue in
-                        guard newValue.count >= 3 else { return }
-                        Task {
-                            usernameIsAvailable = await profileEnvironmentModel
-                                .checkIfUsernameIsAvailable(username: newValue)
+                    .task(id: username, milliseconds: 300) {
+                        guard username.count >= 3 else { return }
+                        let isAvailable = await profileEnvironmentModel
+                            .checkIfUsernameIsAvailable(username: username)
+                        withAnimation {
+                            usernameIsAvailable = isAvailable
                             isLoading = false
                         }
                     }

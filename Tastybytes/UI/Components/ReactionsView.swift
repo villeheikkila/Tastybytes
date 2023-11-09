@@ -14,6 +14,7 @@ struct ReactionsView: View {
     @State private var checkInReactions = [CheckInReaction]()
     @State private var isLoading = false
     @State private var alertError: AlertError?
+    @State private var task: Task<Void, Never>?
 
     let checkIn: CheckIn
 
@@ -46,12 +47,15 @@ struct ReactionsView: View {
             view
                 .accessibilityAddTraits(.isButton)
                 .onTapGesture {
-                    Task {
+                    task = Task {
                         await toggleReaction()
                     }
                 }
         })
         .disabled(isLoading)
+        .onDisappear {
+            task?.cancel()
+        }
         .sensoryFeedback(trigger: checkInReactions) { oldValue, newValue in
             newValue.count > oldValue.count ? .success : .impact(weight: .light)
         }

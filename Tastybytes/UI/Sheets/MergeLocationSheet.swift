@@ -21,6 +21,7 @@ struct MergeLocationSheet: View {
 
     @State private var showMergeToProductConfirmation = false
     @State private var searchTerm = ""
+    @State private var searchTask: Task<Void, Never>?
 
     let location: Location
 
@@ -38,9 +39,6 @@ struct MergeLocationSheet: View {
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: "Search for a duplicate location")
         .disableAutocorrection(true)
-        .onSubmit(of: .search) {
-            Task { await searchLocations(name: searchTerm) }
-        }
         .navigationTitle("Merge location to...")
         .toolbar {
             toolbarContent

@@ -13,12 +13,7 @@ struct ProductLogoSheet: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var alertError: AlertError?
-    @State private var selectedLogo: PhotosPickerItem? {
-        didSet {
-            Task { await uploadLogo() }
-        }
-    }
-
+    @State private var selectedLogo: PhotosPickerItem?
     @State private var logoFile: String?
 
     let product: Product.Joined
@@ -64,6 +59,9 @@ struct ProductLogoSheet: View {
             .listRowBackground(Color.clear)
         }
         .alertError($alertError)
+        .task(id: selectedLogo) {
+            await uploadLogo()
+        }
         .navigationTitle("Product Logo")
         .toolbar {
             toolbarContent

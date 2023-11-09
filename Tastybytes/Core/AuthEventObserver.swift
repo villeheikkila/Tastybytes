@@ -12,6 +12,7 @@ struct AuthEventObserver: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(\.repository) private var repository
+    @State private var task: Task<Void, Never>?
 
     var body: some View {
         ZStack {
@@ -49,9 +50,12 @@ struct AuthEventObserver: View {
             }
         }
         .onOpenURL { url in
-            Task {
+            task = Task {
                 await loadSessionFromURL(url: url)
             }
+        }
+        .onDisappear {
+            task?.cancel()
         }
     }
 

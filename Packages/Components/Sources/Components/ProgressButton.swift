@@ -6,7 +6,6 @@ public struct ProgressButton<LabelView: View>: View {
     public enum ActionOption: CaseIterable {
         case disableButton
         case showProgressView
-        case cancelActionOnDisappear
     }
 
     let role: ButtonRole?
@@ -30,11 +29,13 @@ public struct ProgressButton<LabelView: View>: View {
     @State private var isDisabled = false
     @State private var isLoading = false
 
+    let cancelTaskOnDisappear = false
+
     public var body: some View {
         Button(role: role, action: { buttonAction() }, label: { buttonLabel })
             .disabled(isDisabled)
             .onDisappear {
-                if actionOptions.contains(.cancelActionOnDisappear) {
+                if cancelTaskOnDisappear {
                     task?.cancel()
                 }
             }
