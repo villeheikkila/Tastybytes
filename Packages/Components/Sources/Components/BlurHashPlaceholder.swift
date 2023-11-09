@@ -3,10 +3,10 @@ import Models
 import SwiftUI
 
 public struct BlurHashPlaceholder: View {
+    @State private var image: UIImage?
+
     let blurHash: CheckIn.BlurHash?
     let height: Double
-    @State private var image: UIImage?
-    @State private var task: Task<Void, Never>?
 
     public init(blurHash: CheckIn.BlurHash? = nil, height: Double) {
         self.blurHash = blurHash
@@ -26,27 +26,22 @@ public struct BlurHashPlaceholder: View {
                 ProgressView()
             }
         }
-        .onDisappear {
-            task?.cancel()
-        }
-        .task {
+        .task(id: blurHash) {
             guard let blurHash else { return }
-            task = Task {
-                await withTaskGroup(of: UIImage?.self) { group in
-                    group.addTask(priority: .background) {
-                        await withCheckedContinuation { continuation in
-                            DispatchQueue.global().async {
-                                let decodedImage = UIImage(
-                                    blurHash: blurHash.hash,
-                                    size: CGSize(width: 50, height: 50)
-                                )
-                                continuation.resume(returning: decodedImage)
-                            }
+            await withTaskGroup(of: UIImage?.self) { group in
+                group.addTask(priority: .background) {
+                    await withCheckedContinuation { continuation in
+                        DispatchQueue.global().async {
+                            let decodedImage = UIImage(
+                                blurHash: blurHash.hash,
+                                size: CGSize(width: 50, height: 50)
+                            )
+                            continuation.resume(returning: decodedImage)
                         }
                     }
-                    for await decodedImage in group {
-                        image = decodedImage
-                    }
+                }
+                for await decodedImage in group {
+                    image = decodedImage
                 }
             }
         }

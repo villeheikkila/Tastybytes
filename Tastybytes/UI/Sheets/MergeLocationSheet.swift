@@ -19,7 +19,6 @@ struct MergeLocationSheet: View {
         }
     }
 
-    @State var searchTask: Task<Void, Never>?
     @State private var showMergeToProductConfirmation = false
     @State private var searchTerm = ""
 
@@ -46,17 +45,8 @@ struct MergeLocationSheet: View {
         .toolbar {
             toolbarContent
         }
-        .onDisappear {
-            searchTask?.cancel()
-        }
-        .onChange(of: searchTerm, debounceTime: 0.2) { newValue in
-            searchTask?.cancel()
-            searchTask = Task {
-                await searchLocations(name: newValue)
-            }
-        }
-        .onDisappear {
-            searchTask?.cancel()
+        .task(id: searchTerm, milliseconds: 200) {
+            await searchLocations(name: searchTerm)
         }
         .confirmationDialog(
             "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted.",

@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct CloseButtonView: View {
     @State private var isPressed = false
+
     let action: () -> Void
 
     public init(action: @escaping () -> Void) {
@@ -23,11 +24,10 @@ public struct CloseButtonView: View {
         })
         .buttonStyle(PlainButtonStyle())
         .symbolEffect(.bounce.down, value: isPressed)
-        .onChange(of: isPressed) {
-            Task {
-                try await Task.sleep(for: .milliseconds(200))
-                action()
-            }
+        .task(id: isPressed) {
+            guard isPressed else { return }
+            do { try await Task.sleep(for: .milliseconds(100)) } catch {}
+            action()
         }
         .accessibilityLabel("Close")
     }
@@ -36,4 +36,3 @@ public struct CloseButtonView: View {
 #Preview {
     CloseButtonView(action: {})
 }
-

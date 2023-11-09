@@ -47,6 +47,52 @@ public extension View {
     }
 }
 
+struct DebouncedTaskViewModifier<ID: Equatable>: ViewModifier {
+    let id: ID
+    let priority: TaskPriority
+    let milliseconds: Int
+    let task: @Sendable () async -> Void
+
+    init(
+        id: ID,
+        priority: TaskPriority = .userInitiated,
+        milliseconds: Int = 0,
+        task: @Sendable @escaping () async -> Void
+    ) {
+        self.id = id
+        self.priority = priority
+        self.milliseconds = milliseconds
+        self.task = task
+    }
+
+    func body(content: Content) -> some View {
+        content.task(id: id, priority: priority) {
+            do {
+                try await Task.sleep(for: .milliseconds(milliseconds))
+                await task()
+            } catch {}
+        }
+    }
+}
+
+public extension View {
+    func task<ID: Equatable>(
+        id: ID,
+        priority: TaskPriority = .userInitiated,
+        milliseconds: Int = 0,
+        task: @Sendable @escaping () async -> Void
+    ) -> some View {
+        modifier(
+            DebouncedTaskViewModifier(
+                id: id,
+                priority: priority,
+                milliseconds: milliseconds,
+                task: task
+            )
+        )
+    }
+}
+
 private struct DebouncedChangeViewModifier<Value>: ViewModifier where Value: Equatable {
     let trigger: Value
     let debounceTime: TimeInterval
