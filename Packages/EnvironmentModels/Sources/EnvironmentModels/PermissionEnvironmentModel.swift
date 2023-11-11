@@ -11,8 +11,6 @@ public final class PermissionEnvironmentModel {
     private let notificationEnvironmentModel = UNUserNotificationCenter.current()
 
     public var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
-    public var cameraStatus: AVAuthorizationStatus = .notDetermined
-    public var photoLibraryStatus: PHAuthorizationStatus = .notDetermined
     public var locationsStatus: CLAuthorizationStatus = .notDetermined
 
     public init() {}
@@ -39,32 +37,6 @@ public final class PermissionEnvironmentModel {
         })
     }
 
-    // camera
-    public func requestCameraAuthorization() {
-        AVCaptureDevice.requestAccess(for: .video) { _ in
-            DispatchQueue.main.async {
-                self.cameraStatus = .authorized
-            }
-        }
-    }
-
-    public func getCurrentCameraPermissionAuthorization() {
-        cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
-    }
-
-    // photo library
-    public func getCurrentPhotoLibraryAuthorization() {
-        photoLibraryStatus = PHPhotoLibrary.authorizationStatus()
-    }
-
-    public func requestPhotoLibraryAuthorization() {
-        PHPhotoLibrary.requestAuthorization { status in
-            DispatchQueue.main.async {
-                self.photoLibraryStatus = status
-            }
-        }
-    }
-
     // location
     public func getCurrentLocationAuthorization() {
         locationsStatus = locationEnvironmentModel.authorizationStatus
@@ -76,8 +48,6 @@ public final class PermissionEnvironmentModel {
 
     public func initialize() {
         getCurrentPushNotificationPermissionAuthorization()
-        getCurrentCameraPermissionAuthorization()
-        getCurrentPhotoLibraryAuthorization()
         getCurrentLocationAuthorization()
     }
 }

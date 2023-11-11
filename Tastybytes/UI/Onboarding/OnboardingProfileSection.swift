@@ -2,7 +2,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-struct ProfileOnboarding: View {
+struct OnboardingProfileSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState var focusedField: OnboardField?
@@ -12,7 +12,8 @@ struct ProfileOnboarding: View {
     @State private var usernameIsAvailable = false
 
     @State private var isLoading = false
-    @Binding var currentTab: OnboardingScreen.Tab
+
+    let onContinue: () -> Void
 
     var userNameIsValid: Bool {
         username.count >= 3
@@ -76,20 +77,24 @@ struct ProfileOnboarding: View {
                 }))
             }
             .opacity(firstName.isEmpty || lastName.isEmpty ? 0 : 1)
+
+            Spacer()
+            Button(action: {
+                onContinue()
+            }, label: {
+                Text("Skip")
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .frame(height: 60)
+                    .foregroundColor(.blue)
+                    .font(.headline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.blue, lineWidth: 1)
+                    )
+            })
+            .padding([.leading, .trailing], 20)
+            .padding(.top, 20)
         }
-        .modifier(OnboardingContinueButtonModifier(title: "Continue", isDisabled: !canProgressToNextStep, onClick: {
-            Task {
-                await profileEnvironmentModel.updateProfile(
-                    update: Profile.UpdateRequest(username: username, firstName: firstName,
-                                                  lastName: lastName)
-                )
-            }
-            withAnimation {
-                if let next = currentTab.next {
-                    currentTab = next
-                }
-            }
-        }))
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .scrollDisabled(true)

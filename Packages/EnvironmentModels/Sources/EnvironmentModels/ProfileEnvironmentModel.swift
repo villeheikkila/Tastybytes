@@ -10,6 +10,7 @@ import SwiftUI
 public final class ProfileEnvironmentModel: ObservableObject {
     private let logger = Logger(category: "ProfileEnvironmentModel")
     public var isLoggedIn = false
+    private var initialValuesLoaded = false
     public var alertError: AlertError?
 
     // Profile Settings
@@ -20,7 +21,6 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public var email = ""
 
     // Application Settings
-    var initialValuesLoaded = false
     public var reactionNotifications = true
     public var friendRequestNotifications = true
     public var checkInTagNotifications = true

@@ -7,13 +7,27 @@ import TipKit
 
 struct AuthenticatedContent: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
+
+    var initialOnboardingSection: OnboardingSection? {
+        if !profileEnvironmentModel.isOnboarded {
+            return OnboardingSection.profile
+        }
+        if permissionEnvironmentModel.pushNotificationStatus == .notDetermined {
+            return OnboardingSection.notifications
+        }
+        if permissionEnvironmentModel.locationsStatus == .notDetermined {
+            return OnboardingSection.location
+        }
+        return nil
+    }
 
     var body: some View {
         if !profileEnvironmentModel.isLoggedIn {
             EmptyView()
-        } else if !isOnboardedOnDevice {
-            OnboardingScreen()
+        } else if !isOnboardedOnDevice, let initialOnboardingSection {
+            OnboardingScreen(initialTab: initialOnboardingSection)
         } else {
             MainContent()
         }
@@ -53,6 +67,8 @@ struct MainContent: View {
         }
         .task {
             await friendEnvironmentModel.initialize(profile: profileEnvironmentModel.profile)
+        }
+        .task {
             await notificationEnvironmentModel.getUnreadCount()
         }
         .onAppear(perform: {

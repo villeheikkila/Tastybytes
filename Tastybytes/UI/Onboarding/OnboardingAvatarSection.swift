@@ -3,18 +3,18 @@ import EnvironmentModels
 import PhotosUI
 import SwiftUI
 
-struct AvatarOnboarding: View {
+struct OnboardingAvatarScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @FocusState var focusedField: OnboardField?
     @State private var selectedItem: PhotosPickerItem?
-    @Binding var currentTab: OnboardingScreen.Tab
+
+    let onContinue: () -> Void
 
     var body: some View {
         Form {
             Text("Now, add a photo")
                 .font(.largeTitle)
                 .fontWeight(.semibold)
-
             Section {
                 HStack {
                     Spacer()
@@ -38,13 +38,6 @@ struct AvatarOnboarding: View {
             }
             .listRowBackground(Color.clear)
         }
-        .modifier(OnboardingContinueButtonModifier(title: "Continue", onClick: {
-            if let nextTab = currentTab.next {
-                withAnimation {
-                    currentTab = nextTab
-                }
-            }
-        }))
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .scrollDisabled(true)
