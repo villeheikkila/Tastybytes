@@ -3,14 +3,16 @@ import Models
 import SwiftUI
 
 struct AppLogoView: View {
+    let appIcon: AppIcon?
     let size: Double
 
-    init(size: Double? = nil) {
+    init(appIcon: AppIcon? = nil, size: Double? = nil) {
+        self.appIcon = appIcon
         self.size = size ?? min(UIScreen.main.bounds.width / 4, 300)
     }
 
     var body: some View {
-        Image(getCurrentAppIcon().logo)
+        Image(appIcon?.logo ?? getCurrentAppIcon().logo)
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: size, height: size)

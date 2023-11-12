@@ -12,12 +12,10 @@ public struct LabeledTextField: View {
     }
 
     public var body: some View {
-        HStack {
-            Text(title)
-                .foregroundColor(.secondary)
-            Spacer()
+        LabeledContent(title) {
             TextField(placeholder ?? "", text: $text)
                 .multilineTextAlignment(.trailing)
+                .foregroundColor(.secondary)
         }
     }
 }

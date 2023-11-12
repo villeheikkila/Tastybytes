@@ -57,7 +57,7 @@ struct AuthenticationScreen: View {
         VStack(alignment: .center, spacing: 20) {
             HStack {
                 Spacer()
-                AppLogoView()
+                AppLogoView(appIcon: .ramune)
                 Spacer()
             }
             .background(

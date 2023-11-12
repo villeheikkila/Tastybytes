@@ -66,8 +66,8 @@ struct OnboardingScreen: View {
                 .tag(OnboardingSection.location)
             }
         }
-        .tabViewStyle(.page)
-        .indexViewStyle(.page(backgroundDisplayMode: .never))
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
         .task {
             await splashScreenEnvironmentModel.dismiss()
         }
