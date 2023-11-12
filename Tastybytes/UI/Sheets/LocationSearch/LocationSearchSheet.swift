@@ -92,7 +92,7 @@ struct LocationSearchSheet: View {
             await getRecentLocations()
         }
         .task {
-            locationEnvironmentModel.requestLocation()
+            await locationEnvironmentModel.updateLocation()
         }
         .alertError($alertError)
         .onChange(of: locationEnvironmentModel.location) { _, latestLocation in

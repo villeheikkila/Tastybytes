@@ -4,37 +4,29 @@ import Observation
 import OSLog
 
 @Observable
-public final class LocationEnvironmentModel: NSObject, CLLocationManagerDelegate {
+public final class LocationEnvironmentModel {
     private let logger = Logger(category: "LocationEnvironmentModel")
     private let manager = CLLocationManager()
-
     public var location: CLLocation? = nil
 
-    override public init() {
-        super.init()
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.distanceFilter = kCLDistanceFilterNone
-        manager.requestWhenInUseAuthorization()
-        manager.startUpdatingLocation()
-        manager.delegate = self
-    }
+    public init() {}
 
-    public func requestLocation() {
-        manager.requestLocation()
-    }
-
-    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        location = locations.last
-        manager.stopUpdatingLocation()
-    }
-
-    public func locationManager(_: CLLocationManager, didFailWithError error: Error) {
-        logger.debug("Error while trying to get current location: \(error)")
-    }
-
-    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse || status == .authorizedAlways {
-            manager.requestLocation()
+    public func updateLocation() async {
+        if manager.authorizationStatus == .notDetermined {
+            manager.requestWhenInUseAuthorization()
+        }
+        logger.info("Updating location...")
+        let updates = CLLocationUpdate.liveUpdates()
+        do {
+            for try await update in updates {
+                if let location = update.location {
+                    self.location = location
+                    logger.info("Location found, stopping.")
+                    break
+                }
+            }
+        } catch {
+            logger.error("Error occured while trying to read current location")
         }
     }
 }
