@@ -15,8 +15,8 @@ struct LocationSearchSheet: View {
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
+    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @State private var searchResults = [Location]()
-    @State private var locationEnvironmentModel = LocationEnvironmentModel()
     @State private var recentLocations = [Location]()
     @State private var nearbyLocations = [Location]()
     @State private var currentLocation: CLLocation?
@@ -67,7 +67,7 @@ struct LocationSearchSheet: View {
                     }
                 }
             }
-            if permissionEnvironmentModel.hasLocationAccess, !recentLocations.isEmpty, !hasSearched {
+            if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty, !hasSearched {
                 Section("Nearby locations") {
                     ForEach(nearbyLocations) { location in
                         LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)

@@ -1090,7 +1090,6 @@
 				5CB52D64292BBC14000BF55F /* ProfileProductListView.swift in Sources */,
 				5C7881F22A0AAFC400AF29EE /* MergeLocationSheet.swift in Sources */,
 				5C663F372933B8FA006F9A97 /* LocationScreen.swift in Sources */,
-				5C6E10632A1D4E3C00079F8E /* OnboardingAvatarSection.swift in Sources */,
 				5C234F132A0163AA003F2283 /* CheckInDatePickerSheet.swift in Sources */,
 				5CDC9F9D29E4572000B6082F /* Screen.swift in Sources */,
 				5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */,

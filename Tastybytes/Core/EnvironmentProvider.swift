@@ -17,6 +17,7 @@ struct EnvironmentProvider: View {
     @State private var friendEnvironmentModel: FriendEnvironmentModel
     @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
     @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel()
+    @State private var locationEnvironmentModel = LocationEnvironmentModel()
     @State private var isPortrait = false
     @Environment(\.repository) private var repository
     @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
@@ -45,6 +46,7 @@ struct EnvironmentProvider: View {
             .environment(permissionEnvironmentModel)
             .environment(imageUploadEnvironmentModel)
             .environment(subscriptionEnvironmentModel)
+            .environment(locationEnvironmentModel)
             .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
             .detectOrientation($isPortrait)
             .environment(\.isPortrait, isPortrait)

@@ -8,6 +8,7 @@ import TipKit
 struct AuthenticatedContent: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
+    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
 
     var initialOnboardingSection: OnboardingSection? {
@@ -17,7 +18,7 @@ struct AuthenticatedContent: View {
         if permissionEnvironmentModel.pushNotificationStatus == .notDetermined {
             return OnboardingSection.notifications
         }
-        if permissionEnvironmentModel.locationsStatus == .notDetermined {
+        if locationEnvironmentModel.locationsStatus == .notDetermined {
             return OnboardingSection.location
         }
         return nil

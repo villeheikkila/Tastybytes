@@ -2,7 +2,8 @@ import EnvironmentModels
 import SwiftUI
 
 struct OnboardingLocationPermissionSection: View {
-    @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
+    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
+    @State private var isMounted = false
 
     let onContinue: () -> Void
 
@@ -11,10 +12,14 @@ struct OnboardingLocationPermissionSection: View {
             Image(systemName: "location.fill")
                 .resizable()
                 .scaledToFit()
+                .symbolEffect(.bounce.up, value: isMounted)
                 .frame(width: 70, height: 70)
                 .padding(.top, 80)
+                .onTapGesture {
+                    isMounted.toggle()
+                }
 
-            Text("Enable location access to be able to tag near by venues!")
+            Text("Access to location")
                 .font(.title)
                 .fontWeight(.semibold)
                 .padding(.top, 20)
@@ -27,9 +32,9 @@ struct OnboardingLocationPermissionSection: View {
 
             Spacer()
             Button(action: {
-                permissionEnvironmentModel.requestLocationAuthorization()
+                locationEnvironmentModel.requestLocationAuthorization()
             }, label: {
-                Text("Allow Access")
+                Text("Continue")
                     .frame(minWidth: 0, maxWidth: .infinity)
                     .frame(height: 60)
                     .foregroundColor(.white)
@@ -43,20 +48,24 @@ struct OnboardingLocationPermissionSection: View {
             }, label: {
                 Text("Skip")
                     .frame(minWidth: 0, maxWidth: .infinity)
-                    .frame(height: 60)
                     .foregroundColor(.blue)
                     .font(.headline)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
             })
             .padding([.leading, .trailing], 20)
             .padding(.top, 20)
         }
         .simultaneousGesture(DragGesture())
-        .onChange(of: permissionEnvironmentModel.locationsStatus) {
-            onContinue()
+        .onChange(of: locationEnvironmentModel.locationsStatus) { _, newValue in
+            if newValue != .notDetermined {
+                onContinue()
+            }
+        }
+        .onAppear {
+            isMounted = true
+            locationEnvironmentModel.startMonitoringLocationStatus()
+        }
+        .onDisappear {
+            locationEnvironmentModel.stopMonitoringLocationStatus()
         }
     }
 }

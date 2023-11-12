@@ -3,6 +3,7 @@ import SwiftUI
 
 struct OnboardingNotificationSection: View {
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
+    @State private var isMounted = false
 
     let onContinue: () -> Void
 
@@ -11,6 +12,7 @@ struct OnboardingNotificationSection: View {
             Image(systemName: "bell.fill")
                 .resizable()
                 .scaledToFit()
+                .symbolEffect(.bounce.down, value: isMounted)
                 .frame(width: 70, height: 70)
                 .padding(.top, 80)
 
@@ -29,7 +31,7 @@ struct OnboardingNotificationSection: View {
             Button(action: {
                 permissionEnvironmentModel.requestPushNotificationAuthorization()
             }, label: {
-                Text("Allow")
+                Text("Continue")
                     .frame(minWidth: 0, maxWidth: .infinity)
                     .frame(height: 60)
                     .foregroundColor(.white)
@@ -43,18 +45,17 @@ struct OnboardingNotificationSection: View {
             }, label: {
                 Text("Skip")
                     .frame(minWidth: 0, maxWidth: .infinity)
-                    .frame(height: 60)
                     .foregroundColor(.blue)
                     .font(.headline)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
+
             })
             .padding([.leading, .trailing], 20)
             .padding(.top, 20)
         }
         .simultaneousGesture(DragGesture())
+        .onAppear {
+            isMounted = true
+        }
         .onChange(of: permissionEnvironmentModel.pushNotificationStatus) {
             onContinue()
         }

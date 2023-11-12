@@ -6,10 +6,12 @@ struct OnboardingScreen: View {
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
+    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @State private var currentTab: OnboardingSection
 
-    init(initialTab: OnboardingSection) {
-        _currentTab = State(initialValue: initialTab)
+    init(initialTab _: OnboardingSection) {
+        // _currentTab = State(initialValue: initialTab)
+        _currentTab = State(initialValue: .profile)
     }
 
     func finishOnboarding() {
@@ -19,21 +21,37 @@ struct OnboardingScreen: View {
         }
     }
 
+    var showProfileSection: Bool {
+        !profileEnvironmentModel.isOnboarded
+    }
+
+    var showNotificationSection: Bool {
+        permissionEnvironmentModel.pushNotificationStatus == .notDetermined
+    }
+
+    var showLocationSection: Bool {
+        locationEnvironmentModel.locationsStatus == .notDetermined
+    }
+
     var body: some View {
         TabView(selection: .init(get: { currentTab }, set: { newTab in
             currentTab = newTab
         })) {
-            if !profileEnvironmentModel.isOnboarded {
+            if showProfileSection {
                 OnboardingProfileSection(onContinue: {
-                    currentTab = .avatar
+                    if showNotificationSection {
+                        currentTab = .notifications
+                    } else if showLocationSection {
+                        currentTab = .location
+                    } else {
+                        finishOnboarding()
+                    }
                 })
                 .tag(OnboardingSection.profile)
-                OnboardingAvatarScreen(onContinue: {})
-                    .tag(OnboardingSection.avatar)
             }
-            if permissionEnvironmentModel.pushNotificationStatus == .notDetermined {
+            if showNotificationSection {
                 OnboardingNotificationSection(onContinue: {
-                    if permissionEnvironmentModel.locationsStatus == .notDetermined {
+                    if showLocationSection {
                         currentTab = .location
                     } else {
                         finishOnboarding()
@@ -41,7 +59,7 @@ struct OnboardingScreen: View {
                 })
                 .tag(OnboardingSection.notifications)
             }
-            if permissionEnvironmentModel.locationsStatus == .notDetermined {
+            if showLocationSection {
                 OnboardingLocationPermissionSection(onContinue: {
                     finishOnboarding()
                 })

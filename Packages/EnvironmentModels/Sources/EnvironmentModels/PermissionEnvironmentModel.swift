@@ -7,17 +7,11 @@ import SwiftUI
 @Observable
 public final class PermissionEnvironmentModel {
     private let logger = Logger(category: "PermissionEnvironmentModel")
-    private let locationEnvironmentModel = CLLocationManager()
     private let notificationEnvironmentModel = UNUserNotificationCenter.current()
 
     public var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
-    public var locationsStatus: CLAuthorizationStatus = .notDetermined
 
     public init() {}
-
-    public var hasLocationAccess: Bool {
-        locationsStatus == .authorizedWhenInUse || locationsStatus == .authorizedAlways
-    }
 
     // push notifications
     public func requestPushNotificationAuthorization() {
@@ -37,17 +31,7 @@ public final class PermissionEnvironmentModel {
         })
     }
 
-    // location
-    public func getCurrentLocationAuthorization() {
-        locationsStatus = locationEnvironmentModel.authorizationStatus
-    }
-
-    public func requestLocationAuthorization() {
-        locationEnvironmentModel.requestWhenInUseAuthorization()
-    }
-
     public func initialize() {
         getCurrentPushNotificationPermissionAuthorization()
-        getCurrentLocationAuthorization()
     }
 }

@@ -1,11 +1,14 @@
+import Components
 import EnvironmentModels
 import Models
+import PhotosUI
 import SwiftUI
 
 struct OnboardingProfileSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState var focusedField: OnboardField?
+    @State private var selectedItem: PhotosPickerItem?
     @State private var username = ""
     @State private var firstName = ""
     @State private var lastName = ""
@@ -25,18 +28,31 @@ struct OnboardingProfileSection: View {
 
     var body: some View {
         Form {
-            HStack {
-                Spacer()
-                Image(systemName: "rectangle.and.pencil.and.ellipsis")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 100)
-                Spacer()
-            }.listRowSeparator(.hidden)
-
             Text("Fill in your profile")
                 .font(.largeTitle)
                 .fontWeight(.semibold)
+
+            Section {
+                HStack {
+                    Spacer()
+                    PhotosPicker(
+                        selection: $selectedItem,
+                        matching: .images,
+                        photoLibrary: .shared()
+                    ) {
+                        AvatarView(
+                            avatarUrl: profileEnvironmentModel.profile.avatarUrl,
+                            size: 140,
+                            id: profileEnvironmentModel.id
+                        )
+                    }
+                    .onChange(of: selectedItem) { _, newValue in
+                        guard let newValue else { return }
+                        Task { await profileEnvironmentModel.uploadAvatar(newAvatar: newValue) }
+                    }
+                    Spacer()
+                }
+            }
 
             Section {
                 TextField("Username", text: $username)
@@ -60,29 +76,16 @@ struct OnboardingProfileSection: View {
                     .focused($focusedField, equals: .firstName)
                 TextField("Last Name (optional)", text: $lastName)
                     .focused($focusedField, equals: .lastName)
-            } footer: {
-                Text("These values are shown in your profile page and can be seen by other users.")
             }
-            .headerProminence(.increased)
             .onTapGesture {
                 focusedField = nil
             }
-
-            Section {
-                Toggle("Use your full name instead of username", isOn: .init(get: {
-                    profileEnvironmentModel.showFullName
-                }, set: { newValue in
-                    profileEnvironmentModel.showFullName = newValue
-                    Task { await profileEnvironmentModel.updateDisplaySettings() }
-                }))
-            }
-            .opacity(firstName.isEmpty || lastName.isEmpty ? 0 : 1)
 
             Spacer()
             Button(action: {
                 onContinue()
             }, label: {
-                Text("Skip")
+                Text("Continue")
                     .frame(minWidth: 0, maxWidth: .infinity)
                     .frame(height: 60)
                     .foregroundColor(.blue)
