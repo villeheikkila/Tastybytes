@@ -20,7 +20,7 @@ public class ImageUploadEnvironmentModel {
 
     public func uploadCheckInImage(checkIn: CheckIn, image: UIImage) {
         Task {
-            guard let data = image.jpegData(compressionQuality: 0.1) else { return }
+            guard let data = image.jpegData(compressionQuality: 0.7) else { return }
             switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
             case let .success(imageFile):
                 await MainActor.run {
