@@ -112,10 +112,10 @@ public final class FriendEnvironmentModel {
     }
 
     public func refresh(withHaptics: Bool = false) async {
+        guard let profile else { return }
         if withHaptics {
             isRefreshing = true
         }
-        guard let profile else { return }
         switch await repository.friend.getByUserId(
             userId: profile.id,
             status: .none

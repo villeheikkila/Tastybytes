@@ -19,7 +19,6 @@ struct OnboardingScreen: View {
     }
 
     var showProfileSection: Bool {
-        return true
         !profileEnvironmentModel.isOnboarded
     }
 

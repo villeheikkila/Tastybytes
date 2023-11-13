@@ -14,7 +14,6 @@ struct OnboardingProfileSection: View {
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var usernameIsAvailable = false
-
     @State private var isLoading = false
 
     let onContinue: () -> Void
@@ -49,6 +48,19 @@ struct OnboardingProfileSection: View {
                         size: 140,
                         id: profileEnvironmentModel.id
                     )
+                    .overlay(alignment: .bottomTrailing) {
+                        PhotosPicker(selection: $selectedItem,
+                                     matching: .images,
+                                     photoLibrary: .shared())
+                        {
+                            Image(systemName: "pencil.circle.fill")
+                                .accessibilityHidden(true)
+                                .symbolRenderingMode(.multicolor)
+                                .font(.system(size: 32))
+                                .foregroundColor(color)
+                        }
+                        .buttonStyle(.borderless)
+                    }
                 }
                 .onChange(of: selectedItem) { _, newValue in
                     guard let newValue else { return }
@@ -105,8 +117,8 @@ struct OnboardingProfileSection: View {
                         .background(color)
                         .cornerRadius(15)
                 })
-                .padding()
-                .padding()
+                .padding(.horizontal, 32)
+                .padding(.bottom, 32)
             }
         }
         .background(

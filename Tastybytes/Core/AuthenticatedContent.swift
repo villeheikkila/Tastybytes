@@ -11,7 +11,6 @@ struct AuthenticatedContent: View {
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
 
     var initialOnboardingSection: OnboardingSection? {
-        return .profile
         if !profileEnvironmentModel.isOnboarded {
             return .profile
         }

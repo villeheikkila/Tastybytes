@@ -4,9 +4,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let logger = Logger(category: "RootView")
-
 struct AuthEventObserver: View {
+    private let logger = Logger(category: "AuthEventObserver")
     @State private var authState: AuthState?
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel

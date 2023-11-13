@@ -48,6 +48,7 @@ struct OnboardingSectionContent: View {
                         .resizable()
                         .aspectRatio(1.0, contentMode: .fit)
                         .padding(10)
+                        .accessibilityHidden(true)
                 }
                 .background(in: Circle().inset(by: -20))
                 .backgroundStyle(
@@ -72,6 +73,9 @@ struct OnboardingSectionContent: View {
             Spacer()
             Spacer()
             Spacer()
+            Spacer()
+        }
+        .safeAreaInset(edge: .bottom) {
             VStack(spacing: 16) {
                 Button(action: onContinue, label: {
                     Text("Continue")
@@ -90,8 +94,8 @@ struct OnboardingSectionContent: View {
 
                 })
             }
-            .padding(.horizontal, 20)
-            Spacer()
+            .padding(.horizontal, 32)
+            .padding(.bottom, 32)
         }
         .onAppear {
             isMounted = true
