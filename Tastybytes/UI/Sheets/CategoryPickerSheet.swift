@@ -23,8 +23,12 @@ struct CategoryPickerSheet: View {
         }
     }
 
+    private var sortedCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
+        shownCategories.sorted { category == $0.id && category != $1.id }
+    }
+
     var body: some View {
-        List(shownCategories, selection: $category) { category in
+        List(sortedCategories, selection: $category) { category in
             CategoryNameView(category: category, withBorder: false)
         }
         .onChange(of: category) {

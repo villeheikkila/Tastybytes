@@ -21,12 +21,16 @@ struct SubcategorySheet: View {
         category.subcategories.sorted().filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
     }
 
+    private var sortedSubcategories: [Subcategory] {
+        shownSubcategories.sorted { subcategories.contains($0.id) && !subcategories.contains($1.id) }
+    }
+
     var showContentUnavailableView: Bool {
         !searchTerm.isEmpty && shownSubcategories.isEmpty
     }
 
     var body: some View {
-        List(shownSubcategories, selection: $subcategories) { subcategory in
+        List(sortedSubcategories, selection: $subcategories) { subcategory in
             Text(subcategory.name)
         }
         .environment(\.editMode, .constant(.active))
