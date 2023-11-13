@@ -64,5 +64,8 @@ struct EnvironmentProvider: View {
             .task {
                 await appDataEnvironmentModel.initialize()
             }
+            .task {
+                locationEnvironmentModel.updateLocationAuthorizationStatus()
+            }
     }
 }

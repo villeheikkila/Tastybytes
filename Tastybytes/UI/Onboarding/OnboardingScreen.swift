@@ -2,26 +2,24 @@ import EnvironmentModels
 import SwiftUI
 
 struct OnboardingScreen: View {
-    @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @State private var currentTab: OnboardingSection
 
-    init(initialTab _: OnboardingSection) {
-        // _currentTab = State(initialValue: initialTab)
-        _currentTab = State(initialValue: .profile)
+    init(initialTab: OnboardingSection) {
+        _currentTab = State(initialValue: initialTab)
     }
 
     func finishOnboarding() {
         Task {
             await profileEnvironmentModel.onboardingUpdate()
-            isOnboardedOnDevice = true
         }
     }
 
     var showProfileSection: Bool {
+        return true
         !profileEnvironmentModel.isOnboarded
     }
 
@@ -66,6 +64,7 @@ struct OnboardingScreen: View {
                 .tag(OnboardingSection.location)
             }
         }
+        .ignoresSafeArea(edges: .bottom)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
         .task {

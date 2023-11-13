@@ -1,124 +1,100 @@
+import Components
 import EnvironmentModels
 import SwiftUI
 
 struct OnboardingNotificationSection: View {
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
-    @State private var isMounted = false
 
     let onContinue: () -> Void
 
+    let color = Color(red: 157 / 255, green: 137 / 255, blue: 219 / 255)
+
     var body: some View {
-        VStack {
-            Image(systemName: "bell.fill")
-                .resizable()
-                .scaledToFit()
-                .symbolEffect(.bounce.down, value: isMounted)
-                .frame(width: 70, height: 70)
-                .padding(.top, 80)
-
-            Text("Keep up to date!")
-                .font(.title)
-                .fontWeight(.semibold)
-                .padding(.top, 20)
-
-            Text("To keep you updated and informed, we need access to send you notifications.")
-                .font(.body)
-                .multilineTextAlignment(.center)
-                .padding([.leading, .trailing], 30)
-                .padding(.top, 10)
-
-            Spacer()
-            Button(action: {
-                permissionEnvironmentModel.requestPushNotificationAuthorization()
-            }, label: {
-                Text("Continue")
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .frame(height: 60)
-                    .foregroundColor(.white)
-                    .font(.headline)
-                    .background(Color.blue)
-                    .cornerRadius(15)
-            })
-            .padding([.leading, .trailing], 20)
-            Button(action: {
+        OnboardingSectionContent(onContinue: {
+                                     permissionEnvironmentModel.requestPushNotificationAuthorization()
+                                 },
+                                 onSkip: onContinue,
+                                 color: color,
+                                 symbol: "bell.fill",
+                                 title: "Keep up to date!",
+                                 description: "To keep you updated and informed, we need access to send you notifications.")
+            .background(
+                AppGradient(color: color),
+                alignment: .bottom
+            )
+            .ignoresSafeArea(edges: .bottom)
+            .simultaneousGesture(DragGesture())
+            .onChange(of: permissionEnvironmentModel.pushNotificationStatus) {
                 onContinue()
-            }, label: {
-                Text("Skip")
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .foregroundColor(.blue)
-                    .font(.headline)
-
-            })
-            .padding([.leading, .trailing], 20)
-            .padding(.top, 20)
-        }
-        .simultaneousGesture(DragGesture())
-        .onAppear {
-            isMounted = true
-        }
-        .onChange(of: permissionEnvironmentModel.pushNotificationStatus) {
-            onContinue()
-        }
+            }
     }
 }
 
-struct OnboardingActionSection: View {
-    @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
+struct OnboardingSectionContent: View {
     @State private var isMounted = false
-
     let onContinue: () -> Void
+    let onSkip: () -> Void
+    let color: Color
+    let symbol: String
+    let title: String
+    let description: String
 
     var body: some View {
         VStack {
-            Image(systemName: "bell.fill")
-                .resizable()
-                .scaledToFit()
-                .symbolEffect(.bounce.down, value: isMounted)
-                .frame(width: 70, height: 70)
-                .padding(.top, 80)
-
-            Text("Keep up to date!")
-                .font(.title)
-                .fontWeight(.semibold)
-                .padding(.top, 20)
-
-            Text("To keep you updated and informed, we need access to send you notifications.")
-                .font(.body)
-                .multilineTextAlignment(.center)
-                .padding([.leading, .trailing], 30)
-                .padding(.top, 10)
-
             Spacer()
-            Button(action: {
-                permissionEnvironmentModel.requestPushNotificationAuthorization()
-            }, label: {
-                Text("Continue")
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .frame(height: 60)
-                    .foregroundColor(.white)
-                    .font(.headline)
-                    .background(Color.blue)
-                    .cornerRadius(15)
-            })
-            .padding([.leading, .trailing], 20)
-            Button(action: {
-                onContinue()
-            }, label: {
-                Text("Skip")
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .foregroundColor(.blue)
-                    .font(.headline)
+            VStack(spacing: 20) {
+                VStack {
+                    Image(systemName: symbol)
+                        .resizable()
+                        .aspectRatio(1.0, contentMode: .fit)
+                        .padding(10)
+                }
+                .background(in: Circle().inset(by: -20))
+                .backgroundStyle(
+                    color.gradient
+                )
+                .foregroundStyle(.white.shadow(.drop(radius: 1, y: 1.5)))
+                .padding(20)
+                .frame(width: 120, height: 120)
 
-            })
-            .padding([.leading, .trailing], 20)
-            .padding(.top, 20)
+                Text(title)
+                    .font(.title)
+                    .fontWeight(.semibold)
+
+                Text(description)
+                    .font(.body)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 30)
+            }
+            Spacer()
+            Spacer()
+            Spacer()
+            Spacer()
+            Spacer()
+            Spacer()
+            VStack(spacing: 16) {
+                Button(action: onContinue, label: {
+                    Text("Continue")
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .frame(height: 60)
+                        .foregroundColor(.white)
+                        .font(.headline)
+                        .background(color)
+                        .cornerRadius(15)
+                })
+                Button(action: onSkip, label: {
+                    Text("Skip")
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .foregroundColor(color)
+                        .font(.headline)
+
+                })
+            }
+            .padding(.horizontal, 20)
+            Spacer()
         }
-        .simultaneousGesture(DragGesture())
         .onAppear {
             isMounted = true
-        }
-        .onChange(of: permissionEnvironmentModel.pushNotificationStatus) {
-            onContinue()
         }
     }
 }

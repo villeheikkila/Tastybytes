@@ -27,69 +27,69 @@ struct OnboardingProfileSection: View {
         userNameIsValid && usernameIsAvailable && !username.isEmpty && !isLoading
     }
 
-    var body: some View {
-        ZStack {
-            Form {
-                Text("Set up your profile")
-                    .font(.largeTitle)
-                    .fontWeight(.semibold)
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+    let color = Color(red: 215.0 / 255.0, green: 137.0 / 255.0, blue: 185.0 / 255.0)
 
-                HStack {
-                    Spacer()
-                    PhotosPicker(
-                        selection: $selectedItem,
-                        matching: .images,
-                        photoLibrary: .shared()
-                    ) {
-                        AvatarView(
-                            avatarUrl: profileEnvironmentModel.profile.avatarUrl,
-                            size: 140,
-                            id: profileEnvironmentModel.id
-                        )
-                    }
-                    .onChange(of: selectedItem) { _, newValue in
-                        guard let newValue else { return }
-                        Task { await profileEnvironmentModel.uploadAvatar(newAvatar: newValue) }
-                    }
-                    Spacer()
-                }
+    var body: some View {
+        Form {
+            Text("Set up your profile")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
 
-                Section {
-                    LabeledTextField(title: "Username", text: $username)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
-                        .focused($focusedField, equals: .username)
-                        .onTapGesture {
-                            focusedField = .username
-                        }
-                        .onChange(of: username) {
-                            usernameIsAvailable = false
-                            isLoading = true
-                        }
-                        .task(id: username, milliseconds: 300) {
-                            guard username.count >= 3 else { return }
-                            let isAvailable = await profileEnvironmentModel
-                                .checkIfUsernameIsAvailable(username: username)
-                            withAnimation {
-                                usernameIsAvailable = isAvailable
-                                isLoading = false
-                            }
-                        }
-                    LabeledTextField(title: "First Name (optional)", text: $firstName)
-                        .focused($focusedField, equals: .firstName)
-                        .onTapGesture {
-                            focusedField = .firstName
-                        }
-                    LabeledTextField(title: "Last Name (optional)", text: $lastName)
-                        .focused($focusedField, equals: .lastName)
-                        .onTapGesture {
-                            focusedField = .lastName
-                        }
+            HStack {
+                Spacer()
+                PhotosPicker(
+                    selection: $selectedItem,
+                    matching: .images,
+                    photoLibrary: .shared()
+                ) {
+                    AvatarView(
+                        avatarUrl: profileEnvironmentModel.profile.avatarUrl,
+                        size: 140,
+                        id: profileEnvironmentModel.id
+                    )
                 }
+                .onChange(of: selectedItem) { _, newValue in
+                    guard let newValue else { return }
+                    Task { await profileEnvironmentModel.uploadAvatar(newAvatar: newValue) }
+                }
+                Spacer()
+            }
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+
+            Section {
+                LabeledTextField(title: "Username", text: $username)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .focused($focusedField, equals: .username)
+                    .onTapGesture {
+                        focusedField = .username
+                    }
+                    .onChange(of: username) {
+                        usernameIsAvailable = false
+                        isLoading = true
+                    }
+                    .task(id: username, milliseconds: 300) {
+                        guard username.count >= 3 else { return }
+                        let isAvailable = await profileEnvironmentModel
+                            .checkIfUsernameIsAvailable(username: username)
+                        withAnimation {
+                            usernameIsAvailable = isAvailable
+                            isLoading = false
+                        }
+                    }
+                LabeledTextField(title: "First Name (optional)", text: $firstName)
+                    .focused($focusedField, equals: .firstName)
+                    .onTapGesture {
+                        focusedField = .firstName
+                    }
+                LabeledTextField(title: "Last Name (optional)", text: $lastName)
+                    .focused($focusedField, equals: .lastName)
+                    .onTapGesture {
+                        focusedField = .lastName
+                    }
             }
         }
         .safeAreaInset(edge: .bottom) {
@@ -102,12 +102,18 @@ struct OnboardingProfileSection: View {
                         .frame(height: 60)
                         .foregroundColor(.white)
                         .font(.headline)
-                        .background(Color.blue)
+                        .background(color)
                         .cornerRadius(15)
                 })
                 .padding()
+                .padding()
             }
         }
+        .background(
+            AppGradient(color: color),
+            alignment: .bottom
+        )
+        .ignoresSafeArea(edges: .bottom)
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .scrollDisabled(true)

@@ -1,7 +1,11 @@
 import SwiftUI
 
 public struct AppGradient: View {
-    public init() {}
+    let color: Color
+
+    public init(color: Color) {
+        self.color = color
+    }
 
     public var body: some View {
         LinearGradient(
@@ -54,7 +58,7 @@ public struct AppGradient: View {
 
         let stops = data.map { opacity, location in
             Gradient.Stop(
-                color: Color(.sRGB, red: 130 / 255, green: 135 / 255, blue: 230 / 255, opacity: 1).opacity(opacity),
+                color: color.opacity(opacity),
                 location: location
             )
         }

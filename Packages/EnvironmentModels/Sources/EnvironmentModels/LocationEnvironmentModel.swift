@@ -12,9 +12,7 @@ public final class LocationEnvironmentModel {
     public var location: CLLocation? = nil
     public var locationsStatus: CLAuthorizationStatus = .notDetermined
 
-    public init() {
-        locationsStatus = manager.authorizationStatus
-    }
+    public init() {}
 
     public var hasAccess: Bool {
         locationsStatus == .authorizedAlways || locationsStatus == .authorizedWhenInUse

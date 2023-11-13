@@ -9,17 +9,17 @@ struct AuthenticatedContent: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
-    @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
 
     var initialOnboardingSection: OnboardingSection? {
+        return .profile
         if !profileEnvironmentModel.isOnboarded {
-            return OnboardingSection.profile
+            return .profile
         }
         if permissionEnvironmentModel.pushNotificationStatus == .notDetermined {
-            return OnboardingSection.notifications
+            return .notifications
         }
         if locationEnvironmentModel.locationsStatus == .notDetermined {
-            return OnboardingSection.location
+            return .location
         }
         return nil
     }
@@ -27,7 +27,7 @@ struct AuthenticatedContent: View {
     var body: some View {
         if !profileEnvironmentModel.isLoggedIn {
             EmptyView()
-        } else if !isOnboardedOnDevice, let initialOnboardingSection {
+        } else if let initialOnboardingSection {
             OnboardingScreen(initialTab: initialOnboardingSection)
         } else {
             MainContent()
