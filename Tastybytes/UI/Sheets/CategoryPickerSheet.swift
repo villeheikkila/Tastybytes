@@ -29,8 +29,15 @@ struct CategoryPickerSheet: View {
 
     var body: some View {
         List(sortedCategories, selection: $category) { category in
-            CategoryNameView(category: category, withBorder: false)
+            HStack {
+                if let icon = category.icon {
+                    Text(icon)
+                        .grayscale(1)
+                }
+                Text(category.name)
+            }
         }
+        .environment(\.defaultMinListRowHeight, 50)
         .onChange(of: category) {
             dismiss()
         }

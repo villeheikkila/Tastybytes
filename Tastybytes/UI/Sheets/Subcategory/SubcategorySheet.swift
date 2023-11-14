@@ -33,6 +33,7 @@ struct SubcategorySheet: View {
         List(sortedSubcategories, selection: $subcategories) { subcategory in
             Text(subcategory.name)
         }
+        .environment(\.defaultMinListRowHeight, 50)
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
         .overlay {

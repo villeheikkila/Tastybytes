@@ -45,6 +45,7 @@ struct FlavorSheet: View {
         List(sortedFlavors, selection: $pickedFlavorIds) { pickedFlavor in
             Text(pickedFlavor.name.capitalized)
         }
+        .environment(\.defaultMinListRowHeight, 32)
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
         .navigationTitle("Flavors")
