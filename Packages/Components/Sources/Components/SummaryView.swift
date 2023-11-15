@@ -47,7 +47,9 @@ struct SummaryRow: View {
             Text(title).font(.caption).bold()
             Spacer()
             if let count {
-                Text(String(count)).font(.caption)
+                Text(String(count))
+                    .contentTransition(.numericText())
+                    .font(.caption)
             } else {
                 Text("")
             }
@@ -56,6 +58,7 @@ struct SummaryRow: View {
             Group {
                 if let rating {
                     Text(String(rating))
+                        .contentTransition(.numericText())
                 } else {
                     Text("-")
                 }

@@ -285,6 +285,7 @@ struct CheckInStatisticView: View {
                 .bold()
                 .textCase(.uppercase)
             Text(subtitle)
+                .contentTransition(.numericText())
                 .font(.headline)
         }
         .onTapGesture {
