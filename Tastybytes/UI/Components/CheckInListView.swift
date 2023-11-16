@@ -6,8 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let logger = Logger(category: "CheckInListView")
-
 extension CheckInListView {
     enum Fetcher {
         case activityFeed
@@ -37,29 +35,35 @@ extension CheckInListView {
 }
 
 struct CheckInListView<Header>: View where Header: View {
+    private let logger = Logger(category: "CheckInListView")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
-    @State private var scrollProxy: ScrollViewProxy?
+    // Tasks
+    @State private var loadingCheckInsOnAppear: Task<Void, Error>?
+    // Scroll position
+    @Binding private var scrollToTop: Int
+    @State private var scrolledID: Int?
+    // Feed state
+    @State private var refreshId = 0
+    @State private var previousRefreshId: Int?
+    @State private var isRefreshing = false
+    @State private var isLoading = false
+    @State private var page = 0
+    // Check-ins
+    @State private var checkIns = [CheckIn]()
+    @State private var showCheckInsFrom: CheckInSegment = .everyone
+    @State private var currentShowCheckInsFrom: CheckInSegment = .everyone
+    // Dialogs
+    @State private var alertError: AlertError?
     @State private var showDeleteCheckInConfirmationDialog = false
     @State private var showDeleteConfirmationFor: CheckIn? {
         didSet {
             showDeleteCheckInConfirmationDialog = true
         }
     }
-
-    @State private var checkIns = [CheckIn]()
-    @State private var isLoading = false
-    @State private var initialLoadCompleted = false
-    @State private var page = 0
-    @State private var showEmptyView = false
-    @State private var isRefreshing = false
-    @State private var showCheckInsFrom: CheckInSegment = .everyone
-    @State private var scrolledID: Int?
-    @State private var alertError: AlertError?
-    @Binding private var scrollToTop: Int
 
     private let header: Header
     private let showContentUnavailableView: Bool
@@ -82,6 +86,10 @@ struct CheckInListView<Header>: View where Header: View {
         self.showContentUnavailableView = showContentUnavailableView
         self.header = header()
         self.onRefresh = onRefresh
+    }
+
+    var initialLoadCompleted: Bool {
+        refreshId == 1
     }
 
     var isContentUnavailable: Bool {
@@ -123,27 +131,59 @@ struct CheckInListView<Header>: View where Header: View {
                 }
             }
         }
-        .onChange(of: showCheckInsFrom) {
-            Task {
-                await segmentChanged()
+        .task(id: refreshId) { [refreshId] in
+            if previousRefreshId == refreshId {
+                return
             }
+            if refreshId == 0 {
+                logger.info("Loading initial check-in feed data")
+                await fetchFeedItems(onComplete: { _ in
+                    logger.info("Loading initial check-ins completed")
+                    await splashScreenEnvironmentModel.dismiss()
+                })
+                previousRefreshId = refreshId
+                return
+            }
+            logger.info("Refreshing check-in feed data, refreshId: \(refreshId)")
+            isRefreshing = true
+            async let onRefreshPromise: Void = onRefresh()
+            async let feedItemsPromise: Void = fetchFeedItems(
+                reset: true,
+                onComplete: { _ in
+                    logger.info("Refreshing check-in completed, refreshId: \(refreshId)")
+                }
+            )
+            _ = (await onRefreshPromise, await feedItemsPromise)
+            isRefreshing = false
+            previousRefreshId = refreshId
+        }
+        .task(id: showCheckInsFrom) { [showCheckInsFrom] in
+            if showCheckInsFrom == currentShowCheckInsFrom {
+                return
+            }
+            logger.info("Loading check-ins for scope: \(showCheckInsFrom.rawValue)")
+            await fetchFeedItems(reset: true, onComplete: { _ in
+                currentShowCheckInsFrom = showCheckInsFrom
+                logger.info("Loaded check-ins for scope: \(showCheckInsFrom.rawValue)")
+            })
+        }
+        .onDisappear {
+            loadingCheckInsOnAppear?.cancel()
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-            await refresh()
+            refreshId += 1
         }
         #endif
-        .task {
-                await getInitialData()
-            }
-            .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
-                if let updatedCheckIn = newValue {
-                    imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                    if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
-                        checkIns[index] = updatedCheckIn
+
+        .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
+                    if let updatedCheckIn = newValue {
+                        imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
+                        if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
+                            checkIns[index] = updatedCheckIn
+                        }
                     }
                 }
-            }
     }
 
     @ViewBuilder
@@ -179,7 +219,7 @@ struct CheckInListView<Header>: View where Header: View {
                     })
                     .onAppear {
                         if checkIn == checkIns.last, isLoading != true {
-                            Task {
+                            loadingCheckInsOnAppear = Task {
                                 await fetchFeedItems()
                             }
                         }
@@ -231,17 +271,6 @@ struct CheckInListView<Header>: View where Header: View {
         }
     }
 
-    func refresh() async {
-        isRefreshing = true
-        await fetchFeedItems(
-            reset: true,
-            onComplete: { _ in
-                await onRefresh()
-            }
-        )
-        isRefreshing = false
-    }
-
     func deleteCheckIn(checkIn: CheckIn) async {
         switch await repository.checkIn.delete(id: checkIn.id) {
         case .success:
@@ -258,18 +287,6 @@ struct CheckInListView<Header>: View where Header: View {
     func onCheckInUpdate(_ checkIn: CheckIn) {
         guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
         checkIns[index] = checkIn
-    }
-
-    func getInitialData() async {
-        guard !initialLoadCompleted else { return }
-        await fetchFeedItems(onComplete: { _ in
-            await splashScreenEnvironmentModel.dismiss()
-            initialLoadCompleted = true
-        })
-    }
-
-    func segmentChanged() async {
-        await fetchFeedItems(reset: true, onComplete: { _ in logger.notice("fetched") })
     }
 
     func fetchFeedItems(reset: Bool = false, onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {

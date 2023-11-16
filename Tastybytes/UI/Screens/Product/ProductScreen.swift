@@ -28,6 +28,10 @@ struct ProductScreen: View {
     @State private var isLoadingCheckInImages = false
     @State private var checkInImagesPage = 0
 
+    // state
+    @State private var refreshId = 0
+    @State private var previousRefreshId: Int?
+
     // wishlist
     @State private var isOnWishlist = false
 
@@ -41,7 +45,7 @@ struct ProductScreen: View {
             fetcher: .product(product),
             scrollToTop: $scrollToTop,
             onRefresh: {
-                await refresh()
+                refreshId += 1
             },
             header: {
                 headerContent
@@ -53,16 +57,11 @@ struct ProductScreen: View {
                 loadedFromBarcodeOverlay
             )
         })
-        .task {
-            if summary == nil {
-                await loadSummary()
+
+        .task(id: refreshId) {
+            if refreshId != previousRefreshId {
+                await refresh()
             }
-        }
-        .task {
-            await fetchImages()
-        }
-        .task {
-            await getIfIsOnWishlist()
         }
         .toolbar {
             toolbarContent
@@ -260,37 +259,22 @@ struct ProductScreen: View {
         }
     }
 
-    func loadSummary() async {
-        switch await repository.product.getSummaryById(id: product.id) {
-        case let .success(summary):
-            self.summary = summary
-        case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func getIfIsOnWishlist() async {
-        switch await repository.product.checkIfOnWishlist(id: product.id) {
-        case let .success(isOnWishlist):
-            await MainActor.run {
-                withAnimation {
-                    self.isOnWishlist = isOnWishlist
-                }
-            }
-        case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
     func refresh() async {
+        let refreshingId = refreshId
+        logger.error("Refreshing product page, refresh id: \(refreshId)")
         async let productPromise = repository.product.getById(id: product.id)
         async let summaryPromise = repository.product.getSummaryById(id: product.id)
+        async let wishlistPromise = repository.product.checkIfOnWishlist(id: product.id)
+        async let fetchImagePromise: Void = fetchImages()
 
-        switch await productPromise {
+        let (productResult, summaryResult, wishlistResult, _) = (
+            await productPromise,
+            await summaryPromise,
+            await wishlistPromise,
+            await fetchImagePromise
+        )
+
+        switch productResult {
         case let .success(refreshedProduct):
             await MainActor.run {
                 withAnimation {
@@ -303,7 +287,7 @@ struct ProductScreen: View {
             logger.error("Failed to refresh product by id. Error: \(error) (\(#file):\(#line))")
         }
 
-        switch await summaryPromise {
+        switch summaryResult {
         case let .success(summary):
             await MainActor.run {
                 self.summary = summary
@@ -313,11 +297,26 @@ struct ProductScreen: View {
             alertError = .init()
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
+
+        switch wishlistResult {
+        case let .success(isOnWishlist):
+            await MainActor.run {
+                withAnimation {
+                    self.isOnWishlist = isOnWishlist
+                }
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            alertError = .init()
+            logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
+        }
+        previousRefreshId = refreshingId
+        logger.error("Refreshing product page completed, refresh id: \(refreshId)")
     }
 
     func refreshCheckIns() async {
         resetView += 1
-        await loadSummary()
+        await refresh()
     }
 
     func toggleWishlist() async {
