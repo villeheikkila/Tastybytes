@@ -19,6 +19,7 @@ struct CompanyScreen: View {
     @State private var showUnverifyCompanyConfirmation = false
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var alertError: AlertError?
+    @State private var refreshId = 0
 
     init(company: Company) {
         _company = State(wrappedValue: company)
@@ -59,7 +60,7 @@ struct CompanyScreen: View {
         .listStyle(.plain)
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await getBrandsAndSummary(withHaptics: true)
+                refreshId += 1
             }
         #endif
             .toolbar {
@@ -82,10 +83,8 @@ struct CompanyScreen: View {
                 await deleteCompany(presenting)
             })
         }
-        .task {
-            if summary == nil {
-                await getBrandsAndSummary()
-            }
+        .task(id: refreshId) {
+            await getBrandsAndSummary()
         }
     }
 

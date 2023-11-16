@@ -16,6 +16,7 @@ struct FriendsScreen: View {
     @State private var searchTerm = ""
     @State private var alertError: AlertError?
     @State private var isRefreshing = false
+    @State private var refreshId = 0
 
     let profile: Profile
 
@@ -53,13 +54,11 @@ struct FriendsScreen: View {
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await loadFriends()
+                refreshId += 1
             }
         #endif
-            .task {
-                    if friends.isEmpty {
-                        await loadFriends()
-                    }
+            .task(id: refreshId) {
+                    await loadFriends()
                 }
                 .toolbar {
                     toolbarContent

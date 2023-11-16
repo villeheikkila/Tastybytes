@@ -132,9 +132,6 @@ struct CheckInListView<Header>: View where Header: View {
             }
         }
         .task(id: refreshId) { [refreshId] in
-            if previousRefreshId == refreshId {
-                return
-            }
             if refreshId == 0 {
                 logger.info("Loading initial check-in feed data")
                 await fetchFeedItems(onComplete: { _ in
