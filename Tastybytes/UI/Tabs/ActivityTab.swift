@@ -10,22 +10,20 @@ struct ActivityTab: View {
 
     var body: some View {
         RouterWrapper(tab: .activity) { router in
-            ActivityScreen(scrollToTop: $scrollToTop, navigateToDiscoverTab: {
-                selectedTab = .discover
-            })
-            .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
-                if tab == .activity {
-                    if router.path.isEmpty {
-                        scrollToTop += 1
-                    } else {
-                        router.reset()
+            ActivityScreen(scrollToTop: $scrollToTop)
+                .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
+                    if tab == .activity {
+                        if router.path.isEmpty {
+                            scrollToTop += 1
+                        } else {
+                            router.reset()
+                        }
+                        resetNavigationOnTab = nil
                     }
-                    resetNavigationOnTab = nil
                 }
-            }
-            .toolbar {
-                toolbarContent
-            }
+                .toolbar {
+                    toolbarContent
+                }
         }
     }
 
