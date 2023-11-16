@@ -22,6 +22,14 @@ struct ProfileView: View {
     @State private var selectedItem: PhotosPickerItem?
     @State private var alertError: AlertError?
 
+    @State private var checkInImages = [CheckIn.Image]()
+    @State private var isLoading = false
+    @State private var page = 0
+    @State private var loadImagesTask: Task<Void, Never>?
+    @State private var refreshId = 0
+
+    private let pageSize = 10
+
     private let topAnchor = 0
 
     private let isCurrentUser: Bool
@@ -43,7 +51,7 @@ struct ProfileView: View {
             fetcher: .profile(profile),
             scrollToTop: $scrollToTop,
             onRefresh: {
-                await getSummary()
+                refreshId += 1
             },
             topAnchor: topAnchor,
             header: {
@@ -55,6 +63,14 @@ struct ProfileView: View {
                 }
             }
         )
+        .task(id: refreshId) {
+            logger.info("Refreshing profile \(profile.id) page, attempt \(refreshId) ")
+            await getSummary()
+            await fetchImages()
+        }
+        .task {
+            await splashScreenEnvironmentModel.dismiss()
+        }
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .alertError($alertError)
     }
@@ -71,7 +87,7 @@ struct ProfileView: View {
     @ViewBuilder private var completeProfile: some View {
         Group {
             ratingChart
-            checkInImages
+            checkInImagesSection
                 .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
             ratingSummary
             joinedAtSection
@@ -167,12 +183,6 @@ struct ProfileView: View {
         }
         .listRowSeparator(.hidden)
         .id(topAnchor)
-        .task {
-            if profileSummary == nil {
-                await getSummary()
-                await splashScreenEnvironmentModel.dismiss()
-            }
-        }
         .contextMenu {
             ProfileShareLinkView(profile: profile)
         }
@@ -209,9 +219,26 @@ struct ProfileView: View {
         }
     }
 
-    @ViewBuilder private var checkInImages: some View {
+    @ViewBuilder private var checkInImagesSection: some View {
         Section {
-            CheckInImagesView(queryType: .profile(profile))
+            ScrollView(.horizontal) {
+                LazyHStack {
+                    ForEach(checkInImages) { checkInImage in
+                        CheckInImageCellView(checkInImage: checkInImage)
+                            .onAppear {
+                                if checkInImage == checkInImages.last, isLoading != true {
+                                    loadImagesTask = Task {
+                                        await fetchImages()
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
+            .alertError($alertError)
+            .onDisappear {
+                loadImagesTask?.cancel()
+            }
         }
     }
 
@@ -269,6 +296,29 @@ struct ProfileView: View {
             guard !error.localizedDescription.contains("cancelled") else { return }
             alertError = .init()
             logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func fetchImages() async {
+        let (from, to) = getPagination(page: page, size: pageSize)
+        isLoading = true
+
+        switch await repository.checkIn.getCheckInImages(by: .profile(profile), from: from, to: to) {
+        case let .success(checkIns):
+            await MainActor.run {
+                withAnimation {
+                    self.checkInImages.append(contentsOf: checkIns)
+                }
+                page += 1
+                isLoading = false
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            alertError = .init()
+            logger
+                .error(
+                    "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
+                )
         }
     }
 }
