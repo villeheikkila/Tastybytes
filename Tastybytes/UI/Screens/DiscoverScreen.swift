@@ -36,6 +36,7 @@ struct DiscoverScreen: View {
     @State private var searchedFor = ""
     @State private var searchedBarcode: Barcode?
     @State var searchKey: SearchKey?
+    @State var searchedForKey: SearchKey?
 
     @Binding var scrollToTop: Int
 
@@ -91,15 +92,32 @@ struct DiscoverScreen: View {
         .task {
             await splashScreenEnvironmentModel.dismiss()
         }
-        .task(id: searchKey) {
+        .task(id: searchKey) { [searchKey] in
             switch searchKey {
             case let .barcode(barcode):
+                isLoading = true
                 await searchProductsByBardcode(barcode: barcode)
-            case .text:
-                await search()
+                searchedForKey = searchKey
+            case let .text(searchTerm, searchScope):
+                if searchTerm.count < 2 { return }
+                isLoading = true
+                switch searchScope {
+                case .products:
+                    await searchProducts(searchTerm: searchTerm, productFilter: productFilter)
+                case .companies:
+                    await searchCompanies(searchTerm: searchTerm)
+                case .users:
+                    await searchProfiles(searchTerm: searchTerm)
+                case .locations:
+                    await searchLocations()
+                }
+                isSearched = true
+                searchedBarcode = nil
+                searchedForKey = searchKey
             case .none:
                 return
             }
+            isLoading = false
         }
         .toolbar {
             toolbarContent
@@ -283,6 +301,31 @@ struct DiscoverScreen: View {
         }
     }
 
+    struct SearchInfo<T> {
+        let values: [T]
+        let searchKey: SearchKey
+
+        var isEmpty: Bool {
+            values.isEmpty
+        }
+    }
+
+    struct SearchFailure {
+        let message: String
+    }
+
+    enum SearchSuccess {
+        case products(SearchInfo<Product.Joined>)
+        case profiles(SearchInfo<Profile>)
+        case locations(SearchInfo<Location>)
+        case companies(SearchInfo<Company>)
+    }
+
+    enum SearchResult {
+        case success(SearchSuccess)
+        case failure(SearchFailure)
+    }
+
     @ViewBuilder
     var contentUnavailableView: some View {
         switch searchScope {
@@ -382,12 +425,11 @@ struct DiscoverScreen: View {
         }
     }
 
-    func searchProducts() async {
+    func searchProducts(searchTerm: String, productFilter: Product.Filter?) async {
         switch await repository.product.search(searchTerm: searchTerm, filter: productFilter) {
         case let .success(searchResults):
             withAnimation {
                 products = searchResults
-                isLoading = false
                 searchedFor = searchTerm
             }
         case let .failure(error):
@@ -397,12 +439,11 @@ struct DiscoverScreen: View {
         }
     }
 
-    func searchProfiles() async {
+    func searchProfiles(searchTerm: String) async {
         switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
         case let .success(searchResults):
             withAnimation {
                 profiles = searchResults
-                isLoading = false
                 searchedFor = searchTerm
             }
         case let .failure(error):
@@ -413,7 +454,6 @@ struct DiscoverScreen: View {
     }
 
     func searchProductsByBardcode(barcode: Barcode) async {
-        isLoading = true
         switch await repository.product.search(barcode: barcode) {
         case let .success(searchResults):
             await MainActor.run {
@@ -422,7 +462,6 @@ struct DiscoverScreen: View {
                     isSearched = true
                     searchedFor = ""
                     searchedBarcode = barcode
-                    isLoading = false
                 }
             }
             if searchResults.count == 1, let result = searchResults.first {
@@ -438,13 +477,12 @@ struct DiscoverScreen: View {
         }
     }
 
-    func searchCompanies() async {
+    func searchCompanies(searchTerm: String) async {
         switch await repository.company.search(searchTerm: searchTerm) {
         case let .success(searchResults):
             await MainActor.run {
                 withAnimation {
                     companies = searchResults
-                    isLoading = false
                     searchedFor = searchTerm
                 }
             }
@@ -460,7 +498,6 @@ struct DiscoverScreen: View {
         case let .success(searchResults):
             withAnimation {
                 locations = searchResults
-                isLoading = false
                 searchedFor = searchTerm
             }
         case let .failure(error):
@@ -468,23 +505,6 @@ struct DiscoverScreen: View {
             alertError = .init()
             logger.error("searching locations failed. Error: \(error) (\(#file):\(#line))")
         }
-    }
-
-    func search() async {
-        if searchTerm.count < 2 { return }
-        isLoading = true
-        switch searchScope {
-        case .products:
-            await searchProducts()
-        case .companies:
-            await searchCompanies()
-        case .users:
-            await searchProfiles()
-        case .locations:
-            await searchLocations()
-        }
-        isSearched = true
-        searchedBarcode = nil
     }
 
     enum SearchScope: String, CaseIterable, Identifiable {

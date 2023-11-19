@@ -62,7 +62,9 @@ struct SummaryRow: View {
                 } else {
                     Text("-")
                 }
-            }.font(.caption).bold()
+            }
+            .font(.caption)
+            .bold()
         }
     }
 }
