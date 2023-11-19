@@ -35,8 +35,6 @@ struct DiscoverScreen: View {
     @State private var searchTerm = ""
     @State private var searchedFor = ""
     @State private var searchedBarcode: Barcode?
-
-    @State var searchByBarcode: Barcode?
     @State var searchKey: SearchKey?
 
     @Binding var scrollToTop: Int
@@ -71,18 +69,18 @@ struct DiscoverScreen: View {
         }
         .disableAutocorrection(true)
         .onSubmit(of: .search) {
-            searchKey = .init(searchTerm: searchTerm, searchScope: searchScope)
+            searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
         }
         .onChange(of: searchScope) {
-            searchKey = .init(searchTerm: searchTerm, searchScope: searchScope)
+            searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
             barcode = nil
             isSearched = false
         }
         .onChange(of: productFilter) {
-            searchKey = .init(searchTerm: searchTerm, searchScope: searchScope)
+            searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
         }
         .onChange(of: searchTerm, debounceTime: 0.2) { _ in
-            searchKey = .init(searchTerm: searchTerm, searchScope: searchScope)
+            searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
         }
         .onChange(of: searchTerm) { _, term in
             if term.isEmpty {
@@ -94,10 +92,14 @@ struct DiscoverScreen: View {
             await splashScreenEnvironmentModel.dismiss()
         }
         .task(id: searchKey) {
-            await search()
-        }
-        .task(id: searchByBarcode) {
-            await searchProductsByBardcode()
+            switch searchKey {
+            case let .barcode(barcode):
+                await searchProductsByBardcode(barcode: barcode)
+            case .text:
+                await search()
+            case .none:
+                return
+            }
         }
         .toolbar {
             toolbarContent
@@ -273,7 +275,7 @@ struct DiscoverScreen: View {
                         "Scan a barcode",
                         systemImage: "barcode.viewfinder",
                         sheet: .barcodeScanner(onComplete: { barcode in
-                            searchByBarcode = barcode
+                            searchKey = .barcode(barcode)
                         })
                     )
                 }
@@ -410,22 +412,21 @@ struct DiscoverScreen: View {
         }
     }
 
-    func searchProductsByBardcode() async {
-        guard let searchByBarcode else { return }
+    func searchProductsByBardcode(barcode: Barcode) async {
         isLoading = true
-        switch await repository.product.search(barcode: searchByBarcode) {
+        switch await repository.product.search(barcode: barcode) {
         case let .success(searchResults):
             await MainActor.run {
                 withAnimation {
                     products = searchResults
                     isSearched = true
                     searchedFor = ""
-                    searchedBarcode = searchByBarcode
+                    searchedBarcode = barcode
                     isLoading = false
                 }
             }
             if searchResults.count == 1, let result = searchResults.first {
-                router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: searchByBarcode))
+                router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -517,8 +518,8 @@ struct DiscoverScreen: View {
         }
     }
 
-    struct SearchKey: Hashable {
-        let searchTerm: String
-        let searchScope: SearchScope
+    enum SearchKey: Hashable {
+        case barcode(Barcode)
+        case text(searchTerm: String, searchScope: SearchScope)
     }
 }
