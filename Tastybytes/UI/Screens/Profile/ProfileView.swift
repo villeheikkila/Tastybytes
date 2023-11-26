@@ -27,6 +27,7 @@ struct ProfileView: View {
     @State private var page = 0
     @State private var loadImagesTask: Task<Void, Never>?
     @State private var refreshId = 0
+    @State private var resultId: Int?
 
     private let pageSize = 10
     private let topAnchor = 0
@@ -47,6 +48,7 @@ struct ProfileView: View {
 
     var body: some View {
         CheckInListView(
+            id: "ProfileView",
             fetcher: .profile(profile),
             scrollToTop: $scrollToTop,
             onRefresh: {
@@ -62,8 +64,11 @@ struct ProfileView: View {
                 }
             }
         )
-        .task(id: refreshId) {
+        .task(id: refreshId) { [refreshId] in
+            guard refreshId != resultId else { return }
+            logger.error("Refreshing profile screen with id: \(refreshId)")
             await getProfileData()
+            resultId = refreshId
         }
         .dismissSplashScreen()
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)

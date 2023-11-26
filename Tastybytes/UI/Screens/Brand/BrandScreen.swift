@@ -45,6 +45,9 @@ struct BrandScreen: View {
         }
     }
 
+    @State private var refreshId = 0
+    @State private var resultId: Int?
+
     let refreshOnLoad: Bool
     let initialScrollPosition: SubBrand.JoinedBrand?
 
@@ -107,19 +110,14 @@ struct BrandScreen: View {
             .listStyle(.plain)
             #if !targetEnvironment(macCatalyst)
                 .refreshable {
-                    await refresh(withHaptics: true)
+                    await getBrandData(withHaptics: true)
                 }
             #endif
-                .task {
-                        await getIsLikedBy()
-                    }
-                    .task {
-                        if summary == nil {
-                            await getSummary()
-                        }
-                        if refreshOnLoad {
-                            await refresh()
-                        }
+                .task(id: refreshId) { [refreshId] in
+                        guard refreshId != resultId else { return }
+                        logger.error("Refreshing brand screen with id: \(refreshId)")
+                        await getBrandData()
+                        resultId = refreshId
                     }
                     .toolbar {
                         toolbarContent
@@ -225,7 +223,7 @@ struct BrandScreen: View {
                                 "Edit",
                                 systemImage: "pencil",
                                 sheet: .editSubBrand(brand: brand, subBrand: subBrand, onUpdate: {
-                                    await refresh()
+                                    refreshId += 1
                                 })
                             )
                         }
@@ -286,7 +284,7 @@ struct BrandScreen: View {
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: brand, onUpdate: {
-                            await refresh()
+                            refreshId += 1
                         }))
                     }
                 }
@@ -322,7 +320,7 @@ struct BrandScreen: View {
         }
     }
 
-    func refresh(withHaptics: Bool = false) async {
+    func getBrandData(withHaptics: Bool = false) async {
         let brandId = brand.id
         async let summaryPromise = repository.brand.getSummaryById(id: brandId)
         async let brandPromise = repository.brand.getJoinedById(id: brandId)
@@ -330,7 +328,12 @@ struct BrandScreen: View {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
-        switch await summaryPromise {
+        let (summaryResult, brandResult, isLikedPromiseResult) = (
+            await summaryPromise,
+            await brandPromise,
+            await isLikedPromisePromise
+        )
+        switch summaryResult {
         case let .success(summary):
             await MainActor.run {
                 self.summary = summary
@@ -344,7 +347,7 @@ struct BrandScreen: View {
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
 
-        switch await brandPromise {
+        switch brandResult {
         case let .success(brand):
             await MainActor.run {
                 self.brand = brand
@@ -355,7 +358,7 @@ struct BrandScreen: View {
             logger.error("Request for brand with \(brandId) failed. Error: \(error) (\(#file):\(#line))")
         }
 
-        switch await isLikedPromisePromise {
+        switch isLikedPromiseResult {
         case let .success(isLikedByCurrentUser):
             await MainActor.run {
                 withAnimation {
@@ -448,7 +451,7 @@ struct BrandScreen: View {
     func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) async {
         switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
         case .success:
-            await refresh()
+            refreshId += 1
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -473,7 +476,7 @@ struct BrandScreen: View {
         guard let toDeleteSubBrand else { return }
         switch await repository.subBrand.delete(id: toDeleteSubBrand.id) {
         case .success:
-            await refresh()
+            refreshId += 1
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }

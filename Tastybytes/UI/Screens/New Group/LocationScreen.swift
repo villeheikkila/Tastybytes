@@ -25,6 +25,7 @@ struct LocationScreen: View {
 
     var body: some View {
         CheckInListView(
+            id: "LocationScreen",
             fetcher: .location(location),
             scrollToTop: $scrollToTop,
             onRefresh: { await getSummary() },

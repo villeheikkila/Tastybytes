@@ -48,7 +48,7 @@ struct CheckInListView<Header>: View where Header: View {
     @State private var scrolledID: Int?
     // Feed state
     @State private var refreshId = 0
-    @State private var previousRefreshId: Int?
+    @State private var resultId: Int?
     @State private var isRefreshing = false
     @State private var isLoading = false
     @State private var page = 0
@@ -65,6 +65,7 @@ struct CheckInListView<Header>: View where Header: View {
         }
     }
 
+    private let id: String
     private let header: Header
     private let showContentUnavailableView: Bool
     private let onRefresh: () async -> Void
@@ -73,6 +74,7 @@ struct CheckInListView<Header>: View where Header: View {
     private let pageSize = 10
 
     init(
+        id: String,
         fetcher: Fetcher,
         scrollToTop: Binding<Int>,
         onRefresh: @escaping () async -> Void,
@@ -80,6 +82,7 @@ struct CheckInListView<Header>: View where Header: View {
         showContentUnavailableView: Bool = false,
         @ViewBuilder header: @escaping () -> Header
     ) {
+        self.id = id
         self.fetcher = fetcher
         _scrollToTop = scrollToTop
         self.topAnchor = topAnchor
@@ -132,31 +135,31 @@ struct CheckInListView<Header>: View where Header: View {
             }
         }
         .task(id: refreshId) { [refreshId] in
-            guard refreshId != previousRefreshId else {
-                logger.info("Already loaded data with id: \(refreshId)")
+            guard refreshId != resultId else {
+                logger.info("Already loaded data for \(id) with id: \(refreshId)")
                 return
             }
             if refreshId == 0 {
-                logger.info("Loading initial check-in feed data")
+                logger.info("Loading initial check-in feed data for \(id)")
                 await fetchFeedItems(onComplete: { _ in
-                    logger.info("Loading initial check-ins completed")
+                    logger.info("Loading initial check-ins completed for \(id)")
                     await splashScreenEnvironmentModel.dismiss()
                 })
-                previousRefreshId = refreshId
+                resultId = refreshId
                 return
             }
-            logger.info("Refreshing check-in feed data, refreshId: \(refreshId)")
+            logger.info("Refreshing check-in feed data for \(id) with id: \(refreshId)")
             isRefreshing = true
             async let onRefreshPromise: Void = onRefresh()
             async let feedItemsPromise: Void = fetchFeedItems(
                 reset: true,
                 onComplete: { _ in
-                    logger.info("Refreshing check-ins completed, refreshId: \(refreshId)")
+                    logger.info("Refreshing check-ins completed for \(id) with id: \(refreshId)")
                 }
             )
             _ = (await onRefreshPromise, await feedItemsPromise)
             isRefreshing = false
-            previousRefreshId = refreshId
+            resultId = refreshId
         }
         .task(id: showCheckInsFrom) { [showCheckInsFrom] in
             if showCheckInsFrom == currentShowCheckInsFrom {

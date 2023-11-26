@@ -30,7 +30,7 @@ struct ProductScreen: View {
 
     // state
     @State private var refreshId = 0
-    @State private var previousRefreshId: Int?
+    @State private var resultId: Int?
 
     // wishlist
     @State private var isOnWishlist = false
@@ -42,6 +42,7 @@ struct ProductScreen: View {
 
     var body: some View {
         CheckInListView(
+            id: "ProductScreen",
             fetcher: .product(product),
             scrollToTop: $scrollToTop,
             onRefresh: {
@@ -58,10 +59,11 @@ struct ProductScreen: View {
             )
         })
 
-        .task(id: refreshId) {
-            if refreshId != previousRefreshId {
-                await refresh()
-            }
+        .task(id: refreshId) { [refreshId] in
+            guard refreshId != resultId else { return }
+            logger.error("Refreshing product screen with id: \(refreshId)")
+            await getProductData()
+            resultId = refreshId
         }
         .toolbar {
             toolbarContent
@@ -205,7 +207,7 @@ struct ProductScreen: View {
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
-                        await refresh()
+                        refreshId += 1
                     }))
                 } else {
                     RouterLink(
@@ -233,7 +235,7 @@ struct ProductScreen: View {
 
                     if profileEnvironmentModel.hasPermission(.canAddProductLogo) {
                         RouterLink("Edit Logo", systemImage: "photo", sheet: .productLogo(product: product, onUpload: {
-                            await refresh()
+                            refreshId += 1
                         }))
                     }
 
@@ -259,9 +261,7 @@ struct ProductScreen: View {
         }
     }
 
-    func refresh() async {
-        let refreshingId = refreshId
-        logger.error("Refreshing product page, refresh id: \(refreshId)")
+    func getProductData() async {
         async let productPromise = repository.product.getById(id: product.id)
         async let summaryPromise = repository.product.getSummaryById(id: product.id)
         async let wishlistPromise = repository.product.checkIfOnWishlist(id: product.id)
@@ -310,13 +310,12 @@ struct ProductScreen: View {
             alertError = .init()
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
-        previousRefreshId = refreshingId
         logger.error("Refreshing product page completed, refresh id: \(refreshId)")
     }
 
     func refreshCheckIns() async {
         resetView += 1
-        await refresh()
+        refreshId += 1
     }
 
     func toggleWishlist() async {
@@ -353,7 +352,7 @@ struct ProductScreen: View {
         switch await repository.product.verification(id: product.id, isVerified: isVerified) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await refresh()
+            refreshId += 1
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

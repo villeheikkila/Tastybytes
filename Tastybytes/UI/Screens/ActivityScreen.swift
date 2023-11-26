@@ -6,6 +6,7 @@ struct ActivityScreen: View {
 
     var body: some View {
         CheckInListView(
+            id: "ActivityScreen",
             fetcher: .activityFeed,
             scrollToTop: $scrollToTop,
             onRefresh: {},

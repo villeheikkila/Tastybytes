@@ -57,7 +57,7 @@ struct FriendsScreen: View {
                 refreshId += 1
             }
         #endif
-            .task(id: refreshId) {
+            .task(id: refreshId) { [refreshId] in
                     await loadFriends()
                 }
                 .toolbar {

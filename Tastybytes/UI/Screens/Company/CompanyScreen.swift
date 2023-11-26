@@ -20,6 +20,7 @@ struct CompanyScreen: View {
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var alertError: AlertError?
     @State private var refreshId = 0
+    @State private var resultId: Int?
 
     init(company: Company) {
         _company = State(wrappedValue: company)
@@ -83,8 +84,11 @@ struct CompanyScreen: View {
                 await deleteCompany(presenting)
             })
         }
-        .task(id: refreshId) {
-            await getBrandsAndSummary()
+        .task(id: refreshId) { [refreshId] in
+            guard refreshId != resultId else { return }
+            logger.error("Refreshing company screen with id: \(refreshId)")
+            await getCompanyData()
+            resultId = refreshId
         }
     }
 
@@ -127,7 +131,7 @@ struct CompanyScreen: View {
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     RouterLink("Edit", systemImage: "pencil", sheet: .editCompany(company: company, onSuccess: {
-                        await getBrandsAndSummary(withHaptics: true)
+                        await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("Company updated"))
                     }))
                 } else {
@@ -162,7 +166,7 @@ struct CompanyScreen: View {
         }
     }
 
-    func getBrandsAndSummary(withHaptics: Bool = false) async {
+    func getCompanyData(withHaptics: Bool = false) async {
         async let companyPromise = repository.company.getJoinedById(id: company.id)
         async let summaryPromise = repository.company.getSummaryById(id: company.id)
 
