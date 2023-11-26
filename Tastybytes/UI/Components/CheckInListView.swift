@@ -132,6 +132,10 @@ struct CheckInListView<Header>: View where Header: View {
             }
         }
         .task(id: refreshId) { [refreshId] in
+            guard refreshId != previousRefreshId else {
+                logger.info("Already loaded data with id: \(refreshId)")
+                return
+            }
             if refreshId == 0 {
                 logger.info("Loading initial check-in feed data")
                 await fetchFeedItems(onComplete: { _ in
@@ -147,7 +151,7 @@ struct CheckInListView<Header>: View where Header: View {
             async let feedItemsPromise: Void = fetchFeedItems(
                 reset: true,
                 onComplete: { _ in
-                    logger.info("Refreshing check-in completed, refreshId: \(refreshId)")
+                    logger.info("Refreshing check-ins completed, refreshId: \(refreshId)")
                 }
             )
             _ = (await onRefreshPromise, await feedItemsPromise)

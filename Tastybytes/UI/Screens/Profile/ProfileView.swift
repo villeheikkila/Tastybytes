@@ -29,7 +29,6 @@ struct ProfileView: View {
     @State private var refreshId = 0
 
     private let pageSize = 10
-
     private let topAnchor = 0
 
     private let isCurrentUser: Bool
@@ -64,9 +63,7 @@ struct ProfileView: View {
             }
         )
         .task(id: refreshId) {
-            logger.info("Refreshing profile \(profile.id) page, attempt \(refreshId) ")
-            await getSummary()
-            await fetchImages()
+            await getProfileData()
         }
         .dismissSplashScreen()
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
@@ -282,8 +279,16 @@ struct ProfileView: View {
         }
     }
 
-    func getSummary() async {
-        switch await repository.checkIn.getSummaryByProfileId(id: profile.id) {
+    func getProfileData() async {
+        async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
+        async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile), from: 0, to: pageSize)
+
+        let (summaryResult, imagesResult) = (
+            await summaryPromise,
+            await imagesPromise
+        )
+
+        switch summaryResult {
         case let .success(summary):
             await MainActor.run {
                 withAnimation(.easeIn) {
@@ -294,6 +299,24 @@ struct ProfileView: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
+        }
+
+        switch imagesResult {
+        case let .success(checkIns):
+            await MainActor.run {
+                withAnimation {
+                    self.checkInImages.append(contentsOf: checkIns)
+                }
+                page += 1
+                isLoading = false
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger
+                .error(
+                    "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
+                )
         }
     }
 
