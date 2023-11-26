@@ -91,9 +91,7 @@ struct DiscoverScreen: View {
             }
         }
         .navigationTitle("Discover")
-        .task {
-            await splashScreenEnvironmentModel.dismiss()
-        }
+        .dismissSplashScreen()
         .task(id: searchKey, milliseconds: 200) { [searchKey] in
             guard let searchKey else {
                 logger.info("Empty search key. Reset.")

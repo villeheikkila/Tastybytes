@@ -68,9 +68,7 @@ struct ProfileView: View {
             await getSummary()
             await fetchImages()
         }
-        .task {
-            await splashScreenEnvironmentModel.dismiss()
-        }
+        .dismissSplashScreen()
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .alertError($alertError)
     }

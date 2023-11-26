@@ -105,14 +105,10 @@ struct SideBarView: View {
                     CurrentProfileScreen(scrollToTop: $scrollToTop)
                 case .friends:
                     CurrentUserFriendsScreen()
-                        .task {
-                            await splashScreenEnvironmentModel.dismiss()
-                        }
+                        .dismissSplashScreen()
                 case .settings:
                     SettingsScreen()
-                        .task {
-                            await splashScreenEnvironmentModel.dismiss()
-                        }
+                        .dismissSplashScreen()
                 case nil:
                     EmptyView()
                 }

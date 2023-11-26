@@ -48,9 +48,7 @@ struct AuthenticationScreen: View {
                     .navigationBarTitleDisplayMode(.inline)
             }
         }
-        .task {
-            await splashScreenEnvironmentModel.dismiss()
-        }
+        .dismissSplashScreen()
     }
 
     private var logo: some View {

@@ -24,3 +24,21 @@ public final class SplashScreenEnvironmentModel {
         }
     }
 }
+
+struct DismissSplashScreenModifier: ViewModifier {
+    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
+
+    func body(content: Content) -> some View {
+        content.onAppear {
+            Task {
+                await splashScreenEnvironmentModel.dismiss()
+            }
+        }
+    }
+}
+
+public extension View {
+    func dismissSplashScreen() -> some View {
+        modifier(DismissSplashScreenModifier())
+    }
+}

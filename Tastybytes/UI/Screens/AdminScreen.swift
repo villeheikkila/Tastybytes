@@ -13,8 +13,6 @@ struct AdminScreen: View {
         }
         .listStyle(.insetGrouped)
         .navigationBarTitle("Admin")
-        .task {
-            await splashScreenEnvironmentModel.dismiss()
-        }
+        .dismissSplashScreen()
     }
 }
