@@ -18,10 +18,10 @@ struct DiscoverScreen: View {
     // Search Query
     @State private var searchScope: SearchScope = .products
     @State private var searchTerm = ""
-    @State var searchKey: SearchKey?
+    @State private var searchKey: SearchKey?
     @State private var productFilter: Product.Filter?
     // Search Result
-    @State var searchedForKey: SearchKey?
+    @State private var searchResultKey: SearchKey?
     @State private var scrollProxy: ScrollViewProxy?
     @State private var products = [Product.Joined]()
     @State private var profiles = [Profile]()
@@ -40,7 +40,7 @@ struct DiscoverScreen: View {
     }
 
     private var showContentUnavailableView: Bool {
-        searchedForKey != nil && !isLoading && currentScopeIsEmpty
+        searchResultKey != nil && !isLoading && currentScopeIsEmpty
     }
 
     var body: some View {
@@ -74,7 +74,7 @@ struct DiscoverScreen: View {
         .onChange(of: searchScope) {
             searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
             barcode = nil
-            searchedForKey = nil
+            searchResultKey = nil
         }
         .onChange(of: productFilter) {
             searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
@@ -93,17 +93,17 @@ struct DiscoverScreen: View {
         }
         .task(id: searchKey) { [searchKey] in
             guard let searchKey else {
-                logger.info("Empty search key. Skip.")
+                logger.info("Empty search key. Reset.")
                 withAnimation {
                     profiles = []
                     products = []
                     companies = []
                     locations = []
-                    searchedForKey = nil
+                    searchResultKey = nil
                 }
                 return
             }
-            if searchKey == searchedForKey {
+            if searchKey == searchResultKey {
                 logger.info("Already showing search results for id: \(searchKey.id). Skip.")
                 return
             }
@@ -116,7 +116,7 @@ struct DiscoverScreen: View {
                     await MainActor.run {
                         withAnimation {
                             products = searchResults
-                            searchedForKey = searchKey
+                            searchResultKey = searchKey
                         }
                     }
                     if searchResults.count == 1, let result = searchResults.first {
@@ -136,7 +136,7 @@ struct DiscoverScreen: View {
                     case let .success(searchResults):
                         withAnimation {
                             products = searchResults
-                            searchedForKey = searchKey
+                            searchResultKey = searchKey
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):
@@ -153,7 +153,7 @@ struct DiscoverScreen: View {
                         await MainActor.run {
                             withAnimation {
                                 companies = searchResults
-                                searchedForKey = searchKey
+                                searchResultKey = searchKey
                             }
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
@@ -167,7 +167,7 @@ struct DiscoverScreen: View {
                     case let .success(searchResults):
                         withAnimation {
                             profiles = searchResults
-                            searchedForKey = searchKey
+                            searchResultKey = searchKey
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):
@@ -180,7 +180,7 @@ struct DiscoverScreen: View {
                     case let .success(searchResults):
                         withAnimation {
                             locations = searchResults
-                            searchedForKey = searchKey
+                            searchResultKey = searchKey
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):
@@ -402,7 +402,7 @@ struct DiscoverScreen: View {
 
     @ViewBuilder
     var contentUnavailableView: some View {
-        switch searchedForKey {
+        switch searchResultKey {
         case let .barcode(barcode):
             ContentUnavailableView {
                 Label("No Products found with the barcode", systemImage: "bubbles.and.sparkles")
