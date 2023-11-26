@@ -114,7 +114,7 @@ struct EditBrandSheet: View {
             feedbackEnvironmentModel.toggle(.success("Brand updated!"))
             await onSuccess()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to edit brand'. Error: \(error) (\(#file):\(#line))")
         }
@@ -126,7 +126,7 @@ struct EditBrandSheet: View {
         case .success:
             await onUpdate()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
         }

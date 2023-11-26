@@ -176,7 +176,7 @@ struct CompanyScreen: View {
                 feedbackEnvironmentModel.trigger(.impact(intensity: .high))
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to refresh data for company. Error: \(error) (\(#file):\(#line))")
         }
@@ -185,7 +185,7 @@ struct CompanyScreen: View {
         case let .success(summary):
             self.summary = summary
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load summary for company. Error: \(error) (\(#file):\(#line))")
         }
@@ -197,7 +197,7 @@ struct CompanyScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
             router.reset()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -208,7 +208,7 @@ struct CompanyScreen: View {
         case .success:
             company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }

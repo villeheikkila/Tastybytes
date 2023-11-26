@@ -58,7 +58,7 @@ struct CheckInImagesView: View {
                 isLoading = false
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error(

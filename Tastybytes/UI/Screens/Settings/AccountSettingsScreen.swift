@@ -131,7 +131,7 @@ struct AccountSettingsScreen: View {
         case .success:
             feedbackEnvironmentModel.toggle(.success("Sent!"))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to change email. Error: \(error) (\(#file):\(#line))")
         }
@@ -143,7 +143,7 @@ struct AccountSettingsScreen: View {
             csvExport = CSVFile(initialText: csvText)
             showingExporter = true
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to export check-in csv. Error: \(error) (\(#file):\(#line))")
         }

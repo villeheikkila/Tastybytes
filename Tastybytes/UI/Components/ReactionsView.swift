@@ -76,7 +76,7 @@ struct ReactionsView: View {
                     }
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 alertError = .init()
                 logger.error("removing check-in reaction \(reaction.id) failed. Error: \(error) (\(#file):\(#line))")
             }
@@ -91,7 +91,7 @@ struct ReactionsView: View {
                     }
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 alertError = .init()
                 logger
                     .error(

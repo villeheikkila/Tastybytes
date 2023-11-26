@@ -157,7 +157,7 @@ struct ProductMutationView: View {
                 logoFile: initialProduct.logoFile
             )
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error(
@@ -471,7 +471,7 @@ struct ProductMutationInnerView: View {
             router.navigate(screen: .product(newProduct))
             await onSuccess(newProduct)
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to create new product. Error: \(error) (\(#file):\(#line))")
         }
@@ -503,7 +503,7 @@ struct ProductMutationInnerView: View {
                 feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error(
@@ -536,7 +536,7 @@ struct ProductMutationInnerView: View {
                 await onEdit()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
         }

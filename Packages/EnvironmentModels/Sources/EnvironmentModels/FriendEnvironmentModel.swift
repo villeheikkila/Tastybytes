@@ -50,7 +50,7 @@ public final class FriendEnvironmentModel {
                 onSuccess()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed add new friend '\(receiver)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -73,7 +73,7 @@ public final class FriendEnvironmentModel {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error(
                 "Failed to update friend request. Error: \(error) (\(#file):\(#line))"
@@ -90,7 +90,7 @@ public final class FriendEnvironmentModel {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to remove friend request '\(friend.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -125,7 +125,7 @@ public final class FriendEnvironmentModel {
                 self.friends = friends
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
         }
@@ -150,7 +150,7 @@ public final class FriendEnvironmentModel {
             }
             logger.notice("Friend manager initialized")
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to unblock user \(friend.id). Error: \(error) (\(#file):\(#line))")
         }
@@ -170,7 +170,7 @@ public final class FriendEnvironmentModel {
                 }
                 onSuccess()
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 alertError = .init()
                 logger.error("Failed to block user \(user.id). Error: \(error) (\(#file):\(#line))")
             }

@@ -278,7 +278,7 @@ struct ProfileView: View {
                 joinedAt: profile.joinedAt
             )
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("uplodaing avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -293,7 +293,7 @@ struct ProfileView: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -313,7 +313,7 @@ struct ProfileView: View {
                 isLoading = false
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error(

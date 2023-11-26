@@ -92,7 +92,7 @@ struct CategoryServingStyleSheet: View {
                 servingStyles.append(servingStyle)
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to add serving style to category'. Error: \(error) (\(#file):\(#line))")
         }
@@ -111,7 +111,7 @@ struct CategoryServingStyleSheet: View {
             }
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }

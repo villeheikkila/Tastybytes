@@ -144,7 +144,7 @@ struct ProfileProductListView: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Error occured while loading products. Error: \(error) (\(#file):\(#line))")
         }

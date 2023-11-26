@@ -339,7 +339,7 @@ struct BrandScreen: View {
                 feedbackEnvironmentModel.trigger(.impact(intensity: .high))
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
@@ -350,7 +350,7 @@ struct BrandScreen: View {
                 self.brand = brand
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Request for brand with \(brandId) failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -363,7 +363,7 @@ struct BrandScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             logger.error("Request to check if brand is liked failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -376,7 +376,7 @@ struct BrandScreen: View {
                 self.summary = summary
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
@@ -391,7 +391,7 @@ struct BrandScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load like status. Error: \(error) (\(#file):\(#line))")
         }
@@ -409,7 +409,7 @@ struct BrandScreen: View {
             )
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
@@ -426,7 +426,7 @@ struct BrandScreen: View {
                     }
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 logger.error("unliking brand failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
@@ -439,7 +439,7 @@ struct BrandScreen: View {
                     }
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 logger.error("liking brand failed. Error: \(error) (\(#file):\(#line))")
             }
         }
@@ -451,7 +451,7 @@ struct BrandScreen: View {
             await refresh()
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
@@ -463,7 +463,7 @@ struct BrandScreen: View {
             router.reset()
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")
         }
@@ -476,7 +476,7 @@ struct BrandScreen: View {
             await refresh()
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete brand '\(toDeleteSubBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -550,7 +550,7 @@ private struct ProductRow: View {
                 router.removeLast()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }

@@ -94,7 +94,7 @@ struct DuplicateProductSheet: View {
                 dismiss()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error(
@@ -111,7 +111,7 @@ struct DuplicateProductSheet: View {
                 dismiss()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
@@ -124,7 +124,7 @@ struct DuplicateProductSheet: View {
         case let .success(searchResults):
             products = searchResults.filter { $0.id != product.id }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
         }

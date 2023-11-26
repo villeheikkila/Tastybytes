@@ -115,7 +115,7 @@ struct UserSheet: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed searching users. Error: \(error) (\(#file):\(#line))")
         }

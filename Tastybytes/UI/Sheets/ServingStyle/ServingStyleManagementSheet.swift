@@ -109,7 +109,7 @@ struct ServingStyleManagementSheet: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load all serving styles. Error: \(error) (\(#file):\(#line))")
         }
@@ -125,7 +125,7 @@ struct ServingStyleManagementSheet: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to create new serving style. Error: \(error) (\(#file):\(#line))")
         }
@@ -141,7 +141,7 @@ struct ServingStyleManagementSheet: View {
             }
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -159,7 +159,7 @@ struct ServingStyleManagementSheet: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to edit '\(editServingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }

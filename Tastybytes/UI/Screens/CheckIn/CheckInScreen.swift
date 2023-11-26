@@ -253,7 +253,7 @@ struct CheckInScreen: View {
                 router.removeLast()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")
         }
@@ -268,7 +268,7 @@ struct CheckInScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load check-in comments'. Error: \(error) (\(#file):\(#line))")
         }
@@ -286,7 +286,7 @@ struct CheckInScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update comment \(editComment.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -302,7 +302,7 @@ struct CheckInScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete comment '\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -317,7 +317,7 @@ struct CheckInScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete comment as moderator'\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -330,7 +330,7 @@ struct CheckInScreen: View {
                 router.removeLast()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -349,7 +349,7 @@ struct CheckInScreen: View {
                 commentText = ""
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to send comment. Error: \(error) (\(#file):\(#line))")
         }

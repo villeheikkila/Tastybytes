@@ -112,7 +112,7 @@ struct EditSubBrandSheet: View {
             self.mergeTo = nil
             await onSuccess()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error(
@@ -129,7 +129,7 @@ struct EditSubBrandSheet: View {
             feedbackEnvironmentModel.toggle(.success("Sub-brand updated!"))
             await onSuccess()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
         }

@@ -279,7 +279,7 @@ struct CheckInSheet: View {
             }
             await onUpdate(updatedCheckIn)
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -307,7 +307,7 @@ struct CheckInSheet: View {
             }
             await onCreation(newCheckIn)
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
         }

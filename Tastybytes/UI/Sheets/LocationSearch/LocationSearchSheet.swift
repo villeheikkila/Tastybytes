@@ -118,7 +118,7 @@ struct LocationSearchSheet: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load recemt locations. Error: \(error) (\(#file):\(#line))")
         }
@@ -134,7 +134,7 @@ struct LocationSearchSheet: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load location suggestions. Error: \(error) (\(#file):\(#line))")
         }
@@ -190,7 +190,7 @@ struct LocationRow: View {
                 dismiss()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
         }

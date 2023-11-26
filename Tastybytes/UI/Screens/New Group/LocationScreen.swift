@@ -123,7 +123,7 @@ struct LocationScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to get summary. Error: \(error) (\(#file):\(#line))")
         }
@@ -135,7 +135,7 @@ struct LocationScreen: View {
             router.reset()
             isSuccess = true
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")
         }

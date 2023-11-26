@@ -113,7 +113,7 @@ struct EditCompanySheet: View {
         case .success:
             await onSuccess()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
         }
@@ -126,7 +126,7 @@ struct EditCompanySheet: View {
         case .success:
             await onSuccess()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to send company edit suggestion. Error: \(error) (\(#file):\(#line))")
         }
@@ -143,7 +143,7 @@ struct EditCompanySheet: View {
                 isVerified: company.isVerified
             )
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
         }

@@ -134,7 +134,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         case let .success(user):
             email = user.email.orEmpty
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to get current user data. Error: \(error) (\(#file):\(#line))")
         }
@@ -165,7 +165,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         if case let .failure(error) = await repository.profile.updateSettings(
             update: update
         ) {
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update notification settings. Error: \(error) (\(#file):\(#line))")
         }
@@ -179,7 +179,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
                 UserDefaults().reset()
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to log out. Error: \(error) (\(#file):\(#line))")
         }
@@ -190,7 +190,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         case .success:
             onAccountDeletion()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete current account. Error: \(error) (\(#file):\(#line))")
         }
@@ -203,7 +203,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         case let .success(avatarFile):
             self.extendedProfile = extendedProfile.copyWith(avatarFile: avatarFile)
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("uplodaing avatar failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -220,7 +220,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
                 lastName: update.lastName
             )
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
@@ -237,7 +237,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         case .success:
             extendedProfile = extendedProfile?.copyWith(isOnboarded: true)
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
@@ -251,7 +251,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         case .success:
             logger.log("updated privacy settings")
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update settings. Error: \(error) (\(#file):\(#line))")
         }
@@ -267,7 +267,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         case .success:
             logger.log("updated display settings")
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }

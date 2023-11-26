@@ -27,7 +27,7 @@ public class ImageUploadEnvironmentModel {
                     uploadedImageForCheckIn = checkIn.copyWith(imageFile: imageFile)
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 alertError = .init()
                 logger.error("Failed to upload image to check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
             }

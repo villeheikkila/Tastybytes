@@ -275,7 +275,7 @@ struct CheckInListView<Header>: View where Header: View {
                 checkIns.remove(object: checkIn)
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = AlertError(title: "Error occured while trying to delete a check-in. Please try again!")
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -305,7 +305,7 @@ struct CheckInListView<Header>: View where Header: View {
                 await onComplete(checkIns)
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = AlertError(title: "Error occured while trying to load check-ins")
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
         }

@@ -63,7 +63,7 @@ struct ProfileStatisticsView: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed loading category statistics. Error: \(error) (\(#file):\(#line))")
         }
@@ -136,7 +136,7 @@ struct SubcategoryStatisticsView: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed loading subcategory statistics. Error: \(error) (\(#file):\(#line))")
         }

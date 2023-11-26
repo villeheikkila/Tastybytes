@@ -78,7 +78,7 @@ struct TimePeriodStatisticSegmentView: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed loading time period statistics. Error: \(error) (\(#file):\(#line))")
         }

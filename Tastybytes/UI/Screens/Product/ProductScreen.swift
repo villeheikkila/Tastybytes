@@ -282,7 +282,7 @@ struct ProductScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to refresh product by id. Error: \(error) (\(#file):\(#line))")
         }
@@ -293,7 +293,7 @@ struct ProductScreen: View {
                 self.summary = summary
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
@@ -306,7 +306,7 @@ struct ProductScreen: View {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
@@ -330,7 +330,7 @@ struct ProductScreen: View {
                     }
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 logger.error("removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
@@ -343,7 +343,7 @@ struct ProductScreen: View {
                     }
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 logger.error("adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
             }
         }
@@ -355,7 +355,7 @@ struct ProductScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
             await refresh()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
@@ -367,7 +367,7 @@ struct ProductScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
             router.removeLast()
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
@@ -378,7 +378,7 @@ struct ProductScreen: View {
         case .success:
             feedbackEnvironmentModel.toggle(.success("Barcode added!"))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
@@ -398,7 +398,7 @@ struct ProductScreen: View {
                 isLoadingCheckInImages = false
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error(

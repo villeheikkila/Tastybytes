@@ -123,7 +123,7 @@ struct DiscoverScreen: View {
                         router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
                     }
                 case let .failure(error):
-                    guard !error.localizedDescription.contains("cancelled") else { return }
+                    guard !error.isCancelled else { return }
                     alertError = .init()
                     logger.error("searching products with barcode failed. Error: \(error) (\(#file):\(#line))")
                 }
@@ -158,7 +158,7 @@ struct DiscoverScreen: View {
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):
-                        guard !error.localizedDescription.contains("cancelled") else { return }
+                        guard !error.isCancelled else { return }
                         alertError = .init()
                         logger.error("searching companies failed. Error: \(error) (\(#file):\(#line))")
                     }
@@ -171,7 +171,7 @@ struct DiscoverScreen: View {
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):
-                        guard !error.localizedDescription.contains("cancelled") else { return }
+                        guard !error.isCancelled else { return }
                         alertError = .init()
                         logger.error("searching profiles failed. Error: \(error) (\(#file):\(#line))")
                     }
@@ -184,7 +184,7 @@ struct DiscoverScreen: View {
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):
-                        guard !error.localizedDescription.contains("cancelled") else { return }
+                        guard !error.isCancelled else { return }
                         alertError = .init()
                         logger.error("searching locations failed. Error: \(error) (\(#file):\(#line))")
                     }
@@ -485,7 +485,7 @@ struct DiscoverScreen: View {
             feedbackEnvironmentModel.toggle(.success("Barcode added!"))
             router.navigate(screen: .product(addBarcodeTo))
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger
                 .error(

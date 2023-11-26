@@ -43,7 +43,7 @@ public final class NotificationEnvironmentModel {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to get all unread notifications. Error: \(error) (\(#file):\(#line))")
         }
@@ -66,7 +66,7 @@ public final class NotificationEnvironmentModel {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
         }
@@ -84,7 +84,7 @@ public final class NotificationEnvironmentModel {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete all notifications. Error: \(error) (\(#file):\(#line))")
         }
@@ -104,7 +104,7 @@ public final class NotificationEnvironmentModel {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to mark all notifications as read. Error: \(error) (\(#file):\(#line))")
         }
@@ -124,7 +124,7 @@ public final class NotificationEnvironmentModel {
                     }
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 alertError = .init()
                 logger.error("Failed to mark all friend requests as read. Error: \(error) (\(#file):\(#line))")
             }
@@ -156,7 +156,7 @@ public final class NotificationEnvironmentModel {
                     }
                 }
             case let .failure(error):
-                guard !error.localizedDescription.contains("cancelled") else { return }
+                guard !error.isCancelled else { return }
                 alertError = .init()
                 logger.error("Failed to mark check-in as read \(checkIn.id). Error: \(error) (\(#file):\(#line))")
             }
@@ -168,7 +168,7 @@ public final class NotificationEnvironmentModel {
         case let .success(updatedNotification):
             notifications.replace(notification, with: updatedNotification)
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to mark '\(notification.id)' as read. Error: \(error) (\(#file):\(#line))")
         }
@@ -185,7 +185,7 @@ public final class NotificationEnvironmentModel {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete notification. Error: \(error) (\(#file):\(#line))")
         }
@@ -200,7 +200,7 @@ public final class NotificationEnvironmentModel {
                 }
             }
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete notification '\(notification.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -221,7 +221,7 @@ public final class NotificationEnvironmentModel {
         case let .success(pushNotificationSettings):
             self.pushNotificationSettings = pushNotificationSettings
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update push notification settings for device. Error: \(error) (\(#file):\(#line))")
         }

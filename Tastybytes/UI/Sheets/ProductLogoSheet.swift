@@ -81,7 +81,7 @@ struct ProductLogoSheet: View {
         case let .success(filename):
             logoFile = filename
         case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
+            guard !error.isCancelled else { return }
             alertError = .init(title: "Uplodaing product logo failed.")
             logger.error("Uplodaing product logo failed. Error: \(error) (\(#file):\(#line))")
         }
