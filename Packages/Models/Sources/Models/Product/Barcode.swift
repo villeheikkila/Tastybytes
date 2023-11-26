@@ -1,7 +1,7 @@
 import Extensions
 import Foundation
 
-public struct Barcode: Codable, Hashable, Sendable {
+public struct Barcode: Codable, Hashable, Sendable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case barcode, type
     }
@@ -12,6 +12,10 @@ public struct Barcode: Codable, Hashable, Sendable {
     public init(barcode: String, type: String) {
         self.barcode = barcode
         self.type = type
+    }
+
+    public var id: String {
+        "\(type)_\(barcode)"
     }
 
     public init(from decoder: Decoder) throws {

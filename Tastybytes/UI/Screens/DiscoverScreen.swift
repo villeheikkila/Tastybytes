@@ -13,35 +13,34 @@ struct DiscoverScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
-    @State private var alertError: AlertError?
+    // Scroll Position
+    @Binding var scrollToTop: Int
+    // Search Query
+    @State private var searchScope: SearchScope = .products
+    @State private var searchTerm = ""
+    @State var searchKey: SearchKey?
+    @State private var productFilter: Product.Filter?
+    // Search Result
+    @State var searchedForKey: SearchKey?
     @State private var scrollProxy: ScrollViewProxy?
     @State private var products = [Product.Joined]()
     @State private var profiles = [Profile]()
     @State private var companies = [Company]()
     @State private var locations = [Location]()
-    @State private var isSearched = false
+    // Search State
+    @State private var alertError: AlertError?
     @State private var isLoading = false
-    @State private var searchScope: SearchScope = .products
+    // Barcode
     @State private var barcode: Barcode?
+    @State private var showAddBarcodeConfirmation = false
     @State private var addBarcodeTo: Product.Joined? {
         didSet {
             showAddBarcodeConfirmation = true
         }
     }
 
-    @State private var showAddBarcodeConfirmation = false
-    @State private var productFilter: Product.Filter?
-
-    @State private var searchTerm = ""
-    @State private var searchedFor = ""
-    @State private var searchedBarcode: Barcode?
-    @State var searchKey: SearchKey?
-    @State var searchedForKey: SearchKey?
-
-    @Binding var scrollToTop: Int
-
     private var showContentUnavailableView: Bool {
-        (!searchedFor.isEmpty || searchedBarcode != nil) && isSearched && !isLoading && currentScopeIsEmpty
+        searchedForKey != nil && !isLoading && currentScopeIsEmpty
     }
 
     var body: some View {
@@ -75,7 +74,7 @@ struct DiscoverScreen: View {
         .onChange(of: searchScope) {
             searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
             barcode = nil
-            isSearched = false
+            searchedForKey = nil
         }
         .onChange(of: productFilter) {
             searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
@@ -85,7 +84,7 @@ struct DiscoverScreen: View {
         }
         .onChange(of: searchTerm) { _, term in
             if term.isEmpty {
-                resetSearch()
+                searchKey = nil
             }
         }
         .navigationTitle("Discover")
@@ -93,29 +92,103 @@ struct DiscoverScreen: View {
             await splashScreenEnvironmentModel.dismiss()
         }
         .task(id: searchKey) { [searchKey] in
+            guard let searchKey else {
+                logger.info("Empty search key. Skip.")
+                withAnimation {
+                    profiles = []
+                    products = []
+                    companies = []
+                    locations = []
+                    searchedForKey = nil
+                }
+                return
+            }
+            if searchKey == searchedForKey {
+                logger.info("Already showing search results for id: \(searchKey.id). Skip.")
+                return
+            }
+            logger.info("Staring search for id: '\(searchKey.id)'")
             switch searchKey {
             case let .barcode(barcode):
                 isLoading = true
-                await searchProductsByBardcode(barcode: barcode)
-                searchedForKey = searchKey
+                switch await repository.product.search(barcode: barcode) {
+                case let .success(searchResults):
+                    await MainActor.run {
+                        withAnimation {
+                            products = searchResults
+                            searchedForKey = searchKey
+                        }
+                    }
+                    if searchResults.count == 1, let result = searchResults.first {
+                        router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
+                    }
+                case let .failure(error):
+                    guard !error.localizedDescription.contains("cancelled") else { return }
+                    alertError = .init()
+                    logger.error("searching products with barcode failed. Error: \(error) (\(#file):\(#line))")
+                }
             case let .text(searchTerm, searchScope):
                 if searchTerm.count < 2 { return }
                 isLoading = true
                 switch searchScope {
                 case .products:
-                    await searchProducts(searchTerm: searchTerm, productFilter: productFilter)
+                    switch await repository.product.search(searchTerm: searchTerm, filter: productFilter) {
+                    case let .success(searchResults):
+                        withAnimation {
+                            products = searchResults
+                            searchedForKey = searchKey
+                        }
+                        logger.info("Search completed for id: '\(searchKey.id)'")
+                    case let .failure(error):
+                        if error.isCancelled {
+                            logger.info("Search cancelled for id: '\(searchKey.id)'")
+                            return
+                        }
+                        alertError = .init()
+                        logger.error("searching products failed. Error: \(error) (\(#file):\(#line))")
+                    }
                 case .companies:
-                    await searchCompanies(searchTerm: searchTerm)
+                    switch await repository.company.search(searchTerm: searchTerm) {
+                    case let .success(searchResults):
+                        await MainActor.run {
+                            withAnimation {
+                                companies = searchResults
+                                searchedForKey = searchKey
+                            }
+                        }
+                        logger.info("Search completed for id: '\(searchKey.id)'")
+                    case let .failure(error):
+                        guard !error.localizedDescription.contains("cancelled") else { return }
+                        alertError = .init()
+                        logger.error("searching companies failed. Error: \(error) (\(#file):\(#line))")
+                    }
                 case .users:
-                    await searchProfiles(searchTerm: searchTerm)
+                    switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
+                    case let .success(searchResults):
+                        withAnimation {
+                            profiles = searchResults
+                            searchedForKey = searchKey
+                        }
+                        logger.info("Search completed for id: '\(searchKey.id)'")
+                    case let .failure(error):
+                        guard !error.localizedDescription.contains("cancelled") else { return }
+                        alertError = .init()
+                        logger.error("searching profiles failed. Error: \(error) (\(#file):\(#line))")
+                    }
                 case .locations:
-                    await searchLocations()
+                    switch await repository.location.search(searchTerm: searchTerm) {
+                    case let .success(searchResults):
+                        withAnimation {
+                            locations = searchResults
+                            searchedForKey = searchKey
+                        }
+                        logger.info("Search completed for id: '\(searchKey.id)'")
+                    case let .failure(error):
+                        guard !error.localizedDescription.contains("cancelled") else { return }
+                        alertError = .init()
+                        logger.error("searching locations failed. Error: \(error) (\(#file):\(#line))")
+                    }
                 }
-                isSearched = true
-                searchedBarcode = nil
-                searchedForKey = searchKey
-            case .none:
-                return
             }
             isLoading = false
         }
@@ -214,7 +287,7 @@ struct DiscoverScreen: View {
             }
         }
 
-        if currentScopeIsEmpty && addBarcodeTo == nil && !isSearched {
+        if currentScopeIsEmpty && addBarcodeTo == nil && searchKey == nil {
             Section("Feeds") {
                 Group {
                     RouterLink(
@@ -255,7 +328,7 @@ struct DiscoverScreen: View {
                     .id(product.id)
             }
         }
-        if isSearched, !showContentUnavailableView, profileEnvironmentModel.hasPermission(.canCreateProducts) {
+        if searchKey != nil, !showContentUnavailableView, profileEnvironmentModel.hasPermission(.canCreateProducts) {
             Section("Didn't find a product you were looking for?") {
                 HStack {
                     Text("Add new")
@@ -293,6 +366,7 @@ struct DiscoverScreen: View {
                         "Scan a barcode",
                         systemImage: "barcode.viewfinder",
                         sheet: .barcodeScanner(onComplete: { barcode in
+                            self.barcode = barcode
                             searchKey = .barcode(barcode)
                         })
                     )
@@ -328,35 +402,34 @@ struct DiscoverScreen: View {
 
     @ViewBuilder
     var contentUnavailableView: some View {
-        switch searchScope {
-        case .companies:
+        switch searchedForKey {
+        case let .barcode(barcode):
             ContentUnavailableView {
-                Label("No Companies  found for \"\(searchedFor)\"", systemImage: "storefront")
-            } description: {
-                Text("Check the spelling or try a new search")
+                Label("No Products found with the barcode", systemImage: "bubbles.and.sparkles")
             } actions: {
-                RouterLink("Create new product", screen: .addProduct(barcode))
-            }
-        case .locations:
-            ContentUnavailableView {
-                Label("No Locations found for \"\(searchedFor)\"", systemImage: "location.magnifyingglass")
-            } description: {
-                Text("Check the spelling or try a new search")
-            }
-        case .products:
-            if searchedBarcode != nil {
-                ContentUnavailableView {
-                    Label("No Products found with the barcode", systemImage: "bubbles.and.sparkles")
-                } actions: {
-                    Button("Create new product") {
-                        let barcodeCopy = barcode
-                        barcode = nil
-                        router.navigate(screen: .addProduct(barcodeCopy))
-                    }
+                Button("Create new product") {
+                    router.navigate(screen: .addProduct(barcode))
                 }
-            } else {
+            }
+        case let .text(searchTerm, searchScope):
+            switch searchScope {
+            case .companies:
                 ContentUnavailableView {
-                    Label("No Products found for \"\(searchedFor)\"", systemImage: "bubbles.and.sparkles")
+                    Label("No Companies  found for \"\(searchTerm)\"", systemImage: "storefront")
+                } description: {
+                    Text("Check the spelling or try a new search")
+                } actions: {
+                    RouterLink("Create new product", screen: .addProduct(barcode))
+                }
+            case .locations:
+                ContentUnavailableView {
+                    Label("No Locations found for \"\(searchTerm)\"", systemImage: "location.magnifyingglass")
+                } description: {
+                    Text("Check the spelling or try a new search")
+                }
+            case .products:
+                ContentUnavailableView {
+                    Label("No Products found for \"\(searchTerm)\"", systemImage: "bubbles.and.sparkles")
 
                 } description: {
                     Text("Check the spelling or try a new search")
@@ -367,23 +440,19 @@ struct DiscoverScreen: View {
                         router.navigate(screen: .addProduct(barcodeCopy))
                     }
                 }
-            }
-        case .users:
-            ContentUnavailableView {
-                Label("No profiles found for \"\(searchedFor)\"", systemImage: "person.crop.circle.badge.questionmark")
-            } description: {
-                Text("Check the spelling or try a new search")
-            }
-        }
-    }
 
-    func resetSearch() {
-        withAnimation {
-            profiles = []
-            products = []
-            companies = []
-            locations = []
-            isSearched = false
+            case .users:
+                ContentUnavailableView {
+                    Label(
+                        "No profiles found for \"\(searchTerm)\"",
+                        systemImage: "person.crop.circle.badge.questionmark"
+                    )
+                } description: {
+                    Text("Check the spelling or try a new search")
+                }
+            }
+        case nil:
+            EmptyView()
         }
     }
 
@@ -425,88 +494,6 @@ struct DiscoverScreen: View {
         }
     }
 
-    func searchProducts(searchTerm: String, productFilter: Product.Filter?) async {
-        switch await repository.product.search(searchTerm: searchTerm, filter: productFilter) {
-        case let .success(searchResults):
-            withAnimation {
-                products = searchResults
-                searchedFor = searchTerm
-            }
-        case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger.error("searching products failed. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func searchProfiles(searchTerm: String) async {
-        switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
-        case let .success(searchResults):
-            withAnimation {
-                profiles = searchResults
-                searchedFor = searchTerm
-            }
-        case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger.error("searching profiles failed. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func searchProductsByBardcode(barcode: Barcode) async {
-        switch await repository.product.search(barcode: barcode) {
-        case let .success(searchResults):
-            await MainActor.run {
-                withAnimation {
-                    products = searchResults
-                    isSearched = true
-                    searchedFor = ""
-                    searchedBarcode = barcode
-                }
-            }
-            if searchResults.count == 1, let result = searchResults.first {
-                router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
-            }
-        case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger
-                .error(
-                    "searching products with barcode failed. Error: \(error) (\(#file):\(#line))"
-                )
-        }
-    }
-
-    func searchCompanies(searchTerm: String) async {
-        switch await repository.company.search(searchTerm: searchTerm) {
-        case let .success(searchResults):
-            await MainActor.run {
-                withAnimation {
-                    companies = searchResults
-                    searchedFor = searchTerm
-                }
-            }
-        case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger.error("searching companies failed. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func searchLocations() async {
-        switch await repository.location.search(searchTerm: searchTerm) {
-        case let .success(searchResults):
-            withAnimation {
-                locations = searchResults
-                searchedFor = searchTerm
-            }
-        case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            alertError = .init()
-            logger.error("searching locations failed. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
     enum SearchScope: String, CaseIterable, Identifiable {
         var id: Self { self }
         case products, companies, users, locations
@@ -538,8 +525,17 @@ struct DiscoverScreen: View {
         }
     }
 
-    enum SearchKey: Hashable {
+    enum SearchKey: Hashable, Identifiable {
         case barcode(Barcode)
         case text(searchTerm: String, searchScope: SearchScope)
+
+        var id: String {
+            switch self {
+            case let .barcode(barcode):
+                "barcode::id\(barcode.id)"
+            case let .text(searchTerm, searchScope):
+                "text::scope:\(searchScope.rawValue)::search_term:\(searchTerm)"
+            }
+        }
     }
 }
