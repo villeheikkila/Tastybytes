@@ -28,10 +28,10 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable {
     }
 
     @ViewBuilder
-    func view(selectedTab: Binding<Tab>, _ resetNavigationOnTab: Binding<Tab?>) -> some View {
+    func view(_ resetNavigationOnTab: Binding<Tab?>) -> some View {
         switch self {
         case .activity:
-            ActivityTab(resetNavigationOnTab: resetNavigationOnTab, selectedTab: selectedTab)
+            ActivityTab(resetNavigationOnTab: resetNavigationOnTab)
         case .discover:
             DiscoverTab(resetNavigationOnTab: resetNavigationOnTab)
         case .notifications:

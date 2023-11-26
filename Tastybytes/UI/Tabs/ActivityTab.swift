@@ -6,7 +6,6 @@ struct ActivityTab: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @State private var scrollToTop: Int = 0
     @Binding var resetNavigationOnTab: Tab?
-    @Binding var selectedTab: Tab
 
     var body: some View {
         RouterWrapper(tab: .activity) { router in
