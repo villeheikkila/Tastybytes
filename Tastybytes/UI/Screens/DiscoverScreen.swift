@@ -69,7 +69,11 @@ struct DiscoverScreen: View {
         }
         .disableAutocorrection(true)
         .onSubmit(of: .search) {
-            searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
+            if searchTerm.isEmpty {
+                searchKey = nil
+            } else {
+                searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
+            }
         }
         .onChange(of: searchScope) {
             searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
@@ -79,19 +83,18 @@ struct DiscoverScreen: View {
         .onChange(of: productFilter) {
             searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
         }
-        .onChange(of: searchTerm, debounceTime: 0.2) { _ in
-            searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
-        }
-        .onChange(of: searchTerm) { _, term in
-            if term.isEmpty {
+        .onChange(of: searchTerm) { _, searchTerm in
+            if searchTerm.isEmpty {
                 searchKey = nil
+            } else {
+                searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
             }
         }
         .navigationTitle("Discover")
         .task {
             await splashScreenEnvironmentModel.dismiss()
         }
-        .task(id: searchKey) { [searchKey] in
+        .task(id: searchKey, milliseconds: 200) { [searchKey] in
             guard let searchKey else {
                 logger.info("Empty search key. Reset.")
                 withAnimation {
