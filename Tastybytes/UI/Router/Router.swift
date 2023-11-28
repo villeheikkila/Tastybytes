@@ -40,11 +40,15 @@ final class Router {
         }
     }
 
-    func navigate(screen: Screen, resetStack: Bool = false) {
+    func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
         if resetStack {
             reset()
         }
         path.append(screen)
+        if removeLast {
+            guard path.count >= 2 else { return }
+            path.remove(at: path.count - 2)
+        }
     }
 
     func reset() {
