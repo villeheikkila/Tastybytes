@@ -17,6 +17,7 @@ struct FriendsScreen: View {
     @State private var alertError: AlertError?
     @State private var isRefreshing = false
     @State private var refreshId = 0
+    @State private var resultId: Int?
 
     let profile: Profile
 
@@ -58,7 +59,9 @@ struct FriendsScreen: View {
             }
         #endif
             .task(id: refreshId) { [refreshId] in
+                    guard resultId != refreshId else { return }
                     await loadFriends()
+                    resultId = refreshId
                 }
                 .toolbar {
                     toolbarContent
