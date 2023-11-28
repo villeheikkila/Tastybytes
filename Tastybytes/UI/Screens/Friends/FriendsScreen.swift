@@ -53,20 +53,20 @@ struct FriendsScreen: View {
             newValue.count > oldValue.count
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .task(id: refreshId) { [refreshId] in
+            guard resultId != refreshId else { return }
+            await loadFriends()
+            resultId = refreshId
+        }
+        .toolbar {
+            toolbarContent
+        }
+        .alertError($alertError)
         #if !targetEnvironment(macCatalyst)
             .refreshable {
                 refreshId += 1
             }
         #endif
-            .task(id: refreshId) { [refreshId] in
-                    guard resultId != refreshId else { return }
-                    await loadFriends()
-                    resultId = refreshId
-                }
-                .toolbar {
-                    toolbarContent
-                }
-                .alertError($alertError)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
