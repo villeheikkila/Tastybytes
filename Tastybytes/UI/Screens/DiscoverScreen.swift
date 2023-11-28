@@ -275,7 +275,7 @@ struct DiscoverScreen: View {
     }
 
     @ViewBuilder private var productResults: some View {
-        if barcode != nil {
+        if barcode != nil && !showContentUnavailableView {
             Section {
                 Text(
                     """
@@ -284,7 +284,7 @@ struct DiscoverScreen: View {
                     with the name or by creating a new product.
                     """
                 )
-                Button("Dismiss barcode", action: { resetBarcode() })
+                Button("Dismiss barcode", action: resetBarcode)
             }
         }
 
