@@ -1274,6 +1274,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The location is used for the location search during check-ins";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to prefill check-in date and location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1329,6 +1330,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The location is used for the location search during check-ins";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to prefill check-in date and location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

@@ -1,6 +1,7 @@
 import Components
 import EnvironmentModels
 import Extensions
+import LegacyUIKit
 import Models
 import OSLog
 import PhotosUI
@@ -32,6 +33,11 @@ struct CheckInSheet: View {
     @State private var blurHash: String?
     @State private var alertError: AlertError?
     @State private var image: UIImage?
+    @State private var imageMetadata: ImageMetadata? { didSet {
+        if let imageTakenAt = imageMetadata?.date {
+            checkInAt = imageTakenAt
+        }
+    }}
     @State private var finalImage: UIImage?
     @State private var showImageCropper = false
 
@@ -79,7 +85,8 @@ struct CheckInSheet: View {
         }
         .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
             Button("Camera", action: { showCamera.toggle() })
-            RouterLink("Photo Gallery", sheet: .legacyPhotoPicker(onSelection: { image in
+            RouterLink("Photo Gallery", sheet: .legacyPhotoPicker(onSelection: { image, metadata in
+                imageMetadata = metadata
                 self.image = image
                 self.showImageCropper = true
 
