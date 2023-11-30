@@ -89,6 +89,21 @@ struct SupabaseLocationRepository: LocationRepository {
         }
     }
 
+    func getAllCountries() async -> Result<[Country], Error> {
+        do {
+            let response: [Country] = try await client
+                .database
+                .from(.countries)
+                .select(Country.getQuery(.saved(false)))
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func delete(id: UUID) async -> Result<Void, Error> {
         do {
             try await client

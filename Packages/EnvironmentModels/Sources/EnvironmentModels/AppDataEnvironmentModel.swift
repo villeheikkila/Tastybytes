@@ -10,8 +10,10 @@ public final class AppDataEnvironmentModel {
     private let logger = Logger(category: "AppDataEnvironmentModel")
     public var categories = [Models.Category.JoinedSubcategoriesServingStyles]()
     public var flavors = [Flavor]()
+    public var countries = [Country]()
     public var aboutPage: AboutPage? = nil
     public var alertError: AlertError?
+
     private let repository: Repository
 
     public init(repository: Repository) {
@@ -24,11 +26,13 @@ public final class AppDataEnvironmentModel {
         async let aboutPagePromise = repository.document.getAboutPage()
         async let flavorPromise = repository.flavor.getAll()
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
+        async let countryPromise = repository.location.getAllCountries()
 
-        let (flavorResponse, categoryResponse, aboutPageResponse) = (
+        let (flavorResponse, categoryResponse, aboutPageResponse, countryResponse) = (
             await flavorPromise,
             await categoryPromise,
-            await aboutPagePromise
+            await aboutPagePromise,
+            await countryPromise
         )
 
         switch flavorResponse {
@@ -67,6 +71,18 @@ public final class AppDataEnvironmentModel {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Fetching about page failed. Error: \(error) (\(#file):\(#line))")
+        }
+
+        switch countryResponse {
+        case let .success(countries):
+            await MainActor.run {
+                self.countries = countries
+            }
+            logger.notice("App data (countries) initialized")
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Fetching countries failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 

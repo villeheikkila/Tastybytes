@@ -37,6 +37,11 @@ struct CheckInSheet: View {
         if let imageTakenAt = imageMetadata?.date {
             checkInAt = imageTakenAt
         }
+        if let imageTakenLocation = imageMetadata?.location {
+            Task {
+                await getLocationFromCoordinate(coordinate: imageTakenLocation)
+            }
+        }
     }}
     @State private var finalImage: UIImage?
     @State private var showImageCropper = false
@@ -290,6 +295,12 @@ struct CheckInSheet: View {
             alertError = .init()
             logger.error("Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
+    }
+
+    func getLocationFromCoordinate(coordinate: CLLocationCoordinate2D) async {
+        let countryCode = try? await coordinate.getISOCountryCode()
+        let country = appDataEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
+        location = Location(coordinate: coordinate, countryCode: countryCode, country: country)
     }
 
     func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) async -> Void) async {

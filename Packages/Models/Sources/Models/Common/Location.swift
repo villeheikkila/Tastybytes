@@ -1,3 +1,4 @@
+import CoreLocation
 import MapKit
 
 public struct Location: Identifiable, Codable, Hashable, Sendable {
@@ -15,6 +16,19 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         location = mapItem.placemark.location
         countryCode = mapItem.placemark.countryCode
         country = nil
+    }
+
+    public init(coordinate: CLLocationCoordinate2D, countryCode: String?, country: Country?) {
+        id = UUID()
+        name = String(
+            format: "Lat: %.3f°, Lon: %.3f° \(country?.name ?? "")",
+            coordinate.latitude,
+            coordinate.longitude
+        )
+        title = nil
+        location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        self.countryCode = countryCode
+        self.country = country
     }
 
     public init(id: UUID, name: String, title: String?, location: CLLocation?, countryCode: String?,
