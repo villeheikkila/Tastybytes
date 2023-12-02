@@ -170,10 +170,15 @@ struct CompanyScreen: View {
         async let companyPromise = repository.company.getJoinedById(id: company.id)
         async let summaryPromise = repository.company.getSummaryById(id: company.id)
 
+        let (companyResult, summaryResult) = (
+            await companyPromise,
+            await summaryPromise
+        )
+
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
-        switch await companyPromise {
+        switch companyResult {
         case let .success(company):
             companyJoined = company
             if withHaptics {
@@ -185,7 +190,7 @@ struct CompanyScreen: View {
             logger.error("Failed to refresh data for company. Error: \(error) (\(#file):\(#line))")
         }
 
-        switch await summaryPromise {
+        switch summaryResult {
         case let .success(summary):
             self.summary = summary
         case let .failure(error):

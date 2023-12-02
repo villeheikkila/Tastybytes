@@ -50,6 +50,9 @@ struct CheckInScreen: View {
     }
 
     @State private var alertError: AlertError?
+    // Refresh status
+    @State private var refreshId = 0
+    @State private var resultId: Int?
 
     var orderedCheckInComments: [CheckInComment] {
         checkInComments.reversed()
@@ -87,6 +90,9 @@ struct CheckInScreen: View {
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
+        .refreshable {
+            refreshId += 1
+        }
         .overlay(
             MaterialOverlay(alignment: .bottom) {
                 leaveCommentSection
@@ -129,9 +135,49 @@ struct CheckInScreen: View {
                 action: { await deleteCheckInAsModerator(presenting) }
             )
         }
-        .task {
-            await loadCheckInComments()
-            await notificationEnvironmentModel.markCheckInAsRead(checkIn: checkIn)
+        .task(id: refreshId) { [refreshId] in
+            guard refreshId != resultId else { return }
+            logger.error("Refreshing check-in screen with id: \(refreshId)")
+            await loadCheckInData()
+            resultId = refreshId
+        }
+    }
+
+    func loadCheckInData() async {
+        async let checkInPromise = repository.checkIn.getById(id: checkIn.id)
+        async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: checkIn.id)
+        async let summaryPromise: Void = notificationEnvironmentModel.markCheckInAsRead(checkIn: checkIn)
+
+        let (checkInResult, checkInCommentResult, _) = (
+            await checkInPromise,
+            await checkInCommentPromise,
+            await summaryPromise
+        )
+
+        switch checkInResult {
+        case let .success(checkIn):
+            await MainActor.run {
+                withAnimation {
+                    self.checkIn = checkIn
+                }
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to load check-in. Error: \(error) (\(#file):\(#line))")
+        }
+
+        switch checkInCommentResult {
+        case let .success(checkInComments):
+            await MainActor.run {
+                withAnimation {
+                    self.checkInComments = checkInComments
+                }
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to load check-in comments'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -256,21 +302,6 @@ struct CheckInScreen: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func loadCheckInComments() async {
-        switch await repository.checkInComment.getByCheckInId(id: checkIn.id) {
-        case let .success(checkIns):
-            await MainActor.run {
-                withAnimation {
-                    checkInComments = checkIns
-                }
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to load check-in comments'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
