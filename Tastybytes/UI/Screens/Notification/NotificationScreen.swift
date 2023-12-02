@@ -31,7 +31,8 @@ struct NotificationScreen: View {
     }
 
     var showContentUnavailableView: Bool {
-        filteredNotifications.isEmpty && !notificationEnvironmentModel.isRefreshing
+        notificationEnvironmentModel.isInitialized && filteredNotifications.isEmpty && !notificationEnvironmentModel
+            .isRefreshing
     }
 
     var body: some View {
@@ -63,7 +64,7 @@ struct NotificationScreen: View {
             }
             #if !targetEnvironment(macCatalyst)
             .refreshable {
-                await notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
+                notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
             }
             #endif
             .onChange(of: scrollToTop) {
@@ -75,8 +76,8 @@ struct NotificationScreen: View {
                     }
                 }
         }
-        .task {
-            await notificationEnvironmentModel.refresh(reset: true)
+        .onAppear {
+            notificationEnvironmentModel.refresh()
         }
         .dismissSplashScreen()
         .navigationTitle(filter?.label ?? "Notifications")

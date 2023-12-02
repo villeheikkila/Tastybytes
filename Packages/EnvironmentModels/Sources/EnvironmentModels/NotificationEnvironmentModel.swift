@@ -10,6 +10,8 @@ public final class NotificationEnvironmentModel {
     private let logger = Logger(category: "NotificationEnvironmentModel")
     public var notifications = [Models.Notification]()
     public var isRefreshing = false
+    public var isInitialized = false
+    public var task: Task<Void, Never>?
 
     public var pushNotificationSettings: ProfilePushNotification? = nil
     public var unreadCount: Int = 0
@@ -49,29 +51,37 @@ public final class NotificationEnvironmentModel {
         }
     }
 
-    public func refresh(reset: Bool = false, withHaptics: Bool = false) async {
-        if withHaptics {
-            isRefreshing = true
+    public func refresh(reset: Bool = false, withHaptics: Bool = false) {
+        guard task == nil else {
+            logger.info("Tried to refresh but already fetching notifications. Skipping.")
+            return
         }
-        switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
-        case let .success(newNotifications):
-            await MainActor.run {
-                if reset {
-                    notifications = newNotifications
-                    unreadCount = newNotifications
-                        .filter { $0.seenAt == nil }
-                        .count
-                } else {
-                    notifications.append(contentsOf: newNotifications)
-                }
+        task = Task {
+            defer { task = nil }
+            if withHaptics {
+                isRefreshing = true
             }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
-        }
-        if withHaptics {
-            isRefreshing = false
+            switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
+            case let .success(newNotifications):
+                await MainActor.run {
+                    isInitialized = true
+                    if reset {
+                        notifications = newNotifications
+                        unreadCount = newNotifications
+                            .filter { $0.seenAt == nil }
+                            .count
+                    } else {
+                        notifications.append(contentsOf: newNotifications)
+                    }
+                }
+            case let .failure(error):
+                guard !error.isCancelled else { return }
+                alertError = .init()
+                logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
+            }
+            if withHaptics {
+                isRefreshing = false
+            }
         }
     }
 
