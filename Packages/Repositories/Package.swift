@@ -13,7 +13,10 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/supabase/supabase-swift.git", branch: "main"),
+        .package(
+            url: "https://github.com/supabase-community/supabase-swift.git",
+            from: "1.0.0"
+        ),
         .package(name: "Models", path: "../Models"),
         .package(name: "Extensions", path: "../Extensions"),
     ],

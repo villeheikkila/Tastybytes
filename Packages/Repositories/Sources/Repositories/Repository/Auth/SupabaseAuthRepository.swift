@@ -125,7 +125,7 @@ struct SupabaseAuthRepository: AuthRepository {
     }
 
     func authStateListener() async -> AsyncStream<AuthState> {
-        await client.auth.onAuthStateChange().compactMap { event, session in
+        await client.auth.authStateChanges.compactMap { event, session in
             switch event {
             case .initialSession: session != nil ? AuthState.authenticated : .unauthenticated
             case .signedIn: AuthState.authenticated

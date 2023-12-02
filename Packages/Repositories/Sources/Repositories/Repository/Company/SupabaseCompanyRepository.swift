@@ -61,12 +61,11 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func uploadLogo(companyId: Int, data: Data) async -> Result<String, Error> {
         do {
             let fileName = "\(companyId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
-            let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
 
             _ = try await client
                 .storage
                 .from(.logos)
-                .upload(path: fileName, file: file)
+                .upload(path: fileName, file: data)
 
             return .success(fileName)
         } catch {
