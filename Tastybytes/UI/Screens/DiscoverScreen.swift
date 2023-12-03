@@ -29,7 +29,6 @@ struct DiscoverScreen: View {
     @State private var locations = [Location]()
     // Search State
     @State private var alertError: AlertError?
-    @State private var isLoading = false
     // Barcode
     @State private var barcode: Barcode?
     @State private var showAddBarcodeConfirmation = false
@@ -39,8 +38,17 @@ struct DiscoverScreen: View {
         }
     }
 
+    private var isLoading: Bool {
+        searchKey != searchResultKey
+    }
+
     private var showContentUnavailableView: Bool {
         searchResultKey != nil && !isLoading && currentScopeIsEmpty
+    }
+
+    private var showAddProductViewRow: Bool {
+        searchResultKey != nil && searchKey == searchResultKey && !showContentUnavailableView && profileEnvironmentModel
+            .hasPermission(.canCreateProducts)
     }
 
     var body: some View {
@@ -111,7 +119,6 @@ struct DiscoverScreen: View {
             logger.info("Staring search for id: '\(searchKey.id)'")
             switch searchKey {
             case let .barcode(barcode):
-                isLoading = true
                 switch await repository.product.search(barcode: barcode) {
                 case let .success(searchResults):
                     await MainActor.run {
@@ -130,7 +137,6 @@ struct DiscoverScreen: View {
                 }
             case let .text(searchTerm, searchScope):
                 if searchTerm.count < 2 { return }
-                isLoading = true
                 switch searchScope {
                 case .products:
                     switch await repository.product.search(searchTerm: searchTerm, filter: productFilter) {
@@ -191,7 +197,6 @@ struct DiscoverScreen: View {
                     }
                 }
             }
-            isLoading = false
         }
         .toolbar {
             toolbarContent
@@ -329,7 +334,7 @@ struct DiscoverScreen: View {
                     .id(product.id)
             }
         }
-        if searchKey != nil, !showContentUnavailableView, profileEnvironmentModel.hasPermission(.canCreateProducts) {
+        if showAddProductViewRow {
             Section("Didn't find a product you were looking for?") {
                 HStack {
                     Text("Add new")
