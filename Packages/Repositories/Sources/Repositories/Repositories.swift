@@ -48,7 +48,7 @@ public struct Repository: RepositoryProtocol {
         let client = SupabaseClient(
             supabaseURL: supabaseURL,
             supabaseKey: supabaseKey,
-            options: .init(auth: .init(flowType: .implicit))
+            options: .init(auth: .init(flowType: .implicit), global: .init(headers: ["cache-control": "6000"]))
         )
         profile = SupabaseProfileRepository(client: client)
         checkIn = SupabaseCheckInRepository(client: client)

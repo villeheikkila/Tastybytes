@@ -17,6 +17,7 @@ struct ProductFeedScreen: View {
     @State private var isLoading = false
     @State private var isRefreshing = false
     @State private var alertError: AlertError?
+    @State private var loadingAdditionalItemsTask: Task<Void, Never>?
 
     let feed: Product.FeedType
 
@@ -45,7 +46,10 @@ struct ProductFeedScreen: View {
                     }
                     .onAppear {
                         if product == products.last, isLoading != true {
-                            Task { await fetchProductFeedItems() }
+                            loadingAdditionalItemsTask = Task {
+                                defer { loadingAdditionalItemsTask = nil }
+                                await fetchProductFeedItems()
+                            }
                         }
                     }
             }
@@ -59,6 +63,9 @@ struct ProductFeedScreen: View {
         .listStyle(.plain)
         .task(id: categoryFilter) {
             await refresh()
+        }
+        .onDisappear {
+            loadingAdditionalItemsTask?.cancel()
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
@@ -89,6 +96,7 @@ struct ProductFeedScreen: View {
     }
 
     func refresh() async {
+        loadingAdditionalItemsTask?.cancel()
         page = 0
         products = [Product.Joined]()
         isRefreshing = true

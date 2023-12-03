@@ -6,6 +6,8 @@ import SwiftUI
 @Observable
 public final class SplashScreenEnvironmentModel {
     private let logger = Logger(category: "SplashScreenEnvironmentModel")
+    private var task: Task<Void, Never>?
+    public var state: SplashScreenState = .showing
 
     public init() {}
 
@@ -13,10 +15,11 @@ public final class SplashScreenEnvironmentModel {
         case showing, dismissing, finished
     }
 
-    public var state: SplashScreenState = .showing
-
-    public func dismiss() async {
-        if state == .showing {
+    @MainActor
+    public func dismiss() {
+        guard state == .showing, task == nil else { return }
+        task = Task {
+            defer { task = nil }
             logger.info("Dismissing splash screen")
             state = .dismissing
             try? await Task.sleep(for: Duration.seconds(0.5))
@@ -30,9 +33,7 @@ struct DismissSplashScreenModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content.onAppear {
-            Task {
-                await splashScreenEnvironmentModel.dismiss()
-            }
+            splashScreenEnvironmentModel.dismiss()
         }
     }
 }

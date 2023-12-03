@@ -143,7 +143,7 @@ struct CheckInListView<Header>: View where Header: View {
                 logger.info("Loading initial check-in feed data for \(id)")
                 await fetchFeedItems(onComplete: { _ in
                     logger.info("Loading initial check-ins completed for \(id)")
-                    await splashScreenEnvironmentModel.dismiss()
+                    splashScreenEnvironmentModel.dismiss()
                 })
                 resultId = refreshId
                 return

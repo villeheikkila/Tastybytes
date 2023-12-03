@@ -31,6 +31,7 @@ struct ProductScreen: View {
     // state
     @State private var refreshId = 0
     @State private var resultId: Int?
+    @State private var checkInImageTask: Task<Void, Never>?
 
     // wishlist
     @State private var isOnWishlist = false
@@ -58,7 +59,9 @@ struct ProductScreen: View {
                 loadedFromBarcodeOverlay
             )
         })
-
+        .onDisappear {
+            checkInImageTask?.cancel()
+        }
         .task(id: refreshId) { [refreshId] in
             guard refreshId != resultId else { return }
             logger.error("Refreshing product screen with id: \(refreshId)")
@@ -129,8 +132,9 @@ struct ProductScreen: View {
                             CheckInImageCellView(checkInImage: checkInImage)
                                 .onAppear {
                                     if checkInImage == checkInImages.last, isLoadingCheckInImages != true {
-                                        Task {
-                                            await fetchImages()
+                                        checkInImageTask = Task {
+                                            defer { checkInImageTask = nil }
+                                            await fetchImages(reset: false)
                                         }
                                     }
                                 }
@@ -265,7 +269,7 @@ struct ProductScreen: View {
         async let productPromise = repository.product.getById(id: product.id)
         async let summaryPromise = repository.product.getSummaryById(id: product.id)
         async let wishlistPromise = repository.product.checkIfOnWishlist(id: product.id)
-        async let fetchImagePromise: Void = fetchImages()
+        async let fetchImagePromise: Void = fetchImages(reset: true)
 
         let (productResult, summaryResult, wishlistResult, _) = (
             await productPromise,
@@ -383,7 +387,16 @@ struct ProductScreen: View {
         }
     }
 
-    func fetchImages() async {
+    func fetchImages(reset: Bool) async {
+        if reset {
+            withAnimation {
+                checkInImageTask?.cancel()
+                checkInImages = []
+                isLoadingCheckInImages = false
+                checkInImagesPage = 0
+            }
+        }
+        guard !isLoadingCheckInImages else { return }
         let (from, to) = getPagination(page: checkInImagesPage, size: 10)
         isLoadingCheckInImages = true
 

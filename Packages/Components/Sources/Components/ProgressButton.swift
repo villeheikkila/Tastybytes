@@ -54,9 +54,7 @@ public struct ProgressButton<LabelView: View>: View {
                     do {
                         try await Task.sleep(for: .seconds(1))
                         isLoading = true
-                    } catch {
-                        logger.info("Timer cancelled")
-                    }
+                    } catch {}
                 }
             }
             await action()

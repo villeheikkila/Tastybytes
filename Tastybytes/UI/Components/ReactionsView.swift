@@ -47,7 +47,7 @@ struct ReactionsView: View {
             view
                 .accessibilityAddTraits(.isButton)
                 .onTapGesture {
-                    task = Task {
+                    task = Task(priority: .userInitiated) {
                         await toggleReaction()
                     }
                 }
