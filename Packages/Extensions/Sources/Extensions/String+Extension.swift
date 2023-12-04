@@ -48,12 +48,11 @@ public extension String? {
 
 public extension String {
     func formatStringEveryWordCapitalized() -> String {
-        let trimmedStr = lowercased()
+        lowercased()
             .components(separatedBy: .whitespacesAndNewlines)
             .filter { !$0.isEmpty }
+            .compactMap { $0.capitalized(with: Locale.current) }
             .joined(separator: " ")
-        let capitalizedStr = trimmedStr.capitalized(with: Locale.current)
-        return capitalizedStr
     }
 }
 

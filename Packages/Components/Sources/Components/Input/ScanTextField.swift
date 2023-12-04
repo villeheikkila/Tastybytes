@@ -1,7 +1,10 @@
+import Extensions
 import SwiftUI
 
 public struct ScanTextField: View {
     let title: String
+    @State var scannedText: String = ""
+
     @Binding var text: String
 
     public init(title: String, text: Binding<String>) {
@@ -13,7 +16,12 @@ public struct ScanTextField: View {
         HStack {
             TextField(title, text: $text, axis: .vertical)
             Spacer()
-            ScanTextButton(text: $text)
+            ScanTextButton(text: $scannedText)
+        }
+        .onChange(of: scannedText) { _, newValue in
+            if !newValue.isEmpty {
+                text = newValue.formatStringEveryWordCapitalized()
+            }
         }
     }
 }
