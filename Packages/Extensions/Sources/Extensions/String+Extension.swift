@@ -45,3 +45,20 @@ public extension String? {
         }
     }
 #endif
+
+public extension String {
+    func formatStringEveryWordCapitalized() -> String {
+        let trimmedStr = lowercased()
+            .components(separatedBy: .whitespacesAndNewlines)
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+        let capitalizedStr = trimmedStr.capitalized(with: Locale.current)
+        return capitalizedStr
+    }
+}
+
+public extension String {
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).capitalized + dropFirst()
+    }
+}

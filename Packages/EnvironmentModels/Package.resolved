@@ -10,21 +10,21 @@
       }
     },
     {
-      "identity" : "nuke",
+      "identity" : "supabase-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kean/Nuke.git",
+      "location" : "https://github.com/supabase-community/supabase-swift.git",
       "state" : {
-        "revision" : "3f666f120b63ea7de57d42e9a7c9b47f8e7a290b",
-        "version" : "12.1.6"
+        "revision" : "c17f6d9ff364072a2dba2eb85e2ed9b807c80ffa",
+        "version" : "1.0.0"
       }
     },
     {
-      "identity" : "supabase-swift",
+      "identity" : "swift-concurrency-extras",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/supabase/supabase-swift.git",
+      "location" : "https://github.com/pointfreeco/swift-concurrency-extras",
       "state" : {
-        "branch" : "main",
-        "revision" : "75699fc369a15d53578f58acde3429abf4fdfa3a"
+        "revision" : "bb5059bde9022d69ac516803f4f227d8ac967f71",
+        "version" : "1.1.0"
       }
     }
   ],

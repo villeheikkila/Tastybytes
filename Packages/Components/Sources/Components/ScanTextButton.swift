@@ -1,3 +1,4 @@
+import Extensions
 import SwiftUI
 
 public struct ScanTextButton: View {
