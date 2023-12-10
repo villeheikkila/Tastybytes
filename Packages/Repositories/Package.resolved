@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift.git",
       "state" : {
-        "revision" : "c17f6d9ff364072a2dba2eb85e2ed9b807c80ffa",
-        "version" : "1.0.0"
+        "revision" : "4a3cd8b96eddc4dd99d3b51919388bb9bb790f77",
+        "version" : "1.1.0"
       }
     },
     {
