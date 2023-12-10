@@ -20,10 +20,6 @@
 				<string>tastybytes</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-		</dict>
 	</array>
 	<key>DEEP_LINK_BASE_URL</key>
 	<string>${DEEP_LINK_BASE_URL}</string>
