@@ -8,7 +8,7 @@ struct AppLogoView: View {
 
     init(appIcon: AppIcon? = nil, size: Double? = nil) {
         self.appIcon = appIcon
-        self.size = size ?? min(UIScreen.main.bounds.width / 4, 300)
+        self.size = size ?? 300
     }
 
     var body: some View {

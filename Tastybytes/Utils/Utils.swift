@@ -26,11 +26,11 @@ struct CSVFile: FileDocument {
     }
 }
 
-func isPadOrMac() -> Bool {
+@MainActor func isPadOrMac() -> Bool {
     [.pad, .mac].contains(UIDevice.current.userInterfaceIdiom)
 }
 
-func isMac() -> Bool {
+@MainActor func isMac() -> Bool {
     UIDevice.current.userInterfaceIdiom == .mac
 }
 
