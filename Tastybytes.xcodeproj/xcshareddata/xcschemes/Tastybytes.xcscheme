@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1500"
-   version = "1.3">
+   LastUpgradeVersion = "1510"
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
+               BlueprintIdentifier = "C94722D42AD1859C006DE096"
                BuildableName = "Tastybytes.app"
                BlueprintName = "Tastybytes"
                ReferencedContainer = "container:Tastybytes.xcodeproj">
@@ -26,8 +26,42 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C94722E52AD1859E006DE096"
+               BuildableName = "TastybytesTests.xctest"
+               BlueprintName = "TastybytesTests"
+               ReferencedContainer = "container:Tastybytes.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C94722EF2AD1859E006DE096"
+               BuildableName = "TastybytesUITests.xctest"
+               BlueprintName = "TastybytesUITests"
+               ReferencedContainer = "container:Tastybytes.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C9C213232AD1EDB500C60282"
+               BuildableName = "SharedFrameworkTests.xctest"
+               BlueprintName = "SharedFrameworkTests"
+               ReferencedContainer = "container:Tastybytes.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -44,7 +78,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
+            BlueprintIdentifier = "C94722D42AD1859C006DE096"
             BuildableName = "Tastybytes.app"
             BlueprintName = "Tastybytes"
             ReferencedContainer = "container:Tastybytes.xcodeproj">
@@ -61,7 +95,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
+            BlueprintIdentifier = "C94722D42AD1859C006DE096"
             BuildableName = "Tastybytes.app"
             BlueprintName = "Tastybytes"
             ReferencedContainer = "container:Tastybytes.xcodeproj">
