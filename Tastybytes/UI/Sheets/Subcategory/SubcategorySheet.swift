@@ -54,7 +54,7 @@ struct SubcategorySheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .primaryAction) {
+        ToolbarItemGroup(placement: .confirmationAction) {
             Button("Done", role: .cancel, action: { dismiss() }).bold()
         }
         if profileEnvironmentModel.hasPermission(.canDeleteBrands) {

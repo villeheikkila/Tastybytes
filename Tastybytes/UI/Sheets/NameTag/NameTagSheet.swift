@@ -50,7 +50,7 @@ struct NameTagSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
+        ToolbarItemGroup(placement: .cancellationAction) {
             Button("Close", role: .cancel, action: { dismiss() })
                 .bold()
         }

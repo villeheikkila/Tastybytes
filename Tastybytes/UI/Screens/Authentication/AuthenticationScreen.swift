@@ -41,7 +41,7 @@ struct AuthenticationScreen: View {
                     .ignoresSafeArea()
                     .navigationTitle(link.title)
                     .toolbar {
-                        ToolbarItemGroup(placement: .topBarTrailing) {
+                        ToolbarItemGroup(placement: .cancellationAction) {
                             CloseButtonView { openUrlInWebView = nil }
                         }
                     }

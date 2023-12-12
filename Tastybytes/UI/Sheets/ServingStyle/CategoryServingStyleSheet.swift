@@ -64,7 +64,7 @@ struct CategoryServingStyleSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
+        ToolbarItemGroup(placement: .confirmationAction) {
             Button("Done", role: .cancel, action: { dismiss() })
         }
         ToolbarItemGroup(placement: .primaryAction) {

@@ -24,7 +24,7 @@ struct NewFlavorSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
+        ToolbarItemGroup(placement: .cancellationAction) {
             Button("Cancel", role: .cancel, action: { dismiss() })
                 .bold()
         }

@@ -86,10 +86,10 @@ struct ProductFilterSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
+        ToolbarItemGroup(placement: .cancellationAction) {
             Button("Cancel", role: .cancel, action: { dismiss() })
         }
-        ToolbarItemGroup(placement: .topBarTrailing) {
+        ToolbarItemGroup(placement: .confirmationAction) {
             Button("Apply", action: {
                 onApply(getFilter())
                 dismiss()

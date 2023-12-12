@@ -100,9 +100,8 @@ struct EditBrandSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Done", action: { dismiss() })
-                .bold()
+        ToolbarItemGroup(placement: .confirmationAction) {
+            Button("Done", action: { dismiss() }).bold()
         }
     }
 

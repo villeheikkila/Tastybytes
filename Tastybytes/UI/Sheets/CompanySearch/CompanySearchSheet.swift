@@ -91,7 +91,7 @@ struct CompanySearchSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
+        ToolbarItemGroup(placement: .cancellationAction) {
             Button("Cancel", role: .cancel, action: { dismiss() })
                 .bold()
         }

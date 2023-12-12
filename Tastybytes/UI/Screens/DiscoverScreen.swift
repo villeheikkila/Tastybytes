@@ -366,8 +366,8 @@ struct DiscoverScreen: View {
                 )
                 .labelStyle(.iconOnly)
             }
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
+            if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
                     RouterLink(
                         "Scan a barcode",
                         systemImage: "barcode.viewfinder",
