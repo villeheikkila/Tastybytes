@@ -14,7 +14,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.villeheikkila.tastey</string>
+			<string>${BUNDLE_ID_PREFIX}.${BUNDLE_ID_SUFFIX}</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>tastybytes</string>
