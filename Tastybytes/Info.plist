@@ -44,6 +44,10 @@
 		<key>UISceneConfigurations</key>
 		<dict/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera is used for scanning barcodes and adding photos to check-ins</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is used to find nearby locations for check-ins</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
