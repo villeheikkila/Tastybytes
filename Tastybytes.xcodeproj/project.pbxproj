@@ -145,6 +145,7 @@
 		5C9058602B2894BE00EC157B /* EnvironmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */; };
 		5C9058612B2894BE00EC157B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E32B2894BE00EC157B /* AppDelegate.swift */; };
 		5C9058622B2894BE00EC157B /* AuthEventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E42B2894BE00EC157B /* AuthEventObserver.swift */; };
+		5CCEE2562B29BC5700F276DF /* ProductCreationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 		C94722E12AD1859D006DE096 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722E02AD1859D006DE096 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -305,6 +306,7 @@
 		5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentProvider.swift; sourceTree = "<group>"; };
 		5C9057E32B2894BE00EC157B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C9057E42B2894BE00EC157B /* AuthEventObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthEventObserver.swift; sourceTree = "<group>"; };
+		5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCreationScreen.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* MultiPlatform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MultiPlatform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Debug.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* Tastybytes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tastybytes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -365,7 +367,6 @@
 				5C9057C12B2894BE00EC157B /* Components */,
 				5C9057CE2B2894BE00EC157B /* TabsView.swift */,
 				5C9057CF2B2894BE00EC157B /* Fonts */,
-				5C9057D12B2894BE00EC157B /* Onboarding */,
 				5C9057D72B2894BE00EC157B /* Router */,
 			);
 			path = UI;
@@ -876,6 +877,23 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		5CCEE2532B29AE4D00F276DF /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				5CCEE2542B29AE6900F276DF /* ProductCreation */,
+				5C9057D12B2894BE00EC157B /* Onboarding */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		5CCEE2542B29AE6900F276DF /* ProductCreation */ = {
+			isa = PBXGroup;
+			children = (
+				5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */,
+			);
+			path = ProductCreation;
+			sourceTree = "<group>";
+		};
 		C923F3602AD2E95B0041D01D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -905,6 +923,7 @@
 		C94722D72AD1859C006DE096 /* Tastybytes */ = {
 			isa = PBXGroup;
 			children = (
+				5CCEE2532B29AE4D00F276DF /* Features */,
 				5C9057E02B2894BE00EC157B /* Core */,
 				5C9057DF2B2894BE00EC157B /* Main.swift */,
 				5C9057372B2894BE00EC157B /* UI */,
@@ -1150,6 +1169,7 @@
 				5C9058532B2894BE00EC157B /* OnboardingLocationPermissionSection.swift in Sources */,
 				5C9058162B2894BE00EC157B /* PrivacySettingsPage.swift in Sources */,
 				5C9057F22B2894BE00EC157B /* CompanySearchSheet.swift in Sources */,
+				5CCEE2562B29BC5700F276DF /* ProductCreationScreen.swift in Sources */,
 				5C9058382B2894BE00EC157B /* ActivityScreen.swift in Sources */,
 				5C9058312B2894BE00EC157B /* CheckInImagesView.swift in Sources */,
 				5C90580E2B2894BE00EC157B /* SubBrandSheet.swift in Sources */,
