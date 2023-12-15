@@ -646,7 +646,6 @@
 				5C9057B92B2894BE00EC157B /* DuplicataProductScreen */,
 				5C9057BB2B2894BE00EC157B /* Authentication */,
 				5C9057BD2B2894BE00EC157B /* DiscoverScreen.swift */,
-				5C9057BE2B2894BE00EC157B /* MarkAsDuplicate */,
 				5C9057BF2B2894BE00EC157B /* Company */,
 			);
 			path = Screens;
@@ -789,13 +788,6 @@
 				5C9057BC2B2894BE00EC157B /* AuthenticationScreen.swift */,
 			);
 			path = Authentication;
-			sourceTree = "<group>";
-		};
-		5C9057BE2B2894BE00EC157B /* MarkAsDuplicate */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MarkAsDuplicate;
 			sourceTree = "<group>";
 		};
 		5C9057BF2B2894BE00EC157B /* Company */ = {
