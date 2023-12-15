@@ -1,4 +1,5 @@
 import Components
+import Extensions
 import Models
 import Repositories
 import SwiftUI
@@ -21,13 +22,13 @@ struct CheckInCard: View {
                     productVariant: checkIn.variant,
                     servingStyle: checkIn.servingStyle
                 )
-            }.padding(.horizontal, 10)
+            }.padding(.horizontal, 12)
             CheckInCardImage(imageUrl: checkIn.imageUrl, blurHash: checkIn.blurHash)
             Group {
                 CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
                 CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles, loadedFrom: loadedFrom)
                 CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
-            }.padding(.horizontal, 10)
+            }.padding(.horizontal, 12)
         }
     }
 }

@@ -5,7 +5,7 @@ struct ActivityScreen: View {
     @Environment(Router.self) private var router
 
     var body: some View {
-        CheckInListView(
+        CheckInList(
             id: "ActivityScreen",
             fetcher: .activityFeed,
             scrollToTop: $scrollToTop,

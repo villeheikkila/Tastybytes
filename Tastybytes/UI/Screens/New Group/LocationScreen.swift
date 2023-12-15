@@ -24,7 +24,7 @@ struct LocationScreen: View {
     let location: Location
 
     var body: some View {
-        CheckInListView(
+        CheckInList(
             id: "LocationScreen",
             fetcher: .location(location),
             scrollToTop: $scrollToTop,

@@ -6,40 +6,11 @@ import OSLog
 import Repositories
 import SwiftUI
 
-extension CheckInListView {
-    enum Fetcher {
-        case activityFeed
-        case product(Product.Joined)
-        case profile(Profile)
-        case location(Location)
-
-        @ViewBuilder
-        var emptyContentView: some View {
-            switch self {
-            case .activityFeed:
-                EmptyActivityFeed()
-            default:
-                EmptyView()
-            }
-        }
-
-        var showCheckInSegmentationPicker: Bool {
-            switch self {
-            case .location, .product:
-                true
-            default:
-                false
-            }
-        }
-    }
-}
-
-struct CheckInListView<Header>: View where Header: View {
+struct CheckInList<Header>: View where Header: View {
     private let logger = Logger(category: "CheckInListView")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
-    @Environment(Router.self) private var router
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     // Tasks
     @State private var loadingCheckInsOnAppear: Task<Void, Error>?
@@ -179,57 +150,34 @@ struct CheckInListView<Header>: View where Header: View {
             refreshId += 1
         }
         #endif
-
         .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
-                    if let updatedCheckIn = newValue {
-                        imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                        if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
-                            checkIns[index] = updatedCheckIn
-                        }
+                if let updatedCheckIn = newValue {
+                    imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
+                    if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
+                        checkIns[index] = updatedCheckIn
                     }
                 }
+            }
     }
 
     @ViewBuilder
     private var checkInList: some View {
         LazyVStack {
             ForEach(checkIns) { checkIn in
-                CheckInCard(checkIn: checkIn, loadedFrom: getLoadedFrom)
-                    .id(checkIn.id)
-                    .checkInContextMenu(
-                        router: router,
-                        profileEnvironmentModel: profileEnvironmentModel,
-                        checkIn: checkIn,
-                        onCheckInUpdate: { updatedCheckIn in
-                            onCheckInUpdate(updatedCheckIn)
-                        },
-                        onDelete: { checkIn in
-                            showDeleteConfirmationFor = checkIn
-                        }
-                    )
-                    .if(showDeleteConfirmationFor == checkIn, transform: { view in
-                        view.confirmationDialog(
-                            "Are you sure you want to delete check-in? The data will be permanently lost.",
-                            isPresented: $showDeleteCheckInConfirmationDialog,
-                            titleVisibility: .visible,
-                            presenting: showDeleteConfirmationFor
-                        ) { presenting in
-                            ProgressButton(
-                                "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
-                                role: .destructive,
-                                action: { await deleteCheckIn(checkIn: presenting) }
-                            )
-                        }
-                    })
-                    .onAppear {
-                        if checkIn == checkIns.last, isLoading != true {
-                            loadingCheckInsOnAppear = Task {
-                                await fetchFeedItems()
-                            }
+                CheckInListCard(
+                    checkIn: checkIn,
+                    onUpdate: onCheckInUpdate,
+                    onDelete: deleteCheckIn
+                )
+                .id(checkIn.id)
+                .onAppear {
+                    if checkIn == checkIns.last, isLoading != true {
+                        loadingCheckInsOnAppear = Task {
+                            await fetchFeedItems()
                         }
                     }
+                }
             }
-
             ProgressView()
                 .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
                 .opacity(isLoading && !isRefreshing ? 1 : 0)
@@ -275,7 +223,7 @@ struct CheckInListView<Header>: View where Header: View {
         }
     }
 
-    func deleteCheckIn(checkIn: CheckIn) async {
+    func deleteCheckIn(_ checkIn: CheckIn) async {
         switch await repository.checkIn.delete(id: checkIn.id) {
         case .success:
             withAnimation {
@@ -362,74 +310,30 @@ extension CheckInSegment {
     }
 }
 
-extension View {
-    func checkInContextMenu(
-        router: Router,
-        profileEnvironmentModel: ProfileEnvironmentModel,
-        checkIn: CheckIn,
-        onCheckInUpdate: @escaping (CheckIn) -> Void,
-        onDelete: @escaping (CheckIn) -> Void
-    ) -> some View {
-        contextMenu {
-            ControlGroup {
-                CheckInShareLinkView(checkIn: checkIn)
-                if checkIn.profile.id == profileEnvironmentModel.id {
-                    RouterLink(
-                        "Edit",
-                        systemImage: "pencil",
-                        sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-                            onCheckInUpdate(updatedCheckIn)
-                        })
-                    )
-                    Button(
-                        "Delete",
-                        systemImage: "trash.fill",
-                        role: .destructive,
-                        action: { onDelete(checkIn) }
-                    )
-                } else {
-                    RouterLink(
-                        "Check-in",
-                        systemImage: "pencil",
-                        sheet: .newCheckIn(checkIn.product, onCreation: { checkIn in
-                            router.navigate(screen: .checkIn(checkIn))
-                        })
-                    )
-                    ReportButton(entity: .checkIn(checkIn))
-                }
+extension CheckInList {
+    enum Fetcher {
+        case activityFeed
+        case product(Product.Joined)
+        case profile(Profile)
+        case location(Location)
+
+        @ViewBuilder
+        var emptyContentView: some View {
+            switch self {
+            case .activityFeed:
+                EmptyActivityFeed()
+            default:
+                EmptyView()
             }
-            Divider()
-            RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
-            RouterLink(
-                "Open Brand Owner",
-                systemImage: "network",
-                screen: .company(checkIn.product.subBrand.brand.brandOwner)
-            )
-            RouterLink(
-                "Open Brand",
-                systemImage: "cart",
-                screen: .fetchBrand(checkIn.product.subBrand.brand)
-            )
-            RouterLink(
-                "Open Sub-brand",
-                systemImage: "cart",
-                screen: .fetchSubBrand(checkIn.product.subBrand)
-            )
-            if let location = checkIn.location {
-                RouterLink(
-                    "Open Location",
-                    systemImage: "network",
-                    screen: .location(location)
-                )
+        }
+
+        var showCheckInSegmentationPicker: Bool {
+            switch self {
+            case .location, .product:
+                true
+            default:
+                false
             }
-            if let purchaseLocation = checkIn.purchaseLocation {
-                RouterLink(
-                    "Open Purchase Location",
-                    systemImage: "network",
-                    screen: .location(purchaseLocation)
-                )
-            }
-            Divider()
         }
     }
 }

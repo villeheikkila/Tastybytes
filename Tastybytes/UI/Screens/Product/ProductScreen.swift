@@ -42,7 +42,7 @@ struct ProductScreen: View {
     }
 
     var body: some View {
-        CheckInListView(
+        CheckInList(
             id: "ProductScreen",
             fetcher: .product(product),
             scrollToTop: $scrollToTop,

@@ -47,7 +47,7 @@ struct ProfileView: View {
     }
 
     var body: some View {
-        CheckInListView(
+        CheckInList(
             id: "ProfileView",
             fetcher: .profile(profile),
             scrollToTop: $scrollToTop,
