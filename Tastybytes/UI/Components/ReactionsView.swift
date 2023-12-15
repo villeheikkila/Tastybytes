@@ -43,15 +43,14 @@ struct ReactionsView: View {
         .frame(maxWidth: 80, minHeight: size + 4)
         .contentShape(Rectangle())
         .alertError($alertError)
-        .if(!isLoading, transform: { view in
-            view
-                .accessibilityAddTraits(.isButton)
-                .onTapGesture {
-                    task = Task(priority: .userInitiated) {
-                        await toggleReaction()
-                    }
-                }
-        })
+
+        .accessibilityAddTraits(.isButton)
+        .allowsHitTesting(!isLoading)
+        .onTapGesture {
+            task = Task(priority: .userInitiated) {
+                await toggleReaction()
+            }
+        }
         .disabled(isLoading)
         .onDisappear {
             task?.cancel()

@@ -10,7 +10,7 @@ struct CheckInCardView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     let checkIn: CheckIn
-    let loadedFrom: LoadedFrom
+    let loadedFrom: CheckInCardView.LoadedFrom
 
     private let spacing: Double = 4
     private let padding: Double = 10
@@ -35,13 +35,11 @@ struct CheckInCardView: View {
         .clipped()
         .cornerRadius(8)
         .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
-        .if(loadedFrom != .checkIn) { view in
-            view
-                .onTapGesture {
-                    router.navigate(screen: .checkIn(checkIn))
-                }
-                .accessibilityAddTraits(.isLink)
+        .allowsHitTesting(loadedFrom != .checkIn)
+        .onTapGesture {
+            router.navigate(screen: .checkIn(checkIn))
         }
+        .accessibilityAddTraits(.isLink)
     }
 
     private var header: some View {
@@ -55,23 +53,19 @@ struct CheckInCardView: View {
                 Text("\(location.name) \(location.country?.emoji ?? "")")
                     .font(.caption).bold()
                     .foregroundColor(.primary)
-                    .if(!loadedFrom.isLoadedFromLocation(location)) { view in
-                        view
-                            .contentShape(Rectangle())
-                            .accessibilityAddTraits(.isLink)
-                            .onTapGesture {
-                                router.navigate(screen: .location(location))
-                            }
+                    .contentShape(Rectangle())
+                    .accessibilityAddTraits(.isLink)
+                    .allowsHitTesting(!loadedFrom.isLoadedFromLocation(location))
+                    .onTapGesture {
+                        router.navigate(screen: .location(location))
                     }
             }
         }
-        .if(!loadedFrom.isLoadedFromProfile(checkIn.profile)) { view in
-            view
-                .contentShape(Rectangle())
-                .accessibilityAddTraits(.isLink)
-                .onTapGesture {
-                    router.navigate(screen: .profile(checkIn.profile))
-                }
+        .contentShape(Rectangle())
+        .accessibilityAddTraits(.isLink)
+        .allowsHitTesting(!loadedFrom.isLoadedFromProfile(checkIn.profile))
+        .onTapGesture {
+            router.navigate(screen: .profile(checkIn.profile))
         }
     }
 
@@ -86,13 +80,10 @@ struct CheckInCardView: View {
                         .frame(height: 200)
                         .clipped()
                         .contentShape(Rectangle())
-                        .if(!isMac(), transform: { view in
-                            view
-                                .onTapGesture {
-                                    showFullPicture = true
-                                }
-                                .accessibility(addTraits: .isButton)
-                        })
+                        .onTapGesture {
+                            showFullPicture = true
+                        }
+                        .accessibility(addTraits: .isButton)
                         .popover(isPresented: $showFullPicture) {
                             RemoteImage(url: imageUrl) { state in
                                 if let image = state.image {
@@ -168,13 +159,11 @@ struct CheckInCardView: View {
                 }
             }
         }
-        .if(loadedFrom != .product) { view in
-            view
-                .contentShape(Rectangle())
-                .accessibilityAddTraits(.isLink)
-                .onTapGesture {
-                    router.navigate(screen: .product(checkIn.product))
-                }
+        .contentShape(Rectangle())
+        .accessibilityAddTraits(.isLink)
+        .allowsHitTesting(loadedFrom != .product)
+        .onTapGesture {
+            router.navigate(screen: .product(checkIn.product))
         }
     }
 
@@ -201,23 +190,21 @@ struct CheckInCardView: View {
             if let purchaseLocation = checkIn.purchaseLocation {
                 HStack {
                     Text("Purchased from __\(purchaseLocation.name)__")
-                        .if(!loadedFrom.isLoadedFromLocation(purchaseLocation)) { view in
-                            view.accessibilityAddTraits(.isLink)
-                                .onTapGesture {
-                                    router.navigate(screen: .location(purchaseLocation))
-                                }
+                        .accessibilityAddTraits(.isLink)
+                        .allowsHitTesting(!loadedFrom.isLoadedFromLocation(purchaseLocation))
+                        .onTapGesture {
+                            router.navigate(screen: .location(purchaseLocation))
                         }
+
                     Spacer()
                 }
             }
         }
-        .if(loadedFrom != .checkIn) { view in
-            view
-                .contentShape(Rectangle())
-                .accessibilityAddTraits(.isLink)
-                .onTapGesture {
-                    router.navigate(screen: .checkIn(checkIn))
-                }
+        .contentShape(Rectangle())
+        .accessibilityAddTraits(.isLink)
+        .allowsHitTesting(loadedFrom != .checkIn)
+        .onTapGesture {
+            router.navigate(screen: .checkIn(checkIn))
         }
     }
 
@@ -233,13 +220,11 @@ struct CheckInCardView: View {
                 HStack(spacing: spacing) {
                     ForEach(checkIn.taggedProfiles) { taggedProfile in
                         AvatarView(avatarUrl: taggedProfile.avatarUrl, size: 24, id: taggedProfile.id)
-                            .if(!loadedFrom.isLoadedFromProfile(taggedProfile)) { view in
-                                view
-                                    .contentShape(Rectangle())
-                                    .accessibilityAddTraits(.isLink)
-                                    .onTapGesture {
-                                        router.navigate(screen: .profile(taggedProfile))
-                                    }
+                            .contentShape(Rectangle())
+                            .accessibilityAddTraits(.isLink)
+                            .allowsHitTesting(!loadedFrom.isLoadedFromProfile(taggedProfile))
+                            .onTapGesture {
+                                router.navigate(screen: .profile(taggedProfile))
                             }
                     }
                     Spacer()
@@ -262,14 +247,13 @@ struct CheckInCardView: View {
                 }
                 Spacer()
             }
-            .if(loadedFrom != .checkIn) { view in
-                view
-                    .contentShape(Rectangle())
-                    .accessibilityAddTraits(.isLink)
-                    .onTapGesture {
-                        router.navigate(screen: .checkIn(checkIn))
-                    }
+            .allowsHitTesting(loadedFrom != .checkIn)
+            .contentShape(Rectangle())
+            .accessibilityAddTraits(.isLink)
+            .onTapGesture {
+                router.navigate(screen: .checkIn(checkIn))
             }
+
             ReactionsView(checkIn: checkIn)
         }
     }
