@@ -7,7 +7,7 @@ import Repositories
 import SwiftUI
 
 struct CheckInList<Header>: View where Header: View {
-    private let logger = Logger(category: "CheckInListView")
+    private let logger = Logger(category: "CheckInList")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
@@ -246,13 +246,11 @@ struct CheckInList<Header>: View where Header: View {
         isLoading = true
         switch await checkInFetcher(from: from, to: to) {
         case let .success(fetchedCheckIns):
-            await MainActor.run {
-                withAnimation {
-                    if reset {
-                        self.checkIns = fetchedCheckIns
-                    } else {
-                        self.checkIns.append(contentsOf: fetchedCheckIns)
-                    }
+            withAnimation {
+                if reset {
+                    self.checkIns = fetchedCheckIns
+                } else {
+                    self.checkIns.append(contentsOf: fetchedCheckIns)
                 }
             }
             page += 1

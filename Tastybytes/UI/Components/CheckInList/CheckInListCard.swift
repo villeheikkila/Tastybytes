@@ -22,7 +22,6 @@ struct CheckInListCard: View {
 
     var body: some View {
         CheckInCard(checkIn: checkIn, loadedFrom: .activity(profileEnvironmentModel.profile))
-            .id(checkIn.id)
             .checkInContextMenu(
                 router: router,
                 profileEnvironmentModel: profileEnvironmentModel,
