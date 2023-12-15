@@ -1,3 +1,4 @@
+import Models
 import SwiftUI
 
 public struct AvatarView: View {
@@ -5,6 +6,12 @@ public struct AvatarView: View {
         self.avatarUrl = avatarUrl
         self.size = size
         self.id = id
+    }
+
+    public init(profile: Profile) {
+        avatarUrl = profile.avatarUrl
+        id = profile.id
+        size = 24
     }
 
     let avatarUrl: URL?

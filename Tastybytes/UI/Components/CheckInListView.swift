@@ -194,7 +194,7 @@ struct CheckInListView<Header>: View where Header: View {
     private var checkInList: some View {
         LazyVStack {
             ForEach(checkIns) { checkIn in
-                CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
+                CheckInCard(checkIn: checkIn, loadedFrom: getLoadedFrom)
                     .id(checkIn.id)
                     .checkInContextMenu(
                         router: router,
@@ -262,7 +262,7 @@ struct CheckInListView<Header>: View where Header: View {
         }
     }
 
-    private var getLoadedFrom: CheckInCardView.LoadedFrom {
+    private var getLoadedFrom: CheckInCard.LoadedFrom {
         switch fetcher {
         case let .profile(profile):
             .profile(profile)

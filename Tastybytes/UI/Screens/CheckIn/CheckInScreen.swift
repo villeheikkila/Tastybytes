@@ -64,7 +64,7 @@ struct CheckInScreen: View {
 
     var body: some View {
         List {
-            CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
+            CheckInCard(checkIn: checkIn, loadedFrom: .checkIn)
                 .listRowSeparator(.hidden)
                 .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
                 .checkInContextMenu(
