@@ -29,12 +29,6 @@ struct CheckInList<Header>: View where Header: View {
     @State private var currentShowCheckInsFrom: CheckInSegment = .everyone
     // Dialogs
     @State private var alertError: AlertError?
-    @State private var showDeleteCheckInConfirmationDialog = false
-    @State private var showDeleteConfirmationFor: CheckIn? {
-        didSet {
-            showDeleteCheckInConfirmationDialog = true
-        }
-    }
 
     private let id: String
     private let header: Header
@@ -62,24 +56,46 @@ struct CheckInList<Header>: View where Header: View {
         self.onRefresh = onRefresh
     }
 
-    var initialLoadCompleted: Bool {
-        refreshId == 1
-    }
-
     var isContentUnavailable: Bool {
-        initialLoadCompleted && checkIns.isEmpty && showContentUnavailableView && !isLoading
+        refreshId == 1 && checkIns.isEmpty && showContentUnavailableView && !isLoading
     }
 
     var showSegmentContentUnavailableView: Bool {
         !isLoading && checkIns.isEmpty && !isContentUnavailable && fetcher.showCheckInSegmentationPicker
     }
 
+    private var loadedFrom: CheckInCard.LoadedFrom {
+        switch fetcher {
+        case let .profile(profile):
+            .profile(profile)
+        case let .location(location):
+            .location(location)
+        case .product:
+            .product
+        case .activityFeed:
+            .activity(profileEnvironmentModel.profile)
+        }
+    }
+
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         ScrollView {
             header
-            checkInSegments
-            checkInList
+            if fetcher.showCheckInSegmentationPicker {
+                checkInSegments
+            }
+            CheckInListContent(
+                loadedFrom: loadedFrom,
+                checkIns: $checkIns,
+                isLoading: $isLoading,
+                isRefreshing: $isRefreshing,
+                alertError: $alertError,
+                onLoadMore: {
+                    loadingCheckInsOnAppear = Task {
+                        await fetchFeedItems()
+                    }
+                }
+            )
             if showSegmentContentUnavailableView {
                 showCheckInsFrom.emptyContentView
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -161,40 +177,13 @@ struct CheckInList<Header>: View where Header: View {
     }
 
     @ViewBuilder
-    private var checkInList: some View {
-        LazyVStack {
-            ForEach(checkIns) { checkIn in
-                CheckInListCard(
-                    checkIn: checkIn,
-                    onUpdate: onCheckInUpdate,
-                    onDelete: deleteCheckIn
-                )
-                .id(checkIn.id)
-                .onAppear {
-                    if checkIn == checkIns.last, isLoading != true {
-                        loadingCheckInsOnAppear = Task {
-                            await fetchFeedItems()
-                        }
-                    }
-                }
-            }
-            ProgressView()
-                .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-                .opacity(isLoading && !isRefreshing ? 1 : 0)
-        }
-        .scrollTargetLayout()
-    }
-
-    @ViewBuilder
     private var checkInSegments: some View {
-        if fetcher.showCheckInSegmentationPicker {
-            Picker("Show check-ins from", selection: $showCheckInsFrom) {
-                ForEach(CheckInSegment.allCases, id: \.self) { segment in
-                    Text(segment.rawValue.capitalized)
-                }
+        Picker("Show check-ins from", selection: $showCheckInsFrom) {
+            ForEach(CheckInSegment.allCases, id: \.self) { segment in
+                Text(segment.rawValue.capitalized)
             }
-            .pickerStyle(.segmented)
         }
+        .pickerStyle(.segmented)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -208,37 +197,6 @@ struct CheckInList<Header>: View where Header: View {
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
         }
-    }
-
-    private var getLoadedFrom: CheckInCard.LoadedFrom {
-        switch fetcher {
-        case let .profile(profile):
-            .profile(profile)
-        case let .location(location):
-            .location(location)
-        case .product:
-            .product
-        case .activityFeed:
-            .activity(profileEnvironmentModel.profile)
-        }
-    }
-
-    func deleteCheckIn(_ checkIn: CheckIn) async {
-        switch await repository.checkIn.delete(id: checkIn.id) {
-        case .success:
-            withAnimation {
-                checkIns.remove(object: checkIn)
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = AlertError(title: "Error occured while trying to delete a check-in. Please try again!")
-            logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func onCheckInUpdate(_ checkIn: CheckIn) {
-        guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
-        checkIns[index] = checkIn
     }
 
     func fetchFeedItems(reset: Bool = false, onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {

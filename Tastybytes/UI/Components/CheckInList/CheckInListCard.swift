@@ -17,11 +17,12 @@ struct CheckInListCard: View {
     }
 
     let checkIn: CheckIn
+    let loadedFrom: CheckInCard.LoadedFrom
     let onUpdate: (_ checkIn: CheckIn) -> Void
     let onDelete: (_ checkIn: CheckIn) async -> Void
 
     var body: some View {
-        CheckInCard(checkIn: checkIn, loadedFrom: .activity(profileEnvironmentModel.profile))
+        CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom)
             .checkInContextMenu(
                 router: router,
                 profileEnvironmentModel: profileEnvironmentModel,
