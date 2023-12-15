@@ -199,7 +199,10 @@ struct CheckInList<Header>: View where Header: View {
         }
     }
 
-    func fetchFeedItems(reset: Bool = false, onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {
+    func fetchFeedItems(
+        reset: Bool = false,
+        onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil
+    ) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
         switch await checkInFetcher(from: from, to: to) {
