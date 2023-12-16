@@ -9,9 +9,9 @@ struct RouterWrapper<Content: View>: View {
     @State private var router: Router
     @State private var sheetEnvironmentModel = SheetManager()
 
-    let content: (_ router: Router) -> Content
+    @ViewBuilder let content: () -> Content
 
-    init(tab: Tab, content: @escaping (_ router: Router) -> Content) {
+    init(tab: Tab, content: @escaping () -> Content) {
         _router = State(wrappedValue: Router(tab: tab))
         self.content = content
     }
@@ -20,7 +20,7 @@ struct RouterWrapper<Content: View>: View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
         @Bindable var router = router
         NavigationStack(path: $router.path) {
-            content(router)
+            content()
                 .navigationDestination(for: Screen.self) { screen in
                     screen.view
                 }

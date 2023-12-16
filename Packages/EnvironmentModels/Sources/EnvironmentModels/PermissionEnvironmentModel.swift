@@ -1,5 +1,4 @@
 import AVFoundation
-import Observation
 import OSLog
 import PhotosUI
 import SwiftUI

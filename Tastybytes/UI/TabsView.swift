@@ -2,6 +2,11 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@Observable
+final class TapToRoot {
+    let resetNavigationOnTab: Tab?
+}
+
 struct TabsView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -42,6 +47,7 @@ struct TabsView: View {
         TabView(selection: .init(get: {
             selection
         }, set: { newTab in
+            resetNavigationOnTab = nil
             if newTab == selection {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                     resetNavigationOnTab = selection

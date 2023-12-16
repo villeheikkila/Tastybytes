@@ -34,7 +34,7 @@ struct CheckInListContent: View {
             }
             ProgressView()
                 .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-                .opacity(isLoading && isRefreshing ? 1 : 0)
+                .opacity(isLoading && !isRefreshing ? 1 : 0)
         }
         .scrollTargetLayout()
     }

@@ -1,5 +1,4 @@
 import Models
-import Observation
 import OSLog
 import Repositories
 import SwiftUI
@@ -14,16 +13,16 @@ final class Router {
 
     init(tab: Tab) {
         self.tab = tab
-        restoreState()
+        // restoreState(tab)
     }
 
-    func restoreState() {
+    func restoreState(_ tab: Tab) {
         guard !isRestored else { return }
         guard let data = try? Data(contentsOf: tab.cachesDirectoryPath) else { return }
         do {
             path = try JSONDecoder().decode([Screen].self, from: data)
             isRestored = true
-            logger.info("Navigation stack restored")
+            logger.info("Navigation stack restored for \(tab.rawValue)")
         } catch {
             logger.error("Failed to load stored navigation stack. Error \(error) (\(#file):\(#line))")
         }
@@ -33,7 +32,7 @@ final class Router {
         Task.detached {
             do {
                 try JSONEncoder().encode(self.path).write(to: self.tab.cachesDirectoryPath)
-                self.logger.info("Navigation stack stored")
+                self.logger.info("Navigation stack stored for \(self.tab.rawValue)")
             } catch {
                 self.logger.error("Failed to store navigation stack. Error \(error) (\(#file):\(#line))")
             }

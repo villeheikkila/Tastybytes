@@ -90,11 +90,7 @@ struct CheckInList<Header>: View where Header: View {
                 isLoading: $isLoading,
                 isRefreshing: $isRefreshing,
                 alertError: $alertError,
-                onLoadMore: {
-                    loadingCheckInsOnAppear = Task {
-                        await fetchFeedItems()
-                    }
-                }
+                onLoadMore: onLoadMore
             )
             if showSegmentContentUnavailableView {
                 showCheckInsFrom.emptyContentView
@@ -196,6 +192,15 @@ struct CheckInList<Header>: View where Header: View {
             RouterLink("Settings Page", systemImage: "gear", screen: .settings)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
+        }
+    }
+
+    func onLoadMore() {
+        guard loadingCheckInsOnAppear == nil else { return }
+        loadingCheckInsOnAppear = Task {
+            defer { loadingCheckInsOnAppear = nil }
+            logger.info("Loading more items invoced")
+            await fetchFeedItems()
         }
     }
 

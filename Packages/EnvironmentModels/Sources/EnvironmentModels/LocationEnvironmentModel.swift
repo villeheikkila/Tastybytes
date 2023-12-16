@@ -1,6 +1,5 @@
 import CoreLocation
 import MapKit
-import Observation
 import OSLog
 
 @Observable

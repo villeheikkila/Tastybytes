@@ -4,26 +4,25 @@ import SwiftUI
 
 struct ActivityTab: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
+    @Environment(Router.self) private var router
+
     @State private var scrollToTop: Int = 0
     @Binding var resetNavigationOnTab: Tab?
 
     var body: some View {
-        RouterWrapper(tab: .activity) { router in
-            ActivityScreen(scrollToTop: $scrollToTop)
-                .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
-                    if tab == .activity {
-                        if router.path.isEmpty {
-                            scrollToTop += 1
-                        } else {
-                            router.reset()
-                        }
-                        resetNavigationOnTab = nil
+        ActivityScreen(scrollToTop: $scrollToTop)
+            .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
+                if tab == .activity {
+                    if router.path.isEmpty {
+                        scrollToTop += 1
+                    } else {
+                        router.reset()
                     }
                 }
-                .toolbar {
-                    toolbarContent
-                }
-        }
+            }
+            .toolbar {
+                toolbarContent
+            }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

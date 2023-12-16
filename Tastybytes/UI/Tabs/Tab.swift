@@ -31,15 +31,25 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable {
     func view(_ resetNavigationOnTab: Binding<Tab?>) -> some View {
         switch self {
         case .activity:
-            ActivityTab(resetNavigationOnTab: resetNavigationOnTab)
+            RouterWrapper(tab: self) {
+                ActivityTab(resetNavigationOnTab: resetNavigationOnTab)
+            }
         case .discover:
-            DiscoverTab(resetNavigationOnTab: resetNavigationOnTab)
+            RouterWrapper(tab: self) {
+                DiscoverTab(resetNavigationOnTab: resetNavigationOnTab)
+            }
         case .notifications:
-            NotificationTab(resetNavigationOnTab: resetNavigationOnTab)
+            RouterWrapper(tab: self) {
+                NotificationTab(resetNavigationOnTab: resetNavigationOnTab)
+            }
         case .admin:
-            AdminTab(resetNavigationOnTab: resetNavigationOnTab)
+            RouterWrapper(tab: self) {
+                AdminTab(resetNavigationOnTab: resetNavigationOnTab)
+            }
         case .profile:
-            ProfileTab(resetNavigationOnTab: resetNavigationOnTab)
+            RouterWrapper(tab: self) {
+                ProfileTab(resetNavigationOnTab: resetNavigationOnTab)
+            }
         }
     }
 
