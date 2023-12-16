@@ -10,6 +10,19 @@ enum UserDefaultsKey: String, CaseIterable {
 }
 
 extension UserDefaults {
+    func set<Element: Codable>(value: Element, forKey key: UserDefaultsKey) {
+        let data = try? JSONEncoder().encode(value)
+        UserDefaults.standard.setValue(data, forKey: key.rawValue)
+    }
+
+    func codable<Element: Codable>(forKey key: UserDefaultsKey) -> Element? {
+        guard let data = UserDefaults.standard.data(forKey: key.rawValue) else { return nil }
+        let element = try? JSONDecoder().decode(Element.self, from: data)
+        return element
+    }
+}
+
+extension UserDefaults {
     func reset() {
         UserDefaultsKey.allCases.forEach { removeObject(forKey: $0.rawValue) }
     }

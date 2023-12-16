@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8822B2DCFD600F2B369 /* TabManager.swift */; };
 		5C885F002B2873A900F17C78 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885EFF2B2873A900F17C78 /* Models */; };
 		5C885F032B2873B400F17C78 /* Extensions in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F022B2873B400F17C78 /* Extensions */; };
 		5C885F062B2873C300F17C78 /* Repositories in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F052B2873C300F17C78 /* Repositories */; };
@@ -183,6 +184,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5C82E8822B2DCFD600F2B369 /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		5C885F112B28740800F17C78 /* LegacyUIKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = LegacyUIKit; sourceTree = "<group>"; };
 		5C885F122B28740800F17C78 /* EnvironmentModels */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EnvironmentModels; sourceTree = "<group>"; };
 		5C885F132B28740800F17C78 /* Repositories */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Repositories; sourceTree = "<group>"; };
@@ -353,6 +355,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C82E8802B2DCF9A00F2B369 /* Formfactor */ = {
+			isa = PBXGroup;
+			children = (
+				5C9057382B2894BE00EC157B /* Phone */,
+			);
+			path = Formfactor;
+			sourceTree = "<group>";
+		};
+		5C82E8812B2DCFB400F2B369 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				5C9057392B2894BE00EC157B /* ActivityTab.swift */,
+				5C90573A2B2894BE00EC157B /* NotificationTab.swift */,
+				5C90573B2B2894BE00EC157B /* AdminTab.swift */,
+				5C90573C2B2894BE00EC157B /* DiscoverTab.swift */,
+				5C90573E2B2894BE00EC157B /* ProfileTab.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
 		5C885F102B28740800F17C78 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -378,29 +400,24 @@
 		5C9057372B2894BE00EC157B /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				5C9057382B2894BE00EC157B /* Tabs */,
 				5C90573F2B2894BE00EC157B /* Sheets */,
 				5C90577E2B2894BE00EC157B /* SideBarView.swift */,
 				5C90577F2B2894BE00EC157B /* Screens */,
 				5C9057C12B2894BE00EC157B /* Components */,
-				5C9057CE2B2894BE00EC157B /* TabsView.swift */,
 				5C9057CF2B2894BE00EC157B /* Fonts */,
-				5C9057D72B2894BE00EC157B /* Router */,
 			);
 			path = UI;
 			sourceTree = "<group>";
 		};
-		5C9057382B2894BE00EC157B /* Tabs */ = {
+		5C9057382B2894BE00EC157B /* Phone */ = {
 			isa = PBXGroup;
 			children = (
-				5C9057392B2894BE00EC157B /* ActivityTab.swift */,
-				5C90573A2B2894BE00EC157B /* NotificationTab.swift */,
-				5C90573B2B2894BE00EC157B /* AdminTab.swift */,
-				5C90573C2B2894BE00EC157B /* DiscoverTab.swift */,
+				5C82E8812B2DCFB400F2B369 /* Tabs */,
 				5C90573D2B2894BE00EC157B /* Tab.swift */,
-				5C90573E2B2894BE00EC157B /* ProfileTab.swift */,
+				5C9057CE2B2894BE00EC157B /* TabsView.swift */,
+				5C82E8822B2DCFD600F2B369 /* TabManager.swift */,
 			);
-			path = Tabs;
+			path = Phone;
 			sourceTree = "<group>";
 		};
 		5C90573F2B2894BE00EC157B /* Sheets */ = {
@@ -881,6 +898,7 @@
 		5CCEE2532B29AE4D00F276DF /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				5C9057D72B2894BE00EC157B /* Router */,
 				5CCEE2542B29AE6900F276DF /* ProductCreation */,
 				5C9057D12B2894BE00EC157B /* Onboarding */,
 			);
@@ -950,6 +968,7 @@
 		C94722D72AD1859C006DE096 /* Tastybytes */ = {
 			isa = PBXGroup;
 			children = (
+				5C82E8802B2DCF9A00F2B369 /* Formfactor */,
 				5CCEE2532B29AE4D00F276DF /* Features */,
 				5C9057E02B2894BE00EC157B /* Core */,
 				5C9057DF2B2894BE00EC157B /* Main.swift */,
@@ -1107,6 +1126,7 @@
 				5C9058302B2894BE00EC157B /* ProfileView.swift in Sources */,
 				5C9058412B2894BE00EC157B /* DuplicataProductScreen.swift in Sources */,
 				5C90581D2B2894BE00EC157B /* BlockedUsersScreen.swift in Sources */,
+				5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */,
 				5C9057E82B2894BE00EC157B /* NotificationTab.swift in Sources */,
 				5C9057FA2B2894BE00EC157B /* AddSubcategorySheet.swift in Sources */,
 				5C9058102B2894BE00EC157B /* FlavorSheet.swift in Sources */,

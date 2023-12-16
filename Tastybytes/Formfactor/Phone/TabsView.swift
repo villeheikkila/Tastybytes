@@ -2,16 +2,10 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@Observable
-final class TapToRoot {
-    let resetNavigationOnTab: Tab?
-}
-
 struct TabsView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @AppStorage(.selectedTab) private var selection = Tab.activity
-    @State private var resetNavigationOnTab: Tab?
+    @State private var tabManager = TabManager()
 
     private let switchTabGestureRangeDistance: Double = 50
 
@@ -28,49 +22,45 @@ struct TabsView: View {
             .onEnded { value in
                 if value.translation.width < -switchTabGestureRangeDistance,
                    value.translation.width > -(3 * switchTabGestureRangeDistance),
-                   selection.rawValue < shownTabs.count - 1
+                   tabManager.selection.rawValue < shownTabs.count - 1
                 {
-                    if let tab = Tab(rawValue: selection.rawValue + 1) {
-                        selection = tab
+                    if let tab = Tab(rawValue: tabManager.selection.rawValue + 1) {
+                        tabManager.selection = tab
                     }
                 } else if value.translation.width > switchTabGestureRangeDistance,
-                          value.translation.width < 3 * switchTabGestureRangeDistance, selection.rawValue > 0
+                          value.translation.width < 3 * switchTabGestureRangeDistance, tabManager.selection.rawValue > 0
                 {
-                    if let tab = Tab(rawValue: selection.rawValue - 1) {
-                        selection = tab
+                    if let tab = Tab(rawValue: tabManager.selection.rawValue - 1) {
+                        tabManager.selection = tab
                     }
                 }
             }
     }
 
     var body: some View {
-        TabView(selection: .init(get: {
-            selection
-        }, set: { newTab in
-            resetNavigationOnTab = nil
-            if newTab == selection {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                    resetNavigationOnTab = selection
-                }
-            } else {
-                selection = newTab
-            }
-        })) {
-            ForEach(shownTabs) { tab in
-                tab.view($resetNavigationOnTab)
-                    .tabItem {
-                        tab.label
-                    }
-                    .tag(tab)
-                    .badge(getBadgeByTab(tab))
-            }
+        TabView(selection: $tabManager.selection) {
+            tabs
         }
-        .sensoryFeedback(.selection, trigger: selection)
+        .sensoryFeedback(.selection, trigger: tabManager.selection)
         .simultaneousGesture(switchTabGesture)
+        .environment(tabManager)
         .onOpenURL { url in
             if let tab = url.tab {
-                selection = tab
+                tabManager.selection = tab
             }
+        }
+    }
+
+    var tabs: some View {
+        ForEach(shownTabs) { tab in
+            RouterWrapper(tab: tab) {
+                tab.view
+            }
+            .tabItem {
+                tab.label
+            }
+            .tag(tab)
+            .badge(getBadgeByTab(tab))
         }
     }
 

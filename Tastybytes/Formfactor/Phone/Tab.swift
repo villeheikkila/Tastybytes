@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-public enum Tab: Int, Identifiable, Hashable, CaseIterable {
+public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable {
     case activity, discover, notifications, admin, profile
 
     public var id: Int {
@@ -28,28 +28,18 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable {
     }
 
     @ViewBuilder
-    func view(_ resetNavigationOnTab: Binding<Tab?>) -> some View {
+    var view: some View {
         switch self {
         case .activity:
-            RouterWrapper(tab: self) {
-                ActivityTab(resetNavigationOnTab: resetNavigationOnTab)
-            }
+            ActivityTab()
         case .discover:
-            RouterWrapper(tab: self) {
-                DiscoverTab(resetNavigationOnTab: resetNavigationOnTab)
-            }
+            DiscoverTab()
         case .notifications:
-            RouterWrapper(tab: self) {
-                NotificationTab(resetNavigationOnTab: resetNavigationOnTab)
-            }
+            NotificationTab()
         case .admin:
-            RouterWrapper(tab: self) {
-                AdminTab(resetNavigationOnTab: resetNavigationOnTab)
-            }
+            AdminTab()
         case .profile:
-            RouterWrapper(tab: self) {
-                ProfileTab(resetNavigationOnTab: resetNavigationOnTab)
-            }
+            ProfileTab()
         }
     }
 

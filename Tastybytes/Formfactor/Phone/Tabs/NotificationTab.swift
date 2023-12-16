@@ -3,14 +3,13 @@ import Models
 import SwiftUI
 
 struct NotificationTab: View {
-    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(Router.self) private var router
+    @Environment(TabManager.self) private var tabManager
     @State private var scrollToTop: Int = 0
-    @Binding var resetNavigationOnTab: Tab?
 
     var body: some View {
         NotificationScreen(scrollToTop: $scrollToTop)
-            .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
+            .onChange(of: tabManager.resetNavigationOnTab) { _, tab in
                 if tab == .notifications {
                     if router.path.isEmpty {
                         scrollToTop += 1

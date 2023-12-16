@@ -4,11 +4,11 @@ import SwiftUI
 
 struct AdminTab: View {
     @Environment(Router.self) private var router
-    @Binding var resetNavigationOnTab: Tab?
+    @Environment(TabManager.self) private var tabManager
 
     var body: some View {
         AdminScreen()
-            .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
+            .onChange(of: tabManager.resetNavigationOnTab) { _, tab in
                 if tab == .admin {
                     router.reset()
                 }

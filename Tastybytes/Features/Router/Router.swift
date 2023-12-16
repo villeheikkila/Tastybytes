@@ -12,8 +12,9 @@ final class Router {
     let tab: Tab
 
     init(tab: Tab) {
+        logger.info("RESET")
         self.tab = tab
-        // restoreState(tab)
+        restoreState(tab)
     }
 
     func restoreState(_ tab: Tab) {
