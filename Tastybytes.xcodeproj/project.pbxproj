@@ -425,6 +425,14 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
+		5C82E8922B2F71B400F2B369 /* ActivityFeed */ = {
+			isa = PBXGroup;
+			children = (
+				5C9057AC2B2894BE00EC157B /* ActivityScreen.swift */,
+			);
+			path = ActivityFeed;
+			sourceTree = "<group>";
+		};
 		5C885F102B28740800F17C78 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -696,7 +704,6 @@
 		5C90577F2B2894BE00EC157B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				5C9057802B2894BE00EC157B /* Settings */,
 				5C90578B2B2894BE00EC157B /* ErrorScreen.swift */,
 				5C90578C2B2894BE00EC157B /* AdminScreen.swift */,
 				5C90578D2B2894BE00EC157B /* AccountDeletedScreen.swift */,
@@ -709,7 +716,6 @@
 				5C90579E2B2894BE00EC157B /* Screen.swift */,
 				5C90579F2B2894BE00EC157B /* Verification */,
 				5C9057A12B2894BE00EC157B /* Profile */,
-				5C9057AC2B2894BE00EC157B /* ActivityScreen.swift */,
 				5C9057AD2B2894BE00EC157B /* Location */,
 				5C9057AF2B2894BE00EC157B /* ProductFeed */,
 				5C9057B12B2894BE00EC157B /* Friends */,
@@ -925,6 +931,8 @@
 		5CCEE2532B29AE4D00F276DF /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				5C82E8922B2F71B400F2B369 /* ActivityFeed */,
+				5C9057802B2894BE00EC157B /* Settings */,
 				5C82E88C2B2F67FA00F2B369 /* Authentication */,
 				5C82E8892B2F677A00F2B369 /* Subscription */,
 				5C82E8842B2F637A00F2B369 /* SplashScreen */,
