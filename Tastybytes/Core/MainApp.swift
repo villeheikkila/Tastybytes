@@ -14,15 +14,14 @@ var deviceTokenForPusNotifications: String?
 private let logger = Logger(category: "Main")
 
 @main
-struct Main: App {
+struct MainApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self)
     var appDelegate
     @Environment(\.scenePhase) private var phase
-    @Environment(\.repository) private var repository
 
     var body: some Scene {
         WindowGroup {
-            EnvironmentProvider(repository: repository)
+            ContentView()
         }
         .onChange(of: phase) { _, newPhase in
             switch newPhase {

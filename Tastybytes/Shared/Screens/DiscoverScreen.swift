@@ -12,7 +12,6 @@ struct DiscoverScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     // Scroll Position
     @Binding var scrollToTop: Int
     // Search Query

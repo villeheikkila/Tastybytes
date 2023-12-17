@@ -7,8 +7,6 @@ struct TabsView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var tabManager = TabManager()
 
-    private let switchTabGestureRangeDistance: Double = 50
-
     private var shownTabs: [Tab] {
         if profileEnvironmentModel.hasRole(.admin) {
             [.activity, .discover, .notifications, .admin, .profile]
@@ -16,6 +14,35 @@ struct TabsView: View {
             [.activity, .discover, .notifications, .profile]
         }
     }
+
+    var body: some View {
+        TabView(selection: $tabManager.selection) {
+            tabs
+        }
+        .sensoryFeedback(.selection, trigger: tabManager.selection)
+        .simultaneousGesture(switchTabGesture)
+        .environment(tabManager)
+        .onOpenURL { url in
+            if let tab = url.tab {
+                tabManager.selection = tab
+            }
+        }
+    }
+
+    private var tabs: some View {
+        ForEach(shownTabs) { tab in
+            RouterWrapper {
+                tab.view
+            }
+            .tabItem {
+                tab.label
+            }
+            .tag(tab)
+            .badge(getBadgeByTab(tab))
+        }
+    }
+
+    private let switchTabGestureRangeDistance: Double = 50
 
     var switchTabGesture: some Gesture {
         DragGesture(minimumDistance: switchTabGestureRangeDistance)
@@ -35,33 +62,6 @@ struct TabsView: View {
                     }
                 }
             }
-    }
-
-    var body: some View {
-        TabView(selection: $tabManager.selection) {
-            tabs
-        }
-        .sensoryFeedback(.selection, trigger: tabManager.selection)
-        .simultaneousGesture(switchTabGesture)
-        .environment(tabManager)
-        .onOpenURL { url in
-            if let tab = url.tab {
-                tabManager.selection = tab
-            }
-        }
-    }
-
-    var tabs: some View {
-        ForEach(shownTabs) { tab in
-            RouterWrapper(tab: tab) {
-                tab.view
-            }
-            .tabItem {
-                tab.label
-            }
-            .tag(tab)
-            .badge(getBadgeByTab(tab))
-        }
     }
 
     private func getBadgeByTab(_ tab: Tab) -> Int {

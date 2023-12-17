@@ -6,19 +6,13 @@ import SwiftUI
 struct RouterWrapper<Content: View>: View {
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var router: Router
+    @State private var router = Router()
     @State private var sheetEnvironmentModel = SheetManager()
 
     @ViewBuilder let content: () -> Content
 
-    init(tab: Tab, content: @escaping () -> Content) {
-        _router = State(wrappedValue: Router(tab: tab))
-        self.content = content
-    }
-
     var body: some View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
-        @Bindable var router = router
         NavigationStack(path: $router.path) {
             content()
                 .navigationDestination(for: Screen.self) { screen in
@@ -61,9 +55,6 @@ struct RouterWrapper<Content: View>: View {
         .environment(sheetEnvironmentModel)
         .sensoryFeedback(trigger: feedbackEnvironmentModel.sensoryFeedback) { _, newValue in
             newValue?.sensoryFeedback
-        }
-        .onChange(of: router.path) {
-            router.storeState()
         }
     }
 }

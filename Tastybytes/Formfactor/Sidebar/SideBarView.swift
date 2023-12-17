@@ -34,7 +34,6 @@ struct SideBarView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
-    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(\.isPortrait) private var isPortrait
     @State private var sheetEnvironmentModel = SheetManager()
     @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
@@ -47,7 +46,7 @@ struct SideBarView: View {
     }
 
     @State private var scrollToTop: Int = 0
-    @State private var router = Router(tab: Tab.activity)
+    @State private var router = Router()
 
     private var shownTabs: [SiderBarTab] {
         if profileEnvironmentModel.hasRole(.admin) {

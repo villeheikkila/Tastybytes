@@ -7,22 +7,22 @@ import TipKit
 
 private let logger = Logger(category: "EnvironmentView")
 
-struct EnvironmentProvider: View {
+struct EnvironmentProvider<Content: View>: View {
     @AppStorage(.colorScheme) var colorScheme: String = "system"
-    @State private var splashScreenEnvironmentModel = SplashScreenEnvironmentModel()
     @State private var permissionEnvironmentModel = PermissionEnvironmentModel()
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
     @State private var notificationEnvironmentModel: NotificationEnvironmentModel
     @State private var appDataEnvironmentModel: AppDataEnvironmentModel
     @State private var friendEnvironmentModel: FriendEnvironmentModel
     @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
-    @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel()
     @State private var locationEnvironmentModel = LocationEnvironmentModel()
     @State private var isPortrait = false
     @Environment(\.repository) private var repository
     @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
 
-    init(repository: Repository) {
+    @ViewBuilder let content: () -> Content
+
+    init(repository: Repository, @ViewBuilder content: @escaping () -> Content) {
         _notificationEnvironmentModel =
             State(wrappedValue: NotificationEnvironmentModel(repository: repository))
         _profileEnvironmentModel =
@@ -33,11 +33,11 @@ struct EnvironmentProvider: View {
             State(wrappedValue: ImageUploadEnvironmentModel(repository: repository))
         _friendEnvironmentModel =
             State(wrappedValue: FriendEnvironmentModel(repository: repository))
+        self.content = content
     }
 
     var body: some View {
-        AuthEventObserver()
-            .environment(splashScreenEnvironmentModel)
+        content()
             .environment(notificationEnvironmentModel)
             .environment(profileEnvironmentModel)
             .environment(feedbackEnvironmentModel)
@@ -45,7 +45,6 @@ struct EnvironmentProvider: View {
             .environment(friendEnvironmentModel)
             .environment(permissionEnvironmentModel)
             .environment(imageUploadEnvironmentModel)
-            .environment(subscriptionEnvironmentModel)
             .environment(locationEnvironmentModel)
             .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
             .detectOrientation($isPortrait)

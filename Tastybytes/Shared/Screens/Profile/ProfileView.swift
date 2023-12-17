@@ -15,7 +15,6 @@ struct ProfileView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(Router.self) private var router
-    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Binding private var scrollToTop: Int
     @State private var profile: Profile
     @State private var profileSummary: ProfileSummary?

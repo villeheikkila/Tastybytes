@@ -6,39 +6,9 @@ import SwiftUI
 @Observable
 final class Router {
     private let logger = Logger(category: "Router")
-    private var isRestored = false
+    var path = [Screen]()
 
-    var path: [Screen] = []
-    let tab: Tab
-
-    init(tab: Tab) {
-        logger.info("RESET")
-        self.tab = tab
-        restoreState(tab)
-    }
-
-    func restoreState(_ tab: Tab) {
-        guard !isRestored else { return }
-        guard let data = try? Data(contentsOf: tab.cachesDirectoryPath) else { return }
-        do {
-            path = try JSONDecoder().decode([Screen].self, from: data)
-            isRestored = true
-            logger.info("Navigation stack restored for \(tab.rawValue)")
-        } catch {
-            logger.error("Failed to load stored navigation stack. Error \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func storeState() {
-        Task.detached {
-            do {
-                try JSONEncoder().encode(self.path).write(to: self.tab.cachesDirectoryPath)
-                self.logger.info("Navigation stack stored for \(self.tab.rawValue)")
-            } catch {
-                self.logger.error("Failed to store navigation stack. Error \(error) (\(#file):\(#line))")
-            }
-        }
-    }
+    init() {}
 
     func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
         if resetStack {
@@ -59,39 +29,33 @@ final class Router {
         path.removeLast()
     }
 
-    func fetchAndNavigateTo(_ repository: RepositoryProtocol, _ destination: NavigatablePath,
-                            resetStack: Bool = false)
-    {
+    func fetchAndNavigateTo(
+        _ repository: RepositoryProtocol,
+        _ destination: NavigatablePath,
+        resetStack: Bool = false
+    ) {
         Task {
             switch destination {
             case let .product(id):
                 switch await repository.product.getById(id: id) {
                 case let .success(product):
-                    await MainActor.run {
-                        self.navigate(screen: .product(product), resetStack: resetStack)
-                    }
+                    self.navigate(screen: .product(product), resetStack: resetStack)
                 case let .failure(error):
-                    await MainActor.run {
-                        self.navigate(
-                            screen: .error(reason: "Failed to load requested product page"),
-                            resetStack: resetStack
-                        )
-                    }
+                    self.navigate(
+                        screen: .error(reason: "Failed to load requested product page"),
+                        resetStack: resetStack
+                    )
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .productWithBarcode(id, barcode):
                 switch await repository.product.getById(id: id) {
                 case let .success(product):
-                    await MainActor.run {
-                        self.navigate(screen: .productFromBarcode(product, barcode))
-                    }
+                    self.navigate(screen: .productFromBarcode(product, barcode))
                 case let .failure(error):
-                    await MainActor.run {
-                        self.navigate(
-                            screen: .error(reason: "Failed to load requested product page"),
-                            resetStack: resetStack
-                        )
-                    }
+                    self.navigate(
+                        screen: .error(reason: "Failed to load requested product page"),
+                        resetStack: resetStack
+                    )
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .checkIn(id):

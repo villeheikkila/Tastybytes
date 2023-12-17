@@ -5,7 +5,6 @@ import SwiftUI
 
 struct NotificationScreen: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Binding var scrollToTop: Int
     @State var filter: NotificationType?

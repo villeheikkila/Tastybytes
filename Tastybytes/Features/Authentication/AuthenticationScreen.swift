@@ -12,7 +12,6 @@ private let starsCount = 8
 struct AuthenticationScreen: View {
     private let logger = Logger(category: "AuthenticationScreen")
     @Environment(\.repository) private var repository
-    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @State private var openUrlInWebView: WebViewLink?
 
     var privacyPolicyString: String =

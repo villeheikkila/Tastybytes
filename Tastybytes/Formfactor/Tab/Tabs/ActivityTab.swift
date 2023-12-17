@@ -10,6 +10,9 @@ struct ActivityTab: View {
 
     var body: some View {
         ActivityScreen(scrollToTop: $scrollToTop)
+            .toolbar {
+                toolbarContent
+            }
             .onChange(of: tabManager.resetNavigationOnTab) { _, tab in
                 if tab == .activity {
                     if router.path.isEmpty {
@@ -18,9 +21,6 @@ struct ActivityTab: View {
                         router.reset()
                     }
                 }
-            }
-            .toolbar {
-                toolbarContent
             }
     }
 

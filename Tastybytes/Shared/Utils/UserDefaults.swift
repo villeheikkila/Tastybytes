@@ -4,6 +4,7 @@ import SwiftUI
 
 enum UserDefaultsKey: String, CaseIterable {
     case selectedTab = "selected_tab"
+    case navigationStack = "navigation_stack"
     case selectedSidebarTab = "selected_sidebar_tab"
     case isOnboardedOnDevice = "is_current_device_onboarded"
     case colorScheme = "color_scheme"
@@ -17,6 +18,17 @@ extension UserDefaults {
 
     func codable<Element: Codable>(forKey key: UserDefaultsKey) -> Element? {
         guard let data = UserDefaults.standard.data(forKey: key.rawValue) else { return nil }
+        let element = try? JSONDecoder().decode(Element.self, from: data)
+        return element
+    }
+
+    func set<Element: Codable>(value: Element, prefix: UserDefaultsKey, key: String) {
+        let data = try? JSONEncoder().encode(value)
+        UserDefaults.standard.setValue(data, forKey: "\(prefix)_\(key)")
+    }
+
+    func codable<Element: Codable>(prefix: UserDefaultsKey, key: String) -> Element? {
+        guard let data = UserDefaults.standard.data(forKey: "\(prefix)_\(key)") else { return nil }
         let element = try? JSONDecoder().decode(Element.self, from: data)
         return element
     }

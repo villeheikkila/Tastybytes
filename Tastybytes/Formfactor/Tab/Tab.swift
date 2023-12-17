@@ -8,7 +8,7 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable {
         rawValue
     }
 
-    public var cachesPath: String {
+    public var name: String {
         switch self {
         case .activity:
             "activity"
@@ -21,10 +21,6 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable {
         case .profile:
             "profile"
         }
-    }
-
-    public var cachesDirectoryPath: URL {
-        URL.cachesDirectory.appending(path: cachesPath)
     }
 
     @ViewBuilder

@@ -2,7 +2,6 @@ import EnvironmentModels
 import SwiftUI
 
 struct OnboardingScreen: View {
-    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel

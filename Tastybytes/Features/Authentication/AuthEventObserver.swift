@@ -4,27 +4,27 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct AuthEventObserver: View {
+struct AuthEventObserver<Authenticated: View, Unauthenticated: View, Loading: View>: View {
     private let logger = Logger(category: "AuthEventObserver")
-    @State private var authState: AuthState?
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(\.repository) private var repository
+    @State private var authState: AuthState?
     @State private var task: Task<Void, Never>?
 
+    @ViewBuilder let authenticated: () -> Authenticated
+    @ViewBuilder let unauthenticated: () -> Unauthenticated
+    @ViewBuilder let loading: () -> Loading
+
     var body: some View {
-        ZStack {
+        Group {
             switch authState {
             case .authenticated:
-                AuthenticatedContent()
+                authenticated()
             case .unauthenticated:
-                AuthenticationScreen()
+                unauthenticated()
             case .none:
-                SplashScreen()
-            }
-            if !isMac(), splashScreenEnvironmentModel.state != .finished {
-                SplashScreen()
+                loading()
             }
         }
         .onChange(of: authState) {
