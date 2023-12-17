@@ -58,10 +58,8 @@ struct ProfileLocationsScreen: View {
     func loadCheckInlocations() async {
         switch await repository.location.getCheckInLocations(userId: profile.id) {
         case let .success(checkInLocations):
-            await MainActor.run {
-                withAnimation {
-                    self.checkInLocations = checkInLocations
-                }
+            withAnimation {
+                self.checkInLocations = checkInLocations
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

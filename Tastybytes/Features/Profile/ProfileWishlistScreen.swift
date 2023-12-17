@@ -66,10 +66,8 @@ struct ProfileWishlistScreen: View {
         switch await repository.product.removeFromWishlist(productId: product.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await MainActor.run {
-                withAnimation {
-                    products.remove(object: product)
-                }
+            withAnimation {
+                products.remove(object: product)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -80,11 +78,9 @@ struct ProfileWishlistScreen: View {
     func loadProducts() async {
         switch await repository.product.getWishlistItems(profileId: profile.id) {
         case let .success(wishlist):
-            await MainActor.run {
-                withAnimation {
-                    self.products = wishlist.map(\.product)
-                    initialDataLoaded = true
-                }
+            withAnimation {
+                self.products = wishlist.map(\.product)
+                initialDataLoaded = true
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
