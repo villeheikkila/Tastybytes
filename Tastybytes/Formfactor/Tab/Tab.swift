@@ -8,21 +8,6 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable {
         rawValue
     }
 
-    public var name: String {
-        switch self {
-        case .activity:
-            "activity"
-        case .discover:
-            "discover"
-        case .notifications:
-            "notifications"
-        case .admin:
-            "admin"
-        case .profile:
-            "profile"
-        }
-    }
-
     @ViewBuilder
     var view: some View {
         switch self {

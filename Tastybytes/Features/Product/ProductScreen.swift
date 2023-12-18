@@ -50,15 +50,29 @@ struct ProductScreen: View {
                 refreshId += 1
             },
             header: {
-                headerContent
+                VStack {
+                    if loadedWithBarcode != nil {
+                        Spacer(minLength: 50)
+                    }
+                    ProductItemView(product: product, extras: [.companyLink, .logo])
+                    SummaryView(summary: summary).padding(.top, 4)
+                    if !checkInImages.isEmpty {
+                        ProfileCheckInImagesSection(checkInImages: checkInImages, isLoading: isLoadingCheckInImages) {
+                            checkInImageTask = Task {
+                                defer { checkInImageTask = nil }
+                                await fetchImages(reset: false)
+                            }
+                        }
+                    }
+                }.padding(.horizontal)
             }
         )
         .id(resetView)
-        .if(loadedWithBarcode != nil, transform: { view in
-            view.overlay(
-                loadedFromBarcodeOverlay
-            )
-        })
+        .overlay(
+            if loadedWithBarcode != nil {
+                ProductLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
+            }
+        )
         .onDisappear {
             checkInImageTask?.cancel()
         }
@@ -90,83 +104,6 @@ struct ProductScreen: View {
                 role: .destructive,
                 action: { await deleteProduct(presenting) }
             )
-        }
-    }
-
-    @ViewBuilder private var headerContent: some View {
-        VStack {
-            if loadedWithBarcode != nil {
-                Spacer(minLength: 50)
-            }
-            ProductItemView(product: product, extras: [.companyLink, .logo])
-            SummaryView(summary: summary).padding(.top, 4)
-            HStack(spacing: 0) {
-                RouterLink(
-                    "Check-in!",
-                    systemImage: "checkmark.circle",
-                    sheet: .newCheckIn(product, onCreation: { _ in
-                        await refreshCheckIns()
-                    }),
-                    asTapGesture: true
-                )
-                .frame(maxWidth: .infinity)
-                .padding(.all, 6.5)
-                .background(Color.accentColor)
-                .foregroundColor(.white)
-                .cornerRadius(4, corners: [.topLeft, .bottomLeft])
-                ProgressButton("Wishlist", systemImage: "star", actionOptions: []) {
-                    await toggleWishlist()
-                }
-                .symbolVariant(isOnWishlist ? .fill : .none)
-                .frame(maxWidth: .infinity)
-                .padding(.all, 6)
-                .background(Color.orange)
-                .foregroundColor(.white)
-                .cornerRadius(3, corners: [.topRight, .bottomRight])
-            }.padding(.top, 4)
-
-            if !checkInImages.isEmpty {
-                ScrollView(.horizontal) {
-                    LazyHStack {
-                        ForEach(checkInImages) { checkInImage in
-                            CheckInImageCellView(checkInImage: checkInImage)
-                                .onAppear {
-                                    if checkInImage == checkInImages.last, isLoadingCheckInImages != true {
-                                        checkInImageTask = Task {
-                                            defer { checkInImageTask = nil }
-                                            await fetchImages(reset: false)
-                                        }
-                                    }
-                                }
-                        }
-                    }
-                }
-            }
-        }.padding(.horizontal)
-    }
-
-    @ViewBuilder private var loadedFromBarcodeOverlay: some View {
-        VStack {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Not the product you were looking for?")
-                    HStack {
-                        Button("Back to search") {
-                            router.removeLast()
-                        }
-                    }
-                }
-                .padding(.vertical, 10)
-                Spacer()
-                CloseButtonView {
-                    loadedWithBarcode = nil
-                }
-                .labelStyle(.iconOnly)
-                .imageScale(.large)
-            }
-            .padding(.horizontal, 10)
-            .background(.thinMaterial)
-            Spacer()
         }
     }
 
