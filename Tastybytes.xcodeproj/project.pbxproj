@@ -774,7 +774,6 @@
 				5C90579E2B2894BE00EC157B /* Screen.swift */,
 				5C90579F2B2894BE00EC157B /* Verification */,
 				5C9057AD2B2894BE00EC157B /* Location */,
-				5C9057AF2B2894BE00EC157B /* ProductFeed */,
 				5C9057B12B2894BE00EC157B /* Friends */,
 				5C9057B62B2894BE00EC157B /* CheckIn */,
 				5C9057B92B2894BE00EC157B /* DuplicataProductScreen */,
@@ -832,6 +831,8 @@
 		5C90579A2B2894BE00EC157B /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				5C9057AF2B2894BE00EC157B /* Feed */,
+				5CC276312B31F01B001032CE /* Mutation */,
 				5C82E8AA2B2F95ED00F2B369 /* Screen */,
 			);
 			path = Product;
@@ -879,12 +880,12 @@
 			path = Location;
 			sourceTree = "<group>";
 		};
-		5C9057AF2B2894BE00EC157B /* ProductFeed */ = {
+		5C9057AF2B2894BE00EC157B /* Feed */ = {
 			isa = PBXGroup;
 			children = (
 				5C9057B02B2894BE00EC157B /* ProductFeedScreen.swift */,
 			);
-			path = ProductFeed;
+			path = Feed;
 			sourceTree = "<group>";
 		};
 		5C9057B12B2894BE00EC157B /* Friends */ = {
@@ -926,15 +927,12 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				5CCEE2872B2D0BBA00F276DF /* CheckInList */,
-				5CCEE2752B2C6AA500F276DF /* CheckInCard */,
 				5C9057C22B2894BE00EC157B /* AppNameView.swift */,
 				5C9057C42B2894BE00EC157B /* AppLogoView.swift */,
 				5C9057C82B2894BE00EC157B /* SignInWithAppleView.swift */,
 				5C9057C92B2894BE00EC157B /* ReactionsView.swift */,
 				5C9057CA2B2894BE00EC157B /* ProductItemView.swift */,
 				5C9057CB2B2894BE00EC157B /* VerificationButton.swift */,
-				5C9057CC2B2894BE00EC157B /* ProductMutationView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -985,9 +983,27 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		5CC276312B31F01B001032CE /* Mutation */ = {
+			isa = PBXGroup;
+			children = (
+				5C9057CC2B2894BE00EC157B /* ProductMutationView.swift */,
+			);
+			path = Mutation;
+			sourceTree = "<group>";
+		};
+		5CC276322B31F07C001032CE /* CheckIn */ = {
+			isa = PBXGroup;
+			children = (
+				5CCEE2872B2D0BBA00F276DF /* CheckInList */,
+				5CCEE2752B2C6AA500F276DF /* CheckInCard */,
+			);
+			path = CheckIn;
+			sourceTree = "<group>";
+		};
 		5CCEE2532B29AE4D00F276DF /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				5CC276322B31F07C001032CE /* CheckIn */,
 				5C90579A2B2894BE00EC157B /* Product */,
 				5C9057A12B2894BE00EC157B /* Profile */,
 				5C82E8932B2F728C00F2B369 /* Discover */,

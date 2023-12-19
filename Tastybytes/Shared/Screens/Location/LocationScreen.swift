@@ -28,7 +28,7 @@ struct LocationScreen: View {
             id: "LocationScreen",
             fetcher: .location(location),
             scrollToTop: $scrollToTop,
-            onRefresh: { await getSummary() },
+            onRefresh: getSummary,
             header: {
                 if let coordinate = location.location?.coordinate {
                     Map(initialPosition: MapCameraPosition
@@ -118,10 +118,8 @@ struct LocationScreen: View {
     func getSummary() async {
         switch await repository.location.getSummaryById(id: location.id) {
         case let .success(summary):
-            await MainActor.run {
-                withAnimation {
-                    self.summary = summary
-                }
+            withAnimation {
+                self.summary = summary
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

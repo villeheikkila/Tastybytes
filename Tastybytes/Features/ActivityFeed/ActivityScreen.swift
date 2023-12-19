@@ -8,9 +8,7 @@ struct ActivityScreen: View {
             id: "ActivityScreen",
             fetcher: .activityFeed,
             scrollToTop: $scrollToTop,
-            onRefresh: {},
-            showContentUnavailableView: true,
-            header: {}
+            showContentUnavailableView: true
         )
     }
 }

@@ -42,10 +42,10 @@ struct CheckInList<Header>: View where Header: View {
         id: String,
         fetcher: Fetcher,
         scrollToTop: Binding<Int> = .constant(0),
-        onRefresh: @escaping () async -> Void,
+        onRefresh: @escaping () async -> Void = {},
         topAnchor: Int? = nil,
         showContentUnavailableView: Bool = false,
-        @ViewBuilder header: @escaping () -> Header
+        @ViewBuilder header: @escaping () -> Header = { EmptyView() }
     ) {
         self.id = id
         self.fetcher = fetcher
@@ -199,7 +199,7 @@ struct CheckInList<Header>: View where Header: View {
         guard loadingCheckInsOnAppear == nil else { return }
         loadingCheckInsOnAppear = Task {
             defer { loadingCheckInsOnAppear = nil }
-            logger.info("Loading more items invoced")
+            logger.info("Loading more items invoked")
             await fetchFeedItems()
         }
     }
