@@ -1,6 +1,6 @@
 #include "Configurations/MultiPlatform.xcconfig"
 
-INFOPLIST_FILE = ${TARGET_NAME}/Info.plist
+INFOPLIST_FILE = Configurations/Info.plist
 CODE_SIGN_ENTITLEMENTS = ${TARGET_NAME}/${TARGET_NAME}.entitlements
 GENERATE_INFOPLIST_FILE = YES
 

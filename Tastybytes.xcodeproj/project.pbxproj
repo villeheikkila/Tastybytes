@@ -1109,14 +1109,13 @@
 		C94722D72AD1859C006DE096 /* Tastybytes */ = {
 			isa = PBXGroup;
 			children = (
+				C94722DE2AD1859D006DE096 /* Tastybytes.entitlements */,
 				5C82E8802B2DCF9A00F2B369 /* FormFactor */,
 				5CCEE2532B29AE4D00F276DF /* Features */,
 				5C9057E02B2894BE00EC157B /* Core */,
 				5C9057372B2894BE00EC157B /* Shared */,
 				C94722DC2AD1859D006DE096 /* Assets.xcassets */,
-				C94722DE2AD1859D006DE096 /* Tastybytes.entitlements */,
 				C94722DF2AD1859D006DE096 /* Preview Content */,
-				C94723062AD1AC9E006DE096 /* Info.plist */,
 			);
 			path = Tastybytes;
 			sourceTree = "<group>";
@@ -1132,6 +1131,7 @@
 		C94723032AD185ED006DE096 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
+				C94723062AD1AC9E006DE096 /* Info.plist */,
 				C923F3622AD2EE250041D01D /* MultiPlatform.xcconfig */,
 				C94723052AD1870A006DE096 /* Tastybytes.xcconfig */,
 				5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */,
