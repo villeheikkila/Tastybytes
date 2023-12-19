@@ -21,8 +21,7 @@ struct CheckInDatePickerSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Done", action: { dismiss() })
-                .bold()
+            Button("Done", action: { dismiss() }).bold()
         }
     }
 }

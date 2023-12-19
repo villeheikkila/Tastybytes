@@ -15,11 +15,7 @@ struct ContentView: View {
                         authenticated: {
                             OnboardingProvider {
                                 AuthenticatedContentInitializer {
-                                    if isPadOrMac() {
-                                        SideBarView()
-                                    } else {
-                                        TabsView()
-                                    }
+                                    FormFactorSelector()
                                 }
                             }
                         }, unauthenticated: {
