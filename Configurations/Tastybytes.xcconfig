@@ -1,7 +1,7 @@
 #include "Configurations/MultiPlatform.xcconfig"
 
 INFOPLIST_FILE = Configurations/Info.plist
-CODE_SIGN_ENTITLEMENTS = ${TARGET_NAME}/${TARGET_NAME}.entitlements
+CODE_SIGN_ENTITLEMENTS = Configurations/${TARGET_NAME}.entitlements
 GENERATE_INFOPLIST_FILE = YES
 
 DEVELOPMENT_ASSET_PATHS = ${TARGET_NAME}/Preview\ Content
