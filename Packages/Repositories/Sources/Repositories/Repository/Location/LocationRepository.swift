@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-public protocol LocationRepository {
+public protocol LocationRepository: Sendable {
     func insert(location: Location) async -> Result<Location, Error>
     func getById(id: UUID) async -> Result<Location, Error>
     func delete(id: UUID) async -> Result<Void, Error>

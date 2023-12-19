@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-enum Screen: Hashable, Codable {
+enum Screen: Hashable, Codable, Sendable {
     case product(Product.Joined)
     case productFromBarcode(Product.Joined, Barcode)
     case profile(Profile)

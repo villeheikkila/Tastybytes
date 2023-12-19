@@ -1,6 +1,6 @@
 import Models
 
-public protocol CategoryRepository {
+public protocol CategoryRepository: Sendable {
     func getAllWithSubcategoriesServingStyles() async
         -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error>
     func insert(newCategory: Category.NewRequest) async -> Result<Void, Error>

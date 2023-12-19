@@ -1,7 +1,7 @@
 import OSLog
 import SwiftUI
 
-public enum NavigatablePath {
+public enum NavigatablePath: Sendable {
     case product(id: Int)
     case productWithBarcode(id: Int, barcode: Barcode)
     case checkIn(id: Int)

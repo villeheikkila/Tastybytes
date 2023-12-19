@@ -101,7 +101,7 @@ struct BrandSheet: View {
 }
 
 extension BrandSheet {
-    enum Mode {
+    enum Mode: Sendable {
         case select, new
     }
 }

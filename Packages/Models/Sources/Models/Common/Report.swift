@@ -71,7 +71,7 @@ public struct Report: Codable, Identifiable {
         }
     }
 
-    public enum Entity: Hashable {
+    public enum Entity: Hashable, Sendable {
         case product(Product.Joined)
         case company(Company)
         case brand(Brand.JoinedSubBrandsProductsCompany)

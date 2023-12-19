@@ -1,6 +1,6 @@
 import Models
 
-public protocol SubcategoryRepository {
+public protocol SubcategoryRepository: Sendable {
     func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func update(updateRequest: Subcategory.UpdateRequest) async -> Result<Void, Error>

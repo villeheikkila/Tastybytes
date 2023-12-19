@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-public protocol ProductRepository {
+public protocol ProductRepository: Sendable {
     func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error>
     func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
     func getById(id: Int) async -> Result<Product.Joined, Error>

@@ -37,7 +37,7 @@ public final class FriendEnvironmentModel {
         friends.filter { $0.status == .pending }
     }
 
-    public func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
+    public func sendFriendRequest(receiver: UUID, onSuccess: (@Sendable () -> Void)? = nil) async {
         switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
         case let .success(newFriend):
             await MainActor.run {
@@ -155,7 +155,7 @@ public final class FriendEnvironmentModel {
         }
     }
 
-    public func blockUser(user: Profile, onSuccess: @escaping () -> Void) async {
+    public func blockUser(user: Profile, onSuccess: @Sendable @escaping () -> Void) async {
         guard let profile else { return }
         if let friend = friends.first(where: { $0.getFriend(userId: profile.id) == user }) {
             await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)

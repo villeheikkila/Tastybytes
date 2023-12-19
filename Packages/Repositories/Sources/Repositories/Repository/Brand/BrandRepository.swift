@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-public protocol BrandRepository {
+public protocol BrandRepository: Sendable {
     func getById(id: Int) async -> Result<Brand.JoinedSubBrandsProducts, Error>
     func getJoinedById(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error>
     func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error>

@@ -24,7 +24,7 @@ struct UserSheet: View {
 
     init(
         mode: Mode,
-        onSubmit: @escaping () -> Void
+        onSubmit: @Sendable @escaping () -> Void
     ) {
         self.mode = mode
         self.onSubmit = onSubmit

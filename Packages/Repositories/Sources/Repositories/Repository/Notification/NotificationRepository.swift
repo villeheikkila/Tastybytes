@@ -1,6 +1,6 @@
 import Models
 
-public protocol NotificationRepository {
+public protocol NotificationRepository: Sendable {
     func getAll(afterId: Int?) async -> Result<[Models.Notification], Error>
     func getUnreadCount() async -> Result<Int, Error>
     func refreshPushNotificationToken(deviceToken: String) async

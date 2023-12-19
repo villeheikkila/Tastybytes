@@ -1,7 +1,7 @@
 import Supabase
 import SwiftUI
 
-public protocol RepositoryProtocol {
+public protocol RepositoryProtocol: Sendable {
     var profile: ProfileRepository { get }
     var checkIn: CheckInRepository { get }
     var checkInComment: CheckInCommentRepository { get }

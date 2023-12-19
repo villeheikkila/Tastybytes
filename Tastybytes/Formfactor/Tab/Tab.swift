@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable {
+public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
     case activity, discover, notifications, admin, profile
 
     public var id: Int {

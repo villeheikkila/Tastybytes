@@ -1,4 +1,4 @@
-public protocol CategoryProtocol {
+public protocol CategoryProtocol: Sendable {
     var id: Int { get }
     var name: String { get }
     var icon: String? { get }

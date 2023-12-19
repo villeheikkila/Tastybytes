@@ -5,16 +5,16 @@ import SwiftUI
 
 enum Sheet: Identifiable, Equatable {
     case report(Report.Entity)
-    case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
-    case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) async -> Void)
-    case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
+    case checkIn(CheckIn, onUpdate: @Sendable (_ checkIn: CheckIn) -> Void)
+    case newCheckIn(Product.Joined, onCreation: @Sendable (_ checkIn: CheckIn) async -> Void)
+    case barcodeScanner(onComplete: @Sendable (_ barcode: Barcode) -> Void)
     case productFilter(
         initialFilter: Product.Filter?,
         sections: [ProductFilterSheet.Sections],
-        onApply: (_ filter: Product.Filter?) -> Void
+        onApply: @Sendable (_ filter: Product.Filter?) -> Void
     )
-    case nameTag(onSuccess: (_ profileId: UUID) -> Void)
-    case companySearch(onSelect: (_ company: Company) -> Void)
+    case nameTag(onSuccess: @Sendable (_ profileId: UUID) -> Void)
+    case companySearch(onSelect: @Sendable (_ company: Company) -> Void)
     case brand(brandOwner: Company,
                brand: Binding<Brand.JoinedSubBrands?>,
                mode: BrandSheet.Mode)
@@ -26,34 +26,38 @@ enum Sheet: Identifiable, Equatable {
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany)
     case addProductToSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct)
-    case productEdit(product: Product.Joined, onEdit: (() async -> Void)? = nil)
+    case productEdit(product: Product.Joined, onEdit: (@Sendable () async -> Void)? = nil)
     case productEditSuggestion(product: Product.Joined)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
     case barcodeManagement(product: Product.Joined)
-    case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: () async -> Void)
+    case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: @Sendable () async -> Void)
     case editSubBrand(
         brand: Brand.JoinedSubBrandsProductsCompany,
         subBrand: SubBrand.JoinedProduct,
-        onUpdate: () async -> Void
+        onUpdate: @Sendable () async -> Void
     )
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)
-    case locationSearch(category: Location.RecentLocation, title: String, onSelect: (_ location: Location) -> Void)
-    case legacyPhotoPicker(onSelection: (_ image: UIImage, _ metadata: ImageMetadata) -> Void)
-    case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
+    case locationSearch(
+        category: Location.RecentLocation,
+        title: String,
+        onSelect: @Sendable (_ location: Location) -> Void
+    )
+    case legacyPhotoPicker(onSelection: @Sendable (_ image: UIImage, _ metadata: ImageMetadata) -> Void)
+    case newFlavor(onSubmit: @Sendable (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
-                                onSelect: (_ servingStyle: ServingStyle) async -> Void)
+                                onSelect: @Sendable (_ servingStyle: ServingStyle) async -> Void)
     case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
-    case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) async -> Void)
-    case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
-    case addCategory(onSubmit: (_ newCategoryName: String) async -> Void)
-    case editCompany(company: Company, onSuccess: () async -> Void)
-    case companyEditSuggestion(company: Company, onSuccess: () -> Void)
-    case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
+    case editSubcategory(subcategory: Subcategory, onSubmit: @Sendable (_ subcategoryName: String) async -> Void)
+    case addSubcategory(category: CategoryProtocol, onSubmit: @Sendable (_ newSubcategoryName: String) async -> Void)
+    case addCategory(onSubmit: @Sendable (_ newCategoryName: String) async -> Void)
+    case editCompany(company: Company, onSuccess: @Sendable () async -> Void)
+    case companyEditSuggestion(company: Company, onSuccess: @Sendable () -> Void)
+    case userSheet(mode: UserSheet.Mode, onSubmit: @Sendable () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
     case categoryPickerSheet(category: Binding<Int?>)
     case mergeLocationSheet(location: Location)
-    case productLogo(product: Product.Joined, onUpload: () async -> Void)
+    case productLogo(product: Product.Joined, onUpload: @Sendable () async -> Void)
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
 
@@ -255,6 +259,4 @@ enum Sheet: Identifiable, Equatable {
     static func == (lhs: Sheet, rhs: Sheet) -> Bool {
         lhs.id == rhs.id
     }
-    
-    
 }

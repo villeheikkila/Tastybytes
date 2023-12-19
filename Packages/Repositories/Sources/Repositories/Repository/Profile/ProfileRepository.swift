@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-public protocol ProfileRepository {
+public protocol ProfileRepository: Sendable {
     func getById(id: UUID) async -> Result<Profile, Error>
     func getCurrentUser() async -> Result<Profile.Extended, Error>
     func update(update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error>

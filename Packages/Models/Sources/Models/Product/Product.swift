@@ -96,7 +96,7 @@ public extension Product {
         }
     }
 
-    struct Filter: Hashable, Codable {
+    struct Filter: Hashable, Codable, Sendable {
         public enum SortBy: String, CaseIterable, Identifiable, Sendable, Codable {
             public var id: Self { self }
 
@@ -309,7 +309,7 @@ public extension Product {
         case full
     }
 
-    enum FeedType: Hashable, Identifiable, Codable {
+    enum FeedType: Hashable, Identifiable, Codable, Sendable {
         public var id: String { label }
 
         case topRated, trending, latest

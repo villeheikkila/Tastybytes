@@ -138,7 +138,7 @@ struct CheckInList<Header>: View where Header: View {
                 logger.info("Loading initial check-in feed data for \(id)")
                 await fetchFeedItems(onComplete: { _ in
                     logger.info("Loading initial check-ins completed for \(id)")
-                    splashScreenEnvironmentModel.dismiss()
+                    await splashScreenEnvironmentModel.dismiss()
                 })
                 resultId = refreshId
                 return
@@ -236,7 +236,7 @@ struct CheckInList<Header>: View where Header: View {
 
     func fetchFeedItems(
         reset: Bool = false,
-        onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil
+        onComplete: (@Sendable (_ checkIns: [CheckIn]) async -> Void)? = nil
     ) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true

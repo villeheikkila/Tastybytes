@@ -6,7 +6,7 @@ public enum CheckInQueryType {
     case all
 }
 
-public protocol CheckInRepository {
+public protocol CheckInRepository: Sendable {
     func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getById(id: Int) async -> Result<CheckIn, Error>
     func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error>
