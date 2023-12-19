@@ -1,4 +1,4 @@
-#include "User.xcconfig"
+#include "Environment.xcconfig"
 
 // Primary behaviors
 MACOSX_DEPLOYMENT_TARGET = 14.0

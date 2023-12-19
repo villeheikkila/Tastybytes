@@ -547,6 +547,7 @@
 		5C82E8AA2B2F95ED00F2B369 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */,
 				5C82E8AD2B2F97E400F2B369 /* ProductScreenActionSection.swift */,
 				5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */,
 				5C90579B2B2894BE00EC157B /* ProductScreen.swift */,
@@ -1134,7 +1135,6 @@
 				C94723062AD1AC9E006DE096 /* Info.plist */,
 				C923F3622AD2EE250041D01D /* MultiPlatform.xcconfig */,
 				C94723052AD1870A006DE096 /* Tastybytes.xcconfig */,
-				5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */,
 				C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */,
 				C94723042AD185FB006DE096 /* Project.xcconfig */,
 			);
