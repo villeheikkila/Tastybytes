@@ -4,10 +4,9 @@ import Models
 import OSLog
 import SwiftUI
 
-struct ProductActionSection: View {
-    private let logger = Logger(category: "ProductActionSection")
+struct ProductScreenActionSection: View {
+    private let logger = Logger(category: "ProductScreenActionSection")
     @Environment(\.repository) private var repository
-    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Binding var isOnWishlist: Bool
 
@@ -46,10 +45,8 @@ struct ProductActionSection: View {
             switch await repository.product.removeFromWishlist(productId: product.id) {
             case .success:
                 feedbackEnvironmentModel.trigger(.notification(.success))
-                await MainActor.run {
-                    withAnimation {
-                        isOnWishlist = false
-                    }
+                withAnimation {
+                    isOnWishlist = false
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
@@ -59,10 +56,8 @@ struct ProductActionSection: View {
             switch await repository.product.addToWishlist(productId: product.id) {
             case .success:
                 feedbackEnvironmentModel.trigger(.notification(.success))
-                await MainActor.run {
-                    withAnimation {
-                        isOnWishlist = true
-                    }
+                withAnimation {
+                    isOnWishlist = true
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }

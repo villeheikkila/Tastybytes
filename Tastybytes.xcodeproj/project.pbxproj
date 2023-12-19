@@ -21,8 +21,8 @@
 		5C82E8A22B2F7C2A00F2B369 /* ProfileJoinedAtSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8A12B2F7C2A00F2B369 /* ProfileJoinedAtSection.swift */; };
 		5C82E8A42B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8A32B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift */; };
 		5C82E8A62B2F7FE000F2B369 /* ProfileCheckInImagesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8A52B2F7FE000F2B369 /* ProfileCheckInImagesSection.swift */; };
-		5C82E8AC2B2F95F500F2B369 /* ProductLoadedFromBarcodeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8AB2B2F95F500F2B369 /* ProductLoadedFromBarcodeOverlay.swift */; };
-		5C82E8AE2B2F97E400F2B369 /* ProductActionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8AD2B2F97E400F2B369 /* ProductActionSection.swift */; };
+		5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */; };
+		5C82E8AE2B2F97E400F2B369 /* ProductScreenActionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8AD2B2F97E400F2B369 /* ProductScreenActionSection.swift */; };
 		5C82E8B12B2F996400F2B369 /* ProductScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */; };
 		5C885F002B2873A900F17C78 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885EFF2B2873A900F17C78 /* Models */; };
 		5C885F032B2873B400F17C78 /* Extensions in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F022B2873B400F17C78 /* Extensions */; };
@@ -214,8 +214,8 @@
 		5C82E8A12B2F7C2A00F2B369 /* ProfileJoinedAtSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileJoinedAtSection.swift; sourceTree = "<group>"; };
 		5C82E8A32B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderAvatarSection.swift; sourceTree = "<group>"; };
 		5C82E8A52B2F7FE000F2B369 /* ProfileCheckInImagesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCheckInImagesSection.swift; sourceTree = "<group>"; };
-		5C82E8AB2B2F95F500F2B369 /* ProductLoadedFromBarcodeOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductLoadedFromBarcodeOverlay.swift; sourceTree = "<group>"; };
-		5C82E8AD2B2F97E400F2B369 /* ProductActionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductActionSection.swift; sourceTree = "<group>"; };
+		5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreenLoadedFromBarcodeOverlay.swift; sourceTree = "<group>"; };
+		5C82E8AD2B2F97E400F2B369 /* ProductScreenActionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreenActionSection.swift; sourceTree = "<group>"; };
 		5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreenHeader.swift; sourceTree = "<group>"; };
 		5C885F112B28740800F17C78 /* LegacyUIKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = LegacyUIKit; sourceTree = "<group>"; };
 		5C885F122B28740800F17C78 /* EnvironmentModels */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EnvironmentModels; sourceTree = "<group>"; };
@@ -482,14 +482,14 @@
 			path = "Örlfk";
 			sourceTree = "<group>";
 		};
-		5C82E8AA2B2F95ED00F2B369 /* Components */ = {
+		5C82E8AA2B2F95ED00F2B369 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
-				5C82E8AB2B2F95F500F2B369 /* ProductLoadedFromBarcodeOverlay.swift */,
-				5C82E8AD2B2F97E400F2B369 /* ProductActionSection.swift */,
+				5C82E8AD2B2F97E400F2B369 /* ProductScreenActionSection.swift */,
 				5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */,
+				5C90579B2B2894BE00EC157B /* ProductScreen.swift */,
 			);
-			path = Components;
+			path = Screen;
 			sourceTree = "<group>";
 		};
 		5C885F102B28740800F17C78 /* Packages */ = {
@@ -832,8 +832,7 @@
 		5C90579A2B2894BE00EC157B /* Product */ = {
 			isa = PBXGroup;
 			children = (
-				5C82E8AA2B2F95ED00F2B369 /* Components */,
-				5C90579B2B2894BE00EC157B /* ProductScreen.swift */,
+				5C82E8AA2B2F95ED00F2B369 /* Screen */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -1092,6 +1091,7 @@
 			children = (
 				C923F3622AD2EE250041D01D /* MultiPlatform.xcconfig */,
 				C94723052AD1870A006DE096 /* Tastybytes.xcconfig */,
+				5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */,
 				C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */,
 				C94723042AD185FB006DE096 /* Project.xcconfig */,
 			);
@@ -1274,7 +1274,7 @@
 				5C9058052B2894BE00EC157B /* DuplicateProductSheet.swift in Sources */,
 				5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */,
 				5C9057F82B2894BE00EC157B /* EditCompanySheet.swift in Sources */,
-				5C82E8AE2B2F97E400F2B369 /* ProductActionSection.swift in Sources */,
+				5C82E8AE2B2F97E400F2B369 /* ProductScreenActionSection.swift in Sources */,
 				5C9058542B2894BE00EC157B /* OnboardingProfileSection.swift in Sources */,
 				5C90581F2B2894BE00EC157B /* AdminScreen.swift in Sources */,
 				5C90580C2B2894BE00EC157B /* ReportSheet.swift in Sources */,
@@ -1300,7 +1300,7 @@
 				5C9057EA2B2894BE00EC157B /* DiscoverTab.swift in Sources */,
 				5C9057FB2B2894BE00EC157B /* MergeLocationSheet.swift in Sources */,
 				5C9057F02B2894BE00EC157B /* FriendSheet.swift in Sources */,
-				5C82E8AC2B2F95F500F2B369 /* ProductLoadedFromBarcodeOverlay.swift in Sources */,
+				5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */,
 				5C90582B2B2894BE00EC157B /* CategoryManagementScreen.swift in Sources */,
 				5C9058022B2894BE00EC157B /* SubscriptionStoreContent.swift in Sources */,
 				5C82E8A02B2F7B7800F2B369 /* ProfileLinksSection.swift in Sources */,

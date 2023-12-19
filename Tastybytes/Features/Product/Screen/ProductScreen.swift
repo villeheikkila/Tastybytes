@@ -6,14 +6,12 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let logger = Logger(category: "ProductScreen")
-
 struct ProductScreen: View {
+    private let logger = Logger(category: "ProductScreen")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var scrollToTop: Int = 0
     @State private var product: Product.Joined
     @State private var summary: Summary?
     @State private var showDeleteProductConfirmationDialog = false
@@ -45,34 +43,19 @@ struct ProductScreen: View {
         CheckInList(
             id: "ProductScreen",
             fetcher: .product(product),
-            scrollToTop: $scrollToTop,
             onRefresh: {
                 refreshId += 1
             },
             header: {
-                VStack {
-                    if loadedWithBarcode != nil {
-                        Spacer(minLength: 50)
-                    }
-                    ProductItemView(product: product, extras: [.companyLink, .logo])
-                    SummaryView(summary: summary).padding(.top, 4)
-                    if !checkInImages.isEmpty {
-                        ProfileCheckInImagesSection(checkInImages: checkInImages, isLoading: isLoadingCheckInImages) {
-                            checkInImageTask = Task {
-                                defer { checkInImageTask = nil }
-                                await fetchImages(reset: false)
-                            }
-                        }
-                    }
-                }.padding(.horizontal)
+                header
             }
         )
         .id(resetView)
-        .overlay(
+        .overlay {
             if loadedWithBarcode != nil {
-                ProductLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
+                ProductScreenLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
             }
-        )
+        }
         .onDisappear {
             checkInImageTask?.cancel()
         }
@@ -105,6 +88,22 @@ struct ProductScreen: View {
                 action: { await deleteProduct(presenting) }
             )
         }
+    }
+
+    @ViewBuilder private var header: some View {
+        ProductScreenHeader(
+            product: product,
+            summary: summary,
+            loadedWithBarcode: loadedWithBarcode,
+            loadMoreImages: {
+                checkInImageTask = Task {
+                    defer { checkInImageTask = nil }
+                    await fetchImages(reset: false)
+                }
+            },
+            onRefreshCheckIns: refreshCheckIns,
+            isOnWishlist: $isOnWishlist
+        )
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -217,10 +216,8 @@ struct ProductScreen: View {
 
         switch productResult {
         case let .success(refreshedProduct):
-            await MainActor.run {
-                withAnimation {
-                    product = refreshedProduct
-                }
+            withAnimation {
+                product = refreshedProduct
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -230,9 +227,7 @@ struct ProductScreen: View {
 
         switch summaryResult {
         case let .success(summary):
-            await MainActor.run {
-                self.summary = summary
-            }
+            self.summary = summary
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -241,10 +236,8 @@ struct ProductScreen: View {
 
         switch wishlistResult {
         case let .success(isOnWishlist):
-            await MainActor.run {
-                withAnimation {
-                    self.isOnWishlist = isOnWishlist
-                }
+            withAnimation {
+                self.isOnWishlist = isOnWishlist
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -254,39 +247,9 @@ struct ProductScreen: View {
         logger.error("Refreshing product page completed, refresh id: \(refreshId)")
     }
 
-    func refreshCheckIns() async {
+    func refreshCheckIns() {
         resetView += 1
         refreshId += 1
-    }
-
-    func toggleWishlist() async {
-        if isOnWishlist {
-            switch await repository.product.removeFromWishlist(productId: product.id) {
-            case .success:
-                feedbackEnvironmentModel.trigger(.notification(.success))
-                await MainActor.run {
-                    withAnimation {
-                        isOnWishlist = false
-                    }
-                }
-            case let .failure(error):
-                guard !error.isCancelled else { return }
-                logger.error("removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
-            }
-        } else {
-            switch await repository.product.addToWishlist(productId: product.id) {
-            case .success:
-                feedbackEnvironmentModel.trigger(.notification(.success))
-                await MainActor.run {
-                    withAnimation {
-                        isOnWishlist = true
-                    }
-                }
-            case let .failure(error):
-                guard !error.isCancelled else { return }
-                logger.error("adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
-            }
-        }
     }
 
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {
