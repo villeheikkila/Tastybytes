@@ -50,13 +50,11 @@ struct CheckInImagesView: View {
 
         switch await repository.checkIn.getCheckInImages(by: queryType, from: from, to: to) {
         case let .success(checkIns):
-            await MainActor.run {
-                withAnimation {
-                    self.checkInImages.append(contentsOf: checkIns)
-                }
-                page += 1
-                isLoading = false
+            withAnimation {
+                self.checkInImages.append(contentsOf: checkIns)
             }
+            page += 1
+            isLoading = false
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

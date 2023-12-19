@@ -75,9 +75,7 @@ struct BrandSheet: View {
     func loadBrands(_ brandOwner: Company) async {
         switch await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id) {
         case let .success(brandsWithSubBrands):
-            await MainActor.run {
-                self.brandsWithSubBrands = brandsWithSubBrands
-            }
+            self.brandsWithSubBrands = brandsWithSubBrands
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -92,10 +90,8 @@ struct BrandSheet: View {
             if mode == .new {
                 router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
             }
-            await MainActor.run {
-                brand = brandWithSubBrands
-                dismiss()
-            }
+            brand = brandWithSubBrands
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

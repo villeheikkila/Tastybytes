@@ -1,6 +1,6 @@
 import Foundation
 
-public enum AuthState {
+public enum AuthState: Sendable {
     case authenticated
     case unauthenticated
 }

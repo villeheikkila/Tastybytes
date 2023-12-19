@@ -59,10 +59,8 @@ struct ContributionsScreen: View {
     func loadContributions(userId: UUID) async {
         switch await repository.profile.getContributions(userId: userId) {
         case let .success(contributions):
-            await MainActor.run {
-                withAnimation {
-                    self.contributions = contributions
-                }
+            withAnimation {
+                self.contributions = contributions
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

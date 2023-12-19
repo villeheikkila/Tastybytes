@@ -112,7 +112,7 @@ struct ProductScreen: View {
             Menu {
                 ControlGroup {
                     RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in
-                        await refreshCheckIns()
+                        refreshCheckIns()
                     }))
                     .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     ProductShareLinkView(product: product)
@@ -302,13 +302,11 @@ struct ProductScreen: View {
 
         switch await repository.checkIn.getCheckInImages(by: .product(product), from: from, to: to) {
         case let .success(checkIns):
-            await MainActor.run {
-                withAnimation {
-                    self.checkInImages.append(contentsOf: checkIns)
-                }
-                checkInImagesPage += 1
-                isLoadingCheckInImages = false
+            withAnimation {
+                self.checkInImages.append(contentsOf: checkIns)
             }
+            checkInImagesPage += 1
+            isLoadingCheckInImages = false
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

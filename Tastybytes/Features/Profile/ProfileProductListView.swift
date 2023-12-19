@@ -137,11 +137,9 @@ struct ProfileProductListView: View {
     func loadProducts() async {
         switch await repository.product.getByProfile(id: profile.id) {
         case let .success(products):
-            await MainActor.run {
-                withAnimation {
-                    self.products = products
-                    initialDataLoaded = true
-                }
+            withAnimation {
+                self.products = products
+                initialDataLoaded = true
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

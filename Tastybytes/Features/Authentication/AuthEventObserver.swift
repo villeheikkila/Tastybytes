@@ -39,9 +39,7 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View, Loading: Vi
         }
         .task {
             for await state in await repository.auth.authStateListener() {
-                await MainActor.run {
-                    self.authState = state
-                }
+                self.authState = state
                 logger.debug("auth state changed: \(String(describing: state))")
                 if Task.isCancelled {
                     return

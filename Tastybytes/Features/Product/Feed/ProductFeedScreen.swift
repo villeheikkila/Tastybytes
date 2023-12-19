@@ -111,10 +111,8 @@ struct ProductFeedScreen: View {
 
         switch await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
         case let .success(additionalProducts):
-            await MainActor.run {
-                withAnimation {
-                    products.append(contentsOf: additionalProducts)
-                }
+            withAnimation {
+                products.append(contentsOf: additionalProducts)
             }
             page += 1
             isLoading = false

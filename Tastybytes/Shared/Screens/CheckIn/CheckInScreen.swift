@@ -156,10 +156,8 @@ struct CheckInScreen: View {
 
         switch checkInResult {
         case let .success(checkIn):
-            await MainActor.run {
-                withAnimation {
-                    self.checkIn = checkIn
-                }
+            withAnimation {
+                self.checkIn = checkIn
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -169,10 +167,8 @@ struct CheckInScreen: View {
 
         switch checkInCommentResult {
         case let .success(checkInComments):
-            await MainActor.run {
-                withAnimation {
-                    self.checkInComments = checkInComments
-                }
+            withAnimation {
+                self.checkInComments = checkInComments
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -295,9 +291,7 @@ struct CheckInScreen: View {
         switch await repository.checkIn.delete(id: checkIn.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await MainActor.run {
-                router.removeLast()
-            }
+            router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -311,10 +305,8 @@ struct CheckInScreen: View {
         switch await repository.checkInComment.update(updateCheckInComment: updatedComment) {
         case let .success(updatedComment):
             guard let index = checkInComments.firstIndex(where: { $0.id == updatedComment.id }) else { return }
-            await MainActor.run {
-                withAnimation {
-                    checkInComments[index] = updatedComment
-                }
+            withAnimation {
+                checkInComments[index] = updatedComment
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -327,10 +319,8 @@ struct CheckInScreen: View {
     func deleteComment(_ comment: CheckInComment) async {
         switch await repository.checkInComment.deleteById(id: comment.id) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    checkInComments.remove(object: comment)
-                }
+            withAnimation {
+                checkInComments.remove(object: comment)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -342,10 +332,8 @@ struct CheckInScreen: View {
     func deleteCommentAsModerator(_ comment: CheckInComment) async {
         switch await repository.checkInComment.deleteAsModerator(comment: comment) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    checkInComments.remove(object: comment)
-                }
+            withAnimation {
+                checkInComments.remove(object: comment)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -357,9 +345,7 @@ struct CheckInScreen: View {
     func deleteCheckInAsModerator(_ checkIn: CheckIn) async {
         switch await repository.checkIn.deleteAsModerator(checkIn: checkIn) {
         case .success:
-            await MainActor.run {
-                router.removeLast()
-            }
+            router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -373,12 +359,10 @@ struct CheckInScreen: View {
         let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
         switch result {
         case let .success(newCheckInComment):
-            await MainActor.run {
-                withAnimation {
-                    checkInComments.append(newCheckInComment)
-                }
-                commentText = ""
+            withAnimation {
+                checkInComments.append(newCheckInComment)
             }
+            commentText = ""
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

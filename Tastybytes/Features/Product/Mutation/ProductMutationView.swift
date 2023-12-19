@@ -463,9 +463,7 @@ struct ProductMutationInnerView: View {
         case let .success(newProduct):
             isSuccess = true
             if isSheet {
-                await MainActor.run {
-                    dismiss()
-                }
+                dismiss()
             }
             router.navigate(screen: .product(newProduct), removeLast: true)
             await onSuccess(newProduct)
@@ -497,10 +495,8 @@ struct ProductMutationInnerView: View {
             .createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent)
         {
         case .success:
-            await MainActor.run {
-                dismiss()
-                feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
-            }
+            dismiss()
+            feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -528,9 +524,7 @@ struct ProductMutationInnerView: View {
         switch await repository.product.editProduct(productEditParams: productEditParams) {
         case .success:
             isSuccess = true
-            await MainActor.run {
-                dismiss()
-            }
+            dismiss()
             if let onEdit {
                 await onEdit()
             }

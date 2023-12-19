@@ -121,7 +121,7 @@ struct EditSubBrandSheet: View {
         }
     }
 
-    func editSubBrand(onSuccess: @escaping () async -> Void) async {
+    @Sendable func editSubBrand(onSuccess: @Sendable @escaping () async -> Void) async {
         switch await repository.subBrand
             .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
         {

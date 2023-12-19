@@ -104,10 +104,8 @@ struct CategoryServingStyleSheet: View {
             servingStyleId: servingStyle.id
         ) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    servingStyles.remove(object: servingStyle)
-                }
+            withAnimation {
+                servingStyles.remove(object: servingStyle)
             }
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):

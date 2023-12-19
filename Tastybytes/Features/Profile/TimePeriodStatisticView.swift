@@ -72,10 +72,8 @@ struct TimePeriodStatisticSegmentView: View {
         isLoading = true
         switch await repository.profile.getTimePeriodStatistics(userId: profile.id, timePeriod: timePeriod) {
         case let .success(timePeriodStatistics):
-            await MainActor.run {
-                withAnimation {
-                    self.timePeriodStatistics = timePeriodStatistics
-                }
+            withAnimation {
+                self.timePeriodStatistics = timePeriodStatistics
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

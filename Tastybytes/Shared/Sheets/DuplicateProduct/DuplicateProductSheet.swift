@@ -107,9 +107,7 @@ struct DuplicateProductSheet: View {
         switch await repository.product.mergeProducts(productId: product.id, toProductId: to.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await MainActor.run {
-                dismiss()
-            }
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

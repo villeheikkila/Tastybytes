@@ -259,9 +259,7 @@ struct CheckInSheet: View {
                     }
                 }
                 feedbackEnvironmentModel.trigger(.notification(.success))
-                await MainActor.run {
-                    dismiss()
-                }
+                dismiss()
             })
             .bold()
         }

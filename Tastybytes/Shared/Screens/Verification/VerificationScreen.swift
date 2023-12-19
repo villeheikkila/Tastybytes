@@ -174,10 +174,8 @@ struct VerificationScreen: View {
     func verifyBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
         switch await repository.brand.verification(id: brand.id, isVerified: true) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    brands.remove(object: brand)
-                }
+            withAnimation {
+                brands.remove(object: brand)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -189,10 +187,8 @@ struct VerificationScreen: View {
     func verifySubBrand(_ subBrand: SubBrand.JoinedBrand) async {
         switch await repository.subBrand.verification(id: subBrand.id, isVerified: true) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    subBrands.remove(object: subBrand)
-                }
+            withAnimation {
+                subBrands.remove(object: subBrand)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -204,10 +200,8 @@ struct VerificationScreen: View {
     func verifyCompany(_ company: Company) async {
         switch await repository.company.verification(id: company.id, isVerified: true) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    companies.remove(object: company)
-                }
+            withAnimation {
+                companies.remove(object: company)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -219,10 +213,8 @@ struct VerificationScreen: View {
     func verifyProduct(_ product: Product.Joined) async {
         switch await repository.product.verification(id: product.id, isVerified: true) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    products.remove(object: product)
-                }
+            withAnimation {
+                products.remove(object: product)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -249,10 +241,8 @@ struct VerificationScreen: View {
             if refresh || products.isEmpty {
                 switch await repository.product.getUnverified() {
                 case let .success(products):
-                    await MainActor.run {
-                        withAnimation {
-                            self.products = products
-                        }
+                    withAnimation {
+                        self.products = products
                     }
                     if refresh {
                         feedbackEnvironmentModel.trigger(.notification(.success))
@@ -267,10 +257,8 @@ struct VerificationScreen: View {
             if refresh || companies.isEmpty {
                 switch await repository.company.getUnverified() {
                 case let .success(companies):
-                    await MainActor.run {
-                        withAnimation {
-                            self.companies = companies
-                        }
+                    withAnimation {
+                        self.companies = companies
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
@@ -282,10 +270,8 @@ struct VerificationScreen: View {
             if refresh || brands.isEmpty {
                 switch await repository.brand.getUnverified() {
                 case let .success(brands):
-                    await MainActor.run {
-                        withAnimation {
-                            self.brands = brands
-                        }
+                    withAnimation {
+                        self.brands = brands
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
@@ -297,10 +283,8 @@ struct VerificationScreen: View {
             if refresh || subBrands.isEmpty {
                 switch await repository.subBrand.getUnverified() {
                 case let .success(subBrands):
-                    await MainActor.run {
-                        withAnimation {
-                            self.subBrands = subBrands
-                        }
+                    withAnimation {
+                        self.subBrands = subBrands
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }

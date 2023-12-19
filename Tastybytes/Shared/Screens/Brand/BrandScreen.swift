@@ -335,9 +335,7 @@ struct BrandScreen: View {
         )
         switch summaryResult {
         case let .success(summary):
-            await MainActor.run {
-                self.summary = summary
-            }
+            self.summary = summary
             if withHaptics {
                 feedbackEnvironmentModel.trigger(.impact(intensity: .high))
             }
@@ -349,9 +347,7 @@ struct BrandScreen: View {
 
         switch brandResult {
         case let .success(brand):
-            await MainActor.run {
-                self.brand = brand
-            }
+            self.brand = brand
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -360,10 +356,8 @@ struct BrandScreen: View {
 
         switch isLikedPromiseResult {
         case let .success(isLikedByCurrentUser):
-            await MainActor.run {
-                withAnimation {
-                    self.isLikedByCurrentUser = isLikedByCurrentUser
-                }
+            withAnimation {
+                self.isLikedByCurrentUser = isLikedByCurrentUser
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -375,9 +369,7 @@ struct BrandScreen: View {
         async let summaryPromise = repository.brand.getSummaryById(id: brand.id)
         switch await summaryPromise {
         case let .success(summary):
-            await MainActor.run {
-                self.summary = summary
-            }
+            self.summary = summary
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -388,10 +380,8 @@ struct BrandScreen: View {
     func getIsLikedBy() async {
         switch await repository.brand.isLikedByCurrentUser(id: brand.id) {
         case let .success(isLikedByCurrentUser):
-            await MainActor.run {
-                withAnimation {
-                    self.isLikedByCurrentUser = isLikedByCurrentUser
-                }
+            withAnimation {
+                self.isLikedByCurrentUser = isLikedByCurrentUser
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -423,10 +413,8 @@ struct BrandScreen: View {
             switch await repository.brand.unlikeBrand(brandId: brand.id) {
             case .success:
                 feedbackEnvironmentModel.trigger(.notification(.success))
-                await MainActor.run {
-                    withAnimation {
-                        self.isLikedByCurrentUser = false
-                    }
+                withAnimation {
+                    self.isLikedByCurrentUser = false
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
@@ -436,10 +424,8 @@ struct BrandScreen: View {
             switch await repository.brand.likeBrand(brandId: brand.id) {
             case .success:
                 feedbackEnvironmentModel.trigger(.notification(.success))
-                await MainActor.run {
-                    withAnimation {
-                        self.isLikedByCurrentUser = true
-                    }
+                withAnimation {
+                    self.isLikedByCurrentUser = true
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
@@ -549,9 +535,7 @@ private struct ProductRow: View {
         switch await repository.product.delete(id: product.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await MainActor.run {
-                router.removeLast()
-            }
+            router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

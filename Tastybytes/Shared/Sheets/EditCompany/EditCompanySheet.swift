@@ -42,9 +42,7 @@ struct EditCompanySheet: View {
                 TextField("Name", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
                     await submit(onSuccess: {
-                        await MainActor.run {
-                            dismiss()
-                        }
+                        dismiss()
                         await onSuccess()
                     })
                 })
@@ -97,7 +95,7 @@ struct EditCompanySheet: View {
         }
     }
 
-    func submit(onSuccess: () async -> Void) async {
+    func submit(onSuccess: @Sendable () async -> Void) async {
         switch mode {
         case .edit:
             await editCompany(onSuccess: onSuccess)

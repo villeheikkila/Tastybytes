@@ -6,7 +6,7 @@ public protocol BrandRepository {
     func getJoinedById(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error>
     func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error>
     func getUnverified() async -> Result<[Brand.JoinedSubBrandsProductsCompany], Error>
-    func getSummaryById(id: Int) async -> Result<Summary, Error>
+    @Sendable func getSummaryById(id: Int) async -> Result<Summary, Error>
     func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error>
     func isLikedByCurrentUser(id: Int) async -> Result<Bool, Error>
     func likeBrand(brandId: Int) async -> Result<Void, Error>

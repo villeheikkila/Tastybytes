@@ -70,9 +70,7 @@ struct ReportSheet: View {
     func submitReport() async {
         switch await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
         case .success:
-            await MainActor.run {
-                dismiss()
-            }
+            dismiss()
             feedbackEnvironmentModel.toggle(.success("Report submitted!"))
         case let .failure(error):
             guard !error.isCancelled else { return }

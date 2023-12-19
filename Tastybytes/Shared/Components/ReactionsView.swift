@@ -69,10 +69,8 @@ struct ReactionsView: View {
         if let reaction = checkInReactions.first(where: { $0.profile.id == profileEnvironmentModel.id }) {
             switch await repository.checkInReactions.delete(id: reaction.id) {
             case .success:
-                await MainActor.run {
-                    withAnimation {
-                        checkInReactions.remove(object: reaction)
-                    }
+                withAnimation {
+                    checkInReactions.remove(object: reaction)
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
@@ -84,10 +82,8 @@ struct ReactionsView: View {
                 .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
             {
             case let .success(checkInReaction):
-                await MainActor.run {
-                    withAnimation {
-                        checkInReactions.append(checkInReaction)
-                    }
+                withAnimation {
+                    checkInReactions.append(checkInReaction)
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }

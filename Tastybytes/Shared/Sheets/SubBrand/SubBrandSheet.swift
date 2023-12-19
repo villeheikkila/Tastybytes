@@ -75,10 +75,8 @@ struct SubBrandSheet: View {
         {
         case let .success(newSubBrand):
             feedbackEnvironmentModel.toggle(.success("New Sub-brand Created!"))
-            await MainActor.run {
-                subBrand = newSubBrand
-                dismiss()
-            }
+            subBrand = newSubBrand
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

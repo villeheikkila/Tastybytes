@@ -53,10 +53,8 @@ struct BarcodeManagementSheet: View {
     func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {
         switch await repository.productBarcode.delete(id: barcode.id) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    barcodes.remove(object: barcode)
-                }
+            withAnimation {
+                barcodes.remove(object: barcode)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -68,10 +66,8 @@ struct BarcodeManagementSheet: View {
     func getBarcodes() async {
         switch await repository.productBarcode.getByProductId(id: product.id) {
         case let .success(barcodes):
-            await MainActor.run {
-                withAnimation {
-                    self.barcodes = barcodes
-                }
+            withAnimation {
+                self.barcodes = barcodes
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

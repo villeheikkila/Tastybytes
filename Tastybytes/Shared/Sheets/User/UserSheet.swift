@@ -107,12 +107,10 @@ struct UserSheet: View {
         isLoading = true
         switch await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId) {
         case let .success(searchResults):
-            await MainActor.run {
-                withAnimation {
-                    self.searchedFor = searchTerm
-                    self.isLoading = false
-                    self.searchResults = searchResults
-                }
+            withAnimation {
+                self.searchedFor = searchTerm
+                self.isLoading = false
+                self.searchResults = searchResults
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

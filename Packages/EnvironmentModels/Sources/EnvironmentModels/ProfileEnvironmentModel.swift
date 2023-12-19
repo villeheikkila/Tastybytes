@@ -184,7 +184,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    public func deleteCurrentAccount(onAccountDeletion: @escaping () -> Void) async {
+    public func deleteCurrentAccount(onAccountDeletion: @Sendable @escaping () -> Void) async {
         switch await repository.profile.deleteCurrentAccount() {
         case .success:
             onAccountDeletion()

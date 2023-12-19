@@ -82,10 +82,8 @@ struct DuplicateProductScreen: View {
     func verifyProduct(_ product: Product.Joined) async {
         switch await repository.product.verification(id: product.id, isVerified: true) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    products.remove(object: product)
-                }
+            withAnimation {
+                products.remove(object: product)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -98,9 +96,7 @@ struct DuplicateProductScreen: View {
         switch await repository.product.delete(id: product.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await MainActor.run {
-                router.removeLast()
-            }
+            router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -114,14 +110,13 @@ struct DuplicateProductScreen: View {
         }
         switch await repository.product.getUnverified() {
         case let .success(products):
-            await MainActor.run {
-                withAnimation {
-                    self.products = products
-                }
-                if withHaptics {
-                    feedbackEnvironmentModel.trigger(.notification(.success))
-                }
+            withAnimation {
+                self.products = products
             }
+            if withHaptics {
+                feedbackEnvironmentModel.trigger(.notification(.success))
+            }
+
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

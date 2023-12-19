@@ -103,10 +103,8 @@ struct ServingStyleManagementSheet: View {
     func getAllServingStyles() async {
         switch await repository.servingStyle.getAll() {
         case let .success(servingStyles):
-            await MainActor.run {
-                withAnimation {
-                    self.servingStyles = servingStyles
-                }
+            withAnimation {
+                self.servingStyles = servingStyles
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -118,11 +116,9 @@ struct ServingStyleManagementSheet: View {
     func createServingStyle() async {
         switch await repository.servingStyle.insert(servingStyle: ServingStyle.NewRequest(name: newServingStyleName)) {
         case let .success(servingStyle):
-            await MainActor.run {
-                withAnimation {
-                    servingStyles.append(servingStyle)
-                    newServingStyleName = ""
-                }
+            withAnimation {
+                servingStyles.append(servingStyle)
+                newServingStyleName = ""
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -134,10 +130,8 @@ struct ServingStyleManagementSheet: View {
     func deleteServingStyle(_ servingStyle: ServingStyle) async {
         switch await repository.servingStyle.delete(id: servingStyle.id) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    servingStyles.remove(object: servingStyle)
-                }
+            withAnimation {
+                servingStyles.remove(object: servingStyle)
             }
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
@@ -153,10 +147,8 @@ struct ServingStyleManagementSheet: View {
             .update(update: ServingStyle.UpdateRequest(id: editServingStyle.id, name: servingStyleName))
         {
         case let .success(servingStyle):
-            await MainActor.run {
-                withAnimation {
-                    servingStyles.replace(editServingStyle, with: servingStyle)
-                }
+            withAnimation {
+                servingStyles.replace(editServingStyle, with: servingStyle)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

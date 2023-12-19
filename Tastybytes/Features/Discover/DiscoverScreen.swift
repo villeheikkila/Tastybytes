@@ -120,11 +120,9 @@ struct DiscoverScreen: View {
             case let .barcode(barcode):
                 switch await repository.product.search(barcode: barcode) {
                 case let .success(searchResults):
-                    await MainActor.run {
-                        withAnimation {
-                            products = searchResults
-                            searchResultKey = searchKey
-                        }
+                    withAnimation {
+                        products = searchResults
+                        searchResultKey = searchKey
                     }
                     if searchResults.count == 1, let result = searchResults.first {
                         router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
@@ -171,9 +169,11 @@ struct DiscoverScreen: View {
                 case .users:
                     switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
                     case let .success(searchResults):
-                        withAnimation {
-                            profiles = searchResults
-                            searchResultKey = searchKey
+                        await MainActor.run {
+                            withAnimation {
+                                profiles = searchResults
+                                searchResultKey = searchKey
+                            }
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):
@@ -482,11 +482,9 @@ struct DiscoverScreen: View {
         guard let barcode else { return }
         switch await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
         case .success:
-            await MainActor.run {
-                self.barcode = nil
-                self.addBarcodeTo = nil
-                showAddBarcodeConfirmation = false
-            }
+            self.barcode = nil
+            self.addBarcodeTo = nil
+            showAddBarcodeConfirmation = false
             feedbackEnvironmentModel.toggle(.success("Barcode added!"))
             router.navigate(screen: .product(addBarcodeTo))
         case let .failure(error):

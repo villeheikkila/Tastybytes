@@ -111,10 +111,8 @@ struct LocationSearchSheet: View {
     func getRecentLocations() async {
         switch await repository.location.getRecentLocations(category: category) {
         case let .success(recentLocations):
-            await MainActor.run {
-                withAnimation {
-                    self.recentLocations = recentLocations
-                }
+            withAnimation {
+                self.recentLocations = recentLocations
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -127,10 +125,8 @@ struct LocationSearchSheet: View {
         guard let location else { return }
         switch await repository.location.getSuggestions(location: Location.SuggestionParams(location: location)) {
         case let .success(nearbyLocations):
-            await MainActor.run {
-                withAnimation {
-                    self.nearbyLocations = nearbyLocations
-                }
+            withAnimation {
+                self.nearbyLocations = nearbyLocations
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -185,9 +181,7 @@ struct LocationRow: View {
         switch await repository.location.insert(location: location) {
         case let .success(savedLocation):
             onSelect(savedLocation)
-            await MainActor.run {
-                dismiss()
-            }
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
