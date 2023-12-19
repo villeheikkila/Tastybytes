@@ -5,7 +5,7 @@ struct OnboardingContinueButtonModifier: ViewModifier {
     let isDisabled: Bool
     let onClick: () -> Void
 
-    init(title: String, isDisabled: Bool = false, onClick: @escaping () -> Void) {
+    init(title: String, isDisabled: Bool = false, onClick: @Sendable @escaping () -> Void) {
         self.title = title
         self.isDisabled = isDisabled
         self.onClick = onClick

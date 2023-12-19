@@ -10,7 +10,7 @@ final class Router {
 
     init() {}
 
-    func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
+    @Sendable func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
         if resetStack {
             reset()
         }

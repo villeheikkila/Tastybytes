@@ -2,7 +2,7 @@ import MessageUI
 import SwiftUI
 import UIKit
 
-public typealias SendMailCallback = (@Sendable (Result<MFMailComposeResult, Error>) -> Void)?
+public typealias SendMailCallback = ((Result<MFMailComposeResult, Error>) -> Void)?
 
 public struct SendEmailView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentation

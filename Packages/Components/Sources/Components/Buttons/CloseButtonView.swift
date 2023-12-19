@@ -3,9 +3,9 @@ import SwiftUI
 public struct CloseButtonView: View {
     @State private var isPressed = false
 
-    let action: () -> Void
+    let action: @MainActor () -> Void
 
-    public init(action: @escaping () -> Void) {
+    public init(action: @MainActor @escaping () -> Void) {
         self.action = action
     }
 

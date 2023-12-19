@@ -6,9 +6,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let logger = Logger(category: "BrandScreen")
-
 struct BrandScreen: View {
+    private let logger = Logger(category: "BrandScreen")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -181,7 +180,7 @@ struct BrandScreen: View {
         ForEach(productsByCategory) { category in
             Section(category.category.label) {
                 ForEach(category.products) { product in
-                    ProductRow(product: product)
+                    BrandScreenProductRow(product: product)
                 }
             }
             .headerProminence(.increased)
@@ -192,7 +191,7 @@ struct BrandScreen: View {
         ForEach(sortedSubBrands) { subBrand in
             Section {
                 ForEach(subBrand.products) { product in
-                    ProductRow(product: Product.Joined(
+                    BrandScreenProductRow(product: Product.Joined(
                         product: product,
                         subBrand: subBrand,
                         brand: brand
@@ -365,31 +364,6 @@ struct BrandScreen: View {
         }
     }
 
-    func getSummary() async {
-        async let summaryPromise = repository.brand.getSummaryById(id: brand.id)
-        switch await summaryPromise {
-        case let .success(summary):
-            self.summary = summary
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func getIsLikedBy() async {
-        switch await repository.brand.isLikedByCurrentUser(id: brand.id) {
-        case let .success(isLikedByCurrentUser):
-            withAnimation {
-                self.isLikedByCurrentUser = isLikedByCurrentUser
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to load like status. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
     func verifyBrand(brand: Brand.JoinedSubBrandsProductsCompany, isVerified: Bool) async {
         switch await repository.brand.verification(id: brand.id, isVerified: isVerified) {
         case .success:
@@ -468,78 +442,6 @@ struct BrandScreen: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete brand '\(toDeleteSubBrand.id)'. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-}
-
-private struct ProductRow: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(\.repository) private var repository
-    @Environment(Router.self) private var router
-    @State private var alertError: AlertError?
-    @State private var showDeleteProductConfirmationDialog = false
-    @State private var productToDelete: Product.Joined? {
-        didSet {
-            if productToDelete != nil {
-                showDeleteProductConfirmationDialog = true
-            }
-        }
-    }
-
-    let product: Product.Joined
-
-    var body: some View {
-        RouterLink(screen: .product(product)) {
-            ProductItemView(product: product)
-                .padding(2)
-                .contextMenu {
-                    RouterLink(sheet: .duplicateProduct(
-                        mode: profileEnvironmentModel
-                            .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
-                        product: product
-                    ), label: {
-                        if profileEnvironmentModel.hasPermission(.canMergeProducts) {
-                            Label("Merge to...", systemImage: "doc.on.doc")
-                        } else {
-                            Label("Mark as Duplicate", systemImage: "doc.on.doc")
-                        }
-                    })
-
-                    if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
-                        Button(
-                            "Delete",
-                            systemImage: "trash.fill",
-                            role: .destructive,
-                            action: { productToDelete = product }
-                        )
-                        .foregroundColor(.red)
-                        .disabled(product.isVerified)
-                    }
-                }
-        }
-        .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
-                            isPresented: $showDeleteProductConfirmationDialog,
-                            titleVisibility: .visible,
-                            presenting: productToDelete)
-        { presenting in
-            ProgressButton(
-                "Delete \(presenting.getDisplayName(.fullName))",
-                role: .destructive,
-                action: { await deleteProduct(presenting) }
-            )
-        }
-    }
-
-    func deleteProduct(_ product: Product.Joined) async {
-        switch await repository.product.delete(id: product.id) {
-        case .success:
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            router.removeLast()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }
 }

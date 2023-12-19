@@ -14,8 +14,9 @@ final class TabManager {
 
     private func scrollToTop() {
         resetNavigationOnTab = nil
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            self.resetNavigationOnTab = self.selection
+        Task {
+            try? await Task.sleep(for: .milliseconds(1))
+            resetNavigationOnTab = selection
         }
     }
 }
