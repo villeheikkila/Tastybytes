@@ -443,6 +443,16 @@
 			path = Sheets;
 			sourceTree = "<group>";
 		};
+		5C4CC1CE2B3CCDF90073B10F /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				C94722DC2AD1859D006DE096 /* Assets.xcassets */,
+				C94722DF2AD1859D006DE096 /* Preview Content */,
+				5C9057CF2B2894BE00EC157B /* Fonts */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		5C82E8802B2DCF9A00F2B369 /* FormFactor */ = {
 			isa = PBXGroup;
 			children = (
@@ -577,7 +587,6 @@
 			children = (
 				5C9057342B2894BE00EC157B /* Utils */,
 				5C9057C12B2894BE00EC157B /* Components */,
-				5C9057CF2B2894BE00EC157B /* Fonts */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1086,6 +1095,7 @@
 		C94722CC2AD1859C006DE096 = {
 			isa = PBXGroup;
 			children = (
+				5C4CC1CE2B3CCDF90073B10F /* Assets */,
 				5C885F102B28740800F17C78 /* Packages */,
 				C94723032AD185ED006DE096 /* Configurations */,
 				C94722D72AD1859C006DE096 /* Tastybytes */,
@@ -1109,8 +1119,6 @@
 				5CCEE2532B29AE4D00F276DF /* Features */,
 				5C9057E02B2894BE00EC157B /* Core */,
 				5C9057372B2894BE00EC157B /* Shared */,
-				C94722DC2AD1859D006DE096 /* Assets.xcassets */,
-				C94722DF2AD1859D006DE096 /* Preview Content */,
 			);
 			path = Tastybytes;
 			sourceTree = "<group>";
