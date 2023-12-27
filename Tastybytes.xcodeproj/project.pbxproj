@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; };
-		5C39076F2B3232420036253E /* FormfactorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C39076E2B3232420036253E /* FormfactorSelector.swift */; };
+		5C39076F2B3232420036253E /* LayoutSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C39076E2B3232420036253E /* LayoutSelector.swift */; };
 		5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8822B2DCFD600F2B369 /* TabManager.swift */; };
 		5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8862B2F63A100F2B369 /* SplashScreenProvider.swift */; };
 		5C82E88B2B2F678500F2B369 /* SubscriptionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E88A2B2F678500F2B369 /* SubscriptionProvider.swift */; };
@@ -195,7 +195,7 @@
 
 /* Begin PBXFileReference section */
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
-		5C39076E2B3232420036253E /* FormfactorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormfactorSelector.swift; sourceTree = "<group>"; };
+		5C39076E2B3232420036253E /* LayoutSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSelector.swift; sourceTree = "<group>"; };
 		5C82E8822B2DCFD600F2B369 /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		5C82E8862B2F63A100F2B369 /* SplashScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenProvider.swift; sourceTree = "<group>"; };
 		5C82E88A2B2F678500F2B369 /* SubscriptionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionProvider.swift; sourceTree = "<group>"; };
@@ -453,13 +453,13 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		5C82E8802B2DCF9A00F2B369 /* FormFactor */ = {
+		5C82E8802B2DCF9A00F2B369 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
 				5C9057382B2894BE00EC157B /* Tab */,
 				5C82E8882B2F65D400F2B369 /* Sidebar */,
 			);
-			path = FormFactor;
+			path = Layout;
 			sourceTree = "<group>";
 		};
 		5C82E8812B2DCFB400F2B369 /* Tabs */ = {
@@ -997,7 +997,7 @@
 				5C9057DF2B2894BE00EC157B /* MainApp.swift */,
 				5C82E8902B2F6C0E00F2B369 /* ContentView.swift */,
 				5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */,
-				5C39076E2B3232420036253E /* FormfactorSelector.swift */,
+				5C39076E2B3232420036253E /* LayoutSelector.swift */,
 				5C9057E32B2894BE00EC157B /* AppDelegate.swift */,
 			);
 			path = Core;
@@ -1098,7 +1098,7 @@
 				5C4CC1CE2B3CCDF90073B10F /* Assets */,
 				5C885F102B28740800F17C78 /* Packages */,
 				C94723032AD185ED006DE096 /* Configurations */,
-				C94722D72AD1859C006DE096 /* Tastybytes */,
+				C94722D72AD1859C006DE096 /* Source */,
 				C94722D62AD1859C006DE096 /* Products */,
 				C923F3602AD2E95B0041D01D /* Frameworks */,
 			);
@@ -1112,15 +1112,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C94722D72AD1859C006DE096 /* Tastybytes */ = {
+		C94722D72AD1859C006DE096 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				5C82E8802B2DCF9A00F2B369 /* FormFactor */,
+				5C82E8802B2DCF9A00F2B369 /* Layout */,
 				5CCEE2532B29AE4D00F276DF /* Features */,
 				5C9057E02B2894BE00EC157B /* Core */,
 				5C9057372B2894BE00EC157B /* Shared */,
 			);
-			path = Tastybytes;
+			path = Source;
 			sourceTree = "<group>";
 		};
 		C94722DF2AD1859D006DE096 /* Preview Content */ = {
@@ -1350,7 +1350,7 @@
 				5C9058582B2894BE00EC157B /* QuickAction.swift in Sources */,
 				5C9057F42B2894BE00EC157B /* BrandSheet.swift in Sources */,
 				5C9058352B2894BE00EC157B /* ProfileLocationsScreen.swift in Sources */,
-				5C39076F2B3232420036253E /* FormfactorSelector.swift in Sources */,
+				5C39076F2B3232420036253E /* LayoutSelector.swift in Sources */,
 				5C9058202B2894BE00EC157B /* AccountDeletedScreen.swift in Sources */,
 				5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */,
 				5CCEE27B2B2C770A00F276DF /* CheckInCardProduct.swift in Sources */,

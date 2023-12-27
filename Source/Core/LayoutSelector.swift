@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FormFactorSelector: View {
+struct LayoutSelector: View {
     var body: some View {
         if isPadOrMac() {
             SideBarView()

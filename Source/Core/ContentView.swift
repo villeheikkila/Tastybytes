@@ -15,7 +15,7 @@ struct ContentView: View {
                         authenticated: {
                             OnboardingProvider {
                                 AuthenticatedContentInitializer {
-                                    FormFactorSelector()
+                                    LayoutSelector()
                                 }
                             }
                         }, unauthenticated: {
