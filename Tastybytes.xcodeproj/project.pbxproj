@@ -32,12 +32,6 @@
 		5C885F092B2873CF00F17C78 /* LegacyUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F082B2873CF00F17C78 /* LegacyUIKit */; };
 		5C885F0C2B2873DE00F17C78 /* EnvironmentModels in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F0B2B2873DE00F17C78 /* EnvironmentModels */; };
 		5C885F0F2B2873EC00F17C78 /* Components in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F0E2B2873EC00F17C78 /* Components */; };
-		5C885F172B28740800F17C78 /* LegacyUIKit in Resources */ = {isa = PBXBuildFile; fileRef = 5C885F112B28740800F17C78 /* LegacyUIKit */; };
-		5C885F182B28740800F17C78 /* EnvironmentModels in Resources */ = {isa = PBXBuildFile; fileRef = 5C885F122B28740800F17C78 /* EnvironmentModels */; };
-		5C885F192B28740800F17C78 /* Repositories in Resources */ = {isa = PBXBuildFile; fileRef = 5C885F132B28740800F17C78 /* Repositories */; };
-		5C885F1A2B28740800F17C78 /* Models in Resources */ = {isa = PBXBuildFile; fileRef = 5C885F142B28740800F17C78 /* Models */; };
-		5C885F1B2B28740800F17C78 /* Extensions in Resources */ = {isa = PBXBuildFile; fileRef = 5C885F152B28740800F17C78 /* Extensions */; };
-		5C885F1C2B28740800F17C78 /* Components in Resources */ = {isa = PBXBuildFile; fileRef = 5C885F162B28740800F17C78 /* Components */; };
 		5C9057E52B2894BE00EC157B /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057352B2894BE00EC157B /* UserDefaults.swift */; };
 		5C9057E62B2894BE00EC157B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057362B2894BE00EC157B /* Utils.swift */; };
 		5C9057E72B2894BE00EC157B /* ActivityTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057392B2894BE00EC157B /* ActivityTab.swift */; };
@@ -1218,13 +1212,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C885F1C2B28740800F17C78 /* Components in Resources */,
-				5C885F1A2B28740800F17C78 /* Models in Resources */,
-				5C885F192B28740800F17C78 /* Repositories in Resources */,
-				5C885F172B28740800F17C78 /* LegacyUIKit in Resources */,
 				C94722E12AD1859D006DE096 /* Preview Assets.xcassets in Resources */,
-				5C885F182B28740800F17C78 /* EnvironmentModels in Resources */,
-				5C885F1B2B28740800F17C78 /* Extensions in Resources */,
 				C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */,
 				5C9058512B2894BE00EC157B /* Comfortaa-Bold.ttf in Resources */,
 			);
