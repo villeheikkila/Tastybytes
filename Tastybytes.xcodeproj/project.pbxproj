@@ -168,7 +168,6 @@
 		5CCEE2892B2D0C0100F276DF /* CheckInListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */; };
 		5CCEE28B2B2D11C400F276DF /* CheckInCardContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
-		C94722E12AD1859D006DE096 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722E02AD1859D006DE096 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -344,6 +343,7 @@
 		5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentProvider.swift; sourceTree = "<group>"; };
 		5C9057E32B2894BE00EC157B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C9057E42B2894BE00EC157B /* AuthEventObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthEventObserver.swift; sourceTree = "<group>"; };
+		5CBF5A072B3C70F700227A19 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCreationScreen.swift; sourceTree = "<group>"; };
 		5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCard.swift; sourceTree = "<group>"; };
 		5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardHeader.swift; sourceTree = "<group>"; };
@@ -355,7 +355,8 @@
 		5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContainer.swift; sourceTree = "<group>"; };
 		5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListCard.swift; sourceTree = "<group>"; };
 		5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContextMenu.swift; sourceTree = "<group>"; };
-		C923F3622AD2EE250041D01D /* MultiPlatform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MultiPlatform.xcconfig; sourceTree = "<group>"; };
+		5CDFB0922B3C794A009FAE6C /* Product.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Product.xcconfig; sourceTree = "<group>"; };
+		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Debug.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* Tastybytes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tastybytes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C94722DC2AD1859D006DE096 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1127,10 +1128,12 @@
 			children = (
 				C94722DE2AD1859D006DE096 /* Tastybytes.entitlements */,
 				C94723062AD1AC9E006DE096 /* Info.plist */,
-				C923F3622AD2EE250041D01D /* MultiPlatform.xcconfig */,
 				C94723052AD1870A006DE096 /* Tastybytes.xcconfig */,
 				C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */,
+				C923F3622AD2EE250041D01D /* Platform.xcconfig */,
 				C94723042AD185FB006DE096 /* Project.xcconfig */,
+				5CBF5A072B3C70F700227A19 /* Version.xcconfig */,
+				5CDFB0922B3C794A009FAE6C /* Product.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -1212,7 +1215,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C94722E12AD1859D006DE096 /* Preview Assets.xcassets in Resources */,
 				C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */,
 				5C9058512B2894BE00EC157B /* Comfortaa-Bold.ttf in Resources */,
 			);

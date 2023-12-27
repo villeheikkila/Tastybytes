@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>APP_NAME</key>
-	<string>${APP_NAME}</string>
+	<string>Tastybytes</string>
 	<key>BASE_URL</key>
 	<string>${BASE_URL}</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
