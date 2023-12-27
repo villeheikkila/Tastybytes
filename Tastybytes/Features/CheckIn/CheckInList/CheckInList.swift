@@ -29,6 +29,7 @@ struct CheckInList<Header>: View where Header: View {
     @State private var currentShowCheckInsFrom: CheckInSegment = .everyone
     // Dialogs
     @State private var alertError: AlertError?
+    @State private var errorContentUnavailable: AlertError?
 
     private let id: String
     private let header: Header
@@ -115,8 +116,20 @@ struct CheckInList<Header>: View where Header: View {
         .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
             oldValue && !newValue
         }
-        .background {
-            fetcher.emptyContentView.opacity(isContentUnavailable ? 1 : 0)
+        .overlay {
+            if let errorContentUnavailable {
+                ContentUnavailableView {
+                    Label("Feed couldn't be loaded", systemImage: "exclamationmark.triangle")
+                } actions: {
+                    Button("Reload") {
+                        refreshId += 1
+                    }
+                }
+            } else if isContentUnavailable {
+                fetcher.emptyContentView
+            }  else {
+                EmptyView()
+            }
         }
         .alertError($imageUploadEnvironmentModel.alertError)
         .alertError($alertError)
@@ -240,6 +253,7 @@ struct CheckInList<Header>: View where Header: View {
     ) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
+        errorContentUnavailable = nil
         switch await checkInFetcher(from: from, to: to) {
         case let .success(fetchedCheckIns):
             withAnimation {
@@ -254,8 +268,14 @@ struct CheckInList<Header>: View where Header: View {
                 await onComplete(checkIns)
             }
         case let .failure(error):
+            await splashScreenEnvironmentModel.dismiss()
             guard !error.isCancelled else { return }
-            alertError = AlertError(title: "Error occured while trying to load check-ins")
+            let e = AlertError(title: "Error occured while trying to load check-ins")
+            if checkIns.isEmpty {
+                errorContentUnavailable = e
+            } else {
+                alertError = e
+            }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
         }
         isLoading = false
