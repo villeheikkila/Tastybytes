@@ -287,6 +287,7 @@ struct CheckInScreen: View {
         commentText.isEmpty
     }
 
+    @MainActor
     func deleteCheckIn(_ checkIn: CheckIn) async {
         switch await repository.checkIn.delete(id: checkIn.id) {
         case .success:
@@ -342,6 +343,7 @@ struct CheckInScreen: View {
         }
     }
 
+    @MainActor
     func deleteCheckInAsModerator(_ checkIn: CheckIn) async {
         switch await repository.checkIn.deleteAsModerator(checkIn: checkIn) {
         case .success:

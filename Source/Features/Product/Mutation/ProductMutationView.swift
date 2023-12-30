@@ -465,7 +465,7 @@ struct ProductMutationInnerView: View {
             if isSheet {
                 dismiss()
             }
-            router.navigate(screen: .product(newProduct), removeLast: true)
+            await router.navigate(screen: .product(newProduct), removeLast: true)
             await onSuccess(newProduct)
         case let .failure(error):
             guard !error.isCancelled else { return }

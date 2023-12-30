@@ -7,11 +7,11 @@ enum Sheet: Identifiable, Equatable {
     case report(Report.Entity)
     case checkIn(CheckIn, onUpdate: @Sendable (_ checkIn: CheckIn) -> Void)
     case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) async -> Void)
-    case barcodeScanner(onComplete: @Sendable (_ barcode: Barcode) -> Void)
+    case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
     case productFilter(
         initialFilter: Product.Filter?,
         sections: [ProductFilterSheet.Sections],
-        onApply: @Sendable (_ filter: Product.Filter?) -> Void
+        onApply: (_ filter: Product.Filter?) -> Void
     )
     case nameTag(onSuccess: @Sendable (_ profileId: UUID) -> Void)
     case companySearch(onSelect: @Sendable (_ company: Company) -> Void)

@@ -3,14 +3,15 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 @Observable
 final class Router {
     private let logger = Logger(category: "Router")
-    var path = [Screen]()
+     var path = [Screen]()
 
     init() {}
 
-    @Sendable func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
+     func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
         if resetStack {
             reset()
         }
@@ -21,7 +22,7 @@ final class Router {
         }
     }
 
-    func reset() {
+     func reset() {
         path = []
     }
 

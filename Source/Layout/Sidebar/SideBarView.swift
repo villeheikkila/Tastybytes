@@ -29,6 +29,7 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
     }
 }
 
+@MainActor
 struct SideBarView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct VerificationScreen: View {
     enum VerificationType: String, CaseIterable, Identifiable {
         var id: Self { self }
@@ -96,6 +97,7 @@ struct VerificationScreen: View {
         }
     }
 
+    @MainActor
     private var unverifiedSubBrands: some View {
         ForEach(subBrands) { subBrand in
             HStack {

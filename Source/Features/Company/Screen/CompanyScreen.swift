@@ -200,6 +200,7 @@ struct CompanyScreen: View {
         }
     }
 
+    @MainActor
     func deleteCompany(_ company: Company) async {
         switch await repository.company.delete(id: company.id) {
         case .success:

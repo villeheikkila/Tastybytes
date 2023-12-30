@@ -420,6 +420,7 @@ struct BrandScreen: View {
         }
     }
 
+    @MainActor
     func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
         switch await repository.brand.delete(id: brand.id) {
         case .success:

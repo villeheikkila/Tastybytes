@@ -263,7 +263,8 @@ struct ProductScreen: View {
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
-
+    
+    @MainActor
     func deleteProduct(_ product: Product.Joined) async {
         switch await repository.product.delete(id: product.id) {
         case .success:

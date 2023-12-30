@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 enum Screen: Hashable, Codable, Sendable {
     case product(Product.Joined)
     case productFromBarcode(Product.Joined, Barcode)

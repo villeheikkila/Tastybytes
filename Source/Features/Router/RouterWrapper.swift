@@ -3,6 +3,7 @@ import Models
 import Repositories
 import SwiftUI
 
+@MainActor
 struct RouterWrapper<Content: View>: View {
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

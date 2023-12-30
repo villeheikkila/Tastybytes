@@ -15,7 +15,11 @@ struct ContentView: View {
                         authenticated: {
                             OnboardingProvider {
                                 AuthenticatedContentInitializer {
-                                    LayoutSelector()
+                                    LayoutSelector(sidebar: {
+                                        SideBarView()
+                                    }, tab: {
+                                        TabsView()
+                                    })
                                 }
                             }
                         }, unauthenticated: {

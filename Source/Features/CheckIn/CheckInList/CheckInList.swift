@@ -117,7 +117,7 @@ struct CheckInList<Header>: View where Header: View {
             oldValue && !newValue
         }
         .overlay {
-            if let errorContentUnavailable {
+            if errorContentUnavailable != nil {
                 ContentUnavailableView {
                     Label("Feed couldn't be loaded", systemImage: "exclamationmark.triangle")
                 } actions: {

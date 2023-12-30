@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct DiscoverScreen: View {
     private let logger = Logger(category: "SearchListView")
     @Environment(\.repository) private var repository
@@ -99,7 +100,7 @@ struct DiscoverScreen: View {
         }
         .navigationTitle("Discover")
         .dismissSplashScreen()
-        .task(id: searchKey, milliseconds: 200) { [searchKey] in
+        .task(id: searchKey, milliseconds: 200) {     @MainActor [searchKey] in
             guard let searchKey else {
                 logger.info("Empty search key. Reset.")
                 withAnimation {
@@ -317,13 +318,13 @@ struct DiscoverScreen: View {
             ForEach(products) { product in
                 ProductItemView(product: product, extras: [.checkInCheck, .rating])
                     .swipeActions {
-                        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { checkIn in
+                        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: {     @MainActor checkIn in
                             router.navigate(screen: .checkIn(checkIn))
                         })).tint(.green)
                     }
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
-                    .onTapGesture {
+                    .onTapGesture { 
                         if barcode == nil || product.barcodes.contains(where: { $0.isBarcode(barcode) }) {
                             router.navigate(screen: .product(product))
                         } else {
