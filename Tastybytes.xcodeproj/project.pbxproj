@@ -194,6 +194,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5C150DDB2B4004A100CC939E /* Compiler.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Compiler.xcconfig; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
 		5C39076E2B3232420036253E /* LayoutSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSelector.swift; sourceTree = "<group>"; };
 		5C82E8822B2DCFD600F2B369 /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
@@ -1142,6 +1143,7 @@
 				C94723042AD185FB006DE096 /* Project.xcconfig */,
 				5CBF5A072B3C70F700227A19 /* Version.xcconfig */,
 				5CDFB0922B3C794A009FAE6C /* Product.xcconfig */,
+				5C150DDB2B4004A100CC939E /* Compiler.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
