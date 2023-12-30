@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo library makes it possible to add photos from the gallery. Full access is needed to fill in metadata such as location and time.</string>
 	<key>APP_NAME</key>
 	<string>Tastybytes</string>
 	<key>BASE_URL</key>
