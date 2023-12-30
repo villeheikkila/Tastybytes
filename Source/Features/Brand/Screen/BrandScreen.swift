@@ -114,7 +114,7 @@ struct BrandScreen: View {
             #endif
                 .task(id: refreshId) { [refreshId] in
                         guard refreshId != resultId else { return }
-                        logger.error("Refreshing brand screen with id: \(refreshId)")
+                        logger.info("Refreshing brand screen with id: \(refreshId)")
                         await getBrandData()
                         resultId = refreshId
                     }

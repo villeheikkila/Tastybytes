@@ -137,7 +137,7 @@ struct CheckInScreen: View {
         }
         .task(id: refreshId) { [refreshId] in
             guard refreshId != resultId else { return }
-            logger.error("Refreshing check-in screen with id: \(refreshId)")
+            logger.info("Refreshing check-in screen with id: \(refreshId)")
             await loadCheckInData()
             resultId = refreshId
         }

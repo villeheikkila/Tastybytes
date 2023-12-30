@@ -70,7 +70,7 @@ struct ProfileHeader: View {
         }
         .task(id: refreshId) { [refreshId] in
             guard refreshId != resultId else { return }
-            logger.error("Refreshing profile screen with id: \(refreshId)")
+            logger.info("Refreshing profile screen with id: \(refreshId)")
             await getProfileData()
             resultId = refreshId
         }

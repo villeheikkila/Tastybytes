@@ -81,11 +81,11 @@ struct CheckInList<Header>: View where Header: View {
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         ScrollView {
-            header
-            if fetcher.showCheckInSegmentationPicker {
-                checkInSegments
-            }
             LazyVStack {
+                header
+                if fetcher.showCheckInSegmentationPicker {
+                    checkInSegments
+                }
                 ForEach(checkIns) { checkIn in
                     CheckInListCard(
                         checkIn: checkIn,

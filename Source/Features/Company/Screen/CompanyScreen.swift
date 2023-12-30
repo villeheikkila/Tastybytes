@@ -86,7 +86,7 @@ struct CompanyScreen: View {
         }
         .task(id: refreshId) { [refreshId] in
             guard refreshId != resultId else { return }
-            logger.error("Refreshing company screen with id: \(refreshId)")
+            logger.info("Refreshing company screen with id: \(refreshId)")
             await getCompanyData()
             resultId = refreshId
         }

@@ -61,7 +61,7 @@ struct ProductScreen: View {
         }
         .task(id: refreshId) { [refreshId] in
             guard refreshId != resultId else { return }
-            logger.error("Refreshing product screen with id: \(refreshId)")
+            logger.info("Refreshing product screen with id: \(refreshId)")
             await getProductData()
             resultId = refreshId
         }
@@ -244,7 +244,7 @@ struct ProductScreen: View {
             alertError = .init()
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
-        logger.error("Refreshing product page completed, refresh id: \(refreshId)")
+        logger.info("Refreshing product page completed, refresh id: \(refreshId)")
     }
 
     func refreshCheckIns() {
