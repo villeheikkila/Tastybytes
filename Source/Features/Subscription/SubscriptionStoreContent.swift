@@ -1,5 +1,6 @@
 import StoreKit
 import SwiftUI
+import Models
 
 struct SubscriptionStoreContentView: View {
     var body: some View {
@@ -24,7 +25,7 @@ extension SubscriptionStoreContentView {
     }
 
     var title: some View {
-        Text("Tastybytes Pro")
+        Text("\(Config.appName) Pro")
             .font(.largeTitle.bold())
     }
 

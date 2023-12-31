@@ -15,7 +15,7 @@ struct AuthenticationScreen: View {
     @State private var openUrlInWebView: WebViewLink?
 
     var privacyPolicyString: String =
-        "Welcome to Tastybytes! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](\(Config.privacyPolicyUrl))"
+        "Welcome to \(Config.appName)! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](\(Config.privacyPolicyUrl))"
 
     var body: some View {
         VStack(alignment: .center) {

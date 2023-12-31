@@ -6,4 +6,4 @@ DerivedData/
 .netrc
 .build/
 
-/Environment.xcconfig
+/Config.xcconfig
