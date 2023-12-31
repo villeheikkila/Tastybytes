@@ -6,12 +6,21 @@ struct TabsView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var tabManager = TabManager()
-
+    
     private var shownTabs: [Tab] {
         if profileEnvironmentModel.hasRole(.admin) {
             [.activity, .discover, .notifications, .admin, .profile]
         } else {
             [.activity, .discover, .notifications, .profile]
+        }
+    }
+
+    private var badge: Int {
+        switch tabManager.selection {
+        case .notifications:
+            notificationEnvironmentModel.unreadCount
+        default:
+            0
         }
     }
 
@@ -38,7 +47,7 @@ struct TabsView: View {
                 tab.label
             }
             .tag(tab)
-            .badge(getBadgeByTab(tab))
+            .badge(badge)
         }
     }
 
@@ -62,14 +71,5 @@ struct TabsView: View {
                     }
                 }
             }
-    }
-
-    private func getBadgeByTab(_ tab: Tab) -> Int {
-        switch tab {
-        case .notifications:
-            notificationEnvironmentModel.unreadCount
-        default:
-            0
-        }
     }
 }
