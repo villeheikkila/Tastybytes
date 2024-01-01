@@ -18,3 +18,10 @@ SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES
 INFOPLIST_KEY_UISupportedInterfaceOrientations[sdk=watch*] = UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown
 INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad[sdk=iphone*] = UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone[sdk=iphone*] = UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+
+//-- Deployment Targets
+MACOSX_DEPLOYMENT_TARGET = 14.0
+IPHONEOS_DEPLOYMENT_TARGET = 17.2
+TVOS_DEPLOYMENT_TARGET = 17.2
+WATCHOS_DEPLOYMENT_TARGET = 10.0
+VISIONOS_DEPLOYMENT_TARGET = 1.0
