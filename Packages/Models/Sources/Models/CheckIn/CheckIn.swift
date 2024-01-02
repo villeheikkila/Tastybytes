@@ -135,12 +135,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         } else {
             blurHash = nil
         }
-        let checkInAtString = try values.decodeIfPresent(String.self, forKey: .checkInAt)
-        if let checkInAtString {
-            checkInAt = Date(timestamptzString: checkInAtString)
-        } else {
-            checkInAt = nil
-        }
+        checkInAt = try values.decodeIfPresent(Date.self, forKey: .checkInAt)
         profile = try values.decode(Profile.self, forKey: .profile)
         product = try values.decode(Product.Joined.self, forKey: .product)
         checkInReactions = try values.decode([CheckInReaction].self, forKey: .checkInReactions)
@@ -159,11 +154,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         try container.encodeIfPresent(review, forKey: .review)
         try container.encodeIfPresent(imageFile, forKey: .imageFile)
         try container.encodeIfPresent(blurHash?.encoded, forKey: .blurHash)
-        var checkInAtString: String? = nil
-        if let checkInAt {
-            checkInAtString = CustomDateFormatter.shared.format(date: checkInAt, .timestampTz)
-        }
-        try container.encodeIfPresent(checkInAtString, forKey: .checkInAt)
+        try container.encodeIfPresent(checkInAt, forKey: .checkInAt)
         try container.encode(profile, forKey: .profile)
         try container.encode(product, forKey: .product)
         try container.encode(checkInReactions, forKey: .checkInReactions)
