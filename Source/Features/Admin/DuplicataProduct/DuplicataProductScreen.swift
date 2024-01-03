@@ -30,8 +30,8 @@ struct DuplicateProductScreen: View {
                         AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
                         Text(createdBy.preferredName).font(.caption).bold()
                         Spacer()
-                        if let createdAt = product.createdAt, let date = Date(timestamptzString: createdAt) {
-                            Text(date.customFormat(.relativeTime)).font(.caption).bold()
+                        if let createdAt = product.createdAt {
+                            Text(createdAt.customFormat(.relativeTime)).font(.caption).bold()
                         }
                     }
                 }

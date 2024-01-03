@@ -94,12 +94,7 @@ public extension ProductBarcode {
             barcode = try values.decode(String.self, forKey: .barcode)
             type = try values.decode(String.self, forKey: .type)
             profile = try values.decode(Profile.self, forKey: .profiles)
-            let timestamp = try values.decode(String.self, forKey: .createdAt)
-            if let createdAt = Date(timestamptzString: timestamp) {
-                self.createdAt = createdAt
-            } else {
-                throw DateParsingError.unsupportedFormat
-            }
+            createdAt = try values.decode(Date.self, forKey: .createdAt)
         }
 
         public func encode(to encoder: Encoder) throws {

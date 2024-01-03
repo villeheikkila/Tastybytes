@@ -339,7 +339,7 @@ public extension Product {
         public let averageRating: Double?
         public let currentUserCheckIns: Int?
         public let createdBy: Profile?
-        public let createdAt: String?
+        public let createdAt: Date?
         public let isDiscontinued: Bool
 
         public func getDisplayName(_ part: NameParts) -> String {

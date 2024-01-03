@@ -48,19 +48,8 @@ extension Notification: Codable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
-
-        let timestamp = try values.decode(String.self, forKey: .createdAt)
-        if let createdAt = Date(timestamptzString: timestamp) {
-            self.createdAt = createdAt
-        } else {
-            throw DateParsingError.unsupportedFormat
-        }
-
-        if let date = try values.decodeIfPresent(String.self, forKey: .seenAt) {
-            seenAt = Date(timestamptzString: date)
-        } else {
-            seenAt = nil
-        }
+        createdAt = try values.decode(Date.self, forKey: .createdAt)
+        seenAt = try values.decodeIfPresent(Date.self, forKey: .seenAt)
 
         let message = try values.decodeIfPresent(String.self, forKey: .message)
         let friendRequest = try values.decodeIfPresent(Friend.self, forKey: .friendRequest)
