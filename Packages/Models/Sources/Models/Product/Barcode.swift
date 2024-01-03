@@ -28,20 +28,6 @@ public struct ProductBarcode: Identifiable, Hashable, Codable, Sendable {
     public let barcode: String
     public let type: String
 
-    public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        barcode = try values.decode(String.self, forKey: .barcode)
-        type = try values.decode(String.self, forKey: .type)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(barcode, forKey: .barcode)
-        try container.encode(type, forKey: .type)
-    }
-
     public func isBarcode(_ code: Barcode?) -> Bool {
         guard let code else { return false }
         return type == code.type && barcode == code.barcode
@@ -108,22 +94,6 @@ public extension ProductBarcode {
 
         enum CodingKeys: String, CodingKey {
             case id, barcode, type, product = "products"
-        }
-
-        public init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            id = try values.decode(Int.self, forKey: .id)
-            barcode = try values.decode(String.self, forKey: .barcode)
-            type = try values.decode(String.self, forKey: .type)
-            product = try values.decode(Product.Joined.self, forKey: .product)
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(id, forKey: .id)
-            try container.encode(barcode, forKey: .barcode)
-            try container.encode(type, forKey: .type)
-            try container.encode(product, forKey: .product)
         }
     }
 }

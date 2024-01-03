@@ -191,22 +191,6 @@ public extension CheckIn {
             case imageFile = "image_file"
             case createdBy = "created_by"
         }
-
-        public init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            id = try values.decode(Int.self, forKey: .id)
-            createdBy = try values.decode(UUID.self, forKey: .createdBy)
-            imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
-            blurHash = try values.decodeIfPresent(BlurHash.self, forKey: .blurHash)
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(id, forKey: .id)
-            try container.encode(createdBy, forKey: .createdBy)
-            try container.encodeIfPresent(imageFile, forKey: .imageFile)
-            try container.encodeIfPresent(blurHash, forKey: .blurHash)
-        }
     }
 
     struct BlurHash: Hashable, Sendable, Codable {
