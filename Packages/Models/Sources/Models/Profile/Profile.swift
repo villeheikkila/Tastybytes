@@ -32,13 +32,7 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(UUID.self, forKey: .id)
-        let joinedAtRaw = try values.decode(String.self, forKey: .joinedAt)
-
-        if let date = CustomDateFormatter.shared.parse(string: joinedAtRaw, .date) {
-            joinedAt = date
-        } else {
-            joinedAt = Date()
-        }
+        joinedAt = try values.decode(Date.self, forKey: .joinedAt)
         preferredName = try values.decode(String.self, forKey: .preferredName)
         isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
         avatarFile = try values.decodeIfPresent(String.self, forKey: .avatarFile)
@@ -47,8 +41,7 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        let joinedAtRaw = CustomDateFormatter.shared.format(date: joinedAt, .date)
-        try container.encode(joinedAtRaw, forKey: .joinedAt)
+        try container.encode(joinedAt, forKey: .joinedAt)
         try container.encode(preferredName, forKey: .preferredName)
         try container.encode(isPrivate, forKey: .isPrivate)
         try container.encodeIfPresent(avatarFile, forKey: .avatarFile)
@@ -157,13 +150,7 @@ public extension Profile {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             id = try values.decode(UUID.self, forKey: .id)
             username = try values.decodeIfPresent(String.self, forKey: .username)
-            let joinedAtRaw = try values.decode(String.self, forKey: .joinedAt)
-
-            if let date = CustomDateFormatter.shared.parse(string: joinedAtRaw, .date) {
-                joinedAt = date
-            } else {
-                joinedAt = Date()
-            }
+            joinedAt = try values.decode(Date.self, forKey: .joinedAt)
             preferredName = try values.decodeIfPresent(String.self, forKey: .preferredName) ?? ""
             isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
             isOnboarded = try values.decode(Bool.self, forKey: .isOnboarded)
@@ -172,7 +159,6 @@ public extension Profile {
             avatarFile = try values.decodeIfPresent(String.self, forKey: .avatarFile)
             nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
             roles = try values.decode([Role].self, forKey: .roles)
-
             settings = try values.decode(ProfileSettings.self, forKey: .settings)
         }
 
