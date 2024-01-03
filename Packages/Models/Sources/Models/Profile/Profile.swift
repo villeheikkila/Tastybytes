@@ -28,24 +28,6 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
         case avatarFile = "avatar_file"
         case joinedAt = "joined_at"
     }
-
-    public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(UUID.self, forKey: .id)
-        joinedAt = try values.decode(Date.self, forKey: .joinedAt)
-        preferredName = try values.decode(String.self, forKey: .preferredName)
-        isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
-        avatarFile = try values.decodeIfPresent(String.self, forKey: .avatarFile)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(joinedAt, forKey: .joinedAt)
-        try container.encode(preferredName, forKey: .preferredName)
-        try container.encode(isPrivate, forKey: .isPrivate)
-        try container.encodeIfPresent(avatarFile, forKey: .avatarFile)
-    }
 }
 
 public extension Profile {
@@ -175,7 +157,7 @@ public extension Profile {
             try container.encodeIfPresent(avatarFile, forKey: .avatarFile)
             try container.encode(nameDisplay, forKey: .nameDisplay)
             try container.encode(roles, forKey: .roles)
-            try container.encode([settings], forKey: .settings)
+            try container.encode(settings, forKey: .settings)
         }
     }
 }

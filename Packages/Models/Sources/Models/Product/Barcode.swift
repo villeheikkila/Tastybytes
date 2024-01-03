@@ -17,18 +17,6 @@ public struct Barcode: Codable, Hashable, Sendable, Identifiable {
     public var id: String {
         "\(type)_\(barcode)"
     }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        barcode = try container.decode(String.self, forKey: .barcode)
-        type = try container.decode(String.self, forKey: .type)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(barcode, forKey: .barcode)
-        try container.encode(type, forKey: .type)
-    }
 }
 
 public struct ProductBarcode: Identifiable, Hashable, Codable, Sendable {
