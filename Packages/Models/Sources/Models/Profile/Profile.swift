@@ -157,7 +157,7 @@ public extension Profile {
             try container.encodeIfPresent(avatarFile, forKey: .avatarFile)
             try container.encode(nameDisplay, forKey: .nameDisplay)
             try container.encode(roles, forKey: .roles)
-            try container.encode(settings, forKey: .settings)
+            try container.encode([settings], forKey: .settings)
         }
     }
 }

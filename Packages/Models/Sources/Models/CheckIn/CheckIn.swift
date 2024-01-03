@@ -129,12 +129,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         rating = try values.decodeIfPresent(Double.self, forKey: .rating)
         review = try values.decodeIfPresent(String.self, forKey: .review)
         imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
-        let blurHashString = try values.decodeIfPresent(String.self, forKey: .blurHash)
-        if let blurHashString {
-            blurHash = try BlurHash(str: blurHashString)
-        } else {
-            blurHash = nil
-        }
+        blurHash = try values.decodeIfPresent(BlurHash.self, forKey: .blurHash)
         checkInAt = try values.decodeIfPresent(Date.self, forKey: .checkInAt)
         profile = try values.decode(Profile.self, forKey: .profile)
         product = try values.decode(Product.Joined.self, forKey: .product)
@@ -153,7 +148,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         try container.encodeIfPresent(rating, forKey: .rating)
         try container.encodeIfPresent(review, forKey: .review)
         try container.encodeIfPresent(imageFile, forKey: .imageFile)
-        try container.encodeIfPresent(blurHash?.encoded, forKey: .blurHash)
+        try container.encodeIfPresent(blurHash, forKey: .blurHash)
         try container.encodeIfPresent(checkInAt, forKey: .checkInAt)
         try container.encode(profile, forKey: .profile)
         try container.encode(product, forKey: .product)
@@ -202,12 +197,7 @@ public extension CheckIn {
             id = try values.decode(Int.self, forKey: .id)
             createdBy = try values.decode(UUID.self, forKey: .createdBy)
             imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
-            let blurHashString = try values.decodeIfPresent(String.self, forKey: .blurHash)
-            if let blurHashString {
-                blurHash = try BlurHash(str: blurHashString)
-            } else {
-                blurHash = nil
-            }
+            blurHash = try values.decodeIfPresent(BlurHash.self, forKey: .blurHash)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -215,11 +205,11 @@ public extension CheckIn {
             try container.encode(id, forKey: .id)
             try container.encode(createdBy, forKey: .createdBy)
             try container.encodeIfPresent(imageFile, forKey: .imageFile)
-            try container.encodeIfPresent(blurHash?.encoded, forKey: .blurHash)
+            try container.encodeIfPresent(blurHash, forKey: .blurHash)
         }
     }
 
-    struct BlurHash: Hashable, Sendable {
+    struct BlurHash: Hashable, Sendable, Codable {
         enum BlurHashError: Error {
             case genericError
         }
@@ -246,9 +236,38 @@ public extension CheckIn {
             self.width = width
             self.height = height
         }
-
+        
         public var encoded: String {
             "\(width):\(height):::\(hash)"
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encode("\(width):\(height):::\(hash)")
+        }
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            let str = try container.decode(String.self)
+            let components = str.components(separatedBy: ":::")
+            
+            guard let dimensions = components.first?.components(separatedBy: ":") else {
+                throw BlurHashError.genericError
+            }
+            
+            guard let width = Double(dimensions[0]) else {
+                 throw BlurHashError.genericError
+            }
+           
+            guard let height = Double(dimensions[1]) else {
+                throw BlurHashError.genericError
+            }
+            
+            let hash = components[1]
+            
+            self.hash = hash
+            self.width = width
+            self.height = height
         }
     }
 
