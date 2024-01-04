@@ -9,7 +9,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-// TODO: Remove this hack after MKLocalSearch.Response is actually sendable
 extension MKLocalSearch.Response: @unchecked Sendable {}
 
 @MainActor

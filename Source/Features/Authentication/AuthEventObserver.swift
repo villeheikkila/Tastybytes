@@ -32,7 +32,7 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View, Loading: Vi
             if case .authenticated = authState {
                 Task {
                     await profileEnvironmentModel.initialize()
-                    guard let deviceTokenForPusNotifications else { return }
+                    guard let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications else { return }
                     await notificationEnvironmentModel
                         .refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
                 }

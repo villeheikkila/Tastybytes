@@ -2,6 +2,8 @@ import OSLog
 import StoreKit
 import SwiftUI
 
+extension StoreKit.Product.SubscriptionInfo.Status: @unchecked Sendable {}
+
 actor ProductSubscription {
     private let logger = Logger(category: "ProductSubscription")
     private(set) static var shared: ProductSubscription! //  swiftlint:disable:this implicitly_unwrapped_optional

@@ -2,6 +2,10 @@ import EnvironmentModels
 import OSLog
 import SwiftUI
 
+extension UNUserNotificationCenter: @unchecked Sendable {}
+extension UNNotification: @unchecked Sendable {}
+
+@MainActor
 final class AppDelegate: NSObject, UIApplicationDelegate {
     private let logger = Logger(category: "AppDelegate")
 
@@ -23,7 +27,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
         if let shortcutItem = options.shortcutItem {
-            selectedQuickAction = shortcutItem
+            Task {
+               await quickActionActor.setSelectedQuickAction(shortcutItem)
+            }
         }
 
         let sceneConfiguration = UISceneConfiguration(
@@ -46,7 +52,9 @@ class SceneConfiguration: UIResponder, UIWindowSceneDelegate {
         performActionFor shortcutItem: UIApplicationShortcutItem,
         completionHandler _: @escaping (Bool) -> Void
     ) {
-        selectedQuickAction = shortcutItem
+        Task {
+            await quickActionActor.setSelectedQuickAction(shortcutItem)
+        }
     }
 }
 
@@ -82,6 +90,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
     {
         let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
-        deviceTokenForPusNotifications = deviceTokenString
+        Task {
+          await  deviceTokenActor.setDeviceTokenForPusNotifications(deviceTokenString)
+        }
     }
 }
