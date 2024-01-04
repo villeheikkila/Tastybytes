@@ -220,35 +220,35 @@ public extension CheckIn {
             self.width = width
             self.height = height
         }
-        
+
         public var encoded: String {
             "\(width):\(height):::\(hash)"
         }
-        
+
         public func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             try container.encode("\(width):\(height):::\(hash)")
         }
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
             let str = try container.decode(String.self)
             let components = str.components(separatedBy: ":::")
-            
+
             guard let dimensions = components.first?.components(separatedBy: ":") else {
                 throw BlurHashError.genericError
             }
-            
+
             guard let width = Double(dimensions[0]) else {
-                 throw BlurHashError.genericError
+                throw BlurHashError.genericError
             }
-           
+
             guard let height = Double(dimensions[1]) else {
                 throw BlurHashError.genericError
             }
-            
+
             let hash = components[1]
-            
+
             self.hash = hash
             self.width = width
             self.height = height

@@ -7,7 +7,7 @@ struct TabsView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var tabManager = TabManager()
-    
+
     private var shownTabs: [Tab] {
         if profileEnvironmentModel.hasRole(.admin) {
             [.activity, .discover, .notifications, .admin, .profile]

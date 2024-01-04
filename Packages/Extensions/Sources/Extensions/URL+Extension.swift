@@ -7,4 +7,3 @@ extension URL {
         // swiftlint:enable force_unwrapping
     }
 }
-

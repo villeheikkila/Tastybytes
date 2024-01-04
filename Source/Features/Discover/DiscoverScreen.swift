@@ -100,7 +100,7 @@ struct DiscoverScreen: View {
         }
         .navigationTitle("Discover")
         .dismissSplashScreen()
-        .task(id: searchKey, milliseconds: 200) {     @MainActor [searchKey] in
+        .task(id: searchKey, milliseconds: 200) { @MainActor [searchKey] in
             guard let searchKey else {
                 logger.info("Empty search key. Reset.")
                 withAnimation {
@@ -280,7 +280,7 @@ struct DiscoverScreen: View {
     }
 
     @ViewBuilder private var productResults: some View {
-        if barcode != nil && !showContentUnavailableView {
+        if barcode != nil, !showContentUnavailableView {
             Section {
                 Text(
                     """
@@ -295,7 +295,7 @@ struct DiscoverScreen: View {
             }
         }
 
-        if currentScopeIsEmpty && addBarcodeTo == nil && searchKey == nil {
+        if currentScopeIsEmpty, addBarcodeTo == nil, searchKey == nil {
             Section("Feeds") {
                 Group {
                     RouterLink(
@@ -320,13 +320,13 @@ struct DiscoverScreen: View {
             ForEach(products) { product in
                 ProductItemView(product: product, extras: [.checkInCheck, .rating])
                     .swipeActions {
-                        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: {     @MainActor checkIn in
+                        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { @MainActor checkIn in
                             router.navigate(screen: .checkIn(checkIn))
                         })).tint(.green)
                     }
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
-                    .onTapGesture { 
+                    .onTapGesture {
                         if barcode == nil || product.barcodes.contains(where: { $0.isBarcode(barcode) }) {
                             router.navigate(screen: .product(product))
                         } else {

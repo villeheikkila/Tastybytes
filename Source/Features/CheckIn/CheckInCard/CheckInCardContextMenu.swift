@@ -33,7 +33,7 @@ extension View {
                     RouterLink(
                         "Check-in",
                         systemImage: "pencil",
-                        sheet: .newCheckIn(checkIn.product, onCreation: {@MainActor checkIn in
+                        sheet: .newCheckIn(checkIn.product, onCreation: { @MainActor checkIn in
                             router.navigate(screen: .checkIn(checkIn))
                         })
                     )

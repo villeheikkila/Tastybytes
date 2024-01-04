@@ -317,11 +317,11 @@ public extension Product {
         public var label: String {
             switch self {
             case .topRated:
-                return "Top Rated"
+                "Top Rated"
             case .trending:
-                return "Trending"
+                "Trending"
             case .latest:
-                return "Latest"
+                "Latest"
             }
         }
     }
@@ -345,18 +345,18 @@ public extension Product {
         public func getDisplayName(_ part: NameParts) -> String {
             switch part {
             case .full:
-                return [
+                [
                     subBrand.brand.brandOwner.name,
                     subBrand.brand.name,
                     subBrand.name,
                     name,
                     isDiscontinued ? "(discontinued)" : nil,
                 ]
-                    .joinOptionalSpace()
+                .joinOptionalSpace()
             case .brandOwner:
-                return subBrand.brand.brandOwner.name
+                subBrand.brand.brandOwner.name
             case .fullName:
-                return [subBrand.brand.name, subBrand.name, name, isDiscontinued ? "(discontinued)" : nil]
+                [subBrand.brand.name, subBrand.name, name, isDiscontinued ? "(discontinued)" : nil]
                     .joinOptionalSpace()
             }
         }
@@ -581,7 +581,7 @@ public extension Product {
 
 extension CaseIterable where Self: RawRepresentable, Self.RawValue == String {
     static var allValues: [String] {
-        return allCases.map { $0.rawValue }
+        allCases.map(\.rawValue)
     }
 }
 

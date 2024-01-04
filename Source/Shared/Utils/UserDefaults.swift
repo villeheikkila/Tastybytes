@@ -11,7 +11,7 @@ enum UserDefaultsKey: String, CaseIterable {
 }
 
 extension UserDefaults {
-    func set<Element: Codable>(value: Element, forKey key: UserDefaultsKey) {
+    func set(value: some Codable, forKey key: UserDefaultsKey) {
         let data = try? JSONEncoder().encode(value)
         UserDefaults.standard.setValue(data, forKey: key.rawValue)
     }
@@ -22,7 +22,7 @@ extension UserDefaults {
         return element
     }
 
-    func set<Element: Codable>(value: Element, prefix: UserDefaultsKey, key: String) {
+    func set(value: some Codable, prefix: UserDefaultsKey, key: String) {
         let data = try? JSONEncoder().encode(value)
         UserDefaults.standard.setValue(data, forKey: "\(prefix)_\(key)")
     }

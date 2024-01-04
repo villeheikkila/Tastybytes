@@ -11,7 +11,7 @@ actor DeviceTokenActor {
 
     var deviceTokenForPusNotifications: String? {
         get {
-            return _deviceTokenForPusNotifications
+            _deviceTokenForPusNotifications
         }
         set {
             _deviceTokenForPusNotifications = newValue
@@ -28,13 +28,13 @@ actor QuickActionActor {
 
     var selectedQuickAction: UIApplicationShortcutItem? {
         get {
-            return _selectedQuickAction
+            _selectedQuickAction
         }
         set {
             _selectedQuickAction = newValue
         }
     }
-    
+
     func setSelectedQuickAction(_ newValue: UIApplicationShortcutItem?) async {
         _selectedQuickAction = newValue
     }
@@ -56,26 +56,26 @@ struct MainApp: App {
             ContentView()
         }
         .onChange(of: phase) { _, newPhase in
-                switch newPhase {
-                case .active:
-                    logger.info("Scene phase is active.")
-                    Task {
-                        let quickAction = await quickActionActor.selectedQuickAction
-                        if let name = quickAction?.userInfo?["name"] as? String,
-                           let quickAction = QuickAction(rawValue: name)
-                        {
-                            await UIApplication.shared.open(quickAction.url)
-                            await quickActionActor.setSelectedQuickAction(nil)
-                        }
+            switch newPhase {
+            case .active:
+                logger.info("Scene phase is active.")
+                Task {
+                    let quickAction = await quickActionActor.selectedQuickAction
+                    if let name = quickAction?.userInfo?["name"] as? String,
+                       let quickAction = QuickAction(rawValue: name)
+                    {
+                        await UIApplication.shared.open(quickAction.url)
+                        await quickActionActor.setSelectedQuickAction(nil)
                     }
-                case .inactive:
-                    logger.info("Scene phase is inactive.")
-                case .background:
-                    logger.info("Scene phase is background.")
-                    UIApplication.shared.shortcutItems = QuickAction.allCases.map(\.shortcutItem)
-                @unknown default:
-                    logger.info("Scene phase is unknown.")
                 }
+            case .inactive:
+                logger.info("Scene phase is inactive.")
+            case .background:
+                logger.info("Scene phase is background.")
+                UIApplication.shared.shortcutItems = QuickAction.allCases.map(\.shortcutItem)
+            @unknown default:
+                logger.info("Scene phase is unknown.")
             }
+        }
     }
 }

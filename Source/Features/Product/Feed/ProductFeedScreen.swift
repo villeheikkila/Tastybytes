@@ -30,9 +30,9 @@ struct ProductFeedScreen: View {
 
     var title: String {
         if let categoryFilter {
-            return "\(feed.label): \(categoryFilter.name)"
+            "\(feed.label): \(categoryFilter.name)"
         } else {
-            return feed.label
+            feed.label
         }
     }
 
@@ -54,7 +54,7 @@ struct ProductFeedScreen: View {
                         }
                     }
             }
-            if isLoading && !isRefreshing {
+            if isLoading, !isRefreshing {
                 ProgressView()
                     .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
                     .listRowSeparator(.hidden)
@@ -74,17 +74,17 @@ struct ProductFeedScreen: View {
         }
         #endif
         .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                toolbarContent
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
+            toolbarContent
+        }
+        .alertError($alertError)
+        .task {
+            if products.isEmpty {
+                await fetchProductFeedItems()
             }
-            .alertError($alertError)
-            .task {
-                if products.isEmpty {
-                    await fetchProductFeedItems()
-                }
-            }
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

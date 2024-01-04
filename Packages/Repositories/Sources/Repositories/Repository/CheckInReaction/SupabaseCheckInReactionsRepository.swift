@@ -9,8 +9,8 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
             let response: CheckInReaction = try await client
                 .database
                 .rpc(fn: .createCheckInReaction, params: newCheckInReaction)
-                .select( CheckInReaction.getQuery(.joinedProfile(false)))
-                .limit( 1)
+                .select(CheckInReaction.getQuery(.joinedProfile(false)))
+                .limit(1)
                 .single()
                 .execute()
                 .value

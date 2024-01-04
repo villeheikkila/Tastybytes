@@ -77,8 +77,8 @@ public func clearTemporaryData() {
 @MainActor
 public func getCurrentAppIcon() -> AppIcon {
     if let alternateAppIcon = UIApplication.shared.alternateIconName {
-        return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
+        AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
     } else {
-        return AppIcon.ramune
+        AppIcon.ramune
     }
 }

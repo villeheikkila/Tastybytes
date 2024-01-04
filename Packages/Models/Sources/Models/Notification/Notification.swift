@@ -26,10 +26,10 @@ public struct Notification: Identifiable, Hashable {
     public func copyWith(id: Int? = nil, createdAt: Date? = nil, seenAt: Date?? = nil,
                          content: Content? = nil) -> Notification
     {
-        return Notification(id: id ?? self.id,
-                            createdAt: createdAt ?? self.createdAt,
-                            seenAt: seenAt ?? self.seenAt,
-                            content: content ?? self.content)
+        Notification(id: id ?? self.id,
+                     createdAt: createdAt ?? self.createdAt,
+                     seenAt: seenAt ?? self.seenAt,
+                     content: content ?? self.content)
     }
 }
 

@@ -9,9 +9,9 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
             let result: CheckInComment = try await client
                 .database
                 .from(.checkInComments)
-                .insert( newCheckInComment, returning: .representation)
-                .select( CheckInComment.getQuery(.joinedProfile(false)))
-                .limit( 1)
+                .insert(newCheckInComment, returning: .representation)
+                .select(CheckInComment.getQuery(.joinedProfile(false)))
+                .limit(1)
                 .single()
                 .execute()
                 .value
@@ -27,9 +27,9 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
             let response: CheckInComment = try await client
                 .database
                 .from(.checkInComments)
-                .update( updateCheckInComment, returning: .representation)
-                .eq( "id", value: updateCheckInComment.id)
-                .select( CheckInComment.getQuery(.joinedProfile(false)))
+                .update(updateCheckInComment, returning: .representation)
+                .eq("id", value: updateCheckInComment.id)
+                .select(CheckInComment.getQuery(.joinedProfile(false)))
                 .single()
                 .execute()
                 .value
@@ -45,9 +45,9 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
             let response: [CheckInComment] = try await client
                 .database
                 .from(.checkInComments)
-                .select( CheckInComment.getQuery(.joinedProfile(false)))
-                .eq( "check_in_id", value: id)
-                .order( "created_at")
+                .select(CheckInComment.getQuery(.joinedProfile(false)))
+                .eq("check_in_id", value: id)
+                .order("created_at")
                 .execute()
                 .value
 
@@ -63,7 +63,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
                 .database
                 .from(.checkInComments)
                 .delete()
-                .eq( "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())

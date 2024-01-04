@@ -10,7 +10,7 @@ public struct WebView: UIViewRepresentable {
     }
 
     public func makeUIView(context _: Context) -> WKWebView {
-        return WKWebView()
+        WKWebView()
     }
 
     public func updateUIView(_ webView: WKWebView, context _: Context) {

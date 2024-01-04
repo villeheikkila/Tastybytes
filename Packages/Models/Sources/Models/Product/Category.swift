@@ -7,9 +7,9 @@ public protocol CategoryProtocol: Sendable {
 public extension CategoryProtocol {
     var label: String {
         if let icon {
-            return "\(icon) \(name)"
+            "\(icon) \(name)"
         } else {
-            return name
+            name
         }
     }
 }
@@ -59,7 +59,7 @@ public extension Category {
         }
 
         public func appending(subcategory: Subcategory) -> JoinedSubcategoriesServingStyles {
-            return copyWith(subcategories: subcategories + [subcategory])
+            copyWith(subcategories: subcategories + [subcategory])
         }
     }
 

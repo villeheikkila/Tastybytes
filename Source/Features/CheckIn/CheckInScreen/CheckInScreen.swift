@@ -149,10 +149,10 @@ struct CheckInScreen: View {
         async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: checkIn.id)
         async let summaryPromise: Void = notificationEnvironmentModel.markCheckInAsRead(checkIn: checkIn)
 
-        let (checkInResult, checkInCommentResult, _) = (
-            await checkInPromise,
-            await checkInCommentPromise,
-            await summaryPromise
+        let (checkInResult, checkInCommentResult, _) = await (
+            checkInPromise,
+            checkInCommentPromise,
+            summaryPromise
         )
 
         switch checkInResult {

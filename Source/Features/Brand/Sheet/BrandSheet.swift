@@ -82,7 +82,7 @@ struct BrandSheet: View {
             logger.error("Failed to load brands for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")
         }
     }
-    
+
     @MainActor
     func createNewBrand() async {
         switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {

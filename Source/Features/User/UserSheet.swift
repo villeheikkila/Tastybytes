@@ -47,7 +47,7 @@ struct UserSheet: View {
                             if !friendEnvironmentModel.friends
                                 .contains(where: { $0.containsUser(userId: profile.id) })
                             {
-                                ProgressButton("Add as a friend", systemImage: "person.badge.plus", action: { 
+                                ProgressButton("Add as a friend", systemImage: "person.badge.plus", action: {
                                     await friendEnvironmentModel.sendFriendRequest(
                                         receiver: profile.id,
                                         onSuccess: {
@@ -109,8 +109,8 @@ struct UserSheet: View {
         switch await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId) {
         case let .success(searchResults):
             withAnimation {
-                self.searchedFor = searchTerm
-                self.isLoading = false
+                searchedFor = searchTerm
+                isLoading = false
                 self.searchResults = searchResults
             }
         case let .failure(error):

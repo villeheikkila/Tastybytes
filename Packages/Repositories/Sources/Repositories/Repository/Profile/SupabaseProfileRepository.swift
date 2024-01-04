@@ -226,7 +226,8 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
 
     func getTimePeriodStatistics(userId: UUID, timePeriod: TimePeriodStatistic.TimePeriod) async
-    -> Result<TimePeriodStatistic, Error> {
+        -> Result<TimePeriodStatistic, Error>
+    {
         do {
             let result: TimePeriodStatistic = try await client
                 .database

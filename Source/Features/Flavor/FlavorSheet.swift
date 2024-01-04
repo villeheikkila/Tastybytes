@@ -20,9 +20,9 @@ struct FlavorSheet: View {
 
     private var filteredFlavors: [Flavor] {
         if searchTerm.isEmpty {
-            return appDataEnvironmentModel.flavors
+            appDataEnvironmentModel.flavors
         } else {
-            return appDataEnvironmentModel.flavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
+            appDataEnvironmentModel.flavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
         }
     }
 

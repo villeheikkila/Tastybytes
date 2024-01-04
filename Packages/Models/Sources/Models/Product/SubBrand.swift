@@ -23,9 +23,9 @@ public struct SubBrand: Identifiable, Hashable, Codable, Sendable, Comparable, S
 
     public static func < (lhs: SubBrand, rhs: SubBrand) -> Bool {
         switch (lhs.name, rhs.name) {
-        case let (lhs?, rhs?): return lhs < rhs
-        case (nil, _): return true
-        case (_?, nil): return false
+        case let (lhs?, rhs?): lhs < rhs
+        case (nil, _): true
+        case (_?, nil): false
         }
     }
 }
@@ -53,9 +53,9 @@ public extension SubBrand {
 
         public static func < (lhs: JoinedBrand, rhs: JoinedBrand) -> Bool {
             switch (lhs.name, rhs.name) {
-            case let (lhs?, rhs?): return lhs < rhs
-            case (nil, _): return true
-            case (_?, nil): return false
+            case let (lhs?, rhs?): lhs < rhs
+            case (nil, _): true
+            case (_?, nil): false
             }
         }
     }
@@ -75,9 +75,9 @@ public extension SubBrand {
 
         public static func < (lhs: JoinedProduct, rhs: JoinedProduct) -> Bool {
             switch (lhs.name, rhs.name) {
-            case let (lhs?, rhs?): return lhs < rhs
-            case (nil, _): return true
-            case (_?, nil): return false
+            case let (lhs?, rhs?): lhs < rhs
+            case (nil, _): true
+            case (_?, nil): false
             }
         }
     }

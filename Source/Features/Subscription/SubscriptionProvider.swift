@@ -16,13 +16,13 @@ struct SubscriptionProvider<Content: View>: View {
                 ProductSubscription.createSharedInstance()
             })
             .subscriptionStatusTask(for: productSubscriptionIds.group) { taskStatus in
-                self.status = await taskStatus.map { statuses in
+                status = await taskStatus.map { statuses in
                     await ProductSubscription.shared.status(
                         for: statuses,
                         ids: productSubscriptionIds
                     )
                 }
-                switch self.status {
+                switch status {
                 case let .failure(error):
                     subscriptionEnvironmentModel.subscriptionStatus = .notSubscribed
                     logger.error("Failed to check subscription status: \(error)")

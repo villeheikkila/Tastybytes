@@ -43,7 +43,7 @@ struct FriendsScreen: View {
         .navigationTitle("Friends (\(friends.count))")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
-            if !searchTerm.isEmpty && filteredFriends.isEmpty {
+            if !searchTerm.isEmpty, filteredFriends.isEmpty {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }

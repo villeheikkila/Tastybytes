@@ -13,7 +13,7 @@ public extension View {
 
 public extension View {
     func frame(size: CGSize) -> some View {
-        return frame(width: size.width, height: size.height)
+        frame(width: size.width, height: size.height)
     }
 }
 
@@ -76,8 +76,8 @@ struct DebouncedTaskViewModifier<ID: Equatable>: ViewModifier {
 }
 
 public extension View {
-    func task<ID: Equatable>(
-        id: ID,
+    func task(
+        id: some Equatable,
         priority: TaskPriority = .userInitiated,
         milliseconds: Int = 0,
         task: @Sendable @escaping () async -> Void
@@ -137,7 +137,7 @@ public struct DetectOrientation: ViewModifier {
     public func body(content: Content) -> some View {
         content.onAppear {
             #if os(iOS)
-               _ = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+                _ = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
                     .sink { _ in
                         let isCurrentlyPortrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
                         isPortrait = UIDevice.current

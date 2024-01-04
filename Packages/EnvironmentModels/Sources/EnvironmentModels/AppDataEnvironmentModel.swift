@@ -10,7 +10,7 @@ public final class AppDataEnvironmentModel {
     public var categories = [Models.Category.JoinedSubcategoriesServingStyles]()
     public var flavors = [Flavor]()
     public var countries = [Country]()
-    public var aboutPage: AboutPage? = nil
+    public var aboutPage: AboutPage?
     public var alertError: AlertError?
 
     private let repository: Repository
@@ -28,11 +28,11 @@ public final class AppDataEnvironmentModel {
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
         async let countryPromise = repository.location.getAllCountries()
 
-        let (flavorResponse, categoryResponse, aboutPageResponse, countryResponse) = (
-            await flavorPromise,
-            await categoryPromise,
-            await aboutPagePromise,
-            await countryPromise
+        let (flavorResponse, categoryResponse, aboutPageResponse, countryResponse) = await (
+            flavorPromise,
+            categoryPromise,
+            aboutPagePromise,
+            countryPromise
         )
 
         switch flavorResponse {

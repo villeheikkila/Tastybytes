@@ -17,9 +17,9 @@ public struct Friend: Identifiable, Codable, Hashable, Sendable {
 
     public func getFriend(userId: UUID?) -> Profile {
         if sender.id == userId {
-            return receiver
+            receiver
         } else {
-            return sender
+            sender
         }
     }
 

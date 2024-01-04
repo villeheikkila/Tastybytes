@@ -208,11 +208,11 @@ struct ProductScreen: View {
         async let wishlistPromise = repository.product.checkIfOnWishlist(id: product.id)
         async let fetchImagePromise: Void = fetchImages(reset: true)
 
-        let (productResult, summaryResult, wishlistResult, _) = (
-            await productPromise,
-            await summaryPromise,
-            await wishlistPromise,
-            await fetchImagePromise
+        let (productResult, summaryResult, wishlistResult, _) = await (
+            productPromise,
+            summaryPromise,
+            wishlistPromise,
+            fetchImagePromise
         )
 
         switch productResult {
@@ -264,7 +264,7 @@ struct ProductScreen: View {
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
-    
+
     @MainActor
     func deleteProduct(_ product: Product.Joined) async {
         switch await repository.product.delete(id: product.id) {
@@ -305,7 +305,7 @@ struct ProductScreen: View {
         switch await repository.checkIn.getCheckInImages(by: .product(product), from: from, to: to) {
         case let .success(checkIns):
             withAnimation {
-                self.checkInImages.append(contentsOf: checkIns)
+                checkInImages.append(contentsOf: checkIns)
             }
             checkInImagesPage += 1
             isLoadingCheckInImages = false

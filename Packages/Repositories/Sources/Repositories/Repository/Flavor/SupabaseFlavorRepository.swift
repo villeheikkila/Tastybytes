@@ -9,8 +9,8 @@ struct SupabaseFlavorRepository: FlavorRepository {
             let response: [Flavor] = try await client
                 .database
                 .from(.flavors)
-                .select( Flavor.getQuery(.saved(false)))
-                .order( "name")
+                .select(Flavor.getQuery(.saved(false)))
+                .order("name")
                 .execute()
                 .value
 
@@ -25,8 +25,8 @@ struct SupabaseFlavorRepository: FlavorRepository {
             let response: Flavor = try await client
                 .database
                 .from(.flavors)
-                .insert( newFlavor, returning: .representation)
-                .select( Flavor.getQuery(.saved(false)))
+                .insert(newFlavor, returning: .representation)
+                .select(Flavor.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .value
@@ -43,7 +43,7 @@ struct SupabaseFlavorRepository: FlavorRepository {
                 .database
                 .from(.flavors)
                 .delete()
-                .eq( "id", value: id)
+                .eq("id", value: id)
                 .execute()
 
             return .success(())

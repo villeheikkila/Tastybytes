@@ -128,7 +128,7 @@ struct CheckInList<Header>: View where Header: View {
                 }
             } else if isContentUnavailable {
                 fetcher.emptyContentView
-            }  else {
+            } else {
                 EmptyView()
             }
         }
@@ -165,7 +165,7 @@ struct CheckInList<Header>: View where Header: View {
                     logger.info("Refreshing check-ins completed for \(id) with id: \(refreshId)")
                 }
             )
-            _ = (await onRefresh(), await feedItemsPromise)
+            _ = await (onRefresh(), feedItemsPromise)
             isRefreshing = false
             resultId = refreshId
         }
@@ -188,13 +188,13 @@ struct CheckInList<Header>: View where Header: View {
         }
         #endif
         .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
-                if let updatedCheckIn = newValue {
-                    imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                    if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
-                        checkIns[index] = updatedCheckIn
-                    }
+            if let updatedCheckIn = newValue {
+                imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
+                if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
+                    checkIns[index] = updatedCheckIn
                 }
             }
+        }
     }
 
     @ViewBuilder
@@ -249,7 +249,7 @@ struct CheckInList<Header>: View where Header: View {
 
     func fetchFeedItems(
         reset: Bool = false,
-        onComplete:  (@Sendable (_ checkIns: [CheckIn]) async -> Void)? = nil
+        onComplete: (@Sendable (_ checkIns: [CheckIn]) async -> Void)? = nil
     ) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
@@ -258,9 +258,9 @@ struct CheckInList<Header>: View where Header: View {
         case let .success(fetchedCheckIns):
             withAnimation {
                 if reset {
-                    self.checkIns = fetchedCheckIns
+                    checkIns = fetchedCheckIns
                 } else {
-                    self.checkIns.append(contentsOf: fetchedCheckIns)
+                    checkIns.append(contentsOf: fetchedCheckIns)
                 }
             }
             page += 1

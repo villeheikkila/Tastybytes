@@ -16,7 +16,7 @@ struct CheckInCardHeader: View {
                 .font(.caption).bold()
                 .foregroundColor(.primary)
             Spacer()
-            if let location = location {
+            if let location {
                 Text("\(location.name) \(location.country?.emoji ?? "")")
                     .font(.caption).bold()
                     .foregroundColor(.primary)

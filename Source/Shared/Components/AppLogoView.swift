@@ -54,15 +54,15 @@ extension AppIcon {
     var icon: ImageResource {
         switch self {
         case .ramune:
-            return .ramune
+            .ramune
         case .juice:
-            return .juice
+            .juice
         case .energyDrink:
-            return .energyDrink
+            .energyDrink
         case .kombucha:
-            return .kombucha
+            .kombucha
         case .cola:
-            return .cola
+            .cola
         }
     }
 }

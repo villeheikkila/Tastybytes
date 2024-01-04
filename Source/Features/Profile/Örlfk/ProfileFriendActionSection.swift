@@ -16,7 +16,7 @@ struct ProfileFriendActionSection: View {
                 if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
                     ProgressButton(
                         "Send Friend Request",
-                        action: {  await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
+                        action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
                     )
                 } else if let friend = friendEnvironmentModel.isPendingUserApproval(profile) {
                     ProgressButton(

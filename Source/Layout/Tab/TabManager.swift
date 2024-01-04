@@ -11,7 +11,7 @@ final class TabManager {
         }
     }
 
-    var resetNavigationOnTab: Tab? = nil
+    var resetNavigationOnTab: Tab?
 
     private func scrollToTop() {
         resetNavigationOnTab = nil

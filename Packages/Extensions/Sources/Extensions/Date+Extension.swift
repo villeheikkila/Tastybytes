@@ -45,4 +45,3 @@ public extension Date {
         CustomDateFormatter.shared.format(date: self, type)
     }
 }
-

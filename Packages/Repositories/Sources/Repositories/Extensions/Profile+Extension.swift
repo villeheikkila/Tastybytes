@@ -121,7 +121,7 @@ extension CategoryStatistics {
     static func getQuery(_ queryType: QueryPart) -> String {
         switch queryType {
         case .value:
-            return "id, name, icon, count"
+            "id, name, icon, count"
         }
     }
 }
@@ -134,7 +134,7 @@ extension Contributions {
     static func getQuery(_ queryType: QueryPart) -> String {
         switch queryType {
         case .value:
-            return "products, companies, brands, sub_brands, barcodes"
+            "products, companies, brands, sub_brands, barcodes"
         }
     }
 }
@@ -147,7 +147,7 @@ extension SubcategoryStatistics {
     static func getQuery(_ queryType: QueryPart) -> String {
         switch queryType {
         case .value:
-            return "id, name, count"
+            "id, name, count"
         }
     }
 }

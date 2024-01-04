@@ -79,7 +79,7 @@ struct ProfileWishlistScreen: View {
         switch await repository.product.getWishlistItems(profileId: profile.id) {
         case let .success(wishlist):
             withAnimation {
-                self.products = wishlist.map(\.product)
+                products = wishlist.map(\.product)
                 initialDataLoaded = true
             }
         case let .failure(error):

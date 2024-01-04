@@ -49,9 +49,9 @@ struct ProfileStatisticsView: View {
             }
         #endif
             .alertError($alertError)
-                .task {
-                    await loadStatistics()
-                }
+            .task {
+                await loadStatistics()
+            }
     }
 
     func loadStatistics() async {

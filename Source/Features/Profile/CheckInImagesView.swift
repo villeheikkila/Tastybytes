@@ -51,7 +51,7 @@ struct CheckInImagesView: View {
         switch await repository.checkIn.getCheckInImages(by: queryType, from: from, to: to) {
         case let .success(checkIns):
             withAnimation {
-                self.checkInImages.append(contentsOf: checkIns)
+                checkInImages.append(contentsOf: checkIns)
             }
             page += 1
             isLoading = false

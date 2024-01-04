@@ -87,11 +87,11 @@ extension CheckInSegment {
     var table: Database.Table {
         switch self {
         case .everyone:
-            return .checkIns
+            .checkIns
         case .friends:
-            return .viewCheckInsFromFriends
+            .viewCheckInsFromFriends
         case .you:
-            return .viewCheckInsFromCurrentUser
+            .viewCheckInsFromCurrentUser
         }
     }
 }

@@ -12,20 +12,20 @@ struct NotificationScreen: View {
 
     var filteredNotifications: [Models.Notification] {
         notificationEnvironmentModel.notifications.filter { notification in
-            if self.filter == nil {
+            if filter == nil {
                 return true
             }
             return switch notification.content {
             case .checkInReaction:
-                self.filter == .checkInReaction
+                filter == .checkInReaction
             case .friendRequest:
-                self.filter == .friendRequest
+                filter == .friendRequest
             case .message:
-                self.filter == .message
+                filter == .message
             case .checkInComment:
-                self.filter == .checkInComment
+                filter == .checkInComment
             case .taggedCheckIn:
-                self.filter == .taggedCheckIn
+                filter == .taggedCheckIn
             }
         }
     }
@@ -68,13 +68,13 @@ struct NotificationScreen: View {
             }
             #endif
             .onChange(of: scrollToTop) {
-                    withAnimation {
-                        filter = nil
-                        if let first = filteredNotifications.first {
-                            scrollProxy.scrollTo(first.id, anchor: .top)
-                        }
+                withAnimation {
+                    filter = nil
+                    if let first = filteredNotifications.first {
+                        scrollProxy.scrollTo(first.id, anchor: .top)
                     }
                 }
+            }
         }
         .onAppear {
             notificationEnvironmentModel.refresh()

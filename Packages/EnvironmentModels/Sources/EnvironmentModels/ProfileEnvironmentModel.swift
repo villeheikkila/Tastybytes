@@ -38,7 +38,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     // Getters
     public var profile: Profile {
         if let extendedProfile {
-            return extendedProfile.profile
+            extendedProfile.profile
         } else {
             fatalError("profile can only be used on authenticated routes.")
         }
@@ -46,7 +46,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public var id: UUID {
         if let extendedProfile {
-            return extendedProfile.id
+            extendedProfile.id
         } else {
             fatalError("id can only be used on authenticated routes.")
         }
@@ -54,7 +54,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public var username: String {
         if let extendedProfile {
-            return extendedProfile.username ?? ""
+            extendedProfile.username ?? ""
         } else {
             fatalError("username can only be used on authenticated routes.")
         }
@@ -62,7 +62,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public var firstName: String? {
         if let extendedProfile {
-            return extendedProfile.firstName
+            extendedProfile.firstName
         } else {
             fatalError("username can only be used on authenticated routes.")
         }
@@ -70,7 +70,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public var lastName: String? {
         if let extendedProfile {
-            return extendedProfile.lastName
+            extendedProfile.lastName
         } else {
             fatalError("username can only be used on authenticated routes.")
         }
@@ -78,7 +78,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public var isOnboarded: Bool {
         if let extendedProfile {
-            return extendedProfile.isOnboarded
+            extendedProfile.isOnboarded
         } else {
             fatalError("isOnboarded can only be used on authenticated routes.")
         }
@@ -187,7 +187,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public func deleteCurrentAccount(onAccountDeletion: @MainActor @Sendable @escaping () -> Void) async {
         switch await repository.profile.deleteCurrentAccount() {
         case .success:
-             await onAccountDeletion()
+            await onAccountDeletion()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

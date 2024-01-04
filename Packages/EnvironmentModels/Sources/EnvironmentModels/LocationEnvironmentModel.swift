@@ -8,7 +8,7 @@ public final class LocationEnvironmentModel {
     private let manager = CLLocationManager()
     private var monitoringTask: Task<Void, Never>?
 
-    public var location: CLLocation? = nil
+    public var location: CLLocation?
     public var locationsStatus: CLAuthorizationStatus = .notDetermined
 
     public init() {}

@@ -5,7 +5,8 @@ struct SupabaseCategoryRepository: CategoryRepository {
     let client: SupabaseClient
 
     func getAllWithSubcategoriesServingStyles() async
-    -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error> {
+        -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error>
+    {
         do {
             let response: [Models.Category.JoinedSubcategoriesServingStyles] = try await client
                 .database

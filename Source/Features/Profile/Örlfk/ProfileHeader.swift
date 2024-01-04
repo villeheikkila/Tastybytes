@@ -84,7 +84,7 @@ struct ProfileHeader: View {
     @ViewBuilder private var sendFriendRequestSection: some View {
         if !isCurrentUser,
            !friendEnvironmentModel.isFriend(profile) || friendEnvironmentModel
-               .isPendingUserApproval(profile) != nil
+           .isPendingUserApproval(profile) != nil
         {
             ProfileFriendActionSection(profile: profile)
         }
@@ -94,9 +94,9 @@ struct ProfileHeader: View {
         async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
         async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile), from: 0, to: pageSize)
 
-        let (summaryResult, imagesResult) = (
-            await summaryPromise,
-            await imagesPromise
+        let (summaryResult, imagesResult) = await (
+            summaryPromise,
+            imagesPromise
         )
 
         switch summaryResult {
@@ -113,7 +113,7 @@ struct ProfileHeader: View {
         switch imagesResult {
         case let .success(checkIns):
             withAnimation {
-                self.checkInImages.append(contentsOf: checkIns)
+                checkInImages.append(contentsOf: checkIns)
             }
             page += 1
             isLoading = false
@@ -134,7 +134,7 @@ struct ProfileHeader: View {
         switch await repository.checkIn.getCheckInImages(by: .profile(profile), from: from, to: to) {
         case let .success(checkIns):
             withAnimation {
-                self.checkInImages.append(contentsOf: checkIns)
+                checkInImages.append(contentsOf: checkIns)
             }
             page += 1
             isLoading = false

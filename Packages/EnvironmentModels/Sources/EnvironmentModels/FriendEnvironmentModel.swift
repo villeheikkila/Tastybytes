@@ -13,7 +13,7 @@ public final class FriendEnvironmentModel {
     public var alertError: AlertError?
     public var isRefreshing = false
 
-    public var profile: Profile? = nil
+    public var profile: Profile?
 
     private let repository: Repository
 

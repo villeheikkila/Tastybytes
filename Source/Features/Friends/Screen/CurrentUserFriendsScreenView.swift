@@ -115,7 +115,7 @@ struct CurrentUserFriendsScreen: View {
                 ContentUnavailableView {
                     Label("You don't have any friends yet", systemImage: "person.3")
                 }
-            } else if !searchTerm.isEmpty && filteredFriends.isEmpty {
+            } else if !searchTerm.isEmpty, filteredFriends.isEmpty {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
@@ -128,29 +128,29 @@ struct CurrentUserFriendsScreen: View {
             }
         #endif
             .task {
-                    await friendEnvironmentModel.refresh()
-                    await notificationEnvironmentModel.markAllFriendRequestsAsRead()
-                }
-                .toolbar {
-                    toolbarContent
-                }
-                .confirmationDialog(
-                    """
-                    Remove user from your friends, you will no longer be able to see each other's check-ins on your
-                    activity feed nor be able to tag each other check-ins
-                    """,
-                    isPresented: $showRemoveFriendConfirmation,
-                    titleVisibility: .visible,
-                    presenting: friendToBeRemoved
-                ) { presenting in
-                    ProgressButton(
-                        "Remove \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName) from friends",
-                        role: .destructive,
-                        action: {
-                            await friendEnvironmentModel.removeFriendRequest(presenting)
-                        }
-                    )
-                }
+                await friendEnvironmentModel.refresh()
+                await notificationEnvironmentModel.markAllFriendRequestsAsRead()
+            }
+            .toolbar {
+                toolbarContent
+            }
+            .confirmationDialog(
+                """
+                Remove user from your friends, you will no longer be able to see each other's check-ins on your
+                activity feed nor be able to tag each other check-ins
+                """,
+                isPresented: $showRemoveFriendConfirmation,
+                titleVisibility: .visible,
+                presenting: friendToBeRemoved
+            ) { presenting in
+                ProgressButton(
+                    "Remove \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName) from friends",
+                    role: .destructive,
+                    action: {
+                        await friendEnvironmentModel.removeFriendRequest(presenting)
+                    }
+                )
+            }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

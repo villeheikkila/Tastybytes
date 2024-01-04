@@ -66,11 +66,11 @@ struct CompanyScreen: View {
             }
         #endif
             .toolbar {
-                    toolbarContent
-                }
-                .confirmationDialog("Unverify Company",
-                                    isPresented: $showUnverifyCompanyConfirmation,
-                                    presenting: company)
+                toolbarContent
+            }
+            .confirmationDialog("Unverify Company",
+                                isPresented: $showUnverifyCompanyConfirmation,
+                                presenting: company)
         { presenting in
             ProgressButton("Unverify \(presenting.name) company", action: {
                 await verifyCompany(isVerified: false)
@@ -171,9 +171,9 @@ struct CompanyScreen: View {
         async let companyPromise = repository.company.getJoinedById(id: company.id)
         async let summaryPromise = repository.company.getSummaryById(id: company.id)
 
-        let (companyResult, summaryResult) = (
-            await companyPromise,
-            await summaryPromise
+        let (companyResult, summaryResult) = await (
+            companyPromise,
+            summaryPromise
         )
 
         if withHaptics {

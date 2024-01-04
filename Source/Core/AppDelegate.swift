@@ -28,7 +28,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> UISceneConfiguration {
         if let shortcutItem = options.shortcutItem {
             Task {
-               await quickActionActor.setSelectedQuickAction(shortcutItem)
+                await quickActionActor.setSelectedQuickAction(shortcutItem)
             }
         }
 
@@ -91,7 +91,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     {
         let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
         Task {
-          await  deviceTokenActor.setDeviceTokenForPusNotifications(deviceTokenString)
+            await deviceTokenActor.setDeviceTokenForPusNotifications(deviceTokenString)
         }
     }
 }

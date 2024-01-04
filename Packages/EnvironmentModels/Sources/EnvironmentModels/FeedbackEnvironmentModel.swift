@@ -338,35 +338,35 @@ public extension Toast {
         var backgroundColor: Color? {
             switch self {
             case let .style(backgroundColor: color, _, _, _, _):
-                return color
+                color
             }
         }
 
         var titleColor: Color? {
             switch self {
             case let .style(_, color, _, _, _):
-                return color
+                color
             }
         }
 
         var subtitleColor: Color? {
             switch self {
             case let .style(_, _, color, _, _):
-                return color
+                color
             }
         }
 
         var titleFont: Font? {
             switch self {
             case let .style(_, _, _, titleFont: font, _):
-                return font
+                font
             }
         }
 
         var subTitleFont: Font? {
             switch self {
             case let .style(_, _, _, _, subTitleFont: font):
-                return font
+                font
             }
         }
     }
@@ -429,9 +429,9 @@ public struct ToastModifier: ViewModifier {
                         onTap?()
                         if tapToDismiss {
                             withAnimation(.spring) {
-                                self.workItem?.cancel()
+                                workItem?.cancel()
                                 isPresenting = false
-                                self.workItem = nil
+                                workItem = nil
                             }
                         }
                     }
@@ -447,7 +447,7 @@ public struct ToastModifier: ViewModifier {
 
                             if rect.integral != alertRect.integral {
                                 DispatchQueue.main.async {
-                                    self.alertRect = rect
+                                    alertRect = rect
                                 }
                             }
                             return AnyView(EmptyView())
@@ -457,9 +457,9 @@ public struct ToastModifier: ViewModifier {
                         onTap?()
                         if tapToDismiss {
                             withAnimation(.spring) {
-                                self.workItem?.cancel()
+                                workItem?.cancel()
                                 isPresenting = false
-                                self.workItem = nil
+                                workItem = nil
                             }
                         }
                     }
@@ -473,9 +473,9 @@ public struct ToastModifier: ViewModifier {
                         onTap?()
                         if tapToDismiss {
                             withAnimation(.spring) {
-                                self.workItem?.cancel()
+                                workItem?.cancel()
                                 isPresenting = false
-                                self.workItem = nil
+                                workItem = nil
                             }
                         }
                     }
@@ -509,7 +509,7 @@ public struct ToastModifier: ViewModifier {
 
                         if rect.integral != hostRect.integral {
                             DispatchQueue.main.async {
-                                self.hostRect = rect
+                                hostRect = rect
                             }
                         }
 
@@ -571,11 +571,11 @@ private struct AnimatedCheckmark: View {
     var size: Int = 50
 
     var height: CGFloat {
-        return CGFloat(size)
+        CGFloat(size)
     }
 
     var width: CGFloat {
-        return CGFloat(size)
+        CGFloat(size)
     }
 
     @State private var percentage: CGFloat = .zero
@@ -601,15 +601,15 @@ private struct AnimatedXmark: View {
     var size: Int = 50
 
     var height: CGFloat {
-        return CGFloat(size)
+        CGFloat(size)
     }
 
     var width: CGFloat {
-        return CGFloat(size)
+        CGFloat(size)
     }
 
     var rect: CGRect {
-        return CGRect(x: 0, y: 0, width: size, height: size)
+        CGRect(x: 0, y: 0, width: size, height: size)
     }
 
     @State private var percentage: CGFloat = .zero
@@ -681,7 +681,7 @@ private struct AnimatedXmark: View {
         public typealias UIViewType = UIVisualEffectView
 
         public func makeUIView(context _: Context) -> UIVisualEffectView {
-            return UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+            UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
         }
 
         public func updateUIView(_ uiView: UIVisualEffectView, context _: Context) {

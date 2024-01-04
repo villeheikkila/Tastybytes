@@ -114,17 +114,17 @@ struct BrandScreen: View {
                 }
             #endif
                 .task(id: refreshId) { [refreshId] in
-                        guard refreshId != resultId else { return }
-                        logger.info("Refreshing brand screen with id: \(refreshId)")
-                        await getBrandData()
-                        resultId = refreshId
-                    }
-                    .toolbar {
-                        toolbarContent
-                    }
-                    .confirmationDialog("Unverify Sub-brand",
-                                        isPresented: $showSubBrandUnverificationConfirmation,
-                                        presenting: toUnverifySubBrand)
+                    guard refreshId != resultId else { return }
+                    logger.info("Refreshing brand screen with id: \(refreshId)")
+                    await getBrandData()
+                    resultId = refreshId
+                }
+                .toolbar {
+                    toolbarContent
+                }
+                .confirmationDialog("Unverify Sub-brand",
+                                    isPresented: $showSubBrandUnverificationConfirmation,
+                                    presenting: toUnverifySubBrand)
             { presenting in
                 ProgressButton("Unverify \(presenting.name ?? "default") sub-brand", action: {
                     await verifySubBrand(presenting, isVerified: false)
@@ -328,10 +328,10 @@ struct BrandScreen: View {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
-        let (summaryResult, brandResult, isLikedPromiseResult) = (
-            await summaryPromise,
-            await brandPromise,
-            await isLikedPromisePromise
+        let (summaryResult, brandResult, isLikedPromiseResult) = await (
+            summaryPromise,
+            brandPromise,
+            isLikedPromisePromise
         )
         switch summaryResult {
         case let .success(summary):
@@ -389,7 +389,7 @@ struct BrandScreen: View {
             case .success:
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 withAnimation {
-                    self.isLikedByCurrentUser = false
+                    isLikedByCurrentUser = false
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
@@ -400,7 +400,7 @@ struct BrandScreen: View {
             case .success:
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 withAnimation {
-                    self.isLikedByCurrentUser = true
+                    isLikedByCurrentUser = true
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }

@@ -13,7 +13,7 @@ public final class NotificationEnvironmentModel {
     public var isInitialized = false
     public var task: Task<Void, Never>?
 
-    public var pushNotificationSettings: ProfilePushNotification? = nil
+    public var pushNotificationSettings: ProfilePushNotification?
     public var unreadCount: Int = 0
     public var alertError: AlertError?
 
@@ -121,7 +121,7 @@ public final class NotificationEnvironmentModel {
     }
 
     public func markAllFriendRequestsAsRead() async {
-        let containsFriendRequests = notifications.contains(where: { $0.isFriendRequest })
+        let containsFriendRequests = notifications.contains(where: \.isFriendRequest)
 
         if containsFriendRequests {
             switch await repository.notification.markAllFriendRequestsAsRead() {

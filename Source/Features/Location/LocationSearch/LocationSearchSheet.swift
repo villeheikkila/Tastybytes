@@ -99,7 +99,7 @@ struct LocationSearchSheet: View {
         .alertError($alertError)
         .onChange(of: locationEnvironmentModel.location) { _, latestLocation in
             guard nearbyLocations.isEmpty else { return }
-            self.currentLocation = latestLocation
+            currentLocation = latestLocation
             Task { await getSuggestions(latestLocation) }
         }
     }

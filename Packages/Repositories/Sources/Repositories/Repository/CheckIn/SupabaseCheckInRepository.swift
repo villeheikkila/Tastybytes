@@ -254,9 +254,9 @@ public enum CheckInImageQueryType: Sendable {
     var id: String {
         switch self {
         case let .profile(profile):
-            return profile.id.uuidString
+            profile.id.uuidString
         case let .product(product):
-            return String(product.id)
+            String(product.id)
         }
     }
 }

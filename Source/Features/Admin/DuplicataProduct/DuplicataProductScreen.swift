@@ -76,8 +76,8 @@ struct DuplicateProductScreen: View {
             }
         #endif
             .task {
-                    await loadProducts()
-                }
+                await loadProducts()
+            }
     }
 
     func verifyProduct(_ product: Product.Joined) async {

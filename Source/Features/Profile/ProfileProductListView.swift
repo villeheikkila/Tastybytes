@@ -56,9 +56,9 @@ struct ProfileProductListView: View {
 
     func sortProducts(_ sortBy: Product.Filter.SortBy, _ lhs: Product.Joined, _ rhs: Product.Joined) -> Bool {
         switch (lhs.averageRating, rhs.averageRating) {
-        case let (lhs?, rhs?): return sortBy == .lowestRated ? lhs < rhs : lhs > rhs
-        case (nil, _): return false
-        case (_?, nil): return true
+        case let (lhs?, rhs?): sortBy == .lowestRated ? lhs < rhs : lhs > rhs
+        case (nil, _): false
+        case (_?, nil): true
         }
     }
 

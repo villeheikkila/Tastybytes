@@ -34,7 +34,7 @@ public struct SendEmailView: UIViewControllerRepresentable {
                                           didFinishWith result: MFMailComposeResult,
                                           error: Error?)
         {
-            if let error = error {
+            if let error {
                 callback?(.failure(error))
             } else {
                 callback?(.success(result))
@@ -48,7 +48,8 @@ public struct SendEmailView: UIViewControllerRepresentable {
     }
 
     public func makeUIViewController(context: UIViewControllerRepresentableContext<SendEmailView>)
-    -> MFMailComposeViewController {
+        -> MFMailComposeViewController
+    {
         let mvc = MFMailComposeViewController()
         mvc.mailComposeDelegate = context.coordinator
         mvc.setSubject(email.subject)
