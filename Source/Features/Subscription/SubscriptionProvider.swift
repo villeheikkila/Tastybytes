@@ -2,39 +2,38 @@ import OSLog
 import StoreKit
 import SwiftUI
 
+@MainActor
 struct SubscriptionProvider<Content: View>: View {
     private let logger = Logger(category: "SubscriptionProvider")
     @State private var status: EntitlementTaskState<SubscriptionStatus> = .loading
-    @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel()
+    @State private var subscriptionStatusEnvironmentModel = SubscriptionStatusEnvironmentModel()
+    @State private var subscriptionEnvironmentModel = ProductSubscriptionEnvironmentModel()
     @Environment(\.productSubscriptionIds) private var productSubscriptionIds
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         content()
-            .environment(subscriptionEnvironmentModel)
-            .onAppear(perform: {
-                ProductSubscription.createSharedInstance()
-            })
+            .environment(subscriptionStatusEnvironmentModel)
             .subscriptionStatusTask(for: productSubscriptionIds.group) { taskStatus in
                 status = await taskStatus.map { statuses in
-                    await ProductSubscription.shared.status(
+                    await subscriptionEnvironmentModel.status(
                         for: statuses,
                         ids: productSubscriptionIds
                     )
                 }
                 switch status {
                 case let .failure(error):
-                    subscriptionEnvironmentModel.subscriptionStatus = .notSubscribed
+                    subscriptionStatusEnvironmentModel.subscriptionStatus = .notSubscribed
                     logger.error("Failed to check subscription status: \(error)")
                 case let .success(status):
-                    subscriptionEnvironmentModel.subscriptionStatus = status
+                    subscriptionStatusEnvironmentModel.subscriptionStatus = status
                 case .loading: break
                 @unknown default: break
                 }
             }
             .task {
-                await ProductSubscription.shared.observeTransactionUpdates()
-                await ProductSubscription.shared.checkForUnfinishedTransactions()
+                await subscriptionEnvironmentModel.observeTransactionUpdates()
+                await subscriptionEnvironmentModel.checkForUnfinishedTransactions()
             }
     }
 }

@@ -4,15 +4,10 @@ import SwiftUI
 
 extension StoreKit.Product.SubscriptionInfo.Status: @unchecked Sendable {}
 
-actor ProductSubscription {
-    private let logger = Logger(category: "ProductSubscription")
-    private(set) static var shared: ProductSubscription! //  swiftlint:disable:this implicitly_unwrapped_optional
+actor ProductSubscriptionEnvironmentModel {
+    private let logger = Logger(category: "ProductSubscriptionEnvironmentModel")
 
-    private init() {}
-
-    static func createSharedInstance() {
-        shared = ProductSubscription()
-    }
+    public init() {}
 
     func status(for statuses: [StoreKit.Product.SubscriptionInfo.Status],
                 ids: SubscriptionIdentifier) -> SubscriptionStatus
@@ -57,7 +52,7 @@ actor ProductSubscription {
     }
 }
 
-extension ProductSubscription {
+extension ProductSubscriptionEnvironmentModel {
     func process(transaction _: VerificationResult<StoreKit.Transaction>) async {}
 
     func checkForUnfinishedTransactions() async {
