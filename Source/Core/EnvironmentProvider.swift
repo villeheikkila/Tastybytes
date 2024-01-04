@@ -5,10 +5,9 @@ import StoreKit
 import SwiftUI
 import TipKit
 
-private let logger = Logger(category: "EnvironmentView")
-
 @MainActor
 struct EnvironmentProvider<Content: View>: View {
+    private let logger = Logger(category: "EnvironmentView")
     @AppStorage(.colorScheme) var colorScheme: String = "system"
     @State private var permissionEnvironmentModel = PermissionEnvironmentModel()
     @State private var profileEnvironmentModel: ProfileEnvironmentModel

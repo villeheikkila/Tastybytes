@@ -56,7 +56,7 @@ struct ProductCreationBrandSection: View {
 }
 
 struct ProductCreationProductSection: View {
-    private let logger = Logger(category: "ProductCreationBrandSection")
+    private let logger = Logger(category: "ProductCreationProductSection")
     @State private var searchTerm: String = ""
     @Binding var section: ProductCreationScreen.Section
 

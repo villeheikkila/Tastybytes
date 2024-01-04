@@ -8,9 +8,9 @@ import OSLog
 import StoreKit
 import SwiftUI
 
-private let logger = Logger(category: "AboutScreen")
 
 struct AboutScreen: View {
+    private let logger = Logger(category: "AboutScreen")
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.requestReview) var requestReview

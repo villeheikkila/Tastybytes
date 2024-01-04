@@ -6,10 +6,10 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let logger = Logger(category: "MarkAsDuplicate")
 
 @MainActor
 struct DuplicateProductSheet: View {
+    private let logger = Logger(category: "DuplicateProductSheet")
     enum Mode {
         case mergeDuplicate, reportDuplicate
     }

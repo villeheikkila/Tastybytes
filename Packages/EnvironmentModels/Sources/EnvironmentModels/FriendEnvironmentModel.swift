@@ -4,11 +4,11 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let logger = Logger(category: "FriendsScreen")
 
 @MainActor
 @Observable
 public final class FriendEnvironmentModel {
+    private let logger = Logger(category: "FriendsScreen")
     public var friends = [Friend]()
     public var alertError: AlertError?
     public var isRefreshing = false

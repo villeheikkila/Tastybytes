@@ -6,9 +6,9 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let logger = Logger(category: "ProfileLocationsScreen")
 
 struct ProfileLocationsScreen: View {
+    private let logger = Logger(category: "ProfileLocationsScreen")
     @Environment(\.repository) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

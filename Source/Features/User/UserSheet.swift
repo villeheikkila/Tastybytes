@@ -6,10 +6,9 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let logger = Logger(category: "UserSheet")
-
 @MainActor
 struct UserSheet: View {
+    private let logger = Logger(category: "UserSheet")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
