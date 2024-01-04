@@ -559,7 +559,7 @@
 				5C82E8A52B2F7FE000F2B369 /* ProfileCheckInImagesSection.swift */,
 			);
 			name = Components;
-			path = "Örlfk";
+			path = "Components";
 			sourceTree = "<group>";
 		};
 		5C82E8AA2B2F95ED00F2B369 /* Screen */ = {
