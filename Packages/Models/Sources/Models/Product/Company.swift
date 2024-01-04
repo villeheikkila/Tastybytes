@@ -26,7 +26,7 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogo {
 }
 
 public extension Company {
-    struct NewRequest: Codable {
+    struct NewRequest: Codable, Sendable {
         public init(name: String) {
             self.name = name
         }
@@ -34,7 +34,7 @@ public extension Company {
         public let name: String
     }
 
-    struct UpdateRequest: Codable {
+    struct UpdateRequest: Codable, Sendable {
         public init(id: Int, name: String) {
             self.id = id
             self.name = name
@@ -44,7 +44,7 @@ public extension Company {
         public let name: String
     }
 
-    struct EditSuggestionRequest: Codable {
+    struct EditSuggestionRequest: Codable, Sendable {
         public init(id: Int, name: String) {
             self.id = id
             self.name = name
@@ -59,7 +59,7 @@ public extension Company {
         }
     }
 
-    struct VerifyRequest: Codable {
+    struct VerifyRequest: Codable, Sendable {
         public init(id: Int, isVerified: Bool) {
             self.id = id
             self.isVerified = isVerified
@@ -74,7 +74,7 @@ public extension Company {
         }
     }
 
-    struct SummaryRequest: Codable {
+    struct SummaryRequest: Codable, Sendable {
         public init(id: Int) {
             self.id = id
         }
@@ -86,7 +86,7 @@ public extension Company {
         }
     }
 
-    struct Joined: Identifiable, Hashable, Codable {
+    struct Joined: Identifiable, Hashable, Codable, Sendable {
         public let id: Int
         public let name: String
         public let logoUrl: String?

@@ -8,6 +8,7 @@ import SwiftUI
 
 private let logger = Logger(category: "UserSheet")
 
+@MainActor
 struct UserSheet: View {
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -19,12 +20,12 @@ struct UserSheet: View {
     @State private var isLoading = false
     @State private var searchResults = [Profile]()
 
-    let onSubmit: () -> Void
+    let onSubmit: @MainActor () -> Void
     let mode: Mode
 
     init(
         mode: Mode,
-        onSubmit: @Sendable @escaping () -> Void
+        onSubmit: @escaping () -> Void
     ) {
         self.mode = mode
         self.onSubmit = onSubmit
@@ -46,7 +47,7 @@ struct UserSheet: View {
                             if !friendEnvironmentModel.friends
                                 .contains(where: { $0.containsUser(userId: profile.id) })
                             {
-                                ProgressButton("Add as a friend", systemImage: "person.badge.plus", action: {
+                                ProgressButton("Add as a friend", systemImage: "person.badge.plus", action: { 
                                     await friendEnvironmentModel.sendFriendRequest(
                                         receiver: profile.id,
                                         onSuccess: {

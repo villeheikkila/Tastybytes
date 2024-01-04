@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ProductScreen: View {
     private let logger = Logger(category: "ProductScreen")
     @Environment(\.repository) private var repository
@@ -43,7 +44,7 @@ struct ProductScreen: View {
         CheckInList(
             id: "ProductScreen",
             fetcher: .product(product),
-            onRefresh: {
+            onRefresh: { @MainActor in
                 refreshId += 1
             },
             header: {

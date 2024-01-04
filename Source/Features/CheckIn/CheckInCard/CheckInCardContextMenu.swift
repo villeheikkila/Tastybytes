@@ -9,7 +9,7 @@ extension View {
         router: Router,
         profileEnvironmentModel: ProfileEnvironmentModel,
         checkIn: CheckIn,
-        onCheckInUpdate: @Sendable @escaping (CheckIn) -> Void,
+        onCheckInUpdate: @escaping (CheckIn) -> Void,
         onDelete: @escaping (CheckIn) -> Void
     ) -> some View {
         contextMenu {

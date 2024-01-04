@@ -1,6 +1,7 @@
 import OSLog
 import SwiftUI
 
+@MainActor
 @Observable
 final class SheetManager {
     private let logger = Logger(category: "SheetEnvironmentModel")

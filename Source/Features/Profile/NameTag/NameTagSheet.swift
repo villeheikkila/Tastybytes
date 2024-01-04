@@ -9,7 +9,7 @@ struct NameTagSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showNameTagScanner = false
 
-    let onSuccess: (_ profileId: UUID) -> Void
+    let onSuccess: @MainActor (_ profileId: UUID) -> Void
 
     var body: some View {
         VStack(spacing: 20) {

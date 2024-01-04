@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ProductMutationView: View {
     private let logger = Logger(category: "ProductMutationView")
     @Environment(\.repository) private var repository
@@ -203,6 +204,7 @@ private struct ProductMutationInitialValues {
     }
 }
 
+@MainActor
 struct ProductMutationInnerView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(\.repository) private var repository
@@ -465,7 +467,7 @@ struct ProductMutationInnerView: View {
             if isSheet {
                 dismiss()
             }
-            await router.navigate(screen: .product(newProduct), removeLast: true)
+            router.navigate(screen: .product(newProduct), removeLast: true)
             await onSuccess(newProduct)
         case let .failure(error):
             guard !error.isCancelled else { return }

@@ -24,7 +24,7 @@ struct ProfileView: View {
             id: "ProfileView",
             fetcher: .profile(profile),
             scrollToTop: $scrollToTop,
-            onRefresh: {
+            onRefresh: { @MainActor in
                 refreshId += 1
             },
             topAnchor: topAnchor,

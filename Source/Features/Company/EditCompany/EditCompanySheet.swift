@@ -41,7 +41,7 @@ struct EditCompanySheet: View {
             Section(mode.nameSectionHeader) {
                 TextField("Name", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
-                    await submit(onSuccess: {
+                    await submit(onSuccess: { @MainActor in
                         dismiss()
                         await onSuccess()
                     })

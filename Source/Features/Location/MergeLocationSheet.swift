@@ -43,7 +43,7 @@ struct MergeLocationSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task(id: searchTerm, milliseconds: 200) {
+        .task(id: searchTerm, milliseconds: 200) { @MainActor in
             await searchLocations(name: searchTerm)
         }
         .confirmationDialog(

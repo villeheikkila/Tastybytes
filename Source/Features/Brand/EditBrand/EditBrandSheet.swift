@@ -7,6 +7,7 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+@MainActor
 struct EditBrandSheet: View {
     private let logger = Logger(category: "EditBrandSheet")
     @Environment(\.repository) private var repository

@@ -238,7 +238,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     }
 }
 
-public enum CheckInImageQueryType {
+public enum CheckInImageQueryType: Sendable {
     case profile(Profile)
     case product(Product.Joined)
 

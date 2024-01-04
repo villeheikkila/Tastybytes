@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct CheckInList<Header>: View where Header: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(\.repository) private var repository
@@ -34,7 +35,7 @@ struct CheckInList<Header>: View where Header: View {
     private let id: String
     private let header: Header
     private let showContentUnavailableView: Bool
-    private let onRefresh: () async -> Void
+    private let onRefresh: @Sendable () async -> Void
     private let topAnchor: Int?
     private let fetcher: Fetcher
     private let pageSize = 10
@@ -43,7 +44,7 @@ struct CheckInList<Header>: View where Header: View {
         id: String,
         fetcher: Fetcher,
         scrollToTop: Binding<Int> = .constant(0),
-        onRefresh: @escaping () async -> Void = {},
+        onRefresh: @Sendable @escaping () async -> Void = {},
         topAnchor: Int? = nil,
         showContentUnavailableView: Bool = false,
         @ViewBuilder header: @escaping () -> Header = { EmptyView() }
@@ -149,9 +150,9 @@ struct CheckInList<Header>: View where Header: View {
             }
             if refreshId == 0 {
                 logger.info("Loading initial check-in feed data for \(id)")
-                await fetchFeedItems(onComplete: { _ in
+                await fetchFeedItems(onComplete: { @MainActor _ in
                     logger.info("Loading initial check-ins completed for \(id)")
-                    await splashScreenEnvironmentModel.dismiss()
+                    splashScreenEnvironmentModel.dismiss()
                 })
                 resultId = refreshId
                 return
@@ -161,7 +162,7 @@ struct CheckInList<Header>: View where Header: View {
             async let onRefreshPromise: Void = onRefresh()
             async let feedItemsPromise: Void = fetchFeedItems(
                 reset: true,
-                onComplete: { _ in
+                onComplete: { @MainActor _ in
                     logger.info("Refreshing check-ins completed for \(id) with id: \(refreshId)")
                 }
             )
@@ -174,7 +175,7 @@ struct CheckInList<Header>: View where Header: View {
                 return
             }
             logger.info("Loading check-ins for scope: \(showCheckInsFrom.rawValue)")
-            await fetchFeedItems(reset: true, onComplete: { _ in
+            await fetchFeedItems(reset: true, onComplete: { @MainActor _ in
                 currentShowCheckInsFrom = showCheckInsFrom
                 logger.info("Loaded check-ins for scope: \(showCheckInsFrom.rawValue)")
             })
@@ -249,7 +250,7 @@ struct CheckInList<Header>: View where Header: View {
 
     func fetchFeedItems(
         reset: Bool = false,
-        onComplete: (@Sendable (_ checkIns: [CheckIn]) async -> Void)? = nil
+        onComplete:  (@Sendable (_ checkIns: [CheckIn]) async -> Void)? = nil
     ) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
@@ -268,7 +269,7 @@ struct CheckInList<Header>: View where Header: View {
                 await onComplete(checkIns)
             }
         case let .failure(error):
-            await splashScreenEnvironmentModel.dismiss()
+            splashScreenEnvironmentModel.dismiss()
             guard !error.isCancelled else { return }
             let e = AlertError(title: "Error occured while trying to load check-ins")
             if checkIns.isEmpty {

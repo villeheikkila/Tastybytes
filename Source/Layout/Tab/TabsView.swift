@@ -2,6 +2,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct TabsView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

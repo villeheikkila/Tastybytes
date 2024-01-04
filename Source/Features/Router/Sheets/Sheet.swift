@@ -3,9 +3,10 @@ import LegacyUIKit
 import Models
 import SwiftUI
 
+@MainActor
 enum Sheet: Identifiable, Equatable {
     case report(Report.Entity)
-    case checkIn(CheckIn, onUpdate: @Sendable (_ checkIn: CheckIn) -> Void)
+    case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
     case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) async -> Void)
     case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
     case productFilter(
@@ -13,8 +14,8 @@ enum Sheet: Identifiable, Equatable {
         sections: [ProductFilterSheet.Sections],
         onApply: (_ filter: Product.Filter?) -> Void
     )
-    case nameTag(onSuccess: @Sendable (_ profileId: UUID) -> Void)
-    case companySearch(onSelect: @Sendable (_ company: Company) -> Void)
+    case nameTag(onSuccess: @MainActor (_ profileId: UUID) -> Void)
+    case companySearch(onSelect: (_ company: Company) -> Void)
     case brand(brandOwner: Company,
                brand: Binding<Brand.JoinedSubBrands?>,
                mode: BrandSheet.Mode)
@@ -30,34 +31,34 @@ enum Sheet: Identifiable, Equatable {
     case productEditSuggestion(product: Product.Joined)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
     case barcodeManagement(product: Product.Joined)
-    case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: @MainActor () async -> Void)
+    case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: () async -> Void)
     case editSubBrand(
         brand: Brand.JoinedSubBrandsProductsCompany,
         subBrand: SubBrand.JoinedProduct,
-        onUpdate: @MainActor () async -> Void
+        onUpdate: () async -> Void
     )
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)
     case locationSearch(
         category: Location.RecentLocation,
         title: String,
-        onSelect: @Sendable (_ location: Location) -> Void
+        onSelect: (_ location: Location) -> Void
     )
-    case legacyPhotoPicker(onSelection: @Sendable (_ image: UIImage, _ metadata: ImageMetadata) -> Void)
-    case newFlavor(onSubmit: @Sendable (_ newFlavor: String) async -> Void)
+    case legacyPhotoPicker(onSelection: (_ image: UIImage, _ metadata: ImageMetadata) -> Void)
+    case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
-                                onSelect: @MainActor (_ servingStyle: ServingStyle) async -> Void)
+                                onSelect: (_ servingStyle: ServingStyle) async -> Void)
     case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
-    case editSubcategory(subcategory: Subcategory, onSubmit: @Sendable (_ subcategoryName: String) async -> Void)
+    case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) async -> Void)
     case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
-    case addCategory(onSubmit: @MainActor (_ newCategoryName: String) async -> Void)
-    case editCompany(company: Company, onSuccess: @Sendable () async -> Void)
-    case companyEditSuggestion(company: Company, onSuccess: @Sendable () -> Void)
-    case userSheet(mode: UserSheet.Mode, onSubmit: @MainActor () -> Void)
+    case addCategory(onSubmit: (_ newCategoryName: String) async -> Void)
+    case editCompany(company: Company, onSuccess: () async -> Void)
+    case companyEditSuggestion(company: Company, onSuccess: () -> Void)
+    case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
     case categoryPickerSheet(category: Binding<Int?>)
     case mergeLocationSheet(location: Location)
-    case productLogo(product: Product.Joined, onUpload: @Sendable () async -> Void)
+    case productLogo(product: Product.Joined, onUpload: () async -> Void)
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
 
@@ -175,7 +176,7 @@ enum Sheet: Identifiable, Equatable {
         }
     }
 
-    var id: String {
+    nonisolated var id: String {
         switch self {
         case .report:
             "report"
@@ -256,7 +257,7 @@ enum Sheet: Identifiable, Equatable {
         }
     }
 
-    static func == (lhs: Sheet, rhs: Sheet) -> Bool {
+    nonisolated static func == (lhs: Sheet, rhs: Sheet) -> Bool {
         lhs.id == rhs.id
     }
 }

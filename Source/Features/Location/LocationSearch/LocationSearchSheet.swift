@@ -9,6 +9,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
     @Environment(\.repository) private var repository

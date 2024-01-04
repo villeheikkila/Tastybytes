@@ -289,7 +289,9 @@ struct DiscoverScreen: View {
                     with the name or by creating a new product.
                     """
                 )
-                Button("Dismiss barcode", action: resetBarcode)
+                Button("Dismiss barcode", action: {
+                    barcode = nil
+                })
             }
         }
 
@@ -473,10 +475,6 @@ struct DiscoverScreen: View {
         case .users:
             profiles.isEmpty
         }
-    }
-
-    func resetBarcode() {
-        barcode = nil
     }
 
     func addBarcodeToProduct(_ addBarcodeTo: Product.Joined) async {

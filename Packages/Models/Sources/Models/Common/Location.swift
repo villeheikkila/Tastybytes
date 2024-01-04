@@ -153,7 +153,7 @@ public extension Location {
         }
     }
 
-    enum RecentLocation {
+    enum RecentLocation: Sendable {
         case checkIn
         case purchase
     }

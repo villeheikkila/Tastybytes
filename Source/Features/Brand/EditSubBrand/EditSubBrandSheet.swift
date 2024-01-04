@@ -7,6 +7,7 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+@MainActor
 struct EditSubBrandSheet: View {
     private let logger = Logger(category: "EditSubBrandSheet")
     @Environment(\.repository) private var repository
@@ -56,7 +57,7 @@ struct EditSubBrandSheet: View {
             Section("Name") {
                 TextField("Name", text: $newSubBrandName)
                 ProgressButton("Edit") {
-                    await editSubBrand(onSuccess: {
+                    await editSubBrand(onSuccess: { @MainActor in
                         await onUpdate()
                     })
                 }
@@ -87,7 +88,7 @@ struct EditSubBrandSheet: View {
             ProgressButton(
                 "Merge \(subBrand.name ?? "default sub-brand") to \(presenting.name ?? "default sub-brand")",
                 role: .destructive,
-                action: {
+                action: { @MainActor in
                     await mergeToSubBrand(subBrand: subBrand, onSuccess: {
                         feedbackEnvironmentModel.trigger(.notification(.success))
                         await onUpdate()

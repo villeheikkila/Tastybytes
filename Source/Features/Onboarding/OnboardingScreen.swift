@@ -1,6 +1,7 @@
 import EnvironmentModels
 import SwiftUI
 
+@MainActor
 struct OnboardingScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel

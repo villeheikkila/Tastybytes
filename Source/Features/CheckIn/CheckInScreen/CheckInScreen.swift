@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct CheckInScreen: View {
     enum Focusable {
         case checkInComment

@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-public enum CheckInQueryType {
+public enum CheckInQueryType: Sendable {
     case paginated(Int, Int)
     case all
 }

@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct CheckInListCard: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Router.self) private var router
@@ -18,8 +19,8 @@ struct CheckInListCard: View {
 
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
-    let onUpdate: (_ checkIn: CheckIn) -> Void
-    let onDelete: (_ checkIn: CheckIn) async -> Void
+    let onUpdate: @MainActor (_ checkIn: CheckIn) -> Void
+    let onDelete: @MainActor (_ checkIn: CheckIn) async -> Void
 
     var body: some View {
         CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom)

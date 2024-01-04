@@ -9,6 +9,7 @@ import SwiftUI
 
 private let logger = Logger(category: "AccountSettingsScreen")
 
+@MainActor
 struct AccountSettingsScreen: View {
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

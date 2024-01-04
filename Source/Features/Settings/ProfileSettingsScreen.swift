@@ -4,6 +4,7 @@ import Models
 import PhotosUI
 import SwiftUI
 
+@MainActor
 struct ProfileSettingsScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var username = ""
@@ -46,7 +47,7 @@ struct ProfileSettingsScreen: View {
                     .onChange(of: username) {
                         isLoading = true
                     }
-                    .task(id: username, milliseconds: 300) {
+                    .task(id: username, milliseconds: 300) { @MainActor in
                         guard username.count >= 3 else { return }
                         let isAvailable = await profileEnvironmentModel
                             .checkIfUsernameIsAvailable(username: username)

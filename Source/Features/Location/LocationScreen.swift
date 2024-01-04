@@ -9,6 +9,7 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+@MainActor
 struct LocationScreen: View {
     private let logger = Logger(category: "LocationScreen")
     @Environment(\.repository) private var repository

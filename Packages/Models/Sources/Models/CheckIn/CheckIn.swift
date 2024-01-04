@@ -388,7 +388,7 @@ public extension CheckIn {
     }
 }
 
-public enum CheckInSegment: String, CaseIterable {
+public enum CheckInSegment: String, CaseIterable, Sendable {
     case everyone, friends, you
 }
 

@@ -4,6 +4,7 @@ import Models
 import PhotosUI
 import SwiftUI
 
+@MainActor
 struct OnboardingProfileSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -83,7 +84,7 @@ struct OnboardingProfileSection: View {
                         usernameIsAvailable = false
                         isLoading = true
                     }
-                    .task(id: username, milliseconds: 300) {
+                    .task(id: username, milliseconds: 300) { @MainActor in
                         guard username.count >= 3 else { return }
                         let isAvailable = await profileEnvironmentModel
                             .checkIfUsernameIsAvailable(username: username)

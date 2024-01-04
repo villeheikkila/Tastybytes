@@ -8,6 +8,7 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+@MainActor
 struct CheckInSheet: View {
     private let logger = Logger(category: "CheckInSheet")
     @Environment(\.repository) private var repository
@@ -243,7 +244,7 @@ struct CheckInSheet: View {
             Button("Cancel", role: .cancel, action: { dismiss() })
         }
         ToolbarItemGroup(placement: .primaryAction) {
-            ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: {
+            ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: { @MainActor in
                 switch action {
                 case .create:
                     if let onCreation {

@@ -20,7 +20,7 @@ struct CurrentProfileScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
-            RouterLink("Show name tag", systemImage: "qrcode", sheet: .nameTag(onSuccess: {     @MainActor profileId in
+            RouterLink("Show name tag", systemImage: "qrcode", sheet: .nameTag(onSuccess: { profileId in
                 router.fetchAndNavigateTo(repository, .profile(id: profileId))
             }))
         }

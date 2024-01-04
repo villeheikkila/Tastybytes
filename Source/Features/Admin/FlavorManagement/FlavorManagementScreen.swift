@@ -2,6 +2,7 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
+@MainActor
 struct FlavorManagementScreen: View {
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

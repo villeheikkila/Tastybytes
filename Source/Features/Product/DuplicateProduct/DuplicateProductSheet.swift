@@ -8,6 +8,7 @@ import SwiftUI
 
 private let logger = Logger(category: "MarkAsDuplicate")
 
+@MainActor
 struct DuplicateProductSheet: View {
     enum Mode {
         case mergeDuplicate, reportDuplicate
@@ -90,9 +91,7 @@ struct DuplicateProductSheet: View {
         ) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await MainActor.run {
-                dismiss()
-            }
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

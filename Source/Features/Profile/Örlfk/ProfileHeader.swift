@@ -8,6 +8,7 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ProfileHeader: View {
     private let logger = Logger(category: "ProfileHeader")
     @Environment(\.repository) private var repository

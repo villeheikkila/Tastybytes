@@ -138,7 +138,7 @@ public extension SubBrand {
         }
     }
 
-    enum Update {
+    enum Update: Sendable {
         case brand(UpdateBrandRequest)
         case name(UpdateNameRequest)
     }
