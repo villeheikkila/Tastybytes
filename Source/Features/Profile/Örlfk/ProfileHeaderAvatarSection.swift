@@ -46,7 +46,10 @@ struct ProfileHeaderAvatarSection: View {
                     }
             }
             .onChange(of: selectedItem) { _, newValue in
-                Task { await uploadAvatar(userId: profileEnvironmentModel.id, newAvatar: newValue) }
+                Task {
+                    guard let data = await newValue?.getJPEG() else { return }
+                    await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
+                }
             }
             Spacer()
             if showInFull {
@@ -61,8 +64,7 @@ struct ProfileHeaderAvatarSection: View {
         }
     }
 
-    func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) async {
-        guard let data = await newAvatar?.getJPEG() else { return }
+    func uploadAvatar(userId: UUID, data: Data) async {
         switch await repository.profile.uploadAvatar(userId: userId, data: data) {
         case let .success(avatarFile):
             profile = Profile(

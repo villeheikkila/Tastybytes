@@ -65,7 +65,10 @@ struct OnboardingProfileSection: View {
                 }
                 .onChange(of: selectedItem) { _, newValue in
                     guard let newValue else { return }
-                    Task { await profileEnvironmentModel.uploadAvatar(newAvatar: newValue) }
+                    Task {
+                        guard let data = await newValue.getJPEG() else { return }
+                        await profileEnvironmentModel.uploadAvatar(data: data)
+                    }
                 }
                 Spacer()
             }

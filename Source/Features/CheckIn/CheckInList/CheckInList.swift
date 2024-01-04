@@ -35,7 +35,7 @@ struct CheckInList<Header>: View where Header: View {
     private let id: String
     private let header: Header
     private let showContentUnavailableView: Bool
-    private let onRefresh: @Sendable () async -> Void
+    private let onRefresh: () async -> Void
     private let topAnchor: Int?
     private let fetcher: Fetcher
     private let pageSize = 10
@@ -44,7 +44,7 @@ struct CheckInList<Header>: View where Header: View {
         id: String,
         fetcher: Fetcher,
         scrollToTop: Binding<Int> = .constant(0),
-        onRefresh: @MainActor @Sendable @escaping () async -> Void = {},
+        onRefresh: @MainActor @escaping () async -> Void = {},
         topAnchor: Int? = nil,
         showContentUnavailableView: Bool = false,
         @ViewBuilder header: @escaping () -> Header = { EmptyView() }
@@ -159,14 +159,13 @@ struct CheckInList<Header>: View where Header: View {
             }
             logger.info("Refreshing check-in feed data for \(id) with id: \(refreshId)")
             isRefreshing = true
-            async let onRefreshPromise: Void = onRefresh()
             async let feedItemsPromise: Void = fetchFeedItems(
                 reset: true,
                 onComplete: { @MainActor _ in
                     logger.info("Refreshing check-ins completed for \(id) with id: \(refreshId)")
                 }
             )
-            _ = (await onRefreshPromise, await feedItemsPromise)
+            _ = (await onRefresh(), await feedItemsPromise)
             isRefreshing = false
             resultId = refreshId
         }

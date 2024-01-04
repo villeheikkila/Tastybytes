@@ -63,14 +63,17 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         return [.sound, .badge, .banner, .list]
     }
 
-    func userNotificationCenter(
+    nonisolated func userNotificationCenter(
         _: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         let userInfo = response.notification.request.content.userInfo
         if let deepLink = userInfo["link"] as? String, let url = URL(string: deepLink) {
-            UIApplication.shared.open(url)
+            Task { await MainActor.run {
+                UIApplication.shared.open(url)
+            }
+            }
         }
         completionHandler()
     }

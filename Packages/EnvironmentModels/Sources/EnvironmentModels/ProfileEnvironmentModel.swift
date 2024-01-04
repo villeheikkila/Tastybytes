@@ -195,8 +195,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    public func uploadAvatar(newAvatar: PhotosPickerItem) async {
-        guard let data = await newAvatar.getJPEG() else { return }
+    public func uploadAvatar(data: Data) async {
         guard let extendedProfile else { return }
         switch await repository.profile.uploadAvatar(userId: extendedProfile.id, data: data) {
         case let .success(avatarFile):

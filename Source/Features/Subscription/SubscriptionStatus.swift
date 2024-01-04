@@ -1,7 +1,7 @@
 import StoreKit
 import SwiftUI
 
-enum SubscriptionStatus: Comparable, Hashable {
+enum SubscriptionStatus: Comparable, Hashable, Sendable {
     case notSubscribed
     case monthly
     case yearly

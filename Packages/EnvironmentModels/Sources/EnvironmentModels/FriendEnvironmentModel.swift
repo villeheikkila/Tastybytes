@@ -168,7 +168,7 @@ public final class FriendEnvironmentModel {
                         self.friends.append(blockedUser)
                     }
                 }
-                await onSuccess()
+                onSuccess()
             case let .failure(error):
                 guard !error.isCancelled else { return }
                 alertError = .init()
