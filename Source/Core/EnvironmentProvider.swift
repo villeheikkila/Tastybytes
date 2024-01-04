@@ -7,6 +7,7 @@ import TipKit
 
 private let logger = Logger(category: "EnvironmentView")
 
+@MainActor
 struct EnvironmentProvider<Content: View>: View {
     @AppStorage(.colorScheme) var colorScheme: String = "system"
     @State private var permissionEnvironmentModel = PermissionEnvironmentModel()

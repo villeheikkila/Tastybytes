@@ -6,6 +6,7 @@ import SwiftUI
 
 private let logger = Logger(category: "FriendsScreen")
 
+@MainActor
 @Observable
 public final class FriendEnvironmentModel {
     public var friends = [Friend]()
@@ -37,7 +38,7 @@ public final class FriendEnvironmentModel {
         friends.filter { $0.status == .pending }
     }
 
-    public func sendFriendRequest(receiver: UUID, onSuccess: (@MainActor () -> Void)? = nil) async {
+    public func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
         switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
         case let .success(newFriend):
             await MainActor.run {
@@ -46,7 +47,7 @@ public final class FriendEnvironmentModel {
                 }
             }
             if let onSuccess {
-               await onSuccess()
+                onSuccess()
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

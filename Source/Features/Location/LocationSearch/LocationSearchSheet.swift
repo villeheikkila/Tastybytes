@@ -9,6 +9,9 @@ import OSLog
 import Repositories
 import SwiftUI
 
+// TODO: Remove this hack after MKLocalSearch.Response is actually sendable
+extension MKLocalSearch.Response: @unchecked Sendable {}
+
 @MainActor
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
@@ -50,7 +53,7 @@ struct LocationSearchSheet: View {
                                             latitudinalMeters: radius,
                                             longitudinalMeters: radius)
 
-        Task {
+        Task { @MainActor in
             let search = MKLocalSearch(request: request)
             let response = try? await search.start()
             let rawResults = response?.mapItems ?? []

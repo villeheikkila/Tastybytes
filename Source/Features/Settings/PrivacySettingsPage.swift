@@ -2,6 +2,7 @@ import EnvironmentModels
 import PhotosUI
 import SwiftUI
 
+@MainActor
 struct PrivacySettingsScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 

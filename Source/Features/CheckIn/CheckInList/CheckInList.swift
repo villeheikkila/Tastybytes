@@ -44,7 +44,7 @@ struct CheckInList<Header>: View where Header: View {
         id: String,
         fetcher: Fetcher,
         scrollToTop: Binding<Int> = .constant(0),
-        onRefresh: @Sendable @escaping () async -> Void = {},
+        onRefresh: @MainActor @Sendable @escaping () async -> Void = {},
         topAnchor: Int? = nil,
         showContentUnavailableView: Bool = false,
         @ViewBuilder header: @escaping () -> Header = { EmptyView() }

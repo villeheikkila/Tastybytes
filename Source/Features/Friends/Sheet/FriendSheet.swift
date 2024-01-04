@@ -3,6 +3,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct FriendSheet: View {
     @Binding private var taggedFriends: [Profile]
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel

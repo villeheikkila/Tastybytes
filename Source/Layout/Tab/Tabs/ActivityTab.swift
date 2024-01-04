@@ -2,6 +2,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct ActivityTab: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(Router.self) private var router

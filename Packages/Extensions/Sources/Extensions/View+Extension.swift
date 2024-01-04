@@ -137,7 +137,7 @@ public struct DetectOrientation: ViewModifier {
     public func body(content: Content) -> some View {
         content.onAppear {
             #if os(iOS)
-                NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+               _ = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
                     .sink { _ in
                         let isCurrentlyPortrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
                         isPortrait = UIDevice.current

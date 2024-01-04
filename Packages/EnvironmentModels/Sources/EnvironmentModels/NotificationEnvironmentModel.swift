@@ -4,6 +4,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 @Observable
 public final class NotificationEnvironmentModel {
     private let logger = Logger(category: "NotificationEnvironmentModel")

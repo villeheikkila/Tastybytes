@@ -8,6 +8,7 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
         rawValue
     }
 
+    @MainActor
     @ViewBuilder
     var view: some View {
         switch self {
