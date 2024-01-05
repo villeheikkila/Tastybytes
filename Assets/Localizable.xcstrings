@@ -1,0 +1,766 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "(%@)" : {
+
+    },
+    "(%lld)" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@ app icon" : {
+
+    },
+    "%@ brand" : {
+
+    },
+    "%@ commented on your check-in of %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ commented on your check-in of %2$@"
+          }
+        }
+      }
+    },
+    "%@ Photo" : {
+
+    },
+    "%@ Pro" : {
+
+    },
+    "%@ reacted to your check-in of %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ reacted to your check-in of %2$@"
+          }
+        }
+      }
+    },
+    "%@ sent you a friend request!" : {
+
+    },
+    "%@ sub-brand from %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ sub-brand from %2$@"
+          }
+        }
+      }
+    },
+    "%@ tagged you in a check-in of %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ tagged you in a check-in of %2$@"
+          }
+        }
+      }
+    },
+    "%@,you can assign the barcode to a product by searching again with the name or by creating a new product." : {
+
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%@: %@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@: %3$@"
+          }
+        }
+      }
+    },
+    "2019-%@" : {
+
+    },
+    "About" : {
+
+    },
+    "Accept friend request" : {
+
+    },
+    "Account" : {
+
+    },
+    "Account Deleted" : {
+
+    },
+    "Activity" : {
+
+    },
+    "Add" : {
+
+    },
+    "Add barcode confirmation" : {
+
+    },
+    "Add barcode manually" : {
+
+    },
+    "Add Category" : {
+
+    },
+    "Add Flavor" : {
+
+    },
+    "Add new" : {
+
+    },
+    "Add new brand for %@" : {
+
+    },
+    "Add new company" : {
+
+    },
+    "Add new serving style" : {
+
+    },
+    "Add new sub-brand for %@" : {
+
+    },
+    "Add new subcategory" : {
+
+    },
+    "Add subcategory" : {
+
+    },
+    "Add Subcategory" : {
+
+    },
+    "Add subcategory to %@" : {
+
+    },
+    "Additional Information" : {
+
+    },
+    "Admin" : {
+
+    },
+    "All your personal information has been permanently deleted from the system." : {
+
+    },
+    "All your verified contributions are counted here. Verification can take some days." : {
+
+    },
+    "App Icon" : {
+
+    },
+    "Appearance" : {
+
+    },
+    "Apply" : {
+
+    },
+    "Are you sure you want to delete brand and all related sub-brands and products?" : {
+
+    },
+    "Are you sure you want to delete check-in as a moderator?" : {
+
+    },
+    "Are you sure you want to delete check-in? The data will be permanently lost." : {
+
+    },
+    "Are you sure you want to delete comment as a moderator?" : {
+
+    },
+    "Are you sure you want to delete sub-brand and all related products?" : {
+
+    },
+    "Are you sure you want to delete subcategory?" : {
+
+    },
+    "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost" : {
+
+    },
+    "Are you sure you want to delete the product and all of its check-ins?" : {
+
+    },
+    "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost" : {
+
+    },
+    "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted" : {
+
+    },
+    "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted." : {
+
+    },
+    "Are you sure you want to permanently delete your account? All data will be lost." : {
+
+    },
+    "Back to search" : {
+
+    },
+    "Barcode (EAN13)" : {
+
+    },
+    "Barcode Scanner" : {
+
+    },
+    "Barcodes" : {
+
+    },
+    "Be first to check-in!" : {
+
+    },
+    "Blocked Users" : {
+
+    },
+    "Blocked users can't see your check-ins or profile" : {
+
+    },
+    "Brand" : {
+
+    },
+    "Brand name" : {
+
+    },
+    "Brand Owner" : {
+
+    },
+    "Brands" : {
+
+    },
+    "Camera" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Categories" : {
+
+    },
+    "Category" : {
+
+    },
+    "Check the spelling or try a new search" : {
+
+    },
+    "Check-in date" : {
+
+    },
+    "Check-in Date" : {
+
+    },
+    "Check-in Locations" : {
+
+    },
+    "Check-ins" : {
+
+    },
+    "Checked-in" : {
+
+    },
+    "Checked-in %@" : {
+
+    },
+    "Close" : {
+
+    },
+    "Companies" : {
+
+    },
+    "Connect with others by sharing your name tag" : {
+
+    },
+    "Content in question" : {
+
+    },
+    "Continue" : {
+
+    },
+    "Copyright" : {
+
+    },
+    "Create new company" : {
+
+    },
+    "Create new product" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delete Account" : {
+
+    },
+    "Delete as Moderator" : {
+
+    },
+    "Delete Company Confirmation" : {
+
+    },
+    "Didn't find a product you were looking for?" : {
+
+    },
+    "Didn't find the company you were looking for?" : {
+
+    },
+    "Discover" : {
+
+    },
+    "Dismiss barcode" : {
+
+    },
+    "Distance: %@" : {
+
+    },
+    "Done" : {
+
+    },
+    "Edit" : {
+
+    },
+    "Edit %@" : {
+
+    },
+    "Edit Brand" : {
+
+    },
+    "Edit Comment" : {
+
+    },
+    "Edit Serving Style" : {
+
+    },
+    "Email" : {
+
+    },
+    "Email is only used for login and is not shown for other users." : {
+
+    },
+    "Enable or disable the app's permission to send notifications" : {
+
+    },
+    "Feed couldn't be loaded" : {
+
+    },
+    "Feeds" : {
+
+    },
+    "Filter" : {
+
+    },
+    "Find products by rating" : {
+
+    },
+    "Flavors" : {
+
+    },
+    "Friends" : {
+
+    },
+    "Friends (%lld)" : {
+
+    },
+    "GitHub" : {
+
+    },
+    "Group products by" : {
+
+    },
+    "Group Products By" : {
+
+    },
+    "Has a sub-brand?" : {
+
+    },
+    "How was it?" : {
+
+    },
+    "Identity" : {
+
+    },
+    "Image of the check-in" : {
+
+    },
+    "Joined %@" : {
+
+    },
+    "Leave a comment!" : {
+
+    },
+    "legacy check-in" : {
+
+    },
+    "Legacy Check-in" : {
+
+    },
+    "LinkedIn" : {
+
+    },
+    "Location & Friends" : {
+
+    },
+    "Logo" : {
+
+    },
+    "Long press on a rating to find rated products" : {
+
+    },
+    "Mark as duplicate" : {
+
+    },
+    "Mark as Duplicate" : {
+
+    },
+    "Mark as legacy check-in" : {
+
+    },
+    "Merge duplicates" : {
+
+    },
+    "Merge location to..." : {
+
+    },
+    "Merge to another sub-brand" : {
+
+    },
+    "Merge to..." : {
+
+    },
+    "Moderation" : {
+
+    },
+    "Name" : {
+
+    },
+    "Name Tag" : {
+
+    },
+    "Nearby locations" : {
+
+    },
+    "New Products" : {
+
+    },
+    "No check-ins from friends" : {
+
+    },
+    "No Companies  found for \"%@\"" : {
+
+    },
+    "No companies found with the searched name." : {
+
+    },
+    "No Locations found for \"%@\"" : {
+
+    },
+    "No longer in production" : {
+
+    },
+    "No Products found for \"%@\"" : {
+
+    },
+    "No Products found with the barcode" : {
+
+    },
+    "No profiles found for \"%@\"" : {
+
+    },
+    "None" : {
+
+    },
+    "Not Selected" : {
+
+    },
+    "Not the product you were looking for?" : {
+
+    },
+    "Notifications" : {
+
+    },
+    "Only things I have not had" : {
+
+    },
+    "Oops!" : {
+
+    },
+    "Open System Notification Settings" : {
+
+    },
+    "Options menu" : {
+
+    },
+    "Pick a photo" : {
+
+    },
+    "Pick Serving Style" : {
+
+    },
+    "Picked serving style" : {
+
+    },
+    "Portfolio" : {
+
+    },
+    "Privacy" : {
+
+    },
+    "Private profile" : {
+
+    },
+    "Private Profile" : {
+
+    },
+    "Private profile hides check-ins and profile page from everyone else but your friends" : {
+
+    },
+    "Product" : {
+
+    },
+    "Product Logo" : {
+
+    },
+    "Product Merge Confirmation" : {
+
+    },
+    "Products" : {
+
+    },
+    "Profile" : {
+
+    },
+    "Purchased from __%@__" : {
+
+    },
+    "Quit the App" : {
+
+    },
+    "Rating" : {
+
+    },
+    "React to check-in" : {
+
+    },
+    "Reason" : {
+
+    },
+    "Recent locations" : {
+
+    },
+    "Reload" : {
+
+    },
+    "Remove friend request" : {
+
+    },
+    "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins" : {
+
+    },
+    "Report" : {
+
+    },
+    "Report %@" : {
+
+    },
+    "Reset" : {
+
+    },
+    "Reset filter" : {
+
+    },
+    "Review" : {
+
+    },
+    "Scan Name Tag" : {
+
+    },
+    "Search companies" : {
+
+    },
+    "Search for a duplicate location" : {
+
+    },
+    "Search for a duplicate product" : {
+
+    },
+    "Search for duplicate of %@. Your request will be reviewed and products will be combined if appropriate." : {
+
+    },
+    "Search users" : {
+
+    },
+    "Select All" : {
+
+    },
+    "Select Logo" : {
+
+    },
+    "Selected" : {
+
+    },
+    "Serving Style" : {
+
+    },
+    "Set up your profile" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Share your profile" : {
+
+    },
+    "Show All" : {
+
+    },
+    "Show check-ins from" : {
+
+    },
+    "Show Name Tag" : {
+
+    },
+    "Show scanner" : {
+
+    },
+    "Showing only products you haven't tried" : {
+
+    },
+    "Sign Out" : {
+
+    },
+    "Skip" : {
+
+    },
+    "Sorry to see you go but you're always welcome back!" : {
+
+    },
+    "Sort By" : {
+
+    },
+    "Sorted by %@" : {
+
+    },
+    "Statistics" : {
+
+    },
+    "Sub-brand" : {
+
+    },
+    "Sub-brands" : {
+
+    },
+    "Subcategories" : {
+
+    },
+    "Subcategory" : {
+
+    },
+    "Submit" : {
+
+    },
+    "System Settings" : {
+
+    },
+    "Tag friends" : {
+
+    },
+    "TextField" : {
+
+    },
+    "These values are used in your personal page and can be seen by other users." : {
+
+    },
+    "This only takes effect if both first name and last name are provided." : {
+
+    },
+    "Time Period" : {
+
+    },
+    "Turn the torch %@" : {
+
+    },
+    "Unlock additional features" : {
+
+    },
+    "Unverified %@" : {
+
+    },
+    "Unverified Products" : {
+
+    },
+    "Unverify Brand" : {
+
+    },
+    "Unverify Company" : {
+
+    },
+    "Unverify Product" : {
+
+    },
+    "Unverify Sub-brand" : {
+
+    },
+    "Use Dark Mode" : {
+
+    },
+    "Use Full Name Instead of Username" : {
+
+    },
+    "Use System Color Scheme" : {
+
+    },
+    "Username" : {
+
+    },
+    "Value" : {
+
+    },
+    "Ville Heikkilä" : {
+
+    },
+    "Wishlist" : {
+
+    },
+    "Wishlist is empty" : {
+
+    },
+    "You don't have any friends yet" : {
+
+    },
+    "You have %@ Pro. Thank you!" : {
+
+    },
+    "You haven't blocked any users" : {
+
+    },
+    "You haven't check-in yet" : {
+
+    },
+    "Your Contributions" : {
+
+    }
+  },
+  "version" : "1.0"
+}

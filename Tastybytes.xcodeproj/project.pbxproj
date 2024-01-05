@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5C037BB52B472F150075091B /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C037BB42B472F150075091B /* Globals.swift */; };
+		5C037BB72B47EDF10075091B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C037BB62B47EDF10075091B /* Localizable.xcstrings */; };
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; };
 		5C39076F2B3232420036253E /* LayoutSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C39076E2B3232420036253E /* LayoutSelector.swift */; };
 		5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8822B2DCFD600F2B369 /* TabManager.swift */; };
@@ -197,6 +198,7 @@
 
 /* Begin PBXFileReference section */
 		5C037BB42B472F150075091B /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		5C037BB62B47EDF10075091B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5C150DDB2B4004A100CC939E /* Compiler.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Compiler.xcconfig; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
 		5C39076E2B3232420036253E /* LayoutSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSelector.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 				C94722DC2AD1859D006DE096 /* Assets.xcassets */,
 				C94722DF2AD1859D006DE096 /* Preview Content */,
 				5C9057CF2B2894BE00EC157B /* Fonts */,
+				5C037BB62B47EDF10075091B /* Localizable.xcstrings */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -1242,6 +1245,7 @@
 			files = (
 				C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */,
 				5C9058512B2894BE00EC157B /* Comfortaa-Bold.ttf in Resources */,
+				5C037BB72B47EDF10075091B /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1536,9 +1540,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				SDKROOT = auto;
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1564,8 +1566,6 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				SDKROOT = auto;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
