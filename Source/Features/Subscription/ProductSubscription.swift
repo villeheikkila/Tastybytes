@@ -4,8 +4,8 @@ import SwiftUI
 
 extension StoreKit.Product.SubscriptionInfo.Status: @unchecked Sendable {}
 
-actor ProductSubscriptionEnvironmentModel {
-    private let logger = Logger(category: "ProductSubscriptionEnvironmentModel")
+actor ProductSubscription {
+    private let logger = Logger(category: "ProductSubscription")
 
     public init() {}
 
@@ -52,7 +52,7 @@ actor ProductSubscriptionEnvironmentModel {
     }
 }
 
-extension ProductSubscriptionEnvironmentModel {
+extension ProductSubscription {
     func process(transaction _: VerificationResult<StoreKit.Transaction>) async {}
 
     func checkForUnfinishedTransactions() async {

@@ -4,7 +4,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-
 @main
 struct MainApp: App {
     private let logger = Logger(category: "Main")

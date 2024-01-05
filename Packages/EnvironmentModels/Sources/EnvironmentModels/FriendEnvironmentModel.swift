@@ -4,7 +4,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-
 @MainActor
 @Observable
 public final class FriendEnvironmentModel {

@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-
 @MainActor
 struct DuplicateProductSheet: View {
     private let logger = Logger(category: "DuplicateProductSheet")

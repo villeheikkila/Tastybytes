@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-
 struct ProfileLocationsScreen: View {
     private let logger = Logger(category: "ProfileLocationsScreen")
     @Environment(\.repository) private var repository

@@ -2,12 +2,10 @@ import OSLog
 import StoreKit
 import SwiftUI
 
-@MainActor
 struct SubscriptionProvider<Content: View>: View {
     private let logger = Logger(category: "SubscriptionProvider")
     @State private var status: EntitlementTaskState<SubscriptionStatus> = .loading
     @State private var subscriptionStatusEnvironmentModel = SubscriptionStatusEnvironmentModel()
-    @State private var subscriptionEnvironmentModel = ProductSubscriptionEnvironmentModel()
     @Environment(\.productSubscriptionIds) private var productSubscriptionIds
     @ViewBuilder let content: () -> Content
 
@@ -16,7 +14,7 @@ struct SubscriptionProvider<Content: View>: View {
             .environment(subscriptionStatusEnvironmentModel)
             .subscriptionStatusTask(for: productSubscriptionIds.group) { taskStatus in
                 status = await taskStatus.map { statuses in
-                    await subscriptionEnvironmentModel.status(
+                    await subscriptionStatusEnvironmentModel.productSubscription.status(
                         for: statuses,
                         ids: productSubscriptionIds
                     )
@@ -32,8 +30,8 @@ struct SubscriptionProvider<Content: View>: View {
                 }
             }
             .task {
-                await subscriptionEnvironmentModel.observeTransactionUpdates()
-                await subscriptionEnvironmentModel.checkForUnfinishedTransactions()
+                await subscriptionStatusEnvironmentModel.productSubscription.observeTransactionUpdates()
+                await subscriptionStatusEnvironmentModel.productSubscription.checkForUnfinishedTransactions()
             }
     }
 }
