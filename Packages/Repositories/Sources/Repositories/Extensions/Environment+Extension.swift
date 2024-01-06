@@ -2,16 +2,16 @@ import Models
 import SwiftUI
 
 public struct RepositoryKey: EnvironmentKey {
-    public static var defaultValue: Repository = .init(
-        supabaseURL: Config.supabaseUrl,
-        supabaseKey: Config.supabaseAnonKey,
-        headers: ["X-Bundle-Identifier": Config.bundleIdentifier, "X-App-Version": Config.appVersion]
-    )
+  public static var defaultValue: Repository = .init(
+    supabaseURL: Config.supabaseUrl,
+    supabaseKey: Config.supabaseAnonKey,
+    headers: ["x_bundle_id": Config.bundleIdentifier, "x_app_version": Config.appVersion]
+  )
 }
 
-public extension EnvironmentValues {
-    var repository: Repository {
-        get { self[RepositoryKey.self] }
-        set { self[RepositoryKey.self] = newValue }
-    }
+extension EnvironmentValues {
+  public var repository: Repository {
+    get { self[RepositoryKey.self] }
+    set { self[RepositoryKey.self] = newValue }
+  }
 }
