@@ -47,22 +47,24 @@ struct CropView: View {
     @MainActor
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: { renderFinalImage() }) {
-                Image(systemName: "checkmark")
+            Button(action: { renderFinalImage() }, label: {
+                Label("Done", systemImage: "checkmark")
+                    .labelStyle(.iconOnly)
                     .font(.callout)
                     .fontWeight(.semibold)
-            }
+            })
         }
 
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
                 finalImage = image
                 dismiss()
-            }) {
-                Image(systemName: "xmark")
+            }, label: {
+                Label("Close", systemImage: "xmark")
+                    .labelStyle(.iconOnly)
                     .font(.callout)
                     .fontWeight(.semibold)
-            }
+            })
         }
     }
 
@@ -75,6 +77,7 @@ struct CropView: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
+                    .accessibilityLabel("Image to be resized")
                     .overlay {
                         GeometryReader { proxy in
                             let rect = proxy.frame(in: .named(coordinateSpace))

@@ -29,7 +29,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public var appIcon: AppIcon = .ramune
 
     private let repository: Repository
-    private var extendedProfile: Profile.Extended? = nil
+    private var extendedProfile: Profile.Extended?
 
     public init(repository: Repository) {
         self.repository = repository
@@ -172,7 +172,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public func logOut() async {
         switch await repository.auth.logOut() {
-        case .success():
+        case .success:
             await MainActor.run {
                 clearTemporaryData()
                 UserDefaults().reset()

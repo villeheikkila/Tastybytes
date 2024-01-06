@@ -28,7 +28,6 @@ opt_in_rules:
   - redundant_nil_coalescing
   - joined_default_parameter
   - explicit_init
-  - enum_case_associated_values_count
   - convenience_type
   - legacy_multiple
   - toggle_bool
@@ -51,7 +50,6 @@ opt_in_rules:
   - closure_end_indentation
   - closure_spacing
   - empty_xctest_method
-  - function_default_parameter_at_end
   - pattern_matching_keywords
   - single_test_class
 
@@ -66,6 +64,7 @@ disabled_rules:
   - type_body_length
   - function_body_length
   - closure_end_indentation
+  - trailing_comma
 
 type_name:
   min_length: 3

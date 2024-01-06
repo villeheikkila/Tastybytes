@@ -232,8 +232,7 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("Location & Friends") {
-            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location) {
-                location in
+            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location) { location in
                 self.location = location
             }
 

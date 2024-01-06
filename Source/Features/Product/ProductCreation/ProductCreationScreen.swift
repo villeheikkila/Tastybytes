@@ -44,6 +44,7 @@ struct ProductCreationBrandSection: View {
     var body: some View {
         List(filteredProducts, id: \.brandName) { product in
             BrandRow(product: product)
+                .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                     section = .company
                 }
@@ -73,6 +74,7 @@ struct ProductCreationProductSection: View {
     var body: some View {
         List(filteredProducts, id: \.brandName) { product in
             BrandRow(product: product)
+                .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                     section = .company
                 }

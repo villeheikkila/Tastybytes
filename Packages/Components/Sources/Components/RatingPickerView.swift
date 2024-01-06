@@ -34,6 +34,7 @@ public struct RatingPickerView: View {
             HStack {
                 ForEach(0 ... 4, id: \.self) { i in
                     Image(systemName: "star")
+                        .accessibilityHidden(true)
                         .overlay(
                             GeometryReader { geo in
                                 let fraction = rating - Double(i)
@@ -56,7 +57,7 @@ public struct RatingPickerView: View {
                         )
                         .frame(width: starSize.width, height: starSize.height)
                         .foregroundColor(.yellow)
-                }
+                }.accessibilityLabel("Rating \(rating) / 5")
             }
             .background(
                 GeometryReader { proxy in

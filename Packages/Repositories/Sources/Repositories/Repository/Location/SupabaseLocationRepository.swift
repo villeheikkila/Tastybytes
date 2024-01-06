@@ -43,7 +43,6 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: [Location] = try await client
                 .database
-                // TODO: Create a proper view for this
                 .from(.viewRecentLocationsFromCurrentUser)
                 .select(Location.getQuery(.joined(false)))
                 .order("created_at", ascending: false)

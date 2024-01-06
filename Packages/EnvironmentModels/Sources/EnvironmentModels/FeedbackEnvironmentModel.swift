@@ -140,15 +140,19 @@ public struct Toast: View {
                     case let .complete(color):
                         Image(systemName: "checkmark")
                             .foregroundColor(color)
+                            .accessibilityHidden(true)
                     case let .error(color):
                         Image(systemName: "xmark")
                             .foregroundColor(color)
+                            .accessibilityHidden(true)
                     case let .systemImage(name, color):
                         Image(systemName: name)
                             .foregroundColor(color)
+                            .accessibilityHidden(true)
                     case let .image(name, color):
                         Image(name)
                             .foregroundColor(color)
+                            .accessibilityHidden(true)
                     case .loading:
                         ActivityIndicator()
                     case .regular:
@@ -166,10 +170,10 @@ public struct Toast: View {
             }
             .fixedSize(horizontal: true, vertical: false)
             .multilineTextAlignment(.leading)
-            .textColor(style?.titleColor ?? nil)
+            .textColor(style?.titleColor)
             .padding()
             .frame(maxWidth: 400, alignment: .leading)
-            .alertBackground(style?.backgroundColor ?? nil)
+            .alertBackground(style?.backgroundColor)
             .cornerRadius(10)
             .padding([.horizontal, .bottom])
         }
@@ -183,16 +187,19 @@ public struct Toast: View {
                     Image(systemName: "checkmark")
                         .hudModifier()
                         .foregroundColor(color)
+                        .accessibilityHidden(true)
                 case let .error(color):
                     Image(systemName: "xmark")
                         .hudModifier()
                         .foregroundColor(color)
+                        .accessibilityHidden(true)
                 case let .systemImage(name, color):
                     Image(systemName: name)
                         .foregroundColor(color)
                         .font(.system(size: 14, weight: .medium, design: .rounded))
                         .frame(width: 31, height: 31, alignment: .center)
                         .background(color.opacity(0.23), in: Circle())
+                        .accessibilityHidden(true)
                         .onTapGesture {
                             onTap?()
                         }
@@ -200,6 +207,7 @@ public struct Toast: View {
                     Image(name)
                         .hudModifier()
                         .foregroundColor(color)
+                        .accessibilityHidden(true)
                 case .loading:
                     ActivityIndicator()
                 case .regular:
@@ -212,14 +220,14 @@ public struct Toast: View {
                             Text(LocalizedStringKey(title ?? ""))
                                 .font(.system(size: 14, weight: .medium, design: .rounded))
                                 .multilineTextAlignment(.center)
-                                .textColor(style?.titleColor ?? nil)
+                                .textColor(style?.titleColor)
                         }
                         if subTitle != nil {
                             Text(LocalizedStringKey(subTitle ?? ""))
                                 .font(.system(size: 11.5, weight: .medium, design: .rounded))
                                 .opacity(0.7)
                                 .multilineTextAlignment(.center)
-                                .textColor(style?.subtitleColor ?? nil)
+                                .textColor(style?.subtitleColor)
                         }
                     }
                     .padding(.trailing, 15)
@@ -228,7 +236,7 @@ public struct Toast: View {
             .fixedSize(horizontal: true, vertical: false)
             .padding(7)
             .frame(height: 45)
-            .alertBackground(style?.backgroundColor ?? nil)
+            .alertBackground(style?.backgroundColor)
             .clipShape(Capsule())
             .overlay(Capsule().stroke(Color.gray.opacity(0.06), lineWidth: 1))
             .shadow(color: Color.black.opacity(0.1), radius: 5)
@@ -255,6 +263,7 @@ public struct Toast: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .scaledToFit()
+                    .accessibilityHidden(true)
                     .foregroundColor(color)
                     .padding(.bottom)
                 Spacer()
@@ -264,6 +273,7 @@ public struct Toast: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .scaledToFit()
+                    .accessibilityHidden(true)
                     .foregroundColor(color)
                     .padding(.bottom)
                 Spacer()
@@ -278,21 +288,21 @@ public struct Toast: View {
                     Text(LocalizedStringKey(title ?? ""))
                         .font(style?.titleFont ?? Font.body.bold())
                         .multilineTextAlignment(.center)
-                        .textColor(style?.titleColor ?? nil)
+                        .textColor(style?.titleColor)
                 }
                 if subTitle != nil {
                     Text(LocalizedStringKey(subTitle ?? ""))
                         .font(style?.subTitleFont ?? Font.footnote)
                         .opacity(0.7)
                         .multilineTextAlignment(.center)
-                        .textColor(style?.subtitleColor ?? nil)
+                        .textColor(style?.subtitleColor)
                 }
             }
         }
         .fixedSize(horizontal: true, vertical: false)
         .padding()
         .withFrame(type != .regular && type != .loading)
-        .alertBackground(style?.backgroundColor ?? nil)
+        .alertBackground(style?.backgroundColor)
         .cornerRadius(10)
     }
 

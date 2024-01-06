@@ -69,10 +69,6 @@ public extension ScannerView {
             previewLayer?.frame = view.layer.bounds
         }
 
-        override public func viewDidAppear(_ animated: Bool) {
-            super.viewDidAppear(animated)
-        }
-
         override public func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             setupSession()
