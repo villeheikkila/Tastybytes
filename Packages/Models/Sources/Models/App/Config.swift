@@ -97,4 +97,7 @@ public enum Config {
         }
         return ""
     }()
+
+    public static let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A"
+    public static let bundleIdentifier: String = Bundle.main.bundleIdentifier ?? "N/A"
 }

@@ -367,8 +367,8 @@
 		5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListCard.swift; sourceTree = "<group>"; };
 		5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContextMenu.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
-		C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Debug.xcconfig"; sourceTree = "<group>"; };
-		C94722D52AD1859C006DE096 /* Tastybytes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tastybytes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
+		C94722D52AD1859C006DE096 /* Tastybytes DEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tastybytes DEV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C94722DC2AD1859D006DE096 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C94722DE2AD1859D006DE096 /* Production.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Production.entitlements; sourceTree = "<group>"; };
 		C94722E02AD1859D006DE096 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -400,7 +400,7 @@
 				5C150DDB2B4004A100CC939E /* Compiler.xcconfig */,
 				5C72E9B32B49D29F00A963D3 /* Product.xcconfig */,
 				C94723042AD185FB006DE096 /* Project.xcconfig */,
-				C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */,
+				C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */,
 				5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */,
 				5C72E9B22B49D0DD00A963D3 /* Project-Production.xcconfig */,
 			);
@@ -1536,7 +1536,7 @@
 		};
 		C94722F82AD1859E006DE096 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */;
+			baseConfigurationReference = C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

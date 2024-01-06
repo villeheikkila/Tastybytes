@@ -44,11 +44,11 @@ public struct Repository: RepositoryProtocol {
     public let document: DocumentRepository
     public let report: ReportRepository
 
-    public init(supabaseURL: URL, supabaseKey: String) {
+    public init(supabaseURL: URL, supabaseKey: String, headers: [String: String]) {
         let client = SupabaseClient(
             supabaseURL: supabaseURL,
             supabaseKey: supabaseKey,
-            options: .init(auth: .init(flowType: .implicit))
+            options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers))
         )
         profile = SupabaseProfileRepository(client: client)
         checkIn = SupabaseCheckInRepository(client: client)
