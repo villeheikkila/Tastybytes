@@ -69,7 +69,7 @@ struct ProfileStatisticsView: View {
 }
 
 struct SubcategoryStatisticsView: View {
-    private let logger = Logger(category: "SubcategoryStatistics")
+    private let logger = Logger(category: "SubcategoryStatisticsView")
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var subcategoryStatistics = [SubcategoryStatistics]()
