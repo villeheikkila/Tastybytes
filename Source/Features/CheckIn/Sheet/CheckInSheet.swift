@@ -34,16 +34,19 @@ struct CheckInSheet: View {
     @State private var blurHash: String?
     @State private var alertError: AlertError?
     @State private var image: UIImage?
-    @State private var imageMetadata: ImageMetadata? { didSet {
-        if let imageTakenAt = imageMetadata?.date {
-            checkInAt = imageTakenAt
-        }
-        if let imageTakenLocation = imageMetadata?.location {
-            Task {
-                await getLocationFromCoordinate(coordinate: imageTakenLocation)
+    @State private var imageMetadata: ImageMetadata? {
+        didSet {
+            if let imageTakenAt = imageMetadata?.date {
+                checkInAt = imageTakenAt
+            }
+            if let imageTakenLocation = imageMetadata?.location {
+                Task {
+                    await getLocationFromCoordinate(coordinate: imageTakenLocation)
+                }
             }
         }
-    }}
+    }
+
     @State private var finalImage: UIImage?
     @State private var showImageCropper = false
 
@@ -62,9 +65,10 @@ struct CheckInSheet: View {
         _isLegacyCheckIn = State(initialValue: false)
     }
 
-    init(checkIn: CheckIn,
-         onUpdate: @escaping (_ checkIn: CheckIn) async -> Void)
-    {
+    init(
+        checkIn: CheckIn,
+        onUpdate: @escaping (_ checkIn: CheckIn) async -> Void
+    ) {
         product = checkIn.product
         onCreation = nil
         self.onUpdate = onUpdate
@@ -91,22 +95,31 @@ struct CheckInSheet: View {
         }
         .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
             Button("Camera", action: { showCamera.toggle() })
-            RouterLink("Photo Gallery", sheet: .legacyPhotoPicker(onSelection: { image, metadata in
-                imageMetadata = metadata
-                self.image = image
-                self.showImageCropper = true
+            RouterLink(
+                "Photo Gallery",
+                sheet: .legacyPhotoPicker(onSelection: { image, metadata in
+                    imageMetadata = metadata
+                    self.image = image
+                    showImageCropper = true
 
-            }))
+                })
+            )
         } message: {
             Text("Pick a photo")
         }
-        .fullScreenCamera(isPresented: $showCamera, selectedImage: .init(get: {
-            nil
-        }, set: { image in
-            guard let image else { return }
-            self.image = image
-            showImageCropper = true
-        }))
+        .fullScreenCamera(
+            isPresented: $showCamera,
+            selectedImage: .init(
+                get: {
+                    nil
+                },
+                set: { image in
+                    guard let image else { return }
+                    self.image = image
+                    showImageCropper = true
+                }
+            )
+        )
         .fullScreenImageCrop(
             isPresented: $showImageCropper,
             image: image,
@@ -118,13 +131,16 @@ struct CheckInSheet: View {
         }
         .task(id: finalImage, priority: .background) {
             if let finalImage, let hash = finalImage.resize(to: 100)?.blurHash(numberOfComponents: (5, 5)) {
-                blurHash = CheckIn
-                    .BlurHash(hash: hash, height: finalImage.size.height, width: finalImage.size.width).encoded
+                blurHash =
+                    CheckIn
+                        .BlurHash(hash: hash, height: finalImage.size.height, width: finalImage.size.width)
+                        .encoded
             }
         }
         .onAppear {
-            servingStyles = appDataEnvironmentModel.categories.first(where: { $0.id == product.category.id })?
-                .servingStyles ?? []
+            servingStyles =
+                appDataEnvironmentModel.categories.first(where: { $0.id == product.category.id })?
+                    .servingStyles ?? []
         }
     }
 
@@ -174,21 +190,26 @@ struct CheckInSheet: View {
         Section("Review") {
             TextField("How was it?", text: $review, axis: .vertical)
                 .focused($focusedField, equals: .review)
-            RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
-                if !pickedFlavors.isEmpty {
-                    FlavorsView(flavors: pickedFlavors)
-                } else {
-                    Text("Flavors")
+            RouterLink(
+                sheet: .flavors(pickedFlavors: $pickedFlavors),
+                label: {
+                    if !pickedFlavors.isEmpty {
+                        FlavorsView(flavors: pickedFlavors)
+                    } else {
+                        Text("Flavors")
+                    }
                 }
-            })
-            Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
-                   systemImage: "photo", action: { showPhotoMenu.toggle() })
+            )
+            Button(
+                "\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
+                systemImage: "photo", action: { showPhotoMenu.toggle() }
+            )
         }
         .headerProminence(.increased)
     }
 
     @ViewBuilder private var additionalInformationSection: some View {
-        Section("Additional Information") {
+        Section("checkIn.section.additionalInformation.title") {
             if !servingStyles.isEmpty {
                 Picker(selection: $servingStyle) {
                     Text("Not Selected").tag(ServingStyle?(nil))
@@ -200,42 +221,54 @@ struct CheckInSheet: View {
                 }
             }
 
-            RouterLink("Manufactured by \(manufacturer?.name ?? "")", sheet: .companySearch(onSelect: { company in
-                manufacturer = company
-            }))
+            RouterLink(
+                "Manufactured by \(manufacturer?.name ?? "")",
+                sheet: .companySearch(onSelect: { company in
+                    manufacturer = company
+                })
+            )
         }
     }
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("Location & Friends") {
-            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location) { location in
+            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location) {
+                location in
                 self.location = location
             }
 
-            LocationInputButton(category: .purchase, title: "Purchase Location",
-                                selection: purchaseLocation)
-            { location in
+            LocationInputButton(
+                category: .purchase, title: "Purchase Location",
+                selection: purchaseLocation
+            ) { location in
                 purchaseLocation = location
             }
 
             if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
-                RouterLink(sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn)) {
-                    Text(isLegacyCheckIn ? "Legacy Check-in" :
-                        "Checked-in \(checkInAt.customFormat(.relativeTime).lowercased())")
+                RouterLink(
+                    sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn)
+                ) {
+                    Text(
+                        isLegacyCheckIn
+                            ? "Legacy Check-in"
+                            : "Checked-in \(checkInAt.customFormat(.relativeTime).lowercased())")
                 }
             }
 
-            RouterLink(sheet: .friends(taggedFriends: $taggedFriends), label: {
-                if taggedFriends.isEmpty {
-                    Text("Tag friends")
-                } else {
-                    WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
-                        ForEach(taggedFriends) { friend in
-                            AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
+            RouterLink(
+                sheet: .friends(taggedFriends: $taggedFriends),
+                label: {
+                    if taggedFriends.isEmpty {
+                        Text("Tag friends")
+                    } else {
+                        WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
+                            ForEach(taggedFriends) { friend in
+                                AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
+                            }
                         }
                     }
                 }
-            })
+            )
         }
     }
 
@@ -244,24 +277,27 @@ struct CheckInSheet: View {
             Button("actions.cancel", role: .cancel, action: { dismiss() })
         }
         ToolbarItemGroup(placement: .primaryAction) {
-            ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: { @MainActor in
-                switch action {
-                case .create:
-                    if let onCreation {
-                        await createCheckIn { newCheckIn in
-                            await onCreation(newCheckIn)
+            ProgressButton(
+                action == .create ? "Check-in!" : "Update Check-in!",
+                action: { @MainActor in
+                    switch action {
+                    case .create:
+                        if let onCreation {
+                            await createCheckIn { newCheckIn in
+                                await onCreation(newCheckIn)
+                            }
+                        }
+                    case .update:
+                        if let onUpdate {
+                            await updateCheckIn { updatedCheckIn in
+                                await onUpdate(updatedCheckIn)
+                            }
                         }
                     }
-                case .update:
-                    if let onUpdate {
-                        await updateCheckIn { updatedCheckIn in
-                            await onUpdate(updatedCheckIn)
-                        }
-                    }
+                    feedbackEnvironmentModel.trigger(.notification(.success))
+                    dismiss()
                 }
-                feedbackEnvironmentModel.trigger(.notification(.success))
-                dismiss()
-            })
+            )
             .bold()
         }
     }
@@ -292,7 +328,8 @@ struct CheckInSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error(
+                "Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -349,21 +386,24 @@ struct LocationInputButton: View {
     let onSelect: (_ location: Location) -> Void
 
     var body: some View {
-        RouterLink(sheet: .locationSearch(category: category, title: title, onSelect: onSelect), label: {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
+        RouterLink(
+            sheet: .locationSearch(category: category, title: title, onSelect: onSelect),
+            label: {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
 
-                if let selection {
-                    Text(selection.name)
-                        .foregroundColor(.secondary)
-
-                    if let locationTitle = selection.title {
-                        Text(locationTitle)
+                    if let selection {
+                        Text(selection.name)
                             .foregroundColor(.secondary)
-                            .font(.caption)
+
+                        if let locationTitle = selection.title {
+                            Text(locationTitle)
+                                .foregroundColor(.secondary)
+                                .font(.caption)
+                        }
                     }
                 }
             }
-        })
+        )
     }
 }

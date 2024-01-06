@@ -18,18 +18,21 @@ struct AccountDeletedScreen: View {
                         .font(.title)
 
                     VStack(spacing: 8) {
-                        Text("All your personal information has been permanently deleted from the system.")
+                        Text("settings.account.delete.disclaimer")
                         Text("Sorry to see you go but you're always welcome back!")
                     }
                     .multilineTextAlignment(.center)
 
-                    ProgressButton(action: {
-                        exit(0)
-                    }, label: {
-                        Text("Quit the App")
-                            .font(.headline)
-                            .padding(.all, 8)
-                    })
+                    ProgressButton(
+                        action: {
+                            exit(0)
+                        },
+                        label: {
+                            Text("Quit the App")
+                                .font(.headline)
+                                .padding(.all, 8)
+                        }
+                    )
                     .buttonStyle(.borderedProminent)
                 }
                 .padding(.horizontal, 24)

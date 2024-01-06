@@ -203,6 +203,9 @@
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
 		5C39076E2B3232420036253E /* LayoutSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSelector.swift; sourceTree = "<group>"; };
 		5C3CF5532B43484F0034B786 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
+		5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Staging.xcconfig"; sourceTree = "<group>"; };
+		5C72E9B22B49D0DD00A963D3 /* Project-Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Production.xcconfig"; sourceTree = "<group>"; };
+		5C72E9B32B49D29F00A963D3 /* Product.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Product.xcconfig; sourceTree = "<group>"; };
 		5C82E8822B2DCFD600F2B369 /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		5C82E8862B2F63A100F2B369 /* SplashScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenProvider.swift; sourceTree = "<group>"; };
 		5C82E88A2B2F678500F2B369 /* SubscriptionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionProvider.swift; sourceTree = "<group>"; };
@@ -363,15 +366,14 @@
 		5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContainer.swift; sourceTree = "<group>"; };
 		5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListCard.swift; sourceTree = "<group>"; };
 		5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContextMenu.swift; sourceTree = "<group>"; };
-		5CDFB0922B3C794A009FAE6C /* Product.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Product.xcconfig; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Debug.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* Tastybytes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tastybytes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C94722DC2AD1859D006DE096 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C94722DE2AD1859D006DE096 /* Tastybytes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tastybytes.entitlements; sourceTree = "<group>"; };
+		C94722DE2AD1859D006DE096 /* Production.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Production.entitlements; sourceTree = "<group>"; };
 		C94722E02AD1859D006DE096 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C94723042AD185FB006DE096 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
-		C94723052AD1870A006DE096 /* Tastybytes.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Tastybytes.xcconfig; sourceTree = "<group>"; };
+		C94723052AD1870A006DE096 /* Target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Target.xcconfig; sourceTree = "<group>"; };
 		C94723062AD1AC9E006DE096 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -392,6 +394,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C037D232B49C4940075091B /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				5C150DDB2B4004A100CC939E /* Compiler.xcconfig */,
+				5C72E9B32B49D29F00A963D3 /* Product.xcconfig */,
+				C94723042AD185FB006DE096 /* Project.xcconfig */,
+				C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */,
+				5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */,
+				5C72E9B22B49D0DD00A963D3 /* Project-Production.xcconfig */,
+			);
+			path = Project;
+			sourceTree = "<group>";
+		};
+		5C037D242B49C54A0075091B /* Target */ = {
+			isa = PBXGroup;
+			children = (
+				5CBF5A072B3C70F700227A19 /* Version.xcconfig */,
+				C923F3622AD2EE250041D01D /* Platform.xcconfig */,
+				C94723052AD1870A006DE096 /* Target.xcconfig */,
+			);
+			path = Target;
+			sourceTree = "<group>";
+		};
 		5C3907642B3208D10036253E /* ProductItem */ = {
 			isa = PBXGroup;
 			children = (
@@ -1153,15 +1178,10 @@
 		C94723032AD185ED006DE096 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				C94722DE2AD1859D006DE096 /* Tastybytes.entitlements */,
+				5C037D242B49C54A0075091B /* Target */,
+				5C037D232B49C4940075091B /* Project */,
+				C94722DE2AD1859D006DE096 /* Production.entitlements */,
 				C94723062AD1AC9E006DE096 /* Info.plist */,
-				C94723052AD1870A006DE096 /* Tastybytes.xcconfig */,
-				C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */,
-				C923F3622AD2EE250041D01D /* Platform.xcconfig */,
-				C94723042AD185FB006DE096 /* Project.xcconfig */,
-				5CBF5A072B3C70F700227A19 /* Version.xcconfig */,
-				5CDFB0922B3C794A009FAE6C /* Product.xcconfig */,
-				5C150DDB2B4004A100CC939E /* Compiler.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -1192,7 +1212,7 @@
 				5C885F0B2B2873DE00F17C78 /* EnvironmentModels */,
 				5C885F0E2B2873EC00F17C78 /* Components */,
 			);
-			productName = AppTemplate;
+			productName = Tastybytes;
 			productReference = C94722D52AD1859C006DE096 /* Tastybytes.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -1417,6 +1437,80 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		5C72E9AF2B49D05D00A963D3 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+			};
+			name = Staging;
+		};
+		5C72E9B02B49D05D00A963D3 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C94723052AD1870A006DE096 /* Target.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for reading barcodes and for check-in photos";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location is used to help you find nearby locations for check-ins";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				SDKROOT = auto;
+			};
+			name = Staging;
+		};
 		C94722F82AD1859E006DE096 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C93791A22AD5DD1200665F50 /* Project-Debug.xcconfig */;
@@ -1451,7 +1545,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1470,7 +1563,7 @@
 		};
 		C94722F92AD1859E006DE096 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C94723042AD185FB006DE096 /* Project.xcconfig */;
+			baseConfigurationReference = 5C72E9B22B49D0DD00A963D3 /* Project-Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1503,7 +1596,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1520,7 +1612,7 @@
 		};
 		C94722FB2AD1859E006DE096 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C94723052AD1870A006DE096 /* Tastybytes.xcconfig */;
+			baseConfigurationReference = C94723052AD1870A006DE096 /* Target.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1546,7 +1638,7 @@
 		};
 		C94722FC2AD1859E006DE096 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C94723052AD1870A006DE096 /* Tastybytes.xcconfig */;
+			baseConfigurationReference = C94723052AD1870A006DE096 /* Target.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1577,6 +1669,7 @@
 			buildConfigurations = (
 				C94722F82AD1859E006DE096 /* Debug */,
 				C94722F92AD1859E006DE096 /* Release */,
+				5C72E9AF2B49D05D00A963D3 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1586,6 +1679,7 @@
 			buildConfigurations = (
 				C94722FB2AD1859E006DE096 /* Debug */,
 				C94722FC2AD1859E006DE096 /* Release */,
+				5C72E9B02B49D05D00A963D3 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

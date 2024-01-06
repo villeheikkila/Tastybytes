@@ -88,4 +88,13 @@ public enum Config {
         guard let schema else { fatalError("Deep link schema is not set in plist for this environment") }
         return schema
     }()
+
+    public static let copyrightHolder: String = "Ville Heikkilä"
+
+    public static let copyrightYear: String = {
+        if let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year {
+            return "2018-\(String(currentYear))"
+        }
+        return ""
+    }()
 }

@@ -43,7 +43,7 @@ struct ContributionsScreen: View {
                         Text(String(contributions.barcodes))
                     }
                 } footer: {
-                    Text("All your verified contributions are counted here. Verification can take some days.")
+                    Text("settings.contributions.description")
                 }
             }
         }

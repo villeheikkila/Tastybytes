@@ -32,7 +32,7 @@ struct SettingsScreen: View {
             RouterLink("Profile", systemName: "person.fill", color: .indigo, screen: .profileSettings)
             RouterLink("Account", systemName: "gear", color: .gray, screen: .accountSettings)
             RouterLink("Privacy", systemName: "key.fill", color: .yellow, screen: .privacySettings)
-            RouterLink("Appearance", systemName: "paintbrush.fill", color: .blue, screen: .appearanaceSettings)
+            RouterLink("settings.appearance.title", systemName: "paintbrush.fill", color: .blue, screen: .appearanaceSettings)
             RouterLink(
                 "Notifications",
                 systemName: "bell.badge.fill",
@@ -93,7 +93,7 @@ struct AppIconLabelRow: View {
                 .padding(.trailing, 8)
                 .aspectRatio(contentMode: .fill)
                 .accessibilityHidden(true)
-            Text("App Icon")
+            Text("settings.appIcon.title")
             Spacer()
             if profileEnvironmentModel.appIcon != .ramune {
                 Text(profileEnvironmentModel.appIcon.label)

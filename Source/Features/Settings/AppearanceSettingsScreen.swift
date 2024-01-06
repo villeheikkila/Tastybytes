@@ -27,7 +27,7 @@ struct AppearanceSettingsScreen: View {
             }))
             .disabled(colorScheme == "system")
         }
-        .navigationTitle("Appearance")
+        .navigationTitle("settings.appearance.title")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

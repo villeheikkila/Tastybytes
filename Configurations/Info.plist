@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>APP_NAME</key>
-	<string>${TARGET_NAME}</string>
+	<string>${APP_NAME}</string>
 	<key>BASE_URL</key>
 	<string>${BASE_URL}</string>
 	<key>CFBundleURLTypes</key>

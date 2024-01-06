@@ -11,7 +11,14 @@
 
     },
     "%@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
     },
     "%@ %@" : {
       "localizations" : {
@@ -24,26 +31,54 @@
       }
     },
     "%@ app icon" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ app icon"
+          }
+        }
+      }
     },
     "%@ brand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ brand"
+          }
+        }
+      }
     },
     "%@ commented on your check-in of %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ commented on your check-in of %2$@"
+            "state" : "translated",
+            "value" : "%@ commented on your check-in of %@"
           }
         }
       }
     },
     "%@ Photo" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Photo"
+          }
+        }
+      }
     },
     "%@ Pro" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Pro"
+          }
+        }
+      }
     },
     "%@ reacted to your check-in of %@" : {
       "localizations" : {
@@ -56,14 +91,21 @@
       }
     },
     "%@ sent you a friend request!" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sent you a friend request!"
+          }
+        }
+      }
     },
     "%@ sub-brand from %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ sub-brand from %2$@"
+            "state" : "translated",
+            "value" : "%@ sub-brand from %@"
           }
         }
       }
@@ -72,14 +114,21 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ tagged you in a check-in of %2$@"
+            "state" : "translated",
+            "value" : "%@ tagged you in a check-in of %@"
           }
         }
       }
     },
     "%@,you can assign the barcode to a product by searching again with the name or by creating a new product." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@,you can assign the barcode to a product by searching again with the name or by creating a new product."
+          }
+        }
+      }
     },
     "%@: %@" : {
       "localizations" : {
@@ -101,17 +150,35 @@
         }
       }
     },
-    "2019-%@" : {
-
-    },
     "About" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
     },
     "Account" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        }
+      }
     },
     "Account Deleted" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account Deleted"
+          }
+        }
+      }
     },
     "account.delete-confirmation.title" : {
       "localizations" : {
@@ -134,118 +201,346 @@
       }
     },
     "Activity" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activity"
+          }
+        }
+      }
     },
     "Add" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "Add barcode confirmation" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add barcode confirmation"
+          }
+        }
+      }
     },
     "Add barcode manually" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add barcode manually"
+          }
+        }
+      }
     },
     "Add Category" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Category"
+          }
+        }
+      }
     },
     "Add Flavor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Flavor"
+          }
+        }
+      }
+    },
+    "Add flavors" : {
+
+    },
+    "Add friend" : {
 
     },
     "Add new" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new"
+          }
+        }
+      }
     },
     "Add new brand for %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new brand for %@"
+          }
+        }
+      }
     },
     "Add new company" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new company"
+          }
+        }
+      }
     },
     "Add new serving style" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new serving style"
+          }
+        }
+      }
     },
     "Add new sub-brand for %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new sub-brand for %@"
+          }
+        }
+      }
     },
     "Add new subcategory" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new subcategory"
+          }
+        }
+      }
+    },
+    "Add Product" : {
+
+    },
+    "Add Serving Style" : {
 
     },
     "Add subcategory" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add subcategory"
+          }
+        }
+      }
     },
     "Add Subcategory" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Subcategory"
+          }
+        }
+      }
     },
     "Add subcategory to %@" : {
-
-    },
-    "Additional Information" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add subcategory to %@"
+          }
+        }
+      }
     },
     "Admin" : {
-
-    },
-    "All your personal information has been permanently deleted from the system." : {
-
-    },
-    "All your verified contributions are counted here. Verification can take some days." : {
-
-    },
-    "App Icon" : {
-
-    },
-    "Appearance" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Admin"
+          }
+        }
+      }
     },
     "Apply" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
+        }
+      }
     },
     "Are you sure you want to delete check-in as a moderator?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete check-in as a moderator?"
+          }
+        }
+      }
     },
     "Are you sure you want to delete comment as a moderator?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete comment as a moderator?"
+          }
+        }
+      }
     },
     "Are you sure you want to delete subcategory?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete subcategory?"
+          }
+        }
+      }
     },
     "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost"
+          }
+        }
+      }
     },
     "Are you sure you want to delete the product and all of its check-ins?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the product and all of its check-ins?"
+          }
+        }
+      }
     },
     "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted"
+          }
+        }
+      }
     },
     "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted."
+          }
+        }
+      }
     },
     "Back to search" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back to search"
+          }
+        }
+      }
     },
     "Barcode (EAN13)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barcode (EAN13)"
+          }
+        }
+      }
     },
     "Barcode Scanner" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barcode Scanner"
+          }
+        }
+      }
     },
     "Barcodes" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barcodes"
+          }
+        }
+      }
     },
     "Blocked Users" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocked Users"
+          }
+        }
+      }
     },
     "Blocked users can't see your check-ins or profile" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocked users can't see your check-ins or profile"
+          }
+        }
+      }
     },
     "Brand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand"
+          }
+        }
+      }
     },
     "Brand name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand name"
+          }
+        }
+      }
     },
     "Brand Owner" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand Owner"
+          }
+        }
+      }
     },
     "brand.delete-warning" : {
       "localizations" : {
@@ -258,7 +553,14 @@
       }
     },
     "Brands" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brands"
+          }
+        }
+      }
     },
     "brands.delete-brand-warning" : {
       "localizations" : {
@@ -271,24 +573,79 @@
       }
     },
     "Camera" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera"
+          }
+        }
+      }
     },
     "Categories" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categories"
+          }
+        }
+      }
     },
     "Category" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
     },
     "Check the spelling or try a new search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the spelling or try a new search"
+          }
+        }
+      }
+    },
+    "Check-in" : {
 
     },
     "Check-in date" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in date"
+          }
+        }
+      }
     },
     "Check-in Date" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in Date"
+          }
+        }
+      }
     },
     "Check-in Locations" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in Locations"
+          }
+        }
+      }
+    },
+    "Check-in!" : {
 
     },
     "check-in.delete-confirmation.title" : {
@@ -302,10 +659,24 @@
       }
     },
     "check-in.legacy.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "legacy check-in"
+          }
+        }
+      }
     },
     "Check-ins" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-ins"
+          }
+        }
+      }
     },
     "check-ins.empty-content" : {
       "localizations" : {
@@ -318,109 +689,373 @@
       }
     },
     "Checked-in" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checked-in"
+          }
+        }
+      }
     },
     "Checked-in %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checked-in %@"
+          }
+        }
+      }
+    },
+    "checkIn.section.additionalInformation.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Additional Information"
+          }
+        }
+      }
     },
     "Close" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
     },
     "Companies" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Companies"
+          }
+        }
+      }
     },
     "Connect with others by sharing your name tag" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect with others by sharing your name tag"
+          }
+        }
+      }
     },
     "Content in question" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Content in question"
+          }
+        }
+      }
     },
     "Continue" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
     },
     "Copyright" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copyright"
+          }
+        }
+      }
     },
     "Create new company" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new company"
+          }
+        }
+      }
     },
     "Create new product" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new product"
+          }
+        }
+      }
     },
     "Delete" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "Delete Account" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Account"
+          }
+        }
+      }
     },
     "Delete as Moderator" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete as Moderator"
+          }
+        }
+      }
     },
     "Delete Company Confirmation" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Company Confirmation"
+          }
+        }
+      }
     },
     "Didn't find a product you were looking for?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Didn't find a product you were looking for?"
+          }
+        }
+      }
     },
     "Didn't find the company you were looking for?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Didn't find the company you were looking for?"
+          }
+        }
+      }
     },
     "Discover" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discover"
+          }
+        }
+      }
     },
     "Dismiss barcode" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss barcode"
+          }
+        }
+      }
     },
     "Distance: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance: %@"
+          }
+        }
+      }
     },
     "Done" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
     },
     "Edit" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
     },
     "Edit %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit %@"
+          }
+        }
+      }
     },
     "Edit Brand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Brand"
+          }
+        }
+      }
     },
     "Edit Comment" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Comment"
+          }
+        }
+      }
+    },
+    "Edit Logo" : {
 
     },
     "Edit Serving Style" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Serving Style"
+          }
+        }
+      }
+    },
+    "Edit Serving Styles" : {
+
+    },
+    "Edit Suggestion" : {
 
     },
     "Email" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
     },
     "Email is only used for login and is not shown for other users." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email is only used for login and is not shown for other users."
+          }
+        }
+      }
     },
     "Enable or disable the app's permission to send notifications" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable or disable the app's permission to send notifications"
+          }
+        }
+      }
     },
     "Feed couldn't be loaded" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feed couldn't be loaded"
+          }
+        }
+      }
     },
     "Feeds" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeds"
+          }
+        }
+      }
     },
     "Filter" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter"
+          }
+        }
+      }
     },
     "Find products by rating" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find products by rating"
+          }
+        }
+      }
     },
     "Flavors" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flavors"
+          }
+        }
+      }
     },
     "Friends" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Friends"
+          }
+        }
+      }
     },
     "Friends (%lld)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Friends (%lld)"
+          }
+        }
+      }
     },
     "friends.accept-request.label" : {
       "localizations" : {
@@ -433,252 +1068,803 @@
       }
     },
     "GitHub" : {
-
-    },
-    "Group products by" : {
-
-    },
-    "Group Products By" : {
-
-    },
-    "Has a sub-brand?" : {
-
-    },
-    "How was it?" : {
-
-    },
-    "Identity" : {
-
-    },
-    "Image of the check-in" : {
-
-    },
-    "Joined %@" : {
-
-    },
-    "Leave a comment!" : {
-
-    },
-    "legacy check-in" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "legacy check-in"
+            "value" : "GitHub"
+          }
+        }
+      }
+    },
+    "Group products by" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group products by"
+          }
+        }
+      }
+    },
+    "Group Products By" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group Products By"
+          }
+        }
+      }
+    },
+    "Has a sub-brand?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Has a sub-brand?"
+          }
+        }
+      }
+    },
+    "How was it?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How was it?"
+          }
+        }
+      }
+    },
+    "Identity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity"
+          }
+        }
+      }
+    },
+    "Image of the check-in" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image of the check-in"
+          }
+        }
+      }
+    },
+    "Joined %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joined %@"
+          }
+        }
+      }
+    },
+    "Leave a comment!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave a comment!"
           }
         }
       }
     },
     "Legacy Check-in" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legacy Check-in"
+          }
+        }
+      }
     },
     "LinkedIn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LinkedIn"
+          }
+        }
+      }
     },
     "Location & Friends" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location & Friends"
+          }
+        }
+      }
     },
     "Logo" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logo"
+          }
+        }
+      }
     },
     "Long press on a rating to find rated products" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Long press on a rating to find rated products"
+          }
+        }
+      }
     },
     "Mark as duplicate" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as duplicate"
+          }
+        }
+      }
     },
     "Mark as Duplicate" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as Duplicate"
+          }
+        }
+      }
     },
     "Mark as legacy check-in" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as legacy check-in"
+          }
+        }
+      }
     },
     "Merge duplicates" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge duplicates"
+          }
+        }
+      }
     },
     "Merge location to..." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge location to..."
+          }
+        }
+      }
     },
     "Merge to another sub-brand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge to another sub-brand"
+          }
+        }
+      }
     },
     "Merge to..." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge to..."
+          }
+        }
+      }
     },
     "Moderation" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moderation"
+          }
+        }
+      }
     },
     "Name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "Name Tag" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name Tag"
+          }
+        }
+      }
     },
     "Nearby locations" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby locations"
+          }
+        }
+      }
     },
     "New Products" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Products"
+          }
+        }
+      }
     },
     "No check-ins from friends" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No check-ins from friends"
+          }
+        }
+      }
     },
     "No Companies  found for \"%@\"" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Companies  found for \"%@\""
+          }
+        }
+      }
     },
     "No companies found with the searched name." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No companies found with the searched name."
+          }
+        }
+      }
     },
     "No Locations found for \"%@\"" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Locations found for \"%@\""
+          }
+        }
+      }
     },
     "No longer in production" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No longer in production"
+          }
+        }
+      }
     },
     "No Products found for \"%@\"" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Products found for \"%@\""
+          }
+        }
+      }
     },
     "No Products found with the barcode" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Products found with the barcode"
+          }
+        }
+      }
     },
     "No profiles found for \"%@\"" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No profiles found for \"%@\""
+          }
+        }
+      }
     },
     "None" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
+          }
+        }
+      }
     },
     "Not Selected" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Selected"
+          }
+        }
+      }
     },
     "Not the product you were looking for?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not the product you were looking for?"
+          }
+        }
+      }
     },
     "Notifications" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        }
+      }
     },
     "Only things I have not had" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only things I have not had"
+          }
+        }
+      }
     },
     "Oops!" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops!"
+          }
+        }
+      }
     },
     "Open System Notification Settings" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open System Notification Settings"
+          }
+        }
+      }
     },
     "Options menu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options menu"
+          }
+        }
+      }
     },
     "Pick a photo" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a photo"
+          }
+        }
+      }
     },
     "Pick Serving Style" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick Serving Style"
+          }
+        }
+      }
     },
     "Picked serving style" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Picked serving style"
+          }
+        }
+      }
     },
     "Portfolio" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Portfolio"
+          }
+        }
+      }
     },
     "Privacy" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy"
+          }
+        }
+      }
     },
     "Private profile" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private profile"
+          }
+        }
+      }
     },
     "Private Profile" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private Profile"
+          }
+        }
+      }
     },
     "Private profile hides check-ins and profile page from everyone else but your friends" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private profile hides check-ins and profile page from everyone else but your friends"
+          }
+        }
+      }
     },
     "Product" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product"
+          }
+        }
+      }
     },
     "Product Logo" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product Logo"
+          }
+        }
+      }
     },
     "Product Merge Confirmation" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product Merge Confirmation"
+          }
+        }
+      }
     },
     "Products" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products"
+          }
+        }
+      }
     },
     "Profile" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
     },
     "Purchased from __%@__" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchased from __%@__"
+          }
+        }
+      }
     },
     "Quit the App" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit the App"
+          }
+        }
+      }
+    },
+    "Rate %@" : {
 
     },
     "Rating" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating"
+          }
+        }
+      }
     },
     "React to check-in" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "React to check-in"
+          }
+        }
+      }
     },
     "Reason" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reason"
+          }
+        }
+      }
     },
     "Recent locations" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent locations"
+          }
+        }
+      }
     },
     "Reload" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload"
+          }
+        }
+      }
     },
     "Remove friend request" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove friend request"
+          }
+        }
+      }
     },
     "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins"
+          }
+        }
+      }
     },
     "Report" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report"
+          }
+        }
+      }
     },
     "Report %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report %@"
+          }
+        }
+      }
     },
     "Reset" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
     },
     "Reset filter" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset filter"
+          }
+        }
+      }
     },
     "Review" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review"
+          }
+        }
+      }
+    },
+    "Scan a barcode" : {
 
     },
     "Scan Name Tag" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Name Tag"
+          }
+        }
+      }
     },
     "Search companies" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search companies"
+          }
+        }
+      }
     },
     "Search for a duplicate location" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a duplicate location"
+          }
+        }
+      }
     },
     "Search for a duplicate product" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a duplicate product"
+          }
+        }
+      }
     },
     "Search for duplicate of %@. Your request will be reviewed and products will be combined if appropriate." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for duplicate of %@. Your request will be reviewed and products will be combined if appropriate."
+          }
+        }
+      }
     },
     "Search users" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search users"
+          }
+        }
+      }
     },
     "Select All" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select All"
+          }
+        }
+      }
     },
     "Select Logo" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Logo"
+          }
+        }
+      }
     },
     "Selected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected"
+          }
+        }
+      }
+    },
+    "Send Feedback" : {
 
     },
     "Serving Style" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serving Style"
+          }
+        }
+      }
     },
     "serving-style.delete-warning.title" : {
       "localizations" : {
@@ -691,142 +1877,509 @@
       }
     },
     "Set up your profile" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set up your profile"
+          }
+        }
+      }
     },
     "Settings" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "settings.account.delete.disclaimer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All your personal information has been permanently deleted from the system."
+          }
+        }
+      }
+    },
+    "settings.appearance.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        }
+      }
+    },
+    "settings.appIcon.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Icon"
+          }
+        }
+      }
+    },
+    "settings.contributions.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All your verified contributions are counted here. Verification can take some days."
+          }
+        }
+      }
     },
     "Share your profile" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share your profile"
+          }
+        }
+      }
     },
     "Show All" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show All"
+          }
+        }
+      }
+    },
+    "Show block user sheet" : {
 
     },
     "Show check-ins from" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show check-ins from"
+          }
+        }
+      }
+    },
+    "Show filters" : {
+
+    },
+    "Show name tag" : {
 
     },
     "Show Name Tag" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Name Tag"
+          }
+        }
+      }
+    },
+    "Show name tag or send friend request by QR code" : {
 
     },
     "Show scanner" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show scanner"
+          }
+        }
+      }
     },
     "Showing only products you haven't tried" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Showing only products you haven't tried"
+          }
+        }
+      }
     },
     "Sign Out" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign Out"
+          }
+        }
+      }
     },
     "Skip" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip"
+          }
+        }
+      }
     },
     "Sorry to see you go but you're always welcome back!" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorry to see you go but you're always welcome back!"
+          }
+        }
+      }
     },
     "Sort By" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sort By"
+          }
+        }
+      }
     },
     "Sorted by %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorted by %@"
+          }
+        }
+      }
     },
     "Statistics" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistics"
+          }
+        }
+      }
     },
     "Sub-brand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brand"
+          }
+        }
+      }
     },
     "Sub-brands" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brands"
+          }
+        }
+      }
     },
     "Subcategories" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subcategories"
+          }
+        }
+      }
     },
     "Subcategory" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subcategory"
+          }
+        }
+      }
     },
     "Submit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submit"
+          }
+        }
+      }
+    },
+    "Subscribe to Premium" : {
 
     },
     "System Settings" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System Settings"
+          }
+        }
+      }
     },
     "Tag friends" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag friends"
+          }
+        }
+      }
     },
     "TextField" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TextField"
+          }
+        }
+      }
     },
     "These values are used in your personal page and can be seen by other users." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These values are used in your personal page and can be seen by other users."
+          }
+        }
+      }
     },
     "This only takes effect if both first name and last name are provided." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This only takes effect if both first name and last name are provided."
+          }
+        }
+      }
     },
     "Time Period" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Period"
+          }
+        }
+      }
     },
     "Turn the torch %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn the torch %@"
+          }
+        }
+      }
     },
     "Unlock additional features" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock additional features"
+          }
+        }
+      }
     },
     "Unverified %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified %@"
+          }
+        }
+      }
     },
     "Unverified Products" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified Products"
+          }
+        }
+      }
     },
     "Unverify Brand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify Brand"
+          }
+        }
+      }
     },
     "Unverify Company" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify Company"
+          }
+        }
+      }
     },
     "Unverify Product" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify Product"
+          }
+        }
+      }
     },
     "Unverify Sub-brand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify Sub-brand"
+          }
+        }
+      }
     },
     "Use Dark Mode" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Dark Mode"
+          }
+        }
+      }
     },
     "Use Full Name Instead of Username" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Full Name Instead of Username"
+          }
+        }
+      }
     },
     "Use System Color Scheme" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use System Color Scheme"
+          }
+        }
+      }
     },
     "Username" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username"
+          }
+        }
+      }
     },
     "Value" : {
-
-    },
-    "Ville Heikkilä" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Value"
+          }
+        }
+      }
     },
     "Wishlist" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wishlist"
+          }
+        }
+      }
     },
     "Wishlist is empty" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wishlist is empty"
+          }
+        }
+      }
     },
     "You don't have any friends yet" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any friends yet"
+          }
+        }
+      }
     },
     "You have %@ Pro. Thank you!" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %@ Pro. Thank you!"
+          }
+        }
+      }
     },
     "You haven't blocked any users" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven't blocked any users"
+          }
+        }
+      }
     },
     "You haven't check-in yet" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven't check-in yet"
+          }
+        }
+      }
     },
     "Your Contributions" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Contributions"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

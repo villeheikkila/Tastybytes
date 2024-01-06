@@ -101,7 +101,7 @@ public extension ProgressButton where LabelView == Label<Text, Image> {
 
 public extension ProgressButton where LabelView == LinkIconLabel {
     init(
-        _ titleKey: String,
+        _ titleKey: LocalizedStringKey,
         systemName: String,
         color: Color,
         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
@@ -114,11 +114,11 @@ public extension ProgressButton where LabelView == LinkIconLabel {
 }
 
 public struct LinkIconLabel: View {
-    let titleKey: String
+    let titleKey: LocalizedStringKey
     let systemName: String
     let color: Color
 
-    public init(titleKey: String, systemName: String, color: Color) {
+    public init(titleKey: LocalizedStringKey, systemName: String, color: Color) {
         self.titleKey = titleKey
         self.systemName = systemName
         self.color = color

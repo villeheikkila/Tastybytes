@@ -28,7 +28,7 @@ struct AppIconScreen: View {
             }
             .padding(4)
         }
-        .navigationBarTitle("App Icon")
+        .navigationBarTitle("settings.appIcon.title")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: selection) { _, icon in
             if let icon, selection != getCurrentAppIcon() {
