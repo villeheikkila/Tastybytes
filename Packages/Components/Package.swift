@@ -16,7 +16,7 @@ let package = Package(
     dependencies: [
         .package(name: "Models", path: "../Models"),
         .package(name: "Extensions", path: "../Extensions"),
-        .package(url: "https://github.com/kean/Nuke.git", from: "12.2.0"),
+        .package(url: "https://github.com/kean/Nuke.git", from: "12.3.0"),
 
     ],
     targets: [
