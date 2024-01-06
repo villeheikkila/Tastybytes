@@ -159,8 +159,8 @@ public struct Toast: View {
                         .font(style?.titleFont ?? Font.headline.bold())
                 }
 
-                if subTitle != nil {
-                    Text(LocalizedStringKey(subTitle!))
+                if let subTitle {
+                    Text(LocalizedStringKey(subTitle))
                         .font(style?.subTitleFont ?? Font.subheadline)
                 }
             }

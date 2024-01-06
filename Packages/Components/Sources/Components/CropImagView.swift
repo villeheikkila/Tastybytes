@@ -20,7 +20,7 @@ struct CropView: View {
     @State private var offset: CGSize = .zero
     @State private var lastStoredOffset: CGSize = .zero
     @State private var selectedCropType: Crop = .rectangle
-    @GestureState private var isInteracting: Bool = false
+    @GestureState private var isInteracting = false
     @Binding var finalImage: UIImage?
 
     private let coordinateSpace = "cropView"

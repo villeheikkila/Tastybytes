@@ -86,4 +86,4 @@ force_unwrapping:
 redundant_type_annotation: error
 
 excluded:
-  - .build
+  - "**/.build/**"
