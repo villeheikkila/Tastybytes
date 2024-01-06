@@ -375,7 +375,7 @@ public extension Toast {
 public struct ToastModifier: ViewModifier {
     @Binding private var isPresenting: Bool
     @State private var duration: Double
-    @State private var tapToDismiss: Bool = true
+    @State private var tapToDismiss = true
     @State private var workItem: DispatchWorkItem?
     @State private var hostRect: CGRect = .zero
     @State private var alertRect: CGRect = .zero

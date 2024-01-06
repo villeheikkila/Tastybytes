@@ -29,7 +29,7 @@ struct CropView: View {
     var image: UIImage?
 
     var body: some View {
-        ImageView()
+        imageView()
             .navigationTitle("Crop")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -67,7 +67,7 @@ struct CropView: View {
     }
 
     @ViewBuilder
-    func ImageView() -> some View {
+    func imageView() -> some View {
         let cropSize = crop.size()
         GeometryReader { geometry in
             let size = geometry.size
@@ -146,7 +146,7 @@ struct CropView: View {
 
     @MainActor
     func renderFinalImage() {
-        let renderer = ImageRenderer(content: ImageView())
+        let renderer = ImageRenderer(content: imageView())
         renderer.proposedSize = .init(crop.size())
         if let image = renderer.uiImage {
             finalImage = image
