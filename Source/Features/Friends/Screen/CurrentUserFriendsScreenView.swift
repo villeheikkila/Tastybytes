@@ -21,8 +21,8 @@ struct CurrentUserFriendsScreen: View {
 
     var filteredFriends: [Friend] {
         friendEnvironmentModel.acceptedOrPendingFriends.filter { friend in
-            searchTerm.isEmpty ||
-                friend.getFriend(userId: profileEnvironmentModel.id).preferredName.lowercased()
+            searchTerm.isEmpty
+                || friend.getFriend(userId: profileEnvironmentModel.id).preferredName.lowercased()
                 .contains(searchTerm.lowercased())
         }
     }
@@ -46,16 +46,17 @@ struct CurrentUserFriendsScreen: View {
                                 .onTapGesture {
                                     friendToBeRemoved = friend
                                 }
-                            Label("Accept friend request", systemImage: "person.badge.plus")
+                            Label("friends.accept-request.label", systemImage: "person.badge.plus")
                                 .imageScale(.large)
                                 .labelStyle(.iconOnly)
                                 .accessibilityAddTraits(.isButton)
-                                .onTapGesture { Task {
-                                    await friendEnvironmentModel.updateFriendRequest(
-                                        friend: friend,
-                                        newStatus: .accepted
-                                    )
-                                }
+                                .onTapGesture {
+                                    Task {
+                                        await friendEnvironmentModel.updateFriendRequest(
+                                            friend: friend,
+                                            newStatus: .accepted
+                                        )
+                                    }
                                 }
                         }
                     }
@@ -65,7 +66,7 @@ struct CurrentUserFriendsScreen: View {
                 Group {
                     if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                         ProgressButton(
-                            "Accept friend request",
+                            "friends.accept-request.label",
                             systemImage: "person.badge.plus",
                             action: {
                                 await friendEnvironmentModel.updateFriendRequest(
@@ -101,7 +102,8 @@ struct CurrentUserFriendsScreen: View {
                 ProgressButton(
                     "Block",
                     systemImage: "person.2.slash",
-                    action: { await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
+                    action: {
+                        await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
                     }
                 )
             }
@@ -168,9 +170,15 @@ struct CurrentUserFriendsScreen: View {
             .imageScale(.large)
             .popoverTip(NameTagTip())
 
-            RouterLink("Add friend", systemImage: "plus", sheet: .userSheet(mode: .add, onSubmit: {
-                feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
-            }))
+            RouterLink(
+                "Add friend", systemImage: "plus",
+                sheet: .userSheet(
+                    mode: .add,
+                    onSubmit: {
+                        feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
+                    }
+                )
+            )
             .labelStyle(.iconOnly)
             .imageScale(.large)
         }

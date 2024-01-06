@@ -20,7 +20,7 @@ struct ProfileFriendActionSection: View {
                     )
                 } else if let friend = friendEnvironmentModel.isPendingUserApproval(profile) {
                     ProgressButton(
-                        "Accept Friend Request",
+                        "friends.accept-request.label",
                         action: {
                             await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
                         }

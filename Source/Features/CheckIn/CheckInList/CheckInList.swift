@@ -310,7 +310,7 @@ extension CheckInSegment {
         switch self {
         case .everyone:
             ContentUnavailableView {
-                Label("Be first to check-in!", systemImage: "list.star")
+                Label("check-ins.empty-content", systemImage: "list.star")
             }
         case .friends:
             ContentUnavailableView {

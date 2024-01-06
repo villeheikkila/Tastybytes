@@ -34,7 +34,7 @@ struct CheckInListCard: View {
                 }
             )
             .confirmationDialog(
-                "Are you sure you want to delete check-in? The data will be permanently lost.",
+                "check-in.delete-confirmation.title",
                 isPresented: $showDeleteCheckInConfirmationDialog,
                 titleVisibility: .visible,
                 presenting: showDeleteConfirmationFor

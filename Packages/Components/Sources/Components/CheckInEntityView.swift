@@ -157,7 +157,7 @@ public struct CheckInEntityView: View {
                 Text(checkInAt.customFormat(.relativeTime))
                     .font(.caption).bold()
             } else {
-                Text("legacy check-in")
+                Text("check-in.legacy.label")
                     .font(.caption).bold()
             }
             Spacer()

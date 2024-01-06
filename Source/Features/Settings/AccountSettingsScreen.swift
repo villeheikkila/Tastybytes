@@ -35,9 +35,12 @@ struct AccountSettingsScreen: View {
         }
         .navigationTitle("Account")
         .navigationBarTitleDisplayMode(.inline)
-        .fullScreenCover(isPresented: $showAccountDeleteScreen, content: {
-            AccountDeletedScreen()
-        })
+        .fullScreenCover(
+            isPresented: $showAccountDeleteScreen,
+            content: {
+                AccountDeletedScreen()
+            }
+        )
         .transaction { transaction in
             if showAccountDeleteScreen {
                 transaction.disablesAnimations = true
@@ -51,11 +54,13 @@ struct AccountSettingsScreen: View {
         .onAppear {
             email = profileEnvironmentModel.email
         }
-        .fileExporter(isPresented: $showingExporter,
-                      document: csvExport,
-                      contentType: UTType.commaSeparatedText,
-                      defaultFilename: "\(Config.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv")
-        { result in
+        .fileExporter(
+            isPresented: $showingExporter,
+            document: csvExport,
+            contentType: UTType.commaSeparatedText,
+            defaultFilename:
+            "\(Config.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv"
+        ) { result in
             switch result {
             case .success:
                 feedbackEnvironmentModel.toggle(.success("Data was exported as CSV"))
@@ -65,7 +70,7 @@ struct AccountSettingsScreen: View {
         }
         .alertError($alertError)
         .confirmationDialog(
-            "Are you sure you want to permanently delete your account? All data will be lost.",
+            "account.delete-confirmation.title",
             isPresented: $showDeleteConfirmation,
             titleVisibility: .visible
         ) {

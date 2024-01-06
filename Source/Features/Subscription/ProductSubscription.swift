@@ -9,8 +9,17 @@ actor ProductSubscription {
 
     public init() {}
 
-    func status(for statuses: [StoreKit.Product.SubscriptionInfo.Status],
-                ids: SubscriptionIdentifier) -> SubscriptionStatus
+    public func getStatusFromTaskStatus(taskStatuses: EntitlementTaskState<[Product.SubscriptionInfo.Status]>, productSubscriptionIds: SubscriptionIdentifier) async -> EntitlementTaskState<SubscriptionStatus> {
+        taskStatuses.map { statuses in
+            status(
+                for: statuses,
+                ids: productSubscriptionIds
+            )
+        }
+    }
+
+    private func status(for statuses: [StoreKit.Product.SubscriptionInfo.Status],
+                        ids: SubscriptionIdentifier) -> SubscriptionStatus
     {
         let effectiveStatus = statuses.max { lhs, rhs in
             let lhsStatus = SubscriptionStatus(

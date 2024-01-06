@@ -241,7 +241,7 @@ struct CheckInSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("Cancel", role: .cancel, action: { dismiss() })
+            Button("actions.cancel", role: .cancel, action: { dismiss() })
         }
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: { @MainActor in

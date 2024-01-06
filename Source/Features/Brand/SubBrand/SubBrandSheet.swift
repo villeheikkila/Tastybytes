@@ -64,7 +64,7 @@ struct SubBrandSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("Cancel", role: .cancel, action: { dismiss() })
+            Button("actions.cancel", role: .cancel, action: { dismiss() })
                 .bold()
         }
     }

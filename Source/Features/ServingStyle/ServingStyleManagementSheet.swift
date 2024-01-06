@@ -37,18 +37,22 @@ struct ServingStyleManagementSheet: View {
     var body: some View {
         List {
             ForEach(servingStyles) { servingStyle in
-                ProgressButton(action: { await onSelect(servingStyle) }, label: {
-                    HStack {
-                        Text(servingStyle.label)
-                        Spacer()
-                        if pickedServingStyles.contains(servingStyle) {
-                            Label("Picked serving style", systemImage: "checkmark")
-                                .labelStyle(.iconOnly)
+                ProgressButton(
+                    action: { await onSelect(servingStyle) },
+                    label: {
+                        HStack {
+                            Text(servingStyle.label)
+                            Spacer()
+                            if pickedServingStyles.contains(servingStyle) {
+                                Label("Picked serving style", systemImage: "checkmark")
+                                    .labelStyle(.iconOnly)
+                            }
                         }
                     }
-                })
+                )
                 .swipeActions {
-                    Button("Edit", systemImage: "pencil", action: { editServingStyle = servingStyle }).tint(.yellow)
+                    Button("Edit", systemImage: "pencil", action: { editServingStyle = servingStyle }).tint(
+                        .yellow)
                     Button(
                         "Delete",
                         systemImage: "trash",
@@ -69,15 +73,21 @@ struct ServingStyleManagementSheet: View {
         .toolbar {
             toolbarContent
         }
-        .alert("Edit Serving Style", isPresented: $showEditServingStyle, actions: {
-            TextField("TextField", text: $servingStyleName)
-            Button("Cancel", role: .cancel, action: {})
-            ProgressButton("Edit", action: {
-                await saveEditServingStyle()
-            })
-        })
+        .alert(
+            "Edit Serving Style", isPresented: $showEditServingStyle,
+            actions: {
+                TextField("TextField", text: $servingStyleName)
+                Button("actions.cancel", role: .cancel, action: {})
+                ProgressButton(
+                    "Edit",
+                    action: {
+                        await saveEditServingStyle()
+                    }
+                )
+            }
+        )
         .confirmationDialog(
-            "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost",
+            "serving-style.delete-warning.title",
             isPresented: $showDeleteServingStyleConfirmation,
             titleVisibility: .visible,
             presenting: toDeleteServingStyle
@@ -114,7 +124,9 @@ struct ServingStyleManagementSheet: View {
     }
 
     func createServingStyle() async {
-        switch await repository.servingStyle.insert(servingStyle: ServingStyle.NewRequest(name: newServingStyleName)) {
+        switch await repository.servingStyle.insert(
+            servingStyle: ServingStyle.NewRequest(name: newServingStyleName))
+        {
         case let .success(servingStyle):
             withAnimation {
                 servingStyles.append(servingStyle)
@@ -137,7 +149,8 @@ struct ServingStyleManagementSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error(
+                "Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 

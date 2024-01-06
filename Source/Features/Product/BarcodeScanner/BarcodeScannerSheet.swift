@@ -40,7 +40,7 @@ struct BarcodeScannerSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("Cancel", role: .cancel, action: { dismiss() }).bold()
+            Button("actions.cancel", role: .cancel, action: { dismiss() }).bold()
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Group {

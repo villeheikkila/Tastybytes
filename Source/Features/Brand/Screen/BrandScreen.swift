@@ -122,58 +122,72 @@ struct BrandScreen: View {
                 .toolbar {
                     toolbarContent
                 }
-                .confirmationDialog("Unverify Sub-brand",
-                                    isPresented: $showSubBrandUnverificationConfirmation,
-                                    presenting: toUnverifySubBrand)
-            { presenting in
-                ProgressButton("Unverify \(presenting.name ?? "default") sub-brand", action: {
-                    await verifySubBrand(presenting, isVerified: false)
-                })
-            }
-            .alertError($alertError)
-            .confirmationDialog("Unverify Brand",
-                                isPresented: $showBrandUnverificationConfirmation,
-                                presenting: brand)
-            { presenting in
-                ProgressButton("Unverify \(presenting.name) brand", action: {
-                    await verifyBrand(brand: presenting, isVerified: false)
-                })
-            }
-            .confirmationDialog("Group products by",
-                                isPresented: $showProductGroupingPicker,
-                                titleVisibility: .visible)
-            {
-                Button("Sub-brand") {
-                    productGrouping = .subBrand
+                .confirmationDialog(
+                    "Unverify Sub-brand",
+                    isPresented: $showSubBrandUnverificationConfirmation,
+                    presenting: toUnverifySubBrand
+                ) { presenting in
+                    ProgressButton(
+                        "Unverify \(presenting.name ?? "default") sub-brand",
+                        action: {
+                            await verifySubBrand(presenting, isVerified: false)
+                        }
+                    )
                 }
-                .disabled(productGrouping == .subBrand)
-                Button("Category") {
-                    productGrouping = .category
+                .alertError($alertError)
+                .confirmationDialog(
+                    "Unverify Brand",
+                    isPresented: $showBrandUnverificationConfirmation,
+                    presenting: brand
+                ) { presenting in
+                    ProgressButton(
+                        "Unverify \(presenting.name) brand",
+                        action: {
+                            await verifyBrand(brand: presenting, isVerified: false)
+                        }
+                    )
                 }
-                .disabled(productGrouping == .category)
-            }
-            .confirmationDialog("Are you sure you want to delete sub-brand and all related products?",
-                                isPresented: $showDeleteSubBrandConfirmation,
-                                titleVisibility: .visible,
-                                presenting: toDeleteSubBrand)
-            { presenting in
-                ProgressButton(
-                    "Delete \(presenting.name ?? "default sub-brand")",
-                    role: .destructive,
-                    action: {
-                        await deleteSubBrand(presenting)
+                .confirmationDialog(
+                    "Group products by",
+                    isPresented: $showProductGroupingPicker,
+                    titleVisibility: .visible
+                ) {
+                    Button("Sub-brand") {
+                        productGrouping = .subBrand
                     }
-                )
-            }
-            .confirmationDialog("Are you sure you want to delete brand and all related sub-brands and products?",
-                                isPresented: $showDeleteBrandConfirmationDialog,
-                                titleVisibility: .visible,
-                                presenting: brand)
-            { presenting in
-                ProgressButton("Delete \(presenting.name)", role: .destructive, action: {
-                    await deleteBrand(presenting)
-                })
-            }
+                    .disabled(productGrouping == .subBrand)
+                    Button("Category") {
+                        productGrouping = .category
+                    }
+                    .disabled(productGrouping == .category)
+                }
+                .confirmationDialog(
+                    "brands.delete-brand-warning",
+                    isPresented: $showDeleteSubBrandConfirmation,
+                    titleVisibility: .visible,
+                    presenting: toDeleteSubBrand
+                ) { presenting in
+                    ProgressButton(
+                        "Delete \(presenting.name ?? "default sub-brand")",
+                        role: .destructive,
+                        action: {
+                            await deleteSubBrand(presenting)
+                        }
+                    )
+                }
+                .confirmationDialog(
+                    "brand.delete-warning",
+                    isPresented: $showDeleteBrandConfirmationDialog,
+                    titleVisibility: .visible,
+                    presenting: brand
+                ) { presenting in
+                    ProgressButton(
+                        "Delete \(presenting.name)", role: .destructive,
+                        action: {
+                            await deleteBrand(presenting)
+                        }
+                    )
+                }
         }
     }
 
@@ -192,11 +206,12 @@ struct BrandScreen: View {
         ForEach(sortedSubBrands) { subBrand in
             Section {
                 ForEach(subBrand.products) { product in
-                    BrandScreenProductRow(product: Product.Joined(
-                        product: product,
-                        subBrand: subBrand,
-                        brand: brand
-                    ))
+                    BrandScreenProductRow(
+                        product: Product.Joined(
+                            product: product,
+                            subBrand: subBrand,
+                            brand: brand
+                        ))
                 }
             } header: {
                 HStack {
@@ -205,11 +220,15 @@ struct BrandScreen: View {
                     }
                     Spacer()
                     Menu {
-                        VerificationButton(isVerified: subBrand.isVerified, verify: {
-                            await verifySubBrand(subBrand, isVerified: true)
-                        }, unverify: {
-                            toUnverifySubBrand = subBrand
-                        })
+                        VerificationButton(
+                            isVerified: subBrand.isVerified,
+                            verify: {
+                                await verifySubBrand(subBrand, isVerified: true)
+                            },
+                            unverify: {
+                                toUnverifySubBrand = subBrand
+                            }
+                        )
                         Divider()
                         if profileEnvironmentModel.hasPermission(.canCreateProducts) {
                             RouterLink(
@@ -222,9 +241,12 @@ struct BrandScreen: View {
                             RouterLink(
                                 "Edit",
                                 systemImage: "pencil",
-                                sheet: .editSubBrand(brand: brand, subBrand: subBrand, onUpdate: {
-                                    refreshId += 1
-                                })
+                                sheet: .editSubBrand(
+                                    brand: brand, subBrand: subBrand,
+                                    onUpdate: {
+                                        refreshId += 1
+                                    }
+                                )
                             )
                         }
                         ReportButton(entity: .subBrand(brand, subBrand))
@@ -271,9 +293,12 @@ struct BrandScreen: View {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ProgressButton(isLikedByCurrentUser ? "Unlike" : "Like", systemImage: "heart", action: {
-                await toggleLike()
-            })
+            ProgressButton(
+                isLikedByCurrentUser ? "Unlike" : "Like", systemImage: "heart",
+                action: {
+                    await toggleLike()
+                }
+            )
             .symbolVariant(isLikedByCurrentUser ? .fill : .none)
             BrandShareLinkView(brand: brand)
             Menu {
@@ -283,16 +308,26 @@ struct BrandScreen: View {
                         RouterLink("Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand))
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
-                        RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: brand, onUpdate: {
-                            refreshId += 1
-                        }))
+                        RouterLink(
+                            "Edit", systemImage: "pencil",
+                            sheet: .editBrand(
+                                brand: brand,
+                                onUpdate: {
+                                    refreshId += 1
+                                }
+                            )
+                        )
                     }
                 }
-                VerificationButton(isVerified: brand.isVerified, verify: {
-                    await verifyBrand(brand: brand, isVerified: true)
-                }, unverify: {
-                    showBrandUnverificationConfirmation = true
-                })
+                VerificationButton(
+                    isVerified: brand.isVerified,
+                    verify: {
+                        await verifyBrand(brand: brand, isVerified: true)
+                    },
+                    unverify: {
+                        showBrandUnverificationConfirmation = true
+                    }
+                )
                 Divider()
                 RouterLink(
                     "Open Brand Owner",
@@ -443,7 +478,8 @@ struct BrandScreen: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Failed to delete brand '\(toDeleteSubBrand.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error(
+                "Failed to delete brand '\(toDeleteSubBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

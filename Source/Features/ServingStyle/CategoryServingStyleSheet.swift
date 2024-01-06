@@ -48,7 +48,7 @@ struct CategoryServingStyleSheet: View {
         }
         .alertError($alertError)
         .confirmationDialog(
-            "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost",
+            "serving-style.delete-warning.title",
             isPresented: $showDeleteServingStyleConfirmation,
             titleVisibility: .visible,
             presenting: toDeleteServingStyle
@@ -111,7 +111,8 @@ struct CategoryServingStyleSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error(
+                "Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

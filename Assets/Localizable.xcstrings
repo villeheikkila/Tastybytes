@@ -107,14 +107,31 @@
     "About" : {
 
     },
-    "Accept friend request" : {
-
-    },
     "Account" : {
 
     },
     "Account Deleted" : {
 
+    },
+    "account.delete-confirmation.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to permanently delete your account? All data will be lost."
+          }
+        }
+      }
+    },
+    "actions.cancel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     },
     "Activity" : {
 
@@ -182,19 +199,10 @@
     "Apply" : {
 
     },
-    "Are you sure you want to delete brand and all related sub-brands and products?" : {
-
-    },
     "Are you sure you want to delete check-in as a moderator?" : {
 
     },
-    "Are you sure you want to delete check-in? The data will be permanently lost." : {
-
-    },
     "Are you sure you want to delete comment as a moderator?" : {
-
-    },
-    "Are you sure you want to delete sub-brand and all related products?" : {
 
     },
     "Are you sure you want to delete subcategory?" : {
@@ -206,16 +214,10 @@
     "Are you sure you want to delete the product and all of its check-ins?" : {
 
     },
-    "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost" : {
-
-    },
     "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted" : {
 
     },
     "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted." : {
-
-    },
-    "Are you sure you want to permanently delete your account? All data will be lost." : {
 
     },
     "Back to search" : {
@@ -228,9 +230,6 @@
 
     },
     "Barcodes" : {
-
-    },
-    "Be first to check-in!" : {
 
     },
     "Blocked Users" : {
@@ -248,13 +247,30 @@
     "Brand Owner" : {
 
     },
+    "brand.delete-warning" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete brand and all related sub-brands and products?"
+          }
+        }
+      }
+    },
     "Brands" : {
 
     },
-    "Camera" : {
-
+    "brands.delete-brand-warning" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete sub-brand and all related products?"
+          }
+        }
+      }
     },
-    "Cancel" : {
+    "Camera" : {
 
     },
     "Categories" : {
@@ -275,8 +291,31 @@
     "Check-in Locations" : {
 
     },
+    "check-in.delete-confirmation.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete check-in? The data will be permanently lost."
+          }
+        }
+      }
+    },
+    "check-in.legacy.label" : {
+
+    },
     "Check-ins" : {
 
+    },
+    "check-ins.empty-content" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Be first to check-in!"
+          }
+        }
+      }
     },
     "Checked-in" : {
 
@@ -383,6 +422,16 @@
     "Friends (%lld)" : {
 
     },
+    "friends.accept-request.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept friend request"
+          }
+        }
+      }
+    },
     "GitHub" : {
 
     },
@@ -411,7 +460,15 @@
 
     },
     "legacy check-in" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "legacy check-in"
+          }
+        }
+      }
     },
     "Legacy Check-in" : {
 
@@ -622,6 +679,16 @@
     },
     "Serving Style" : {
 
+    },
+    "serving-style.delete-warning.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost"
+          }
+        }
+      }
     },
     "Set up your profile" : {
 

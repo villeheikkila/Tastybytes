@@ -70,7 +70,7 @@ struct ProductLogoSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Cancel", role: .cancel, action: { dismiss() })
+            Button("actions.cancel", role: .cancel, action: { dismiss() })
                 .bold()
         }
     }

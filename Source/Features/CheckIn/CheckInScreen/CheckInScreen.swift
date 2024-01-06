@@ -103,33 +103,36 @@ struct CheckInScreen: View {
             toolbarContent
         }
         .alertError($alertError)
-        .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
-                            isPresented: $showDeleteConfirmation,
-                            titleVisibility: .visible,
-                            presenting: checkIn)
-        { presenting in
+        .confirmationDialog(
+            "check-in.delete-confirmation.title",
+            isPresented: $showDeleteConfirmation,
+            titleVisibility: .visible,
+            presenting: checkIn
+        ) { presenting in
             ProgressButton(
                 "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
                 role: .destructive,
                 action: { await deleteCheckIn(presenting) }
             )
         }
-        .confirmationDialog("Are you sure you want to delete comment as a moderator?",
-                            isPresented: $showDeleteCommentAsModeratorConfirmation,
-                            titleVisibility: .visible,
-                            presenting: deleteAsCheckInCommentAsModerator)
-        { presenting in
+        .confirmationDialog(
+            "Are you sure you want to delete comment as a moderator?",
+            isPresented: $showDeleteCommentAsModeratorConfirmation,
+            titleVisibility: .visible,
+            presenting: deleteAsCheckInCommentAsModerator
+        ) { presenting in
             ProgressButton(
                 "Delete comment from \(presenting.profile.preferredName)",
                 role: .destructive,
                 action: { await deleteCommentAsModerator(presenting) }
             )
         }
-        .confirmationDialog("Are you sure you want to delete check-in as a moderator?",
-                            isPresented: $showDeleteCheckInAsModeratorConfirmation,
-                            titleVisibility: .visible,
-                            presenting: toDeleteCheckInAsModerator)
-        { presenting in
+        .confirmationDialog(
+            "Are you sure you want to delete check-in as a moderator?",
+            isPresented: $showDeleteCheckInAsModeratorConfirmation,
+            titleVisibility: .visible,
+            presenting: toDeleteCheckInAsModerator
+        ) { presenting in
             ProgressButton(
                 "Delete check-in from \(presenting.profile.preferredName)",
                 role: .destructive,
@@ -147,7 +150,8 @@ struct CheckInScreen: View {
     func loadCheckInData() async {
         async let checkInPromise = repository.checkIn.getById(id: checkIn.id)
         async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: checkIn.id)
-        async let summaryPromise: Void = notificationEnvironmentModel.markCheckInAsRead(checkIn: checkIn)
+        async let summaryPromise: Void = notificationEnvironmentModel.markCheckInAsRead(
+            checkIn: checkIn)
 
         let (checkInResult, checkInCommentResult, _) = await (
             checkInPromise,
@@ -185,9 +189,15 @@ struct CheckInScreen: View {
                 if checkIn.profile.id == profileEnvironmentModel.id {
                     ControlGroup {
                         CheckInShareLinkView(checkIn: checkIn)
-                        RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-                            checkIn = updatedCheckIn
-                        }))
+                        RouterLink(
+                            "Edit", systemImage: "pencil",
+                            sheet: .checkIn(
+                                checkIn,
+                                onUpdate: { updatedCheckIn in
+                                    checkIn = updatedCheckIn
+                                }
+                            )
+                        )
                         Button(
                             "Delete",
                             systemImage: "trash.fill",
@@ -203,7 +213,9 @@ struct CheckInScreen: View {
                     screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )
                 RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
-                RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
+                RouterLink(
+                    "Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand)
+                )
                 RouterLink(
                     "Open Sub-brand",
                     systemImage: "cart",
@@ -264,22 +276,30 @@ struct CheckInScreen: View {
                     }
                 }
         }
-        .alert("Edit Comment", isPresented: $showEditCommentPrompt, actions: {
-            TextField("TextField", text: $editCommentText)
-            Button("Cancel", role: .cancel, action: {})
-            ProgressButton("Edit", action: {
-                await updateComment()
-            })
-        })
+        .alert(
+            "Edit Comment", isPresented: $showEditCommentPrompt,
+            actions: {
+                TextField("TextField", text: $editCommentText)
+                Button("actions.cancel", role: .cancel, action: {})
+                ProgressButton(
+                    "Edit",
+                    action: {
+                        await updateComment()
+                    }
+                )
+            }
+        )
     }
 
     private var leaveCommentSection: some View {
         HStack {
             TextField("Leave a comment!", text: $commentText)
                 .focused($focusedField, equals: .checkInComment)
-            ProgressButton("Send the comment", systemImage: "paperplane.fill", action: { await sendComment() })
-                .labelStyle(.iconOnly)
-                .disabled(isInvalidComment())
+            ProgressButton(
+                "Send the comment", systemImage: "paperplane.fill", action: { await sendComment() }
+            )
+            .labelStyle(.iconOnly)
+            .disabled(isInvalidComment())
         }
         .padding(2)
     }
@@ -306,14 +326,17 @@ struct CheckInScreen: View {
         let updatedComment = CheckInComment.UpdateRequest(id: editComment.id, content: editCommentText)
         switch await repository.checkInComment.update(updateCheckInComment: updatedComment) {
         case let .success(updatedComment):
-            guard let index = checkInComments.firstIndex(where: { $0.id == updatedComment.id }) else { return }
+            guard let index = checkInComments.firstIndex(where: { $0.id == updatedComment.id }) else {
+                return
+            }
             withAnimation {
                 checkInComments[index] = updatedComment
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Failed to update comment \(editComment.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error(
+                "Failed to update comment \(editComment.id)'. Error: \(error) (\(#file):\(#line))")
         }
         editCommentText = ""
     }
@@ -340,7 +363,8 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Failed to delete comment as moderator'\(comment.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error(
+                "Failed to delete comment as moderator'\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -352,7 +376,9 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error(
+                "Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))"
+            )
         }
     }
 

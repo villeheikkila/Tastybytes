@@ -29,7 +29,7 @@ struct AddSubcategorySheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
-            Button("Cancel", role: .cancel, action: { dismiss() })
+            Button("actions.cancel", role: .cancel, action: { dismiss() })
                 .bold()
         }
     }
