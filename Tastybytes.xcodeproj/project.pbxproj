@@ -199,13 +199,11 @@
 /* Begin PBXFileReference section */
 		5C037BB42B472F150075091B /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		5C037BB62B47EDF10075091B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
-		5C150DDB2B4004A100CC939E /* Compiler.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Compiler.xcconfig; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
 		5C39076E2B3232420036253E /* LayoutSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSelector.swift; sourceTree = "<group>"; };
 		5C3CF5532B43484F0034B786 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Staging.xcconfig"; sourceTree = "<group>"; };
 		5C72E9B22B49D0DD00A963D3 /* Project-Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Production.xcconfig"; sourceTree = "<group>"; };
-		5C72E9B32B49D29F00A963D3 /* Product.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Product.xcconfig; sourceTree = "<group>"; };
 		5C82E8822B2DCFD600F2B369 /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		5C82E8862B2F63A100F2B369 /* SplashScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenProvider.swift; sourceTree = "<group>"; };
 		5C82E88A2B2F678500F2B369 /* SubscriptionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionProvider.swift; sourceTree = "<group>"; };
@@ -368,7 +366,7 @@
 		5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContextMenu.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
-		C94722D52AD1859C006DE096 /* Tastybytes DEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tastybytes DEV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C94722DC2AD1859D006DE096 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C94722DE2AD1859D006DE096 /* Production.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Production.entitlements; sourceTree = "<group>"; };
 		C94722E02AD1859D006DE096 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -397,8 +395,6 @@
 		5C037D232B49C4940075091B /* Project */ = {
 			isa = PBXGroup;
 			children = (
-				5C150DDB2B4004A100CC939E /* Compiler.xcconfig */,
-				5C72E9B32B49D29F00A963D3 /* Product.xcconfig */,
 				C94723042AD185FB006DE096 /* Project.xcconfig */,
 				C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */,
 				5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */,
@@ -1151,7 +1147,7 @@
 		C94722D62AD1859C006DE096 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C94722D52AD1859C006DE096 /* Tastybytes.app */,
+				C94722D52AD1859C006DE096 /* TastybytesDEV.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1214,7 +1210,7 @@
 				5C885F0E2B2873EC00F17C78 /* Components */,
 			);
 			productName = Tastybytes;
-			productReference = C94722D52AD1859C006DE096 /* Tastybytes.app */;
+			productReference = C94722D52AD1859C006DE096 /* TastybytesDEV.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
