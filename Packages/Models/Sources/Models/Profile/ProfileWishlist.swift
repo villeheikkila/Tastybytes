@@ -1,7 +1,7 @@
 import Foundation
 
 public enum ProfileWishlist {
-    public struct Joined: Codable {
+    public struct Joined: Codable, Sendable {
         public let createdBy: UUID
         public let product: Product.Joined
 
@@ -23,7 +23,7 @@ public enum ProfileWishlist {
         }
     }
 
-    public struct CheckIfOnWishlist: Codable {
+    public struct CheckIfOnWishlist: Codable, Sendable {
         public init(id: Int) {
             self.id = id
         }

@@ -368,7 +368,7 @@
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C94722DC2AD1859D006DE096 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C94722DE2AD1859D006DE096 /* Production.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Production.entitlements; sourceTree = "<group>"; };
+		C94722DE2AD1859D006DE096 /* Required.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Required.entitlements; sourceTree = "<group>"; };
 		C94722E02AD1859D006DE096 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C94723042AD185FB006DE096 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		C94723052AD1870A006DE096 /* Target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Target.xcconfig; sourceTree = "<group>"; };
@@ -1176,7 +1176,7 @@
 			children = (
 				5C037D242B49C54A0075091B /* Target */,
 				5C037D232B49C4940075091B /* Project */,
-				C94722DE2AD1859D006DE096 /* Production.entitlements */,
+				C94722DE2AD1859D006DE096 /* Required.entitlements */,
 				C94723062AD1AC9E006DE096 /* Info.plist */,
 			);
 			path = Configurations;

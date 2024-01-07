@@ -68,9 +68,7 @@ public extension FeedbackEnvironmentModel {
 
     enum FeedbackType: Int, @unchecked Sendable {
         case success = 0
-
         case warning = 1
-
         case error = 2
     }
 
@@ -86,6 +84,7 @@ public extension FeedbackEnvironmentModel {
 }
 
 // Vendored from https://github.com/elai950/AlertToast with modifications
+@MainActor
 public extension View {
     func toast(
         isPresenting: Binding<Bool>,
@@ -382,6 +381,7 @@ public extension Toast {
     }
 }
 
+@MainActor
 public struct ToastModifier: ViewModifier {
     @Binding private var isPresenting: Bool
     @State private var duration: Double

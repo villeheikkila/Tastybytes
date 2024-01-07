@@ -4,6 +4,7 @@ import LegacyUIKit
 import Models
 import SwiftUI
 
+@MainActor
 struct NameTagSheet: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss

@@ -3,6 +3,7 @@ import Extensions
 import Models
 import SwiftUI
 
+@MainActor
 struct FlavorSheet: View {
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

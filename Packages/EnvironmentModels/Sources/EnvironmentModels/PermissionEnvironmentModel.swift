@@ -1,8 +1,8 @@
 import AVFoundation
 import OSLog
-import PhotosUI
 import SwiftUI
 
+@MainActor
 @Observable
 public final class PermissionEnvironmentModel {
     private let logger = Logger(category: "PermissionEnvironmentModel")

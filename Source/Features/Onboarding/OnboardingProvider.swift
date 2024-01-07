@@ -5,6 +5,7 @@ import StoreKit
 import SwiftUI
 import TipKit
 
+@MainActor
 struct OnboardingProvider<Content: View>: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel

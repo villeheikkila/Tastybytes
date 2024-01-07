@@ -5,6 +5,7 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+@MainActor
 @Observable
 public final class ProfileEnvironmentModel: ObservableObject {
     private let logger = Logger(category: "ProfileEnvironmentModel")
@@ -119,7 +120,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
             checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
             sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
-            appIcon = await getCurrentAppIcon()
+            appIcon = getCurrentAppIcon()
             initialValuesLoaded = true
             isLoggedIn = true
             logger.notice("User data initialized")
@@ -187,7 +188,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public func deleteCurrentAccount(onAccountDeletion: @MainActor @Sendable @escaping () -> Void) async {
         switch await repository.profile.deleteCurrentAccount() {
         case .success:
-            await onAccountDeletion()
+            onAccountDeletion()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

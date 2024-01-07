@@ -1,6 +1,7 @@
 import Extensions
 import SwiftUI
 
+@MainActor
 public struct ScanTextButton: View {
     private let responder: ScanTextResponder
 

@@ -105,6 +105,7 @@ struct Sparkle {
         return CGSize(width: height, height: height)
     }
 
+    @MainActor
     var position: CGPoint {
         let x = CGFloat.random(in: 36 + size.width ... UIScreen.main.bounds.size.width - 36 - size.width)
         let y = CGFloat.random(in: -50 + size.height ... 100 - size.height)

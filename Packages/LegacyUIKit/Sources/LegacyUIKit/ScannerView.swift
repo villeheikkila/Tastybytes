@@ -28,6 +28,7 @@ public struct ScannerView: UIViewControllerRepresentable {
     }
 }
 
+@MainActor
 public extension ScannerView {
     enum ScanError: Error {
         case badInput
@@ -92,7 +93,7 @@ public extension ScannerView {
             reset()
 
             if captureSession.isRunning == false {
-                DispatchQueue.global(qos: .userInteractive).async {
+                DispatchQueue.main.async {
                     self.captureSession?.startRunning()
                 }
             }
@@ -176,7 +177,7 @@ public extension ScannerView {
             super.viewDidDisappear(animated)
 
             if captureSession?.isRunning == true {
-                DispatchQueue.global(qos: .userInteractive).async {
+                DispatchQueue.main.async {
                     self.captureSession?.stopRunning()
                 }
             }
@@ -236,7 +237,7 @@ public extension ScannerView {
             lastTime = Date(timeIntervalSince1970: 0)
         }
 
-        public func metadataOutput(
+        public nonisolated func metadataOutput(
             _: AVCaptureMetadataOutput,
             didOutput metadataObjects: [AVMetadataObject],
             from _: AVCaptureConnection
@@ -244,10 +245,13 @@ public extension ScannerView {
             guard let metadataObject = metadataObjects.first else { return }
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
-            guard didFinishScanning == false else { return }
             let result = Barcode(barcode: stringValue, type: readableObject.type.rawValue)
-            found(result)
-            didFinishScanning = true
+
+            DispatchQueue.main.async {
+                guard self.didFinishScanning == false else { return }
+                self.found(result)
+                self.didFinishScanning = true
+            }
         }
 
         func isPastScanInterval() -> Bool {

@@ -4,6 +4,7 @@ import UIKit
 
 public typealias SendMailCallback = ((Result<MFMailComposeResult, Error>) -> Void)?
 
+@MainActor
 public struct SendEmailView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentation
     @Binding var email: Email

@@ -4,6 +4,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 @Observable
 public final class AppDataEnvironmentModel {
     private let logger = Logger(category: "AppDataEnvironmentModel")
@@ -19,7 +20,6 @@ public final class AppDataEnvironmentModel {
         self.repository = repository
     }
 
-    @MainActor
     public func initialize(reset: Bool = false) async {
         guard reset || flavors.isEmpty || categories.isEmpty else { return }
         logger.notice("Initializing app data")

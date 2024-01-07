@@ -16,7 +16,10 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "LegacyUIKit"
+            name: "LegacyUIKit",
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency"),
+            ]
         ),
     ]
 )

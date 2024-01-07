@@ -44,7 +44,7 @@ enum Sheet: Identifiable, Equatable {
         title: String,
         onSelect: (_ location: Location) -> Void
     )
-    case legacyPhotoPicker(onSelection: (_ image: UIImage, _ metadata: ImageMetadata) -> Void)
+    case legacyPhotoPicker(onSelection: @Sendable (_ image: UIImage, _ metadata: ImageMetadata) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
                                 onSelect: (_ servingStyle: ServingStyle) async -> Void)

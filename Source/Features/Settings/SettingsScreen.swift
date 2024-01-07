@@ -3,6 +3,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct SettingsScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 

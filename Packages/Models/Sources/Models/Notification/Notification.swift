@@ -1,8 +1,8 @@
 import Extensions
 import Foundation
 
-public struct Notification: Identifiable, Hashable {
-    public enum Content: Hashable {
+public struct Notification: Identifiable, Hashable, Sendable {
+    public enum Content: Hashable, Sendable {
         case message(String)
         case friendRequest(Friend)
         case taggedCheckIn(CheckIn)
@@ -104,7 +104,7 @@ public extension Notification {
         }
     }
 
-    struct MarkReadRequest: Codable {
+    struct MarkReadRequest: Codable, Sendable {
         public init(id: Int) {
             self.id = id
         }
@@ -116,7 +116,7 @@ public extension Notification {
         }
     }
 
-    struct MarkCheckInReadRequest: Codable {
+    struct MarkCheckInReadRequest: Codable, Sendable {
         public init(checkInId: Int) {
             self.checkInId = checkInId
         }
@@ -167,7 +167,7 @@ public enum NotificationType: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
-public struct ProfilePushNotification: Codable, Identifiable {
+public struct ProfilePushNotification: Codable, Identifiable, Sendable {
     public var id: String { deviceToken }
 
     public let deviceToken: String

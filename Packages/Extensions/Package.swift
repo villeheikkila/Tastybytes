@@ -17,7 +17,10 @@ let package = Package(
 
     targets: [
         .target(
-            name: "Extensions"
+            name: "Extensions",
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency"),
+            ]
         ),
     ]
 )

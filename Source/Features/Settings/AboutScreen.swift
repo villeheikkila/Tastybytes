@@ -8,6 +8,7 @@ import OSLog
 import StoreKit
 import SwiftUI
 
+@MainActor
 struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
@@ -61,7 +62,7 @@ struct AboutScreen: View {
             })
         )
         ProgressButton("Rate \(Config.appName)", systemName: "heart", color: .red, action: {
-            await requestReview()
+            requestReview()
         })
     }
 

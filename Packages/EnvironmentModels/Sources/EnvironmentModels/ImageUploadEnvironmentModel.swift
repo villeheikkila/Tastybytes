@@ -4,6 +4,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 @Observable
 public class ImageUploadEnvironmentModel {
     private let logger = Logger(category: "PermissionEnvironmentModel")

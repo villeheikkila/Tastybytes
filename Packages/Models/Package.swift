@@ -19,6 +19,9 @@ let package = Package(
     targets: [
         .target(
             name: "Models", dependencies: [.product(name: "Extensions", package: "Extensions"),
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
     ]

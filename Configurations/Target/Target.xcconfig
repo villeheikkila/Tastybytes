@@ -3,7 +3,7 @@
 
 //-- Assets
 INFOPLIST_FILE = Configurations/Info.plist
-CODE_SIGN_ENTITLEMENTS = Configurations/Production.entitlements
+CODE_SIGN_ENTITLEMENTS = Configurations/Required.entitlements
 GENERATE_INFOPLIST_FILE = YES
 DEVELOPMENT_ASSET_PATHS = Assets/Preview\ Content
 SKIP_INSTALL = NO

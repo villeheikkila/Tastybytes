@@ -26,6 +26,9 @@ let package = Package(
                 .product(name: "Extensions", package: "Extensions"),
                 .product(name: "Nuke", package: "Nuke"),
                 .product(name: "NukeUI", package: "Nuke"),
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
     ]

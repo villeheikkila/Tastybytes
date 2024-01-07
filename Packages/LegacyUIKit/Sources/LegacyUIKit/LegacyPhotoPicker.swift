@@ -1,10 +1,11 @@
 import PhotosUI
 import SwiftUI
 
+@MainActor
 public struct LegacyPhotoPicker: UIViewControllerRepresentable {
-    let onSelection: (_ image: UIImage, _ metadata: ImageMetadata) -> Void
+    let onSelection: @Sendable (_ image: UIImage, _ metadata: ImageMetadata) -> Void
 
-    public init(onSelection: @escaping (_ image: UIImage, _ metadata: ImageMetadata) -> Void) {
+    public init(onSelection: @Sendable @escaping (_ image: UIImage, _ metadata: ImageMetadata) -> Void) {
         self.onSelection = onSelection
     }
 
@@ -24,14 +25,15 @@ public struct LegacyPhotoPicker: UIViewControllerRepresentable {
     }
 }
 
+@MainActor
 public extension LegacyPhotoPicker {
-    final class Coordinator: NSObject, PHPickerViewControllerDelegate {
+    final class Coordinator: NSObject, PHPickerViewControllerDelegate, Sendable {
         let parent: LegacyPhotoPicker
-        let onSelection: (_ image: UIImage, _ metadata: ImageMetadata) -> Void
+        let onSelection: @Sendable (_ image: UIImage, _ metadata: ImageMetadata) -> Void
 
         public init(
             _ parent: LegacyPhotoPicker,
-            onSelection: @escaping (_ image: UIImage, _ metadata: ImageMetadata) -> Void
+            onSelection: @Sendable @escaping (_ image: UIImage, _ metadata: ImageMetadata) -> Void
         ) {
             self.parent = parent
             self.onSelection = onSelection
@@ -69,7 +71,7 @@ public extension LegacyPhotoPicker {
     }
 }
 
-public struct ImageMetadata {
+public struct ImageMetadata: Sendable {
     public let location: CLLocationCoordinate2D?
     public let date: Date?
 

@@ -49,7 +49,7 @@ public extension Subcategory {
 }
 
 public extension Subcategory {
-    struct NewRequest: Codable {
+    struct NewRequest: Codable, Sendable {
         public let name: String
         public let categoryId: Int
 

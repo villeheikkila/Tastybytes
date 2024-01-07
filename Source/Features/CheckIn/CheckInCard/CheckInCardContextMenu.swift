@@ -4,6 +4,7 @@ import Extensions
 import Models
 import SwiftUI
 
+@MainActor
 extension View {
     func checkInContextMenu(
         router: Router,

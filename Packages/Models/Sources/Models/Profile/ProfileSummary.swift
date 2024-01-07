@@ -36,7 +36,7 @@ public struct ProfileSummary: Codable, Sendable {
 }
 
 public extension ProfileSummary {
-    struct GetRequest: Codable {
+    struct GetRequest: Codable, Sendable {
         let profileId: String
 
         enum CodingKeys: String, CodingKey {

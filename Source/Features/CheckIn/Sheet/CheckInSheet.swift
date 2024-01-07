@@ -98,9 +98,11 @@ struct CheckInSheet: View {
             RouterLink(
                 "Photo Gallery",
                 sheet: .legacyPhotoPicker(onSelection: { image, metadata in
-                    imageMetadata = metadata
-                    self.image = image
-                    showImageCropper = true
+                    DispatchQueue.main.async {
+                        imageMetadata = metadata
+                        self.image = image
+                        showImageCropper = true
+                    }
 
                 })
             )

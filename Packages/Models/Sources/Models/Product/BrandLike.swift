@@ -1,7 +1,7 @@
 import Foundation
 
 public enum BrandLike {
-    public struct New: Codable {
+    public struct New: Codable, Sendable {
         public init(brandId: Int) {
             self.brandId = brandId
         }
@@ -13,7 +13,7 @@ public enum BrandLike {
         }
     }
 
-    public struct CheckIfLikedRequest: Codable {
+    public struct CheckIfLikedRequest: Codable, Sendable {
         public init(id: Int) {
             self.id = id
         }

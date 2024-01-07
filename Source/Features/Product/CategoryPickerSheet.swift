@@ -4,6 +4,7 @@ import Models
 import OSLog
 import SwiftUI
 
+@MainActor
 struct CategoryPickerSheet: View {
     private let logger = Logger(category: "CategoryPickerSheet")
     @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
