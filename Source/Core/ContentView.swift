@@ -9,25 +9,27 @@ struct ContentView: View {
 
     var body: some View {
         SplashScreenProvider {
-            SubscriptionProvider {
-                EnvironmentProvider(repository: repository) {
-                    AuthEventObserver(
-                        authenticated: {
-                            OnboardingProvider {
-                                AuthenticatedContentInitializer {
-                                    LayoutSelector(sidebar: {
-                                        SideBarView()
-                                    }, tab: {
-                                        TabsView()
-                                    })
+            AppConfigProvider(repository: repository) {
+                SubscriptionProvider {
+                    EnvironmentProvider(repository: repository) {
+                        AuthEventObserver(
+                            authenticated: {
+                                OnboardingProvider {
+                                    AuthenticatedContentInitializer {
+                                        LayoutSelector(sidebar: {
+                                            SideBarView()
+                                        }, tab: {
+                                            TabsView()
+                                        })
+                                    }
                                 }
+                            }, unauthenticated: {
+                                AuthenticationScreen()
+                            }, loading: {
+                                SplashScreen()
                             }
-                        }, unauthenticated: {
-                            AuthenticationScreen()
-                        }, loading: {
-                            SplashScreen()
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }

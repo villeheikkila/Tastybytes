@@ -2,6 +2,7 @@ import Foundation
 
 enum Database {
     enum Table: String {
+        case appConfigs = "app_configs"
         case brandLikes = "brand_likes"
         case profileWishlistItems = "profile_wishlist_items"
         case products

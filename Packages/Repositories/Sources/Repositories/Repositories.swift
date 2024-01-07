@@ -2,6 +2,7 @@ import Supabase
 import SwiftUI
 
 public protocol RepositoryProtocol: Sendable {
+    var appConfig: AppConfigRepository { get }
     var profile: ProfileRepository { get }
     var checkIn: CheckInRepository { get }
     var checkInComment: CheckInCommentRepository { get }
@@ -24,6 +25,7 @@ public protocol RepositoryProtocol: Sendable {
 }
 
 public struct Repository: RepositoryProtocol {
+    public let appConfig: AppConfigRepository
     public let profile: ProfileRepository
     public let checkIn: CheckInRepository
     public let checkInComment: CheckInCommentRepository
@@ -50,6 +52,7 @@ public struct Repository: RepositoryProtocol {
             supabaseKey: supabaseKey,
             options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers))
         )
+        appConfig = SupabaseAppConfigRepository(client: client)
         profile = SupabaseProfileRepository(client: client)
         checkIn = SupabaseCheckInRepository(client: client)
         checkInComment = SupabaseCheckInCommentRepository(client: client)
