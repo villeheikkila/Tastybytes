@@ -23,8 +23,8 @@ public final class AppDataEnvironmentModel {
     }
 
     public func initialize(reset: Bool = false) async {
-        guard reset || flavors.isEmpty || categories.isEmpty else { return }
-        logger.notice("Initializing app data")
+        logger.notice("\(reset ? "Refreshing" : "Initializing") app data")
+        let startTime = DispatchTime.now()
         async let appConfigPromise = repository.appConfig.get()
         async let aboutPagePromise = repository.document.getAboutPage()
         async let flavorPromise = repository.flavor.getAll()
@@ -89,6 +89,11 @@ public final class AppDataEnvironmentModel {
             alertError = .init()
             logger.error("Fetching countries failed. Error: \(error) (\(#file):\(#line))")
         }
+
+        let endTime = DispatchTime.now()
+        let elapsedTime = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let elapsedTimeInMilliSeconds = Double(elapsedTime) / 1_000_000.0
+        logger.info("AppData \(reset ? "refreshed" : "initialized") in \(UInt64(elapsedTimeInMilliSeconds))ms")
     }
 
     // Flavors
@@ -170,8 +175,7 @@ public final class AppDataEnvironmentModel {
 
     public func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String) async {
         switch await repository.subcategory
-            .insert(newSubcategory: Subcategory
-                .NewRequest(name: name, category: category))
+            .insert(newSubcategory: Subcategory.NewRequest(name: name, category: category))
         {
         case let .success(newSubcategory):
             let updatedCategory = category.appending(subcategory: newSubcategory)
