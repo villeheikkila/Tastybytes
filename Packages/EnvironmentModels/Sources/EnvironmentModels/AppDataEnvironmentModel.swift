@@ -12,6 +12,8 @@ public final class AppDataEnvironmentModel {
     public var flavors = [Flavor]()
     public var countries = [Country]()
     public var aboutPage: AboutPage?
+    public var appConfig: AppConfig?
+
     public var alertError: AlertError?
 
     private let repository: Repository
@@ -23,17 +25,28 @@ public final class AppDataEnvironmentModel {
     public func initialize(reset: Bool = false) async {
         guard reset || flavors.isEmpty || categories.isEmpty else { return }
         logger.notice("Initializing app data")
+        async let appConfigPromise = repository.appConfig.get()
         async let aboutPagePromise = repository.document.getAboutPage()
         async let flavorPromise = repository.flavor.getAll()
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
         async let countryPromise = repository.location.getAllCountries()
 
-        let (flavorResponse, categoryResponse, aboutPageResponse, countryResponse) = await (
+        let (appConfigResponse, flavorResponse, categoryResponse, aboutPageResponse, countryResponse) = await (
+            appConfigPromise,
             flavorPromise,
             categoryPromise,
             aboutPagePromise,
             countryPromise
         )
+
+        switch appConfigResponse {
+        case let .success(appConfig):
+            self.appConfig = appConfig
+            logger.notice("App Config initialized")
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Fetching app config failed. Error: \(error) (\(#file):\(#line))")
+        }
 
         switch flavorResponse {
         case let .success(flavors):

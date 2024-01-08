@@ -170,7 +170,6 @@
 		5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */; };
 		5CCEE2892B2D0C0100F276DF /* CheckInListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */; };
 		5CCEE28B2B2D11C400F276DF /* CheckInCardContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */; };
-		5CFAE7CE2B4B3464005A4D90 /* AppConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFAE7CD2B4B3464005A4D90 /* AppConfigProvider.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -365,7 +364,6 @@
 		5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContainer.swift; sourceTree = "<group>"; };
 		5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListCard.swift; sourceTree = "<group>"; };
 		5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContextMenu.swift; sourceTree = "<group>"; };
-		5CFAE7CD2B4B3464005A4D90 /* AppConfigProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigProvider.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1040,7 +1038,6 @@
 				5C39076E2B3232420036253E /* LayoutSelector.swift */,
 				5C9057E32B2894BE00EC157B /* AppDelegate.swift */,
 				5C037BB42B472F150075091B /* Globals.swift */,
-				5CFAE7CD2B4B3464005A4D90 /* AppConfigProvider.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1450,7 +1447,6 @@
 				5C90580E2B2894BE00EC157B /* SubBrandSheet.swift in Sources */,
 				5C9057F32B2894BE00EC157B /* NewFlavorSheet.swift in Sources */,
 				5C90584F2B2894BE00EC157B /* CheckInList.swift in Sources */,
-				5CFAE7CE2B4B3464005A4D90 /* AppConfigProvider.swift in Sources */,
 				5C9058402B2894BE00EC157B /* CheckInScreen.swift in Sources */,
 				5C82E8B12B2F996400F2B369 /* ProductScreenHeader.swift in Sources */,
 				5C90584A2B2894BE00EC157B /* SignInWithAppleView.swift in Sources */,
