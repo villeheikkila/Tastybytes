@@ -4,6 +4,12 @@ import OSLog
 import Repositories
 import SwiftUI
 
+public enum AppDataError: Error {
+    case networkUnavailable
+    case unexpected
+    case cancelled
+}
+
 @MainActor
 @Observable
 public final class AppDataEnvironmentModel {
@@ -13,6 +19,8 @@ public final class AppDataEnvironmentModel {
     public var countries = [Country]()
     public var aboutPage: AboutPage?
     public var appConfig: AppConfig?
+
+    public var appDataError: AppDataError?
 
     public var alertError: AlertError?
 
@@ -39,61 +47,55 @@ public final class AppDataEnvironmentModel {
             countryPromise
         )
 
+        var errors: [Error] = []
         switch appConfigResponse {
         case let .success(appConfig):
             self.appConfig = appConfig
-            logger.notice("App Config initialized")
         case let .failure(error):
+            errors.append(error)
             guard !error.isCancelled else { return }
-            logger.error("Fetching app config failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load app config. Error: \(error) (\(#file):\(#line))")
         }
-
         switch flavorResponse {
         case let .success(flavors):
-            withAnimation {
-                self.flavors = flavors
-            }
-            logger.notice("App data (flavors) initialized")
+            self.flavors = flavors
         case let .failure(error):
+            errors.append(error)
             guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Fetching flavors failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load flavors. Error: \(error) (\(#file):\(#line))")
         }
-
         switch categoryResponse {
         case let .success(categories):
             self.categories = categories
-            logger.notice("App data (categories) initialized")
         case let .failure(error):
+            errors.append(error)
             guard !error.isCancelled else { return }
-            alertError = .init()
             logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
         }
-
         switch aboutPageResponse {
         case let .success(aboutPage):
             self.aboutPage = aboutPage
-            logger.notice("App data (about page) initialized")
         case let .failure(error):
+            errors.append(error)
             guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Fetching about page failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load about page data. Error: \(error) (\(#file):\(#line))")
         }
-
         switch countryResponse {
         case let .success(countries):
             self.countries = countries
-            logger.notice("App data (countries) initialized")
         case let .failure(error):
+            errors.append(error)
             guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Fetching countries failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load countries. Error: \(error) (\(#file):\(#line))")
         }
 
-        let endTime = DispatchTime.now()
-        let elapsedTime = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-        let elapsedTimeInMilliSeconds = Double(elapsedTime) / 1_000_000.0
-        logger.info("AppData \(reset ? "refreshed" : "initialized") in \(UInt64(elapsedTimeInMilliSeconds))ms")
+        if !errors.isEmpty {
+            appDataError = errors.contains(where: { error in error.isNetworkUnavailable }) ? .networkUnavailable : errors.contains(where: { error in error.isNetworkUnavailable }) ? .cancelled : .unexpected
+            logger.error("AppData failed to initialize due to \(self.appDataError)")
+            return
+        }
+
+        logger.info("AppData \(reset ? "refreshed" : "initialized") in \(startTime.elapsedTime())ms")
     }
 
     // Flavors

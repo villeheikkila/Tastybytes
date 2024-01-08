@@ -6,3 +6,10 @@ public extension Error {
         return nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorCancelled
     }
 }
+
+public extension Error {
+    var isNetworkUnavailable: Bool {
+        let nsError = self as NSError
+        return nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorNotConnectedToInternet
+    }
+}
