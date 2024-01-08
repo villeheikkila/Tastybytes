@@ -2,6 +2,7 @@ import OSLog
 import StoreKit
 import SwiftUI
 
+@MainActor
 @Observable class SubscriptionEnvironmentModel {
     private let logger = Logger(category: "SubscriptionEnvironmentModel")
     var productSubscription = ProductSubscription()

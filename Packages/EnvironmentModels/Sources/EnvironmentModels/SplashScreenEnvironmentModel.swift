@@ -2,6 +2,7 @@ import Extensions
 import OSLog
 import SwiftUI
 
+@MainActor
 @Observable
 public final class SplashScreenEnvironmentModel {
     private let logger = Logger(category: "SplashScreenEnvironmentModel")

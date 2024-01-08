@@ -40,10 +40,8 @@ public final class FriendEnvironmentModel {
     public func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
         switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
         case let .success(newFriend):
-            await MainActor.run {
-                withAnimation {
-                    self.friends.append(newFriend)
-                }
+            withAnimation {
+                self.friends.append(newFriend)
             }
             if let onSuccess {
                 onSuccess()
@@ -64,11 +62,9 @@ public final class FriendEnvironmentModel {
 
         switch await repository.friend.update(id: friend.id, friendUpdate: friendUpdate) {
         case let .success(updatedFriend):
-            await MainActor.run {
+            withAnimation {
                 withAnimation {
-                    withAnimation {
-                        self.friends.replace(friend, with: updatedFriend)
-                    }
+                    self.friends.replace(friend, with: updatedFriend)
                 }
             }
         case let .failure(error):
@@ -83,10 +79,8 @@ public final class FriendEnvironmentModel {
     public func removeFriendRequest(_ friend: Friend) async {
         switch await repository.friend.delete(id: friend.id) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    self.friends.remove(object: friend)
-                }
+            withAnimation {
+                self.friends.remove(object: friend)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -120,9 +114,7 @@ public final class FriendEnvironmentModel {
             status: .none
         ) {
         case let .success(friends):
-            await MainActor.run {
-                self.friends = friends
-            }
+            self.friends = friends
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -142,10 +134,8 @@ public final class FriendEnvironmentModel {
     public func unblockUser(_ friend: Friend) async {
         switch await repository.friend.delete(id: friend.id) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    self.friends.remove(object: friend)
-                }
+            withAnimation {
+                self.friends.remove(object: friend)
             }
             logger.notice("Friend manager initialized")
         case let .failure(error):
@@ -162,10 +152,8 @@ public final class FriendEnvironmentModel {
         } else {
             switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
             case let .success(blockedUser):
-                await MainActor.run {
-                    withAnimation {
-                        self.friends.append(blockedUser)
-                    }
+                withAnimation {
+                    self.friends.append(blockedUser)
                 }
                 onSuccess()
             case let .failure(error):

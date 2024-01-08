@@ -84,7 +84,7 @@ public extension SubBrand {
 }
 
 public extension SubBrand {
-    struct NewRequest: Codable {
+    struct NewRequest: Codable, Sendable {
         public let name: String
         public let brandId: Int
 

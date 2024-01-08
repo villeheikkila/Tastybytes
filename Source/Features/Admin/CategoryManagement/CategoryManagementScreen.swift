@@ -4,6 +4,7 @@ import Models
 import OSLog
 import SwiftUI
 
+@MainActor
 struct CategoryManagementScreen: View {
     private let logger = Logger(category: "CategoryManagementScreen")
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

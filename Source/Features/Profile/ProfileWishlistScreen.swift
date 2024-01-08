@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ProfileWishlistScreen: View {
     private let logger = Logger(category: "ProfileWishlistScreen")
     @Environment(\.repository) private var repository

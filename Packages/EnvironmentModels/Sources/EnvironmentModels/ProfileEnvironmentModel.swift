@@ -174,10 +174,8 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public func logOut() async {
         switch await repository.auth.logOut() {
         case .success:
-            await MainActor.run {
-                clearTemporaryData()
-                UserDefaults().reset()
-            }
+            clearTemporaryData()
+            UserDefaults().reset()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

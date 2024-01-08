@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct CategoryServingStyleSheet: View {
     private let logger = Logger(category: "CategoryServingStyleSheet")
     @Environment(\.repository) private var repository

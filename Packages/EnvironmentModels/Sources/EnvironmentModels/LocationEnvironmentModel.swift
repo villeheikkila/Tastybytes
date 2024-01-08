@@ -2,6 +2,7 @@ import CoreLocation
 import MapKit
 import OSLog
 
+@MainActor
 @Observable
 public final class LocationEnvironmentModel {
     private let logger = Logger(category: "LocationEnvironmentModel")

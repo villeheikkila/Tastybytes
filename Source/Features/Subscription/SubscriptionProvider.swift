@@ -2,6 +2,7 @@ import OSLog
 import StoreKit
 import SwiftUI
 
+@MainActor
 struct SubscriptionProvider<Content: View>: View {
     @Environment(\.productSubscriptionIds) private var productSubscriptionIds
     @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel()

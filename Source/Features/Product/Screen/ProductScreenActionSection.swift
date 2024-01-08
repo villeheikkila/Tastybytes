@@ -4,6 +4,7 @@ import Models
 import OSLog
 import SwiftUI
 
+@MainActor
 struct ProductScreenActionSection: View {
     private let logger = Logger(category: "ProductScreenActionSection")
     @Environment(\.repository) private var repository

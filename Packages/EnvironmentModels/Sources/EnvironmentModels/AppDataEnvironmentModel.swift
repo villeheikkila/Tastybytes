@@ -37,10 +37,8 @@ public final class AppDataEnvironmentModel {
 
         switch flavorResponse {
         case let .success(flavors):
-            await MainActor.run {
-                withAnimation {
-                    self.flavors = flavors
-                }
+            withAnimation {
+                self.flavors = flavors
             }
             logger.notice("App data (flavors) initialized")
         case let .failure(error):
@@ -51,9 +49,7 @@ public final class AppDataEnvironmentModel {
 
         switch categoryResponse {
         case let .success(categories):
-            await MainActor.run {
-                self.categories = categories
-            }
+            self.categories = categories
             logger.notice("App data (categories) initialized")
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -63,9 +59,7 @@ public final class AppDataEnvironmentModel {
 
         switch aboutPageResponse {
         case let .success(aboutPage):
-            await MainActor.run {
-                self.aboutPage = aboutPage
-            }
+            self.aboutPage = aboutPage
             logger.notice("App data (about page) initialized")
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -75,9 +69,7 @@ public final class AppDataEnvironmentModel {
 
         switch countryResponse {
         case let .success(countries):
-            await MainActor.run {
-                self.countries = countries
-            }
+            self.countries = countries
             logger.notice("App data (countries) initialized")
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -90,10 +82,8 @@ public final class AppDataEnvironmentModel {
     public func addFlavor(name: String) async {
         switch await repository.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
         case let .success(newFlavor):
-            await MainActor.run {
-                withAnimation {
-                    flavors.append(newFlavor)
-                }
+            withAnimation {
+                flavors.append(newFlavor)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -105,10 +95,8 @@ public final class AppDataEnvironmentModel {
     public func deleteFlavor(_ flavor: Flavor) async {
         switch await repository.flavor.delete(id: flavor.id) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    flavors.remove(object: flavor)
-                }
+            withAnimation {
+                flavors.remove(object: flavor)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -120,10 +108,8 @@ public final class AppDataEnvironmentModel {
     public func refreshFlavors() async {
         switch await repository.flavor.getAll() {
         case let .success(flavors):
-            await MainActor.run {
-                withAnimation {
-                    self.flavors = flavors
-                }
+            withAnimation {
+                self.flavors = flavors
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -175,10 +161,8 @@ public final class AppDataEnvironmentModel {
                 .NewRequest(name: name, category: category))
         {
         case let .success(newSubcategory):
-            await MainActor.run {
-                let updatedCategory = category.appending(subcategory: newSubcategory)
-                categories.replace(category, with: updatedCategory)
-            }
+            let updatedCategory = category.appending(subcategory: newSubcategory)
+            categories.replace(category, with: updatedCategory)
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -192,9 +176,7 @@ public final class AppDataEnvironmentModel {
     public func loadCategories() async {
         switch await repository.category.getAllWithSubcategoriesServingStyles() {
         case let .success(categories):
-            await MainActor.run {
-                self.categories = categories
-            }
+            self.categories = categories
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

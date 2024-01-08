@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 @Observable
 public final class FeedbackEnvironmentModel {
     public var show = false

@@ -4,6 +4,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct SplashScreenProvider<Content: View>: View {
     @State private var splashScreenEnvironmentModel = SplashScreenEnvironmentModel()
     @ViewBuilder let content: () -> Content

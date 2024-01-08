@@ -18,7 +18,7 @@ public struct ServingStyle: Identifiable, Hashable, Codable, Sendable {
 }
 
 public extension ServingStyle {
-    struct UpdateRequest: Codable {
+    struct UpdateRequest: Codable, Sendable {
         public init(id: Int, name: String) {
             self.id = id
             self.name = name
@@ -28,7 +28,7 @@ public extension ServingStyle {
         public let name: String
     }
 
-    struct NewRequest: Codable {
+    struct NewRequest: Codable, Sendable {
         public init(name: String) {
             self.name = name
         }

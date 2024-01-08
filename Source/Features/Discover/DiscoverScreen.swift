@@ -155,11 +155,9 @@ struct DiscoverScreen: View {
                 case .companies:
                     switch await repository.company.search(searchTerm: searchTerm) {
                     case let .success(searchResults):
-                        await MainActor.run {
-                            withAnimation {
-                                companies = searchResults
-                                searchResultKey = searchKey
-                            }
+                        withAnimation {
+                            companies = searchResults
+                            searchResultKey = searchKey
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):
@@ -170,11 +168,9 @@ struct DiscoverScreen: View {
                 case .users:
                     switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
                     case let .success(searchResults):
-                        await MainActor.run {
-                            withAnimation {
-                                profiles = searchResults
-                                searchResultKey = searchKey
-                            }
+                        withAnimation {
+                            profiles = searchResults
+                            searchResultKey = searchKey
                         }
                         logger.info("Search completed for id: '\(searchKey.id)'")
                     case let .failure(error):

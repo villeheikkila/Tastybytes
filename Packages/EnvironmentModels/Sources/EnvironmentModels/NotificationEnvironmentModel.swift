@@ -39,10 +39,8 @@ public final class NotificationEnvironmentModel {
     public func getUnreadCount() async {
         switch await repository.notification.getUnreadCount() {
         case let .success(count):
-            await MainActor.run {
-                withAnimation {
-                    self.unreadCount = count
-                }
+            withAnimation {
+                self.unreadCount = count
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -63,16 +61,14 @@ public final class NotificationEnvironmentModel {
             }
             switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
             case let .success(newNotifications):
-                await MainActor.run {
-                    isInitialized = true
-                    if reset {
-                        notifications = newNotifications
-                        unreadCount = newNotifications
-                            .filter { $0.seenAt == nil }
-                            .count
-                    } else {
-                        notifications.append(contentsOf: newNotifications)
-                    }
+                isInitialized = true
+                if reset {
+                    notifications = newNotifications
+                    unreadCount = newNotifications
+                        .filter { $0.seenAt == nil }
+                        .count
+                } else {
+                    notifications.append(contentsOf: newNotifications)
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
@@ -108,10 +104,8 @@ public final class NotificationEnvironmentModel {
                 return readNotification ?? notification
             }
 
-            await MainActor.run {
-                withAnimation {
-                    notifications = markedAsSeenNotifications
-                }
+            withAnimation {
+                notifications = markedAsSeenNotifications
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -189,10 +183,8 @@ public final class NotificationEnvironmentModel {
         let notificationId = notifications[index].id
         switch await repository.notification.delete(id: notificationId) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    _ = self.notifications.remove(at: index)
-                }
+            withAnimation {
+                _ = self.notifications.remove(at: index)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -204,10 +196,8 @@ public final class NotificationEnvironmentModel {
     public func deleteNotifications(notification: Models.Notification) async {
         switch await repository.notification.delete(id: notification.id) {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    self.notifications.remove(object: notification)
-                }
+            withAnimation {
+                self.notifications.remove(object: notification)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

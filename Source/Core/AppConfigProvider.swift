@@ -19,8 +19,8 @@ struct AppConfigProvider<Content: View>: View {
     var body: some View {
         VStack {
             if appConfigEnvironmentModel.appConfig != nil {
-                  content().environment(appConfigEnvironmentModel)
-              }
+                content().environment(appConfigEnvironmentModel)
+            }
         }.task {
             await appConfigEnvironmentModel.initialize()
         }
