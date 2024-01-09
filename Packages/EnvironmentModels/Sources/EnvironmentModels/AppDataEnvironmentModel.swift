@@ -53,7 +53,6 @@ public final class AppDataEnvironmentModel {
             self.appConfig = appConfig
         case let .failure(error):
             errors.append(error)
-            guard !error.isCancelled else { return }
             logger.error("Failed to load app config. Error: \(error) (\(#file):\(#line))")
         }
         switch flavorResponse {
@@ -61,7 +60,6 @@ public final class AppDataEnvironmentModel {
             self.flavors = flavors
         case let .failure(error):
             errors.append(error)
-            guard !error.isCancelled else { return }
             logger.error("Failed to load flavors. Error: \(error) (\(#file):\(#line))")
         }
         switch categoryResponse {
@@ -69,7 +67,6 @@ public final class AppDataEnvironmentModel {
             self.categories = categories
         case let .failure(error):
             errors.append(error)
-            guard !error.isCancelled else { return }
             logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
         }
         switch aboutPageResponse {
@@ -77,7 +74,6 @@ public final class AppDataEnvironmentModel {
             self.aboutPage = aboutPage
         case let .failure(error):
             errors.append(error)
-            guard !error.isCancelled else { return }
             logger.error("Failed to load about page data. Error: \(error) (\(#file):\(#line))")
         }
         switch countryResponse {
@@ -85,7 +81,6 @@ public final class AppDataEnvironmentModel {
             self.countries = countries
         case let .failure(error):
             errors.append(error)
-            guard !error.isCancelled else { return }
             logger.error("Failed to load countries. Error: \(error) (\(#file):\(#line))")
         }
 

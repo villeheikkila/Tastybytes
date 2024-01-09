@@ -8,26 +8,28 @@ struct ContentView: View {
     @Environment(\.repository) private var repository
 
     var body: some View {
-        SplashScreenProvider {
+        EnvironmentProvider(repository: repository) {
             SubscriptionProvider {
-                EnvironmentProvider(repository: repository) {
-                    AuthEventObserver(
-                        authenticated: {
-                            OnboardingProvider {
-                                AuthenticatedContentInitializer {
-                                    LayoutSelector(sidebar: {
-                                        SideBarView()
-                                    }, tab: {
-                                        TabsView()
-                                    })
+                MiscProvider {
+                    SplashScreenProvider {
+                        AuthEventObserver(
+                            authenticated: {
+                                OnboardingProvider {
+                                    AuthenticatedContentInitializer {
+                                        LayoutSelector(sidebar: {
+                                            SideBarView()
+                                        }, tab: {
+                                            TabsView()
+                                        })
+                                    }
                                 }
+                            }, unauthenticated: {
+                                AuthenticationScreen()
+                            }, loading: {
+                                SplashScreen()
                             }
-                        }, unauthenticated: {
-                            AuthenticationScreen()
-                        }, loading: {
-                            SplashScreen()
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }

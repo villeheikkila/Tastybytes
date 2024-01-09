@@ -43,6 +43,7 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View, Loading: Vi
                 authState = state
                 logger.debug("auth state changed: \(String(describing: state))")
                 if Task.isCancelled {
+                    print("Auth listener cancelled")
                     return
                 }
             }

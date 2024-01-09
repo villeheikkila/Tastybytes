@@ -8,7 +8,6 @@ import TipKit
 @MainActor
 struct EnvironmentProvider<Content: View>: View {
     private let logger = Logger(category: "EnvironmentView")
-    @AppStorage(.colorScheme) var colorScheme: String = "system"
     @State private var permissionEnvironmentModel = PermissionEnvironmentModel()
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
     @State private var notificationEnvironmentModel: NotificationEnvironmentModel
@@ -16,23 +15,16 @@ struct EnvironmentProvider<Content: View>: View {
     @State private var friendEnvironmentModel: FriendEnvironmentModel
     @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
     @State private var locationEnvironmentModel = LocationEnvironmentModel()
-    @State private var isPortrait = false
-    @Environment(\.repository) private var repository
     @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
 
     @ViewBuilder let content: () -> Content
 
     init(repository: Repository, @ViewBuilder content: @escaping () -> Content) {
-        _notificationEnvironmentModel =
-            State(wrappedValue: NotificationEnvironmentModel(repository: repository))
-        _profileEnvironmentModel =
-            State(wrappedValue: ProfileEnvironmentModel(repository: repository))
-        _appDataEnvironmentModel =
-            State(wrappedValue: AppDataEnvironmentModel(repository: repository))
-        _imageUploadEnvironmentModel =
-            State(wrappedValue: ImageUploadEnvironmentModel(repository: repository))
-        _friendEnvironmentModel =
-            State(wrappedValue: FriendEnvironmentModel(repository: repository))
+        _notificationEnvironmentModel = State(wrappedValue: NotificationEnvironmentModel(repository: repository))
+        _profileEnvironmentModel = State(wrappedValue: ProfileEnvironmentModel(repository: repository))
+        _appDataEnvironmentModel = State(wrappedValue: AppDataEnvironmentModel(repository: repository))
+        _imageUploadEnvironmentModel = State(wrappedValue: ImageUploadEnvironmentModel(repository: repository))
+        _friendEnvironmentModel = State(wrappedValue: FriendEnvironmentModel(repository: repository))
         self.content = content
     }
 
@@ -46,17 +38,11 @@ struct EnvironmentProvider<Content: View>: View {
             .environment(permissionEnvironmentModel)
             .environment(imageUploadEnvironmentModel)
             .environment(locationEnvironmentModel)
-            .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
-            .detectOrientation($isPortrait)
-            .environment(\.isPortrait, isPortrait)
             .alertError($appDataEnvironmentModel.alertError)
             .alertError($notificationEnvironmentModel.alertError)
             .alertError($profileEnvironmentModel.alertError)
             .alertError($appDataEnvironmentModel.alertError)
             .alertError($friendEnvironmentModel.alertError)
-            .task {
-                try? Tips.configure([.displayFrequency(.daily)])
-            }
             .task {
                 permissionEnvironmentModel.initialize()
             }
@@ -66,5 +52,22 @@ struct EnvironmentProvider<Content: View>: View {
             .task {
                 locationEnvironmentModel.updateLocationAuthorizationStatus()
             }
+            .task {
+                try? Tips.configure([.displayFrequency(.daily)])
+            }
+    }
+}
+
+@MainActor
+struct MiscProvider<Content: View>: View {
+    @AppStorage(.colorScheme) var colorScheme: String = "system"
+    @State private var isPortrait = false
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        content()
+            .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
+            .detectOrientation($isPortrait)
+            .environment(\.isPortrait, isPortrait)
     }
 }
