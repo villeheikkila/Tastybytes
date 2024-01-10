@@ -28,7 +28,6 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View>: View {
         }
         .task(id: profileEnvironmentModel.authState) {
             if case .authenticated = profileEnvironmentModel.authState {
-                await profileEnvironmentModel.initialize()
                 guard let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications else { return }
                 await notificationEnvironmentModel
                     .refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)

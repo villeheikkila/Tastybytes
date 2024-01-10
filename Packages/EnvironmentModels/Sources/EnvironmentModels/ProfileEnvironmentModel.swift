@@ -40,8 +40,12 @@ public final class ProfileEnvironmentModel: ObservableObject {
     
     public func listenToAuthState() async {
         for await state in await repository.auth.authStateListener() {
-            logger.info("Auth state changed from \(String(describing: self.authState)) to \(String(describing: state))")
+            let previousState = authState
             authState = state
+            logger.info("Auth state changed from \(String(describing: previousState)) to \(String(describing: state))")
+            if state == .authenticated {
+                await initialize()
+            }
             if Task.isCancelled {
                 logger.info("Auth state listener cancelled")
                 return
