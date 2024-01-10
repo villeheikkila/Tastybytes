@@ -372,9 +372,6 @@
         }
       }
     },
-    "App can't connect to the internet" : {
-
-    },
     "Apply" : {
       "localizations" : {
         "en" : {
@@ -1470,6 +1467,9 @@
         }
       }
     },
+    "Open App Store" : {
+
+    },
     "Open System Notification Settings" : {
       "localizations" : {
         "en" : {
@@ -1519,6 +1519,9 @@
           }
         }
       }
+    },
+    "Please check your network connection and try again." : {
+
     },
     "Portfolio" : {
       "localizations" : {
@@ -2184,6 +2187,9 @@
         }
       }
     },
+    "Try again" : {
+
+    },
     "Turn the torch %@" : {
       "localizations" : {
         "en" : {
@@ -2193,6 +2199,9 @@
           }
         }
       }
+    },
+    "Unexpected error occured. Please try loading the app again later." : {
+
     },
     "Unlock additional features" : {
       "localizations" : {
@@ -2263,6 +2272,9 @@
           }
         }
       }
+    },
+    "Update needed!" : {
+
     },
     "Use Dark Mode" : {
       "localizations" : {
@@ -2383,6 +2395,9 @@
           }
         }
       }
+    },
+    "Your current app version is no longer supported, please update the app in the App Store" : {
+
     }
   },
   "version" : "1.0"

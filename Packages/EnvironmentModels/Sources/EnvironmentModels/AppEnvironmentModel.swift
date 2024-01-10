@@ -21,11 +21,13 @@ public enum SplashScreenState {
 public final class AppEnvironmentModel {
     private let logger = Logger(category: "AppEnvironmentModel")
     // App state
+    public var isInitializing = false
     public var state: AppState = .uninitialized {
         didSet {
             dismissSplashScreen()
         }
     }
+
     public var alertError: AlertError?
     // App data
     public var categories = [Models.Category.JoinedSubcategoriesServingStyles]()
@@ -55,7 +57,10 @@ public final class AppEnvironmentModel {
     }
 
     public func initialize(reset: Bool = false) async {
+        defer { isInitializing = false }
+        guard !isInitializing else { return }
         logger.notice("\(reset ? "Refreshing" : "Initializing") app data")
+        isInitializing = true
         let startTime = DispatchTime.now()
         async let appConfigPromise = repository.appConfig.get()
         async let aboutPagePromise = repository.document.getAboutPage()

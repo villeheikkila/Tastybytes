@@ -12,7 +12,7 @@ struct ContentView: View {
             SubscriptionProvider {
                 MiscProvider {
                     SplashScreenProvider {
-                        AppContentProvider {
+                        AppStateSelector {
                             AuthEventObserver(
                                 authenticated: {
                                     OnboardingProvider {

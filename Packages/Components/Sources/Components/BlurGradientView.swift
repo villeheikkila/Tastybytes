@@ -19,9 +19,7 @@ public struct BlurGradientView<TopContent: View, BottomContent: View>: View {
     }
 
     var colors: [Color] {
-        [0, 0.1, 0.5, 0.75, 1, 1, 1, 1].map { opacity in
-            Color.black.opacity(opacity)
-        }
+        [0, 0.1, 0.5, 0.75, 1, 1, 1, 1].map(Color.black.opacity)
     }
 
     public var body: some View {

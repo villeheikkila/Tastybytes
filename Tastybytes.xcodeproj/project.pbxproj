@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailable.swift */; };
+		5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailableState.swift */; };
+		5C02A73B2B4F28B700B497FA /* AppUnexpectedErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73A2B4F28B700B497FA /* AppUnexpectedErrorState.swift */; };
+		5C02A73D2B4F2A7800B497FA /* AppUnsupportedVersionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */; };
+		5C02A73F2B4F316800B497FA /* AppStateSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73E2B4F316800B497FA /* AppStateSelector.swift */; };
 		5C037BB52B472F150075091B /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C037BB42B472F150075091B /* Globals.swift */; };
 		5C037BB72B47EDF10075091B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C037BB62B47EDF10075091B /* Localizable.xcstrings */; };
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; };
@@ -146,7 +149,6 @@
 		5C9058532B2894BE00EC157B /* OnboardingLocationPermissionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D32B2894BE00EC157B /* OnboardingLocationPermissionSection.swift */; };
 		5C9058542B2894BE00EC157B /* OnboardingProfileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */; };
 		5C9058552B2894BE00EC157B /* OnboardingNotificationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D52B2894BE00EC157B /* OnboardingNotificationSection.swift */; };
-		5C9058562B2894BE00EC157B /* OnboardingContinueButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D62B2894BE00EC157B /* OnboardingContinueButtonModifier.swift */; };
 		5C9058572B2894BE00EC157B /* RouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D82B2894BE00EC157B /* RouterLink.swift */; };
 		5C9058582B2894BE00EC157B /* QuickAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D92B2894BE00EC157B /* QuickAction.swift */; };
 		5C9058592B2894BE00EC157B /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DA2B2894BE00EC157B /* SheetManager.swift */; };
@@ -198,7 +200,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkUnavailable.swift; sourceTree = "<group>"; };
+		5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkUnavailableState.swift; sourceTree = "<group>"; };
+		5C02A73A2B4F28B700B497FA /* AppUnexpectedErrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUnexpectedErrorState.swift; sourceTree = "<group>"; };
+		5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUnsupportedVersionState.swift; sourceTree = "<group>"; };
+		5C02A73E2B4F316800B497FA /* AppStateSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateSelector.swift; sourceTree = "<group>"; };
 		5C037BB42B472F150075091B /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		5C037BB62B47EDF10075091B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
@@ -340,7 +345,6 @@
 		5C9057D32B2894BE00EC157B /* OnboardingLocationPermissionSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingLocationPermissionSection.swift; sourceTree = "<group>"; };
 		5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingProfileSection.swift; sourceTree = "<group>"; };
 		5C9057D52B2894BE00EC157B /* OnboardingNotificationSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationSection.swift; sourceTree = "<group>"; };
-		5C9057D62B2894BE00EC157B /* OnboardingContinueButtonModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingContinueButtonModifier.swift; sourceTree = "<group>"; };
 		5C9057D82B2894BE00EC157B /* RouterLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterLink.swift; sourceTree = "<group>"; };
 		5C9057D92B2894BE00EC157B /* QuickAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickAction.swift; sourceTree = "<group>"; };
 		5C9057DA2B2894BE00EC157B /* SheetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
@@ -394,12 +398,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5C02A7372B4EAF7700B497FA /* ErrorStates */ = {
+		5C02A7372B4EAF7700B497FA /* AppStates */ = {
 			isa = PBXGroup;
 			children = (
-				5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailable.swift */,
+				5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailableState.swift */,
+				5C02A73A2B4F28B700B497FA /* AppUnexpectedErrorState.swift */,
+				5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */,
 			);
-			path = ErrorStates;
+			path = AppStates;
 			sourceTree = "<group>";
 		};
 		5C037D232B49C4940075091B /* Project */ = {
@@ -1019,7 +1025,6 @@
 				5C9057D32B2894BE00EC157B /* OnboardingLocationPermissionSection.swift */,
 				5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */,
 				5C9057D52B2894BE00EC157B /* OnboardingNotificationSection.swift */,
-				5C9057D62B2894BE00EC157B /* OnboardingContinueButtonModifier.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1042,13 +1047,14 @@
 		5C9057E02B2894BE00EC157B /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				5C02A7372B4EAF7700B497FA /* ErrorStates */,
+				5C02A7372B4EAF7700B497FA /* AppStates */,
 				5C9057DF2B2894BE00EC157B /* MainApp.swift */,
 				5C82E8902B2F6C0E00F2B369 /* ContentView.swift */,
 				5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */,
 				5C39076E2B3232420036253E /* LayoutSelector.swift */,
 				5C9057E32B2894BE00EC157B /* AppDelegate.swift */,
 				5C037BB42B472F150075091B /* Globals.swift */,
+				5C02A73E2B4F316800B497FA /* AppStateSelector.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1336,6 +1342,7 @@
 				5C9058302B2894BE00EC157B /* ProfileView.swift in Sources */,
 				5C9058412B2894BE00EC157B /* DuplicataProductScreen.swift in Sources */,
 				5C90581D2B2894BE00EC157B /* BlockedUsersScreen.swift in Sources */,
+				5C02A73F2B4F316800B497FA /* AppStateSelector.swift in Sources */,
 				5C82E89C2B2F79EB00F2B369 /* ProfileFriendActionSection.swift in Sources */,
 				5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */,
 				5C9057E82B2894BE00EC157B /* NotificationTab.swift in Sources */,
@@ -1354,10 +1361,10 @@
 				5C90582C2B2894BE00EC157B /* Screen.swift in Sources */,
 				5C9058142B2894BE00EC157B /* SettingsScreen.swift in Sources */,
 				5C9058262B2894BE00EC157B /* CheckInCommentNotificationView.swift in Sources */,
-				5C9058562B2894BE00EC157B /* OnboardingContinueButtonModifier.swift in Sources */,
 				5C9058452B2894BE00EC157B /* AppNameView.swift in Sources */,
 				5C90580B2B2894BE00EC157B /* ReportButtonView.swift in Sources */,
 				5C82E8982B2F74E700F2B369 /* ProfileHeader.swift in Sources */,
+				5C02A73B2B4F28B700B497FA /* AppUnexpectedErrorState.swift in Sources */,
 				5C82E8A62B2F7FE000F2B369 /* ProfileCheckInImagesSection.swift in Sources */,
 				5C90583A2B2894BE00EC157B /* ProductFeedScreen.swift in Sources */,
 				5C9058182B2894BE00EC157B /* AppIconScreen.swift in Sources */,
@@ -1411,7 +1418,7 @@
 				5C82E89E2B2F7AC700F2B369 /* ProfileSummarySection.swift in Sources */,
 				5C9057EA2B2894BE00EC157B /* DiscoverTab.swift in Sources */,
 				5C9057FB2B2894BE00EC157B /* MergeLocationSheet.swift in Sources */,
-				5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailable.swift in Sources */,
+				5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailableState.swift in Sources */,
 				5C9057F02B2894BE00EC157B /* FriendSheet.swift in Sources */,
 				5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */,
 				5C90582B2B2894BE00EC157B /* CategoryManagementScreen.swift in Sources */,
@@ -1425,6 +1432,7 @@
 				5C9058352B2894BE00EC157B /* ProfileLocationsScreen.swift in Sources */,
 				5C39076F2B3232420036253E /* LayoutSelector.swift in Sources */,
 				5C9058202B2894BE00EC157B /* AccountDeletedScreen.swift in Sources */,
+				5C02A73D2B4F2A7800B497FA /* AppUnsupportedVersionState.swift in Sources */,
 				5C037BB52B472F150075091B /* Globals.swift in Sources */,
 				5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */,
 				5CCEE27B2B2C770A00F276DF /* CheckInCardProduct.swift in Sources */,
