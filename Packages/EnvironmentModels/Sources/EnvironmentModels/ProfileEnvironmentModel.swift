@@ -9,10 +9,12 @@ import SwiftUI
 @Observable
 public final class ProfileEnvironmentModel: ObservableObject {
     private let logger = Logger(category: "ProfileEnvironmentModel")
+    // Auth state
+    public var authState: AuthState?
     public var isLoggedIn = false
     private var initialValuesLoaded = false
     public var alertError: AlertError?
-
+    
     // Profile Settings
     public var showFullName = false
     public var isPrivateProfile = true
@@ -34,6 +36,17 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public init(repository: Repository) {
         self.repository = repository
+    }
+    
+    public func listenToAuthState() async {
+        for await state in await repository.auth.authStateListener() {
+            logger.info("Auth state changed from \(String(describing: self.authState)) to \(String(describing: state))")
+            authState = state
+            if Task.isCancelled {
+                logger.info("Auth state listener cancelled")
+                return
+            }
+        }
     }
 
     // Getters

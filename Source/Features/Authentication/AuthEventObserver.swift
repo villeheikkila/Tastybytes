@@ -10,7 +10,6 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View>: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(\.repository) private var repository
-    @State private var authState: AuthState?
     @State private var loadSessionFromUrlTask: Task<Void, Never>?
 
     @ViewBuilder let authenticated: () -> Authenticated
@@ -18,7 +17,7 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View>: View {
 
     var body: some View {
         VStack {
-            switch authState {
+            switch profileEnvironmentModel.authState {
             case .authenticated:
                 authenticated()
             case .unauthenticated:
@@ -27,8 +26,8 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View>: View {
                 EmptyView()
             }
         }
-        .task(id: authState) {
-            if case .authenticated = authState {
+        .task(id: profileEnvironmentModel.authState) {
+            if case .authenticated = profileEnvironmentModel.authState {
                 await profileEnvironmentModel.initialize()
                 guard let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications else { return }
                 await notificationEnvironmentModel
@@ -36,14 +35,7 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View>: View {
             }
         }
         .task {
-            for await state in await repository.auth.authStateListener() {
-                logger.info("Auth state changed from \(String(describing: authState)) to \(String(describing: state))")
-                authState = state
-                if Task.isCancelled {
-                    print("Auth listener cancelled")
-                    return
-                }
-            }
+            await profileEnvironmentModel.listenToAuthState()
         }
         .onOpenURL { url in
             loadSessionFromUrlTask = Task {
