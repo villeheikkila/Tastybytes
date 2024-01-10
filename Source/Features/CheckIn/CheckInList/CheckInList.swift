@@ -11,7 +11,6 @@ struct CheckInList<Header>: View where Header: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(SplashScreenEnvironmentModel.self) private var splashScreenEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     // Tasks
     @State private var loadingCheckInsOnAppear: Task<Void, Error>?
@@ -152,7 +151,6 @@ struct CheckInList<Header>: View where Header: View {
                 logger.info("Loading initial check-in feed data for \(id)")
                 await fetchFeedItems(onComplete: { @MainActor _ in
                     logger.info("Loading initial check-ins completed for \(id)")
-                    splashScreenEnvironmentModel.dismiss()
                 })
                 resultId = refreshId
                 return
@@ -268,7 +266,6 @@ struct CheckInList<Header>: View where Header: View {
                 await onComplete(checkIns)
             }
         case let .failure(error):
-            splashScreenEnvironmentModel.dismiss()
             guard !error.isCancelled else { return }
             let e = AlertError(title: "Error occured while trying to load check-ins")
             if checkIns.isEmpty {

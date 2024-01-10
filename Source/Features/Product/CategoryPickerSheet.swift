@@ -7,7 +7,7 @@ import SwiftUI
 @MainActor
 struct CategoryPickerSheet: View {
     private let logger = Logger(category: "CategoryPickerSheet")
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var category: Int?
 

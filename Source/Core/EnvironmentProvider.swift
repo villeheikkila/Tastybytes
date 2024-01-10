@@ -11,7 +11,7 @@ struct EnvironmentProvider<Content: View>: View {
     @State private var permissionEnvironmentModel = PermissionEnvironmentModel()
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
     @State private var notificationEnvironmentModel: NotificationEnvironmentModel
-    @State private var appDataEnvironmentModel: AppDataEnvironmentModel
+    @State private var appDataEnvironmentModel: AppEnvironmentModel
     @State private var friendEnvironmentModel: FriendEnvironmentModel
     @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
     @State private var locationEnvironmentModel = LocationEnvironmentModel()
@@ -22,7 +22,7 @@ struct EnvironmentProvider<Content: View>: View {
     init(repository: Repository, @ViewBuilder content: @escaping () -> Content) {
         _notificationEnvironmentModel = State(wrappedValue: NotificationEnvironmentModel(repository: repository))
         _profileEnvironmentModel = State(wrappedValue: ProfileEnvironmentModel(repository: repository))
-        _appDataEnvironmentModel = State(wrappedValue: AppDataEnvironmentModel(repository: repository))
+        _appDataEnvironmentModel = State(wrappedValue: AppEnvironmentModel(repository: repository))
         _imageUploadEnvironmentModel = State(wrappedValue: ImageUploadEnvironmentModel(repository: repository))
         _friendEnvironmentModel = State(wrappedValue: FriendEnvironmentModel(repository: repository))
         self.content = content

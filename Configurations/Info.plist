@@ -50,6 +50,8 @@
 	<string>Photo library makes it possible to add photos from the gallery. Full access is needed to fill in metadata such as location and time.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>UIRequiresPersistentWiFi</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

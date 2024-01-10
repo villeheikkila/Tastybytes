@@ -4,7 +4,7 @@ import SwiftUI
 
 @MainActor
 struct FlavorManagementScreen: View {
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
 
     var body: some View {

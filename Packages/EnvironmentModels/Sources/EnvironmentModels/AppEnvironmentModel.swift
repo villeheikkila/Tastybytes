@@ -4,31 +4,54 @@ import OSLog
 import Repositories
 import SwiftUI
 
-public enum AppDataState: String, Sendable {
+public enum AppState: String, Sendable {
     case networkUnavailable
     case unexpectedError
     case tooOldAppVersion
     case operational
+    case uninitialized
+}
+
+public enum SplashScreenState {
+    case showing, dismissing, finished
 }
 
 @MainActor
 @Observable
-public final class AppDataEnvironmentModel {
-    private let logger = Logger(category: "AppDataEnvironmentModel")
+public final class AppEnvironmentModel {
+    private let logger = Logger(category: "AppEnvironmentModel")
+    // App state
+    public var state: AppState = .uninitialized {
+        didSet {
+            dismissSplashScreen()
+        }
+    }
+    public var alertError: AlertError?
+    // App data
     public var categories = [Models.Category.JoinedSubcategoriesServingStyles]()
     public var flavors = [Flavor]()
     public var countries = [Country]()
     public var aboutPage: AboutPage?
     public var appConfig: AppConfig?
-
-    public var appDataState: AppDataState?
-
-    public var alertError: AlertError?
-
+    // Splash screen
+    public var splashScreenState: SplashScreenState = .showing
+    private var splashScreenDismissalTask: Task<Void, Never>?
+    // Props
     private let repository: Repository
 
     public init(repository: Repository) {
         self.repository = repository
+    }
+
+    public func dismissSplashScreen() {
+        guard splashScreenState == .showing, splashScreenDismissalTask == nil else { return }
+        splashScreenDismissalTask = Task {
+            defer { splashScreenDismissalTask = nil }
+            logger.info("Dismissing splash screen")
+            splashScreenState = .dismissing
+            try? await Task.sleep(for: Duration.seconds(0.5))
+            splashScreenState = .finished
+        }
     }
 
     public func initialize(reset: Bool = false) async {
@@ -54,7 +77,7 @@ public final class AppDataEnvironmentModel {
             self.appConfig = appConfig
             if appConfig.minimumSupportedVersion > Config.projectVersion {
                 logger.error("App is too old to run against the latest API, app version \(Config.appVersion)")
-                appDataState = .tooOldAppVersion
+                state = .tooOldAppVersion
                 return
             }
         case let .failure(error):
@@ -91,10 +114,10 @@ public final class AppDataEnvironmentModel {
         }
 
         if !errors.isEmpty {
-            appDataState = errors.contains(where: { error in error.isNetworkUnavailable }) ? .networkUnavailable : .unexpectedError
+            state = errors.contains(where: { error in error.isNetworkUnavailable }) ? .networkUnavailable : .unexpectedError
             return
         }
-        appDataState = .operational
+        state = .operational
         logger.info("AppData \(reset ? "refreshed" : "initialized") in \(startTime.elapsedTime())ms")
     }
 

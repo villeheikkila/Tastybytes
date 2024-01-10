@@ -37,7 +37,6 @@ struct ProfileView: View {
                 )
             }
         )
-        .dismissSplashScreen()
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .alertError($alertError)
     }

@@ -99,7 +99,6 @@ struct DiscoverScreen: View {
             }
         }
         .navigationTitle("Discover")
-        .dismissSplashScreen()
         .task(id: searchKey, milliseconds: 200) { @MainActor [searchKey] in
             guard let searchKey else {
                 logger.info("Empty search key. Reset.")

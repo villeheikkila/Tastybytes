@@ -79,7 +79,6 @@ struct NotificationScreen: View {
         .onAppear {
             notificationEnvironmentModel.refresh()
         }
-        .dismissSplashScreen()
         .navigationTitle(filter?.label ?? "Notifications")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)

@@ -47,7 +47,6 @@ struct AuthenticationScreen: View {
                     .navigationBarTitleDisplayMode(.inline)
             }
         }
-        .dismissSplashScreen()
     }
 
     private var logo: some View {

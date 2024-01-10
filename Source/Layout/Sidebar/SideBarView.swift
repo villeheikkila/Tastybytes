@@ -34,7 +34,7 @@ struct SideBarView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.isPortrait) private var isPortrait
     @State private var sheetEnvironmentModel = SheetManager()
     @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
@@ -105,10 +105,8 @@ struct SideBarView: View {
                     CurrentProfileScreen(scrollToTop: $scrollToTop)
                 case .friends:
                     CurrentUserFriendsScreen()
-                        .dismissSplashScreen()
                 case .settings:
                     SettingsScreen()
-                        .dismissSplashScreen()
                 case nil:
                     EmptyView()
                 }

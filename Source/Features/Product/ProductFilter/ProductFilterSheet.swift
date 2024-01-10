@@ -9,7 +9,7 @@ struct ProductFilterSheet: View {
     }
 
     private let logger = Logger(category: "SeachFilterSheet")
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var subcategoryFilter: Subcategory?

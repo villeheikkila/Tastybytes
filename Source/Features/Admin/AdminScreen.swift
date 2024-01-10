@@ -11,6 +11,5 @@ struct AdminScreen: View {
         }
         .listStyle(.insetGrouped)
         .navigationBarTitle("Admin")
-        .dismissSplashScreen()
     }
 }

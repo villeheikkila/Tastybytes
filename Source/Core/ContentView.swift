@@ -12,23 +12,25 @@ struct ContentView: View {
             SubscriptionProvider {
                 MiscProvider {
                     SplashScreenProvider {
-                        AuthEventObserver(
-                            authenticated: {
-                                OnboardingProvider {
-                                    AuthenticatedContentInitializer {
-                                        LayoutSelector(sidebar: {
-                                            SideBarView()
-                                        }, tab: {
-                                            TabsView()
-                                        })
+                        AppContentProvider {
+                            AuthEventObserver(
+                                authenticated: {
+                                    OnboardingProvider {
+                                        AuthenticatedContentInitializer {
+                                            LayoutSelector(sidebar: {
+                                                SideBarView()
+                                            }, tab: {
+                                                TabsView()
+                                            })
+                                        }
                                     }
+                                }, unauthenticated: {
+                                    AuthenticationScreen()
+                                }, loading: {
+                                    SplashScreen()
                                 }
-                            }, unauthenticated: {
-                                AuthenticationScreen()
-                            }, loading: {
-                                SplashScreen()
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }

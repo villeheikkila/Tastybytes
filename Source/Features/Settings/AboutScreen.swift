@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.requestReview) var requestReview
     @State private var email = Email.feedback

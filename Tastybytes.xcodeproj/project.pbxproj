@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailable.swift */; };
 		5C037BB52B472F150075091B /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C037BB42B472F150075091B /* Globals.swift */; };
 		5C037BB72B47EDF10075091B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C037BB62B47EDF10075091B /* Localizable.xcstrings */; };
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; };
@@ -197,6 +198,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkUnavailable.swift; sourceTree = "<group>"; };
 		5C037BB42B472F150075091B /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		5C037BB62B47EDF10075091B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
@@ -392,6 +394,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C02A7372B4EAF7700B497FA /* ErrorStates */ = {
+			isa = PBXGroup;
+			children = (
+				5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailable.swift */,
+			);
+			path = ErrorStates;
+			sourceTree = "<group>";
+		};
 		5C037D232B49C4940075091B /* Project */ = {
 			isa = PBXGroup;
 			children = (
@@ -1032,6 +1042,7 @@
 		5C9057E02B2894BE00EC157B /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				5C02A7372B4EAF7700B497FA /* ErrorStates */,
 				5C9057DF2B2894BE00EC157B /* MainApp.swift */,
 				5C82E8902B2F6C0E00F2B369 /* ContentView.swift */,
 				5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */,
@@ -1400,6 +1411,7 @@
 				5C82E89E2B2F7AC700F2B369 /* ProfileSummarySection.swift in Sources */,
 				5C9057EA2B2894BE00EC157B /* DiscoverTab.swift in Sources */,
 				5C9057FB2B2894BE00EC157B /* MergeLocationSheet.swift in Sources */,
+				5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailable.swift in Sources */,
 				5C9057F02B2894BE00EC157B /* FriendSheet.swift in Sources */,
 				5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */,
 				5C90582B2B2894BE00EC157B /* CategoryManagementScreen.swift in Sources */,

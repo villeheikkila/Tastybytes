@@ -11,7 +11,7 @@ struct ProductMutationView: View {
     private let logger = Logger(category: "ProductMutationView")
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var initialValues: ProductMutationInitialValues?
     @State private var alertError: AlertError?
@@ -211,7 +211,7 @@ struct ProductMutationInnerView: View {
     @Environment(Router.self) private var router
     @Environment(SheetManager.self) private var sheetEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var alertError: AlertError?

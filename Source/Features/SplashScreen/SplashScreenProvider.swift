@@ -1,20 +1,40 @@
+import Components
 import EnvironmentModels
 import Models
 import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct SplashScreenProvider<Content: View>: View {
-    @State private var splashScreenEnvironmentModel = SplashScreenEnvironmentModel()
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         ZStack {
             content()
-            if splashScreenEnvironmentModel.state != .finished {
+            if appDataEnvironmentModel.splashScreenState != .finished {
                 SplashScreen()
             }
-        }.environment(splashScreenEnvironmentModel)
+        }
+    }
+}
+
+struct AppContentProvider<Content: View>: View {
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        switch appDataEnvironmentModel.state {
+        case .operational:
+            content()
+        case .networkUnavailable:
+            AppNetworkUnavailable()
+        case .unexpectedError:
+            EmptyView()
+        case .tooOldAppVersion:
+            EmptyView()
+        case .uninitialized:
+            EmptyView()
+        }
     }
 }

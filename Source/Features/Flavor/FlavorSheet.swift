@@ -5,7 +5,7 @@ import SwiftUI
 
 @MainActor
 struct FlavorSheet: View {
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var pickedFlavors: [Flavor]

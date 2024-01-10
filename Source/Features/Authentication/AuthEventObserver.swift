@@ -11,7 +11,7 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View, Loading: Vi
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(\.repository) private var repository
     @State private var authState: AuthState?
-    @State private var task: Task<Void, Never>?
+    @State private var loadSessionFromUrlTask: Task<Void, Never>?
 
     @ViewBuilder let authenticated: () -> Authenticated
     @ViewBuilder let unauthenticated: () -> Unauthenticated
@@ -49,12 +49,12 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View, Loading: Vi
             }
         }
         .onOpenURL { url in
-            task = Task {
+            loadSessionFromUrlTask = Task {
                 await loadSessionFromURL(url: url)
             }
         }
         .onDisappear {
-            task?.cancel()
+            loadSessionFromUrlTask?.cancel()
         }
     }
 

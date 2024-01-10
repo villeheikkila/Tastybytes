@@ -372,6 +372,9 @@
         }
       }
     },
+    "App can't connect to the internet" : {
+
+    },
     "Apply" : {
       "localizations" : {
         "en" : {

@@ -11,7 +11,7 @@ struct ProductFeedScreen: View {
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @State private var products = [Product.Joined]()
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var page = 0

@@ -4,7 +4,7 @@ import SwiftUI
 
 struct AddCategorySheet: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(AppDataEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @State private var newCategoryName = ""
 
     let onSubmit: (_ newCategoryName: String) async -> Void

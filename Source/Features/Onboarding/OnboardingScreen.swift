@@ -66,7 +66,6 @@ struct OnboardingScreen: View {
         .ignoresSafeArea(edges: .bottom)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-        .dismissSplashScreen()
     }
 }
 
