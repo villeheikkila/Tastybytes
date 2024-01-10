@@ -89,6 +89,21 @@ public enum Config {
         return schema
     }()
 
+    public static let projectVersion: AppVersion = {
+        guard let buildVersionString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String, let buildVersion = Int(buildVersionString) else {
+            fatalError("CFBundleVersion is missing")
+        }
+
+        guard let versionString = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else { fatalError("CFBundleShortVersionString is missing") }
+
+        do {
+            return try AppVersion(with: versionString, buildVersion: buildVersion)
+        } catch {
+            fatalError("Failed to decode AppVersion from CFBundleShortVersionString")
+        }
+
+    }()
+
     public static let copyrightHolder: String = "Ville Heikkilä"
 
     public static let copyrightYear: String = {

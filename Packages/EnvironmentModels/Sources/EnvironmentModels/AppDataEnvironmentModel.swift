@@ -4,10 +4,11 @@ import OSLog
 import Repositories
 import SwiftUI
 
-public enum AppDataError: Error {
+public enum AppDataState: String, Sendable {
     case networkUnavailable
-    case unexpected
-    case cancelled
+    case unexpectedError
+    case tooOldAppVersion
+    case operational
 }
 
 @MainActor
@@ -20,7 +21,7 @@ public final class AppDataEnvironmentModel {
     public var aboutPage: AboutPage?
     public var appConfig: AppConfig?
 
-    public var appDataError: AppDataError?
+    public var appDataState: AppDataState?
 
     public var alertError: AlertError?
 
@@ -51,6 +52,11 @@ public final class AppDataEnvironmentModel {
         switch appConfigResponse {
         case let .success(appConfig):
             self.appConfig = appConfig
+            if appConfig.minimumSupportedVersion > Config.projectVersion {
+                logger.error("App is too old to run against the latest API, app version \(Config.appVersion)")
+                appDataState = .tooOldAppVersion
+                return
+            }
         case let .failure(error):
             errors.append(error)
             logger.error("Failed to load app config. Error: \(error) (\(#file):\(#line))")
@@ -85,8 +91,7 @@ public final class AppDataEnvironmentModel {
         }
 
         if !errors.isEmpty {
-            appDataError = errors.contains(where: { error in error.isNetworkUnavailable }) ? .networkUnavailable : errors.contains(where: { error in error.isNetworkUnavailable }) ? .cancelled : .unexpected
-            logger.error("AppData failed to initialize due to \(self.appDataError)")
+            appDataState = errors.contains(where: { error in error.isNetworkUnavailable }) ? .networkUnavailable : .unexpectedError
             return
         }
 
