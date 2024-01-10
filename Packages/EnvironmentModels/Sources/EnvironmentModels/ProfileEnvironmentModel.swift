@@ -14,7 +14,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public var isLoggedIn = false
     private var initialValuesLoaded = false
     public var alertError: AlertError?
-    
+
     // Profile Settings
     public var showFullName = false
     public var isPrivateProfile = true
@@ -37,7 +37,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public init(repository: Repository) {
         self.repository = repository
     }
-    
+
     public func listenToAuthState() async {
         for await state in await repository.auth.authStateListener() {
             let previousState = authState

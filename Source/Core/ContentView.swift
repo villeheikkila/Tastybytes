@@ -12,10 +12,10 @@ struct ContentView: View {
             SubscriptionProvider {
                 MiscProvider {
                     SplashScreenProvider {
-                        AppStateSelector {
-                            AuthEventObserver(
+                        AppStateObserver {
+                            AuthStateObserver(
                                 authenticated: {
-                                    OnboardingProvider {
+                                    OnboardingStateObserver {
                                         AuthenticatedContentInitializer {
                                             LayoutSelector(sidebar: {
                                                 SideBarView()

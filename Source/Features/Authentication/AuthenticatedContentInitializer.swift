@@ -31,6 +31,11 @@ struct AuthenticatedContentInitializer<Content: View>: View {
                 notificationEnvironmentModel.unreadCount = unreadCount
             }
             .task {
+                if let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications {
+                    await notificationEnvironmentModel.refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
+                }
+            }
+            .task {
                 await friendEnvironmentModel.initialize(profile: profileEnvironmentModel.profile)
             }
             .task {

@@ -5,10 +5,9 @@ import Repositories
 import SwiftUI
 
 @MainActor
-struct AuthEventObserver<Authenticated: View, Unauthenticated: View>: View {
-    private let logger = Logger(category: "AuthEventObserver")
+struct AuthStateObserver<Authenticated: View, Unauthenticated: View>: View {
+    private let logger = Logger(category: "AuthStateObserver")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(\.repository) private var repository
     @State private var loadSessionFromUrlTask: Task<Void, Never>?
 
@@ -24,13 +23,6 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View>: View {
                 unauthenticated()
             case .none:
                 EmptyView()
-            }
-        }
-        .task(id: profileEnvironmentModel.authState) {
-            if case .authenticated = profileEnvironmentModel.authState {
-                guard let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications else { return }
-                await notificationEnvironmentModel
-                    .refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
             }
         }
         .task {

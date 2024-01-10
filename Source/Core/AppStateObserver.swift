@@ -1,7 +1,7 @@
 import EnvironmentModels
 import SwiftUI
 
-struct AppStateSelector<Content: View>: View {
+struct AppStateObserver<Content: View>: View {
     @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
     @ViewBuilder let content: () -> Content
 
