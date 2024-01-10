@@ -5,7 +5,7 @@ import Repositories
 import SwiftUI
 
 @MainActor
-struct AuthEventObserver<Authenticated: View, Unauthenticated: View, Loading: View>: View {
+struct AuthEventObserver<Authenticated: View, Unauthenticated: View>: View {
     private let logger = Logger(category: "AuthEventObserver")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
@@ -15,33 +15,30 @@ struct AuthEventObserver<Authenticated: View, Unauthenticated: View, Loading: Vi
 
     @ViewBuilder let authenticated: () -> Authenticated
     @ViewBuilder let unauthenticated: () -> Unauthenticated
-    @ViewBuilder let loading: () -> Loading
 
     var body: some View {
-        Group {
+        VStack {
             switch authState {
             case .authenticated:
                 authenticated()
             case .unauthenticated:
                 unauthenticated()
             case .none:
-                loading()
+                EmptyView()
             }
         }
-        .onChange(of: authState) {
+        .task(id: authState) {
             if case .authenticated = authState {
-                Task {
-                    await profileEnvironmentModel.initialize()
-                    guard let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications else { return }
-                    await notificationEnvironmentModel
-                        .refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
-                }
+                await profileEnvironmentModel.initialize()
+                guard let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications else { return }
+                await notificationEnvironmentModel
+                    .refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
             }
         }
         .task {
             for await state in await repository.auth.authStateListener() {
+                logger.info("Auth state changed from \(String(describing: authState)) to \(String(describing: state))")
                 authState = state
-                logger.debug("auth state changed: \(String(describing: state))")
                 if Task.isCancelled {
                     print("Auth listener cancelled")
                     return

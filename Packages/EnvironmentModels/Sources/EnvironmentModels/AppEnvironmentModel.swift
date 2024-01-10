@@ -123,7 +123,7 @@ public final class AppEnvironmentModel {
             return
         }
         state = .operational
-        logger.info("AppData \(reset ? "refreshed" : "initialized") in \(startTime.elapsedTime())ms")
+        logger.info("App \(reset ? "refreshed" : "initialized") in \(startTime.elapsedTime())ms")
     }
 
     // Flavors

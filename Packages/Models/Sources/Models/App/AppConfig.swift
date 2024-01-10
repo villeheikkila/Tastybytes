@@ -28,7 +28,7 @@ public struct AppConfig: Hashable, Codable, Sendable {
         case copyrightTimeRange = "copyright_time_range"
         case minimumSupportedVersion = "minimum_supported_version"
     }
-    
+
     public var appleStoreUrl: URL? {
         URL(string: "https://apps.apple.com/app/id\(appId)")
     }
