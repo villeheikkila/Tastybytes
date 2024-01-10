@@ -1,6 +1,7 @@
 import OSLog
 import SwiftUI
 
+@MainActor
 public struct ProgressButton<LabelView: View>: View {
     private let logger = Logger(category: "ProgressButton")
     public enum ActionOption: CaseIterable {

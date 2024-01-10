@@ -94,7 +94,7 @@ public final class AppDataEnvironmentModel {
             appDataState = errors.contains(where: { error in error.isNetworkUnavailable }) ? .networkUnavailable : .unexpectedError
             return
         }
-
+        appDataState = .operational
         logger.info("AppData \(reset ? "refreshed" : "initialized") in \(startTime.elapsedTime())ms")
     }
 
