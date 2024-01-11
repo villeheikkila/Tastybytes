@@ -5,13 +5,17 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+public enum ProfileState: Sendable {
+    case uninitialized, initialized, error
+}
+
 @MainActor
 @Observable
 public final class ProfileEnvironmentModel: ObservableObject {
     private let logger = Logger(category: "ProfileEnvironmentModel")
     // Auth state
+    public var profileState: ProfileState = .uninitialized
     public var authState: AuthState?
-    public var isInitialized = false
     private var initialValuesLoaded = false
     public var alertError: AlertError?
 
@@ -131,6 +135,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public func initialize() async {
         logger.notice("Initializing user data")
+        let startTime = DispatchTime.now()
         async let profilePromise = await repository.profile.getCurrentUser()
         async let userPromise = await repository.auth.getUser()
 
@@ -147,11 +152,11 @@ public final class ProfileEnvironmentModel: ObservableObject {
             sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
             appIcon = getCurrentAppIcon()
             initialValuesLoaded = true
-            isInitialized = true
-            logger.notice("User data initialized")
+            profileState = .initialized
+            logger.info("User data initialized in \(startTime.elapsedTime())ms")
         case let .failure(error):
+            profileState = .error
             logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
-            isInitialized = false
             await logOut()
         }
 

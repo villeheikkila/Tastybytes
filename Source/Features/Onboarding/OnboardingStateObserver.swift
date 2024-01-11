@@ -1,9 +1,5 @@
 import EnvironmentModels
-import OSLog
-import Repositories
-import StoreKit
 import SwiftUI
-import TipKit
 
 @MainActor
 struct OnboardingStateObserver<Content: View>: View {
@@ -27,12 +23,28 @@ struct OnboardingStateObserver<Content: View>: View {
     }
 
     var body: some View {
-        if !profileEnvironmentModel.isInitialized {
-            EmptyView()
-        } else if let initialOnboardingSection {
+        if let initialOnboardingSection {
             OnboardingScreen(initialTab: initialOnboardingSection)
         } else {
             content()
+        }
+    }
+}
+
+@MainActor
+struct ProfileStateObserver<Content: View>: View {
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        switch profileEnvironmentModel.profileState {
+        case .initialized:
+            content()
+        case .uninitialized:
+            EmptyView()
+        case .error:
+            // TODO: Add proper error page
+            AppUnexpectedErrorState()
         }
     }
 }
