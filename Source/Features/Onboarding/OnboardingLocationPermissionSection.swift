@@ -4,6 +4,7 @@ import SwiftUI
 
 struct OnboardingLocationPermissionSection: View {
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
+    @AppStorage(.locationOnboardingSectionSkipped) private var locationOnboardingSectionSkipped = false
     @State private var isMounted = false
 
     let onContinue: () -> Void
@@ -14,7 +15,10 @@ struct OnboardingLocationPermissionSection: View {
         OnboardingSectionContent(onContinue: {
                                      locationEnvironmentModel.requestLocationAuthorization()
                                  },
-                                 onSkip: onContinue,
+                                 onSkip: {
+                                     locationOnboardingSectionSkipped = true
+                                     onContinue()
+                                 },
                                  color: color,
                                  symbol: "location.fill",
                                  title: "Access to location",

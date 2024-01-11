@@ -4,6 +4,7 @@ import SwiftUI
 
 struct OnboardingNotificationSection: View {
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
+    @AppStorage(.notificationOnboardingSectionSkipped) private var notificationOnboardingSectionSkipped = false
 
     let onContinue: () -> Void
 
@@ -13,7 +14,10 @@ struct OnboardingNotificationSection: View {
         OnboardingSectionContent(onContinue: {
                                      permissionEnvironmentModel.requestPushNotificationAuthorization()
                                  },
-                                 onSkip: onContinue,
+                                 onSkip: {
+                                     notificationOnboardingSectionSkipped = true
+                                     onContinue()
+                                 },
                                  color: color,
                                  symbol: "bell.fill",
                                  title: "Keep up to date!",

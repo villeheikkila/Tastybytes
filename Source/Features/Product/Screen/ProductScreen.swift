@@ -52,7 +52,7 @@ struct ProductScreen: View {
             }
         )
         .safeAreaInset(edge: .top, alignment: .trailing) {
-                ProductScreenLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
+            ProductScreenLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
         }
         .id(resetView)
         .onDisappear {

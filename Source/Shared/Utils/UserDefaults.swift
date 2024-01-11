@@ -8,6 +8,8 @@ enum UserDefaultsKey: String, CaseIterable {
     case selectedSidebarTab = "selected_sidebar_tab"
     case isOnboardedOnDevice = "is_current_device_onboarded"
     case colorScheme = "color_scheme"
+    case notificationOnboardingSectionSkipped = "notification_onboarding_section_skipped"
+    case locationOnboardingSectionSkipped = "location_onboarding_section_skipped"
 }
 
 extension UserDefaults {
