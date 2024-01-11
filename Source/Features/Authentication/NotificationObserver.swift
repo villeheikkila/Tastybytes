@@ -7,8 +7,6 @@ import TipKit
 
 struct NotificationObserver<Content: View>: View {
     private let logger = Logger(category: "MainContent")
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(\.scenePhase) private var phase
 
@@ -34,9 +32,6 @@ struct NotificationObserver<Content: View>: View {
                 if let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications {
                     await notificationEnvironmentModel.refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
                 }
-            }
-            .task {
-                await friendEnvironmentModel.initialize(profile: profileEnvironmentModel.profile)
             }
             .task {
                 await notificationEnvironmentModel.getUnreadCount()

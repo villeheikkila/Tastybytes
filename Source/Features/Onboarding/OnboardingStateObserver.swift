@@ -30,21 +30,3 @@ struct OnboardingStateObserver<Content: View>: View {
         }
     }
 }
-
-@MainActor
-struct ProfileStateObserver<Content: View>: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @ViewBuilder let content: () -> Content
-
-    var body: some View {
-        switch profileEnvironmentModel.profileState {
-        case .initialized:
-            content()
-        case .uninitialized:
-            EmptyView()
-        case .error:
-            // TODO: Add proper error page
-            AppUnexpectedErrorState()
-        }
-    }
-}

@@ -14,13 +14,15 @@ struct ContentView: View {
                     SplashScreenProvider {
                         AppStateObserver {
                             AuthStateObserver {
-                                OnboardingStateObserver {
-                                    NotificationObserver {
-                                        LayoutSelector(sidebar: {
-                                            SideBarView()
-                                        }, tab: {
-                                            TabsView()
-                                        })
+                                ProfileStateObserver {
+                                    OnboardingStateObserver {
+                                        NotificationObserver {
+                                            LayoutSelector(sidebar: {
+                                                SideBarView()
+                                            }, tab: {
+                                                TabsView()
+                                            })
+                                        }
                                     }
                                 }
                             }
