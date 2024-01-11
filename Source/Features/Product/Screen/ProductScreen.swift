@@ -44,19 +44,17 @@ struct ProductScreen: View {
         CheckInList(
             id: "ProductScreen",
             fetcher: .product(product),
-            onRefresh: { @MainActor in
+            onRefresh: {
                 refreshId += 1
             },
             header: {
                 header
             }
         )
-        .id(resetView)
-        .overlay {
-            if loadedWithBarcode != nil {
+        .safeAreaInset(edge: .top, alignment: .trailing) {
                 ProductScreenLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
-            }
         }
+        .id(resetView)
         .onDisappear {
             checkInImageTask?.cancel()
         }
@@ -95,7 +93,6 @@ struct ProductScreen: View {
         ProductScreenHeader(
             product: product,
             summary: summary,
-            loadedWithBarcode: loadedWithBarcode,
             loadMoreImages: {
                 checkInImageTask = Task {
                     defer { checkInImageTask = nil }

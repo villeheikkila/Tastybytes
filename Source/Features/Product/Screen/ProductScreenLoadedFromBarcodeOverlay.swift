@@ -7,7 +7,6 @@ struct ProductScreenLoadedFromBarcodeOverlay: View {
     @Binding var loadedWithBarcode: Barcode?
 
     var body: some View {
-        VStack {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Not the product you were looking for?")
@@ -27,7 +26,5 @@ struct ProductScreenLoadedFromBarcodeOverlay: View {
             }
             .padding(.horizontal, 10)
             .background(.thinMaterial)
-            Spacer()
-        }
     }
 }

@@ -8,6 +8,7 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ProfileView: View {
     private let logger = Logger(category: "ProfileView")
     private let topAnchor = 0
@@ -24,7 +25,7 @@ struct ProfileView: View {
             id: "ProfileView",
             fetcher: .profile(profile),
             scrollToTop: $scrollToTop,
-            onRefresh: { @MainActor in
+            onRefresh: {
                 refreshId += 1
             },
             topAnchor: topAnchor,
