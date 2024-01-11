@@ -27,7 +27,7 @@ struct OnboardingStateObserver<Content: View>: View {
     }
 
     var body: some View {
-        if !profileEnvironmentModel.isLoggedIn {
+        if !profileEnvironmentModel.isInitialized {
             EmptyView()
         } else if let initialOnboardingSection {
             OnboardingScreen(initialTab: initialOnboardingSection)

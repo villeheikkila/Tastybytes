@@ -13,21 +13,17 @@ struct ContentView: View {
                 MiscProvider {
                     SplashScreenProvider {
                         AppStateObserver {
-                            AuthStateObserver(
-                                authenticated: {
-                                    OnboardingStateObserver {
-                                        AuthenticatedContentInitializer {
-                                            LayoutSelector(sidebar: {
-                                                SideBarView()
-                                            }, tab: {
-                                                TabsView()
-                                            })
-                                        }
+                            AuthStateObserver {
+                                OnboardingStateObserver {
+                                    AuthenticatedContentInitializer {
+                                        LayoutSelector(sidebar: {
+                                            SideBarView()
+                                        }, tab: {
+                                            TabsView()
+                                        })
                                     }
-                                }, unauthenticated: {
-                                    AuthenticationScreen()
                                 }
-                            )
+                            }
                         }
                     }
                 }

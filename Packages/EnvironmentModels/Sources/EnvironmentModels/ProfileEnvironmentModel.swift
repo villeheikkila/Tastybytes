@@ -11,7 +11,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     private let logger = Logger(category: "ProfileEnvironmentModel")
     // Auth state
     public var authState: AuthState?
-    public var isLoggedIn = false
+    public var isInitialized = false
     private var initialValuesLoaded = false
     public var alertError: AlertError?
 
@@ -38,6 +38,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         self.repository = repository
     }
 
+    // Session
     public func listenToAuthState() async {
         for await state in await repository.auth.authStateListener() {
             let previousState = authState
@@ -50,6 +51,13 @@ public final class ProfileEnvironmentModel: ObservableObject {
                 logger.info("Auth state listener cancelled")
                 return
             }
+        }
+    }
+
+    public func loadSessionFromURL(url: URL) async {
+        let result = await repository.auth.signInFromUrl(url: url)
+        if case let .failure(error) = result {
+            logger.error("Failed to load session from url: \(url). Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -139,11 +147,11 @@ public final class ProfileEnvironmentModel: ObservableObject {
             sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
             appIcon = getCurrentAppIcon()
             initialValuesLoaded = true
-            isLoggedIn = true
+            isInitialized = true
             logger.notice("User data initialized")
         case let .failure(error):
             logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
-            isLoggedIn = false
+            isInitialized = false
             await logOut()
         }
 

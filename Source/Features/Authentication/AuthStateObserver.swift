@@ -5,14 +5,11 @@ import Repositories
 import SwiftUI
 
 @MainActor
-struct AuthStateObserver<Authenticated: View, Unauthenticated: View>: View {
+struct AuthStateObserver<Authenticated: View>: View {
     private let logger = Logger(category: "AuthStateObserver")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(\.repository) private var repository
     @State private var loadSessionFromUrlTask: Task<Void, Never>?
-
     @ViewBuilder let authenticated: () -> Authenticated
-    @ViewBuilder let unauthenticated: () -> Unauthenticated
 
     var body: some View {
         VStack {
@@ -20,7 +17,7 @@ struct AuthStateObserver<Authenticated: View, Unauthenticated: View>: View {
             case .authenticated:
                 authenticated()
             case .unauthenticated:
-                unauthenticated()
+                AuthenticationScreen()
             case .none:
                 EmptyView()
             }
@@ -30,18 +27,11 @@ struct AuthStateObserver<Authenticated: View, Unauthenticated: View>: View {
         }
         .onOpenURL { url in
             loadSessionFromUrlTask = Task {
-                await loadSessionFromURL(url: url)
+                await profileEnvironmentModel.loadSessionFromURL(url: url)
             }
         }
         .onDisappear {
             loadSessionFromUrlTask?.cancel()
-        }
-    }
-
-    func loadSessionFromURL(url: URL) async {
-        let result = await repository.auth.signInFromUrl(url: url)
-        if case let .failure(error) = result {
-            logger.error("Failed to load session from url: \(url). Error: \(error) (\(#file):\(#line))")
         }
     }
 }
