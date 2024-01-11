@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.requestReview) var requestReview
     @State private var email = Email.feedback
@@ -67,7 +67,7 @@ struct AboutScreen: View {
     }
 
     @ViewBuilder var aboutSection: some View {
-        if let aboutPage = appDataEnvironmentModel.aboutPage {
+        if let aboutPage = appEnvironmentModel.aboutPage {
             Section {
                 Text(aboutPage.summary)
             }

@@ -11,6 +11,7 @@
 		5C02A73B2B4F28B700B497FA /* AppUnexpectedErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73A2B4F28B700B497FA /* AppUnexpectedErrorState.swift */; };
 		5C02A73D2B4F2A7800B497FA /* AppUnsupportedVersionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */; };
 		5C02A73F2B4F316800B497FA /* AppStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73E2B4F316800B497FA /* AppStateObserver.swift */; };
+		5C02A7412B4FBA5900B497FA /* DeviceInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */; };
 		5C037BB52B472F150075091B /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C037BB42B472F150075091B /* Globals.swift */; };
 		5C037BB72B47EDF10075091B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C037BB62B47EDF10075091B /* Localizable.xcstrings */; };
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; };
@@ -204,6 +205,7 @@
 		5C02A73A2B4F28B700B497FA /* AppUnexpectedErrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUnexpectedErrorState.swift; sourceTree = "<group>"; };
 		5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUnsupportedVersionState.swift; sourceTree = "<group>"; };
 		5C02A73E2B4F316800B497FA /* AppStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateObserver.swift; sourceTree = "<group>"; };
+		5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoProvider.swift; sourceTree = "<group>"; };
 		5C037BB42B472F150075091B /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		5C037BB62B47EDF10075091B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
@@ -1055,6 +1057,7 @@
 				5C9057E32B2894BE00EC157B /* AppDelegate.swift */,
 				5C037BB42B472F150075091B /* Globals.swift */,
 				5C02A73E2B4F316800B497FA /* AppStateObserver.swift */,
+				5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1323,6 +1326,7 @@
 				5C9058552B2894BE00EC157B /* OnboardingNotificationSection.swift in Sources */,
 				5C9058072B2894BE00EC157B /* CategoryServingStyleSheet.swift in Sources */,
 				5C9058502B2894BE00EC157B /* TabsView.swift in Sources */,
+				5C02A7412B4FBA5900B497FA /* DeviceInfoProvider.swift in Sources */,
 				5C9058602B2894BE00EC157B /* EnvironmentProvider.swift in Sources */,
 				5C9058442B2894BE00EC157B /* CompanyScreen.swift in Sources */,
 				5C90582F2B2894BE00EC157B /* ProfileScreen.swift in Sources */,

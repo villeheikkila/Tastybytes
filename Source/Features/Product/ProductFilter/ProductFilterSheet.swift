@@ -9,7 +9,7 @@ struct ProductFilterSheet: View {
     }
 
     private let logger = Logger(category: "SeachFilterSheet")
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var subcategoryFilter: Subcategory?
@@ -39,7 +39,7 @@ struct ProductFilterSheet: View {
                 Section("Category") {
                     Picker(selection: $categoryFilter) {
                         Text("Select All").tag(Models.Category.JoinedSubcategoriesServingStyles?(nil))
-                        ForEach(appDataEnvironmentModel.categories) { category in
+                        ForEach(appEnvironmentModel.categories) { category in
                             Text(category.name).tag(Optional(category))
                         }
                     } label: {

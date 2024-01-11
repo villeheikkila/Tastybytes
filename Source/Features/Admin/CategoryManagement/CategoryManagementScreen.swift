@@ -8,7 +8,7 @@ import SwiftUI
 struct CategoryManagementScreen: View {
     private let logger = Logger(category: "CategoryManagementScreen")
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var showDeleteSubcategoryConfirmation = false
     @State private var verifySubcategory: Subcategory?
     @State private var deleteSubcategory: Subcategory? {
@@ -18,7 +18,7 @@ struct CategoryManagementScreen: View {
     }
 
     var body: some View {
-        List(appDataEnvironmentModel.categories) { category in
+        List(appEnvironmentModel.categories) { category in
             Section {
                 ForEach(category.subcategories) { subcategory in
                     HStack {
@@ -39,7 +39,7 @@ struct CategoryManagementScreen: View {
                             "Add Subcategory",
                             systemImage: "plus",
                             sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                                await appDataEnvironmentModel.addSubcategory(
+                                await appEnvironmentModel.addSubcategory(
                                     category: category,
                                     name: newSubcategoryName
                                 )
@@ -61,7 +61,7 @@ struct CategoryManagementScreen: View {
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-            await appDataEnvironmentModel.initialize(reset: true)
+            await appEnvironmentModel.initialize(reset: true)
         }
         #endif
         .confirmationDialog("Are you sure you want to delete subcategory?",
@@ -72,7 +72,7 @@ struct CategoryManagementScreen: View {
             ProgressButton(
                 "Delete \(presenting.name)",
                 role: .destructive,
-                action: { await appDataEnvironmentModel.deleteSubcategory(presenting) }
+                action: { await appEnvironmentModel.deleteSubcategory(presenting) }
             )
         }
     }

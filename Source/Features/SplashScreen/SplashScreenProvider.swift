@@ -3,13 +3,13 @@ import EnvironmentModels
 import SwiftUI
 
 struct SplashScreenProvider<Content: View>: View {
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         ZStack {
             content()
-            if appDataEnvironmentModel.splashScreenState != .finished {
+            if appEnvironmentModel.splashScreenState != .finished {
                 SplashScreen()
             }
         }

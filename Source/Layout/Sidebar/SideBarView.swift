@@ -34,7 +34,7 @@ struct SideBarView: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.isPortrait) private var isPortrait
     @State private var sheetEnvironmentModel = SheetManager()
     @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
@@ -127,7 +127,7 @@ struct SideBarView: View {
         .sensoryFeedback(.selection, trigger: selection)
         .environment(router)
         .environment(sheetEnvironmentModel)
-        .environment(appDataEnvironmentModel)
+        .environment(appEnvironmentModel)
         .toast(isPresenting: $feedbackEnvironmentModel.show) {
             feedbackEnvironmentModel.toast
         }
@@ -142,7 +142,7 @@ struct SideBarView: View {
             .environment(router)
             .environment(sheetEnvironmentModel)
             .environment(profileEnvironmentModel)
-            .environment(appDataEnvironmentModel)
+            .environment(appEnvironmentModel)
             .environment(feedbackEnvironmentModel)
             .toast(isPresenting: $feedbackEnvironmentModel.show) {
                 feedbackEnvironmentModel.toast
@@ -158,7 +158,7 @@ struct SideBarView: View {
                 .environment(router)
                 .environment(sheetEnvironmentModel)
                 .environment(profileEnvironmentModel)
-                .environment(appDataEnvironmentModel)
+                .environment(appEnvironmentModel)
                 .environment(feedbackEnvironmentModel)
                 .toast(isPresenting: $feedbackEnvironmentModel.show) {
                     feedbackEnvironmentModel.toast

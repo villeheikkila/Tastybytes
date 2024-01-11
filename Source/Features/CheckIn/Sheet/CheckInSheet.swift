@@ -14,7 +14,7 @@ struct CheckInSheet: View {
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
@@ -141,7 +141,7 @@ struct CheckInSheet: View {
         }
         .onAppear {
             servingStyles =
-                appDataEnvironmentModel.categories.first(where: { $0.id == product.category.id })?
+                appEnvironmentModel.categories.first(where: { $0.id == product.category.id })?
                     .servingStyles ?? []
         }
     }
@@ -336,7 +336,7 @@ struct CheckInSheet: View {
 
     func getLocationFromCoordinate(coordinate: CLLocationCoordinate2D) async {
         let countryCode = try? await coordinate.getISOCountryCode()
-        let country = appDataEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
+        let country = appEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
         location = Location(coordinate: coordinate, countryCode: countryCode, country: country)
     }
 

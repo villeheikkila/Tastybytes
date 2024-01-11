@@ -7,14 +7,14 @@ import SwiftUI
 @MainActor
 struct CategoryPickerSheet: View {
     private let logger = Logger(category: "CategoryPickerSheet")
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var category: Int?
 
     @State private var searchTerm = ""
 
     var shownCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
-        appDataEnvironmentModel.categories.filter { category in
+        appEnvironmentModel.categories.filter { category in
             searchTerm.isEmpty ||
                 category.name.contains(searchTerm) ||
                 category.subcategories.contains(where: { subcategory in

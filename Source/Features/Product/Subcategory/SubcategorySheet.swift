@@ -10,7 +10,7 @@ struct SubcategorySheet: View {
     private let logger = Logger(category: "SubcategorySheet")
     @Environment(\.repository) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var subcategories: Set<Int>
     @State private var showAddSubcategory = false
@@ -49,7 +49,7 @@ struct SubcategorySheet: View {
             TextField("TextField", text: $newSubcategoryName)
             Button("actions.cancel", role: .cancel, action: {})
             ProgressButton("Create", action: {
-                await appDataEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
+                await appEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
             })
         })
     }

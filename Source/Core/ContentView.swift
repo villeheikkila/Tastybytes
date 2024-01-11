@@ -10,7 +10,7 @@ struct ContentView: View {
     var body: some View {
         EnvironmentProvider(repository: repository) {
             SubscriptionProvider {
-                MiscProvider {
+                DeviceInfoProvider {
                     SplashScreenProvider {
                         AppStateObserver {
                             AuthStateObserver {

@@ -11,7 +11,7 @@ struct ProductMutationView: View {
     private let logger = Logger(category: "ProductMutationView")
     @Environment(\.repository) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var initialValues: ProductMutationInitialValues?
     @State private var alertError: AlertError?
@@ -75,14 +75,14 @@ struct ProductMutationView: View {
     func loadMissingData() async {
         switch mode {
         case let .edit(initialProduct), let .editSuggestion(initialProduct):
-            await loadValuesFromExistingProduct(initialProduct, categories: appDataEnvironmentModel.categories)
+            await loadValuesFromExistingProduct(initialProduct, categories: appEnvironmentModel.categories)
         case let .addToBrand(brand):
-            loadFromBrand(brand, categories: appDataEnvironmentModel.categories)
+            loadFromBrand(brand, categories: appEnvironmentModel.categories)
         case let .addToSubBrand(brand, subBrand):
-            loadFromSubBrand(brand: brand, subBrand: subBrand, categories: appDataEnvironmentModel.categories)
+            loadFromSubBrand(brand: brand, subBrand: subBrand, categories: appEnvironmentModel.categories)
         case .new:
             initialValues = ProductMutationInitialValues(
-                category: appDataEnvironmentModel.categories.first(where: { $0.name == "beverage" })
+                category: appEnvironmentModel.categories.first(where: { $0.name == "beverage" })
             )
         }
     }
@@ -211,7 +211,7 @@ struct ProductMutationInnerView: View {
     @Environment(Router.self) private var router
     @Environment(SheetManager.self) private var sheetEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var alertError: AlertError?
@@ -307,7 +307,7 @@ struct ProductMutationInnerView: View {
     }
 
     private var selectedCategory: Models.Category.JoinedSubcategoriesServingStyles? {
-        appDataEnvironmentModel.categories.first(where: { $0.id == category })
+        appEnvironmentModel.categories.first(where: { $0.id == category })
     }
 
     private var selectedSubcategories: [Subcategory] {

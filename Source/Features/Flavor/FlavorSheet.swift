@@ -5,7 +5,7 @@ import SwiftUI
 
 @MainActor
 struct FlavorSheet: View {
-    @Environment(AppEnvironmentModel.self) private var appDataEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var pickedFlavors: [Flavor]
@@ -21,9 +21,9 @@ struct FlavorSheet: View {
 
     private var filteredFlavors: [Flavor] {
         if searchTerm.isEmpty {
-            appDataEnvironmentModel.flavors
+            appEnvironmentModel.flavors
         } else {
-            appDataEnvironmentModel.flavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
+            appEnvironmentModel.flavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
         }
     }
 
@@ -34,7 +34,7 @@ struct FlavorSheet: View {
 
     private var pickedFlavorIdsAsFlavors: [Flavor] {
         pickedFlavorIds.compactMap { flavor in
-            appDataEnvironmentModel.flavors.first(where: { $0.id == flavor })
+            appEnvironmentModel.flavors.first(where: { $0.id == flavor })
         }
     }
 
