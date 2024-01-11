@@ -15,7 +15,7 @@ struct ContentView: View {
                         AppStateObserver {
                             AuthStateObserver {
                                 OnboardingStateObserver {
-                                    AuthenticatedContentInitializer {
+                                    NotificationObserver {
                                         LayoutSelector(sidebar: {
                                             SideBarView()
                                         }, tab: {

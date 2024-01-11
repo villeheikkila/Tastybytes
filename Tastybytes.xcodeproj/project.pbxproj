@@ -158,7 +158,7 @@
 		5C90585C2B2894BE00EC157B /* TabIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DD2B2894BE00EC157B /* TabIdentifier.swift */; };
 		5C90585D2B2894BE00EC157B /* RouterWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DE2B2894BE00EC157B /* RouterWrapper.swift */; };
 		5C90585E2B2894BE00EC157B /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DF2B2894BE00EC157B /* MainApp.swift */; };
-		5C90585F2B2894BE00EC157B /* AuthenticatedContentInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E12B2894BE00EC157B /* AuthenticatedContentInitializer.swift */; };
+		5C90585F2B2894BE00EC157B /* NotificationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E12B2894BE00EC157B /* NotificationObserver.swift */; };
 		5C9058602B2894BE00EC157B /* EnvironmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */; };
 		5C9058612B2894BE00EC157B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E32B2894BE00EC157B /* AppDelegate.swift */; };
 		5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */; };
@@ -355,7 +355,7 @@
 		5C9057DD2B2894BE00EC157B /* TabIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabIdentifier.swift; sourceTree = "<group>"; };
 		5C9057DE2B2894BE00EC157B /* RouterWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterWrapper.swift; sourceTree = "<group>"; };
 		5C9057DF2B2894BE00EC157B /* MainApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
-		5C9057E12B2894BE00EC157B /* AuthenticatedContentInitializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedContentInitializer.swift; sourceTree = "<group>"; };
+		5C9057E12B2894BE00EC157B /* NotificationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationObserver.swift; sourceTree = "<group>"; };
 		5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentProvider.swift; sourceTree = "<group>"; };
 		5C9057E32B2894BE00EC157B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStateObserver.swift; sourceTree = "<group>"; };
@@ -568,7 +568,7 @@
 				5C9057BC2B2894BE00EC157B /* AuthenticationScreen.swift */,
 				5C9057C82B2894BE00EC157B /* SignInWithAppleView.swift */,
 				5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */,
-				5C9057E12B2894BE00EC157B /* AuthenticatedContentInitializer.swift */,
+				5C9057E12B2894BE00EC157B /* NotificationObserver.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -1355,7 +1355,7 @@
 				5C9058572B2894BE00EC157B /* RouterLink.swift in Sources */,
 				5C9058062B2894BE00EC157B /* ServingStyleManagementSheet.swift in Sources */,
 				5C9058472B2894BE00EC157B /* AppLogoView.swift in Sources */,
-				5C90585F2B2894BE00EC157B /* AuthenticatedContentInitializer.swift in Sources */,
+				5C90585F2B2894BE00EC157B /* NotificationObserver.swift in Sources */,
 				5C82E8962B2F74BF00F2B369 /* CheckInStatisticView.swift in Sources */,
 				5C9057F62B2894BE00EC157B /* BarcodeUtils.swift in Sources */,
 				5C9058172B2894BE00EC157B /* ContributionsScreenView.swift in Sources */,

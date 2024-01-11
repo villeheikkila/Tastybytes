@@ -5,7 +5,7 @@ import StoreKit
 import SwiftUI
 import TipKit
 
-struct AuthenticatedContentInitializer<Content: View>: View {
+struct NotificationObserver<Content: View>: View {
     private let logger = Logger(category: "MainContent")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
