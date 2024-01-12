@@ -44,10 +44,9 @@ struct OnboardingProfileSection: View {
                     matching: .images,
                     photoLibrary: .shared()
                 ) {
-                    AvatarView(
-                        avatarUrl: profileEnvironmentModel.profile.avatarUrl,
-                        size: 140,
-                        id: profileEnvironmentModel.id
+                    Avatar(
+                        profile: profileEnvironmentModel.profile,
+                        size: 140
                     )
                     .overlay(alignment: .bottomTrailing) {
                         PhotosPicker(selection: $selectedItem,

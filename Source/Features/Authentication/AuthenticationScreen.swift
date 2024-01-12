@@ -7,15 +7,9 @@ import OSLog
 import Repositories
 import SwiftUI
 
-private let starsCount = 8
-
+@MainActor
 struct AuthenticationScreen: View {
-    private let logger = Logger(category: "AuthenticationScreen")
-    @Environment(\.repository) private var repository
-    @State private var openUrlInWebView: WebViewLink?
-
-    var privacyPolicyString: String =
-        "Welcome to \(Config.appName)! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](\(Config.privacyPolicyUrl))"
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 
     var body: some View {
         VStack(alignment: .center) {
@@ -34,19 +28,6 @@ struct AuthenticationScreen: View {
             alignment: .bottom
         )
         .ignoresSafeArea(edges: .bottom)
-        .sheet(item: $openUrlInWebView) { link in
-            NavigationStack {
-                WebView(url: link.url)
-                    .ignoresSafeArea()
-                    .navigationTitle(link.title)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .cancellationAction) {
-                            CloseButtonView { openUrlInWebView = nil }
-                        }
-                    }
-                    .navigationBarTitleDisplayMode(.inline)
-            }
-        }
     }
 
     private var logo: some View {
@@ -59,7 +40,7 @@ struct AuthenticationScreen: View {
             .background(
                 SparklesView()
             )
-            Text(Config.appName)
+            Text(appEnvironmentModel.infoPlist.appName)
                 .font(Font.custom("Comfortaa-Bold", size: 38))
                 .bold()
         }
@@ -69,15 +50,37 @@ struct AuthenticationScreen: View {
         VStack(alignment: .leading, spacing: 12) {
             SignInWithAppleView()
                 .frame(height: 52)
-            Text(.init(privacyPolicyString))
-                .font(.caption)
-                .environment(\.openURL, OpenURLAction { url in
-                    openUrlInWebView = WebViewLink(title: "Privacy Policy", url: url)
-                    return .handled
-                })
+            PrivacyPolicy()
         }
         .padding(40)
         .frame(maxWidth: 500)
+    }
+}
+
+struct PrivacyPolicy: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @State private var openUrlInWebView: WebViewLink?
+
+    var body: some View {
+        Text(.init("Welcome to \(appEnvironmentModel.infoPlist.appName)! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](\(appEnvironmentModel.config.privacyPolicyUrl))"))
+            .font(.caption)
+            .environment(\.openURL, OpenURLAction { url in
+                openUrlInWebView = WebViewLink(title: "Privacy Policy", url: url)
+                return .handled
+            })
+            .sheet(item: $openUrlInWebView) { link in
+                NavigationStack {
+                    WebView(url: link.url)
+                        .ignoresSafeArea()
+                        .navigationTitle(link.title)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .cancellationAction) {
+                                CloseButtonView { openUrlInWebView = nil }
+                            }
+                        }
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+            }
     }
 }
 

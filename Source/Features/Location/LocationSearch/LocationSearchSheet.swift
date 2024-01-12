@@ -14,7 +14,7 @@ extension MKLocalSearch.Response: @unchecked Sendable {}
 @MainActor
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
@@ -141,7 +141,7 @@ struct LocationSearchSheet: View {
 
 struct LocationRow: View {
     private let logger = Logger(category: "LocationSearchView")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var alertError: AlertError?

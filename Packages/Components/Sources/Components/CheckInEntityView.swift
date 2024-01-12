@@ -3,9 +3,11 @@ import SwiftUI
 
 public struct CheckInEntityView: View {
     let checkIn: CheckIn
+    let baseUrl: URL
 
-    public init(checkIn: CheckIn) {
+    public init(checkIn: CheckIn, baseUrl: URL) {
         self.checkIn = checkIn
+        self.baseUrl = baseUrl
     }
 
     public var body: some View {
@@ -25,7 +27,7 @@ public struct CheckInEntityView: View {
 
     private var header: some View {
         HStack {
-            AvatarView(avatarUrl: checkIn.profile.avatarUrl, size: 24, id: checkIn.profile.id)
+            AvatarView(profile: checkIn.profile, baseUrl: baseUrl)
             Text(checkIn.profile.preferredName)
                 .font(.caption).bold()
                 .foregroundColor(.primary)
@@ -40,7 +42,7 @@ public struct CheckInEntityView: View {
 
     @MainActor
     @ViewBuilder private var checkInImage: some View {
-        if let imageUrl = checkIn.imageUrl {
+        if let imageUrl = checkIn.getImageUrl(baseUrl: baseUrl) {
             HStack {
                 RemoteImage(url: imageUrl) { state in
                     if let image = state.image {
@@ -60,7 +62,7 @@ public struct CheckInEntityView: View {
 
     private var productSection: some View {
         HStack(spacing: 12) {
-            if let logoUrl = checkIn.product.logoUrl {
+            if let logoUrl = checkIn.product.getLogo(baseUrl: baseUrl) {
                 AsyncImage(url: logoUrl) { image in
                     image
                         .resizable()
@@ -144,7 +146,7 @@ public struct CheckInEntityView: View {
             }
             HStack(spacing: 4) {
                 ForEach(checkIn.taggedProfiles) { taggedProfile in
-                    AvatarView(avatarUrl: taggedProfile.avatarUrl, size: 24, id: taggedProfile.id)
+                    AvatarView(profile: taggedProfile, baseUrl: baseUrl)
                 }
                 Spacer()
             }

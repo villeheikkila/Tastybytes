@@ -1,10 +1,13 @@
 import Components
+import EnvironmentModels
 import Models
 import Repositories
 import SwiftUI
 
 struct ProductItemView: View {
     @Environment(Router.self) private var router
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+
     enum Extra {
         case checkInCheck, rating, companyLink, logo
     }
@@ -19,7 +22,7 @@ struct ProductItemView: View {
 
     var body: some View {
         HStack(spacing: 24) {
-            if extras.contains(.logo), let logoUrl = product.logoUrl {
+            if extras.contains(.logo), let logoUrl = product.getLogo(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                 RemoteImage(url: logoUrl) { state in
                     if let image = state.image {
                         image

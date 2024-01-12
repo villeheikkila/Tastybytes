@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 struct CheckInSheet: View {
     private let logger = Logger(category: "CheckInSheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
@@ -165,7 +165,7 @@ struct CheckInSheet: View {
                             .frame(height: 150, alignment: .top)
                             .shadow(radius: 4)
                             .accessibilityLabel("Image of the check-in")
-                    } else if let imageUrl = editCheckIn?.imageUrl {
+                    } else if let imageUrl = editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                         RemoteImage(url: imageUrl) { state in
                             if let image = state.image {
                                 image
@@ -203,7 +203,7 @@ struct CheckInSheet: View {
                 }
             )
             Button(
-                "\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
+                "\(editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) == nil && image == nil ? "Add" : "Change") Photo",
                 systemImage: "photo", action: { showPhotoMenu.toggle() }
             )
         }
@@ -264,7 +264,7 @@ struct CheckInSheet: View {
                     } else {
                         WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
                             ForEach(taggedFriends) { friend in
-                                AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
+                                Avatar(profile: friend, size: 24)
                             }
                         }
                     }

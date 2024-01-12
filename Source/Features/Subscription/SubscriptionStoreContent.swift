@@ -25,7 +25,7 @@ extension SubscriptionStoreContentView {
     }
 
     var title: some View {
-        Text("\(Config.appName) Pro")
+        Text("Config.appName Pro")
             .font(.largeTitle.bold())
     }
 

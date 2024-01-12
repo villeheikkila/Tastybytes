@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 struct ProfileHeader: View {
     private let logger = Logger(category: "ProfileHeader")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(Router.self) private var router

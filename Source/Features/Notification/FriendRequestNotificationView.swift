@@ -1,14 +1,16 @@
 import Components
+import EnvironmentModels
 import Models
 import SwiftUI
 
 struct FriendRequestNotificationView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let friend: Friend
 
     var body: some View {
         RouterLink(screen: .currentUserFriends) {
             HStack {
-                AvatarView(avatarUrl: friend.sender.avatarUrl, size: 32, id: friend.sender.id)
+                Avatar(profile: friend.sender, size: 32)
                 Text("\(friend.sender.preferredName) sent you a friend request!")
                 Spacer()
             }

@@ -8,7 +8,7 @@ import SwiftUI
 
 struct CheckInImagesView: View {
     private let logger = Logger(category: "CheckInImagesView")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInImages = [CheckIn.Image]()
     @State private var isLoading = false
@@ -68,13 +68,14 @@ struct CheckInImagesView: View {
 
 struct CheckInImageCellView: View {
     @Environment(Router.self) private var router
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 
     let checkInImage: CheckIn.Image
 
     var body: some View {
         HStack {
-            RemoteImage(url: checkInImage.imageUrl) { state in
+            RemoteImage(url: checkInImage.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
                 if let image = state.image {
                     image
                         .resizable()

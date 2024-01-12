@@ -35,14 +35,25 @@ public final class AppEnvironmentModel {
     public var countries = [Country]()
     public var aboutPage: AboutPage?
     public var appConfig: AppConfig?
+
+    public var config: AppConfig {
+        if let appConfig {
+            appConfig
+        } else {
+            fatalError("Tried to access app config before app environment model was initialized")
+        }
+    }
+
     // Splash screen
     public var splashScreenState: SplashScreenState = .showing
     private var splashScreenDismissalTask: Task<Void, Never>?
     // Props
     private let repository: Repository
+    public let infoPlist: InfoPlist
 
-    public init(repository: Repository) {
+    public init(repository: Repository, configuration: InfoPlist) {
         self.repository = repository
+        infoPlist = configuration
     }
 
     public func dismissSplashScreen() {
@@ -80,8 +91,9 @@ public final class AppEnvironmentModel {
         switch appConfigResponse {
         case let .success(appConfig):
             self.appConfig = appConfig
-            if appConfig.minimumSupportedVersion > Config.projectVersion {
-                logger.error("App is too old to run against the latest API, app version \(Config.projectVersion.prettyString)")
+            if appConfig.minimumSupportedVersion > infoPlist.appVersion {
+                let config = infoPlist.appVersion.prettyString
+                logger.error("App is too old to run against the latest API, app version \(config)")
                 state = .tooOldAppVersion
                 return
             }

@@ -66,7 +66,7 @@ struct SideBarView: View {
         NavigationSplitView(columnVisibility: .constant(columnVisibility)) {
             List(selection: $selection) {
                 HStack(alignment: .firstTextBaseline) {
-                    Text(Config.appName)
+                    Text(appEnvironmentModel.infoPlist.appName)
                         .font(Font.custom("Comfortaa-Bold", size: 24)).bold()
                     Spacer()
                 }
@@ -117,7 +117,7 @@ struct SideBarView: View {
         }
         .navigationSplitViewStyle(.balanced)
         .onOpenURL { url in
-            if let tab = url.sidebarTab {
+            if let tab = TabUrlHandler(url: url, deeplinkSchema: appEnvironmentModel.infoPlist.deeplinkSchema).sidebarTab {
                 selection = tab
             }
         }

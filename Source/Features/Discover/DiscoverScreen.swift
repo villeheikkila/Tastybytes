@@ -9,10 +9,11 @@ import SwiftUI
 @MainActor
 struct DiscoverScreen: View {
     private let logger = Logger(category: "SearchListView")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     // Scroll Position
     @Binding var scrollToTop: Int
     // Search Query
@@ -242,7 +243,7 @@ struct DiscoverScreen: View {
         ForEach(profiles) { profile in
             RouterLink(screen: .profile(profile)) {
                 HStack(alignment: .center) {
-                    AvatarView(avatarUrl: profile.avatarUrl, size: 42, id: profile.id)
+                    Avatar(profile: profile, size: 42)
                     VStack {
                         HStack {
                             Text(profile.preferredName)

@@ -10,9 +10,10 @@ import SwiftUI
 @MainActor
 struct CompanyScreen: View {
     private let logger = Logger(category: "CompanyScreen")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
     @State private var company: Company
     @State private var companyJoined: Company.Joined?
@@ -97,7 +98,7 @@ struct CompanyScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
-                if let logoUrl = company.logoUrl {
+                if let logoUrl = company.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                     RemoteImage(url: logoUrl) { state in
                         if let image = state.image {
                             image

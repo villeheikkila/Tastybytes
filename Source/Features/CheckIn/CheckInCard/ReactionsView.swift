@@ -9,7 +9,7 @@ import SwiftUI
 @MainActor
 struct ReactionsView: View {
     private let logger = Logger(category: "ReactionsView")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInReactions = [CheckInReaction]()
@@ -30,7 +30,7 @@ struct ReactionsView: View {
         HStack(alignment: .center) {
             Spacer()
             ForEach(checkInReactions) { reaction in
-                AvatarView(avatarUrl: reaction.profile.avatarUrl, size: size, id: reaction.profile.id)
+                Avatar(profile: reaction.profile, size: size)
             }
             Label(
                 "React to check-in",

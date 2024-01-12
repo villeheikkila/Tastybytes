@@ -9,8 +9,9 @@ import SwiftUI
 @MainActor
 struct ReportSheet: View {
     private let logger = Logger(category: "ReportSheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var reasonText = ""
     @State private var alertError: AlertError?
@@ -64,7 +65,7 @@ struct ReportSheet: View {
         case let .comment(comment):
             CheckInCommentView(comment: comment)
         case let .checkIn(checkIn):
-            CheckInEntityView(checkIn: checkIn)
+            CheckInEntityView(checkIn: checkIn, baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
         }
     }
 

@@ -9,7 +9,7 @@ import SwiftUI
 @MainActor
 struct ProductMutationView: View {
     private let logger = Logger(category: "ProductMutationView")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
@@ -207,7 +207,7 @@ private struct ProductMutationInitialValues {
 @MainActor
 struct ProductMutationInnerView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(SheetManager.self) private var sheetEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

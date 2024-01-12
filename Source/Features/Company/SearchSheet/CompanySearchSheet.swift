@@ -9,7 +9,7 @@ import SwiftUI
 @MainActor
 struct CompanySearchSheet: View {
     private let logger = Logger(category: "CompanySearchSheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss

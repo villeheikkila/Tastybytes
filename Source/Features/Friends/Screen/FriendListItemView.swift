@@ -1,8 +1,10 @@
 import Components
+import EnvironmentModels
 import Models
 import SwiftUI
 
 struct FriendListItemView<RootView: View>: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
     let profile: Profile
     let view: () -> RootView?
@@ -18,7 +20,7 @@ struct FriendListItemView<RootView: View>: View {
     var body: some View {
         RouterLink(screen: .profile(profile)) {
             HStack {
-                AvatarView(avatarUrl: profile.avatarUrl, size: 42, id: profile.id)
+                Avatar(profile: profile, size: 42)
                 Text(profile.preferredName)
                     .padding(.leading, 8)
                     .foregroundColor(.primary)

@@ -393,9 +393,10 @@ public enum CheckInSegment: String, CaseIterable, Sendable {
 }
 
 public extension CheckIn {
-    var imageUrl: URL? {
+    func getImageUrl(baseUrl: URL) -> URL? {
         guard let imageFile else { return nil }
         return URL(
+            baseUrl: baseUrl,
             bucket: .checkIns,
             fileName: "\(profile.id.uuidString.lowercased())/\(imageFile)"
         )
@@ -403,9 +404,10 @@ public extension CheckIn {
 }
 
 public extension CheckIn.Image {
-    var imageUrl: URL? {
+    func getImageUrl(baseUrl: URL) -> URL? {
         guard let imageFile else { return nil }
         return URL(
+            baseUrl: baseUrl,
             bucket: .checkIns,
             fileName: "\(createdBy.uuidString.lowercased())/\(imageFile)"
         )

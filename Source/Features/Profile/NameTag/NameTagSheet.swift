@@ -6,16 +6,17 @@ import SwiftUI
 
 @MainActor
 struct NameTagSheet: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var showNameTagScanner = false
 
-    let onSuccess: @MainActor (_ profileId: UUID) -> Void
+    let onSuccess: (_ profileId: UUID) -> Void
 
     var body: some View {
         VStack(spacing: 20) {
             if !showNameTagScanner {
-                CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileEnvironmentModel.id).url.absoluteString)
+                CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileEnvironmentModel.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl).absoluteString)
                 Button(action: { showNameTagScanner.toggle() }, label: {
                     HStack {
                         Spacer()

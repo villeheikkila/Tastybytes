@@ -9,9 +9,10 @@ import SwiftUI
 @MainActor
 struct BrandScreen: View {
     private let logger = Logger(category: "BrandScreen")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var summary: Summary?
@@ -275,7 +276,7 @@ struct BrandScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
-                if let logoUrl = brand.logoUrl {
+                if let logoUrl = brand.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                     RemoteImage(url: logoUrl) { state in
                         if let image = state.image {
                             image

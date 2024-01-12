@@ -1,4 +1,5 @@
 import Components
+import EnvironmentModels
 import Models
 import SwiftUI
 
@@ -11,7 +12,7 @@ struct CheckInCardHeader: View {
 
     var body: some View {
         HStack {
-            AvatarView(profile: profile)
+            Avatar(profile: profile)
             Text(profile.preferredName)
                 .font(.caption).bold()
                 .foregroundColor(.primary)

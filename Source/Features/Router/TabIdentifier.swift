@@ -5,52 +5,54 @@ enum TabIdentifier: Hashable {
     case activity, discover, notifications, currentProfile
 }
 
-extension URL {
-    var tabIndentifier: TabIdentifier? {
-        guard isUniversalLink || isDeepLink, pathComponents.count == 2 else { return nil }
+struct TabUrlHandler {
+    private let url: URL
+    let deeplinkSchema: String
 
-        return switch pathComponents[1] {
-        case "activity": .activity
-        case "discover": .discover
-        case "notifications": .notifications
-        case "profile": .currentProfile
-        default: nil
+    init(url: URL, deeplinkSchema: String) {
+        self.url = url
+        self.deeplinkSchema = deeplinkSchema
+    }
+
+    var isUniversalLink: Bool {
+        url.scheme == "https"
+    }
+
+    var isDeepLink: Bool {
+        url.scheme == deeplinkSchema
+    }
+
+    var tabIdentifier: TabIdentifier? {
+        guard isUniversalLink || isDeepLink, url.pathComponents.count == 2 else { return nil }
+
+        switch url.pathComponents[1] {
+        case "activity": return .activity
+        case "discover": return .discover
+        case "notifications": return .notifications
+        case "profile": return .currentProfile
+        default: return nil
         }
     }
 
     var tab: Tab? {
-        guard let tabIndentifier
-        else {
-            return nil
-        }
+        guard let identifier = tabIdentifier else { return nil }
 
-        return switch tabIndentifier {
-        case .activity:
-            Tab.activity
-        case .discover:
-            Tab.discover
-        case .notifications:
-            Tab.notifications
-        case .currentProfile:
-            Tab.profile
+        switch identifier {
+        case .activity: return Tab.activity
+        case .discover: return Tab.discover
+        case .notifications: return Tab.notifications
+        case .currentProfile: return Tab.profile
         }
     }
 
     var sidebarTab: SiderBarTab? {
-        guard let tabIndentifier
-        else {
-            return nil
-        }
+        guard let identifier = tabIdentifier else { return nil }
 
-        return switch tabIndentifier {
-        case .activity:
-            SiderBarTab.activity
-        case .discover:
-            SiderBarTab.discover
-        case .notifications:
-            SiderBarTab.notifications
-        case .currentProfile:
-            SiderBarTab.profile
+        switch identifier {
+        case .activity: return SiderBarTab.activity
+        case .discover: return SiderBarTab.discover
+        case .notifications: return SiderBarTab.notifications
+        case .currentProfile: return SiderBarTab.profile
         }
     }
 }

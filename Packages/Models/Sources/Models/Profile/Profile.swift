@@ -396,8 +396,8 @@ public extension Profile {
 }
 
 public extension AvatarURL {
-    var avatarUrl: URL? {
+    func getAvatarUrl(baseUrl: URL) -> URL? {
         guard let avatarFile else { return nil }
-        return URL(bucket: .avatars, fileName: "\(id.uuidString.lowercased())/\(avatarFile)")
+        return URL(baseUrl: baseUrl, bucket: .avatars, fileName: "\(id.uuidString.lowercased())/\(avatarFile)")
     }
 }

@@ -1,10 +1,12 @@
 import Components
+import EnvironmentModels
 import Extensions
 import Models
 import Repositories
 import SwiftUI
 
 struct CheckInCard: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
 
@@ -23,7 +25,7 @@ struct CheckInCard: View {
                     servingStyle: checkIn.servingStyle
                 )
             }.padding(.horizontal, 12)
-            CheckInCardImage(imageUrl: checkIn.imageUrl, blurHash: checkIn.blurHash)
+            CheckInCardImage(imageUrl: checkIn.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), blurHash: checkIn.blurHash)
             Group {
                 CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
                 CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles, loadedFrom: loadedFrom)

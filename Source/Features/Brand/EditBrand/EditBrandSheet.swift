@@ -10,9 +10,10 @@ import SwiftUI
 @MainActor
 struct EditBrandSheet: View {
     private let logger = Logger(category: "EditBrandSheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var name: String
     @State private var brandOwner: Company
@@ -50,7 +51,7 @@ struct EditBrandSheet: View {
                         matching: .images,
                         photoLibrary: .shared()
                     ) {
-                        if let logoUrl = brand.logoUrl {
+                        if let logoUrl = brand.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                             RemoteImage(url: logoUrl) { state in
                                 if let image = state.image {
                                     image

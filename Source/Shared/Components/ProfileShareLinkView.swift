@@ -1,7 +1,10 @@
+import EnvironmentModels
 import Models
 import SwiftUI
 
 public struct ProfileShareLinkView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+
     let profile: Profile
 
     public init(profile: Profile) {
@@ -13,6 +16,6 @@ public struct ProfileShareLinkView: View {
     }
 
     public var body: some View {
-        ShareLink("Share", item: NavigatablePath.profile(id: profile.id).url, preview: SharePreview(title))
+        ShareLink("Share", item: NavigatablePath.profile(id: profile.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl), preview: SharePreview(title))
     }
 }

@@ -8,7 +8,7 @@ import SwiftUI
 @MainActor
 struct SubcategorySheet: View {
     private let logger = Logger(category: "SubcategorySheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss

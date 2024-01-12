@@ -2,12 +2,13 @@ import Components
 import EnvironmentModels
 import Models
 import OSLog
+import Repositories
 import SwiftUI
 
 @MainActor
 struct ProductScreenActionSection: View {
     private let logger = Logger(category: "ProductScreenActionSection")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Binding var isOnWishlist: Bool
 

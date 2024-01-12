@@ -19,7 +19,7 @@ struct CheckInCardTaggedFriends: View {
                 }
                 HStack(spacing: 4) {
                     ForEach(taggedProfiles) { taggedProfile in
-                        AvatarView(profile: taggedProfile)
+                        Avatar(profile: taggedProfile)
                             .contentShape(Rectangle())
                             .accessibilityAddTraits(.isLink)
                             .allowsHitTesting(!loadedFrom.isLoadedFromProfile(taggedProfile))

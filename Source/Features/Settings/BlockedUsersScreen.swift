@@ -58,12 +58,13 @@ struct BlockedUsersScreen: View {
 }
 
 struct BlockedUserListItemView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let profile: Profile
     let onUnblockUser: () async -> Void
 
     var body: some View {
         HStack(alignment: .center) {
-            AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
+            Avatar(profile: profile, size: 32)
             VStack {
                 HStack {
                     Text(profile.preferredName)

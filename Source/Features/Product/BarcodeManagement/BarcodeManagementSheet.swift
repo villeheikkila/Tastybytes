@@ -8,7 +8,7 @@ import SwiftUI
 
 struct BarcodeManagementSheet: View {
     private let logger = Logger(category: "BarcodeManagementSheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
@@ -82,7 +82,7 @@ struct BarcodeManagementRow: View {
 
     var body: some View {
         HStack {
-            AvatarView(avatarUrl: barcode.profile.avatarUrl, size: 32, id: barcode.profile.id)
+            Avatar(profile: barcode.profile, size: 32)
             VStack(alignment: .leading, spacing: 2) {
                 HStack {
                     Text(barcode.profile.preferredName).font(.caption)

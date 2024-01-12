@@ -1,80 +1,37 @@
 import Foundation
 
-public enum Config {
-    enum Keys {
-        enum Plist {
-            static let supabaseUrl = "SUPABASE_URL"
-            static let supabaseAnonKey = "SUPABASE_ANON_KEY"
-            static let baseUrl = "BASE_URL"
-            static let privacyPolicyUrl = "PRIVACY_POLICY_URL"
-            static let appName = "APP_NAME"
-            static let deepLinkBaseUrl = "DEEP_LINK_BASE_URL"
-            static let feedbackEmail = "FEEDBACK_EMAIL"
+public struct InfoPlist: Codable {
+    public let supabaseUrl: URL
+    public let supabaseAnonKey: String
+    public let baseUrl: URL
+    public let privacyPolicyUrl: String
+    public let appName: String
+    public let deepLinkBaseUrl: URL
+    public let feedbackEmail: String
+    public let bundleVersion: String
+    public let bundleShortVersion: String
+
+    public init() throws {
+        guard let infoDictionary = Bundle.main.infoDictionary else {
+            throw NSError(domain: "Configuration", code: 0, userInfo: [NSLocalizedDescriptionKey: "infoDictionary not found"])
         }
+        let jsonData = try JSONSerialization.data(withJSONObject: infoDictionary, options: .prettyPrinted)
+        self = try JSONDecoder().decode(InfoPlist.self, from: jsonData)
     }
 
-    private static let infoDictionary: [String: Any] = {
-        guard let dict = Bundle.main.infoDictionary else {
-            fatalError("Plist file not found")
-        }
-        return dict
-    }()
+    enum CodingKeys: String, CodingKey {
+        case supabaseUrl = "SUPABASE_URL"
+        case supabaseAnonKey = "SUPABASE_ANON_KEY"
+        case baseUrl = "BASE_URL"
+        case privacyPolicyUrl = "PRIVACY_POLICY_URL"
+        case appName = "APP_NAME"
+        case deepLinkBaseUrl = "DEEP_LINK_BASE_URL"
+        case feedbackEmail = "FEEDBACK_EMAIL"
+        case bundleVersion = "CFBundleVersion"
+        case bundleShortVersion = "CFBundleShortVersionString"
+    }
 
-    public static let appName: String = {
-        guard let baseUrl = Config.infoDictionary[Keys.Plist.appName] as? String else {
-            fatalError("App name is not set in plist for this environment")
-        }
-        return baseUrl
-    }()
-
-    public static let supabaseUrl: URL = {
-        guard let rootURLstring = Config.infoDictionary[Keys.Plist.supabaseUrl] as? String else {
-            fatalError("Supabase URL not set in plist for this environment")
-        }
-        guard let supabaseUrl = URL(string: rootURLstring) else {
-            fatalError("Supabase URL is invalid")
-        }
-        return supabaseUrl
-    }()
-
-    public static let supabaseAnonKey: String = {
-        guard let anonKey = Config.infoDictionary[Keys.Plist.supabaseAnonKey] as? String else {
-            fatalError("Supabase Anon Key not set in plist for this environment")
-        }
-        return anonKey
-    }()
-
-    public static let baseUrl: String = {
-        guard let baseUrl = Config.infoDictionary[Keys.Plist.baseUrl] as? String else {
-            fatalError("Base url is not set in plist for this environment")
-        }
-        return baseUrl
-    }()
-
-    public static let privacyPolicyUrl: URL = {
-        guard let urlString = Config.infoDictionary[Keys.Plist.privacyPolicyUrl] as? String,
-              let url = URL(string: urlString)
-        else {
-            fatalError("Privacy policy url is not set in plist for this environment")
-        }
-        return url
-    }()
-
-    public static let deeplinkBaseUrl: String = {
-        guard let url = Config.infoDictionary[Keys.Plist.deepLinkBaseUrl] as? String else {
-            fatalError("Deep link base url is not set in plist for this environment")
-        }
-        return url
-    }()
-
-    public static let feedbackEmail: String = {
-        guard let email = Config.infoDictionary[Keys.Plist.feedbackEmail] as? String else {
-            fatalError("Feedback email is not set in plist for this environment")
-        }
-        return email
-    }()
-
-    public static let deeplinkSchema: String = {
+    public var deeplinkSchema: String {
         var schema: String?
 
         if let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] {
@@ -87,31 +44,15 @@ public enum Config {
 
         guard let schema else { fatalError("Deep link schema is not set in plist for this environment") }
         return schema
-    }()
+    }
 
-    public static let projectVersion: AppVersion = {
-        guard let buildVersionString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String, let buildVersion = Int(buildVersionString) else {
-            fatalError("CFBundleVersion is missing")
-        }
-
-        guard let versionString = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else { fatalError("CFBundleShortVersionString is missing") }
-
+    public var appVersion: AppVersion {
         do {
-            return try AppVersion(with: versionString, buildVersion: buildVersion)
+            return try AppVersion(with: bundleShortVersion, buildVersion: Int(bundleVersion) ?? 0)
         } catch {
-            fatalError("Failed to decode AppVersion from CFBundleShortVersionString")
+            fatalError("failed to decode AV")
         }
+    }
 
-    }()
-
-    public static let copyrightHolder: String = "Ville Heikkilä"
-
-    public static let copyrightYear: String = {
-        if let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year {
-            return "2018-\(String(currentYear))"
-        }
-        return ""
-    }()
-
-    public static let bundleIdentifier: String = Bundle.main.bundleIdentifier ?? "N/A"
+    public var bundleIdentifier: String = Bundle.main.bundleIdentifier ?? "N/A"
 }

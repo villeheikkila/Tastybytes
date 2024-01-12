@@ -75,6 +75,12 @@ public struct Email: Sendable {
         self.body = body
     }
 
+    public init() {
+        adress = ""
+        subject = ""
+        body = ""
+    }
+
     let adress: String
     let subject: String
     let body: String

@@ -5,7 +5,8 @@ import SwiftUI
 
 @MainActor
 struct RouterWrapper<Content: View>: View {
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var router = Router()
     @State private var sheetEnvironmentModel = SheetManager()
@@ -21,7 +22,7 @@ struct RouterWrapper<Content: View>: View {
                 }
         }
         .onOpenURL { url in
-            if let detailPage = url.detailPage {
+            if let detailPage = DeepLinkHandler(url: url, deeplinkSchema: appEnvironmentModel.infoPlist.deeplinkSchema).detailPage {
                 router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
             }
         }

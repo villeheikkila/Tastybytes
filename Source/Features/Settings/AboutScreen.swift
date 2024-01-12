@@ -14,7 +14,7 @@ struct AboutScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.requestReview) var requestReview
-    @State private var email = Email.feedback
+    @State private var email: Email = .init()
     @State private var alertError: AlertError?
 
     var body: some View {
@@ -28,6 +28,11 @@ struct AboutScreen: View {
         .listStyle(.insetGrouped)
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            email = Email(adress: appEnvironmentModel.config.feedbackEmail,
+                          subject: "Feedback for \(appEnvironmentModel.infoPlist.appName)",
+                          body: "")
+        }
         .alertError($alertError)
     }
 
@@ -61,7 +66,7 @@ struct AboutScreen: View {
                 }
             })
         )
-        ProgressButton("Rate \(Config.appName)", systemName: "heart", color: .red, action: {
+        ProgressButton("Rate \(appEnvironmentModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
             requestReview()
         })
     }
@@ -122,7 +127,7 @@ struct AboutScreen: View {
     @ViewBuilder var footer: some View {
         Section {
             VStack {
-                Text("\(Config.appName) \(Config.projectVersion.prettyString)")
+                Text("\(appEnvironmentModel.infoPlist.appName) \(appEnvironmentModel.infoPlist.appVersion.prettyString)")
                     .font(.caption).bold()
                 HStack {
                     Spacer()
@@ -139,10 +144,4 @@ struct AboutScreen: View {
             }
         }.listRowBackground(Color.clear)
     }
-}
-
-public extension Email {
-    static let feedback = Email(adress: Config.feedbackEmail,
-                                subject: "Feedback for \(Config.appName)",
-                                body: "")
 }

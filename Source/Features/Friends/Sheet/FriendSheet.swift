@@ -7,6 +7,7 @@ import SwiftUI
 struct FriendSheet: View {
     @Binding private var taggedFriends: [Profile]
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
     @State private var selectedFriendIds: Set<UUID> = Set()
@@ -38,7 +39,7 @@ struct FriendSheet: View {
     var body: some View {
         List(sortedShownProfiles, selection: $selectedFriendIds) { friend in
             HStack {
-                AvatarView(avatarUrl: friend.avatarUrl, size: 42, id: friend.id)
+                Avatar(profile: friend, size: 42)
                 Text(friend.preferredName).padding(.leading, 8)
                 Spacer()
             }

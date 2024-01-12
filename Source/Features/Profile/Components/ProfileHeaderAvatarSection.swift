@@ -3,6 +3,7 @@ import EnvironmentModels
 import Models
 import OSLog
 import PhotosUI
+import Repositories
 import SwiftUI
 
 struct ProfileHeaderAvatarSection: View {
@@ -10,7 +11,7 @@ struct ProfileHeaderAvatarSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(Router.self) private var router
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @State private var selectedItem: PhotosPickerItem?
     @Binding var profile: Profile
 
@@ -28,7 +29,7 @@ struct ProfileHeaderAvatarSection: View {
             }
             Spacer()
             VStack(alignment: .center) {
-                AvatarView(avatarUrl: profile.avatarUrl, size: 90, id: profile.id)
+                Avatar(profile: profile, size: 90)
                     .overlay(alignment: .bottomTrailing) {
                         if isCurrentUser {
                             PhotosPicker(selection: $selectedItem,

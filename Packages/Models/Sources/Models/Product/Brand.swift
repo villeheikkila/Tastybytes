@@ -167,8 +167,8 @@ public extension Brand {
 }
 
 public extension BrandProtocol {
-    var logoUrl: URL? {
+    func getLogoUrl(baseUrl: URL) -> URL? {
         guard let logoFile else { return nil }
-        return URL(bucket: .brandLogos, fileName: logoFile)
+        return URL(baseUrl: baseUrl, bucket: .brandLogos, fileName: logoFile)
     }
 }

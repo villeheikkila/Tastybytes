@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ProductLogoSheet: View {
     private let logger = Logger(category: "ProductLogoSheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var alertError: AlertError?
     @State private var selectedLogo: PhotosPickerItem?
@@ -34,6 +35,7 @@ struct ProductLogoSheet: View {
                     photoLibrary: .shared()
                 ) {
                     if let logoFile, let logoUrl = URL(
+                        baseUrl: appEnvironmentModel.infoPlist.supabaseUrl,
                         bucket: .productLogos,
                         fileName: logoFile
                     ) {

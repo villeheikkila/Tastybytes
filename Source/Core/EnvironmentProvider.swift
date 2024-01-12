@@ -20,14 +20,16 @@ struct EnvironmentProvider<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(@ViewBuilder content: @escaping () -> Content) {
+        let configuration = try? InfoPlist()
+        guard let configuration else { fatalError("invalid") }
         let repository = Repository(
-            supabaseURL: Config.supabaseUrl,
-            supabaseKey: Config.supabaseAnonKey,
-            headers: ["x_bundle_id": Config.bundleIdentifier, "x_app_version": Config.projectVersion.prettyString]
+            supabaseURL: configuration.supabaseUrl,
+            supabaseKey: configuration.supabaseAnonKey,
+            headers: ["x_bundle_id": configuration.bundleIdentifier, "x_app_version": configuration.appVersion.prettyString]
         )
         _notificationEnvironmentModel = State(wrappedValue: NotificationEnvironmentModel(repository: repository))
         _profileEnvironmentModel = State(wrappedValue: ProfileEnvironmentModel(repository: repository))
-        _appEnvironmentModel = State(wrappedValue: AppEnvironmentModel(repository: repository))
+        _appEnvironmentModel = State(wrappedValue: AppEnvironmentModel(repository: repository, configuration: configuration))
         _imageUploadEnvironmentModel = State(wrappedValue: ImageUploadEnvironmentModel(repository: repository))
         _friendEnvironmentModel = State(wrappedValue: FriendEnvironmentModel(repository: repository))
         self.repository = repository
@@ -36,7 +38,7 @@ struct EnvironmentProvider<Content: View>: View {
 
     var body: some View {
         content()
-            .environment(\.repository, repository)
+            .environment(repository)
             .environment(notificationEnvironmentModel)
             .environment(profileEnvironmentModel)
             .environment(feedbackEnvironmentModel)

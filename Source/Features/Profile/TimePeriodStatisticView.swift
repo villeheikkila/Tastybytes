@@ -31,7 +31,7 @@ struct TimePeriodStatisticView: View {
 
 struct TimePeriodStatisticSegmentView: View {
     private let logger = Logger(category: "TimePeriodStatisticSegmentView")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var timePeriodStatistics: TimePeriodStatistic?
     @State private var isLoading = false

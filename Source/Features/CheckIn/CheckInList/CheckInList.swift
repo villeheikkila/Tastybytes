@@ -9,7 +9,7 @@ import SwiftUI
 @MainActor
 struct CheckInList<Header>: View where Header: View {
     private let logger = Logger(category: "CheckInList")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     // Tasks

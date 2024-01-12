@@ -1,9 +1,12 @@
+import EnvironmentModels
 import Models
 import SwiftUI
 
 struct AppNameView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+
     var body: some View {
-        Text(Config.appName)
+        Text(appEnvironmentModel.infoPlist.appName)
             .font(Font.custom("Comfortaa-Bold", size: 28))
             .bold()
     }

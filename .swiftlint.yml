@@ -65,6 +65,7 @@ disabled_rules:
   - function_body_length
   - closure_end_indentation
   - trailing_comma
+  - function_parameter_count
 
 type_name:
   min_length: 3

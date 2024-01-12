@@ -48,22 +48,20 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
         }
     }
 
-    var urlString: String {
+    var path: String {
         switch self {
         case .activity:
-            "\(Config.deeplinkBaseUrl)/activity"
+            "activity"
         case .discover:
-            "\(Config.deeplinkBaseUrl)/discover"
+            "discover"
         case .notifications:
-            "\(Config.deeplinkBaseUrl)/notifications"
+            "notifications"
         case .profile:
-            "\(Config.deeplinkBaseUrl)/profile"
+            "profile"
         }
     }
 
-    var url: URL {
-        // swiftlint:disable force_unwrapping
-        URL(string: urlString)!
-        // swiftlint:enable force_unwrapping
+    func getUrl(baseUrl: URL) -> URL {
+        baseUrl.appendingPathComponent(path)
     }
 }

@@ -8,10 +8,10 @@ public struct AvatarView: View {
         self.id = id
     }
 
-    public init(profile: Profile) {
-        avatarUrl = profile.avatarUrl
+    public init(profile: Profile, baseUrl: URL, size: Double = 24) {
+        avatarUrl = profile.getAvatarUrl(baseUrl: baseUrl)
         id = profile.id
-        size = 24
+        self.size = size
     }
 
     let avatarUrl: URL?

@@ -28,7 +28,7 @@ struct VerificationScreen: View {
     }
 
     private let logger = Logger(category: "ProductVerificationScreen")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var products = [Product.Joined]()
@@ -135,7 +135,7 @@ struct VerificationScreen: View {
             VStack {
                 if let createdBy = product.createdBy {
                     HStack {
-                        AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
+                        Avatar(profile: createdBy, size: 16)
                         Text(createdBy.preferredName).font(.caption).bold()
                         Spacer()
                         if let createdAt = product.createdAt {

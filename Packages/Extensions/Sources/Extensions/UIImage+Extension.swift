@@ -101,7 +101,6 @@ public extension UIImage {
         return hash
     }
 
-    // swiftlint:disable function_parameter_count
     private func multiplyBasisFunction(
         pixels: UnsafePointer<UInt8>,
         width: Int,
@@ -111,7 +110,6 @@ public extension UIImage {
         pixelOffset: Int,
         basisFunction: (Float, Float) -> Float
     ) -> (Float, Float, Float) {
-        // swiftlint:enable function_parameter_count
         var r: Float = 0
         var g: Float = 0
         var b: Float = 0

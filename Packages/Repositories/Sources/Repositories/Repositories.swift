@@ -24,7 +24,8 @@ public protocol RepositoryProtocol: Sendable {
     var report: ReportRepository { get }
 }
 
-public struct Repository: RepositoryProtocol {
+@Observable
+public final class Repository: RepositoryProtocol {
     public let appConfig: AppConfigRepository
     public let profile: ProfileRepository
     public let checkIn: CheckInRepository

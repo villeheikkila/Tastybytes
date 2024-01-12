@@ -9,7 +9,7 @@ import SwiftUI
 @MainActor
 struct UserSheet: View {
     private let logger = Logger(category: "UserSheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(\.dismiss) private var dismiss
@@ -37,7 +37,7 @@ struct UserSheet: View {
     var body: some View {
         List(searchResults) { profile in
             HStack {
-                AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
+                Avatar(profile: profile, size: 32)
                 Text(profile.preferredName)
                 Spacer()
                 HStack {

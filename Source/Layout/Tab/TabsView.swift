@@ -4,6 +4,7 @@ import SwiftUI
 
 @MainActor
 struct TabsView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var tabManager = TabManager()
@@ -33,7 +34,7 @@ struct TabsView: View {
         .simultaneousGesture(switchTabGesture)
         .environment(tabManager)
         .onOpenURL { url in
-            if let tab = url.tab {
+            if let tab = TabUrlHandler(url: url, deeplinkSchema: appEnvironmentModel.infoPlist.deeplinkSchema).tab {
                 tabManager.selection = tab
             }
         }

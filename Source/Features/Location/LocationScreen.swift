@@ -12,7 +12,7 @@ import SwiftUI
 @MainActor
 struct LocationScreen: View {
     private let logger = Logger(category: "LocationScreen")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

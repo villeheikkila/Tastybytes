@@ -1,7 +1,9 @@
+import EnvironmentModels
 import Models
 import SwiftUI
 
 public struct LocationShareLinkView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let location: Location
 
     public init(location: Location) {
@@ -13,6 +15,6 @@ public struct LocationShareLinkView: View {
     }
 
     public var body: some View {
-        ShareLink("Share", item: NavigatablePath.location(id: location.id).url, preview: SharePreview(title))
+        ShareLink("Share", item: NavigatablePath.location(id: location.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl), preview: SharePreview(title))
     }
 }

@@ -10,8 +10,9 @@ import SwiftUI
 @MainActor
 struct EditCompanySheet: View {
     private let logger = Logger(category: "EditCompanySheet")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var company: Company
     @State private var newCompanyName = ""
@@ -72,7 +73,7 @@ struct EditCompanySheet: View {
                     matching: .images,
                     photoLibrary: .shared()
                 ) {
-                    if let logoUrl = company.logoUrl {
+                    if let logoUrl = company.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                         RemoteImage(url: logoUrl) { state in
                             if let image = state.image {
                                 image

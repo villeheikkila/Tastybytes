@@ -10,7 +10,7 @@ struct BrandScreenProductRow: View {
     private let logger = Logger(category: "BrandScreenProductRow")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var alertError: AlertError?
     @State private var showDeleteProductConfirmationDialog = false

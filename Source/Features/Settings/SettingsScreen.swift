@@ -5,6 +5,7 @@ import SwiftUI
 
 @MainActor
 struct SettingsScreen: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 
     var body: some View {
@@ -60,7 +61,7 @@ struct SettingsScreen: View {
             if profileEnvironmentModel.hasRole(.pro) {
                 HStack {
                     Spacer()
-                    Text("You have \(Config.appName) Pro. Thank you!")
+                    Text("You have \(appEnvironmentModel.infoPlist.appName) Pro. Thank you!")
                     Spacer()
                 }
             }

@@ -586,8 +586,8 @@ extension CaseIterable where Self: RawRepresentable, Self.RawValue == String {
 }
 
 public extension Product.Joined {
-    var logoUrl: URL? {
+    func getLogo(baseUrl: URL) -> URL? {
         guard let logoFile else { return nil }
-        return URL(bucket: .productLogos, fileName: logoFile)
+        return URL(baseUrl: baseUrl, bucket: .productLogos, fileName: logoFile)
     }
 }

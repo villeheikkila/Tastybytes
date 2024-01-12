@@ -10,27 +10,25 @@ public enum NavigatablePath: Sendable {
     case location(id: UUID)
     case brand(id: Int)
 
-    var urlString: String {
+    private var path: String {
         switch self {
         case let .profile(id):
-            "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id.uuidString.lowercased())"
+            "\(PathIdentifier.profiles)/\(id.uuidString.lowercased())"
         case let .checkIn(id):
-            "\(Config.baseUrl)/\(PathIdentifier.checkins)/\(id)"
+            "\(PathIdentifier.checkins)/\(id)"
         case let .product(id), let .productWithBarcode(id, _):
-            "\(Config.baseUrl)/\(PathIdentifier.products)/\(id)"
+            "\(PathIdentifier.products)/\(id)"
         case let .company(id):
-            "\(Config.baseUrl)/\(PathIdentifier.companies)/\(id)"
+            "\(PathIdentifier.companies)/\(id)"
         case let .brand(id):
-            "\(Config.baseUrl)/\(PathIdentifier.brands)/\(id)"
+            "\(PathIdentifier.brands)/\(id)"
         case let .location(id):
-            "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id.uuidString.lowercased())"
+            "\(PathIdentifier.locations)/\(id.uuidString.lowercased())"
         }
     }
 
-    public var url: URL {
-        // swiftlint:disable force_unwrapping
-        URL(string: urlString)!
-        // swiftlint:enable force_unwrapping
+    public func getUrl(baseUrl: URL) -> URL {
+        baseUrl.appendingPathComponent(path)
     }
 }
 

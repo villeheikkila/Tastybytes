@@ -10,7 +10,8 @@ import SwiftUI
 @MainActor
 struct AccountSettingsScreen: View {
     private let logger = Logger(category: "AccountSettingsScreen")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var showDeleteConfirmation = false
@@ -59,7 +60,7 @@ struct AccountSettingsScreen: View {
             document: csvExport,
             contentType: UTType.commaSeparatedText,
             defaultFilename:
-            "\(Config.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv"
+            "\(appEnvironmentModel.infoPlist.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv"
         ) { result in
             switch result {
             case .success:

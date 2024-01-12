@@ -13,7 +13,7 @@ struct CheckInScreen: View {
     }
 
     private let logger = Logger(category: "CheckInScreen")
-    @Environment(\.repository) private var repository
+    @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
