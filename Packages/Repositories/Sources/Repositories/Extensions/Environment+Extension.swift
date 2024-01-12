@@ -3,9 +3,9 @@ import SwiftUI
 
 public struct RepositoryKey: EnvironmentKey {
     public static var defaultValue: Repository = .init(
-        supabaseURL: Config.supabaseUrl,
-        supabaseKey: Config.supabaseAnonKey,
-        headers: ["x_bundle_id": Config.bundleIdentifier, "x_app_version": Config.appVersion]
+        supabaseURL: URL(staticString: "fill_this_in"),
+        supabaseKey: "fill_this_in",
+        headers: [:]
     )
 }
 

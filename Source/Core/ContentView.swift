@@ -19,11 +19,10 @@ struct ContentView: View {
 }
 
 struct Providers<Content: View>: View {
-    @Environment(\.repository) private var repository
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        EnvironmentProvider(repository: repository) {
+        EnvironmentProvider {
             SubscriptionProvider {
                 DeviceInfoProvider {
                     SplashScreenProvider {

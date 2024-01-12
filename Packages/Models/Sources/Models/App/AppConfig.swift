@@ -74,4 +74,8 @@ public struct AppVersion: Codable, Sendable, Hashable, Comparable {
             lhs.patch < rhs.patch
         }
     }
+
+    public var prettyString: String {
+        "\(major).\(minor).\(patch) (\(build))"
+    }
 }

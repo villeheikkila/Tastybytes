@@ -121,16 +121,21 @@ struct AboutScreen: View {
 
     @ViewBuilder var footer: some View {
         Section {
-            HStack {
-                Spacer()
-                HStack(alignment: .center) {
-                    Label("Copyright", systemImage: "c.circle")
-                        .labelStyle(.iconOnly)
-                    Text(Config.copyrightYear)
-                    Text(Config.copyrightHolder)
+            VStack {
+                Text("\(Config.appName) \(Config.projectVersion.prettyString)")
+                    .font(.caption).bold()
+                HStack {
+                    Spacer()
+                    HStack(alignment: .center, spacing: 2) {
+                        Label("Copyright", systemImage: "c.circle")
+                            .labelStyle(.iconOnly)
+                        if let appConfig = appEnvironmentModel.appConfig {
+                            Text("\(appConfig.copyrightTimeRange) \(appConfig.copyrightHolder)")
+                        }
+                    }
+                    .font(.caption).bold()
+                    Spacer()
                 }
-                .font(.caption).bold()
-                Spacer()
             }
         }.listRowBackground(Color.clear)
     }

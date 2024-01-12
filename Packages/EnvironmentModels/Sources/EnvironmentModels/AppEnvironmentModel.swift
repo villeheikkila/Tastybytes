@@ -81,7 +81,7 @@ public final class AppEnvironmentModel {
         case let .success(appConfig):
             self.appConfig = appConfig
             if appConfig.minimumSupportedVersion > Config.projectVersion {
-                logger.error("App is too old to run against the latest API, app version \(Config.appVersion)")
+                logger.error("App is too old to run against the latest API, app version \(Config.projectVersion.prettyString)")
                 state = .tooOldAppVersion
                 return
             }

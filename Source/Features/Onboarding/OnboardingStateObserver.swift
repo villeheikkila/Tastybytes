@@ -15,10 +15,10 @@ struct OnboardingStateObserver<Content: View>: View {
         if !profileEnvironmentModel.isOnboarded {
             return .profile
         }
-        if permissionEnvironmentModel.pushNotificationStatus == .notDetermined && !notificationOnboardingSectionSkipped {
+        if permissionEnvironmentModel.pushNotificationStatus == .notDetermined, !notificationOnboardingSectionSkipped {
             return .notifications
         }
-        if locationEnvironmentModel.locationsStatus == .notDetermined && !locationOnboardingSectionSkipped {
+        if locationEnvironmentModel.locationsStatus == .notDetermined, !locationOnboardingSectionSkipped {
             return .location
         }
         return nil
