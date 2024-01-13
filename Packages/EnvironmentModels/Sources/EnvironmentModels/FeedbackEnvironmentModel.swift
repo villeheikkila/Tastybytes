@@ -67,7 +67,7 @@ public extension FeedbackEnvironmentModel {
         case warning(_ title: String)
     }
 
-    enum FeedbackType: Int, @unchecked Sendable {
+    enum FeedbackType: Int, Sendable {
         case success = 0
         case warning = 1
         case error = 2

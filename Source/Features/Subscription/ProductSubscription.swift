@@ -2,6 +2,7 @@ import OSLog
 import StoreKit
 import SwiftUI
 
+// HACK: Remove when no longer necessary
 extension StoreKit.Product.SubscriptionInfo.Status: @unchecked Sendable {}
 
 actor ProductSubscription {

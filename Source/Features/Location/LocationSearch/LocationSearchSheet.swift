@@ -9,6 +9,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+// HACK: Remove when no longer necessary
 extension MKLocalSearch.Response: @unchecked Sendable {}
 
 @MainActor

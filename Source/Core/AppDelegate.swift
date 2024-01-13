@@ -2,8 +2,10 @@ import EnvironmentModels
 import OSLog
 import SwiftUI
 
+// HACK: Remove when no longer necessary
 extension UNUserNotificationCenter: @unchecked Sendable {}
 extension UNNotification: @unchecked Sendable {}
+extension UIApplicationShortcutItem: @unchecked Sendable {}
 
 @MainActor
 final class AppDelegate: NSObject, UIApplicationDelegate {
@@ -78,9 +80,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     ) {
         let userInfo = response.notification.request.content.userInfo
         if let deepLink = userInfo["link"] as? String, let url = URL(string: deepLink) {
-            Task { await MainActor.run {
-                UIApplication.shared.open(url)
-            }
+            Task { @MainActor in
+                await UIApplication.shared.open(url)
             }
         }
         completionHandler()
@@ -95,8 +96,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
     }
 }
-
-extension UIApplicationShortcutItem: @unchecked Sendable {}
 
 // Actors to make passing values between AppDelegate and SwiftUI views safe without using shared singletons
 actor DeviceTokenActor {
