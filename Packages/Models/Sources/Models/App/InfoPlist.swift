@@ -1,6 +1,12 @@
 import Foundation
 
 public struct InfoPlist: Codable {
+    private struct CFBundleType: Codable {
+        let CFBundleTypeRole: String
+        let CFBundleURLName: String
+        let CFBundleURLSchemes: [String]
+    }
+
     public let supabaseUrl: URL
     public let supabaseAnonKey: String
     public let baseUrl: URL
@@ -9,7 +15,8 @@ public struct InfoPlist: Codable {
     public let deepLinkBaseUrl: URL
     public let feedbackEmail: String
     public let bundleVersion: String
-    public let bundleShortVersion: String
+    public let appVersion: AppVersion
+    private let cfBundleURLTypes: [CFBundleType]
 
     public init() throws {
         guard let infoDictionary = Bundle.main.infoDictionary else {
@@ -28,30 +35,12 @@ public struct InfoPlist: Codable {
         case deepLinkBaseUrl = "DEEP_LINK_BASE_URL"
         case feedbackEmail = "FEEDBACK_EMAIL"
         case bundleVersion = "CFBundleVersion"
-        case bundleShortVersion = "CFBundleShortVersionString"
+        case appVersion = "CFBundleShortVersionString"
+        case cfBundleURLTypes = "CFBundleURLTypes"
     }
 
-    public var deeplinkSchema: String {
-        var schema: String?
-
-        if let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] {
-            for urlType in urlTypes {
-                if let urlSchemes = urlType["CFBundleURLSchemes"] as? [String] {
-                    schema = urlSchemes.first
-                }
-            }
-        }
-
-        guard let schema else { fatalError("Deep link schema is not set in plist for this environment") }
-        return schema
-    }
-
-    public var appVersion: AppVersion {
-        do {
-            return try AppVersion(with: bundleShortVersion, buildVersion: Int(bundleVersion) ?? 0)
-        } catch {
-            fatalError("failed to decode AV")
-        }
+    public var deeplinkSchemes: [String] {
+        cfBundleURLTypes.flatMap(\.CFBundleURLSchemes)
     }
 
     public var bundleIdentifier: String = Bundle.main.bundleIdentifier ?? "N/A"

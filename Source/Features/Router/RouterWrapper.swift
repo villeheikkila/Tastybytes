@@ -22,7 +22,7 @@ struct RouterWrapper<Content: View>: View {
                 }
         }
         .onOpenURL { url in
-            if let detailPage = DeepLinkHandler(url: url, deeplinkSchema: appEnvironmentModel.infoPlist.deeplinkSchema).detailPage {
+            if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
                 router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
             }
         }

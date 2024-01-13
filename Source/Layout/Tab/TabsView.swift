@@ -34,7 +34,7 @@ struct TabsView: View {
         .simultaneousGesture(switchTabGesture)
         .environment(tabManager)
         .onOpenURL { url in
-            if let tab = TabUrlHandler(url: url, deeplinkSchema: appEnvironmentModel.infoPlist.deeplinkSchema).tab {
+            if let tab = TabUrlHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).tab {
                 tabManager.selection = tab
             }
         }

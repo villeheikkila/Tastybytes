@@ -117,7 +117,7 @@ struct SideBarView: View {
         }
         .navigationSplitViewStyle(.balanced)
         .onOpenURL { url in
-            if let tab = TabUrlHandler(url: url, deeplinkSchema: appEnvironmentModel.infoPlist.deeplinkSchema).sidebarTab {
+            if let tab = TabUrlHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).sidebarTab {
                 selection = tab
             }
         }

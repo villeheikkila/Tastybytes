@@ -127,7 +127,7 @@ struct AboutScreen: View {
     @ViewBuilder var footer: some View {
         Section {
             VStack {
-                Text("\(appEnvironmentModel.infoPlist.appName) \(appEnvironmentModel.infoPlist.appVersion.prettyString)")
+                Text("\(appEnvironmentModel.infoPlist.appName) \(appEnvironmentModel.infoPlist.appVersion.prettyString) (\(appEnvironmentModel.infoPlist.bundleVersion))")
                     .font(.caption).bold()
                 HStack {
                     Spacer()

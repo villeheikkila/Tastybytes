@@ -7,11 +7,11 @@ enum TabIdentifier: Hashable {
 
 struct TabUrlHandler {
     private let url: URL
-    let deeplinkSchema: String
+    let deeplinkSchemes: [String]
 
-    init(url: URL, deeplinkSchema: String) {
+    init(url: URL, deeplinkSchemes: [String]) {
         self.url = url
-        self.deeplinkSchema = deeplinkSchema
+        self.deeplinkSchemes = deeplinkSchemes
     }
 
     var isUniversalLink: Bool {
@@ -19,7 +19,8 @@ struct TabUrlHandler {
     }
 
     var isDeepLink: Bool {
-        url.scheme == deeplinkSchema
+        guard let scheme = url.scheme else { return false }
+        return deeplinkSchemes.contains(scheme)
     }
 
     var tabIdentifier: TabIdentifier? {
