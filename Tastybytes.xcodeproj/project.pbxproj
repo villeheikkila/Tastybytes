@@ -469,12 +469,6 @@
 		5C07F2842B527DDE00D8740B /* ShareLink */ = {
 			isa = PBXGroup;
 			children = (
-				5C07F2742B51EBB700D8740B /* BrandShareLinkView.swift */,
-				5C07F2732B51EBB700D8740B /* CheckInShareLinkView.swift */,
-				5C07F2772B51EBB800D8740B /* CompanyShareLinkView.swift */,
-				5C07F2752B51EBB700D8740B /* LocationShareLinkView.swift */,
-				5C07F2722B51EBB700D8740B /* ProductShareLinkView.swift */,
-				5C07F2762B51EBB700D8740B /* ProfileShareLinkView.swift */,
 			);
 			path = ShareLink;
 			sourceTree = "<group>";
@@ -1052,6 +1046,12 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5C07F2742B51EBB700D8740B /* BrandShareLinkView.swift */,
+				5C07F2732B51EBB700D8740B /* CheckInShareLinkView.swift */,
+				5C07F2772B51EBB800D8740B /* CompanyShareLinkView.swift */,
+				5C07F2752B51EBB700D8740B /* LocationShareLinkView.swift */,
+				5C07F2722B51EBB700D8740B /* ProductShareLinkView.swift */,
+				5C07F2762B51EBB700D8740B /* ProfileShareLinkView.swift */,
 				5C07F2842B527DDE00D8740B /* ShareLink */,
 				5C9057C22B2894BE00EC157B /* AppNameView.swift */,
 				5C9057C42B2894BE00EC157B /* AppLogoView.swift */,

@@ -51,9 +51,9 @@ public final class AppEnvironmentModel {
     private let repository: Repository
     public let infoPlist: InfoPlist
 
-    public init(repository: Repository, configuration: InfoPlist) {
+    public init(repository: Repository, infoPlist: InfoPlist) {
         self.repository = repository
-        infoPlist = configuration
+        self.infoPlist = infoPlist
     }
 
     public func dismissSplashScreen() {
