@@ -1,15 +1,12 @@
 import SwiftUI
 
-struct LayoutSelector<Sidebar: View, Tab: View>: View {
-    @ViewBuilder let sidebar: () -> Sidebar
-    @ViewBuilder let tab: () -> Tab
-
+struct LayoutSelector: View {
     var body: some View {
         switch UIDevice.current.userInterfaceIdiom {
         case .pad, .mac, .vision:
-            sidebar()
+            SideBarView()
         case .phone:
-            tab()
+            TabsView()
         default:
             EmptyView()
         }

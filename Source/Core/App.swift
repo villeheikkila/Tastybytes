@@ -6,9 +6,7 @@ import SwiftUI
 
 @main
 struct MainApp: App {
-    private let logger = Logger(category: "Main")
-    @UIApplicationDelegateAdaptor(AppDelegate.self)
-    var appDelegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {

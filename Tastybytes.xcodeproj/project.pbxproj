@@ -12,7 +12,6 @@
 		5C02A73D2B4F2A7800B497FA /* AppUnsupportedVersionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */; };
 		5C02A73F2B4F316800B497FA /* AppStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73E2B4F316800B497FA /* AppStateObserver.swift */; };
 		5C02A7412B4FBA5900B497FA /* DeviceInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */; };
-		5C037BB52B472F150075091B /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C037BB42B472F150075091B /* Globals.swift */; };
 		5C037BB72B47EDF10075091B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C037BB62B47EDF10075091B /* Localizable.xcstrings */; };
 		5C07F2782B51EBB800D8740B /* ProfileShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F2762B51EBB700D8740B /* ProfileShareLinkView.swift */; };
 		5C07F2792B51EBB800D8740B /* BrandShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F2742B51EBB700D8740B /* BrandShareLinkView.swift */; };
@@ -215,7 +214,6 @@
 		5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUnsupportedVersionState.swift; sourceTree = "<group>"; };
 		5C02A73E2B4F316800B497FA /* AppStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateObserver.swift; sourceTree = "<group>"; };
 		5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoProvider.swift; sourceTree = "<group>"; };
-		5C037BB42B472F150075091B /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		5C037BB62B47EDF10075091B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5C07F2722B51EBB700D8740B /* ProductShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductShareLinkView.swift; sourceTree = "<group>"; };
 		5C07F2732B51EBB700D8740B /* CheckInShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInShareLinkView.swift; sourceTree = "<group>"; };
@@ -447,6 +445,25 @@
 				C94723052AD1870A006DE096 /* Target.xcconfig */,
 			);
 			path = Target;
+			sourceTree = "<group>";
+		};
+		5C07F2802B5275D800D8740B /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */,
+				5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
+		5C07F2812B5275E100D8740B /* Observers */ = {
+			isa = PBXGroup;
+			children = (
+				5C672E892B504DD80048605B /* ProfileStateObserver.swift */,
+				5C02A73E2B4F316800B497FA /* AppStateObserver.swift */,
+				5C07F27E2B51F00600D8740B /* PhaseObserver.swift */,
+			);
+			path = Observers;
 			sourceTree = "<group>";
 		};
 		5C3907642B3208D10036253E /* ProductItem */ = {
@@ -1074,17 +1091,13 @@
 		5C9057E02B2894BE00EC157B /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				5C07F2812B5275E100D8740B /* Observers */,
+				5C07F2802B5275D800D8740B /* Providers */,
 				5C02A7372B4EAF7700B497FA /* AppStates */,
 				5C9057DF2B2894BE00EC157B /* App.swift */,
 				5C82E8902B2F6C0E00F2B369 /* ContentView.swift */,
-				5C672E892B504DD80048605B /* ProfileStateObserver.swift */,
-				5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */,
 				5C39076E2B3232420036253E /* LayoutSelector.swift */,
 				5C9057E32B2894BE00EC157B /* AppDelegate.swift */,
-				5C037BB42B472F150075091B /* Globals.swift */,
-				5C02A73E2B4F316800B497FA /* AppStateObserver.swift */,
-				5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */,
-				5C07F27E2B51F00600D8740B /* PhaseObserver.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1468,7 +1481,6 @@
 				5C39076F2B3232420036253E /* LayoutSelector.swift in Sources */,
 				5C9058202B2894BE00EC157B /* AccountDeletedScreen.swift in Sources */,
 				5C02A73D2B4F2A7800B497FA /* AppUnsupportedVersionState.swift in Sources */,
-				5C037BB52B472F150075091B /* Globals.swift in Sources */,
 				5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */,
 				5CCEE27B2B2C770A00F276DF /* CheckInCardProduct.swift in Sources */,
 				5CCEE2812B2CA57700F276DF /* CheckInCardFooter.swift in Sources */,

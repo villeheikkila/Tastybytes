@@ -6,45 +6,21 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Providers {
-            Observers {
-                LayoutSelector(sidebar: {
-                    SideBarView()
-                }, tab: {
-                    TabsView()
-                })
-            }
-        }
-    }
-}
-
-struct Providers<Content: View>: View {
-    @ViewBuilder let content: () -> Content
-
-    var body: some View {
         EnvironmentProvider {
             SubscriptionProvider {
                 DeviceInfoProvider {
                     SplashScreenProvider {
-                        content()
-                    }
-                }
-            }
-        }
-    }
-}
-
-struct Observers<Content: View>: View {
-    @ViewBuilder let content: () -> Content
-
-    var body: some View {
-        PhaseObserver {
-            AppStateObserver {
-                AuthStateObserver {
-                    ProfileStateObserver {
-                        OnboardingStateObserver {
-                            NotificationObserver {
-                                content()
+                        PhaseObserver {
+                            AppStateObserver {
+                                AuthStateObserver {
+                                    ProfileStateObserver {
+                                        OnboardingStateObserver {
+                                            NotificationObserver {
+                                                LayoutSelector()
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

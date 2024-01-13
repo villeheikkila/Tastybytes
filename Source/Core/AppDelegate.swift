@@ -95,3 +95,25 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
     }
 }
+
+extension UIApplicationShortcutItem: @unchecked Sendable {}
+
+// Actors to make passing values between AppDelegate and SwiftUI views safe without using shared singletons
+actor DeviceTokenActor {
+    var deviceTokenForPusNotifications: String?
+
+    func setDeviceTokenForPusNotifications(_ newValue: String?) async {
+        deviceTokenForPusNotifications = newValue
+    }
+}
+
+actor QuickActionActor {
+    var selectedQuickAction: UIApplicationShortcutItem?
+
+    func setSelectedQuickAction(_ newValue: UIApplicationShortcutItem?) async {
+        selectedQuickAction = newValue
+    }
+}
+
+let quickActionActor = QuickActionActor()
+let deviceTokenActor = DeviceTokenActor()
