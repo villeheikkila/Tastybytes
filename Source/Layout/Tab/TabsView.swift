@@ -17,14 +17,6 @@ struct TabsView: View {
         }
     }
 
-    private func badge() -> Int {
-        switch tabManager.selection {
-        case .notifications:
-            notificationEnvironmentModel.unreadCount
-        default:
-            0
-        }
-    }
 
     var body: some View {
         TabView(selection: $tabManager.selection) {
@@ -50,6 +42,15 @@ struct TabsView: View {
             }
             .tag(tab)
             .badge(badge())
+        }
+    }
+    
+    private func badge() -> Int {
+        switch tabManager.selection {
+        case .notifications:
+            notificationEnvironmentModel.unreadCount
+        default:
+            0
         }
     }
 

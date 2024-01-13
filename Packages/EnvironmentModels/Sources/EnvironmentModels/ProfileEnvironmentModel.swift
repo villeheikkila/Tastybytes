@@ -65,7 +65,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    // Getters
+    // Getters that are only available after authentication, calling these before authentication causes an app crash
     public var profile: Profile {
         if let extendedProfile {
             extendedProfile.profile

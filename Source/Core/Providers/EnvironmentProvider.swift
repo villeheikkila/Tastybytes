@@ -5,39 +5,6 @@ import Repositories
 import StoreKit
 import SwiftUI
 
-private final class RepositoryInitializer {
-    private let logger = Logger(category: "RepositoryInitializer")
-
-    let infoPlist: InfoPlist
-    let bundleIdentifier: String
-    let repository: Repository
-
-    static let shared = RepositoryInitializer()
-
-    private init() {
-        do {
-            let startTime = DispatchTime.now()
-            guard let infoDictionary = Bundle.main.infoDictionary else {
-                throw NSError(domain: "Configuration", code: 0, userInfo: [NSLocalizedDescriptionKey: "infoDictionary not found"])
-            }
-
-            let jsonData = try JSONSerialization.data(withJSONObject: infoDictionary, options: .prettyPrinted)
-            let infoPlist = try JSONDecoder().decode(InfoPlist.self, from: jsonData)
-            let bundleIdentifier: String = Bundle.main.bundleIdentifier ?? "N/A"
-            self.infoPlist = infoPlist
-            self.bundleIdentifier = bundleIdentifier
-            repository = Repository(
-                supabaseURL: infoPlist.supabaseUrl,
-                supabaseKey: infoPlist.supabaseAnonKey,
-                headers: ["x_bundle_id": bundleIdentifier, "x_app_version": infoPlist.appVersion.prettyString]
-            )
-            logger.info("Repository initialized in \(startTime.elapsedTime())ms")
-        } catch {
-            fatalError("Error decoding configuration: \(error)")
-        }
-    }
-}
-
 @MainActor
 struct EnvironmentProvider<Content: View>: View {
     @State private var permissionEnvironmentModel = PermissionEnvironmentModel()
@@ -77,5 +44,38 @@ struct EnvironmentProvider<Content: View>: View {
             .task {
                 locationEnvironmentModel.updateLocationAuthorizationStatus()
             }
+    }
+}
+
+private final class RepositoryInitializer {
+    private let logger = Logger(category: "RepositoryInitializer")
+
+    let infoPlist: InfoPlist
+    let bundleIdentifier: String
+    let repository: Repository
+
+    static let shared = RepositoryInitializer()
+
+    private init() {
+        do {
+            let startTime = DispatchTime.now()
+            guard let infoDictionary = Bundle.main.infoDictionary else {
+                throw NSError(domain: "Configuration", code: 0, userInfo: [NSLocalizedDescriptionKey: "infoDictionary not found"])
+            }
+
+            let jsonData = try JSONSerialization.data(withJSONObject: infoDictionary, options: .prettyPrinted)
+            let infoPlist = try JSONDecoder().decode(InfoPlist.self, from: jsonData)
+            let bundleIdentifier: String = Bundle.main.bundleIdentifier ?? "N/A"
+            self.infoPlist = infoPlist
+            self.bundleIdentifier = bundleIdentifier
+            repository = Repository(
+                supabaseURL: infoPlist.supabaseUrl,
+                supabaseKey: infoPlist.supabaseAnonKey,
+                headers: ["x_bundle_id": bundleIdentifier, "x_app_version": infoPlist.appVersion.prettyString]
+            )
+            logger.info("Repository initialized in \(startTime.elapsedTime())ms")
+        } catch {
+            fatalError("Failed to initialize repository: \(error)")
+        }
     }
 }

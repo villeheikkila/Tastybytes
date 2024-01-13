@@ -36,11 +36,12 @@ public final class AppEnvironmentModel {
     public var aboutPage: AboutPage?
     public var appConfig: AppConfig?
 
+    // Getters that are only available after initialization, calling these before authentication causes an app crash
     public var config: AppConfig {
         if let appConfig {
             appConfig
         } else {
-            fatalError("Tried to access app config before app environment model was initialized")
+            fatalError("Tried to access config before app environment model was initialized")
         }
     }
 

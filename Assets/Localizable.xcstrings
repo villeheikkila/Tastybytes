@@ -81,7 +81,6 @@
       }
     },
     "%@ Pro" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -748,9 +747,6 @@
           }
         }
       }
-    },
-    "Config.appName Pro" : {
-
     },
     "Connect with others by sharing your name tag" : {
       "localizations" : {

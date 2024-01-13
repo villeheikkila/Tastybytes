@@ -1,8 +1,12 @@
 import Models
 import StoreKit
 import SwiftUI
+import EnvironmentModels
 
+@MainActor
 struct SubscriptionStoreContentView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+
     var body: some View {
         VStack {
             image
@@ -14,9 +18,7 @@ struct SubscriptionStoreContentView: View {
         .padding(.vertical)
         .padding(.top, 40)
     }
-}
-
-extension SubscriptionStoreContentView {
+    
     var image: some View {
         Image(.projectLogo)
             .resizable()
@@ -25,7 +27,7 @@ extension SubscriptionStoreContentView {
     }
 
     var title: some View {
-        Text("Config.appName Pro")
+        Text("\(appEnvironmentModel.infoPlist.appName) Pro")
             .font(.largeTitle.bold())
     }
 

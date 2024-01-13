@@ -9,9 +9,9 @@ struct SubscriptionIdentifier: Sendable {
 extension EnvironmentValues {
     private enum SubscriptionIDKey: EnvironmentKey, Sendable {
         static var defaultValue = SubscriptionIdentifier(
-            group: "21373294",
-            monthly: "com.tastybytes.pro.monthly",
-            yearly: "com.tastybytes.pro.yearly"
+            group: "21434122",
+            monthly: "monthly",
+            yearly: "yearly"
         )
     }
 
