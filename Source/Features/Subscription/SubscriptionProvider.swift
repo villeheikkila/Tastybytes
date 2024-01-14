@@ -4,15 +4,16 @@ import SwiftUI
 
 @MainActor
 struct SubscriptionProvider<Content: View>: View {
-    @Environment(\.productSubscriptionIds) private var productSubscriptionIds
-    @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel()
+    @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         content()
-            .environment(subscriptionEnvironmentModel)
-            .subscriptionStatusTask(for: productSubscriptionIds.group) { taskStatus in
-                await subscriptionEnvironmentModel.onTaskStatusChange(taskStatus: taskStatus, productSubscriptionIds: productSubscriptionIds)
+            .subscriptionStatusTask(for: subscriptionEnvironmentModel.subscriptionGroup?.groupId ?? "") { taskStatus in
+                await subscriptionEnvironmentModel.onTaskStatusChange(taskStatus: taskStatus)
+            }
+            .task {
+                await subscriptionEnvironmentModel.initializeProductIds()
             }
             .task {
                 await subscriptionEnvironmentModel.productSubscription.observeTransactionUpdates()

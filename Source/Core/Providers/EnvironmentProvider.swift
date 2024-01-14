@@ -15,6 +15,8 @@ struct EnvironmentProvider<Content: View>: View {
     @State private var imageUploadEnvironmentModel = ImageUploadEnvironmentModel(repository: RepositoryInitializer.shared.repository)
     @State private var locationEnvironmentModel = LocationEnvironmentModel()
     @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
+    @State private var subscriptionEnvironmentModel = SubscriptionEnvironmentModel(repository: RepositoryInitializer.shared.repository)
+
     let repository: Repository = RepositoryInitializer.shared.repository
 
     @ViewBuilder let content: () -> Content
@@ -30,6 +32,7 @@ struct EnvironmentProvider<Content: View>: View {
             .environment(permissionEnvironmentModel)
             .environment(imageUploadEnvironmentModel)
             .environment(locationEnvironmentModel)
+            .environment(subscriptionEnvironmentModel)
             .alertError($appEnvironmentModel.alertError)
             .alertError($notificationEnvironmentModel.alertError)
             .alertError($profileEnvironmentModel.alertError)

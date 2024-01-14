@@ -1,3 +1,4 @@
+import Models
 import OSLog
 import StoreKit
 import SwiftUI
@@ -10,29 +11,30 @@ actor ProductSubscription {
 
     public init() {}
 
-    public func getStatusFromTaskStatus(taskStatuses: EntitlementTaskState<[Product.SubscriptionInfo.Status]>, productSubscriptionIds: SubscriptionIdentifier) async -> EntitlementTaskState<SubscriptionStatus> {
+    public func getStatusFromTaskStatus(taskStatuses: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions: [Subscription]) async -> EntitlementTaskState<SubscriptionStatus> {
         taskStatuses.map { statuses in
             status(
                 for: statuses,
-                ids: productSubscriptionIds
+                productSubscriptions: productSubscriptions
             )
         }
     }
 
     private func status(for statuses: [StoreKit.Product.SubscriptionInfo.Status],
-                        ids: SubscriptionIdentifier) -> SubscriptionStatus
+                        productSubscriptions: [Subscription]) -> SubscriptionStatus
     {
         let effectiveStatus = statuses.max { lhs, rhs in
             let lhsStatus = SubscriptionStatus(
                 productID: lhs.transaction.unsafePayloadValue.productID,
-                ids: ids
+                productSubscriptions: productSubscriptions
             ) ?? .notSubscribed
             let rhsStatus = SubscriptionStatus(
                 productID: rhs.transaction.unsafePayloadValue.productID,
-                ids: ids
+                productSubscriptions: productSubscriptions
             ) ?? .notSubscribed
             return lhsStatus < rhsStatus
         }
+
         guard let effectiveStatus else {
             return .notSubscribed
         }
@@ -47,18 +49,15 @@ actor ProductSubscription {
             return .notSubscribed
         }
 
-        if case .autoRenewable = transaction.productType {
-            if !(transaction.revocationDate == nil && transaction.revocationReason == nil) {
-                return .notSubscribed
-            }
-            if let subscriptionExpirationDate = transaction.expirationDate {
-                if subscriptionExpirationDate.timeIntervalSince1970 < Date().timeIntervalSince1970 {
-                    return .notSubscribed
-                }
-            }
+        if case .autoRenewable = transaction.productType,
+           transaction.revocationDate != nil || transaction.revocationReason != nil,
+           let expirationDate = transaction.expirationDate,
+           expirationDate.timeIntervalSince1970 < Date().timeIntervalSince1970
+        {
+            return .notSubscribed
         }
 
-        return SubscriptionStatus(productID: transaction.productID, ids: ids) ?? .notSubscribed
+        return .init(productID: transaction.productID, productSubscriptions: productSubscriptions) ?? .notSubscribed
     }
 }
 

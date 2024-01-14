@@ -2,16 +2,18 @@ import StoreKit
 import SwiftUI
 
 struct SubscriptionSheet: View {
-    @Environment(\.productSubscriptionIds.group) private var groupId
+    @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
 
     var body: some View {
-        SubscriptionStoreView(groupID: groupId) {
-            SubscriptionStoreContentView()
+        if let subscriptionGroup = subscriptionEnvironmentModel.subscriptionGroup {
+            SubscriptionStoreView(groupID: subscriptionGroup.groupId) {
+                SubscriptionStoreContentView(subscriptionGroupName: subscriptionGroup.name)
+            }
+            .backgroundStyle(.clear)
+            .subscriptionStoreButtonLabel(.multiline)
+            .subscriptionStorePickerItemBackground(.thinMaterial)
+            .storeButton(.visible, for: .restorePurchases)
         }
-        .backgroundStyle(.clear)
-        .subscriptionStoreButtonLabel(.multiline)
-        .subscriptionStorePickerItemBackground(.thinMaterial)
-        .storeButton(.visible, for: .restorePurchases)
     }
 }
 

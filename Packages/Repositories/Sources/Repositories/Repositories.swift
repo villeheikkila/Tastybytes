@@ -22,6 +22,7 @@ public protocol RepositoryProtocol: Sendable {
     var location: LocationRepository { get }
     var document: DocumentRepository { get }
     var report: ReportRepository { get }
+    var subscription: SubscriptionRepository { get }
 }
 
 @Observable
@@ -46,6 +47,7 @@ public final class Repository: RepositoryProtocol {
     public let location: LocationRepository
     public let document: DocumentRepository
     public let report: ReportRepository
+    public let subscription: SubscriptionRepository
 
     public init(supabaseURL: URL, supabaseKey: String, headers: [String: String]) {
         let client = SupabaseClient(
@@ -73,5 +75,6 @@ public final class Repository: RepositoryProtocol {
         location = SupabaseLocationRepository(client: client)
         document = SupabaseDocumentRepository(client: client)
         report = SupabaseReportRepository(client: client)
+        subscription = SupabaseSubscriptionRepository(client: client)
     }
 }

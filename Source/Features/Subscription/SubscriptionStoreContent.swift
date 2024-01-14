@@ -7,6 +7,8 @@ import SwiftUI
 struct SubscriptionStoreContentView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 
+    let subscriptionGroupName: String
+
     var body: some View {
         VStack {
             image
@@ -22,12 +24,13 @@ struct SubscriptionStoreContentView: View {
     var image: some View {
         Image(.projectLogo)
             .resizable()
+            .accessibilityHidden(true)
             .aspectRatio(contentMode: .fit)
             .frame(width: 100)
     }
 
     var title: some View {
-        Text("\(appEnvironmentModel.infoPlist.appName) Pro")
+        Text("\(appEnvironmentModel.infoPlist.appName) \(subscriptionGroupName)")
             .font(.largeTitle.bold())
     }
 
