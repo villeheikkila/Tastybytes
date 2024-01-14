@@ -7,11 +7,11 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         EnvironmentProvider {
-            SubscriptionProvider {
-                DeviceInfoProvider {
-                    SplashScreenProvider {
-                        PhaseObserver {
-                            AppStateObserver {
+            DeviceInfoProvider {
+                SplashScreenProvider {
+                    PhaseObserver {
+                        AppStateObserver {
+                            SubscriptionProvider {
                                 AuthStateObserver {
                                     ProfileStateObserver {
                                         OnboardingStateObserver {

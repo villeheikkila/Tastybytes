@@ -35,11 +35,20 @@ public final class AppEnvironmentModel {
     public var countries = [Country]()
     public var aboutPage: AboutPage?
     public var appConfig: AppConfig?
+    private var subscriptionGroupOptional: SubscriptionGroup.Joined?
 
     // Getters that are only available after initialization, calling these before authentication causes an app crash
     public var config: AppConfig {
         if let appConfig {
             appConfig
+        } else {
+            fatalError("Tried to access config before app environment model was initialized")
+        }
+    }
+
+    public var subscriptionGroup: SubscriptionGroup.Joined {
+        if let subscriptionGroupOptional {
+            subscriptionGroupOptional
         } else {
             fatalError("Tried to access config before app environment model was initialized")
         }
@@ -79,13 +88,15 @@ public final class AppEnvironmentModel {
         async let flavorPromise = repository.flavor.getAll()
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
         async let countryPromise = repository.location.getAllCountries()
+        async let subscriptionGroupPromise = repository.subscription.getActiveGroup()
 
-        let (appConfigResponse, flavorResponse, categoryResponse, aboutPageResponse, countryResponse) = await (
+        let (appConfigResponse, flavorResponse, categoryResponse, aboutPageResponse, countryResponse, subscriptionGroup) = await (
             appConfigPromise,
             flavorPromise,
             categoryPromise,
             aboutPagePromise,
-            countryPromise
+            countryPromise,
+            subscriptionGroupPromise
         )
 
         var errors: [Error] = []
@@ -101,6 +112,12 @@ public final class AppEnvironmentModel {
         case let .failure(error):
             errors.append(error)
             logger.error("Failed to load app config. Error: \(error) (\(#file):\(#line))")
+        }
+        switch subscriptionGroup {
+        case let .success(subscriptionGroup):
+            subscriptionGroupOptional = subscriptionGroup
+        case let .failure(error):
+            logger.error("Failed to load subscription group. Error: \(error) (\(#file):\(#line))")
         }
         switch flavorResponse {
         case let .success(flavors):
