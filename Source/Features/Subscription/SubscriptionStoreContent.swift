@@ -1,7 +1,7 @@
+import EnvironmentModels
 import Models
 import StoreKit
 import SwiftUI
-import EnvironmentModels
 
 @MainActor
 struct SubscriptionStoreContentView: View {
@@ -18,7 +18,7 @@ struct SubscriptionStoreContentView: View {
         .padding(.vertical)
         .padding(.top, 40)
     }
-    
+
     var image: some View {
         Image(.projectLogo)
             .resizable()

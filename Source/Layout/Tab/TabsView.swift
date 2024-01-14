@@ -17,7 +17,6 @@ struct TabsView: View {
         }
     }
 
-
     var body: some View {
         TabView(selection: $tabManager.selection) {
             tabs
@@ -44,7 +43,7 @@ struct TabsView: View {
             .badge(badge())
         }
     }
-    
+
     private func badge() -> Int {
         switch tabManager.selection {
         case .notifications:
