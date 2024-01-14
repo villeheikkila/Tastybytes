@@ -35,20 +35,12 @@ public final class AppEnvironmentModel {
     public var countries = [Country]()
     public var aboutPage: AboutPage?
     public var appConfig: AppConfig?
-    private var subscriptionGroupOptional: SubscriptionGroup.Joined?
+    public var subscriptionGroup: SubscriptionGroup.Joined?
 
     // Getters that are only available after initialization, calling these before authentication causes an app crash
     public var config: AppConfig {
         if let appConfig {
             appConfig
-        } else {
-            fatalError("Tried to access config before app environment model was initialized")
-        }
-    }
-
-    public var subscriptionGroup: SubscriptionGroup.Joined {
-        if let subscriptionGroupOptional {
-            subscriptionGroupOptional
         } else {
             fatalError("Tried to access config before app environment model was initialized")
         }
@@ -115,7 +107,7 @@ public final class AppEnvironmentModel {
         }
         switch subscriptionGroup {
         case let .success(subscriptionGroup):
-            subscriptionGroupOptional = subscriptionGroup
+            self.subscriptionGroup = subscriptionGroup
         case let .failure(error):
             logger.error("Failed to load subscription group. Error: \(error) (\(#file):\(#line))")
         }

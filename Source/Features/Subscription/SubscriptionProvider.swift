@@ -10,13 +10,22 @@ struct SubscriptionProvider<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        content()
-            .subscriptionStatusTask(for: appEnvironmentModel.subscriptionGroup.groupId) { taskStatus in
-                await subscriptionEnvironmentModel.onTaskStatusChange(taskStatus: taskStatus, productSubscriptions: appEnvironmentModel.subscriptionGroup.subscriptions)
+        Group {
+            if let subscriptionGroup = appEnvironmentModel.subscriptionGroup {
+                content()
+                    .subscriptionStatusTask(for: subscriptionGroup.groupId) { taskStatus in
+                        await subscriptionEnvironmentModel.onTaskStatusChange(taskStatus: taskStatus, productSubscriptions: subscriptionGroup.subscriptions)
+                    }
+                    .task {
+                        await subscriptionEnvironmentModel.initializeActiveTransactions()
+                    }
+                    .task {
+                        await subscriptionEnvironmentModel.productSubscription.observeTransactionUpdates()
+                    }
+                    .task {
+                        await subscriptionEnvironmentModel.productSubscription.checkForUnfinishedTransactions()
+                    }
             }
-            .task {
-                await subscriptionEnvironmentModel.productSubscription.observeTransactionUpdates()
-                await subscriptionEnvironmentModel.productSubscription.checkForUnfinishedTransactions()
-            }
+        }
     }
 }

@@ -14,7 +14,7 @@ extension SubscriptionGroup {
         case let .joined(withTableName):
             return queryWithTableName(
                 tableName,
-                [saved, Subscription.getQuery(.saved(true))].joinComma(),
+                [saved, SubscriptionProduct.getQuery(.saved(true))].joinComma(),
                 withTableName
             )
         }
@@ -27,9 +27,9 @@ extension SubscriptionGroup {
     }
 }
 
-extension Subscription {
+extension SubscriptionProduct {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.subscriptions.rawValue
+        let tableName = Database.Table.subscriptionProducts.rawValue
         let saved = "name, product_id, group_id, priority"
 
         switch queryType {

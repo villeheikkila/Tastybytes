@@ -22,4 +22,19 @@ struct SupabaseSubscriptionRepository: SubscriptionRepository {
             return .failure(error)
         }
     }
+
+    func syncSubscriptionTransaction(transactionInfo: SubscriptionTransaction) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(.subscriptionTransactions)
+                .upsert(transactionInfo, onConflict: "id")
+                .execute()
+                .value
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
 }

@@ -4,9 +4,9 @@ import SwiftUI
 
 enum SubscriptionStatus: Comparable, Hashable, Sendable {
     case notSubscribed
-    case subscribed(Subscription)
+    case subscribed(SubscriptionProduct)
 
-    init?(productID: StoreKit.Product.ID, productSubscriptions: [Subscription]) {
+    init?(productID: StoreKit.Product.ID, productSubscriptions: [SubscriptionProduct]) {
         if let matchedSubscription = productSubscriptions.first(where: { $0.id == productID }) {
             self = .subscribed(matchedSubscription)
         } else {

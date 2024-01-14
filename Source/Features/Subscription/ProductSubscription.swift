@@ -3,15 +3,12 @@ import OSLog
 import StoreKit
 import SwiftUI
 
-// HACK: Remove when no longer necessary
-extension StoreKit.Product.SubscriptionInfo.Status: @unchecked Sendable {}
-
 actor ProductSubscription {
     private let logger = Logger(category: "ProductSubscription")
 
     public init() {}
 
-    public func getStatusFromTaskStatus(taskStatuses: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions: [Subscription]) async -> EntitlementTaskState<SubscriptionStatus> {
+    public func getStatusFromTaskStatus(taskStatuses: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions: [SubscriptionProduct]) async -> EntitlementTaskState<SubscriptionStatus> {
         taskStatuses.map { statuses in
             status(
                 for: statuses,
@@ -21,7 +18,7 @@ actor ProductSubscription {
     }
 
     private func status(for statuses: [StoreKit.Product.SubscriptionInfo.Status],
-                        productSubscriptions: [Subscription]) -> SubscriptionStatus
+                        productSubscriptions: [SubscriptionProduct]) -> SubscriptionStatus
     {
         let effectiveStatus = statuses.max { lhs, rhs in
             let lhsStatus = SubscriptionStatus(
@@ -59,9 +56,7 @@ actor ProductSubscription {
 
         return .init(productID: transaction.productID, productSubscriptions: productSubscriptions) ?? .notSubscribed
     }
-}
 
-extension ProductSubscription {
     func process(transaction _: VerificationResult<StoreKit.Transaction>) async {}
 
     func checkForUnfinishedTransactions() async {

@@ -43,7 +43,8 @@ enum Database {
         case subBrands = "sub_brands"
         case subcategories
         case subscriptionGroups = "subscription_groups"
-        case subscriptions
+        case subscriptionProducts = "subscription_products"
+        case subscriptionTransactions = "subscription_transactions"
         // views
         case viewCheckInsFromFriends = "view__check_ins_from_friends"
         case viewCheckInsFromCurrentUser = "view__check_ins_from_current_user"
