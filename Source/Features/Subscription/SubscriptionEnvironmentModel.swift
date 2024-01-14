@@ -30,4 +30,26 @@ import SwiftUI
         @unknown default: break
         }
     }
+
+    func onInAppPurchaseCompletion(product: StoreKit.Product, result: Result<StoreKit.Product.PurchaseResult, Error>) async {
+        switch result {
+        case let .success(result):
+            await onPurchaseResult(product: product, result: result)
+        case let .failure(error):
+            logger.error("Purchase failed, \(error)")
+        }
+    }
+
+    func onPurchaseResult(product: StoreKit.Product, result: StoreKit.Product.PurchaseResult) async {
+        switch result {
+        case let .success(transaction):
+            logger.info("Purchases for \(product.displayName) successful at \(transaction.signedData)")
+        case .pending:
+            logger.info("Purchases for \(product.displayName) pending user action")
+        case .userCancelled:
+            logger.info("Purchases for \(product.displayName) was cancelled by the user")
+        @unknown default:
+            logger.error("Encountered unknown purchase result")
+        }
+    }
 }

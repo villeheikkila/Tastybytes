@@ -1554,6 +1554,9 @@
         }
       }
     },
+    "Privacy policy here" : {
+
+    },
     "Private profile" : {
       "localizations" : {
         "en" : {
@@ -2160,6 +2163,9 @@
           }
         }
       }
+    },
+    "Terms of service here" : {
+
     },
     "TextField" : {
       "localizations" : {
