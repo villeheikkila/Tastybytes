@@ -2376,7 +2376,18 @@
         }
       }
     },
+    "You have %@ %@. Thank you!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You have %1$@ %2$@. Thank you!"
+          }
+        }
+      }
+    },
     "You have %@ Pro. Thank you!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

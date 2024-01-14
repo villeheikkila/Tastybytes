@@ -6,11 +6,13 @@ import SwiftUI
 @MainActor
 struct SettingsScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 
     var body: some View {
         List {
-            settingsSection
+            profileSection
+            appSection
             aboutSection
             logOutSection
         }
@@ -29,11 +31,17 @@ struct SettingsScreen: View {
         }
     }
 
-    @ViewBuilder private var settingsSection: some View {
+    @ViewBuilder private var profileSection: some View {
         Section {
             RouterLink("Profile", systemName: "person.fill", color: .indigo, screen: .profileSettings)
             RouterLink("Account", systemName: "gear", color: .gray, screen: .accountSettings)
             RouterLink("Privacy", systemName: "key.fill", color: .yellow, screen: .privacySettings)
+            RouterLink("Blocked Users", systemName: "person.fill.xmark", color: .green, screen: .blockedUsers)
+        }
+    }
+
+    @ViewBuilder private var appSection: some View {
+        Section {
             RouterLink("settings.appearance.title", systemName: "paintbrush.fill", color: .blue, screen: .appearanaceSettings)
             RouterLink(
                 "Notifications",
@@ -44,7 +52,6 @@ struct SettingsScreen: View {
             RouterLink(screen: .appIcon, label: {
                 AppIconLabelRow()
             })
-            RouterLink("Blocked Users", systemName: "person.fill.xmark", color: .green, screen: .blockedUsers)
         }
     }
 
@@ -58,10 +65,10 @@ struct SettingsScreen: View {
             )
             RouterLink("About", systemName: "at", color: .blue, screen: .about)
         } footer: {
-            if profileEnvironmentModel.hasRole(.pro) {
+            if case .subscribed = subscriptionEnvironmentModel.subscriptionStatus, let subscriptionName = appEnvironmentModel.subscriptionGroup?.name {
                 HStack {
                     Spacer()
-                    Text("You have \(appEnvironmentModel.infoPlist.appName) Pro. Thank you!")
+                    Text("You have \(appEnvironmentModel.infoPlist.appName) \(subscriptionName). Thank you!")
                     Spacer()
                 }
             }
