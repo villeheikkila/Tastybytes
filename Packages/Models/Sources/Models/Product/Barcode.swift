@@ -59,7 +59,7 @@ public extension ProductBarcode {
         public let createdAt: Date
 
         enum CodingKeys: String, CodingKey {
-            case id, barcode, type, profile = "profile", createdAt = "created_at"
+            case id, barcode, type, profile = "profiles", createdAt = "created_at"
         }
     }
 

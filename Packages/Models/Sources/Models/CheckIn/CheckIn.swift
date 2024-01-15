@@ -113,7 +113,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
 public extension CheckIn {
     struct CheckInTaggedProfile: Codable, Sendable, Hashable {
         public let profile: Profile
-        
+
         enum CodingKeys: String, CodingKey {
             case profile = "profiles"
         }
@@ -121,12 +121,12 @@ public extension CheckIn {
 
     struct CheckInFlavor: Codable, Sendable, Hashable {
         public let flavor: Flavor
-        
+
         enum CodingKeys: String, CodingKey {
             case flavor = "flavors"
         }
     }
-    
+
     struct Image: Hashable, Sendable, Identifiable, Codable {
         public let id: Int
         public let createdBy: UUID

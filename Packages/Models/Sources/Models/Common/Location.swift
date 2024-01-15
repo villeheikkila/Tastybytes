@@ -67,10 +67,11 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(title, forKey: .title)
-        try container.encode(location?.coordinate.latitude, forKey: .latitude)
         try container.encode(location?.coordinate.longitude, forKey: .longitude)
+        try container.encode(location?.coordinate.latitude, forKey: .latitude)
         try container.encode(countryCode, forKey: .countryCode)
         try container.encode(country, forKey: .country)
     }
