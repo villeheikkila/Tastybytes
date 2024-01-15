@@ -17,6 +17,8 @@ struct RouterWrapper<Content: View>: View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
         NavigationStack(path: $router.path) {
             content()
+                .toolbarBackground(Material.thin, for: .navigationBar)
+                .toolbarBackground(Material.thin, for: .tabBar)
                 .navigationDestination(for: Screen.self) { screen in
                     screen.view
                 }
