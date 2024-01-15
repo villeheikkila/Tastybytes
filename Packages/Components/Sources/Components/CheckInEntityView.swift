@@ -129,7 +129,7 @@ public struct CheckInEntityView: View {
                     .foregroundColor(.primary)
             }
 
-            FlavorsView(flavors: checkIn.flavors)
+            FlavorsView(flavors: checkIn.flavors.map(\.flavor))
             if let purchaseLocation = checkIn.purchaseLocation {
                 Text("Purchased from __\(purchaseLocation.name)__")
             }
@@ -145,7 +145,7 @@ public struct CheckInEntityView: View {
                 Spacer()
             }
             HStack(spacing: 4) {
-                ForEach(checkIn.taggedProfiles) { taggedProfile in
+                ForEach(checkIn.taggedProfiles.map(\.profile)) { taggedProfile in
                     AvatarView(profile: taggedProfile, baseUrl: baseUrl)
                 }
                 Spacer()

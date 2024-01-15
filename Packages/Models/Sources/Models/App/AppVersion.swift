@@ -16,6 +16,11 @@ public struct AppVersion: Codable, Sendable, Hashable, Comparable {
         minor = components[1]
         patch = components[2]
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(prettyString)
+    }
 
     public static func < (lhs: AppVersion, rhs: AppVersion) -> Bool {
         if lhs.major != rhs.major {
@@ -30,4 +35,5 @@ public struct AppVersion: Codable, Sendable, Hashable, Comparable {
     public var prettyString: String {
         "\(major).\(minor).\(patch)"
     }
+
 }

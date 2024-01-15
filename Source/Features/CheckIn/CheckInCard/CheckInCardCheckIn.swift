@@ -26,7 +26,7 @@ struct CheckInCardCheckIn: View {
                 }
             }
 
-            FlavorsView(flavors: checkIn.flavors)
+            FlavorsView(flavors: checkIn.flavors.map(\.flavor))
 
             if let purchaseLocation = checkIn.purchaseLocation {
                 HStack {

@@ -28,7 +28,7 @@ struct CheckInCard: View {
             CheckInCardImage(imageUrl: checkIn.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), blurHash: checkIn.blurHash)
             Group {
                 CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
-                CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles, loadedFrom: loadedFrom)
+                CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
                 CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
             }.padding(.horizontal, 12)
         }

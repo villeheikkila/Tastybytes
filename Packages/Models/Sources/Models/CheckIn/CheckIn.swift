@@ -11,8 +11,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let profile: Profile
     public let product: Product.Joined
     public let checkInReactions: [CheckInReaction]
-    public let taggedProfiles: [Profile]
-    public let flavors: [Flavor]
+    public let taggedProfiles: [CheckInTaggedProfile]
+    public let flavors: [CheckInFlavor]
     public let variant: ProductVariant?
     public let servingStyle: ServingStyle?
     public let location: Location?
@@ -32,8 +32,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         profile: Profile,
         product: Product.Joined,
         checkInReactions: [CheckInReaction],
-        taggedProfiles: [Profile],
-        flavors: [Flavor],
+        taggedProfiles: [CheckInTaggedProfile],
+        flavors: [CheckInFlavor],
         variant: ProductVariant? = nil,
         servingStyle: ServingStyle? = nil,
         location: Location? = nil,
@@ -65,8 +65,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         profile: Profile? = nil,
         product: Product.Joined? = nil,
         checkInReactions: [CheckInReaction]? = nil,
-        taggedProfiles: [Profile]? = nil,
-        flavors: [Flavor]? = nil,
+        taggedProfiles: [CheckInTaggedProfile]? = nil,
+        flavors: [CheckInFlavor]? = nil,
         variant: ProductVariant? = nil,
         servingStyle: ServingStyle? = nil,
         location: Location? = nil,
@@ -108,77 +108,25 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         case location = "locations"
         case purchaseLocation = "purchase_location"
     }
-
-    public init(from decoder: Decoder) throws {
-        struct CheckInTaggedProfile: Codable {
-            let profile: Profile
-            enum CodingKeys: String, CodingKey {
-                case profile = "profiles"
-            }
-        }
-
-        struct CheckInFlavors: Codable {
-            let flavor: Flavor
-            enum CodingKeys: String, CodingKey {
-                case flavor = "flavors"
-            }
-        }
-
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        rating = try values.decodeIfPresent(Double.self, forKey: .rating)
-        review = try values.decodeIfPresent(String.self, forKey: .review)
-        imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
-        blurHash = try values.decodeIfPresent(BlurHash.self, forKey: .blurHash)
-        checkInAt = try values.decodeIfPresent(Date.self, forKey: .checkInAt)
-        profile = try values.decode(Profile.self, forKey: .profile)
-        product = try values.decode(Product.Joined.self, forKey: .product)
-        checkInReactions = try values.decode([CheckInReaction].self, forKey: .checkInReactions)
-        taggedProfiles = try values.decode([CheckInTaggedProfile].self, forKey: .taggedProfiles).map(\.profile)
-        flavors = try values.decode([CheckInFlavors].self, forKey: .flavors).map(\.flavor)
-        variant = try values.decodeIfPresent(ProductVariant.self, forKey: .variant)
-        servingStyle = try values.decodeIfPresent(ServingStyle.self, forKey: .servingStyle)
-        location = try values.decodeIfPresent(Location.self, forKey: .location)
-        purchaseLocation = try values.decodeIfPresent(Location.self, forKey: .purchaseLocation)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encodeIfPresent(rating, forKey: .rating)
-        try container.encodeIfPresent(review, forKey: .review)
-        try container.encodeIfPresent(imageFile, forKey: .imageFile)
-        try container.encodeIfPresent(blurHash, forKey: .blurHash)
-        try container.encodeIfPresent(checkInAt, forKey: .checkInAt)
-        try container.encode(profile, forKey: .profile)
-        try container.encode(product, forKey: .product)
-        try container.encode(checkInReactions, forKey: .checkInReactions)
-        try container.encode(taggedProfiles, forKey: .taggedProfiles)
-        try container.encode(flavors, forKey: .flavors)
-        try container.encodeIfPresent(variant, forKey: .variant)
-        try container.encodeIfPresent(servingStyle, forKey: .servingStyle)
-        try container.encodeIfPresent(location, forKey: .location)
-        try container.encodeIfPresent(purchaseLocation, forKey: .purchaseLocation)
-    }
 }
 
 public extension CheckIn {
-    struct CheckInTaggedProfile: Codable {
-        let profile: Profile
-
+    struct CheckInTaggedProfile: Codable, Sendable, Hashable {
+        public let profile: Profile
+        
         enum CodingKeys: String, CodingKey {
             case profile = "profiles"
         }
     }
 
-    struct CheckInFlavors: Codable {
-        let flavor: Flavor
-
+    struct CheckInFlavor: Codable, Sendable, Hashable {
+        public let flavor: Flavor
+        
         enum CodingKeys: String, CodingKey {
             case flavor = "flavors"
         }
     }
-
+    
     struct Image: Hashable, Sendable, Identifiable, Codable {
         public let id: Int
         public let createdBy: UUID
