@@ -14,6 +14,7 @@ struct ProductScreenHeader: View {
     let loadMoreImages: () -> Void
     let onRefreshCheckIns: () -> Void
     @Binding var isOnWishlist: Bool
+    let onCreation: (_ checkIn: CheckIn) async -> Void
 
     var body: some View {
         VStack {
@@ -21,9 +22,7 @@ struct ProductScreenHeader: View {
             SummaryView(summary: summary).padding(.top, 4)
             ProductScreenActionSection(
                 isOnWishlist: $isOnWishlist,
-                product: product,
-                onRefreshCheckIns: onRefreshCheckIns
-            )
+                product: product, onCreation: onCreation)
             if !checkInImages.isEmpty {
                 ProfileCheckInImagesSection(
                     checkInImages: checkInImages,

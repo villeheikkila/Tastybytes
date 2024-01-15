@@ -16,6 +16,7 @@ struct LocationScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @State private var checkIns = [CheckIn]()
     @State private var scrollToTop: Int = 0
     @State private var summary: Summary?
     @State private var showDeleteLocationConfirmation = false
@@ -28,6 +29,7 @@ struct LocationScreen: View {
         CheckInList(
             id: "LocationScreen",
             fetcher: .location(location),
+            checkIns: $checkIns,
             scrollToTop: $scrollToTop,
             onRefresh: getSummary,
             header: {
