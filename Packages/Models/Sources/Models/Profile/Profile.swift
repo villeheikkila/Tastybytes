@@ -123,41 +123,8 @@ public extension Profile {
             case lastName = "last_name"
             case avatarFile = "avatar_file"
             case nameDisplay = "name_display"
-            case notification = "notifications"
             case roles
             case settings = "profile_settings"
-        }
-
-        public init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            id = try values.decode(UUID.self, forKey: .id)
-            username = try values.decodeIfPresent(String.self, forKey: .username)
-            joinedAt = try values.decode(Date.self, forKey: .joinedAt)
-            preferredName = try values.decodeIfPresent(String.self, forKey: .preferredName) ?? ""
-            isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
-            isOnboarded = try values.decode(Bool.self, forKey: .isOnboarded)
-            firstName = try values.decodeIfPresent(String.self, forKey: .firstName)
-            lastName = try values.decodeIfPresent(String.self, forKey: .lastName)
-            avatarFile = try values.decodeIfPresent(String.self, forKey: .avatarFile)
-            nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
-            roles = try values.decode([Role].self, forKey: .roles)
-            settings = try values.decode(ProfileSettings.self, forKey: .settings)
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(id, forKey: .id)
-            try container.encode(username, forKey: .username)
-            try container.encode(joinedAt, forKey: .joinedAt)
-            try container.encode(preferredName, forKey: .preferredName)
-            try container.encode(isPrivate, forKey: .isPrivate)
-            try container.encode(isOnboarded, forKey: .isOnboarded)
-            try container.encodeIfPresent(firstName, forKey: .firstName)
-            try container.encodeIfPresent(lastName, forKey: .lastName)
-            try container.encodeIfPresent(avatarFile, forKey: .avatarFile)
-            try container.encode(nameDisplay, forKey: .nameDisplay)
-            try container.encode(roles, forKey: .roles)
-            try container.encode([settings], forKey: .settings)
         }
     }
 }

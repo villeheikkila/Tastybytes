@@ -59,25 +59,7 @@ public extension ProductBarcode {
         public let createdAt: Date
 
         enum CodingKeys: String, CodingKey {
-            case id, barcode, type, profiles, createdAt = "created_at"
-        }
-
-        public init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            id = try values.decode(Int.self, forKey: .id)
-            barcode = try values.decode(String.self, forKey: .barcode)
-            type = try values.decode(String.self, forKey: .type)
-            profile = try values.decode(Profile.self, forKey: .profiles)
-            createdAt = try values.decode(Date.self, forKey: .createdAt)
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(id, forKey: .id)
-            try container.encode(barcode, forKey: .barcode)
-            try container.encode(type, forKey: .type)
-            try container.encode(profile, forKey: .profiles)
-            try container.encode(createdAt, forKey: .createdAt)
+            case id, barcode, type, profile = "profile", createdAt = "created_at"
         }
     }
 
