@@ -44,7 +44,6 @@ struct ReactionsView: View {
         .frame(maxWidth: 80, minHeight: size + 4)
         .contentShape(Rectangle())
         .alertError($alertError)
-
         .accessibilityAddTraits(.isButton)
         .allowsHitTesting(!isLoading)
         .onTapGesture {

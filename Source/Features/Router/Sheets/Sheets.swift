@@ -15,9 +15,9 @@ struct SheetsModifier: ViewModifier {
                 NavigationStack {
                     item.view
                 }
+                .presentationBackground(Material.ultraThin)
                 .presentationDetents(item.detents)
                 .presentationCornerRadius(item.cornerRadius)
-                .presentationBackground(item.background)
                 .presentationDragIndicator(.visible)
             }
     }

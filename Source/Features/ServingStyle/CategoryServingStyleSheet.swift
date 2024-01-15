@@ -12,6 +12,7 @@ struct CategoryServingStyleSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var sheet: Sheet?
     @State private var servingStyles: [ServingStyle]
     @State private var showDeleteServingStyleConfirmation = false
     @State private var alertError: AlertError?
@@ -44,6 +45,7 @@ struct CategoryServingStyleSheet: View {
         }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
+        .sheets(item: $sheet)
         .toolbar {
             toolbarContent
         }
@@ -69,15 +71,17 @@ struct CategoryServingStyleSheet: View {
             Button("Done", role: .cancel, action: { dismiss() })
         }
         ToolbarItemGroup(placement: .primaryAction) {
-            RouterLink(
+            Button(
                 "Add Serving Style",
                 systemImage: "plus",
-                sheet: .servingStyleManagement(
-                    pickedServingStyles: $servingStyles,
-                    onSelect: { servingStyle in
-                        await addServingStyleToCategory(servingStyle)
-                    }
-                )
+                action: {
+                    sheet = .servingStyleManagement(
+                        pickedServingStyles: $servingStyles,
+                        onSelect: { servingStyle in
+                            await addServingStyleToCategory(servingStyle)
+                        }
+                    )
+                }
             )
             .bold()
         }

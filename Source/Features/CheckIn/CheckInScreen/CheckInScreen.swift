@@ -196,7 +196,8 @@ struct CheckInScreen: View {
                                 onUpdate: { updatedCheckIn in
                                     checkIn = updatedCheckIn
                                 }
-                            )
+                            ),
+                            useRootSheetManager: true
                         )
                         Button(
                             "Delete",

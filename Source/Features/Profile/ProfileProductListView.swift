@@ -5,6 +5,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ProfileProductListView: View {
     private let logger = Logger(category: "ProfileProductListView")
     @Environment(Repository.self) private var repository
@@ -96,7 +97,8 @@ struct ProfileProductListView: View {
                     "Show filters",
                     systemImage: "line.3.horizontal.decrease.circle",
                     sheet: .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
-                                          onApply: { filter in productFilter = filter })
+                                          onApply: { filter in productFilter = filter }),
+                    useRootSheetManager: true
                 )
                 .labelStyle(.iconOnly)
             }

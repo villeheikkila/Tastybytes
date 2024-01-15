@@ -306,7 +306,7 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        RouterLink("Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand))
+                        RouterLink("Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand), useRootSheetManager: true)
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         RouterLink(
@@ -316,7 +316,8 @@ struct BrandScreen: View {
                                 onUpdate: {
                                     refreshId += 1
                                 }
-                            )
+                            ),
+                            useRootSheetManager: true
                         )
                     }
                 }

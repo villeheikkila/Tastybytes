@@ -32,7 +32,7 @@ struct FlavorManagementScreen: View {
         ToolbarItemGroup(placement: .primaryAction) {
             RouterLink("Add flavors", systemImage: "plus", sheet: .newFlavor(onSubmit: { newFlavor in
                 await appEnvironmentModel.addFlavor(name: newFlavor)
-            })).labelStyle(.iconOnly)
+            }), useRootSheetManager: true).labelStyle(.iconOnly)
         }
     }
 }

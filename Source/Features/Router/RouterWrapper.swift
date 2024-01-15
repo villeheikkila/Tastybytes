@@ -36,21 +36,6 @@ struct RouterWrapper<Content: View>: View {
             .presentationCornerRadius(sheet.cornerRadius)
             .presentationBackground(sheet.background)
             .presentationDragIndicator(.visible)
-            .sheet(item: $sheetEnvironmentModel.nestedSheet, content: { nestedSheet in
-                NavigationStack {
-                    nestedSheet.view
-                        .toast(isPresenting: $feedbackEnvironmentModel.show) {
-                            feedbackEnvironmentModel.toast
-                        }
-                }
-                .presentationDetents(nestedSheet.detents)
-                .presentationCornerRadius(nestedSheet.cornerRadius)
-                .presentationBackground(nestedSheet.background)
-                .presentationDragIndicator(.visible)
-            })
-            .toast(isPresenting: $feedbackEnvironmentModel.show) {
-                feedbackEnvironmentModel.toast
-            }
         }
         .toast(isPresenting: $feedbackEnvironmentModel.show) {
             feedbackEnvironmentModel.toast

@@ -113,8 +113,8 @@ struct ProductScreen: View {
                 ControlGroup {
                     RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in
                         refreshCheckIns()
-                    }))
-                    .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
+                    }), useRootSheetManager: true)
+                        .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     ProductShareLinkView(product: product)
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                         RouterLink(
@@ -122,7 +122,7 @@ struct ProductScreen: View {
                             systemImage: "barcode.viewfinder",
                             sheet: .barcodeScanner(onComplete: { barcode in
                                 Task { await addBarcodeToProduct(barcode) }
-                            })
+                            }), useRootSheetManager: true
                         )
                     }
                 }
@@ -148,19 +148,20 @@ struct ProductScreen: View {
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
                         refreshId += 1
-                    }))
+                    }), useRootSheetManager: true)
                 } else {
                     RouterLink(
                         "Edit Suggestion",
                         systemImage: "pencil",
-                        sheet: .productEditSuggestion(product: product)
+                        sheet: .productEditSuggestion(product: product),
+                        useRootSheetManager: true
                     )
                 }
 
                 RouterLink(sheet: .duplicateProduct(
                     mode: profileEnvironmentModel.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                     product: product
-                ), label: {
+                ), useRootSheetManager: true, label: {
                     if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                         Label("Merge to...", systemImage: "doc.on.doc")
                     } else {
@@ -170,13 +171,13 @@ struct ProductScreen: View {
 
                 Menu {
                     if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
-                        RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: product))
+                        RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: product), useRootSheetManager: true)
                     }
 
                     if profileEnvironmentModel.hasPermission(.canAddProductLogo) {
                         RouterLink("Edit Logo", systemImage: "photo", sheet: .productLogo(product: product, onUpload: {
                             refreshId += 1
-                        }))
+                        }), useRootSheetManager: true)
                     }
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {

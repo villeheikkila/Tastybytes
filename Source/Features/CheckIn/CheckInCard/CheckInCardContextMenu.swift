@@ -22,7 +22,8 @@ extension View {
                         systemImage: "pencil",
                         sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
                             onCheckInUpdate(updatedCheckIn)
-                        })
+                        }),
+                        useRootSheetManager: true
                     )
                     Button(
                         "Delete",
@@ -34,9 +35,10 @@ extension View {
                     RouterLink(
                         "Check-in",
                         systemImage: "pencil",
-                        sheet: .newCheckIn(checkIn.product, onCreation: { @MainActor checkIn in
+                        sheet: .newCheckIn(checkIn.product, onCreation: { checkIn in
                             router.navigate(screen: .checkIn(checkIn))
-                        })
+                        }),
+                        useRootSheetManager: true
                     )
                     ReportButton(entity: .checkIn(checkIn))
                 }

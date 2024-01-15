@@ -1,5 +1,6 @@
 #if os(macOS)
     import AppKit
+
     public typealias UIImage = NSImage
 #else
     import UIKit

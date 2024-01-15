@@ -33,7 +33,8 @@ struct CategoryManagementScreen: View {
                         RouterLink(
                             "Edit Serving Styles",
                             systemImage: "pencil",
-                            sheet: .categoryServingStyle(category: category)
+                            sheet: .categoryServingStyle(category: category),
+                            useRootSheetManager: true
                         )
                         RouterLink(
                             "Add Subcategory",
@@ -84,7 +85,7 @@ struct CategoryManagementScreen: View {
                 systemImage: "plus",
                 sheet: .addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("Category created!"))
-                })
+                }), useRootSheetManager: true
             )
             .labelStyle(.iconOnly)
             .bold()

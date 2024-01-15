@@ -128,7 +128,7 @@ struct NotificationScreen: View {
 extension Models.Notification {
     @ViewBuilder
     var notificationView: some View {
-        switch self.content {
+        switch content {
         case let .message(message):
             MessageNotificationView(message: message)
         case let .friendRequest(friendRequest):

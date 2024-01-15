@@ -49,9 +49,9 @@ struct BlockedUsersScreen: View {
             HStack {
                 RouterLink("Show block user sheet", systemImage: "plus", sheet: .userSheet(mode: .block, onSubmit: {
                     feedbackEnvironmentModel.toggle(.success("User blocked"))
-                }))
-                .labelStyle(.iconOnly)
-                .imageScale(.large)
+                }), useRootSheetManager: true)
+                    .labelStyle(.iconOnly)
+                    .imageScale(.large)
             }
         }
     }

@@ -93,7 +93,7 @@ public extension ScannerView {
             reset()
 
             if captureSession.isRunning == false {
-                DispatchQueue.main.async {
+                DispatchQueue.global(qos: .background).async {
                     self.captureSession?.startRunning()
                 }
             }

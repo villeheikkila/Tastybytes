@@ -107,8 +107,9 @@ struct LocationSearchSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
-                .bold()
+            CloseButtonView {
+                dismiss()
+            }
         }
     }
 

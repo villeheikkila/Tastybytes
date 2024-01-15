@@ -14,6 +14,7 @@ struct DiscoverScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @State private var sheet: Sheet?
     // Scroll Position
     @Binding var scrollToTop: Int
     // Search Query
@@ -316,9 +317,9 @@ struct DiscoverScreen: View {
             ForEach(products) { product in
                 ProductItemView(product: product, extras: [.checkInCheck, .rating])
                     .swipeActions {
-                        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { @MainActor checkIn in
+                        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { checkIn in
                             router.navigate(screen: .checkIn(checkIn))
-                        })).tint(.green)
+                        }), useRootSheetManager: true).tint(.green)
                     }
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
@@ -357,13 +358,16 @@ struct DiscoverScreen: View {
                 RouterLink(
                     "Show filters",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    sheet: .productFilter(initialFilter: productFilter, sections: [.category, .checkIns],
-                                          onApply: { filter in
-                                              productFilter = filter
-                                          })
-                )
-                .labelStyle(.iconOnly)
+                    sheet: .productFilter(
+                        initialFilter: productFilter,
+                        sections: [.category, .checkIns],
+                        onApply: { filter in
+                            productFilter = filter
+                        }
+                    )
+                ).labelStyle(.iconOnly)
             }
+
             if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     RouterLink(

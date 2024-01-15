@@ -164,7 +164,8 @@ struct CurrentUserFriendsScreen: View {
                     Task {
                         await friendEnvironmentModel.sendFriendRequest(receiver: profileId)
                     }
-                })
+                }),
+                useRootSheetManager: true
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)
@@ -177,7 +178,8 @@ struct CurrentUserFriendsScreen: View {
                     onSubmit: {
                         feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
                     }
-                )
+                ),
+                useRootSheetManager: true
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)

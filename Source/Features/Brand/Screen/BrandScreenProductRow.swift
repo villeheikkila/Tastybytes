@@ -33,7 +33,7 @@ struct BrandScreenProductRow: View {
                         mode: profileEnvironmentModel
                             .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                         product: product
-                    ), label: {
+                    ), useRootSheetManager: true, label: {
                         if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                             Label("Merge to...", systemImage: "doc.on.doc")
                         } else {

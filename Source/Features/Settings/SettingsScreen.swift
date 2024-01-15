@@ -24,7 +24,7 @@ struct SettingsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("Subscribe to Premium", systemImage: "crown.fill", sheet: .subscribe)
+            RouterLink("Subscribe to Premium", systemImage: "crown.fill", sheet: .subscribe, useRootSheetManager: true)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
                 .foregroundColor(.yellow)

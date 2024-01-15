@@ -159,9 +159,9 @@ enum Sheet: Identifiable, Equatable {
     var background: Material {
         switch self {
         case .subscribe, .checkIn:
-            .thickMaterial
+            .ultraThin
         case .productFilter, .nameTag, .barcodeScanner, .checkInDatePicker:
-            .thickMaterial
+            .ultraThin
         default:
             .ultraThick
         }

@@ -3,16 +3,19 @@ import Models
 import Repositories
 import SwiftUI
 
+@MainActor
 struct CurrentProfileScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @State private var sheet: Sheet?
     @Binding var scrollToTop: Int
 
     var body: some View {
         ProfileView(profile: profileEnvironmentModel.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
             .navigationTitle(profileEnvironmentModel.profile.preferredName)
             .navigationBarTitleDisplayMode(.inline)
+            .sheets(item: $sheet)
             .toolbar {
                 toolbarContent
             }
@@ -20,9 +23,11 @@ struct CurrentProfileScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
-            RouterLink("Show name tag", systemImage: "qrcode", sheet: .nameTag(onSuccess: { profileId in
-                router.fetchAndNavigateTo(repository, .profile(id: profileId))
-            }))
+            Button("Show name tag", systemImage: "qrcode", action: {
+                sheet = .nameTag(onSuccess: { profileId in
+                    router.fetchAndNavigateTo(repository, .profile(id: profileId))
+                })
+            })
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             RouterLink("Settings page", systemImage: "gear", screen: .settings)
