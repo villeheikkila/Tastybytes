@@ -141,6 +141,7 @@ struct LocationSearchSheet: View {
     }
 }
 
+@MainActor
 struct LocationRow: View {
     private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
