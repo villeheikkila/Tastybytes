@@ -13,7 +13,6 @@ struct ProfileView: View {
     private let logger = Logger(category: "ProfileView")
     private let topAnchor = 0
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
-    @State private var checkIns = [CheckIn]()
     @State private var alertError: AlertError?
     @State private var refreshId = 0
 
@@ -25,7 +24,6 @@ struct ProfileView: View {
         CheckInList(
             id: "ProfileView",
             fetcher: .profile(profile),
-            checkIns: $checkIns,
             scrollToTop: $scrollToTop,
             onRefresh: {
                 refreshId += 1

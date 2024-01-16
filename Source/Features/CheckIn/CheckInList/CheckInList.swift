@@ -24,7 +24,7 @@ struct CheckInList<Header>: View where Header: View {
     @State private var isLoading = false
     @State private var page = 0
     // Check-ins
-    @Binding private var checkIns: [CheckIn]
+    @State private var checkIns = [CheckIn]()
     @State private var showCheckInsFrom: CheckInSegment = .everyone
     @State private var currentShowCheckInsFrom: CheckInSegment = .everyone
     // Dialogs
@@ -42,7 +42,6 @@ struct CheckInList<Header>: View where Header: View {
     init(
         id: String,
         fetcher: Fetcher,
-        checkIns: Binding<[CheckIn]>,
         scrollToTop: Binding<Int> = .constant(0),
         onRefresh: @MainActor @escaping () async -> Void = {},
         topAnchor: Int? = nil,
@@ -51,7 +50,6 @@ struct CheckInList<Header>: View where Header: View {
     ) {
         self.id = id
         self.fetcher = fetcher
-        _checkIns = checkIns
         _scrollToTop = scrollToTop
         self.topAnchor = topAnchor
         self.showContentUnavailableView = showContentUnavailableView

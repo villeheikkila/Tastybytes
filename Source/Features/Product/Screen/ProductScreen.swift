@@ -13,7 +13,6 @@ struct ProductScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var checkIns = [CheckIn]()
     @State private var product: Product.Joined
     @State private var summary: Summary?
     @State private var showDeleteProductConfirmationDialog = false
@@ -45,7 +44,6 @@ struct ProductScreen: View {
         CheckInList(
             id: "ProductScreen",
             fetcher: .product(product),
-            checkIns: $checkIns,
             onRefresh: {
                 refreshId += 1
             },
@@ -104,10 +102,8 @@ struct ProductScreen: View {
                 }
             },
             onRefreshCheckIns: refreshCheckIns,
-            isOnWishlist: $isOnWishlist, 
-            onCreation: { checkIn in
-                checkIns.insert(checkIn, at: 0)
-            })
+            isOnWishlist: $isOnWishlist
+        )
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -115,8 +111,8 @@ struct ProductScreen: View {
             ProductShareLinkView(product: product)
             Menu {
                 ControlGroup {
-                    RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { checkIn in
-                        checkIns.insert(checkIn, at: 0)
+                    RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in
+                        refreshCheckIns()
                     }), useRootSheetManager: true)
                         .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     ProductShareLinkView(product: product)
