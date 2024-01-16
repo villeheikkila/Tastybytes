@@ -48,6 +48,7 @@ struct BrandScreen: View {
 
     @State private var refreshId = 0
     @State private var resultId: Int?
+    @State private var sheet: Sheet?
 
     let refreshOnLoad: Bool
     let initialScrollPosition: SubBrand.JoinedBrand?
@@ -136,6 +137,7 @@ struct BrandScreen: View {
                     )
                 }
                 .alertError($alertError)
+                .sheets(item: $sheet)
                 .confirmationDialog(
                     "Unverify Brand",
                     isPresented: $showBrandUnverificationConfirmation,
@@ -232,22 +234,24 @@ struct BrandScreen: View {
                         )
                         Divider()
                         if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                            RouterLink(
+                            Button(
                                 "Add Product",
                                 systemImage: "plus",
-                                sheet: .addProductToSubBrand(brand: brand, subBrand: subBrand)
+                                action: {
+                                    sheet = .addProductToSubBrand(brand: brand, subBrand: subBrand)
+                                }
                             )
                         }
                         if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
-                            RouterLink(
+                            Button(
                                 "Edit",
                                 systemImage: "pencil",
-                                sheet: .editSubBrand(
+                                action: { sheet = .editSubBrand(
                                     brand: brand, subBrand: subBrand,
                                     onUpdate: {
                                         refreshId += 1
                                     }
-                                )
+                                ) }
                             )
                         }
                         ReportButton(entity: .subBrand(brand, subBrand))
@@ -306,18 +310,17 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        RouterLink("Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand), useRootSheetManager: true)
+                        Button("Product", systemImage: "plus", action: { sheet = .addProductToBrand(brand: brand) })
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
-                        RouterLink(
+                        Button(
                             "Edit", systemImage: "pencil",
-                            sheet: .editBrand(
+                            action: { sheet = .editBrand(
                                 brand: brand,
                                 onUpdate: {
                                     refreshId += 1
                                 }
-                            ),
-                            useRootSheetManager: true
+                            ) }
                         )
                     }
                 }

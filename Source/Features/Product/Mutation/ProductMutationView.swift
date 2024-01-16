@@ -209,7 +209,6 @@ struct ProductMutationInnerView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(SheetManager.self) private var sheetEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
@@ -240,6 +239,7 @@ struct ProductMutationInnerView: View {
     }
 
     @State private var barcode: Barcode?
+    @State private var sheet: Sheet?
 
     let mode: Mode
     let isSheet: Bool
@@ -286,6 +286,7 @@ struct ProductMutationInnerView: View {
             productSection
             action
         }
+        .sheets(item: $sheet)
         .sensoryFeedback(.success, trigger: isSuccess)
         .onChange(of: category) {
             subcategories = []
@@ -317,17 +318,19 @@ struct ProductMutationInnerView: View {
 
     private var categorySection: some View {
         Section {
-            RouterLink(
+            Button(
                 selectedCategory?.name ?? "Pick a category",
-                sheet: .categoryPickerSheet(category: $category)
+                action: {
+                    sheet = .categoryPickerSheet(category: $category)
+                }
             )
 
             Button(action: {
                 if let selectedCategory {
-                    sheetEnvironmentModel.navigate(sheet: .subcategory(
+                    sheet = .subcategory(
                         subcategories: $subcategories,
                         category: selectedCategory
-                    ))
+                    )
                 }
             }, label: {
                 HStack {
@@ -357,6 +360,7 @@ struct ProductMutationInnerView: View {
     private var brandSection: some View {
         Section {
             PickerLinkRow(
+                shownSheet: $sheet,
                 label: "Brand Owner",
                 selection: brandOwner?.name,
                 sheet: .companySearch(onSelect: { company in
@@ -366,6 +370,7 @@ struct ProductMutationInnerView: View {
 
             if let brandOwner {
                 PickerLinkRow(
+                    shownSheet: $sheet,
                     label: "Brand",
                     selection: brand?.name,
                     sheet: .brand(brandOwner: brandOwner, brand: $brand, mode: .select)
@@ -385,6 +390,7 @@ struct ProductMutationInnerView: View {
 
             if hasSubBrand, let brand {
                 PickerLinkRow(
+                    shownSheet: $sheet,
                     label: "Sub-brand",
                     selection: subBrand?.name,
                     sheet: .subBrand(brandWithSubBrands: brand, subBrand: $subBrand)
@@ -409,11 +415,11 @@ struct ProductMutationInnerView: View {
                 .focused($focusedField, equals: .description)
 
             if showBarcodeSection {
-                RouterLink(
+                Button(
                     barcode == nil ? "Add Barcode" : "Barcode Added!",
-                    sheet: .barcodeScanner(onComplete: { barcode in
+                    action: { sheet = .barcodeScanner(onComplete: { barcode in
                         self.barcode = barcode
-                    })
+                    }) }
                 )
             }
             Toggle("No longer in production", isOn: $isDiscontinued)
@@ -562,12 +568,15 @@ extension ProductMutationInnerView {
 }
 
 struct PickerLinkRow: View {
+    @Binding var shownSheet: Sheet?
     let label: String
     let selection: String?
     let sheet: Sheet
 
     var body: some View {
-        RouterLink(sheet: sheet) {
+        Button(action: {
+            shownSheet = sheet
+        }, label: {
             HStack {
                 Text(label)
                 Spacer()
@@ -575,6 +584,6 @@ struct PickerLinkRow: View {
                     Text(selection)
                 }
             }
-        }
+        })
     }
 }

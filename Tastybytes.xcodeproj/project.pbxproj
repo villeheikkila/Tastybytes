@@ -171,6 +171,7 @@
 		5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */; };
 		5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* Sheets.swift */; };
 		5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC442B5707C400E17629 /* CheckInListContent.swift */; };
+		5CA4AC472B57195B00E17629 /* SheetLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC462B57195B00E17629 /* SheetLink.swift */; };
 		5CCEE2562B29BC5700F276DF /* ProductCreationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */; };
 		5CCEE2772B2C6AAF00F276DF /* CheckInCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */; };
 		5CCEE2792B2C6CEA00F276DF /* CheckInCardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */; };
@@ -377,6 +378,7 @@
 		5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStateObserver.swift; sourceTree = "<group>"; };
 		5C9583862B41EE0000A2A03B /* Sheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheets.swift; sourceTree = "<group>"; };
 		5CA4AC442B5707C400E17629 /* CheckInListContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListContent.swift; sourceTree = "<group>"; };
+		5CA4AC462B57195B00E17629 /* SheetLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetLink.swift; sourceTree = "<group>"; };
 		5CBF5A072B3C70F700227A19 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCreationScreen.swift; sourceTree = "<group>"; };
 		5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCard.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 				5C9057DA2B2894BE00EC157B /* SheetManager.swift */,
 				5C9057432B2894BE00EC157B /* Sheet.swift */,
 				5C9583862B41EE0000A2A03B /* Sheets.swift */,
+				5CA4AC462B57195B00E17629 /* SheetLink.swift */,
 			);
 			path = Sheets;
 			sourceTree = "<group>";
@@ -1446,6 +1449,7 @@
 				5C9058042B2894BE00EC157B /* AddCategorySheet.swift in Sources */,
 				5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */,
 				5C9058052B2894BE00EC157B /* DuplicateProductSheet.swift in Sources */,
+				5CA4AC472B57195B00E17629 /* SheetLink.swift in Sources */,
 				5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */,
 				5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */,
 				5C9057F82B2894BE00EC157B /* EditCompanySheet.swift in Sources */,

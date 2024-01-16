@@ -24,8 +24,6 @@ struct ActivityScreen: View {
     @State private var page = 0
     // Check-ins
     @State private var checkIns = [CheckIn]()
-    @State private var showCheckInsFrom: CheckInSegment = .everyone
-    @State private var currentShowCheckInsFrom: CheckInSegment = .everyone
     // Dialogs
     @State private var alertError: AlertError?
     @State private var errorContentUnavailable: AlertError?
@@ -93,16 +91,6 @@ struct ActivityScreen: View {
             await fetchFeedItems(reset: true)
             isRefreshing = false
             resultId = refreshId
-        }
-        .task(id: showCheckInsFrom) { [showCheckInsFrom] in
-            if showCheckInsFrom == currentShowCheckInsFrom {
-                return
-            }
-            logger.info("Loading check-ins for scope: \(showCheckInsFrom.rawValue)")
-            await fetchFeedItems(reset: true, onComplete: { @MainActor _ in
-                currentShowCheckInsFrom = showCheckInsFrom
-                logger.info("Loaded check-ins for scope: \(showCheckInsFrom.rawValue)")
-            })
         }
         .onDisappear {
             loadingCheckInsOnAppear?.cancel()

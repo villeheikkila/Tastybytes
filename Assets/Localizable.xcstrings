@@ -231,6 +231,9 @@
         }
       }
     },
+    "Add Barcode" : {
+
+    },
     "Add barcode confirmation" : {
       "localizations" : {
         "en" : {
@@ -482,6 +485,9 @@
           }
         }
       }
+    },
+    "Barcode Added!" : {
+
     },
     "Barcode Scanner" : {
       "localizations" : {
