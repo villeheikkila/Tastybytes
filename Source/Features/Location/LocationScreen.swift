@@ -21,6 +21,7 @@ struct LocationScreen: View {
     @State private var showDeleteLocationConfirmation = false
     @State private var alertError: AlertError?
     @State private var isSuccess = false
+    @State private var sheet: Sheet?
 
     let location: Location
 
@@ -46,7 +47,9 @@ struct LocationScreen: View {
                 }
                 Section {
                     SummaryView(summary: summary)
-                }.padding(.horizontal).padding(.vertical, 4)
+                }
+                .padding(.horizontal).padding(.vertical, 4)
+                .sheets(item: $sheet)
             }
         )
         .navigationTitle(location.name)
@@ -92,7 +95,7 @@ struct LocationScreen: View {
                 if profileEnvironmentModel.hasRole(.admin) {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canMergeLocations) {
-                            RouterLink(sheet: .mergeLocationSheet(location: location), useRootSheetManager: true, label: {
+                            Button(action: { sheet = .mergeLocationSheet(location: location) }, label: {
                                 Label("Merge to...", systemImage: "doc.on.doc")
                             })
                         }

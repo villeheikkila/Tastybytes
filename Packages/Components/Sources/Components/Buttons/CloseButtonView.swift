@@ -14,12 +14,12 @@ public struct CloseButtonView: View {
             isPressed = true
         }, label: {
             Circle()
-                .fill(Color(.secondarySystemBackground))
-                .frame(width: 30, height: 30)
+                .fill(.ultraThickMaterial)
+                .frame(width: 32, height: 32)
                 .overlay(
                     Image(systemName: "xmark")
                         .font(.system(size: 12, weight: .bold, design: .rounded))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.primary)
                 )
         })
         .buttonStyle(PlainButtonStyle())

@@ -30,19 +30,21 @@ struct DuplicateProductSheet: View {
     let product: Product.Joined
 
     var body: some View {
-        List {
-            if products.isEmpty, mode == .reportDuplicate {
-                Text("""
-                Search for duplicate of \(product
-                    .getDisplayName(
-                        .fullName
-                    )). Your request will be reviewed and products will be combined if appropriate.
-                """).listRowSeparator(.hidden)
-            }
-            ForEach(products) { product in
-                Button(action: { mergeToProduct = product }, label: {
+        List(products) { product in
+            Button(action: { mergeToProduct = product }, label: {
+                HStack {
                     ProductItemView(product: product)
-                }).buttonStyle(.plain)
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+            })
+            .buttonStyle(.plain)
+            .listRowBackground(Color.clear)
+        }
+        .listStyle(.plain)
+        .background {
+            if products.isEmpty, mode != .reportDuplicate {
+                DuplicateProductContentUnavailableView(productName: product.getDisplayName(.fullName))
             }
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
@@ -79,7 +81,9 @@ struct DuplicateProductSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
-            Button("Close", role: .cancel, action: { dismiss() }).bold()
+            CloseButtonView {
+                dismiss()
+            }
         }
     }
 
@@ -124,5 +128,25 @@ struct DuplicateProductSheet: View {
             alertError = .init()
             logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
         }
+    }
+}
+
+struct DuplicateProductContentUnavailableView: View {
+    let productName: String
+
+    private var title: String {
+        "Find a duplicate of\n \(productName)"
+    }
+
+    private var description: String {
+        "Your request will be reviewed and products will be combined if appropriate."
+    }
+
+    private var icon: String {
+        "square.filled.on.square"
+    }
+
+    var body: some View {
+        ContentUnavailableView(title, image: icon, description: Text(description))
     }
 }

@@ -93,6 +93,7 @@ struct CheckInSheet: View {
             additionalInformationSection
             locationAndFriendsSection
         }
+        .foregroundColor(.primary)
         .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
             Button("Camera", action: { showCamera.toggle() })
             RouterLink(
@@ -221,6 +222,7 @@ struct CheckInSheet: View {
                 } label: {
                     Text("Serving Style")
                 }
+                .pickerStyle(.navigationLink)
             }
 
             RouterLink(
@@ -282,7 +284,7 @@ struct CheckInSheet: View {
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(
                 action == .create ? "Check-in!" : "Update Check-in!",
-                action: { @MainActor in
+                action: {
                     switch action {
                     case .create:
                         if let onCreation {
@@ -301,6 +303,7 @@ struct CheckInSheet: View {
                     dismiss()
                 }
             )
+            .foregroundColor(.primary)
             .bold()
         }
     }

@@ -14,6 +14,7 @@ struct BrandScreenProductRow: View {
     @Environment(Router.self) private var router
     @State private var alertError: AlertError?
     @State private var showDeleteProductConfirmationDialog = false
+    @State private var sheet: Sheet?
     @State private var productToDelete: Product.Joined? {
         didSet {
             if productToDelete != nil {
@@ -29,11 +30,11 @@ struct BrandScreenProductRow: View {
             ProductItemView(product: product)
                 .padding(2)
                 .contextMenu {
-                    RouterLink(sheet: .duplicateProduct(
+                    Button(action: { sheet = .duplicateProduct(
                         mode: profileEnvironmentModel
                             .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                         product: product
-                    ), useRootSheetManager: true, label: {
+                    ) }, label: {
                         if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                             Label("Merge to...", systemImage: "doc.on.doc")
                         } else {

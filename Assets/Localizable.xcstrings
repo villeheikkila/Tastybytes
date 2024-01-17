@@ -1830,6 +1830,7 @@
       }
     },
     "Search for duplicate of %@. Your request will be reviewed and products will be combined if appropriate." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

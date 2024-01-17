@@ -1,3 +1,4 @@
+import Components
 import EnvironmentModels
 import Models
 import OSLog
@@ -45,6 +46,7 @@ struct ProductFilterSheet: View {
                     } label: {
                         Text("Category")
                     }
+                    .pickerStyle(.navigationLink)
                     Picker(selection: $subcategoryFilter) {
                         Text("Select All").tag(Subcategory?(nil))
                         if let categoryFilter {
@@ -54,7 +56,9 @@ struct ProductFilterSheet: View {
                         }
                     } label: {
                         Text("Subcategory")
-                    }.disabled(categoryFilter == nil)
+                    }
+                    .pickerStyle(.navigationLink)
+                    .disabled(categoryFilter == nil)
                 }
             }
 
@@ -77,7 +81,6 @@ struct ProductFilterSheet: View {
             }
             Button("Reset", action: { resetFilter() }).bold()
         }
-        .scrollDisabled(true)
         .navigationTitle("Filter")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -87,7 +90,9 @@ struct ProductFilterSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
+            CloseButtonView {
+                dismiss()
+            }
         }
         ToolbarItemGroup(placement: .confirmationAction) {
             Button("Apply", action: {

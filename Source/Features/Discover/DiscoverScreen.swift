@@ -67,6 +67,7 @@ struct DiscoverScreen: View {
             }
         }
         .listStyle(.plain)
+        .sheets(item: $sheet)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: searchScope.prompt)
         .searchScopes($searchScope, activation: .onSearchPresentation) {
@@ -317,9 +318,9 @@ struct DiscoverScreen: View {
             ForEach(products) { product in
                 ProductItemView(product: product, extras: [.checkInCheck, .rating])
                     .swipeActions {
-                        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { checkIn in
+                        Button("Check-in", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: { checkIn in
                             router.navigate(screen: .checkIn(checkIn))
-                        }), useRootSheetManager: true).tint(.green)
+                        }) }).tint(.green)
                     }
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
@@ -355,28 +356,28 @@ struct DiscoverScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if searchScope == .products {
             ToolbarItemGroup(placement: .topBarLeading) {
-                RouterLink(
+                Button(
                     "Show filters",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    sheet: .productFilter(
+                    action: { sheet = .productFilter(
                         initialFilter: productFilter,
                         sections: [.category, .checkIns],
                         onApply: { filter in
                             productFilter = filter
                         }
-                    )
+                    ) }
                 ).labelStyle(.iconOnly)
             }
 
             if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    RouterLink(
+                    Button(
                         "Scan a barcode",
                         systemImage: "barcode.viewfinder",
-                        sheet: .barcodeScanner(onComplete: { barcode in
+                        action: { sheet = .barcodeScanner(onComplete: { barcode in
                             self.barcode = barcode
                             searchKey = .barcode(barcode)
-                        })
+                        }) }
                     )
                 }
             }
