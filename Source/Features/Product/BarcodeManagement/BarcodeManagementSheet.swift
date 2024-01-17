@@ -12,33 +12,38 @@ struct BarcodeManagementSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
+    @State private var isInitialized = false
     @State private var alertError: AlertError?
 
     let product: Product.Joined
 
     var body: some View {
-        Form {
-            ForEach(barcodes) { barcode in
-                BarcodeManagementRow(barcode: barcode)
-                    .swipeActions {
-                        ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
-                            await deleteBarcode(barcode)
-                            feedbackEnvironmentModel.trigger(.notification(.success))
-                        })
-                    }
-                    .contextMenu {
-                        ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
-                            await deleteBarcode(barcode)
-                            feedbackEnvironmentModel.trigger(.notification(.success))
-                        })
-                    }
+        List(barcodes) { barcode in
+            BarcodeManagementRow(barcode: barcode)
+                .swipeActions {
+                    ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
+                        await deleteBarcode(barcode)
+                        feedbackEnvironmentModel.trigger(.notification(.success))
+                    })
+                }
+                .contextMenu {
+                    ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
+                        await deleteBarcode(barcode)
+                        feedbackEnvironmentModel.trigger(.notification(.success))
+                    })
+                }
+        }
+        .listStyle(.plain)
+        .background {
+            if isInitialized, barcodes.isEmpty {
+                BarcodeManagementContentUnavailable()
             }
         }
         .task {
             await getBarcodes()
         }
         .alertError($alertError)
-        .navigationTitle("Barcodes")
+        .navigationTitle("Barcode Management")
         .toolbar {
             toolbarContent
         }
@@ -46,7 +51,9 @@ struct BarcodeManagementSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("Done", role: .cancel, action: { dismiss() })
+            CloseButtonView {
+                dismiss()
+            }
         }
     }
 
@@ -67,31 +74,13 @@ struct BarcodeManagementSheet: View {
         switch await repository.productBarcode.getByProductId(id: product.id) {
         case let .success(barcodes):
             withAnimation {
+                isInitialized = true
                 self.barcodes = barcodes
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-}
-
-struct BarcodeManagementRow: View {
-    let barcode: ProductBarcode.JoinedWithCreator
-
-    var body: some View {
-        HStack {
-            Avatar(profile: barcode.profile, size: 32)
-            VStack(alignment: .leading, spacing: 2) {
-                HStack {
-                    Text(barcode.profile.preferredName).font(.caption)
-                    Spacer()
-                    Text(barcode.createdAt.customFormat(.relativeTime)).font(.caption2)
-                }
-                Text(barcode.barcode).font(.callout)
-            }
-            Spacer()
         }
     }
 }
