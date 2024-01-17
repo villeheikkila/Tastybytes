@@ -156,15 +156,12 @@ enum Sheet: Identifiable, Equatable {
         }
     }
 
-    var background: Material {
-        switch self {
-        case .subscribe, .checkIn:
-            .ultraThin
-        case .productFilter, .nameTag, .barcodeScanner, .checkInDatePicker:
-            .ultraThin
-        default:
-            .ultraThick
-        }
+    var backgroundDark: Material {
+        .ultraThin
+    }
+
+    var backgroundLight: Material {
+        .thin
     }
 
     var cornerRadius: CGFloat? {

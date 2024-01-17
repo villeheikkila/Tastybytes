@@ -7,6 +7,7 @@ extension View {
 }
 
 struct SheetsModifier: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
     @Binding var item: Sheet?
 
     func body(content: Content) -> some View {
@@ -15,7 +16,7 @@ struct SheetsModifier: ViewModifier {
                 NavigationStack {
                     item.view
                 }
-                .presentationBackground(Material.ultraThin)
+                .presentationBackground(colorScheme == .dark ? item.backgroundDark : item.backgroundLight)
                 .presentationDetents(item.detents)
                 .presentationCornerRadius(item.cornerRadius)
                 .presentationDragIndicator(.visible)

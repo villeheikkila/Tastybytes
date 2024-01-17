@@ -31,6 +31,7 @@ struct ProductScreen: View {
     @State private var refreshId = 0
     @State private var resultId: Int?
     @State private var checkInImageTask: Task<Void, Never>?
+    @State private var sheet: Sheet?
 
     // wishlist
     @State private var isOnWishlist = false
@@ -49,6 +50,7 @@ struct ProductScreen: View {
             },
             header: {
                 header
+                    .sheets(item: $sheet)
             }
         )
         .safeAreaInset(edge: .top, alignment: .trailing) {
@@ -111,18 +113,18 @@ struct ProductScreen: View {
             ProductShareLinkView(product: product)
             Menu {
                 ControlGroup {
-                    RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in
+                    Button("Check-in", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: { _ in
                         refreshCheckIns()
-                    }), useRootSheetManager: true)
-                        .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
+                    }) })
+                    .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     ProductShareLinkView(product: product)
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
-                        RouterLink(
+                        Button(
                             "Add",
                             systemImage: "barcode.viewfinder",
-                            sheet: .barcodeScanner(onComplete: { barcode in
+                            action: { sheet = .barcodeScanner(onComplete: { barcode in
                                 Task { await addBarcodeToProduct(barcode) }
-                            }), useRootSheetManager: true
+                            }) }
                         )
                     }
                 }
@@ -146,22 +148,21 @@ struct ProductScreen: View {
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
+                    Button("Edit", systemImage: "pencil", action: { sheet = .productEdit(product: product, onEdit: {
                         refreshId += 1
-                    }), useRootSheetManager: true)
+                    }) })
                 } else {
-                    RouterLink(
+                    Button(
                         "Edit Suggestion",
                         systemImage: "pencil",
-                        sheet: .productEditSuggestion(product: product),
-                        useRootSheetManager: true
+                        action: { sheet = .productEditSuggestion(product: product) }
                     )
                 }
 
-                RouterLink(sheet: .duplicateProduct(
+                Button(action: { sheet = .duplicateProduct(
                     mode: profileEnvironmentModel.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                     product: product
-                ), useRootSheetManager: true, label: {
+                ) }, label: {
                     if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                         Label("Merge to...", systemImage: "doc.on.doc")
                     } else {
@@ -171,13 +172,13 @@ struct ProductScreen: View {
 
                 Menu {
                     if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
-                        RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: product), useRootSheetManager: true)
+                        Button("Barcodes", systemImage: "barcode", action: { sheet = .barcodeManagement(product: product) })
                     }
 
                     if profileEnvironmentModel.hasPermission(.canAddProductLogo) {
-                        RouterLink("Edit Logo", systemImage: "photo", sheet: .productLogo(product: product, onUpload: {
+                        Button("Edit Logo", systemImage: "photo", action: { sheet = .productLogo(product: product, onUpload: {
                             refreshId += 1
-                        }), useRootSheetManager: true)
+                        }) })
                     }
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {

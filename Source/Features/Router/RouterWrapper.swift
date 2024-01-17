@@ -28,15 +28,7 @@ struct RouterWrapper<Content: View>: View {
                 router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
             }
         }
-        .sheet(item: $sheetEnvironmentModel.sheet) { sheet in
-            NavigationStack {
-                sheet.view
-            }
-            .presentationDetents(sheet.detents)
-            .presentationCornerRadius(sheet.cornerRadius)
-            .presentationBackground(sheet.background)
-            .presentationDragIndicator(.visible)
-        }
+        .sheets(item: $sheetEnvironmentModel.sheet)
         .toast(isPresenting: $feedbackEnvironmentModel.show) {
             feedbackEnvironmentModel.toast
         }
