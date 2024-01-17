@@ -172,6 +172,8 @@
 		5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* Sheets.swift */; };
 		5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC442B5707C400E17629 /* CheckInListContent.swift */; };
 		5CA4AC472B57195B00E17629 /* SheetLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC462B57195B00E17629 /* SheetLink.swift */; };
+		5CA4AC492B586DF800E17629 /* DuplicateProductContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */; };
+		5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */; };
 		5CCEE2562B29BC5700F276DF /* ProductCreationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */; };
 		5CCEE2772B2C6AAF00F276DF /* CheckInCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */; };
 		5CCEE2792B2C6CEA00F276DF /* CheckInCardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */; };
@@ -379,6 +381,8 @@
 		5C9583862B41EE0000A2A03B /* Sheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheets.swift; sourceTree = "<group>"; };
 		5CA4AC442B5707C400E17629 /* CheckInListContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListContent.swift; sourceTree = "<group>"; };
 		5CA4AC462B57195B00E17629 /* SheetLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetLink.swift; sourceTree = "<group>"; };
+		5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductContentUnavailableView.swift; sourceTree = "<group>"; };
+		5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheetRow.swift; sourceTree = "<group>"; };
 		5CBF5A072B3C70F700227A19 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCreationScreen.swift; sourceTree = "<group>"; };
 		5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCard.swift; sourceTree = "<group>"; };
@@ -788,6 +792,8 @@
 			isa = PBXGroup;
 			children = (
 				5C9057662B2894BE00EC157B /* DuplicateProductSheet.swift */,
+				5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */,
+				5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */,
 			);
 			path = DuplicateProduct;
 			sourceTree = "<group>";
@@ -1392,6 +1398,7 @@
 				5C90580A2B2894BE00EC157B /* BarcodeManagementSheet.swift in Sources */,
 				5C9058152B2894BE00EC157B /* AboutScreen.swift in Sources */,
 				5C9057FD2B2894BE00EC157B /* SubscriptionEnvironmentModel.swift in Sources */,
+				5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */,
 				5C82E8912B2F6C0E00F2B369 /* ContentView.swift in Sources */,
 				5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */,
 				5C9057F12B2894BE00EC157B /* CategoryPickerSheet.swift in Sources */,
@@ -1408,6 +1415,7 @@
 				5C9058102B2894BE00EC157B /* FlavorSheet.swift in Sources */,
 				5C9058572B2894BE00EC157B /* RouterLink.swift in Sources */,
 				5C9058062B2894BE00EC157B /* ServingStyleManagementSheet.swift in Sources */,
+				5CA4AC492B586DF800E17629 /* DuplicateProductContentUnavailableView.swift in Sources */,
 				5C9058472B2894BE00EC157B /* AppLogoView.swift in Sources */,
 				5C90585F2B2894BE00EC157B /* NotificationObserver.swift in Sources */,
 				5C82E8962B2F74BF00F2B369 /* CheckInStatisticView.swift in Sources */,

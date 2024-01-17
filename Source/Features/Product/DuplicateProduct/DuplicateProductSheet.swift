@@ -31,15 +31,9 @@ struct DuplicateProductSheet: View {
 
     var body: some View {
         List(products) { product in
-            Button(action: { mergeToProduct = product }, label: {
-                HStack {
-                    ProductItemView(product: product)
-                    Spacer()
-                }
-                .contentShape(Rectangle())
-            })
-            .buttonStyle(.plain)
-            .listRowBackground(Color.clear)
+            DuplicateProductSheetRow(product: product) { product in
+                mergeToProduct = product
+            }
         }
         .listStyle(.plain)
         .background {
@@ -56,6 +50,10 @@ struct DuplicateProductSheet: View {
         }
         .task(id: searchTerm, milliseconds: 200) {
             await searchProducts(name: searchTerm)
+        }
+        .onAppear {
+            // Change the .searchable cancel button tint
+            UISearchBar.appearance().tintColor = UIColor(Color.primary)
         }
         .alertError($alertError)
         .confirmationDialog("Product Merge Confirmation",
@@ -128,25 +126,5 @@ struct DuplicateProductSheet: View {
             alertError = .init()
             logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
         }
-    }
-}
-
-struct DuplicateProductContentUnavailableView: View {
-    let productName: String
-
-    private var title: String {
-        "Find a duplicate of\n \(productName)"
-    }
-
-    private var description: String {
-        "Your request will be reviewed and products will be combined if appropriate."
-    }
-
-    private var icon: String {
-        "square.filled.on.square"
-    }
-
-    var body: some View {
-        ContentUnavailableView(title, image: icon, description: Text(description))
     }
 }
