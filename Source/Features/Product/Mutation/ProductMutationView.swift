@@ -6,208 +6,9 @@ import OSLog
 import Repositories
 import SwiftUI
 
+
 @MainActor
 struct ProductMutationView: View {
-    private let logger = Logger(category: "ProductMutationView")
-    @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(\.dismiss) private var dismiss
-    @State private var initialValues: ProductMutationInitialValues?
-    @State private var alertError: AlertError?
-
-    let mode: ProductMutationInnerView.Mode
-    let onEdit: (() async -> Void)?
-    let onCreate: ((_ product: Product.Joined) -> Void)?
-    let initialBarcode: Barcode?
-    let isSheet: Bool
-
-    init(
-        mode: ProductMutationInnerView.Mode,
-        isSheet: Bool = true,
-        initialBarcode: Barcode? = nil,
-        onEdit: (() async -> Void)? = nil,
-        onCreate: ((_ product: Product.Joined) -> Void)? = nil
-    ) {
-        self.mode = mode
-        self.isSheet = isSheet
-        self.initialBarcode = initialBarcode
-        self.onEdit = onEdit
-        self.onCreate = onCreate
-    }
-
-    var navigationTitle: String {
-        switch mode {
-        case .addToBrand, .addToSubBrand, .new:
-            "Add Product"
-        case .edit:
-            "Edit Product"
-        case .editSuggestion:
-            "Edit Suggestion"
-        }
-    }
-
-    var body: some View {
-        VStack {
-            if let initialValues {
-                ProductMutationInnerView(mode: mode, isSheet: isSheet, initialValues: initialValues,
-                                         initialBarcode: initialBarcode, onEdit: onEdit, onCreate: onCreate)
-            }
-        }
-        .navigationTitle(navigationTitle)
-        .alertError($alertError)
-        .if(isSheet, transform: { view in
-            view.toolbar {
-                toolbarContent
-            }
-        })
-        .task {
-            await loadMissingData()
-        }
-    }
-
-    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
-            CloseButtonView {
-                dismiss()
-            }
-        }
-    }
-
-    func loadMissingData() async {
-        switch mode {
-        case let .edit(initialProduct), let .editSuggestion(initialProduct):
-            await loadValuesFromExistingProduct(initialProduct, categories: appEnvironmentModel.categories)
-        case let .addToBrand(brand):
-            loadFromBrand(brand, categories: appEnvironmentModel.categories)
-        case let .addToSubBrand(brand, subBrand):
-            loadFromSubBrand(brand: brand, subBrand: subBrand, categories: appEnvironmentModel.categories)
-        case .new:
-            initialValues = ProductMutationInitialValues(
-                category: appEnvironmentModel.categories.first(where: { $0.name == "beverage" })
-            )
-        }
-    }
-
-    func loadFromBrand(
-        _ brand: Brand.JoinedSubBrandsProductsCompany,
-        categories: [Models.Category.JoinedSubcategoriesServingStyles]
-    ) {
-        initialValues = ProductMutationInitialValues(
-            category: categories.first(where: { $0.name == "beverage" }),
-            brandOwner: brand.brandOwner,
-            brand: Brand.JoinedSubBrands(
-                id: brand.id,
-                name: brand.name,
-                logoFile: brand.logoFile,
-                isVerified: brand.isVerified,
-                subBrands: brand.subBrands
-                    .map { subBrand in
-                        SubBrand(id: subBrand.id, name: subBrand.name,
-                                 isVerified: subBrand.isVerified)
-                    }
-            )
-        )
-    }
-
-    func loadFromSubBrand(
-        brand: Brand.JoinedSubBrandsProductsCompany,
-        subBrand: SubBrand.JoinedProduct,
-        categories: [Models.Category.JoinedSubcategoriesServingStyles]
-    ) {
-        let subBrandsFromBrand = brand.subBrands
-            .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
-        initialValues = ProductMutationInitialValues(
-            category: categories.first(where: { $0.name == "beverage" }),
-            brandOwner: brand.brandOwner,
-            brand: Brand.JoinedSubBrands(
-                id: brand.id,
-                name: brand.name,
-                logoFile: brand.logoFile,
-                isVerified: brand.isVerified,
-                subBrands: subBrandsFromBrand
-            ),
-            subBrand: subBrandsFromBrand.first(where: { $0.id == subBrand.id })
-        )
-    }
-
-    func loadValuesFromExistingProduct(
-        _ initialProduct: Product.Joined,
-        categories: [Models.Category.JoinedSubcategoriesServingStyles]
-    ) async {
-        switch await repository.brand
-            .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
-        {
-        case let .success(brandsWithSubBrands):
-            let category = categories.first(where: { $0.id == initialProduct.category.id })
-            initialValues = ProductMutationInitialValues(
-                subcategories: initialProduct.subcategories
-                    .map { sub in Subcategory(id: sub.id, name: sub.name, isVerified: sub.isVerified) },
-                category: category,
-                brandOwner: initialProduct.subBrand.brand.brandOwner,
-                brand: Brand.JoinedSubBrands(
-                    id: initialProduct.subBrand.brand.id,
-                    name: initialProduct.subBrand.brand.name,
-                    logoFile: initialProduct.subBrand.brand.logoFile,
-                    isVerified: initialProduct.subBrand.brand.isVerified,
-                    subBrands: brandsWithSubBrands
-                        .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
-                ),
-                subBrand: initialProduct.subBrand,
-                name: initialProduct.name,
-                description: initialProduct.description.orEmpty,
-                isDiscontinued: initialProduct.isDiscontinued,
-                logoFile: initialProduct.logoFile
-            )
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger
-                .error(
-                    "Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))"
-                )
-        }
-    }
-}
-
-private struct ProductMutationInitialValues {
-    let subcategories: [Subcategory]
-    let category: Models.Category.JoinedSubcategoriesServingStyles?
-    let brandOwner: Company?
-    let brand: Brand.JoinedSubBrands?
-    let subBrand: SubBrandProtocol?
-    let name: String
-    let description: String
-    let isDiscontinued: Bool
-    let hasSubBrand: Bool
-    let logoFile: String?
-
-    init(
-        subcategories: [Subcategory] = [],
-        category: Models.Category.JoinedSubcategoriesServingStyles? = nil,
-        brandOwner: Company? = nil,
-        brand: Brand.JoinedSubBrands? = nil,
-        subBrand: SubBrandProtocol? = nil,
-        name: String = "",
-        description: String = "",
-        isDiscontinued: Bool = false,
-        logoFile: String? = nil
-    ) {
-        self.subcategories = subcategories
-        self.category = category
-        self.brandOwner = brandOwner
-        self.brand = brand
-        self.subBrand = subBrand
-        self.name = name
-        self.description = description
-        self.isDiscontinued = isDiscontinued
-        hasSubBrand = subBrand?.name != nil
-        self.logoFile = logoFile
-    }
-}
-
-@MainActor
-struct ProductMutationInnerView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
@@ -216,7 +17,7 @@ struct ProductMutationInnerView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var alertError: AlertError?
-    @State private var subcategories: Set<Int>
+    @State private var subcategories: Set<Int> = Set()
     @State private var category: Int?
     @State private var brandOwner: Company? {
         didSet {
@@ -228,11 +29,11 @@ struct ProductMutationInnerView: View {
 
     @State private var brand: Brand.JoinedSubBrands?
     @State private var subBrand: SubBrandProtocol?
-    @State private var name: String
-    @State private var description: String
+    @State private var name: String = ""
+    @State private var description: String = ""
     @State private var isDiscontinued = false
     @State private var isSuccess = false
-    @State private var hasSubBrand: Bool {
+    @State private var hasSubBrand = false {
         didSet {
             if oldValue == true {
                 subBrand = nil
@@ -248,37 +49,18 @@ struct ProductMutationInnerView: View {
     let onEdit: (() async -> Void)?
     let onCreate: ((_ product: Product.Joined) async -> Void)?
 
-    fileprivate init(
+    init(
         mode: Mode,
-        isSheet: Bool,
-        initialValues: ProductMutationInitialValues,
+        isSheet: Bool = true,
         initialBarcode: Barcode? = nil,
         onEdit: (() async -> Void)? = nil,
         onCreate: ((_ product: Product.Joined) -> Void)? = nil
     ) {
         self.mode = mode
         self.isSheet = isSheet
-        _barcode = State(wrappedValue: initialBarcode)
+        _barcode = State(initialValue: initialBarcode)
         self.onEdit = onEdit
         self.onCreate = onCreate
-        _category = State(initialValue: initialValues.category?.id)
-        _subcategories = State(initialValue: Set(initialValues.subcategories.map(\.id)))
-        _brandOwner = State(initialValue: initialValues.brandOwner)
-        _brand = State(initialValue: initialValues.brand)
-        _hasSubBrand = State(initialValue: initialValues.hasSubBrand)
-        _subBrand = State(initialValue: initialValues.subBrand)
-        _name = State(initialValue: initialValues.name)
-        _description = State(initialValue: initialValues.description)
-        _isDiscontinued = State(initialValue: initialValues.isDiscontinued)
-    }
-
-    var showBarcodeSection: Bool {
-        switch mode {
-        case .addToBrand, .addToSubBrand, .new:
-            true
-        default:
-            false
-        }
     }
 
     var body: some View {
@@ -286,7 +68,16 @@ struct ProductMutationInnerView: View {
             categorySection
             brandSection
             productSection
-            action
+        }
+        .navigationTitle(mode.navigationTitle)
+        .alertError($alertError)
+        .if(isSheet, transform: { view in
+            view.toolbar {
+                toolbarContent
+            }
+        })
+        .task {
+            await loadMissingData()
         }
         .sheets(item: $sheet)
         .sensoryFeedback(.success, trigger: isSuccess)
@@ -300,13 +91,20 @@ struct ProductMutationInnerView: View {
             }
         }
     }
-
-    private var action: some View {
-        ProgressButton(mode.doneLabel, action: {
-            await primaryAction()
-        })
-        .fontWeight(.medium)
-        .disabled(!isValid())
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .cancellationAction) {
+            CloseButtonView {
+                dismiss()
+            }
+        }
+        ToolbarItemGroup(placement: .primaryAction) {
+            ProgressButton(mode.doneLabel, action: {
+                await primaryAction()
+            })
+            .fontWeight(.medium)
+            .disabled(!isValid())
+        }
     }
 
     private var selectedCategory: Models.Category.JoinedSubcategoriesServingStyles? {
@@ -415,7 +213,7 @@ struct ProductMutationInnerView: View {
             ScanTextField(title: "Description (optional)", text: $description)
                 .focused($focusedField, equals: .description)
 
-            if showBarcodeSection {
+            if mode.showBarcodeSection {
                 Button(
                     barcode == nil ? "Add Barcode" : "Barcode Added!",
                     action: { sheet = .barcodeScanner(onComplete: { barcode in
@@ -454,6 +252,87 @@ struct ProductMutationInnerView: View {
                 }
             })
         }
+    }
+    
+    func loadMissingData() async {
+        switch mode {
+        case let .edit(initialProduct), let .editSuggestion(initialProduct):
+            await loadValuesFromExistingProduct(initialProduct)
+        case let .addToBrand(brand):
+            loadFromBrand(brand, categories: appEnvironmentModel.categories)
+        case let .addToSubBrand(brand, subBrand):
+            loadFromSubBrand(brand: brand, subBrand: subBrand)
+        case .new:
+            category = appEnvironmentModel.categories.first?.id
+        }
+    }
+
+    func loadValuesFromExistingProduct(
+        _ initialProduct: Product.Joined
+    ) async {
+        switch await repository.brand
+            .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
+        {
+        case let .success(brandsWithSubBrands):
+            subcategories = Set(initialProduct.subcategories.map(\.id))
+            category = initialProduct.category.id
+            brandOwner = initialProduct.subBrand.brand.brandOwner
+            brand = Brand.JoinedSubBrands(
+                id: initialProduct.subBrand.brand.id,
+                name: initialProduct.subBrand.brand.name,
+                logoFile: initialProduct.subBrand.brand.logoFile,
+                isVerified: initialProduct.subBrand.brand.isVerified,
+                subBrands: brandsWithSubBrands
+                    .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
+            )
+            subBrand = initialProduct.subBrand
+            name = initialProduct.name
+            description = initialProduct.description.orEmpty
+            isDiscontinued = initialProduct.isDiscontinued
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger
+                .error(
+                    "Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))"
+                )
+        }
+    }
+
+    func loadFromSubBrand(
+        brand: Brand.JoinedSubBrandsProductsCompany,
+        subBrand: SubBrand.JoinedProduct
+    ) {
+        let subBrandsFromBrand = brand.subBrands
+            .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
+
+        brandOwner = brand.brandOwner
+        self.brand = Brand.JoinedSubBrands(
+            id: brand.id,
+            name: brand.name,
+            logoFile: brand.logoFile,
+            isVerified: brand.isVerified,
+            subBrands: subBrandsFromBrand
+        )
+        self.subBrand = subBrandsFromBrand.first(where: { $0.id == subBrand.id })
+    }
+
+    func loadFromBrand(
+        _ brand: Brand.JoinedSubBrandsProductsCompany,
+        categories _: [Models.Category.JoinedSubcategoriesServingStyles]
+    ) {
+        brandOwner = brand.brandOwner
+        self.brand = Brand.JoinedSubBrands(
+            id: brand.id,
+            name: brand.name,
+            logoFile: brand.logoFile,
+            isVerified: brand.isVerified,
+            subBrands: brand.subBrands
+                .map { subBrand in
+                    SubBrand(id: subBrand.id, name: subBrand.name,
+                             isVerified: subBrand.isVerified)
+                }
+        )
     }
 
     func createProduct(onSuccess: @escaping (_ product: Product.Joined) async -> Void) async {
@@ -545,7 +424,7 @@ struct ProductMutationInnerView: View {
     }
 }
 
-extension ProductMutationInnerView {
+extension ProductMutationView {
     enum Mode: Equatable {
         case new, edit(Product.Joined), editSuggestion(Product.Joined),
              addToBrand(Brand.JoinedSubBrandsProductsCompany),
@@ -561,30 +440,29 @@ extension ProductMutationInnerView {
                 "Create"
             }
         }
+        
+        var showBarcodeSection: Bool {
+            switch self {
+            case .addToBrand, .addToSubBrand, .new:
+                true
+            case .edit, .editSuggestion:
+                false
+            }
+        }
+            
+            var navigationTitle: String {
+                switch self {
+                case .addToBrand, .addToSubBrand, .new:
+                    "Add Product"
+                case .edit:
+                    "Edit Product"
+                case .editSuggestion:
+                    "Edit Suggestion"
+                }
+            }
     }
 
     enum Focusable {
         case name, description
-    }
-}
-
-struct PickerLinkRow: View {
-    @Binding var shownSheet: Sheet?
-    let label: String
-    let selection: String?
-    let sheet: Sheet
-
-    var body: some View {
-        Button(action: {
-            shownSheet = sheet
-        }, label: {
-            HStack {
-                Text(label)
-                Spacer()
-                if let selection {
-                    Text(selection)
-                }
-            }
-        })
     }
 }
