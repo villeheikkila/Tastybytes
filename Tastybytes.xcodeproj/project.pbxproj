@@ -177,6 +177,7 @@
 		5CA4AC4D2B586FDF00E17629 /* BarcodeManagementRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */; };
 		5CA4AC4F2B5870BB00E17629 /* BarcodeManagementContentUnavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4E2B5870BB00E17629 /* BarcodeManagementContentUnavailable.swift */; };
 		5CA4AC512B58F5D300E17629 /* PickerLinkRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC502B58F5D300E17629 /* PickerLinkRow.swift */; };
+		5CAADEEB2B59C21200D956C1 /* ProductMutationCategorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAADEEA2B59C21200D956C1 /* ProductMutationCategorySection.swift */; };
 		5CCEE2562B29BC5700F276DF /* ProductCreationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */; };
 		5CCEE2772B2C6AAF00F276DF /* CheckInCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */; };
 		5CCEE2792B2C6CEA00F276DF /* CheckInCardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */; };
@@ -389,6 +390,7 @@
 		5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementRow.swift; sourceTree = "<group>"; };
 		5CA4AC4E2B5870BB00E17629 /* BarcodeManagementContentUnavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementContentUnavailable.swift; sourceTree = "<group>"; };
 		5CA4AC502B58F5D300E17629 /* PickerLinkRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLinkRow.swift; sourceTree = "<group>"; };
+		5CAADEEA2B59C21200D956C1 /* ProductMutationCategorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductMutationCategorySection.swift; sourceTree = "<group>"; };
 		5CBF5A072B3C70F700227A19 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		5CCEE2552B29BC5700F276DF /* ProductCreationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCreationScreen.swift; sourceTree = "<group>"; };
 		5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCard.swift; sourceTree = "<group>"; };
@@ -1132,6 +1134,7 @@
 			children = (
 				5C9057CC2B2894BE00EC157B /* ProductMutationView.swift */,
 				5CA4AC502B58F5D300E17629 /* PickerLinkRow.swift */,
+				5CAADEEA2B59C21200D956C1 /* ProductMutationCategorySection.swift */,
 			);
 			path = Mutation;
 			sourceTree = "<group>";
@@ -1435,6 +1438,7 @@
 				5C9057ED2B2894BE00EC157B /* ProductFilterSheet.swift in Sources */,
 				5C9058032B2894BE00EC157B /* EditSubcategorySheet.swift in Sources */,
 				5C90585E2B2894BE00EC157B /* App.swift in Sources */,
+				5CAADEEB2B59C21200D956C1 /* ProductMutationCategorySection.swift in Sources */,
 				5C90582C2B2894BE00EC157B /* Screen.swift in Sources */,
 				5C9058142B2894BE00EC157B /* SettingsScreen.swift in Sources */,
 				5C9058262B2894BE00EC157B /* CheckInCommentNotificationView.swift in Sources */,

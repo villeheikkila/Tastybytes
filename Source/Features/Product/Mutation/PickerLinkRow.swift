@@ -10,11 +10,10 @@ struct PickerLinkRow: View {
         Button(action: {
             shownSheet = sheet
         }, label: {
-            HStack {
-                Text(label)
-                Spacer()
+            LabeledContent(label) {
                 if let selection {
                     Text(selection)
+                        .foregroundColor(.secondary)
                 }
             }
         })
