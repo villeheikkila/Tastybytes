@@ -7,11 +7,12 @@ import SwiftUI
 
 struct CheckInCard: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(Router.self) private var router
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
 
     var body: some View {
-        CheckInCardContainer(checkIn: checkIn, loadedFrom: loadedFrom) {
+        CheckInCardContainer {
             Group {
                 CheckInCardHeader(
                     profile: checkIn.profile,
@@ -32,6 +33,11 @@ struct CheckInCard: View {
                 CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
             }.padding(.horizontal, 12)
         }
+        .allowsHitTesting(loadedFrom != .checkIn)
+        .onTapGesture {
+            router.navigate(screen: .checkIn(checkIn))
+        }
+        .accessibilityAddTraits(.isLink)
     }
 }
 

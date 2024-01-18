@@ -68,7 +68,9 @@ struct ProductMutationView: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() }).bold()
+            CloseButtonView {
+                dismiss()
+            }
         }
     }
 
@@ -312,8 +314,7 @@ struct ProductMutationInnerView: View {
     }
 
     private var selectedSubcategories: [Subcategory] {
-        selectedCategory?.subcategories
-            .filter { subcategories.contains($0.id) } ?? []
+        selectedCategory?.subcategories.filter { subcategories.contains($0.id) } ?? []
     }
 
     private var categorySection: some View {
