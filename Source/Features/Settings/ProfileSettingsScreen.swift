@@ -33,30 +33,22 @@ struct ProfileSettingsScreen: View {
 
     private var profileSection: some View {
         Section {
-            HStack {
-                Text("Username")
-                    .foregroundColor(.secondary)
-                Spacer()
-                TextField("", text: $username)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-                    .multilineTextAlignment(.trailing)
-                    .onChange(of: username) {
-                        usernameIsAvailable = true
+            LabeledTextField(title: "Username", text: $username)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+                .onChange(of: username) {
+                    usernameIsAvailable = false
+                    isLoading = true
+                }
+                .task(id: username, milliseconds: 300) { @MainActor in
+                    guard username.count >= 3 else { return }
+                    let isAvailable = await profileEnvironmentModel
+                        .checkIfUsernameIsAvailable(username: username)
+                    withAnimation {
+                        usernameIsAvailable = isAvailable
+                        isLoading = false
                     }
-                    .onChange(of: username) {
-                        isLoading = true
-                    }
-                    .task(id: username, milliseconds: 300) { @MainActor in
-                        guard username.count >= 3 else { return }
-                        let isAvailable = await profileEnvironmentModel
-                            .checkIfUsernameIsAvailable(username: username)
-                        withAnimation {
-                            usernameIsAvailable = isAvailable
-                            isLoading = false
-                        }
-                    }
-            }
+                }
             LabeledTextField(title: "First Name", text: $firstName)
             LabeledTextField(title: "Last Name", text: $lastName)
 

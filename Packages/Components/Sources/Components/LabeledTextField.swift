@@ -16,6 +16,6 @@ public struct LabeledTextField: View {
             TextField(placeholder ?? "", text: $text)
                 .multilineTextAlignment(.trailing)
                 .foregroundColor(.secondary)
-        }
+        }.foregroundColor(.primary)
     }
 }
