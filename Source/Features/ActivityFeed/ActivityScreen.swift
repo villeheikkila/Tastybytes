@@ -111,6 +111,7 @@ struct ActivityScreen: View {
     }
 
     func onLoadMore() {
+        defer { loadingCheckInsOnAppear = nil }
         guard loadingCheckInsOnAppear == nil else { return }
         logger.info("Loading more items invoked")
         loadingCheckInsOnAppear = Task {

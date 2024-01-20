@@ -21,7 +21,7 @@ struct ProductItemView: View {
     var body: some View {
         HStack(spacing: 12) {
             if extras.contains(.logo) {
-                ProductLogo(product: product, size: 40)
+                ProductLogo(product: product, size: 48)
             }
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
