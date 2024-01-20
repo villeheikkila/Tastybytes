@@ -201,7 +201,6 @@
 		5CCEE2832B2CA5D600F276DF /* CheckInCardTaggedFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */; };
 		5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */; };
 		5CCEE2892B2D0C0100F276DF /* CheckInListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */; };
-		5CCEE28B2B2D11C400F276DF /* CheckInCardContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -428,7 +427,6 @@
 		5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardTaggedFriends.swift; sourceTree = "<group>"; };
 		5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContainer.swift; sourceTree = "<group>"; };
 		5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListCard.swift; sourceTree = "<group>"; };
-		5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContextMenu.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1255,7 +1253,6 @@
 			children = (
 				5C9057C92B2894BE00EC157B /* ReactionsView.swift */,
 				5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */,
-				5CCEE28A2B2D11C400F276DF /* CheckInCardContextMenu.swift */,
 				5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */,
 				5CCEE27A2B2C770A00F276DF /* CheckInCardProduct.swift */,
 				5CCEE27C2B2CA34800F276DF /* CheckInCardImage.swift */,
@@ -1455,7 +1452,6 @@
 				5CCEE27F2B2CA4DC00F276DF /* CheckInCardCheckIn.swift in Sources */,
 				5C9058002B2894BE00EC157B /* SubscriptionStatus.swift in Sources */,
 				5C9058272B2894BE00EC157B /* BrandScreen.swift in Sources */,
-				5CCEE28B2B2D11C400F276DF /* CheckInCardContextMenu.swift in Sources */,
 				5C9058552B2894BE00EC157B /* OnboardingNotificationSection.swift in Sources */,
 				5C9058072B2894BE00EC157B /* CategoryServingStyleSheet.swift in Sources */,
 				5CA4AC4D2B586FDF00E17629 /* BarcodeManagementRow.swift in Sources */,

@@ -253,7 +253,7 @@ struct BrandScreen: View {
                                 ) }
                             )
                         }
-                        ReportButton(entity: .subBrand(brand, subBrand))
+                        ReportButton(sheet: $sheet, entity: .subBrand(brand, subBrand))
                         if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                             Button(
                                 "Delete",
@@ -332,7 +332,7 @@ struct BrandScreen: View {
                 Button("Group Products By", systemImage: "list.bullet.indent") {
                     showProductGroupingPicker = true
                 }
-                ReportButton(entity: .brand(brand))
+                ReportButton(sheet: $sheet, entity: .brand(brand))
                 if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                     Button(
                         "Delete",

@@ -19,6 +19,7 @@ struct CheckInScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState private var focusedField: Focusable?
+    @State private var sheet: Sheet?
     @State private var checkIn: CheckIn
     @State private var checkInComments = [CheckInComment]()
     @State private var showDeleteConfirmation = false
@@ -68,17 +69,71 @@ struct CheckInScreen: View {
             CheckInCard(checkIn: checkIn, loadedFrom: .checkIn)
                 .listRowSeparator(.hidden)
                 .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
-                .checkInContextMenu(
-                    router: router,
-                    profileEnvironmentModel: profileEnvironmentModel,
-                    checkIn: checkIn,
-                    onCheckInUpdate: { checkIn in
-                        self.checkIn = checkIn
-                    },
-                    onDelete: { _ in
-                        showDeleteConfirmation = true
+                .contextMenu {
+                    ControlGroup {
+                        CheckInShareLinkView(checkIn: checkIn)
+                        if checkIn.profile.id == profileEnvironmentModel.id {
+                            RouterLink(
+                                "Edit",
+                                systemImage: "pencil",
+                                sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                                    self.checkIn = updatedCheckIn
+                                }),
+                                useRootSheetManager: true
+                            )
+                            Button(
+                                "Delete",
+                                systemImage: "trash.fill",
+                                role: .destructive,
+                                action: {
+                                    showDeleteConfirmation = true
+                                }
+                            )
+                        } else {
+                            RouterLink(
+                                "Check-in",
+                                systemImage: "pencil",
+                                sheet: .newCheckIn(checkIn.product, onCreation: { checkIn in
+                                    router.navigate(screen: .checkIn(checkIn))
+                                }),
+                                useRootSheetManager: true
+                            )
+                            ReportButton(sheet: $sheet, entity: .checkIn(checkIn))
+                        }
                     }
-                )
+                    Divider()
+                    RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
+                    RouterLink(
+                        "Open Brand Owner",
+                        systemImage: "network",
+                        screen: .company(checkIn.product.subBrand.brand.brandOwner)
+                    )
+                    RouterLink(
+                        "Open Brand",
+                        systemImage: "cart",
+                        screen: .fetchBrand(checkIn.product.subBrand.brand)
+                    )
+                    RouterLink(
+                        "Open Sub-brand",
+                        systemImage: "cart",
+                        screen: .fetchSubBrand(checkIn.product.subBrand)
+                    )
+                    if let location = checkIn.location {
+                        RouterLink(
+                            "Open Location",
+                            systemImage: "network",
+                            screen: .location(location)
+                        )
+                    }
+                    if let purchaseLocation = checkIn.purchaseLocation {
+                        RouterLink(
+                            "Open Purchase Location",
+                            systemImage: "network",
+                            screen: .location(purchaseLocation)
+                        )
+                    }
+                    Divider()
+                }
                 .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                     focusedField = nil
@@ -102,6 +157,7 @@ struct CheckInScreen: View {
         .toolbar {
             toolbarContent
         }
+        .sheets(item: $sheet)
         .alertError($alertError)
         .confirmationDialog(
             "check-in.delete-confirmation.title",
@@ -224,7 +280,7 @@ struct CheckInScreen: View {
                 )
                 Divider()
                 if profileEnvironmentModel.id != checkIn.profile.id {
-                    ReportButton(entity: .checkIn(checkIn))
+                    ReportButton(sheet: $sheet, entity: .checkIn(checkIn))
                 }
                 if profileEnvironmentModel.hasRole(.moderator) {
                     Menu {
@@ -260,7 +316,7 @@ struct CheckInScreen: View {
                             await deleteComment(comment)
                         }
                     } else {
-                        ReportButton(entity: .comment(comment))
+                        ReportButton(sheet: $sheet, entity: .comment(comment))
                     }
                     Divider()
                     if profileEnvironmentModel.hasRole(.moderator) {

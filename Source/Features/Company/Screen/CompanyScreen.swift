@@ -22,6 +22,7 @@ struct CompanyScreen: View {
     @State private var alertError: AlertError?
     @State private var refreshId = 0
     @State private var resultId: Int?
+    @State private var sheet: Sheet?
 
     init(company: Company) {
         _company = State(wrappedValue: company)
@@ -91,6 +92,7 @@ struct CompanyScreen: View {
             await getCompanyData()
             resultId = refreshId
         }
+        .sheets(item:  $sheet)
     }
 
     @MainActor
@@ -143,7 +145,7 @@ struct CompanyScreen: View {
                 showUnverifyCompanyConfirmation = true
             })
             Divider()
-            ReportButton(entity: .company(company))
+            ReportButton(sheet: $sheet, entity: .company(company))
             if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
                 Button(
                     "Delete",

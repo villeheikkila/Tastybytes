@@ -2,9 +2,12 @@ import Models
 import SwiftUI
 
 struct ReportButton: View {
+    @Binding var sheet: Sheet?
     let entity: Report.Entity
 
     var body: some View {
-        RouterLink("Report", systemImage: "exclamationmark.bubble.fill", sheet: .report(entity), useRootSheetManager: true)
+        Button("Report", systemImage: "exclamationmark.bubble.fill") {
+          sheet =  .report(entity)
+        }
     }
 }

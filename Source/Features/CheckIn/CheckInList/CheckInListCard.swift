@@ -56,7 +56,7 @@ struct CheckInListCard: View {
                                 })
                             }
                         )
-                        ReportButton(entity: .checkIn(checkIn))
+                        ReportButton(sheet: $sheet, entity: .checkIn(checkIn))
                     }
                 }
                 Divider()

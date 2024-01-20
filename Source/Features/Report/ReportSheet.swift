@@ -42,7 +42,9 @@ struct ReportSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() }).bold()
+            CloseButtonView {
+                dismiss()
+            }
         }
     }
 
@@ -81,3 +83,4 @@ struct ReportSheet: View {
         }
     }
 }
+
