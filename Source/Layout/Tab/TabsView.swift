@@ -40,12 +40,12 @@ struct TabsView: View {
                 tab.label
             }
             .tag(tab)
-            .badge(badge())
+            .badge(badge(tab))
         }
     }
 
-    private func badge() -> Int {
-        switch tabManager.selection {
+    private func badge(_ tab: Tab) -> Int {
+        switch tab {
         case .notifications:
             notificationEnvironmentModel.unreadCount
         default:
@@ -55,7 +55,7 @@ struct TabsView: View {
 
     private let switchTabGestureRangeDistance: Double = 50
 
-    var switchTabGesture: some Gesture {
+    private var switchTabGesture: some Gesture {
         DragGesture(minimumDistance: switchTabGestureRangeDistance)
             .onEnded { value in
                 if value.translation.width < -switchTabGestureRangeDistance,

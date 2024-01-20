@@ -33,9 +33,10 @@ struct CheckInCard: View {
                 CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
             }.padding(.horizontal, 12)
         }
-        .allowsHitTesting(loadedFrom != .checkIn)
         .onTapGesture {
-            router.navigate(screen: .checkIn(checkIn))
+            if loadedFrom != .checkIn {
+                router.navigate(screen: .checkIn(checkIn))
+            }
         }
         .accessibilityAddTraits(.isLink)
     }

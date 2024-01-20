@@ -5,35 +5,23 @@ import Repositories
 import SwiftUI
 
 struct ProductItemView: View {
-    @Environment(Router.self) private var router
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-
     enum Extra {
         case checkInCheck, rating, companyLink, logo
     }
 
+    @Environment(Router.self) private var router
     let product: Product.Joined
-    let extras: [Extra]
+    let extras: Set<Extra>
 
-    init(product: Product.Joined, extras: [Extra] = []) {
+    init(product: Product.Joined, extras: Set<Extra> = Set()) {
         self.product = product
         self.extras = extras
     }
 
     var body: some View {
-        HStack(spacing: 24) {
-            if extras.contains(.logo), let logoUrl = product.getLogo(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                RemoteImage(url: logoUrl) { state in
-                    if let image = state.image {
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 68, height: 68)
-                            .accessibility(hidden: true)
-                    } else {
-                        ProgressView()
-                    }
-                }
+        HStack(spacing: 12) {
+            if extras.contains(.logo) {
+                ProductLogo(product: product, size: 40)
             }
             VStack(alignment: .leading, spacing: 4) {
                 HStack {

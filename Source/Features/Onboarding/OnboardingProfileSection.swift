@@ -82,7 +82,7 @@ struct OnboardingProfileSection: View {
             }
         }
     }
-    
+
     private var titleSection: some View {
         Text("Set up your profile")
             .font(.largeTitle)
@@ -90,7 +90,7 @@ struct OnboardingProfileSection: View {
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
     }
-    
+
     private var avatarSection: some View {
         HStack {
             Spacer()
@@ -129,7 +129,7 @@ struct OnboardingProfileSection: View {
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
     }
-    
+
     private var profileSection: some View {
         Section {
             LabeledTextField(title: "Username", text: $username)

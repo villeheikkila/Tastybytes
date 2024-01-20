@@ -38,19 +38,11 @@ struct CompanySearchSheet: View {
 
     var body: some View {
         List {
-            if showEmptyResults {
-                Section {
-                    Text("No companies found with the searched name.")
-                    if profileEnvironmentModel.hasPermission(.canCreateCompanies) {
-                        Button("Create new company", action: { createNew() })
-                    }
-                }
-            }
             ForEach(searchResults) { company in
-                Button(company.name, action: {
+                CompanyResultRow(company: company) {
                     onSelect(company)
                     dismiss()
-                })
+                }
             }
 
             if profileEnvironmentModel.hasPermission(.canCreateCompanies), !showEmptyResults {
@@ -75,6 +67,17 @@ struct CompanySearchSheet: View {
                 }
             }
         }
+        .listStyle(.plain)
+        .safeAreaInset(edge: .top, content: {
+            if showEmptyResults {
+                VStack {
+                    Text("No companies found with the searched name.")
+                    if profileEnvironmentModel.hasPermission(.canCreateCompanies) {
+                        Button("Create new company", action: { createNew() })
+                    }
+                }
+            }
+        })
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
@@ -93,14 +96,15 @@ struct CompanySearchSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
-                .bold()
+            CloseButtonView {
+                dismiss()
+            }
         }
     }
 
     func createNew() {
         companyName = searchTerm
-        status = Status.add
+        status = .add
     }
 
     func searchCompanies(name: String) async {
@@ -108,7 +112,7 @@ struct CompanySearchSheet: View {
         switch await repository.company.search(searchTerm: searchTerm) {
         case let .success(searchResults):
             self.searchResults = searchResults
-            status = Status.searched
+            status = .searched
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
