@@ -31,81 +31,9 @@ struct OnboardingProfileSection: View {
 
     var body: some View {
         Form {
-            Text("Set up your profile")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
-
-            HStack {
-                Spacer()
-                PhotosPicker(
-                    selection: $selectedItem,
-                    matching: .images,
-                    photoLibrary: .shared()
-                ) {
-                    Avatar(
-                        profile: profileEnvironmentModel.profile,
-                        size: 140
-                    )
-                    .overlay(alignment: .bottomTrailing) {
-                        PhotosPicker(selection: $selectedItem,
-                                     matching: .images,
-                                     photoLibrary: .shared())
-                        {
-                            Image(systemName: "pencil.circle.fill")
-                                .accessibilityHidden(true)
-                                .symbolRenderingMode(.multicolor)
-                                .font(.system(size: 32))
-                                .foregroundColor(color)
-                        }
-                        .buttonStyle(.borderless)
-                    }
-                }
-                .onChange(of: selectedItem) { _, newValue in
-                    guard let newValue else { return }
-                    Task {
-                        guard let data = await newValue.getJPEG() else { return }
-                        await profileEnvironmentModel.uploadAvatar(data: data)
-                    }
-                }
-                Spacer()
-            }
-            .listRowBackground(Color.clear)
-            .listRowSeparator(.hidden)
-
-            Section {
-                LabeledTextField(title: "Username", text: $username)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-                    .focused($focusedField, equals: .username)
-                    .onTapGesture {
-                        focusedField = .username
-                    }
-                    .onChange(of: username) {
-                        usernameIsAvailable = false
-                        isLoading = true
-                    }
-                    .task(id: username, milliseconds: 300) { @MainActor in
-                        guard username.count >= 3 else { return }
-                        let isAvailable = await profileEnvironmentModel
-                            .checkIfUsernameIsAvailable(username: username)
-                        withAnimation {
-                            usernameIsAvailable = isAvailable
-                            isLoading = false
-                        }
-                    }
-                LabeledTextField(title: "First Name (optional)", text: $firstName)
-                    .focused($focusedField, equals: .firstName)
-                    .onTapGesture {
-                        focusedField = .firstName
-                    }
-                LabeledTextField(title: "Last Name (optional)", text: $lastName)
-                    .focused($focusedField, equals: .lastName)
-                    .onTapGesture {
-                        focusedField = .lastName
-                    }
-            }
+            titleSection
+            avatarSection
+            profileSection
         }
         .safeAreaInset(edge: .bottom) {
             if focusedField == nil {
@@ -139,6 +67,88 @@ struct OnboardingProfileSection: View {
             firstName = profileEnvironmentModel.firstName ?? ""
             lastName = profileEnvironmentModel.lastName ?? ""
             usernameIsAvailable = await profileEnvironmentModel.checkIfUsernameIsAvailable(username: username)
+        }
+        .onChange(of: username) {
+            usernameIsAvailable = false
+            isLoading = true
+        }
+        .task(id: username, milliseconds: 300) { @MainActor in
+            guard username.count >= 3 else { return }
+            let isAvailable = await profileEnvironmentModel
+                .checkIfUsernameIsAvailable(username: username)
+            withAnimation {
+                usernameIsAvailable = isAvailable
+                isLoading = false
+            }
+        }
+    }
+    
+    private var titleSection: some View {
+        Text("Set up your profile")
+            .font(.largeTitle)
+            .fontWeight(.semibold)
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+    }
+    
+    private var avatarSection: some View {
+        HStack {
+            Spacer()
+            PhotosPicker(
+                selection: $selectedItem,
+                matching: .images,
+                photoLibrary: .shared()
+            ) {
+                Avatar(
+                    profile: profileEnvironmentModel.profile,
+                    size: 140
+                )
+                .overlay(alignment: .bottomTrailing) {
+                    PhotosPicker(selection: $selectedItem,
+                                 matching: .images,
+                                 photoLibrary: .shared())
+                    {
+                        Image(systemName: "pencil.circle.fill")
+                            .accessibilityHidden(true)
+                            .symbolRenderingMode(.multicolor)
+                            .font(.system(size: 32))
+                            .foregroundColor(color)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
+            .onChange(of: selectedItem) { _, newValue in
+                guard let newValue else { return }
+                Task {
+                    guard let data = await newValue.getJPEG() else { return }
+                    await profileEnvironmentModel.uploadAvatar(data: data)
+                }
+            }
+            Spacer()
+        }
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+    }
+    
+    private var profileSection: some View {
+        Section {
+            LabeledTextField(title: "Username", text: $username)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+                .focused($focusedField, equals: .username)
+                .onTapGesture {
+                    focusedField = .username
+                }
+            LabeledTextField(title: "First Name (optional)", text: $firstName)
+                .focused($focusedField, equals: .firstName)
+                .onTapGesture {
+                    focusedField = .firstName
+                }
+            LabeledTextField(title: "Last Name (optional)", text: $lastName)
+                .focused($focusedField, equals: .lastName)
+                .onTapGesture {
+                    focusedField = .lastName
+                }
         }
     }
 }

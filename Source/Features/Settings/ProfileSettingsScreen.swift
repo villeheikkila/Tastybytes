@@ -24,6 +24,19 @@ struct ProfileSettingsScreen: View {
         }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: username) {
+            usernameIsAvailable = false
+            isLoading = true
+        }
+        .task(id: username, milliseconds: 300) { @MainActor in
+            guard username.count >= 3 else { return }
+            let isAvailable = await profileEnvironmentModel
+                .checkIfUsernameIsAvailable(username: username)
+            withAnimation {
+                usernameIsAvailable = isAvailable
+                isLoading = false
+            }
+        }
         .onAppear {
             username = profileEnvironmentModel.username
             firstName = profileEnvironmentModel.firstName ?? ""
@@ -36,19 +49,6 @@ struct ProfileSettingsScreen: View {
             LabeledTextField(title: "Username", text: $username)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-                .onChange(of: username) {
-                    usernameIsAvailable = false
-                    isLoading = true
-                }
-                .task(id: username, milliseconds: 300) { @MainActor in
-                    guard username.count >= 3 else { return }
-                    let isAvailable = await profileEnvironmentModel
-                        .checkIfUsernameIsAvailable(username: username)
-                    withAnimation {
-                        usernameIsAvailable = isAvailable
-                        isLoading = false
-                    }
-                }
             LabeledTextField(title: "First Name", text: $firstName)
             LabeledTextField(title: "Last Name", text: $lastName)
 
