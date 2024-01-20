@@ -12,7 +12,6 @@ struct EditCompanySheet: View {
     private let logger = Logger(category: "EditCompanySheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var company: Company
     @State private var newCompanyName = ""
@@ -73,23 +72,7 @@ struct EditCompanySheet: View {
                     matching: .images,
                     photoLibrary: .shared()
                 ) {
-                    if let logoUrl = company.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                        RemoteImage(url: logoUrl) { state in
-                            if let image = state.image {
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 52, height: 52)
-                                    .accessibility(hidden: true)
-                            } else {
-                                Image(systemName: "photo")
-                                    .accessibility(hidden: true)
-                            }
-                        }
-                    } else {
-                        Image(systemName: "photo")
-                            .accessibility(hidden: true)
-                    }
+                    CompanyLogo(company: company, size: 120)
                 }
             }
             .listRowSeparator(.hidden)

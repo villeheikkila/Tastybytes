@@ -13,7 +13,6 @@ struct EditBrandSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var name: String
     @State private var brandOwner: Company
@@ -51,23 +50,7 @@ struct EditBrandSheet: View {
                         matching: .images,
                         photoLibrary: .shared()
                     ) {
-                        if let logoUrl = brand.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                            RemoteImage(url: logoUrl) { state in
-                                if let image = state.image {
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 52, height: 52)
-                                        .accessibility(hidden: true)
-                                } else {
-                                    Image(systemName: "photo")
-                                        .accessibility(hidden: true)
-                                }
-                            }
-                        } else {
-                            Image(systemName: "photo")
-                                .accessibility(hidden: true)
-                        }
+                        BrandLogo(brand: brand, size: 52)
                     }
                 }
                 .listRowSeparator(.hidden)

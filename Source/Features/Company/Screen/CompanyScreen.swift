@@ -13,7 +13,6 @@ struct CompanyScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
     @State private var company: Company
     @State private var companyJoined: Company.Joined?
@@ -98,18 +97,8 @@ struct CompanyScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
-                if let logoUrl = company.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                    RemoteImage(url: logoUrl) { state in
-                        if let image = state.image {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 32, height: 32)
-                                .accessibility(hidden: true)
-                        } else {
-                            ProgressView()
-                        }
-                    }
+                if company.logoFile != nil {
+                    CompanyLogo(company: company, size: 32)
                 }
                 Text(company.name)
                     .font(.headline)
