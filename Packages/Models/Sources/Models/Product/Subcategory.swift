@@ -26,9 +26,9 @@ public struct Subcategory: Identifiable, Codable, Hashable, Sendable, Subcategor
         case name
         case isVerified = "is_verified"
     }
-    
+
     public func copyWith(id: Int? = nil, name: String? = nil, isVerified: Bool? = nil) -> Subcategory {
-        return Subcategory(
+        Subcategory(
             id: id ?? self.id,
             name: name ?? self.name,
             isVerified: isVerified ?? self.isVerified

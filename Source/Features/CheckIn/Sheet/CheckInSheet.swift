@@ -49,6 +49,7 @@ struct CheckInSheet: View {
 
     @State private var finalImage: UIImage?
     @State private var showImageCropper = false
+    @State private var sheet: Sheet?
 
     let onCreation: ((_ checkIn: CheckIn) async -> Void)?
     let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
@@ -94,18 +95,19 @@ struct CheckInSheet: View {
             locationAndFriendsSection
         }
         .foregroundColor(.primary)
+        .sheets(item: $sheet)
         .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
             Button("Camera", action: { showCamera.toggle() })
-            RouterLink(
+            Button(
                 "Photo Gallery",
-                sheet: .legacyPhotoPicker(onSelection: { image, metadata in
+                action: { sheet = .legacyPhotoPicker(onSelection: { image, metadata in
                     DispatchQueue.main.async {
                         imageMetadata = metadata
                         self.image = image
                         showImageCropper = true
                     }
-
                 })
+                }
             )
         } message: {
             Text("Pick a photo")

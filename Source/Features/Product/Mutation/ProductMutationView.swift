@@ -86,6 +86,10 @@ struct ProductMutationView: View {
         selectedCategory?.subcategories.filter { subcategories.contains($0.id) } ?? []
     }
 
+    private var isValid: Bool {
+        category != nil && brandOwner != nil && brand != nil && name.isValidLength(.normal)
+    }
+
     var body: some View {
         Form {
             categorySection
@@ -95,11 +99,9 @@ struct ProductMutationView: View {
         .navigationTitle(mode.navigationTitle)
         .foregroundColor(.primary)
         .alertError($alertError)
-        .if(isSheet, transform: { view in
-            view.toolbar {
-                toolbarContent
-            }
-        })
+        .toolbar {
+            toolbarContent
+        }
         .task {
             await initialize()
         }
@@ -108,18 +110,20 @@ struct ProductMutationView: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
-            CloseButtonView {
-                dismiss()
+        if isSheet {
+            ToolbarItemGroup(placement: .cancellationAction) {
+                CloseButtonView {
+                    dismiss()
+                }
             }
         }
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(mode.doneLabel, action: {
                 await primaryAction()
             })
-            .foregroundColor(.primary)
+            .foregroundColor(isValid ? .primary : .secondary)
             .fontWeight(.medium)
-            .disabled(!isValid())
+            .disabled(!isValid)
         }
     }
 
@@ -238,10 +242,6 @@ struct ProductMutationView: View {
                 }
         }
         .headerProminence(.increased)
-    }
-
-    func isValid() -> Bool {
-        category != nil && brandOwner != nil && brand != nil && name.isValidLength(.normal)
     }
 
     func primaryAction() async {

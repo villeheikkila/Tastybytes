@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct BrandSheet: View {
     private let logger = Logger(category: "BrandSheet")
     @Environment(Repository.self) private var repository
@@ -35,10 +36,10 @@ struct BrandSheet: View {
         List {
             if mode == .select {
                 ForEach(filteredBrands) { brand in
-                    Button(brand.name, action: {
+                    BrandSheetRow(brand: brand) { brand in
                         self.brand = brand
                         dismiss()
-                    })
+                    }
                 }
             }
 
@@ -50,6 +51,8 @@ struct BrandSheet: View {
                 }
             }
         }
+        .listStyle(.plain)
+        .foregroundColor(.primary)
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
@@ -67,8 +70,9 @@ struct BrandSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
-                .bold()
+            CloseButtonView {
+                dismiss()
+            }
         }
     }
 
@@ -83,7 +87,6 @@ struct BrandSheet: View {
         }
     }
 
-    @MainActor
     func createNewBrand() async {
         switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
         case let .success(brandWithSubBrands):

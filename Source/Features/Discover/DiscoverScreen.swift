@@ -192,11 +192,9 @@ struct DiscoverScreen: View {
             switch searchScope {
             case .companies:
                 ContentUnavailableView {
-                    Label("No Companies  found for \"\(searchTerm)\"", systemImage: "storefront")
+                    Label("No Companies found for \"\(searchTerm)\"", systemImage: "storefront")
                 } description: {
                     Text("Check the spelling or try a new search")
-                } actions: {
-                    RouterLink("Create new product", screen: .addProduct(barcode))
                 }
             case .locations:
                 ContentUnavailableView {
