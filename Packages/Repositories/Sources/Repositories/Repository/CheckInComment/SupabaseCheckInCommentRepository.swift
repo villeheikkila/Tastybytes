@@ -47,7 +47,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
                 .from(.checkInComments)
                 .select(CheckInComment.getQuery(.joinedProfile(false)))
                 .eq("check_in_id", value: id)
-                .order("created_at")
+                .order("created_at", ascending: false)
                 .execute()
                 .value
 

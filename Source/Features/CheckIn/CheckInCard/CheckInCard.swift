@@ -6,39 +6,39 @@ import Repositories
 import SwiftUI
 
 struct CheckInCard: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(Router.self) private var router
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
 
     var body: some View {
-        CheckInCardContainer {
-            Group {
-                CheckInCardHeader(
-                    profile: checkIn.profile,
-                    loadedFrom: loadedFrom,
-                    location: checkIn.location
-                )
-                CheckInCardProduct(
-                    product: checkIn.product,
-                    loadedFrom: loadedFrom,
-                    productVariant: checkIn.variant,
-                    servingStyle: checkIn.servingStyle
-                )
-            }.padding(.horizontal, 12)
-            CheckInCardImage(imageUrl: checkIn.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), blurHash: checkIn.blurHash)
-            Group {
-                CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
-                CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
-                CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
-            }.padding(.horizontal, 12)
+        CheckInCardContainer(checkIn: checkIn, loadedFrom: loadedFrom) {
+            header
+            CheckInCardImage(checkIn: checkIn)
+            footer
         }
-        .onTapGesture {
-            if loadedFrom != .checkIn {
-                router.navigate(screen: .checkIn(checkIn))
-            }
-        }
-        .accessibilityAddTraits(.isLink)
+    }
+
+    private var header: some View {
+        Group {
+            CheckInCardHeader(
+                profile: checkIn.profile,
+                loadedFrom: loadedFrom,
+                location: checkIn.location
+            )
+            CheckInCardProduct(
+                product: checkIn.product,
+                loadedFrom: loadedFrom,
+                productVariant: checkIn.variant,
+                servingStyle: checkIn.servingStyle
+            )
+        }.padding(.horizontal, 12)
+    }
+
+    private var footer: some View {
+        Group {
+            CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
+            CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
+            CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
+        }.padding(.horizontal, 12)
     }
 }
 

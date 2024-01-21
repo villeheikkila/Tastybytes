@@ -92,7 +92,7 @@ struct CompanyScreen: View {
             await getCompanyData()
             resultId = refreshId
         }
-        .sheets(item:  $sheet)
+        .sheets(item: $sheet)
     }
 
     @MainActor

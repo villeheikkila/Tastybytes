@@ -50,7 +50,6 @@ struct ProductScreen: View {
             },
             header: {
                 header
-                    .sheets(item: $sheet)
             }
         )
         .safeAreaInset(edge: .top, alignment: .trailing) {
@@ -106,6 +105,7 @@ struct ProductScreen: View {
             onRefreshCheckIns: refreshCheckIns,
             isOnWishlist: $isOnWishlist
         )
+        .sheets(item: $sheet)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

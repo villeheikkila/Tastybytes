@@ -17,7 +17,7 @@ struct ProductScreenHeader: View {
 
     var body: some View {
         VStack {
-            ProductItemView(product: product, extras: [.companyLink, .logo])
+            ProductItemView(product: product, extras: [.companyLink, .logoOnRight])
             SummaryView(summary: summary).padding(.top, 4)
             ProductScreenActionSection(
                 isOnWishlist: $isOnWishlist,

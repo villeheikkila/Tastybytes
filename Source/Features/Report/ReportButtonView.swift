@@ -7,7 +7,7 @@ struct ReportButton: View {
 
     var body: some View {
         Button("Report", systemImage: "exclamationmark.bubble.fill") {
-          sheet =  .report(entity)
+            sheet = .report(entity)
         }
     }
 }

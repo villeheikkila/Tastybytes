@@ -51,7 +51,7 @@ struct ReportSheet: View {
     @ViewBuilder private var reportedEntityView: some View {
         switch entity {
         case let .product(product):
-            ProductItemView(product: product, extras: [.companyLink, .logo])
+            ProductItemView(product: product, extras: [.companyLink, .logoOnLeft])
         case let .company(company):
             HStack {
                 Text(company.name)
@@ -83,4 +83,3 @@ struct ReportSheet: View {
         }
     }
 }
-

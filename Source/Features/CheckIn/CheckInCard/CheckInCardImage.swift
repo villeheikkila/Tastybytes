@@ -1,16 +1,17 @@
 import Components
+import EnvironmentModels
 import Models
 import SwiftUI
 
 struct CheckInCardImage: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var showFullPicture = false
     @State private var blurHashPlaceHolder: UIImage?
 
-    let imageUrl: URL?
-    let blurHash: CheckIn.BlurHash?
+    let checkIn: CheckIn
 
     var body: some View {
-        if let imageUrl {
+        if let imageUrl = checkIn.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
             RemoteImage(url: imageUrl) { state in
                 if let image = state.image {
                     image
@@ -35,7 +36,7 @@ struct CheckInCardImage: View {
                             }
                         }
                 } else {
-                    BlurHashPlaceholder(blurHash: blurHash, height: 200)
+                    BlurHashPlaceholder(blurHash: checkIn.blurHash, height: 200)
                 }
             }
             .frame(height: 200)

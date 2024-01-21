@@ -6,7 +6,7 @@ import SwiftUI
 
 struct ProductItemView: View {
     enum Extra {
-        case checkInCheck, rating, companyLink, logo
+        case checkInCheck, rating, companyLink, logoOnLeft, logoOnRight
     }
 
     @Environment(Router.self) private var router
@@ -20,8 +20,8 @@ struct ProductItemView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            if extras.contains(.logo) {
-                ProductLogo(product: product, size: 48)
+            if extras.contains(.logoOnLeft) {
+                productLogo
             }
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
@@ -62,6 +62,13 @@ struct ProductItemView: View {
                     }
                 }
             }
+            if extras.contains(.logoOnRight) {
+                productLogo
+            }
         }
+    }
+
+    private var productLogo: some View {
+        ProductLogo(product: product, size: 48)
     }
 }
