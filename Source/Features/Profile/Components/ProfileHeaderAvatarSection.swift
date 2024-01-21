@@ -46,12 +46,6 @@ struct ProfileHeaderAvatarSection: View {
                         }
                     }
             }
-            .onChange(of: selectedItem) { _, newValue in
-                Task {
-                    guard let data = await newValue?.getJPEG() else { return }
-                    await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
-                }
-            }
             Spacer()
             if showInFull {
                 CheckInStatisticView(title: "Unique", subtitle: String(profileSummary?.uniqueCheckIns ?? 0)) {
@@ -62,6 +56,12 @@ struct ProfileHeaderAvatarSection: View {
         }
         .contextMenu {
             ProfileShareLinkView(profile: profile)
+        }
+        .onChange(of: selectedItem) { _, newValue in
+            Task {
+                guard let data = await newValue?.getJPEG() else { return }
+                await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
+            }
         }
     }
 
