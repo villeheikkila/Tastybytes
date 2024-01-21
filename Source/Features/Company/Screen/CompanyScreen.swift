@@ -47,14 +47,12 @@ struct CompanyScreen: View {
             Section("Brands") {
                 ForEach(sortedBrands) { brand in
                     RouterLink(
-                        screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company, brand: brand)),
-                        asTapGesture: true
+                        screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company, brand: brand))
                     ) {
-                        HStack {
-                            Text("\(brand.name)")
-                            Spacer()
-                            Text("(\(brand.getNumberOfProducts()))")
-                        }
+                        CompanyBrandRow(brand: brand)
+                    }
+                    .alignmentGuide(.listRowSeparatorLeading) { _ in
+                        0
                     }
                 }
             }
@@ -195,7 +193,6 @@ struct CompanyScreen: View {
         }
     }
 
-    @MainActor
     func deleteCompany(_ company: Company) async {
         switch await repository.company.delete(id: company.id) {
         case .success:

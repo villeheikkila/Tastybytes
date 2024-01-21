@@ -30,6 +30,9 @@ struct DiscoverProductResults: View {
             ForEach(products) { product in
                 DiscoverProductRow(product: product, barcode: $barcode)
                     .id(product.id)
+                    .alignmentGuide(.listRowSeparatorLeading) { _ in
+                        0
+                    }
             }
         }
 

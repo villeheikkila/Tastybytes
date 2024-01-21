@@ -27,7 +27,7 @@ struct BrandScreenProductRow: View {
 
     var body: some View {
         RouterLink(screen: .product(product)) {
-            ProductItemView(product: product)
+            ProductItemView(product: product, extras: [.logoOnLeft])
                 .padding(2)
                 .contextMenu {
                     Button(action: { sheet = .duplicateProduct(
@@ -53,6 +53,7 @@ struct BrandScreenProductRow: View {
                         .disabled(product.isVerified)
                     }
                 }
+                .sheets(item: $sheet)
         }
         .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
                             isPresented: $showDeleteProductConfirmationDialog,
@@ -64,6 +65,9 @@ struct BrandScreenProductRow: View {
                 role: .destructive,
                 action: { await deleteProduct(presenting) }
             )
+        }
+        .alignmentGuide(.listRowSeparatorLeading) { _ in
+            0
         }
     }
 

@@ -82,7 +82,7 @@ struct BrandScreen: View {
             if let index = result.firstIndex(where: { $0.category == product.category }) {
                 result[index].products.append(product)
             } else {
-                result.append(ProductsByCategory(category: product.category, products: [product]))
+                result.append(.init(category: product.category, products: [product]))
             }
         }
     }
@@ -95,11 +95,8 @@ struct BrandScreen: View {
                 }
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
-                .onAppear {
-                    if let initialScrollPosition {
-                        scrollProxy.scrollTo(initialScrollPosition.id, anchor: .top)
-                    }
-                }
+                .id(Optional(initialScrollPosition))
+                .sheets(item: $sheet)
 
                 switch productGrouping {
                 case .subBrand:
@@ -119,6 +116,9 @@ struct BrandScreen: View {
                     logger.info("Refreshing brand screen with id: \(refreshId)")
                     await getBrandData()
                     resultId = refreshId
+                    if refreshId == 0, let initialScrollPosition {
+                        scrollProxy.scrollTo(initialScrollPosition, anchor: .top)
+                    }
                 }
                 .toolbar {
                     toolbarContent
@@ -136,7 +136,6 @@ struct BrandScreen: View {
                     )
                 }
                 .alertError($alertError)
-                .sheets(item: $sheet)
                 .confirmationDialog(
                     "Unverify Brand",
                     isPresented: $showBrandUnverificationConfirmation,
@@ -209,7 +208,7 @@ struct BrandScreen: View {
             Section {
                 ForEach(subBrand.products) { product in
                     BrandScreenProductRow(
-                        product: Product.Joined(
+                        product: .init(
                             product: product,
                             subBrand: subBrand,
                             brand: brand
@@ -269,13 +268,12 @@ struct BrandScreen: View {
                             .frame(width: 24, height: 24)
                     }
                 }
+                .id(subBrand)
             }
             .headerProminence(.increased)
-            .id(subBrand.id)
         }
     }
 
-    @MainActor
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
