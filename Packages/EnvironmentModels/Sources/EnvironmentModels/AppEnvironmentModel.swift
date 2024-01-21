@@ -196,10 +196,9 @@ public final class AppEnvironmentModel {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger
-                .error(
-                    "Failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id). error: \(error)"
-                )
+            logger.error(
+                "Failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id). error: \(error)"
+            )
         }
     }
 

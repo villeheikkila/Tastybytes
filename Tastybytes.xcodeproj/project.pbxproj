@@ -175,7 +175,6 @@
 		5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */; };
 		5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* Sheets.swift */; };
 		5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC442B5707C400E17629 /* CheckInListContent.swift */; };
-		5CA4AC472B57195B00E17629 /* SheetLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC462B57195B00E17629 /* SheetLink.swift */; };
 		5CA4AC492B586DF800E17629 /* DuplicateProductContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */; };
 		5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */; };
 		5CA4AC4D2B586FDF00E17629 /* BarcodeManagementRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */; };
@@ -404,7 +403,6 @@
 		5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStateObserver.swift; sourceTree = "<group>"; };
 		5C9583862B41EE0000A2A03B /* Sheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheets.swift; sourceTree = "<group>"; };
 		5CA4AC442B5707C400E17629 /* CheckInListContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListContent.swift; sourceTree = "<group>"; };
-		5CA4AC462B57195B00E17629 /* SheetLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetLink.swift; sourceTree = "<group>"; };
 		5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductContentUnavailableView.swift; sourceTree = "<group>"; };
 		5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheetRow.swift; sourceTree = "<group>"; };
 		5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementRow.swift; sourceTree = "<group>"; };
@@ -578,7 +576,6 @@
 				5C9057DA2B2894BE00EC157B /* SheetManager.swift */,
 				5C9057432B2894BE00EC157B /* Sheet.swift */,
 				5C9583862B41EE0000A2A03B /* Sheets.swift */,
-				5CA4AC462B57195B00E17629 /* SheetLink.swift */,
 			);
 			path = Sheets;
 			sourceTree = "<group>";
@@ -1549,7 +1546,6 @@
 				5C9058042B2894BE00EC157B /* AddCategorySheet.swift in Sources */,
 				5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */,
 				5C9058052B2894BE00EC157B /* DuplicateProductSheet.swift in Sources */,
-				5CA4AC472B57195B00E17629 /* SheetLink.swift in Sources */,
 				5CAADF0B2B5C566F00D956C1 /* ProductLogo.swift in Sources */,
 				5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */,
 				5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */,
