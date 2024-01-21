@@ -41,19 +41,19 @@ struct CheckInScreen: View {
     var body: some View {
         List {
             header
-            CheckInCommentSection(checkInComments: $checkInComments)
-            Spacer()
-                .frame(height: 200)
-                .listRowSeparator(.hidden)
+                .onTapGesture {
+                    focusedField = nil
+                }
+            ForEach(checkInComments) { comment in
+                CheckInCommentRow(comment: comment, checkInComments: $checkInComments)
+                    .listRowSeparator(.hidden)
+            }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
-        .onTapGesture {
-            focusedField = nil
-        }
         .refreshable {
-            refreshId += 1
+            await loadCheckInData()
         }
         .safeAreaInset(edge: .bottom, alignment: .trailing, content: {
             CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField)
@@ -61,7 +61,12 @@ struct CheckInScreen: View {
         .toolbar {
             toolbarContent
         }
-        .sheets(item: $sheet)
+        .task(id: refreshId) { [refreshId] in
+            guard refreshId != resultId else { return }
+            logger.info("Refreshing check-in screen with id: \(refreshId)")
+            await loadCheckInData()
+            resultId = refreshId
+        }
         .alertError($alertError)
         .confirmationDialog(
             "check-in.delete-confirmation.title",
@@ -87,29 +92,24 @@ struct CheckInScreen: View {
                 action: { await deleteCheckInAsModerator(presenting) }
             )
         }
-        .task(id: refreshId) { [refreshId] in
-            guard refreshId != resultId else { return }
-            logger.info("Refreshing check-in screen with id: \(refreshId)")
-            await loadCheckInData()
-            resultId = refreshId
-        }
     }
 
     private var header: some View {
         CheckInCard(checkIn: checkIn, loadedFrom: .checkIn)
             .listRowSeparator(.hidden)
             .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
+            .sheets(item: $sheet)
             .contextMenu {
                 ControlGroup {
                     CheckInShareLinkView(checkIn: checkIn)
                     if checkIn.profile.id == profileEnvironmentModel.id {
-                        RouterLink(
+                        Button(
                             "Edit",
                             systemImage: "pencil",
-                            sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                            action: { sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
                                 checkIn = updatedCheckIn
-                            }),
-                            useRootSheetManager: true
+                            })
+                            }
                         )
                         Button(
                             "Delete",
@@ -120,13 +120,13 @@ struct CheckInScreen: View {
                             }
                         )
                     } else {
-                        RouterLink(
+                        Button(
                             "Check-in",
                             systemImage: "pencil",
-                            sheet: .newCheckIn(checkIn.product, onCreation: { checkIn in
+                            action: { sheet = .newCheckIn(checkIn.product, onCreation: { checkIn in
                                 router.navigate(screen: .checkIn(checkIn))
-                            }),
-                            useRootSheetManager: true
+                            })
+                            }
                         )
                         ReportButton(sheet: $sheet, entity: .checkIn(checkIn))
                     }
@@ -173,15 +173,15 @@ struct CheckInScreen: View {
                 if checkIn.profile.id == profileEnvironmentModel.id {
                     ControlGroup {
                         CheckInShareLinkView(checkIn: checkIn)
-                        RouterLink(
+                        Button(
                             "Edit", systemImage: "pencil",
-                            sheet: .checkIn(
+                            action: { sheet = .checkIn(
                                 checkIn,
                                 onUpdate: { updatedCheckIn in
                                     checkIn = updatedCheckIn
                                 }
-                            ),
-                            useRootSheetManager: true
+                            )
+                            }
                         )
                         Button(
                             "Delete",

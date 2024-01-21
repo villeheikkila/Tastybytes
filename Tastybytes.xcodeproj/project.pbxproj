@@ -21,7 +21,8 @@
 		5C07F27D2B51EBB800D8740B /* CheckInShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F2732B51EBB700D8740B /* CheckInShareLinkView.swift */; };
 		5C07F27F2B51F00600D8740B /* PhaseObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F27E2B51F00600D8740B /* PhaseObserver.swift */; };
 		5C24E1C62B5D1F83003AB7C8 /* CheckInLeaveComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1C52B5D1F83003AB7C8 /* CheckInLeaveComment.swift */; };
-		5C24E1C82B5D21E4003AB7C8 /* CheckInCommentSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1C72B5D21E4003AB7C8 /* CheckInCommentSection.swift */; };
+		5C24E1CA2B5D34CE003AB7C8 /* CheckInCommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1C92B5D34CE003AB7C8 /* CheckInCommentRow.swift */; };
+		5C24E1CC2B5D38D4003AB7C8 /* CheckInCardSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1CB2B5D38D4003AB7C8 /* CheckInCardSheet.swift */; };
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; };
 		5C39076F2B3232420036253E /* LayoutSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C39076E2B3232420036253E /* LayoutSelector.swift */; };
 		5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E892B504DD80048605B /* ProfileStateObserver.swift */; };
@@ -244,7 +245,8 @@
 		5C07F2772B51EBB800D8740B /* CompanyShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyShareLinkView.swift; sourceTree = "<group>"; };
 		5C07F27E2B51F00600D8740B /* PhaseObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseObserver.swift; sourceTree = "<group>"; };
 		5C24E1C52B5D1F83003AB7C8 /* CheckInLeaveComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInLeaveComment.swift; sourceTree = "<group>"; };
-		5C24E1C72B5D21E4003AB7C8 /* CheckInCommentSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentSection.swift; sourceTree = "<group>"; };
+		5C24E1C92B5D34CE003AB7C8 /* CheckInCommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentRow.swift; sourceTree = "<group>"; };
+		5C24E1CB2B5D38D4003AB7C8 /* CheckInCardSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardSheet.swift; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
 		5C39076E2B3232420036253E /* LayoutSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSelector.swift; sourceTree = "<group>"; };
 		5C3CF5532B43484F0034B786 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
@@ -1076,7 +1078,8 @@
 				5C9057B82B2894BE00EC157B /* CheckInScreen.swift */,
 				5C9057B72B2894BE00EC157B /* CheckInCommentView.swift */,
 				5C24E1C52B5D1F83003AB7C8 /* CheckInLeaveComment.swift */,
-				5C24E1C72B5D21E4003AB7C8 /* CheckInCommentSection.swift */,
+				5C24E1C92B5D34CE003AB7C8 /* CheckInCommentRow.swift */,
+				5C24E1CB2B5D38D4003AB7C8 /* CheckInCardSheet.swift */,
 			);
 			path = CheckInScreen;
 			sourceTree = "<group>";
@@ -1491,7 +1494,6 @@
 				5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */,
 				5C9057E82B2894BE00EC157B /* NotificationTab.swift in Sources */,
 				5C9057FA2B2894BE00EC157B /* AddSubcategorySheet.swift in Sources */,
-				5C24E1C82B5D21E4003AB7C8 /* CheckInCommentSection.swift in Sources */,
 				5C9058102B2894BE00EC157B /* FlavorSheet.swift in Sources */,
 				5C9058572B2894BE00EC157B /* RouterLink.swift in Sources */,
 				5C9058062B2894BE00EC157B /* ServingStyleManagementSheet.swift in Sources */,
@@ -1523,6 +1525,7 @@
 				5C90584E2B2894BE00EC157B /* ProductMutationView.swift in Sources */,
 				5C9058592B2894BE00EC157B /* SheetManager.swift in Sources */,
 				5C9057EC2B2894BE00EC157B /* ProfileTab.swift in Sources */,
+				5C24E1CA2B5D34CE003AB7C8 /* CheckInCommentRow.swift in Sources */,
 				5C9057EE2B2894BE00EC157B /* ProductFilterOverlayView.swift in Sources */,
 				5C9058362B2894BE00EC157B /* RatingChartView.swift in Sources */,
 				5C90581B2B2894BE00EC157B /* NotificationSettingsScreen.swift in Sources */,
@@ -1587,6 +1590,7 @@
 				5C9058372B2894BE00EC157B /* ProfileStatisticsView.swift in Sources */,
 				5C90580F2B2894BE00EC157B /* CheckInSheet.swift in Sources */,
 				5C9058582B2894BE00EC157B /* QuickAction.swift in Sources */,
+				5C24E1CC2B5D38D4003AB7C8 /* CheckInCardSheet.swift in Sources */,
 				5CAADEFE2B5C48C400D956C1 /* DiscoverProductResults.swift in Sources */,
 				5C9057F42B2894BE00EC157B /* BrandSheet.swift in Sources */,
 				5C9058352B2894BE00EC157B /* ProfileLocationsScreen.swift in Sources */,

@@ -63,7 +63,7 @@ struct CompanyScreen: View {
         .listStyle(.plain)
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                refreshId += 1
+                await getCompanyData()
             }
         #endif
             .toolbar {

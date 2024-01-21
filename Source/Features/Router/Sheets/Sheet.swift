@@ -61,6 +61,7 @@ enum Sheet: Identifiable, Equatable {
     case productLogo(product: Product.Joined, onUpload: () async -> Void)
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
+    case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
 
     @ViewBuilder var view: some View {
         switch self {
@@ -140,6 +141,8 @@ enum Sheet: Identifiable, Equatable {
             ProductLogoSheet(product: product, onUpload: onUpload)
         case let .sendEmail(email, callback):
             SendEmailView(email: email, callback: callback)
+        case let .editComment(checkInComment, checkInComments):
+            CheckInCommentEditSheet(checkInComment: checkInComment, checkInComments: checkInComments)
         }
     }
 
@@ -151,6 +154,8 @@ enum Sheet: Identifiable, Equatable {
             [.height(320)]
         case .checkInDatePicker:
             [.height(500)]
+        case .editComment:
+            [.height(120)]
         default:
             [.large]
         }
@@ -251,6 +256,8 @@ enum Sheet: Identifiable, Equatable {
             "product_logo_\(product.hashValue)"
         case .sendEmail:
             "send_email"
+        case let .editComment(checkInComment, _):
+            "edit_comment_\(checkInComment.hashValue)"
         }
     }
 

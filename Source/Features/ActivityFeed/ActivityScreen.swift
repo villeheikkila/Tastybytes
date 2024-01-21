@@ -97,7 +97,7 @@ struct ActivityScreen: View {
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-            refreshId += 1
+            await fetchFeedItems(reset: true)
         }
         #endif
         .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in

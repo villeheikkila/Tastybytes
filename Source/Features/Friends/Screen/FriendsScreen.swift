@@ -65,7 +65,7 @@ struct FriendsScreen: View {
         .alertError($alertError)
         #if !targetEnvironment(macCatalyst)
             .refreshable {
-                refreshId += 1
+                await loadFriends()
             }
         #endif
     }
