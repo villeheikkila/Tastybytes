@@ -35,11 +35,9 @@ struct SubBrandSheet: View {
     var body: some View {
         List {
             ForEach(filteredSubBrands) { subBrand in
-                if let name = subBrand.name {
-                    Button(name, action: {
-                        self.subBrand = subBrand
-                        dismiss()
-                    })
+                SubBrandSheetRow(subBrand: subBrand) { _ in
+                    self.subBrand = subBrand
+                    dismiss()
                 }
             }
 
@@ -51,6 +49,7 @@ struct SubBrandSheet: View {
                 }
             }
         }
+        .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
@@ -65,8 +64,9 @@ struct SubBrandSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .cancellationAction) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
-                .bold()
+            CloseButtonView {
+                dismiss()
+            }
         }
     }
 

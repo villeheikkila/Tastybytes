@@ -25,6 +25,8 @@
 		5C24E1CC2B5D38D4003AB7C8 /* CheckInCardSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1CB2B5D38D4003AB7C8 /* CheckInCardSheet.swift */; };
 		5C24E1CF2B5D89DD003AB7C8 /* CompanyBrandRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1CE2B5D89DD003AB7C8 /* CompanyBrandRow.swift */; };
 		5C24E1D12B5DADD4003AB7C8 /* BrandSheetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1D02B5DADD4003AB7C8 /* BrandSheetRow.swift */; };
+		5C24E1D32B5E4464003AB7C8 /* SubBrandSheetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1D22B5E4464003AB7C8 /* SubBrandSheetRow.swift */; };
+		5C24E1D52B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1D42B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift */; };
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; };
 		5C39076F2B3232420036253E /* LayoutSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C39076E2B3232420036253E /* LayoutSelector.swift */; };
 		5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E892B504DD80048605B /* ProfileStateObserver.swift */; };
@@ -250,6 +252,8 @@
 		5C24E1CB2B5D38D4003AB7C8 /* CheckInCardSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardSheet.swift; sourceTree = "<group>"; };
 		5C24E1CE2B5D89DD003AB7C8 /* CompanyBrandRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyBrandRow.swift; sourceTree = "<group>"; };
 		5C24E1D02B5DADD4003AB7C8 /* BrandSheetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheetRow.swift; sourceTree = "<group>"; };
+		5C24E1D22B5E4464003AB7C8 /* SubBrandSheetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandSheetRow.swift; sourceTree = "<group>"; };
+		5C24E1D42B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandSheetCreateSection.swift; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
 		5C39076E2B3232420036253E /* LayoutSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSelector.swift; sourceTree = "<group>"; };
 		5C3CF5532B43484F0034B786 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
@@ -893,6 +897,8 @@
 			isa = PBXGroup;
 			children = (
 				5C9057752B2894BE00EC157B /* SubBrandSheet.swift */,
+				5C24E1D22B5E4464003AB7C8 /* SubBrandSheetRow.swift */,
+				5C24E1D42B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift */,
 			);
 			path = SubBrand;
 			sourceTree = "<group>";
@@ -1486,6 +1492,7 @@
 				5C9057FD2B2894BE00EC157B /* SubscriptionEnvironmentModel.swift in Sources */,
 				5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */,
 				5C82E8912B2F6C0E00F2B369 /* ContentView.swift in Sources */,
+				5C24E1D52B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift in Sources */,
 				5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */,
 				5C9057F12B2894BE00EC157B /* CategoryPickerSheet.swift in Sources */,
 				5C9057E52B2894BE00EC157B /* UserDefaults.swift in Sources */,
@@ -1556,6 +1563,7 @@
 				5C9057F82B2894BE00EC157B /* EditCompanySheet.swift in Sources */,
 				5C82E8AE2B2F97E400F2B369 /* ProductScreenActionSection.swift in Sources */,
 				5C9058542B2894BE00EC157B /* OnboardingProfileSection.swift in Sources */,
+				5C24E1D32B5E4464003AB7C8 /* SubBrandSheetRow.swift in Sources */,
 				5C90581F2B2894BE00EC157B /* AdminScreen.swift in Sources */,
 				5C90580C2B2894BE00EC157B /* ReportSheet.swift in Sources */,
 				5C9058222B2894BE00EC157B /* MessageNotificationView.swift in Sources */,
