@@ -23,7 +23,7 @@ struct CheckInCommentEditSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("TextField", text: $editCommentText)
+                TextField("Comment...", text: $editCommentText)
             }
             .scrollBounceBehavior(.basedOnSize)
             .navigationTitle("Edit Comment")

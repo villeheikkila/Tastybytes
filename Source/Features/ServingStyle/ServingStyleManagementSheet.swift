@@ -77,7 +77,7 @@ struct ServingStyleManagementSheet: View {
         .alert(
             "Edit Serving Style", isPresented: $showEditServingStyle,
             actions: {
-                TextField("TextField", text: $servingStyleName)
+                TextField("Name of the serving style", text: $servingStyleName)
                 Button("actions.cancel", role: .cancel, action: {})
                 ProgressButton(
                     "Edit",

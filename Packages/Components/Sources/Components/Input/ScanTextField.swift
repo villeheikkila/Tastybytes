@@ -3,7 +3,7 @@ import SwiftUI
 
 public struct ScanTextField: View {
     let title: String
-    @State var scannedText: String = ""
+    @State private var scannedText: String = ""
 
     @Binding var text: String
 

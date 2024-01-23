@@ -46,7 +46,7 @@ struct SubcategorySheet: View {
             toolbarContent
         }
         .alert("Add new subcategory", isPresented: $showAddSubcategory, actions: {
-            TextField("TextField", text: $newSubcategoryName)
+            TextField("Name of subcategory", text: $newSubcategoryName)
             Button("actions.cancel", role: .cancel, action: {})
             ProgressButton("Create", action: {
                 await appEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)

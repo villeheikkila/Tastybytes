@@ -7,7 +7,7 @@ import SwiftUI
 
 struct ProductCreationScreen: View {
     @State private var selection: Section = .brand
-    @State var brand: Brand.JoinedSubBrands?
+    @State private var brand: Brand.JoinedSubBrands?
 
     var body: some View {
         TabView(selection: $selection) {

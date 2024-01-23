@@ -10,7 +10,7 @@ struct FlavorSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var pickedFlavors: [Flavor]
-    @State var pickedFlavorIds: Set<Int> = Set()
+    @State private var pickedFlavorIds: Set<Int> = Set()
     @State private var searchTerm = ""
 
     init(pickedFlavors: Binding<[Flavor]>) {

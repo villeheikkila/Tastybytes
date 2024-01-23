@@ -749,6 +749,9 @@
         }
       }
     },
+    "Comment..." : {
+
+    },
     "Companies" : {
       "localizations" : {
         "en" : {
@@ -1318,6 +1321,12 @@
           }
         }
       }
+    },
+    "Name of subcategory" : {
+
+    },
+    "Name of the serving style" : {
+
     },
     "Name Tag" : {
       "localizations" : {
@@ -2187,6 +2196,7 @@
 
     },
     "TextField" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

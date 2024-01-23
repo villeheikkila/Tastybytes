@@ -7,8 +7,8 @@ import SwiftUI
 struct NotificationScreen: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var filter: NotificationType?
     @Binding var scrollToTop: Int
-    @State var filter: NotificationType?
 
     var filteredNotifications: [Models.Notification] {
         notificationEnvironmentModel.notifications.filter { notification in
