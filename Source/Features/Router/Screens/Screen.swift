@@ -43,24 +43,11 @@ enum Screen: Hashable, Codable, Sendable {
         case let .company(company):
             CompanyScreen(company: company)
         case let .fetchSubBrand(subBrand):
-            BrandScreen(
-                brand: Brand
-                    .JoinedSubBrandsProductsCompany(
-                        id: subBrand.brand.id,
-                        name: subBrand.brand.name,
-                        isVerified: subBrand.brand.isVerified,
-                        brandOwner: subBrand.brand.brandOwner,
-                        subBrands: []
-                    ), refreshOnLoad: true, initialScrollPosition: subBrand
-            )
+            BrandScreen(brand: .init(subBrand: subBrand), refreshOnLoad: true, initialScrollPosition: subBrand)
         case let .brand(brand):
             BrandScreen(brand: brand)
         case let .fetchBrand(brand):
-            BrandScreen(
-                brand: Brand
-                    .JoinedSubBrandsProductsCompany(id: brand.id, name: brand.name, isVerified: brand.isVerified,
-                                                    brandOwner: brand.brandOwner, subBrands: []), refreshOnLoad: true
-            )
+            BrandScreen(brand: .init(brand: brand), refreshOnLoad: true)
         case .currentUserFriends:
             CurrentUserFriendsScreen()
         case .settings:

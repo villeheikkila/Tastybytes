@@ -95,6 +95,24 @@ public extension Brand {
             subBrands = brand.subBrands
         }
 
+        public init(subBrand: SubBrand.JoinedBrand) {
+            id = subBrand.brand.id
+            name = subBrand.brand.name
+            isVerified = subBrand.brand.isVerified
+            brandOwner = subBrand.brand.brandOwner
+            subBrands = []
+            logoFile = subBrand.brand.logoFile
+        }
+
+        public init(brand: Brand.JoinedCompany) {
+            id = brand.id
+            name = brand.name
+            isVerified = brand.isVerified
+            brandOwner = brand.brandOwner
+            subBrands = []
+            logoFile = brand.logoFile
+        }
+
         public func getNumberOfProducts() -> Int {
             subBrands.flatMap(\.products).count
         }
