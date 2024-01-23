@@ -78,11 +78,7 @@ struct DuplicateProductSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
-            CloseButtonView {
-                dismiss()
-            }
-        }
+        ToolbarDismissAction()
     }
 
     func reportDuplicate(_ to: Product.Joined) async {

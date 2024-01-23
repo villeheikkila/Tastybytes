@@ -97,10 +97,7 @@ struct UserSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Close", role: .cancel, action: { dismiss() })
-                .bold()
-        }
+        ToolbarDismissAction()
     }
 
     func searchUsers(currentUserId: UUID) async {

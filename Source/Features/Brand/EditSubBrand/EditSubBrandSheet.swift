@@ -88,7 +88,7 @@ struct EditSubBrandSheet: View {
             ProgressButton(
                 "Merge \(subBrand.name ?? "default sub-brand") to \(presenting.name ?? "default sub-brand")",
                 role: .destructive,
-                action: { @MainActor in
+                action: {
                     await mergeToSubBrand(subBrand: subBrand, onSuccess: {
                         feedbackEnvironmentModel.trigger(.notification(.success))
                         await onUpdate()

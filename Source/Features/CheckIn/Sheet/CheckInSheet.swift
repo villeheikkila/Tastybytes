@@ -278,11 +278,7 @@ struct CheckInSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
-            CloseButtonView {
-                dismiss()
-            }
-        }
+        ToolbarDismissAction()
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(
                 action == .create ? "Check-in!" : "Update Check-in!",

@@ -95,11 +95,7 @@ struct CompanySearchSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
-            CloseButtonView {
-                dismiss()
-            }
-        }
+        ToolbarDismissAction()
     }
 
     func createNew() {

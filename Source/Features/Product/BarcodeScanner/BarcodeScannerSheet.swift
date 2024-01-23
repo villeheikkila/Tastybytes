@@ -39,11 +39,7 @@ struct BarcodeScannerSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
-            CloseButtonView {
-                dismiss()
-            }
-        }
+        ToolbarDismissAction()
         ToolbarItemGroup(placement: .topBarTrailing) {
             Group {
                 Button(showBarcodeTextField ? "Show scanner" : "Add barcode manually",

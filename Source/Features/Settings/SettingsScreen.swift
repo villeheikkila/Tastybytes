@@ -19,7 +19,9 @@ struct SettingsScreen: View {
         .listStyle(.insetGrouped)
         .navigationBarTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
-        .toolbar { toolbarContent }
+        .toolbar {
+            toolbarContent
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

@@ -52,10 +52,7 @@ struct NameTagSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
-            Button("Close", role: .cancel, action: { dismiss() })
-                .bold()
-        }
+        ToolbarDismissAction()
         ToolbarItemGroup(placement: .topBarTrailing) {
             ProfileShareLinkView(profile: profileEnvironmentModel.profile)
         }

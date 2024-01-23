@@ -111,11 +111,7 @@ struct ProductMutationView: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if isSheet {
-            ToolbarItemGroup(placement: .cancellationAction) {
-                CloseButtonView {
-                    dismiss()
-                }
-            }
+            ToolbarDismissAction()
         }
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(mode.doneLabel, action: {

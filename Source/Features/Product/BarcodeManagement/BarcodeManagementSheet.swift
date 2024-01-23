@@ -50,11 +50,7 @@ struct BarcodeManagementSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
-            CloseButtonView {
-                dismiss()
-            }
-        }
+        ToolbarDismissAction()
     }
 
     func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {

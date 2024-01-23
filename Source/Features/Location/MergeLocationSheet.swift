@@ -63,9 +63,7 @@ struct MergeLocationSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
-            Button("Close", role: .cancel, action: { dismiss() }).bold()
-        }
+        ToolbarDismissAction()
     }
 
     func mergeLocation(to: Location) async {

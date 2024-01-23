@@ -41,11 +41,7 @@ struct ReportSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .cancellationAction) {
-            CloseButtonView {
-                dismiss()
-            }
-        }
+        ToolbarDismissAction()
     }
 
     @ViewBuilder private var reportedEntityView: some View {
