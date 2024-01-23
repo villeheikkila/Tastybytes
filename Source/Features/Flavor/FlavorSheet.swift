@@ -1,3 +1,4 @@
+import Components
 import EnvironmentModels
 import Extensions
 import Models
@@ -71,8 +72,6 @@ struct FlavorSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .confirmationAction) {
-            Button("Done", action: { dismiss() }).bold()
-        }
+        ToolbarDoneAction()
     }
 }

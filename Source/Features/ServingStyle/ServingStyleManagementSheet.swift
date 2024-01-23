@@ -105,10 +105,7 @@ struct ServingStyleManagementSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Done", action: { dismiss() })
-                .bold()
-        }
+        ToolbarDoneAction()
     }
 
     func getAllServingStyles() async {

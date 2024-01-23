@@ -1,3 +1,4 @@
+import Components
 import SwiftUI
 
 struct CheckInDatePickerSheet: View {
@@ -20,8 +21,6 @@ struct CheckInDatePickerSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Done", action: { dismiss() }).bold()
-        }
+        ToolbarDoneAction()
     }
 }

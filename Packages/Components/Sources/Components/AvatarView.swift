@@ -2,6 +2,10 @@ import Models
 import SwiftUI
 
 public struct AvatarView: View {
+    let avatarUrl: URL?
+    let size: Double
+    let id: UUID
+    
     public init(avatarUrl: URL? = nil, size: Double, id: UUID) {
         self.avatarUrl = avatarUrl
         self.size = size
@@ -13,10 +17,6 @@ public struct AvatarView: View {
         id = profile.id
         self.size = size
     }
-
-    let avatarUrl: URL?
-    let size: Double
-    let id: UUID
 
     public var body: some View {
         if let avatarUrl {
