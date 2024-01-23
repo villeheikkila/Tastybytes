@@ -117,21 +117,21 @@ struct CompanyScreen: View {
                     Button(
                         "Brand",
                         systemImage: "plus",
-                        action: { sheet = .addBrand(brandOwner: company, mode: .new)}
+                        action: { sheet = .addBrand(brandOwner: company, mode: .new) }
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     Button("Edit", systemImage: "pencil", action: { sheet = .editCompany(company: company, onSuccess: {
                         await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("Company updated"))
-                    })})
+                    }) })
                 } else {
                     Button(
                         "Edit Suggestion",
                         systemImage: "pencil",
                         action: { sheet = .companyEditSuggestion(company: company, onSuccess: {
                             feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
-                        })}
+                        }) }
                     )
                 }
             }

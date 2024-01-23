@@ -51,9 +51,9 @@ struct BlockedUsersScreen: View {
             HStack {
                 Button("Show block user sheet", systemImage: "plus", action: { sheet = .userSheet(mode: .block, onSubmit: {
                     feedbackEnvironmentModel.toggle(.success("User blocked"))
-                })})
-                    .labelStyle(.iconOnly)
-                    .imageScale(.large)
+                }) })
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
             }
         }
     }

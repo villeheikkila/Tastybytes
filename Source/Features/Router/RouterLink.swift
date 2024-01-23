@@ -62,7 +62,6 @@ struct RouterLink<LabelView: View>: View {
                 .sheets(item: $activeSheet)
         }
     }
-
 }
 
 extension RouterLink where LabelView == Text {

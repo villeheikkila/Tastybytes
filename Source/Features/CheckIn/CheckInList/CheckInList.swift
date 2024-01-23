@@ -122,66 +122,66 @@ struct CheckInList<Header>: View where Header: View {
         }
         .alertError($imageUploadEnvironmentModel.alertError)
         .alertError($alertError)
-        .onChange(of: scrollToTop) {
-            withAnimation {
-                if let topAnchor {
-                    scrolledID = topAnchor
-                } else if let first = checkIns.first {
-                    scrolledID = first.id
-                }
-            }
-        }
-        .task(id: refreshId) { [refreshId] in
-            guard refreshId != resultId else {
-                logger.info("Already loaded data for \(id) with id: \(refreshId)")
-                return
-            }
-            if refreshId == 0 {
-                logger.info("Loading initial check-in feed data for \(id)")
-                await fetchFeedItems(onComplete: { @MainActor _ in
-                    logger.info("Loading initial check-ins completed for \(id)")
-                })
-                resultId = refreshId
-                return
-            }
-            logger.info("Refreshing check-in feed data for \(id) with id: \(refreshId)")
-            isRefreshing = true
-            async let feedItemsPromise: Void = fetchFeedItems(
-                reset: true,
-                onComplete: { @MainActor _ in
-                    logger.info("Refreshing check-ins completed for \(id) with id: \(refreshId)")
-                }
-            )
-            _ = await (onRefresh(), feedItemsPromise)
-            isRefreshing = false
-            resultId = refreshId
-        }
-        .task(id: showCheckInsFrom) { [showCheckInsFrom] in
-            if showCheckInsFrom == currentShowCheckInsFrom {
-                return
-            }
-            logger.info("Loading check-ins for scope: \(showCheckInsFrom.rawValue)")
-            await fetchFeedItems(reset: true, onComplete: { @MainActor _ in
-                currentShowCheckInsFrom = showCheckInsFrom
-                logger.info("Loaded check-ins for scope: \(showCheckInsFrom.rawValue)")
-            })
-        }
-        .onDisappear {
-            loadingCheckInsOnAppear?.cancel()
-        }
         #if !targetEnvironment(macCatalyst)
-        .refreshable {
-            refreshId += 1
-        }
+            .refreshable {
+                refreshId += 1
+            }
         #endif
-        .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
-            if let updatedCheckIn = newValue {
-                imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
-                    checkIns[index] = updatedCheckIn
+            .onChange(of: scrollToTop) {
+                withAnimation {
+                    if let topAnchor {
+                        scrolledID = topAnchor
+                    } else if let first = checkIns.first {
+                        scrolledID = first.id
+                    }
                 }
             }
-        }
+            .task(id: showCheckInsFrom) { [showCheckInsFrom] in
+                if showCheckInsFrom == currentShowCheckInsFrom {
+                    return
+                }
+                logger.info("Loading check-ins for scope: \(showCheckInsFrom.rawValue)")
+                await fetchFeedItems(reset: true, onComplete: { @MainActor _ in
+                    currentShowCheckInsFrom = showCheckInsFrom
+                    logger.info("Loaded check-ins for scope: \(showCheckInsFrom.rawValue)")
+                })
+            }
+            .task(id: refreshId) { [refreshId] in
+                guard refreshId != resultId else {
+                    logger.info("Already loaded data for \(id) with id: \(refreshId)")
+                    return
+                }
+                if refreshId == 0 {
+                    logger.info("Loading initial check-in feed data for \(id)")
+                    await fetchFeedItems(onComplete: { @MainActor _ in
+                        logger.info("Loading initial check-ins completed for \(id)")
+                    })
+                    resultId = refreshId
+                    return
+                }
+                logger.info("Refreshing check-in feed data for \(id) with id: \(refreshId)")
+                isRefreshing = true
+                async let feedItemsPromise: Void = fetchFeedItems(
+                    reset: true,
+                    onComplete: { @MainActor _ in
+                        logger.info("Refreshing check-ins completed for \(id) with id: \(refreshId)")
+                    }
+                )
+                _ = await (onRefresh(), feedItemsPromise)
+                isRefreshing = false
+                resultId = refreshId
+            }
+            .onDisappear {
+                loadingCheckInsOnAppear?.cancel()
+            }
+            .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
+                if let updatedCheckIn = newValue {
+                    imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
+                    if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
+                        checkIns[index] = updatedCheckIn
+                    }
+                }
+            }
     }
 
     @ViewBuilder

@@ -33,7 +33,7 @@ struct TabsView: View {
 
     private var tabs: some View {
         ForEach(shownTabs) { tab in
-            RouterWrapper {
+            RouterProvider {
                 tab.view
             }
             .tabItem {

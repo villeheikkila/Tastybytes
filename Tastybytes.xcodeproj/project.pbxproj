@@ -169,7 +169,7 @@
 		5C90585A2B2894BE00EC157B /* PathIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */; };
 		5C90585B2B2894BE00EC157B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DC2B2894BE00EC157B /* Router.swift */; };
 		5C90585C2B2894BE00EC157B /* TabIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DD2B2894BE00EC157B /* TabIdentifier.swift */; };
-		5C90585D2B2894BE00EC157B /* RouterWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DE2B2894BE00EC157B /* RouterWrapper.swift */; };
+		5C90585D2B2894BE00EC157B /* RouterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DE2B2894BE00EC157B /* RouterProvider.swift */; };
 		5C90585E2B2894BE00EC157B /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DF2B2894BE00EC157B /* App.swift */; };
 		5C90585F2B2894BE00EC157B /* NotificationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E12B2894BE00EC157B /* NotificationObserver.swift */; };
 		5C9058602B2894BE00EC157B /* EnvironmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */; };
@@ -399,7 +399,7 @@
 		5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIdentifier.swift; sourceTree = "<group>"; };
 		5C9057DC2B2894BE00EC157B /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		5C9057DD2B2894BE00EC157B /* TabIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabIdentifier.swift; sourceTree = "<group>"; };
-		5C9057DE2B2894BE00EC157B /* RouterWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterWrapper.swift; sourceTree = "<group>"; };
+		5C9057DE2B2894BE00EC157B /* RouterProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterProvider.swift; sourceTree = "<group>"; };
 		5C9057DF2B2894BE00EC157B /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		5C9057E12B2894BE00EC157B /* NotificationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationObserver.swift; sourceTree = "<group>"; };
 		5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentProvider.swift; sourceTree = "<group>"; };
@@ -1157,7 +1157,7 @@
 				5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */,
 				5C9057DC2B2894BE00EC157B /* Router.swift */,
 				5C9057DD2B2894BE00EC157B /* TabIdentifier.swift */,
-				5C9057DE2B2894BE00EC157B /* RouterWrapper.swift */,
+				5C9057DE2B2894BE00EC157B /* RouterProvider.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1545,7 +1545,7 @@
 				5C9057F52B2894BE00EC157B /* NameTagSheet.swift in Sources */,
 				5CAADEF82B5C45B800D956C1 /* DiscoverCompanyResults.swift in Sources */,
 				5C9057FC2B2894BE00EC157B /* UserSheet.swift in Sources */,
-				5C90585D2B2894BE00EC157B /* RouterWrapper.swift in Sources */,
+				5C90585D2B2894BE00EC157B /* RouterProvider.swift in Sources */,
 				5C90583E2B2894BE00EC157B /* FriendListItemView.swift in Sources */,
 				5C9057EF2B2894BE00EC157B /* Sheet.swift in Sources */,
 				5C90585C2B2894BE00EC157B /* TabIdentifier.swift in Sources */,

@@ -51,6 +51,7 @@ struct CategoryManagementScreen: View {
                             .labelStyle(.iconOnly)
                             .frame(width: 24, height: 24)
                     }
+                    .sheets(item: $sheet)
                 }
             }
             .headerProminence(.increased)
@@ -64,7 +65,6 @@ struct CategoryManagementScreen: View {
         .refreshable {
             await appEnvironmentModel.initialize(reset: true)
         }
-        .sheets(item: $sheet)
         #endif
         .confirmationDialog("Are you sure you want to delete subcategory?",
                             isPresented: $showDeleteSubcategoryConfirmation,
@@ -86,7 +86,7 @@ struct CategoryManagementScreen: View {
                 systemImage: "plus",
                 action: { sheet = .addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("Category created!"))
-                })}
+                }) }
             )
             .labelStyle(.iconOnly)
             .bold()

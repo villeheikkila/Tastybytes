@@ -32,9 +32,9 @@ struct FlavorManagementScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
-            Button("Add flavors", systemImage: "plus", action: { sheet =  .newFlavor(onSubmit: { newFlavor in
+            Button("Add flavors", systemImage: "plus", action: { sheet = .newFlavor(onSubmit: { newFlavor in
                 await appEnvironmentModel.addFlavor(name: newFlavor)
-            })}).labelStyle(.iconOnly)
+            }) }).labelStyle(.iconOnly)
         }
     }
 }
