@@ -65,7 +65,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
             _ = try await client
                 .storage
-                .from(.logos)
+                .from(.companyLogos)
                 .upload(path: fileName, file: data, options: fileOptions)
 
             return .success(fileName)

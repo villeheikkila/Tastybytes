@@ -19,13 +19,7 @@ struct EditBrandSheet: View {
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var newCompanyName = ""
     @State private var alertError: AlertError?
-    @State private var selectedLogo: PhotosPickerItem? {
-        didSet {
-            if selectedLogo != nil {
-                Task { await uploadLogo() }
-            }
-        }
-    }
+    @State private var selectedLogo: PhotosPickerItem? 
 
     let onUpdate: () async -> Void
     let initialBrandOwner: Company
@@ -82,6 +76,14 @@ struct EditBrandSheet: View {
             toolbarContent
         }
         .alertError($alertError)
+        .task(id: selectedLogo) {
+            guard let selectedLogo = selectedLogo else { return }
+            guard let data = await selectedLogo.getJPEG() else {
+                logger.error("Failed to convert image to JPEG")
+                return
+            }
+            await uploadLogo(data: data)
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -90,7 +92,7 @@ struct EditBrandSheet: View {
 
     func editBrand(onSuccess: @escaping () async -> Void) async {
         switch await repository.brand
-            .update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id))
+            .update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id))
         {
         case .success:
             feedbackEnvironmentModel.toggle(.success("Brand updated!"))
@@ -102,10 +104,10 @@ struct EditBrandSheet: View {
         }
     }
 
-    func uploadLogo() async {
-        guard let data = await selectedLogo?.getJPEG() else { return }
+    func uploadLogo(data: Data) async {
         switch await repository.brand.uploadLogo(brandId: brand.id, data: data) {
-        case .success:
+        case let .success(fileName):
+            logger.info("Succesfully uploaded logo \(fileName)")
             await onUpdate()
         case let .failure(error):
             guard !error.isCancelled else { return }

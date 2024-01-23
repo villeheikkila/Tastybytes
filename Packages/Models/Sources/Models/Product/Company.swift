@@ -106,6 +106,6 @@ public extension Company {
 public extension CompanyLogo {
     func getLogoUrl(baseUrl: URL) -> URL? {
         guard let logoFile else { return nil }
-        return URL(baseUrl: baseUrl, bucket: .logos, fileName: logoFile)
+        return URL(baseUrl: baseUrl, bucket: .companyLogos, fileName: logoFile)
     }
 }

@@ -209,7 +209,7 @@ struct SupabaseBrandRepository: BrandRepository {
 
             _ = try await client
                 .storage
-                .from(.logos)
+                .from(.brandLogos)
                 .upload(path: fileName, file: data, options: fileOptions)
 
             return .success(fileName)

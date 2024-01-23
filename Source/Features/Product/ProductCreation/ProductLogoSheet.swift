@@ -62,7 +62,12 @@ struct ProductLogoSheet: View {
         }
         .alertError($alertError)
         .task(id: selectedLogo) {
-            await uploadLogo()
+            guard let selectedLogo = selectedLogo else { return }
+            guard let data = await selectedLogo.getJPEG() else {
+                logger.error("Failed to convert image to JPEG")
+                return
+            }
+            await uploadLogo(data: data)
         }
         .navigationTitle("Product Logo")
         .toolbar {
@@ -74,10 +79,10 @@ struct ProductLogoSheet: View {
         ToolbarDismissAction()
     }
 
-    func uploadLogo() async {
-        guard let data = await selectedLogo?.getJPEG() else { return }
+    func uploadLogo(data: Data) async {
         switch await repository.product.uploadLogo(productId: product.id, data: data) {
         case let .success(filename):
+            logger.info("Succesfully uploaded image \(filename)")
             logoFile = filename
         case let .failure(error):
             guard !error.isCancelled else { return }

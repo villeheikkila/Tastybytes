@@ -231,7 +231,7 @@ struct SupabaseProductRepository: ProductRepository {
 
             _ = try await client
                 .storage
-                .from(.logos)
+                .from(.productLogos)
                 .upload(path: fileName, file: data, options: fileOptions)
 
             return .success(fileName)
