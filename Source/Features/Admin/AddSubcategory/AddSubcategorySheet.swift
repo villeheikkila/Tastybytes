@@ -19,18 +19,15 @@ struct AddSubcategorySheet: View {
                     }
                 }).disabled(newSubcategoryName.isEmpty)
             }
-            .navigationTitle("Add subcategory to \(category.name)")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                toolbarContent
-            }
+        }
+        .navigationTitle("Add subcategory to \(category.name)")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            toolbarContent
         }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
-                .bold()
-        }
+        ToolbarDismissAction()
     }
 }

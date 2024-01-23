@@ -11,6 +11,7 @@ struct CategoryManagementScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var showDeleteSubcategoryConfirmation = false
     @State private var verifySubcategory: Subcategory?
+    @State private var sheet: Sheet?
     @State private var deleteSubcategory: Subcategory? {
         didSet {
             showDeleteSubcategoryConfirmation = true
@@ -30,21 +31,20 @@ struct CategoryManagementScreen: View {
                     Text(category.name)
                     Spacer()
                     Menu {
-                        RouterLink(
+                        Button(
                             "Edit Serving Styles",
                             systemImage: "pencil",
-                            sheet: .categoryServingStyle(category: category),
-                            useRootSheetManager: true
+                            action: { sheet = .categoryServingStyle(category: category) }
                         )
-                        RouterLink(
+                        Button(
                             "Add Subcategory",
                             systemImage: "plus",
-                            sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                            action: { sheet = .addSubcategory(category: category, onSubmit: { newSubcategoryName in
                                 await appEnvironmentModel.addSubcategory(
                                     category: category,
                                     name: newSubcategoryName
                                 )
-                            })
+                            }) }
                         )
                     } label: {
                         Label("Options menu", systemImage: "ellipsis")
@@ -64,6 +64,7 @@ struct CategoryManagementScreen: View {
         .refreshable {
             await appEnvironmentModel.initialize(reset: true)
         }
+        .sheets(item: $sheet)
         #endif
         .confirmationDialog("Are you sure you want to delete subcategory?",
                             isPresented: $showDeleteSubcategoryConfirmation,
@@ -80,12 +81,12 @@ struct CategoryManagementScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink(
+            Button(
                 "Add Category",
                 systemImage: "plus",
-                sheet: .addCategory(onSubmit: { _ in
+                action: { sheet = .addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("Category created!"))
-                }), useRootSheetManager: true
+                })}
             )
             .labelStyle(.iconOnly)
             .bold()

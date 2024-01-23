@@ -166,7 +166,6 @@
 		5C9058552B2894BE00EC157B /* OnboardingNotificationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D52B2894BE00EC157B /* OnboardingNotificationSection.swift */; };
 		5C9058572B2894BE00EC157B /* RouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D82B2894BE00EC157B /* RouterLink.swift */; };
 		5C9058582B2894BE00EC157B /* QuickAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D92B2894BE00EC157B /* QuickAction.swift */; };
-		5C9058592B2894BE00EC157B /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DA2B2894BE00EC157B /* SheetManager.swift */; };
 		5C90585A2B2894BE00EC157B /* PathIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */; };
 		5C90585B2B2894BE00EC157B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DC2B2894BE00EC157B /* Router.swift */; };
 		5C90585C2B2894BE00EC157B /* TabIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DD2B2894BE00EC157B /* TabIdentifier.swift */; };
@@ -397,7 +396,6 @@
 		5C9057D52B2894BE00EC157B /* OnboardingNotificationSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationSection.swift; sourceTree = "<group>"; };
 		5C9057D82B2894BE00EC157B /* RouterLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterLink.swift; sourceTree = "<group>"; };
 		5C9057D92B2894BE00EC157B /* QuickAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickAction.swift; sourceTree = "<group>"; };
-		5C9057DA2B2894BE00EC157B /* SheetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
 		5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIdentifier.swift; sourceTree = "<group>"; };
 		5C9057DC2B2894BE00EC157B /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		5C9057DD2B2894BE00EC157B /* TabIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabIdentifier.swift; sourceTree = "<group>"; };
@@ -579,7 +577,6 @@
 		5C39076D2B322FD00036253E /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
-				5C9057DA2B2894BE00EC157B /* SheetManager.swift */,
 				5C9057432B2894BE00EC157B /* Sheet.swift */,
 				5C9583862B41EE0000A2A03B /* Sheets.swift */,
 			);
@@ -1535,7 +1532,6 @@
 				5C9058522B2894BE00EC157B /* OnboardingScreen.swift in Sources */,
 				5C82E88E2B2F692A00F2B369 /* OnboardingStateObserver.swift in Sources */,
 				5C90584E2B2894BE00EC157B /* ProductMutationView.swift in Sources */,
-				5C9058592B2894BE00EC157B /* SheetManager.swift in Sources */,
 				5C9057EC2B2894BE00EC157B /* ProfileTab.swift in Sources */,
 				5C24E1CA2B5D34CE003AB7C8 /* CheckInCommentRow.swift in Sources */,
 				5C9057EE2B2894BE00EC157B /* ProductFilterOverlayView.swift in Sources */,

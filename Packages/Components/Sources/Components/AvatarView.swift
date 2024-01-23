@@ -5,7 +5,7 @@ public struct AvatarView: View {
     let avatarUrl: URL?
     let size: Double
     let id: UUID
-    
+
     public init(avatarUrl: URL? = nil, size: Double, id: UUID) {
         self.avatarUrl = avatarUrl
         self.size = size

@@ -55,9 +55,7 @@ struct SubcategorySheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .confirmationAction) {
-            Button("Done", role: .cancel, action: { dismiss() }).bold()
-        }
+        ToolbarDoneAction()
         if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button("Add subcategory", systemImage: "plus", action: { showAddSubcategory.toggle() })

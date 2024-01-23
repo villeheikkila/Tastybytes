@@ -8,6 +8,7 @@ struct BlockedUsersScreen: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var sheet: Sheet?
 
     var body: some View {
         List(friendEnvironmentModel.blockedUsers) { friend in
@@ -42,14 +43,15 @@ struct BlockedUsersScreen: View {
             await friendEnvironmentModel.refresh()
         }
         #endif
+        .sheets(item: $sheet)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
-                RouterLink("Show block user sheet", systemImage: "plus", sheet: .userSheet(mode: .block, onSubmit: {
+                Button("Show block user sheet", systemImage: "plus", action: { sheet = .userSheet(mode: .block, onSubmit: {
                     feedbackEnvironmentModel.toggle(.success("User blocked"))
-                }), useRootSheetManager: true)
+                })})
                     .labelStyle(.iconOnly)
                     .imageScale(.large)
             }

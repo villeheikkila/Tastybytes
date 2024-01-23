@@ -18,6 +18,7 @@ struct CurrentUserFriendsScreen: View {
     @State private var showRemoveFriendConfirmation = false
     @State private var showUserSearchSheet = false
     @State private var searchTerm = ""
+    @State private var sheet: Sheet?
 
     var filteredFriends: [Friend] {
         friendEnvironmentModel.acceptedOrPendingFriends.filter { friend in
@@ -136,6 +137,7 @@ struct CurrentUserFriendsScreen: View {
             .toolbar {
                 toolbarContent
             }
+            .sheets(item: $sheet)
             .confirmationDialog(
                 """
                 Remove user from your friends, you will no longer be able to see each other's check-ins on your
@@ -157,29 +159,27 @@ struct CurrentUserFriendsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink(
+            Button(
                 "Show name tag or send friend request by QR code",
                 systemImage: "qrcode",
-                sheet: .nameTag(onSuccess: { profileId in
+                action: { sheet = .nameTag(onSuccess: { profileId in
                     Task {
                         await friendEnvironmentModel.sendFriendRequest(receiver: profileId)
                     }
-                }),
-                useRootSheetManager: true
+                })}
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)
             .popoverTip(NameTagTip())
 
-            RouterLink(
+            Button(
                 "Add friend", systemImage: "plus",
-                sheet: .userSheet(
+                action: { sheet = .userSheet(
                     mode: .add,
                     onSubmit: {
                         feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
                     }
-                ),
-                useRootSheetManager: true
+                )}
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)

@@ -6,6 +6,7 @@ import SwiftUI
 struct FlavorManagementScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var sheet: Sheet?
 
     var body: some View {
         List(appEnvironmentModel.flavors) { flavor in
@@ -26,13 +27,14 @@ struct FlavorManagementScreen: View {
             await appEnvironmentModel.refreshFlavors()
         }
         #endif
+        .sheets(item: $sheet)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
-            RouterLink("Add flavors", systemImage: "plus", sheet: .newFlavor(onSubmit: { newFlavor in
+            Button("Add flavors", systemImage: "plus", action: { sheet =  .newFlavor(onSubmit: { newFlavor in
                 await appEnvironmentModel.addFlavor(name: newFlavor)
-            }), useRootSheetManager: true).labelStyle(.iconOnly)
+            })}).labelStyle(.iconOnly)
         }
     }
 }

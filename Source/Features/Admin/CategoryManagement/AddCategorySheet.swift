@@ -26,9 +26,6 @@ struct AddCategorySheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
-                .bold()
-        }
+        ToolbarDismissAction()
     }
 }

@@ -58,9 +58,7 @@ struct EditCompanySheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
-        }
+        ToolbarDismissAction()
     }
 
     @MainActor

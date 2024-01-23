@@ -114,26 +114,24 @@ struct CompanyScreen: View {
         Menu {
             ControlGroup {
                 if profileEnvironmentModel.hasPermission(.canCreateBrands) {
-                    RouterLink(
+                    Button(
                         "Brand",
                         systemImage: "plus",
-                        sheet: .addBrand(brandOwner: company, mode: .new),
-                        useRootSheetManager: true
+                        action: { sheet = .addBrand(brandOwner: company, mode: .new)}
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    RouterLink("Edit", systemImage: "pencil", sheet: .editCompany(company: company, onSuccess: {
+                    Button("Edit", systemImage: "pencil", action: { sheet = .editCompany(company: company, onSuccess: {
                         await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("Company updated"))
-                    }), useRootSheetManager: true)
+                    })})
                 } else {
-                    RouterLink(
+                    Button(
                         "Edit Suggestion",
                         systemImage: "pencil",
-                        sheet: .companyEditSuggestion(company: company, onSuccess: {
+                        action: { sheet = .companyEditSuggestion(company: company, onSuccess: {
                             feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
-                        }),
-                        useRootSheetManager: true
+                        })}
                     )
                 }
             }

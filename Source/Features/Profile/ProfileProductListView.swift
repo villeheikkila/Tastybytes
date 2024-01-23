@@ -15,6 +15,7 @@ struct ProfileProductListView: View {
     @State private var productFilter: Product.Filter?
     @State private var initialDataLoaded = false
     @State private var alertError: AlertError?
+    @State private var sheet: Sheet?
 
     let profile: Profile
     let locked: Bool
@@ -82,6 +83,7 @@ struct ProfileProductListView: View {
         .toolbar {
             toolbarContent
         }
+        .sheets(item: $sheet)
         .alertError($alertError)
         .task {
             if !initialDataLoaded {
@@ -93,12 +95,11 @@ struct ProfileProductListView: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if !locked {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                RouterLink(
+                Button(
                     "Show filters",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    sheet: .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
-                                          onApply: { filter in productFilter = filter }),
-                    useRootSheetManager: true
+                    action: { sheet = .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
+                                                     onApply: { filter in productFilter = filter })}
                 )
                 .labelStyle(.iconOnly)
             }

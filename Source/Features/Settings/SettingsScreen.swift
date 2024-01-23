@@ -8,6 +8,7 @@ struct SettingsScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @State private var sheet: Sheet?
 
     var body: some View {
         List {
@@ -22,11 +23,12 @@ struct SettingsScreen: View {
         .toolbar {
             toolbarContent
         }
+        .sheets(item: $sheet)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("Subscribe to Premium", systemImage: "crown.fill", sheet: .subscribe, useRootSheetManager: true)
+            Button("Subscribe to Premium", systemImage: "crown.fill", action: { sheet = .subscribe })
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
                 .foregroundColor(.yellow)

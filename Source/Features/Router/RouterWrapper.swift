@@ -9,7 +9,6 @@ struct RouterWrapper<Content: View>: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var router = Router()
-    @State private var sheetEnvironmentModel = SheetManager()
 
     @ViewBuilder let content: () -> Content
 
@@ -28,12 +27,10 @@ struct RouterWrapper<Content: View>: View {
                 router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
             }
         }
-        .sheets(item: $sheetEnvironmentModel.sheet)
         .toast(isPresenting: $feedbackEnvironmentModel.show) {
             feedbackEnvironmentModel.toast
         }
         .environment(router)
-        .environment(sheetEnvironmentModel)
         .sensoryFeedback(trigger: feedbackEnvironmentModel.sensoryFeedback) { _, newValue in
             newValue?.sensoryFeedback
         }

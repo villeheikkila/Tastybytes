@@ -36,7 +36,6 @@ struct SideBarView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.isPortrait) private var isPortrait
-    @State private var sheetEnvironmentModel = SheetManager()
     @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
     @State private var selection: SiderBarTab? = SiderBarTab.activity {
         didSet {
@@ -126,44 +125,9 @@ struct SideBarView: View {
         }
         .sensoryFeedback(.selection, trigger: selection)
         .environment(router)
-        .environment(sheetEnvironmentModel)
         .environment(appEnvironmentModel)
         .toast(isPresenting: $feedbackEnvironmentModel.show) {
             feedbackEnvironmentModel.toast
-        }
-        .sheet(item: $sheetEnvironmentModel.sheet) { sheet in
-            NavigationStack {
-                sheet.view
-            }
-            .presentationDetents(sheet.detents)
-            .presentationBackground(sheet.backgroundLight)
-            .presentationCornerRadius(sheet.cornerRadius)
-            .presentationDragIndicator(.visible)
-            .environment(router)
-            .environment(sheetEnvironmentModel)
-            .environment(profileEnvironmentModel)
-            .environment(appEnvironmentModel)
-            .environment(feedbackEnvironmentModel)
-            .toast(isPresenting: $feedbackEnvironmentModel.show) {
-                feedbackEnvironmentModel.toast
-            }
-            .sheet(item: $sheetEnvironmentModel.nestedSheet, content: { nestedSheet in
-                NavigationStack {
-                    nestedSheet.view
-                }
-                .presentationDetents(nestedSheet.detents)
-                .presentationBackground(nestedSheet.backgroundLight)
-                .presentationCornerRadius(nestedSheet.cornerRadius)
-                .presentationDragIndicator(.visible)
-                .environment(router)
-                .environment(sheetEnvironmentModel)
-                .environment(profileEnvironmentModel)
-                .environment(appEnvironmentModel)
-                .environment(feedbackEnvironmentModel)
-                .toast(isPresenting: $feedbackEnvironmentModel.show) {
-                    feedbackEnvironmentModel.toast
-                }
-            })
         }
     }
 

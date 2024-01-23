@@ -71,10 +71,7 @@ struct ProductLogoSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("actions.cancel", role: .cancel, action: { dismiss() })
-                .bold()
-        }
+        ToolbarDismissAction()
     }
 
     func uploadLogo() async {
