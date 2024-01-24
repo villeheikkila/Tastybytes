@@ -274,7 +274,8 @@ struct ProductMutationView: View {
                     logoFile: initialProduct.subBrand.brand.logoFile,
                     isVerified: initialProduct.subBrand.brand.isVerified,
                     subBrands: brandsWithSubBrands
-                        .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
+                        .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? [],
+                    logos: initialProduct.subBrand.brand.logos
                 )
                 if initialProduct.subBrand.name != nil {
                     hasSubBrand = true
@@ -300,7 +301,8 @@ struct ProductMutationView: View {
                     .map { subBrand in
                         SubBrand(id: subBrand.id, name: subBrand.name,
                                  isVerified: subBrand.isVerified)
-                    }
+                    },
+                logos: brand.logos
             )
             status = .initialized
         case let .addToSubBrand(brand, subBrand):
@@ -313,7 +315,8 @@ struct ProductMutationView: View {
                 name: brand.name,
                 logoFile: brand.logoFile,
                 isVerified: brand.isVerified,
-                subBrands: subBrandsFromBrand
+                subBrands: subBrandsFromBrand,
+                logos: brand.logos
             )
             self.subBrand = subBrandsFromBrand.first(where: { $0.id == subBrand.id })
             status = .initialized

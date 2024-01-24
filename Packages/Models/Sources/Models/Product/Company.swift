@@ -5,21 +5,24 @@ public protocol CompanyLogo {
 }
 
 public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogo {
-    public init(id: Int, name: String, logoFile: String? = nil, isVerified: Bool) {
+    public init(id: Int, name: String, logoFile: String? = nil, logos: [ImageEntity] = [], isVerified: Bool) {
         self.id = id
         self.name = name
         self.logoFile = logoFile
         self.isVerified = isVerified
+        self.logos = logos
     }
 
     public let id: Int
     public let name: String
     public let logoFile: String?
     public let isVerified: Bool
+    public let logos: [ImageEntity]
 
     enum CodingKeys: String, CodingKey {
         case id
         case name
+        case logos = "company_logos"
         case logoFile = "logo_file"
         case isVerified = "is_verified"
     }

@@ -7,6 +7,7 @@ public struct Product: Identifiable, Codable, Hashable, Sendable {
     public let isVerified: Bool
     public let isDiscontinued: Bool
     public let logoFile: String?
+    public let logos: [ImageEntity]
 
     enum CodingKeys: String, CodingKey, CaseIterable {
         case id
@@ -15,6 +16,7 @@ public struct Product: Identifiable, Codable, Hashable, Sendable {
         case logoFile = "logo_file"
         case isVerified = "is_verified"
         case isDiscontinued = "is_discontinued"
+        case logos = "product_logos"
     }
 }
 
@@ -426,7 +428,8 @@ public extension Product {
                     name: brand.name,
                     logoFile: brand.logoFile,
                     isVerified: brand.isVerified,
-                    brandOwner: company
+                    brandOwner: company,
+                    logos: brand.logos
                 )
             )
             subcategories = product.subcategories
@@ -458,7 +461,8 @@ public extension Product {
                     name: brand.name,
                     logoFile: brand.logoFile,
                     isVerified: brand.isVerified,
-                    brandOwner: brand.brandOwner
+                    brandOwner: brand.brandOwner,
+                    logos: brand.logos
                 )
             )
             subcategories = product.subcategories

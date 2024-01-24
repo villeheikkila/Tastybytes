@@ -71,7 +71,6 @@ struct SupabaseProductRepository: ProductRepository {
                 return .success(response)
             }
         } catch {
-            print(error)
             return .failure(error)
         }
     }

@@ -14,11 +14,11 @@ extension Company {
         case .editSuggestionTable:
             return editSuggestionTable
         case let .saved(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
+            return queryWithTableName(tableName, [saved, ImageEntity.getQuery(.saved(.companyLogos))].joinComma(), withTableName)
         case let .joinedBrandSubcategoriesOwner(withTableName):
             return queryWithTableName(
                 tableName,
-                [saved, owner, Brand.getQuery(.joined(true))].joinComma(),
+                [saved, owner, Brand.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.companyLogos))].joinComma(),
                 withTableName
             )
         }

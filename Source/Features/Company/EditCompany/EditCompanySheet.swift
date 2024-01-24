@@ -16,15 +16,7 @@ struct EditCompanySheet: View {
     @State private var company: Company
     @State private var newCompanyName = ""
     @State private var alertError: AlertError?
-    @State private var selectedItem: PhotosPickerItem? {
-        didSet {
-            if selectedItem != nil {
-                Task {
-                    await uploadCompanyImage()
-                }
-            }
-        }
-    }
+    @State private var selectedLogo: PhotosPickerItem? 
 
     let mode: Mode
     let onSuccess: () async -> Void
@@ -55,6 +47,14 @@ struct EditCompanySheet: View {
         .toolbar {
             toolbarContent
         }
+        .task(id: selectedLogo) {
+            guard let selectedLogo else { return }
+            guard let data = await selectedLogo.getJPEG() else {
+                logger.error("Failed to convert image to JPEG")
+                return
+            }
+            await uploadLogo(data: data)
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -66,7 +66,7 @@ struct EditCompanySheet: View {
         if profileEnvironmentModel.hasPermission(.canAddCompanyLogo) {
             Section("Logo") {
                 PhotosPicker(
-                    selection: $selectedItem,
+                    selection: $selectedLogo,
                     matching: .images,
                     photoLibrary: .shared()
                 ) {
@@ -113,8 +113,7 @@ struct EditCompanySheet: View {
         }
     }
 
-    func uploadCompanyImage() async {
-        guard let data = await selectedItem?.getJPEG() else { return }
+    func uploadLogo(data: Data) async {
         switch await repository.company.uploadLogo(companyId: company.id, data: data) {
         case let .success(fileName):
             company = Company(

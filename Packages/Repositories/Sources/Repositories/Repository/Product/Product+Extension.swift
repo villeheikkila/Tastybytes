@@ -15,7 +15,7 @@ extension Product {
             return queryWithTableName(
                 tableName,
                 [saved, SubBrand.getQuery(.joinedBrand(true)), Category.getQuery(.saved(true)),
-                 Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true))].joinComma(),
+                 Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.productLogos))].joinComma(),
                 withTableName
             )
         case let .joinedBrandSubcategoriesCreator(withTableName):
@@ -28,6 +28,7 @@ extension Product {
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.joinedCategory(true)),
                     ProductBarcode.getQuery(.saved(true)),
+                    ImageEntity.getQuery(.saved(.productLogos)),
                 ].joinComma(),
                 withTableName
             )
@@ -42,6 +43,7 @@ extension Product {
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.joinedCategory(true)),
                     ProductBarcode.getQuery(.saved(true)),
+                    ImageEntity.getQuery(.saved(.productLogos)),
                 ].joinComma(),
                 withTableName
             )
@@ -56,6 +58,7 @@ extension Product {
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.joinedCategory(true)),
                     ProductBarcode.getQuery(.saved(true)),
+                    ImageEntity.getQuery(.saved(.productLogos)),
                 ].joinComma(),
                 withTableName
             )

@@ -62,7 +62,7 @@ struct ProductLogoSheet: View {
         }
         .alertError($alertError)
         .task(id: selectedLogo) {
-            guard let selectedLogo = selectedLogo else { return }
+            guard let selectedLogo else { return }
             guard let data = await selectedLogo.getJPEG() else {
                 logger.error("Failed to convert image to JPEG")
                 return

@@ -10,15 +10,15 @@ extension Brand {
         case .tableName:
             return tableName
         case let .joinedSubBrands(withTableName):
-            return queryWithTableName(tableName, [saved, SubBrand.getQuery(.saved(true))].joinComma(), withTableName)
+            return queryWithTableName(tableName, [saved, SubBrand.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.brandLogos))].joinComma(), withTableName)
         case let .joined(withTableName):
-            return queryWithTableName(tableName, [saved, SubBrand.getQuery(.joined(true))].joinComma(), withTableName)
+            return queryWithTableName(tableName, [saved, SubBrand.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.brandLogos))].joinComma(), withTableName)
         case let .joinedCompany(withTableName):
-            return queryWithTableName(tableName, [saved, Company.getQuery(.saved(true))].joinComma(), withTableName)
+            return queryWithTableName(tableName, [saved, Company.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.brandLogos))].joinComma(), withTableName)
         case let .joinedSubBrandsCompany(withTableName):
             return queryWithTableName(
                 tableName,
-                [saved, SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true))].joinComma(),
+                [saved, SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.brandLogos))].joinComma(),
                 withTableName
             )
         }

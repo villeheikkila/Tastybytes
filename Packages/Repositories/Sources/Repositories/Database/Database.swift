@@ -6,6 +6,7 @@ enum Database {
         case brandLikes = "brand_likes"
         case profileWishlistItems = "profile_wishlist_items"
         case products
+        case productLogos = "product_logos"
         case productEditSuggestions = "product_edit_suggestions"
         case profiles
         case checkIns = "check_ins"
@@ -16,12 +17,14 @@ enum Database {
         case profilePushNotifications = "profile_push_notifications"
         case brandEditSuggestions = "brand_edit_suggestions"
         case brands
+        case brandLogos = "brand_logos"
         case categories
         case categoryServingStyles = "category_serving_styles"
         case checkInComments = "check_in_comments"
         case checkInFlavors = "check_in_flavors"
         case checkInTaggedProfiles = "check_in_tagged_profiles"
         case companies
+        case companyLogos = "company_logos"
         case countries
         case documents
         case flavors

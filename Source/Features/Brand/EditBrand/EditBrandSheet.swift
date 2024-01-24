@@ -19,7 +19,7 @@ struct EditBrandSheet: View {
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var newCompanyName = ""
     @State private var alertError: AlertError?
-    @State private var selectedLogo: PhotosPickerItem? 
+    @State private var selectedLogo: PhotosPickerItem?
 
     let onUpdate: () async -> Void
     let initialBrandOwner: Company
@@ -77,7 +77,7 @@ struct EditBrandSheet: View {
         }
         .alertError($alertError)
         .task(id: selectedLogo) {
-            guard let selectedLogo = selectedLogo else { return }
+            guard let selectedLogo else { return }
             guard let data = await selectedLogo.getJPEG() else {
                 logger.error("Failed to convert image to JPEG")
                 return
