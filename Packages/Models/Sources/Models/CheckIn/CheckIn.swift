@@ -17,6 +17,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let servingStyle: ServingStyle?
     public let location: Location?
     public let purchaseLocation: Location?
+    public let images: [ImageEntity]
 
     public var isEmpty: Bool {
         [rating == nil, review.isNilOrEmpty, flavors.isEmpty, purchaseLocation == nil].allSatisfy { $0 }
@@ -37,7 +38,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         variant: ProductVariant? = nil,
         servingStyle: ServingStyle? = nil,
         location: Location? = nil,
-        purchaseLocation: Location? = nil
+        purchaseLocation: Location? = nil,
+        images: [ImageEntity]
     ) {
         self.id = id
         self.rating = rating
@@ -54,6 +56,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         self.servingStyle = servingStyle
         self.location = location
         self.purchaseLocation = purchaseLocation
+        self.images = images
     }
 
     public func copyWith(
@@ -70,7 +73,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         variant: ProductVariant? = nil,
         servingStyle: ServingStyle? = nil,
         location: Location? = nil,
-        purchaseLocation: Location?? = nil
+        purchaseLocation: Location? = nil,
+        images: [ImageEntity]? = nil
     ) -> CheckIn {
         CheckIn(
             id: id,
@@ -87,7 +91,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
             variant: variant ?? self.variant,
             servingStyle: servingStyle ?? self.servingStyle,
             location: location ?? self.location,
-            purchaseLocation: purchaseLocation ?? self.purchaseLocation
+            purchaseLocation: purchaseLocation ?? self.purchaseLocation,
+            images: images ?? self.images
         )
     }
 
@@ -107,6 +112,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         case servingStyle = "serving_styles"
         case location = "locations"
         case purchaseLocation = "purchase_location"
+        case images = "check_in_images"
     }
 }
 

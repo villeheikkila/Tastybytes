@@ -39,6 +39,7 @@ extension CheckIn {
                     ServingStyle.getQuery(.saved(true)),
                     "locations:location_id (\(Location.getQuery(.joined(false))))",
                     "purchase_location:purchase_location_id (\(Location.getQuery(.joined(false))))",
+                    ImageEntity.getQuery(.saved(.checkInImages))
                 ].joinComma(),
                 withTableName
             )

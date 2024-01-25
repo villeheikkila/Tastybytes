@@ -20,6 +20,7 @@ enum Database {
         case brandLogos = "brand_logos"
         case categories
         case categoryServingStyles = "category_serving_styles"
+        case checkInImages = "check_in_images"
         case checkInComments = "check_in_comments"
         case checkInFlavors = "check_in_flavors"
         case checkInTaggedProfiles = "check_in_tagged_profiles"
