@@ -119,7 +119,6 @@ struct EditCompanySheet: View {
             company = Company(
                 id: company.id,
                 name: company.name,
-                logoFile: fileName,
                 isVerified: company.isVerified
             )
         case let .failure(error):

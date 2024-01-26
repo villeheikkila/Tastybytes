@@ -5,7 +5,7 @@ extension Company {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.companies.rawValue
         let editSuggestionTable = "company_edit_suggestions"
-        let saved = "id, name, logo_file, is_verified"
+        let saved = "id, name, is_verified"
         let owner = queryWithTableName(tableName, saved, true)
 
         switch queryType {

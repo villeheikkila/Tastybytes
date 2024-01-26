@@ -271,7 +271,6 @@ struct ProductMutationView: View {
                 brand = Brand.JoinedSubBrands(
                     id: initialProduct.subBrand.brand.id,
                     name: initialProduct.subBrand.brand.name,
-                    logoFile: initialProduct.subBrand.brand.logoFile,
                     isVerified: initialProduct.subBrand.brand.isVerified,
                     subBrands: brandsWithSubBrands
                         .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? [],
@@ -295,7 +294,6 @@ struct ProductMutationView: View {
             self.brand = Brand.JoinedSubBrands(
                 id: brand.id,
                 name: brand.name,
-                logoFile: brand.logoFile,
                 isVerified: brand.isVerified,
                 subBrands: brand.subBrands
                     .map { subBrand in
@@ -313,7 +311,6 @@ struct ProductMutationView: View {
             self.brand = Brand.JoinedSubBrands(
                 id: brand.id,
                 name: brand.name,
-                logoFile: brand.logoFile,
                 isVerified: brand.isVerified,
                 subBrands: subBrandsFromBrand,
                 logos: brand.logos

@@ -471,7 +471,7 @@ public extension Product {
             logos = product.logos
         }
 
-        func copyWith(
+        public func copyWith(
             name: String? = nil,
             description: String? = nil,
             isVerified: Bool? = nil,

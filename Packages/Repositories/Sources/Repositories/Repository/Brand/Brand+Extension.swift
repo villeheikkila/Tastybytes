@@ -4,7 +4,7 @@ import Models
 extension Brand {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.brands.rawValue
-        let saved = "id, name, is_verified, logo_file"
+        let saved = "id, name, is_verified"
 
         switch queryType {
         case .tableName:

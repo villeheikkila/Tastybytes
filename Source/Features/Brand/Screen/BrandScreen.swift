@@ -277,7 +277,7 @@ struct BrandScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
-                if brand.logoFile != nil {
+                if !brand.logos.isEmpty {
                     BrandLogo(brand: brand, size: 32)
                 }
                 Text(brand.name)

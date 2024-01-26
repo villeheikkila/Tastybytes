@@ -12,5 +12,5 @@ public protocol CompanyRepository: Sendable {
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
     func search(searchTerm: String) async -> Result<[Company], Error>
     @Sendable func getSummaryById(id: Int) async -> Result<Summary, Error>
-    func uploadLogo(companyId: Int, data: Data) async -> Result<String, Error>
+    func uploadLogo(companyId: Int, data: Data) async -> Result<ImageEntity, Error>
 }

@@ -97,7 +97,7 @@ struct CompanyScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
-                if company.logoFile != nil {
+                if !company.logos.isEmpty {
                     CompanyLogo(company: company, size: 32)
                 }
                 Text(company.name)
@@ -206,7 +206,7 @@ struct CompanyScreen: View {
     func verifyCompany(isVerified: Bool) async {
         switch await repository.company.verification(id: company.id, isVerified: isVerified) {
         case .success:
-            company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
+            company = Company(id: company.id, name: company.name, logos: company.logos, isVerified: isVerified)
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

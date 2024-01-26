@@ -33,11 +33,7 @@ struct ProductLogoSheet: View {
                     matching: .images,
                     photoLibrary: .shared()
                 ) {
-                    if let logoFile, let logoUrl = URL(
-                        baseUrl: appEnvironmentModel.infoPlist.supabaseUrl,
-                        bucket: .productLogos,
-                        fileName: logoFile
-                    ) {
+                    if let logoUrl = product.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                         RemoteImage(url: logoUrl) { state in
                             if let image = state.image {
                                 image
@@ -82,6 +78,7 @@ struct ProductLogoSheet: View {
         switch await repository.product.uploadLogo(productId: product.id, data: data) {
         case let .success(imageEntity):
             logger.info("Succesfully uploaded image \(imageEntity.file)")
+            product = product.copyWith(logos: [imageEntity])
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init(title: "Uplodaing product logo failed.")

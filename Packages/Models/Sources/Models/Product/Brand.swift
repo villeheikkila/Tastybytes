@@ -11,10 +11,9 @@ public protocol BrandProtocol {
 
 public extension Brand {
     struct JoinedSubBrands: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
-        public init(id: Int, name: String, logoFile: String? = nil, isVerified: Bool, subBrands: [SubBrand], logos: [ImageEntity]) {
+        public init(id: Int, name: String, isVerified: Bool, subBrands: [SubBrand], logos: [ImageEntity]) {
             self.id = id
             self.name = name
-            self.logoFile = logoFile
             self.isVerified = isVerified
             self.subBrands = subBrands
             self.logos = logos
@@ -22,7 +21,6 @@ public extension Brand {
 
         public let id: Int
         public let name: String
-        public let logoFile: String?
         public let isVerified: Bool
         public let subBrands: [SubBrand]
         public let logos: [ImageEntity]
@@ -30,7 +28,6 @@ public extension Brand {
         enum CodingKeys: String, CodingKey {
             case id
             case name
-            case logoFile = "logo_file"
             case isVerified = "is_verified"
             case subBrands = "sub_brands"
             case logos = "brand_logos"
@@ -38,10 +35,9 @@ public extension Brand {
     }
 
     struct JoinedCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
-        public init(id: Int, name: String, logoFile: String? = nil, isVerified: Bool, brandOwner: Company, logos: [ImageEntity]) {
+        public init(id: Int, name: String, isVerified: Bool, brandOwner: Company, logos: [ImageEntity]) {
             self.id = id
             self.name = name
-            self.logoFile = logoFile
             self.isVerified = isVerified
             self.brandOwner = brandOwner
             self.logos = logos
@@ -49,7 +45,6 @@ public extension Brand {
 
         public let id: Int
         public let name: String
-        public let logoFile: String?
         public let isVerified: Bool
         public let brandOwner: Company
         public let logos: [ImageEntity]
@@ -57,7 +52,6 @@ public extension Brand {
         enum CodingKeys: String, CodingKey {
             case id
             case name
-            case logoFile = "logo_file"
             case isVerified = "is_verified"
             case brandOwner = "companies"
             case logos = "brand_logos"
@@ -67,7 +61,6 @@ public extension Brand {
     struct JoinedSubBrandsProducts: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
         public let id: Int
         public let name: String
-        public let logoFile: String?
         public let isVerified: Bool
         public let subBrands: [SubBrand.JoinedProduct]
         public let logos: [ImageEntity]
@@ -79,7 +72,6 @@ public extension Brand {
         enum CodingKeys: String, CodingKey {
             case id
             case name
-            case logoFile = "logo_file"
             case isVerified = "is_verified"
             case subBrands = "sub_brands"
             case logos = "brand_logos"
@@ -89,7 +81,6 @@ public extension Brand {
     struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
         public let id: Int
         public let name: String
-        public let logoFile: String?
         public let isVerified: Bool
         public let brandOwner: Company
         public let subBrands: [SubBrand.JoinedProduct]
@@ -100,7 +91,6 @@ public extension Brand {
             name = brand.name
             isVerified = brand.isVerified
             self.brandOwner = brandOwner
-            logoFile = brand.logoFile
             subBrands = brand.subBrands
             logos = brand.logos
         }
@@ -111,7 +101,6 @@ public extension Brand {
             isVerified = subBrand.brand.isVerified
             brandOwner = subBrand.brand.brandOwner
             subBrands = []
-            logoFile = subBrand.brand.logoFile
             logos = subBrand.brand.logos
         }
 
@@ -121,7 +110,6 @@ public extension Brand {
             isVerified = brand.isVerified
             brandOwner = brand.brandOwner
             subBrands = []
-            logoFile = brand.logoFile
             logos = brand.logos
         }
 
@@ -135,14 +123,12 @@ public extension Brand {
             self.isVerified = isVerified
             self.brandOwner = brandOwner
             self.subBrands = subBrands
-            logoFile = nil
             logos = []
         }
 
         enum CodingKeys: String, CodingKey {
             case id
             case name
-            case logoFile = "logo_file"
             case isVerified = "is_verified"
             case brandOwner = "companies"
             case subBrands = "sub_brands"
