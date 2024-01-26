@@ -6,14 +6,12 @@ public struct Product: Identifiable, Codable, Hashable, Sendable {
     public let description: String?
     public let isVerified: Bool
     public let isDiscontinued: Bool
-    public let logoFile: String?
     public let logos: [ImageEntity]
 
     enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case name
         case description
-        case logoFile = "logo_file"
         case isVerified = "is_verified"
         case isDiscontinued = "is_discontinued"
         case logos = "product_logos"
@@ -332,7 +330,6 @@ public extension Product {
         public let id: Int
         public let name: String
         public let description: String?
-        public let logoFile: String?
         public let isVerified: Bool
         public let subBrand: SubBrand.JoinedBrand
         public let category: Category
@@ -343,6 +340,7 @@ public extension Product {
         public let createdBy: Profile?
         public let createdAt: Date?
         public let isDiscontinued: Bool
+        public let logos: [ImageEntity]
 
         public func getDisplayName(_ part: NameParts) -> String {
             switch part {
@@ -367,7 +365,6 @@ public extension Product {
             case id
             case name
             case description
-            case logoFile = "logo_file"
             case isVerified = "is_verified"
             case subBrand = "sub_brands"
             case category = "categories"
@@ -378,30 +375,31 @@ public extension Product {
             case createdBy = "profiles"
             case createdAt = "created_at"
             case isDiscontinued = "is_discontinued"
+            case logos = "product_logos"
         }
 
         public init(
             id: Int,
             name: String,
-            description: String,
-            logoFile: String?,
+            description: String?,
             isVerified: Bool,
             subBrand: SubBrand.JoinedBrand,
             category: Category,
             subcategories: [Subcategory.JoinedCategory],
             barcodes: [ProductBarcode],
-            isDiscontinued: Bool
+            isDiscontinued: Bool,
+            logos: [ImageEntity]
         ) {
             self.id = id
             self.name = name
             self.description = description
-            self.logoFile = logoFile
             self.isVerified = isVerified
             self.subBrand = subBrand
             self.subcategories = subcategories
             self.category = category
             self.barcodes = barcodes
             self.isDiscontinued = isDiscontinued
+            self.logos = logos
             currentUserCheckIns = nil
             averageRating = nil
             createdBy = nil
@@ -417,7 +415,6 @@ public extension Product {
             id = product.id
             name = product.name
             description = product.description
-            logoFile = product.logoFile
             isVerified = product.isVerified
             self.subBrand = SubBrand.JoinedBrand(
                 id: subBrand.id,
@@ -426,7 +423,6 @@ public extension Product {
                 brand: Brand.JoinedCompany(
                     id: brand.id,
                     name: brand.name,
-                    logoFile: brand.logoFile,
                     isVerified: brand.isVerified,
                     brandOwner: company,
                     logos: brand.logos
@@ -435,6 +431,7 @@ public extension Product {
             subcategories = product.subcategories
             category = product.category
             barcodes = []
+            logos = product.logos
             currentUserCheckIns = nil
             averageRating = nil
             createdBy = nil
@@ -450,7 +447,6 @@ public extension Product {
             id = product.id
             name = product.name
             description = product.description
-            logoFile = product.logoFile
             isVerified = product.isVerified
             self.subBrand = SubBrand.JoinedBrand(
                 id: subBrand.id,
@@ -459,7 +455,6 @@ public extension Product {
                 brand: Brand.JoinedCompany(
                     id: brand.id,
                     name: brand.name,
-                    logoFile: brand.logoFile,
                     isVerified: brand.isVerified,
                     brandOwner: brand.brandOwner,
                     logos: brand.logos
@@ -473,6 +468,32 @@ public extension Product {
             createdBy = nil
             createdAt = nil
             isDiscontinued = product.isDiscontinued
+            logos = product.logos
+        }
+
+        func copyWith(
+            name: String? = nil,
+            description: String? = nil,
+            isVerified: Bool? = nil,
+            subBrand: SubBrand.JoinedBrand? = nil,
+            category: Category? = nil,
+            subcategories: [Subcategory.JoinedCategory]? = nil,
+            barcodes: [ProductBarcode]? = nil,
+            isDiscontinued: Bool? = nil,
+            logos: [ImageEntity]? = nil
+        ) -> Self {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                description: description ?? self.description,
+                isVerified: isVerified ?? self.isVerified,
+                subBrand: subBrand ?? self.subBrand,
+                category: category ?? self.category,
+                subcategories: subcategories ?? self.subcategories,
+                barcodes: barcodes ?? self.barcodes,
+                isDiscontinued: isDiscontinued ?? self.isDiscontinued,
+                logos: logos ?? self.logos
+            )
         }
     }
 
@@ -544,41 +565,41 @@ public extension Product {
         public let id: Int
         public let name: String
         public let description: String?
-        public let logoFile: String?
         public let isVerified: Bool
         public let isDiscontinued: Bool
         public let category: Category
         public let subcategories: [Subcategory.JoinedCategory]
+        public let logos: [ImageEntity]
 
         enum CodingKeys: String, CodingKey {
             case id
             case name
             case description
-            case logoFile = "logo_file"
             case isVerified = "is_verified"
             case isDiscontinued = "is_discontinued"
             case category = "categories"
             case subcategories
+            case logos = "product_logos"
         }
 
         public init(
             id: Int,
             name: String,
             description: String?,
-            logoFile: String?,
             isVerified: Bool,
             isDiscontinued: Bool,
             category: Category,
-            subcategories: [Subcategory.JoinedCategory]
+            subcategories: [Subcategory.JoinedCategory],
+            logos: [ImageEntity]
         ) {
             self.id = id
             self.name = name
             self.description = description
-            self.logoFile = logoFile
             self.isVerified = isVerified
             self.category = category
             self.subcategories = subcategories
             self.isDiscontinued = isDiscontinued
+            self.logos = logos
         }
     }
 }
@@ -590,8 +611,8 @@ extension CaseIterable where Self: RawRepresentable, Self.RawValue == String {
 }
 
 public extension Product.Joined {
-    func getLogo(baseUrl: URL) -> URL? {
-        guard let logoFile else { return nil }
-        return URL(baseUrl: baseUrl, bucket: .productLogos, fileName: logoFile)
+    func getLogoUrl(baseUrl: URL) -> URL? {
+        guard let logo = logos.first else { return nil }
+        return logo.getLogoUrl(baseUrl: baseUrl)
     }
 }

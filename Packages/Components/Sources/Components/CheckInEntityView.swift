@@ -62,7 +62,7 @@ public struct CheckInEntityView: View {
 
     private var productSection: some View {
         HStack(spacing: 12) {
-            if let logoUrl = checkIn.product.getLogo(baseUrl: baseUrl) {
+            if let logoUrl = checkIn.product.getLogoUrl(baseUrl: baseUrl) {
                 AsyncImage(url: logoUrl) { image in
                     image
                         .resizable()

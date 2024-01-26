@@ -22,8 +22,8 @@ public class ImageUploadEnvironmentModel {
         Task(priority: .userInitiated) {
             guard let data = image.jpegData(compressionQuality: 0.7) else { return }
             switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
-            case let .success(imageFile):
-                uploadedImageForCheckIn = checkIn.copyWith(imageFile: imageFile)
+            case let .success(imageEntity):
+                uploadedImageForCheckIn = checkIn.copyWith(images: checkIn.images + [imageEntity])
             case let .failure(error):
                 guard !error.isCancelled else { return }
                 alertError = .init()

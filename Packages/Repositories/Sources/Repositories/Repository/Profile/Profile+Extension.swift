@@ -4,19 +4,19 @@ import Models
 extension Profile {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.profiles.rawValue
-        let minimal = "id, is_private, preferred_name, avatar_file, joined_at"
+        let minimal = "id, is_private, preferred_name, joined_at"
         let saved =
-            "id, first_name, last_name, username, avatar_file, name_display, preferred_name, is_private, is_onboarded, joined_at"
+            "id, first_name, last_name, username, name_display, preferred_name, is_private, is_onboarded, joined_at"
 
         switch queryType {
         case .tableName:
             return tableName
         case let .minimal(withTableName):
-            return queryWithTableName(tableName, minimal, withTableName)
+            return queryWithTableName(tableName, [minimal, ImageEntity.getQuery(.saved(.profileAvatars))].joinComma(), withTableName)
         case let .extended(withTableName):
             return queryWithTableName(
                 tableName,
-                [saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true))].joinComma(),
+                [saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))].joinComma(),
                 withTableName
             )
         }

@@ -19,5 +19,5 @@ public protocol CheckInRepository: Sendable {
     func delete(id: Int) async -> Result<Void, Error>
     func deleteAsModerator(checkIn: CheckIn) async -> Result<Void, Error>
     func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error>
-    func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<String, Error>
+    func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<ImageEntity, Error>
 }

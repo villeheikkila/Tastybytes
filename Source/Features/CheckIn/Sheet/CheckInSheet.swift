@@ -57,6 +57,13 @@ struct CheckInSheet: View {
     let product: Product.Joined
     let editCheckIn: CheckIn?
 
+    var showImageSection: Bool {
+        if let images = editCheckIn?.images {
+            return !images.isEmpty
+        }
+        return finalImage != nil
+    }
+
     init(product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) async -> Void) {
         self.onCreation = onCreation
         self.product = product
@@ -158,7 +165,7 @@ struct CheckInSheet: View {
                     focusedField = nil
                 }
 
-            if finalImage != nil || editCheckIn?.imageFile != nil {
+            if showImageSection {
                 HStack {
                     Spacer()
                     if let finalImage {

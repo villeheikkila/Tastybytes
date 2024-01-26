@@ -6,11 +6,15 @@ extension ImageEntity {
 
         switch queryType {
         case let .saved(tableName):
-            return queryWithTableName(tableName.rawValue, saved, true)
+            if let tableName {
+                return queryWithTableName(tableName.rawValue, saved, true)
+            } else {
+                return queryWithTableName("", saved, false)
+            }
         }
     }
 
     enum QueryType {
-        case saved(_ tableName: Database.Table)
+        case saved(_ tableName: Database.Table?)
     }
 }

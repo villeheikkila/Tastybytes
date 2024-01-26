@@ -3,30 +3,30 @@ import Foundation
 
 public protocol AvatarURL {
     var id: UUID { get }
-    var avatarFile: String? { get }
+    var avatars: [ImageEntity] { get }
 }
 
 public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
     public let id: UUID
     public let preferredName: String
     public let isPrivate: Bool
-    public let avatarFile: String?
     public let joinedAt: Date
+    public let avatars: [ImageEntity]
 
-    public init(id: UUID, preferredName: String, isPrivate: Bool, avatarFile: String?, joinedAt: Date) {
+    public init(id: UUID, preferredName: String, isPrivate: Bool, joinedAt: Date, avatars: [ImageEntity]) {
         self.id = id
         self.preferredName = preferredName
         self.isPrivate = isPrivate
-        self.avatarFile = avatarFile
         self.joinedAt = joinedAt
+        self.avatars = avatars
     }
 
     enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case preferredName = "preferred_name"
         case isPrivate = "is_private"
-        case avatarFile = "avatar_file"
         case joinedAt = "joined_at"
+        case avatars = "profile_avatars"
     }
 }
 
@@ -39,11 +39,11 @@ public extension Profile {
         public let joinedAt: Date
         public let isPrivate: Bool
         public let isOnboarded: Bool
-        public let avatarFile: String?
         public let preferredName: String
         public let nameDisplay: NameDisplay
         public let roles: [Role]
         public let settings: ProfileSettings
+        public let avatars: [ImageEntity]
 
         public init(
             id: UUID,
@@ -55,9 +55,9 @@ public extension Profile {
             nameDisplay: Profile.NameDisplay,
             roles: [Role],
             settings: ProfileSettings,
+            avatars: [ImageEntity],
             firstName: String? = nil,
-            lastName: String? = nil,
-            avatarFile: String? = nil
+            lastName: String? = nil
         ) {
             self.id = id
             self.username = username
@@ -66,11 +66,11 @@ public extension Profile {
             self.joinedAt = joinedAt
             self.isPrivate = isPrivate
             self.isOnboarded = isOnboarded
-            self.avatarFile = avatarFile
             self.preferredName = preferredName
             self.nameDisplay = nameDisplay
             self.roles = roles
             self.settings = settings
+            self.avatars = avatars
         }
 
         public func copyWith(
@@ -80,11 +80,11 @@ public extension Profile {
             joinedAt: Date? = nil,
             isPrivate: Bool? = nil,
             isOnboarded: Bool? = nil,
-            avatarFile: String?? = nil,
             preferredName: String? = nil,
             nameDisplay: Profile.NameDisplay? = nil,
             roles: [Role]? = nil,
-            settings: ProfileSettings? = nil
+            settings: ProfileSettings? = nil,
+            avatars: [ImageEntity]? = nil
         ) -> Profile.Extended {
             Profile.Extended(
                 id: id,
@@ -96,9 +96,9 @@ public extension Profile {
                 nameDisplay: nameDisplay ?? self.nameDisplay,
                 roles: roles ?? self.roles,
                 settings: settings ?? self.settings,
+                avatars: avatars ?? self.avatars,
                 firstName: firstName ?? self.firstName,
-                lastName: lastName ?? self.lastName,
-                avatarFile: avatarFile ?? self.avatarFile
+                lastName: lastName ?? self.lastName
             )
         }
 
@@ -107,8 +107,8 @@ public extension Profile {
                 id: id,
                 preferredName: preferredName,
                 isPrivate: isPrivate,
-                avatarFile: avatarFile,
-                joinedAt: joinedAt
+                joinedAt: joinedAt,
+                avatars: avatars
             )
         }
 
@@ -121,10 +121,10 @@ public extension Profile {
             case isOnboarded = "is_onboarded"
             case firstName = "first_name"
             case lastName = "last_name"
-            case avatarFile = "avatar_file"
             case nameDisplay = "name_display"
             case roles
             case settings = "profile_settings"
+            case avatars = "profile_avatars"
         }
     }
 }
@@ -364,7 +364,7 @@ public extension Profile {
 
 public extension AvatarURL {
     func getAvatarUrl(baseUrl: URL) -> URL? {
-        guard let avatarFile else { return nil }
-        return URL(baseUrl: baseUrl, bucket: .avatars, fileName: "\(id.uuidString.lowercased())/\(avatarFile)")
+        guard let imageEntity = avatars.first else { return nil }
+        return imageEntity.getLogoUrl(baseUrl: baseUrl)
     }
 }

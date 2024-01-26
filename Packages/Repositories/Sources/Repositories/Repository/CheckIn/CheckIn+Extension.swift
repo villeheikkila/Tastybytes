@@ -5,8 +5,8 @@ extension CheckIn {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.checkIns.rawValue
         let fromFriendsView = "view_check_ins_from_friends"
-        let image = "id, image_file, blur_hash, created_by"
-        let saved = "id, rating, review, image_file, check_in_at, blur_hash"
+        let image = "id, blur_hash, created_by"
+        let saved = "id, rating, review, check_in_at, blur_hash"
         let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
         let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
         let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
@@ -39,14 +39,14 @@ extension CheckIn {
                     ServingStyle.getQuery(.saved(true)),
                     "locations:location_id (\(Location.getQuery(.joined(false))))",
                     "purchase_location:purchase_location_id (\(Location.getQuery(.joined(false))))",
-                    ImageEntity.getQuery(.saved(.checkInImages))
+                    ImageEntity.getQuery(.saved(.checkInImages)),
                 ].joinComma(),
                 withTableName
             )
         case let .image(withTableName):
             return queryWithTableName(
                 tableName,
-                image,
+                [image, ImageEntity.getQuery(.saved(.checkInImages))].joinComma(),
                 withTableName
             )
         }

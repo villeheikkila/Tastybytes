@@ -9,6 +9,7 @@ enum Database {
         case productLogos = "product_logos"
         case productEditSuggestions = "product_edit_suggestions"
         case profiles
+        case profileAvatars = "profile_avatars"
         case checkIns = "check_ins"
         case checkInReactions = "check_in_reactions"
         case companyEditSuggestions = "company_edit_suggestions"

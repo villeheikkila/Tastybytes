@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol CompanyLogo {
-    var logoFile: String? { get }
+    var logos: [ImageEntity] { get }
 }
 
 public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogo {
@@ -108,7 +108,7 @@ public extension Company {
 
 public extension CompanyLogo {
     func getLogoUrl(baseUrl: URL) -> URL? {
-        guard let logoFile else { return nil }
-        return URL(baseUrl: baseUrl, bucket: .companyLogos, fileName: logoFile)
+        guard let logo = logos.first else { return nil }
+        return logo.getLogoUrl(baseUrl: baseUrl)
     }
 }

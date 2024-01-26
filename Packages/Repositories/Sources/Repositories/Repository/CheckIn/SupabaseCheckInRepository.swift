@@ -92,7 +92,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .from(.checkIns)
                 .select(CheckIn.getQuery(.image(false)))
                 .eq(by.column, value: by.id)
-                .notEquals("image_file", value: "null")
+                .notEquals("check_in_images", value: "null")
                 .order("created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
@@ -221,7 +221,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<String, Error> {
+    func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<ImageEntity, Error> {
         do {
             let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
             let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
@@ -231,7 +231,17 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .from(.checkIns)
                 .upload(path: "\(userId.uuidString.lowercased())/\(fileName)", file: data, options: fileOptions)
 
-            return .success(fileName)
+            let response: ImageEntity = try await client
+                .database
+                .from(.checkInImages)
+                .select(ImageEntity.getQuery(.saved(nil)))
+                .eq("file", value: fileName)
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
         } catch {
             return .failure(error)
         }

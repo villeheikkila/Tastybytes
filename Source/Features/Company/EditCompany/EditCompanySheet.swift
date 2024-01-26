@@ -16,7 +16,7 @@ struct EditCompanySheet: View {
     @State private var company: Company
     @State private var newCompanyName = ""
     @State private var alertError: AlertError?
-    @State private var selectedLogo: PhotosPickerItem? 
+    @State private var selectedLogo: PhotosPickerItem?
 
     let mode: Mode
     let onSuccess: () async -> Void
@@ -125,7 +125,7 @@ struct EditCompanySheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Uploading company logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

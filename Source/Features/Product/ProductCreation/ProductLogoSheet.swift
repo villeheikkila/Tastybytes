@@ -17,13 +17,12 @@ struct ProductLogoSheet: View {
     @State private var selectedLogo: PhotosPickerItem?
     @State private var logoFile: String?
 
-    let product: Product.Joined
+    @State private var product: Product.Joined
     let onUpload: () async -> Void
 
     init(product: Product.Joined, onUpload: @escaping () async -> Void) {
-        self.product = product
+        _product = State(initialValue: product)
         self.onUpload = onUpload
-        _logoFile = State(initialValue: product.logoFile)
     }
 
     var body: some View {
@@ -81,9 +80,8 @@ struct ProductLogoSheet: View {
 
     func uploadLogo(data: Data) async {
         switch await repository.product.uploadLogo(productId: product.id, data: data) {
-        case let .success(filename):
-            logger.info("Succesfully uploaded image \(filename)")
-            logoFile = filename
+        case let .success(imageEntity):
+            logger.info("Succesfully uploaded image \(imageEntity.file)")
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init(title: "Uplodaing product logo failed.")

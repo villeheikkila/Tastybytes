@@ -5,7 +5,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let id: Int
     public let rating: Double?
     public let review: String?
-    public let imageFile: String?
     public let checkInAt: Date?
     public let blurHash: BlurHash?
     public let profile: Profile
@@ -27,7 +26,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         id: Int,
         rating: Double? = nil,
         review: String? = nil,
-        imageFile: String? = nil,
         checkInAt: Date? = nil,
         blurHash: CheckIn.BlurHash? = nil,
         profile: Profile,
@@ -44,7 +42,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         self.id = id
         self.rating = rating
         self.review = review
-        self.imageFile = imageFile
         self.checkInAt = checkInAt
         self.blurHash = blurHash
         self.profile = profile
@@ -62,7 +59,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public func copyWith(
         rating: Double? = nil,
         review: String? = nil,
-        imageFile: String? = nil,
         checkInAt: Date? = nil,
         blurHash: BlurHash? = nil,
         profile: Profile? = nil,
@@ -80,7 +76,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
             id: id,
             rating: rating ?? self.rating,
             review: review ?? self.review,
-            imageFile: imageFile ?? self.imageFile,
             checkInAt: checkInAt ?? self.checkInAt,
             blurHash: blurHash ?? self.blurHash,
             profile: profile ?? self.profile,
@@ -101,7 +96,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         case rating
         case review
         case blurHash = "blur_hash"
-        case imageFile = "image_file"
         case checkInAt = "check_in_at"
         case profile = "profiles"
         case product = "products"
@@ -136,13 +130,13 @@ public extension CheckIn {
     struct Image: Hashable, Sendable, Identifiable, Codable {
         public let id: Int
         public let createdBy: UUID
-        public let imageFile: String?
+        public let images: [ImageEntity]
         public let blurHash: BlurHash?
 
         enum CodingKeys: String, CodingKey {
             case id
             case blurHash = "blur_hash"
-            case imageFile = "image_file"
+            case images = "check_in_images"
             case createdBy = "created_by"
         }
     }
@@ -348,22 +342,14 @@ public enum CheckInSegment: String, CaseIterable, Sendable {
 
 public extension CheckIn {
     func getImageUrl(baseUrl: URL) -> URL? {
-        guard let imageFile else { return nil }
-        return URL(
-            baseUrl: baseUrl,
-            bucket: .checkIns,
-            fileName: "\(profile.id.uuidString.lowercased())/\(imageFile)"
-        )
+        guard let image = images.first else { return nil }
+        return image.getLogoUrl(baseUrl: baseUrl)
     }
 }
 
 public extension CheckIn.Image {
     func getImageUrl(baseUrl: URL) -> URL? {
-        guard let imageFile else { return nil }
-        return URL(
-            baseUrl: baseUrl,
-            bucket: .checkIns,
-            fileName: "\(createdBy.uuidString.lowercased())/\(imageFile)"
-        )
+        guard let image = images.first else { return nil }
+        return image.getLogoUrl(baseUrl: baseUrl)
     }
 }

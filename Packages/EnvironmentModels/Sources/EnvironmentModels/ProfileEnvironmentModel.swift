@@ -227,8 +227,8 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public func uploadAvatar(data: Data) async {
         guard let extendedProfile else { return }
         switch await repository.profile.uploadAvatar(userId: extendedProfile.id, data: data) {
-        case let .success(avatarFile):
-            self.extendedProfile = extendedProfile.copyWith(avatarFile: avatarFile)
+        case let .success(imageEntity):
+            self.extendedProfile = extendedProfile.copyWith(avatars: [imageEntity])
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

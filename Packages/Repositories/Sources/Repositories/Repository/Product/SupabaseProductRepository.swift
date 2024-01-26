@@ -223,7 +223,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func uploadLogo(productId: Int, data: Data) async -> Result<String, Error> {
+    func uploadLogo(productId: Int, data: Data) async -> Result<ImageEntity, Error> {
         do {
             let fileName = "\(productId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
             let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
@@ -233,7 +233,17 @@ struct SupabaseProductRepository: ProductRepository {
                 .from(.productLogos)
                 .upload(path: fileName, file: data, options: fileOptions)
 
-            return .success(fileName)
+            let response: ImageEntity = try await client
+                .database
+                .from(.productLogos)
+                .select(ImageEntity.getQuery(.saved(nil)))
+                .eq("file", value: fileName)
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
         } catch {
             return .failure(error)
         }

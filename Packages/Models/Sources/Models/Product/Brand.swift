@@ -5,7 +5,7 @@ public enum Brand {}
 public protocol BrandProtocol {
     var id: Int { get }
     var name: String { get }
-    var logoFile: String? { get }
+    var logos: [ImageEntity] { get }
     var isVerified: Bool { get }
 }
 
@@ -200,7 +200,7 @@ public extension Brand {
 
 public extension BrandProtocol {
     func getLogoUrl(baseUrl: URL) -> URL? {
-        guard let logoFile else { return nil }
-        return URL(baseUrl: baseUrl, bucket: .brandLogos, fileName: logoFile)
+        guard let logo = logos.first else { return nil }
+        return logo.getLogoUrl(baseUrl: baseUrl)
     }
 }

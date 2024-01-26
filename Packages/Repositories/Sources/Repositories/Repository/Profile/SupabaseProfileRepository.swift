@@ -179,7 +179,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error> {
+    func uploadAvatar(userId: UUID, data: Data) async -> Result<ImageEntity, Error> {
         do {
             let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
             let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
@@ -189,7 +189,17 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .from(.avatars)
                 .upload(path: "\(userId.uuidString.lowercased())/\(fileName)", file: data, options: fileOptions)
 
-            return .success(fileName)
+            let response: ImageEntity = try await client
+                .database
+                .from(.profileAvatars)
+                .select(ImageEntity.getQuery(.saved(nil)))
+                .eq("file", value: fileName)
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
         } catch {
             return .failure(error)
         }

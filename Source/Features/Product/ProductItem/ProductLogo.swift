@@ -10,7 +10,7 @@ struct ProductLogo: View {
 
     var body: some View {
         Group {
-            if let logoUrl = product.getLogo(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+            if let logoUrl = product.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                 RemoteImage(url: logoUrl) { state in
                     if let image = state.image {
                         image.resizable()

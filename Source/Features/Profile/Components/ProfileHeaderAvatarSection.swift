@@ -67,13 +67,13 @@ struct ProfileHeaderAvatarSection: View {
 
     func uploadAvatar(userId: UUID, data: Data) async {
         switch await repository.profile.uploadAvatar(userId: userId, data: data) {
-        case let .success(avatarFile):
+        case let .success(imageEntity):
             profile = Profile(
                 id: profile.id,
                 preferredName: profile.preferredName,
                 isPrivate: profile.isPrivate,
-                avatarFile: avatarFile,
-                joinedAt: profile.joinedAt
+                joinedAt: profile.joinedAt,
+                avatars: [imageEntity]
             )
         case let .failure(error):
             guard !error.isCancelled else { return }
