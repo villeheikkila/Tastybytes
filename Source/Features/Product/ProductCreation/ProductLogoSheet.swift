@@ -81,8 +81,8 @@ struct ProductLogoSheet: View {
             logger.info("Succesfully uploaded image \(imageEntity.file)")
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init(title: "Uplodaing product logo failed.")
-            logger.error("Uplodaing product logo failed. Error: \(error) (\(#file):\(#line))")
+            alertError = .init(title: "Uploading of a product logo failed.")
+            logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

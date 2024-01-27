@@ -5,6 +5,11 @@ public protocol CompanyLogo {
 }
 
 public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogo {
+    public let id: Int
+    public let name: String
+    public let isVerified: Bool
+    public let logos: [ImageEntity]
+
     public init(id: Int, name: String, logos: [ImageEntity] = [], isVerified: Bool) {
         self.id = id
         self.name = name
@@ -12,10 +17,12 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogo {
         self.logos = logos
     }
 
-    public let id: Int
-    public let name: String
-    public let isVerified: Bool
-    public let logos: [ImageEntity]
+    public init(company: Company.Joined) {
+        id = company.id
+        name = company.name
+        isVerified = company.isVerified
+        logos = company.logos
+    }
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -98,16 +105,18 @@ public extension Company {
     struct Joined: Identifiable, Hashable, Codable, Sendable {
         public let id: Int
         public let name: String
-        public let logoUrl: String?
         public let subsidiaries: [Company]
         public let brands: [Brand.JoinedSubBrandsProducts]
+        public let logos: [ImageEntity]
+        public let isVerified: Bool
 
         enum CodingKeys: String, CodingKey {
             case id
             case name
+            case isVerified = "is_verified"
             case subsidiaries = "companies"
             case brands
-            case logoUrl
+            case logos = "company_logos"
         }
     }
 }

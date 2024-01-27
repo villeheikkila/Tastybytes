@@ -286,7 +286,7 @@ struct ProductScreen: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 

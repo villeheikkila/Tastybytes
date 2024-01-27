@@ -71,7 +71,7 @@ struct ProfileHeaderAvatarSection: View {
             profile = profile.copyWith(avatars: [imageEntity])
         case let .failure(error):
             guard !error.isCancelled else { return }
-            logger.error("uplodaing avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Uploading of a avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

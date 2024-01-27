@@ -52,7 +52,7 @@ struct ProductScreenActionSection: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                logger.error("removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
+                logger.error("Removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
             switch await repository.product.addToWishlist(productId: product.id) {
@@ -63,7 +63,7 @@ struct ProductScreenActionSection: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                logger.error("adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
+                logger.error("Adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
             }
         }
     }

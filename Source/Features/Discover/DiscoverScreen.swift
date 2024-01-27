@@ -260,7 +260,7 @@ struct DiscoverScreen: View {
             case let .failure(error):
                 guard !error.isCancelled else { return }
                 alertError = .init()
-                logger.error("searching products with barcode failed. Error: \(error) (\(#file):\(#line))")
+                logger.error("Searching products with barcode failed. Error: \(error) (\(#file):\(#line))")
             }
         case let .text(searchTerm, searchScope):
             if searchTerm.count < 2 { return }
@@ -279,7 +279,7 @@ struct DiscoverScreen: View {
                         return
                     }
                     alertError = .init()
-                    logger.error("searching products failed. Error: \(error) (\(#file):\(#line))")
+                    logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .companies:
                 switch await repository.company.search(searchTerm: searchTerm) {
@@ -292,7 +292,7 @@ struct DiscoverScreen: View {
                 case let .failure(error):
                     guard !error.isCancelled else { return }
                     alertError = .init()
-                    logger.error("searching companies failed. Error: \(error) (\(#file):\(#line))")
+                    logger.error("Searching companies failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .users:
                 switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
@@ -305,7 +305,7 @@ struct DiscoverScreen: View {
                 case let .failure(error):
                     guard !error.isCancelled else { return }
                     alertError = .init()
-                    logger.error("searching profiles failed. Error: \(error) (\(#file):\(#line))")
+                    logger.error("Searching profiles failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .locations:
                 switch await repository.location.search(searchTerm: searchTerm) {

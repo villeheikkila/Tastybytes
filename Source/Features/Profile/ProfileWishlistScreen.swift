@@ -72,7 +72,7 @@ struct ProfileWishlistScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            logger.error("removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 

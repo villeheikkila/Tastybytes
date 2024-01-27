@@ -1,11 +1,11 @@
 import Foundation
 
-public struct ImageEntity: Codable, Hashable, Sendable {
+public struct ImageEntity: Codable, Hashable, Sendable, Identifiable {
     public let id: Int
     public let file: String
     public let bucket: String
 
-    func getLogoUrl(baseUrl: URL) -> URL? {
+    public func getLogoUrl(baseUrl: URL) -> URL? {
         baseUrl.appendingPathComponent("storage/v1/object/public/\(bucket)/\(file)")
     }
 }

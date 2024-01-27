@@ -11,7 +11,7 @@ public protocol BrandRepository: Sendable {
     func isLikedByCurrentUser(id: Int) async -> Result<Bool, Error>
     func likeBrand(brandId: Int) async -> Result<Void, Error>
     func unlikeBrand(brandId: Int) async -> Result<Void, Error>
-    func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error>
+    func update(updateRequest: Brand.UpdateRequest) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error>
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func uploadLogo(brandId: Int, data: Data) async -> Result<ImageEntity, Error>

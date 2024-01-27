@@ -155,16 +155,19 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error> {
+    func update(updateRequest: Brand.UpdateRequest) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error> {
         do {
-            try await client
+            let response: Brand.JoinedSubBrandsProductsCompany = try await client
                 .database
                 .from(.brands)
                 .update(updateRequest)
                 .eq("id", value: updateRequest.id)
+                .select(Brand.getQuery(.joinedSubBrandsCompany(false)))
+                .single()
                 .execute()
+                .value
 
-            return .success(())
+            return .success(response)
         } catch {
             return .failure(error)
         }

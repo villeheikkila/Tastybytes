@@ -88,10 +88,9 @@ struct EditCompanySheet: View {
     }
 
     func editCompany(onSuccess: () async -> Void) async {
-        switch await repository.company
-            .update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
-        {
-        case .success:
+        switch await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName)) {
+        case let .success(company):
+            self.company = .init(company: company)
             await onSuccess()
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -101,9 +100,7 @@ struct EditCompanySheet: View {
     }
 
     func sendCompanyEditSuggestion(onSuccess: () async -> Void) async {
-        switch await repository.company
-            .editSuggestion(updateRequest: Company.EditSuggestionRequest(id: company.id, name: newCompanyName))
-        {
+        switch await repository.company.editSuggestion(updateRequest: Company.EditSuggestionRequest(id: company.id, name: newCompanyName)) {
         case .success:
             await onSuccess()
         case let .failure(error):

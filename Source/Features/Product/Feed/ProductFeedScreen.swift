@@ -123,7 +123,7 @@ struct ProductFeedScreen: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("fetching products failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Fetching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

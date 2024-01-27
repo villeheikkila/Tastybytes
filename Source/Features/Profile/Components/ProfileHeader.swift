@@ -107,7 +107,7 @@ struct ProfileHeader: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
 
         switch imagesResult {

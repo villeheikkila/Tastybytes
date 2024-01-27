@@ -420,7 +420,7 @@ struct BrandScreen: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                logger.error("unliking brand failed. Error: \(error) (\(#file):\(#line))")
+                logger.error("Unliking brand failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
             switch await repository.brand.likeBrand(brandId: brand.id) {
@@ -431,7 +431,7 @@ struct BrandScreen: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                logger.error("liking brand failed. Error: \(error) (\(#file):\(#line))")
+                logger.error("Liking a brand failed. Error: \(error) (\(#file):\(#line))")
             }
         }
     }

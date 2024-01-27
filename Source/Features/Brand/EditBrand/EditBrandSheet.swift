@@ -13,6 +13,7 @@ struct EditBrandSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var name: String
     @State private var brandOwner: Company
@@ -37,18 +38,35 @@ struct EditBrandSheet: View {
 
     var body: some View {
         Form {
-            if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
-                Section("Logo") {
-                    PhotosPicker(
-                        selection: $selectedLogo,
-                        matching: .images,
-                        photoLibrary: .shared()
-                    ) {
-                        BrandLogo(brand: brand, size: 52)
-                    }
+            Section {
+                ForEach(brand.logos) { logo in
+                    RemoteImage(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
+                            if let image = state.image {
+                                image.resizable()
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
+                        .accessibility(hidden: true)
                 }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
+                
+            } header: {
+                HStack {
+                Text("Logos")
+                Spacer()
+                    if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
+                            PhotosPicker(
+                                selection: $selectedLogo,
+                                matching: .images,
+                                photoLibrary: .shared()
+                            ) {
+                                Label("Add", systemImage: "plus")
+                                    .labelStyle(.iconOnly)
+                            }
+                        }
+                }
             }
 
             Section("Brand name") {
@@ -87,15 +105,14 @@ struct EditBrandSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneAction()
+        ToolbarDismissAction()
     }
 
     func editBrand(onSuccess: @escaping () async -> Void) async {
-        switch await repository.brand
-            .update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id))
-        {
-        case .success:
+        switch await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id)) {
+        case let .success(brand):
             feedbackEnvironmentModel.toggle(.success("Brand updated!"))
+            self.brand = brand
             await onSuccess()
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -113,7 +130,7 @@ struct EditBrandSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Uploading of a company logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }
