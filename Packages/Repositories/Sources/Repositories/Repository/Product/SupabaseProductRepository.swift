@@ -4,6 +4,7 @@ import Supabase
 
 struct SupabaseProductRepository: ProductRepository {
     let client: SupabaseClient
+    let imageEntityRepository: ImageEntityRepository
 
     func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error> {
         do {
@@ -233,17 +234,7 @@ struct SupabaseProductRepository: ProductRepository {
                 .from(.productLogos)
                 .upload(path: fileName, file: data, options: fileOptions)
 
-            let response: ImageEntity = try await client
-                .database
-                .from(.productLogos)
-                .select(ImageEntity.getQuery(.saved(nil)))
-                .eq("file", value: fileName)
-                .limit(1)
-                .single()
-                .execute()
-                .value
-
-            return .success(response)
+            return await imageEntityRepository.getByFileName(from: .productLogos, fileName: fileName)
         } catch {
             return .failure(error)
         }

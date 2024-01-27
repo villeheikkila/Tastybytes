@@ -117,13 +117,13 @@ public extension Brand {
             subBrands.flatMap(\.products).count
         }
 
-        public init(id: Int, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct]) {
+        public init(id: Int, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity] = []) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
             self.brandOwner = brandOwner
             self.subBrands = subBrands
-            logos = []
+            self.logos = logos
         }
 
         enum CodingKeys: String, CodingKey {
@@ -133,6 +133,22 @@ public extension Brand {
             case brandOwner = "companies"
             case subBrands = "sub_brands"
             case logos = "brand_logos"
+        }
+
+        public func copyWith(name: String? = nil,
+                             isVerified: Bool? = nil,
+                             brandOwner: Company? = nil,
+                             subBrands: [SubBrand.JoinedProduct]? = nil,
+                             logos: [ImageEntity]? = nil) -> Self
+        {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                isVerified: isVerified ?? self.isVerified,
+                brandOwner: brandOwner ?? self.brandOwner,
+                subBrands: subBrands ?? self.subBrands,
+                logos: logos ?? self.logos
+            )
         }
     }
 }

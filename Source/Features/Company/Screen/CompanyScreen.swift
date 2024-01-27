@@ -206,7 +206,7 @@ struct CompanyScreen: View {
     func verifyCompany(isVerified: Bool) async {
         switch await repository.company.verification(id: company.id, isVerified: isVerified) {
         case .success:
-            company = Company(id: company.id, name: company.name, logos: company.logos, isVerified: isVerified)
+            company = company.copyWith(isVerified: isVerified)
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

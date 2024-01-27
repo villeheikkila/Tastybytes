@@ -4,6 +4,7 @@ import Supabase
 
 struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
+    let imageEntityRepository: ImageEntityRepository
 
     func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
@@ -92,7 +93,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .from(.checkIns)
                 .select(CheckIn.getQuery(.image(false)))
                 .eq(by.column, value: by.id)
-                .notEquals("check_in_images", value: "null")
+                // .notEquals("check_in_images", value: "null")
                 .order("created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
@@ -231,17 +232,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .from(.checkIns)
                 .upload(path: "\(userId.uuidString.lowercased())/\(fileName)", file: data, options: fileOptions)
 
-            let response: ImageEntity = try await client
-                .database
-                .from(.checkInImages)
-                .select(ImageEntity.getQuery(.saved(nil)))
-                .eq("file", value: fileName)
-                .limit(1)
-                .single()
-                .execute()
-                .value
-
-            return .success(response)
+            return await imageEntityRepository.getByFileName(from: .checkInImages, fileName: fileName)
         } catch {
             return .failure(error)
         }

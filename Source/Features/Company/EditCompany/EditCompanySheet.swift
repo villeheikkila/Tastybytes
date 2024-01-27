@@ -115,12 +115,9 @@ struct EditCompanySheet: View {
 
     func uploadLogo(data: Data) async {
         switch await repository.company.uploadLogo(companyId: company.id, data: data) {
-        case let .success(fileName):
-            company = Company(
-                id: company.id,
-                name: company.name,
-                isVerified: company.isVerified
-            )
+        case let .success(imageEntity):
+            company = company.copyWith(logos: company.logos + [imageEntity])
+            logger.info("Succesfully uploaded company logo: \(imageEntity.file)")
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

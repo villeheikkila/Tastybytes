@@ -23,6 +23,7 @@ public protocol RepositoryProtocol: Sendable {
     var document: DocumentRepository { get }
     var report: ReportRepository { get }
     var subscription: SubscriptionRepository { get }
+    var imageEntity: ImageEntityRepository { get }
 }
 
 @Observable
@@ -48,6 +49,7 @@ public final class Repository: RepositoryProtocol {
     public let document: DocumentRepository
     public let report: ReportRepository
     public let subscription: SubscriptionRepository
+    public let imageEntity: ImageEntityRepository
 
     public init(supabaseURL: URL, supabaseKey: String, headers: [String: String]) {
         let client = SupabaseClient(
@@ -56,19 +58,20 @@ public final class Repository: RepositoryProtocol {
             options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers))
         )
         appConfig = SupabaseAppConfigRepository(client: client)
-        profile = SupabaseProfileRepository(client: client)
-        checkIn = SupabaseCheckInRepository(client: client)
+        imageEntity = SupabaseImageEntityRepository(client: client)
+        profile = SupabaseProfileRepository(client: client, imageEntityRepository: imageEntity)
+        checkIn = SupabaseCheckInRepository(client: client, imageEntityRepository: imageEntity)
         checkInComment = SupabaseCheckInCommentRepository(client: client)
         checkInReactions = SupabaseCheckInReactionsRepository(client: client)
-        product = SupabaseProductRepository(client: client)
+        product = SupabaseProductRepository(client: client, imageEntityRepository: imageEntity)
         productBarcode = SupabaseProductBarcodeRepository(client: client)
         auth = SupabaseAuthRepository(client: client)
-        company = SupabaseCompanyRepository(client: client)
+        company = SupabaseCompanyRepository(client: client, imageEntityRepository: imageEntity)
         friend = SupabaseFriendsRepository(client: client)
         category = SupabaseCategoryRepository(client: client)
         subcategory = SupabaseSubcategoryRepository(client: client)
         servingStyle = SupabaseServingStyleRepository(client: client)
-        brand = SupabaseBrandRepository(client: client)
+        brand = SupabaseBrandRepository(client: client, imageEntityRepository: imageEntity)
         subBrand = SupabaseSubBrandRepository(client: client)
         flavor = SupabaseFlavorRepository(client: client)
         notification = SupabaseNotificationRepository(client: client)

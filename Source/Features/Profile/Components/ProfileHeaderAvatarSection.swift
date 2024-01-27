@@ -68,13 +68,7 @@ struct ProfileHeaderAvatarSection: View {
     func uploadAvatar(userId: UUID, data: Data) async {
         switch await repository.profile.uploadAvatar(userId: userId, data: data) {
         case let .success(imageEntity):
-            profile = Profile(
-                id: profile.id,
-                preferredName: profile.preferredName,
-                isPrivate: profile.isPrivate,
-                joinedAt: profile.joinedAt,
-                avatars: [imageEntity]
-            )
+            profile = profile.copyWith(avatars: [imageEntity])
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("uplodaing avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")

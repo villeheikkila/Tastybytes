@@ -23,6 +23,15 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogo {
         case logos = "company_logos"
         case isVerified = "is_verified"
     }
+
+    public func copyWith(name: String? = nil, logos: [ImageEntity]? = nil, isVerified: Bool? = nil) -> Self {
+        .init(
+            id: id,
+            name: name ?? self.name,
+            logos: logos ?? self.logos,
+            isVerified: isVerified ?? self.isVerified
+        )
+    }
 }
 
 public extension Company {

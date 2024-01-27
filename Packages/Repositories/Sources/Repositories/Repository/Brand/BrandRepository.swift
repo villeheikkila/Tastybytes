@@ -14,5 +14,5 @@ public protocol BrandRepository: Sendable {
     func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error>
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
     func delete(id: Int) async -> Result<Void, Error>
-    func uploadLogo(brandId: Int, data: Data) async -> Result<String, Error>
+    func uploadLogo(brandId: Int, data: Data) async -> Result<ImageEntity, Error>
 }

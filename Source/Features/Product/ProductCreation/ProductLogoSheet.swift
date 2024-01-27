@@ -77,8 +77,8 @@ struct ProductLogoSheet: View {
     func uploadLogo(data: Data) async {
         switch await repository.product.uploadLogo(productId: product.id, data: data) {
         case let .success(imageEntity):
+            product = product.copyWith(logos: product.logos + [imageEntity])
             logger.info("Succesfully uploaded image \(imageEntity.file)")
-            product = product.copyWith(logos: [imageEntity])
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init(title: "Uplodaing product logo failed.")

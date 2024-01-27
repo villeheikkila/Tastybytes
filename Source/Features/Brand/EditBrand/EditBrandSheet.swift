@@ -106,8 +106,9 @@ struct EditBrandSheet: View {
 
     func uploadLogo(data: Data) async {
         switch await repository.brand.uploadLogo(brandId: brand.id, data: data) {
-        case let .success(fileName):
-            logger.info("Succesfully uploaded logo \(fileName)")
+        case let .success(imageEntity):
+            brand = brand.copyWith(logos: brand.logos + [imageEntity])
+            logger.info("Succesfully uploaded logo \(imageEntity.file)")
             await onUpdate()
         case let .failure(error):
             guard !error.isCancelled else { return }

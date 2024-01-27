@@ -4,6 +4,7 @@ import Supabase
 
 struct SupabaseBrandRepository: BrandRepository {
     let client: SupabaseClient
+    let imageEntityRepository: ImageEntityRepository
 
     func getById(id: Int) async -> Result<Brand.JoinedSubBrandsProducts, Error> {
         do {
@@ -202,7 +203,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    func uploadLogo(brandId: Int, data: Data) async -> Result<String, Error> {
+    func uploadLogo(brandId: Int, data: Data) async -> Result<ImageEntity, Error> {
         do {
             let fileName = "\(brandId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
             let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
@@ -212,7 +213,7 @@ struct SupabaseBrandRepository: BrandRepository {
                 .from(.brandLogos)
                 .upload(path: fileName, file: data, options: fileOptions)
 
-            return .success(fileName)
+            return await imageEntityRepository.getByFileName(from: .brandLogos, fileName: fileName)
         } catch {
             return .failure(error)
         }

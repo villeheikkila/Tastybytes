@@ -28,6 +28,16 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
         case joinedAt = "joined_at"
         case avatars = "profile_avatars"
     }
+
+    public func copyWith(preferredName: String? = nil, isPrivate: Bool? = nil, joinedAt: Date? = nil, avatars: [ImageEntity]? = nil) -> Self {
+        .init(
+            id: id,
+            preferredName: preferredName ?? self.preferredName,
+            isPrivate: isPrivate ?? self.isPrivate,
+            joinedAt: joinedAt ?? self.joinedAt,
+            avatars: avatars ?? self.avatars
+        )
+    }
 }
 
 public extension Profile {
@@ -85,8 +95,8 @@ public extension Profile {
             roles: [Role]? = nil,
             settings: ProfileSettings? = nil,
             avatars: [ImageEntity]? = nil
-        ) -> Profile.Extended {
-            Profile.Extended(
+        ) -> Self {
+            .init(
                 id: id,
                 username: username ?? self.username,
                 joinedAt: joinedAt ?? self.joinedAt,

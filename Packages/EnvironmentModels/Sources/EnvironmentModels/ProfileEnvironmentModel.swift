@@ -232,14 +232,12 @@ public final class ProfileEnvironmentModel: ObservableObject {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("uplodaing avatar failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Uploading avatar failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     public func updateProfile(update: Profile.UpdateRequest) async {
-        switch await repository.profile.update(
-            update: update
-        ) {
+        switch await repository.profile.update(update: update) {
         case .success:
             extendedProfile = extendedProfile?.copyWith(
                 username: update.username,
@@ -254,13 +252,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     }
 
     public func onboardingUpdate() async {
-        let update = Profile.UpdateRequest(
-            isOnboarded: true
-        )
-
-        switch await repository.profile.update(
-            update: update
-        ) {
+        switch await repository.profile.update(update: .init(isOnboarded: true)) {
         case .success:
             extendedProfile = extendedProfile?.copyWith(isOnboarded: true)
         case let .failure(error):
@@ -271,10 +263,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     }
 
     public func updatePrivacySettings() async {
-        let update = Profile.UpdateRequest(isPrivate: isPrivateProfile)
-        switch await repository.profile.update(
-            update: update
-        ) {
+        switch await repository.profile.update(update: .init(isPrivate: isPrivateProfile)) {
         case .success:
             logger.log("updated privacy settings")
         case let .failure(error):
@@ -285,12 +274,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     }
 
     public func updateDisplaySettings() async {
-        let update = Profile.UpdateRequest(
-            showFullName: showFullName
-        )
-        switch await repository.profile.update(
-            update: update
-        ) {
+        switch await repository.profile.update(update: .init(showFullName: showFullName)) {
         case .success:
             logger.log("updated display settings")
         case let .failure(error):
