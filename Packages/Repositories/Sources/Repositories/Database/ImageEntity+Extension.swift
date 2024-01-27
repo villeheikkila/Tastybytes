@@ -9,7 +9,7 @@ extension ImageEntity {
             if let tableName {
                 return queryWithTableName(tableName.rawValue, saved, true)
             } else {
-                return queryWithTableName("", saved, false)
+                return saved
             }
         }
     }

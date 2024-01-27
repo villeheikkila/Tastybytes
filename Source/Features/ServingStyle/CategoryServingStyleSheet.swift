@@ -102,10 +102,7 @@ struct CategoryServingStyleSheet: View {
     }
 
     func deleteServingStyle(_ servingStyle: ServingStyle) async {
-        switch await repository.category.deleteServingStyle(
-            categoryId: category.id,
-            servingStyleId: servingStyle.id
-        ) {
+        switch await repository.category.deleteServingStyle(categoryId: category.id, servingStyleId: servingStyle.id) {
         case .success:
             withAnimation {
                 servingStyles.remove(object: servingStyle)

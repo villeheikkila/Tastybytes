@@ -225,14 +225,15 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<ImageEntity, Error> {
         do {
             let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
+            let path = "\(userId.uuidString.lowercased())/\(fileName)"
             let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
 
             _ = try await client
                 .storage
                 .from(.checkIns)
-                .upload(path: "\(userId.uuidString.lowercased())/\(fileName)", file: data, options: fileOptions)
+                .upload(path: path, file: data, options: fileOptions)
 
-            return await imageEntityRepository.getByFileName(from: .checkInImages, fileName: fileName)
+            return await imageEntityRepository.getByFileName(from: .checkInImages, fileName: path)
         } catch {
             return .failure(error)
         }

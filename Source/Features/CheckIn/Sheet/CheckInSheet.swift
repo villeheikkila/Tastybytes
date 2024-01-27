@@ -50,6 +50,7 @@ struct CheckInSheet: View {
     @State private var finalImage: UIImage?
     @State private var showImageCropper = false
     @State private var sheet: Sheet?
+    @State private var images: [ImageEntity]?
 
     let onCreation: ((_ checkIn: CheckIn) async -> Void)?
     let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
@@ -58,7 +59,7 @@ struct CheckInSheet: View {
     let editCheckIn: CheckIn?
 
     var showImageSection: Bool {
-        if let images = editCheckIn?.images {
+        if let images {
             return !images.isEmpty
         }
         return finalImage != nil
@@ -82,6 +83,7 @@ struct CheckInSheet: View {
         self.onUpdate = onUpdate
         action = .update
         editCheckIn = checkIn
+        _images = State(initialValue: checkIn.images)
         _review = State(wrappedValue: checkIn.review.orEmpty)
         _rating = State(wrappedValue: checkIn.rating ?? 0)
         _manufacturer = State(wrappedValue: checkIn.variant?.manufacturer)
@@ -168,24 +170,36 @@ struct CheckInSheet: View {
             if showImageSection {
                 HStack {
                     Spacer()
-                    if let finalImage {
-                        Image(uiImage: finalImage)
+                    if let image = finalImage {
+                        Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(height: 150, alignment: .top)
                             .shadow(radius: 4)
                             .accessibilityLabel("Image of the check-in")
-                    } else if let imageUrl = editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                        RemoteImage(url: imageUrl) { state in
-                            if let image = state.image {
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(height: 150, alignment: .top)
-                                    .shadow(radius: 4)
-                                    .accessibilityLabel("Image of the check-in")
-                            } else {
-                                EmptyView()
+                            .contextMenu {
+                                ProgressButton("Delete") {
+                                    finalImage = nil
+                                }
+                            }
+                    }
+                    
+                    if let images {
+                        ForEach(images) { image in
+                            RemoteImage(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
+                                if let image = state.image {
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: 150, alignment: .top)
+                                        .shadow(radius: 4)
+                                        .accessibilityLabel("Image of the check-in")
+                                }
+                            }
+                            .contextMenu {
+                                ProgressButton("Delete") {
+                                   await deleteImage(entity: image)
+                                }
                             }
                         }
                     }
@@ -335,7 +349,7 @@ struct CheckInSheet: View {
             if let finalImage {
                 imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: finalImage)
             }
-            await onUpdate(updatedCheckIn)
+            await onUpdate(updatedCheckIn.copyWith(images: images))
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -359,7 +373,7 @@ struct CheckInSheet: View {
             manufacturer: manufacturer,
             flavors: pickedFlavors,
             rating: rating,
-            location: location,
+            location: nil,
             purchaseLocation: purchaseLocation,
             blurHash: blurHash,
             checkInAt: isLegacyCheckIn ? nil : checkInAt
@@ -375,6 +389,19 @@ struct CheckInSheet: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+    
+    func deleteImage(entity: ImageEntity) async {
+        switch await repository.imageEntity.delete(from: .checkInImages, entity: entity) {
+        case .success:
+            withAnimation {
+                images?.remove(object: entity)
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

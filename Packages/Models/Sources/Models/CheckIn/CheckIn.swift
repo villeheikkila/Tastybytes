@@ -71,8 +71,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         location: Location? = nil,
         purchaseLocation: Location? = nil,
         images: [ImageEntity]? = nil
-    ) -> CheckIn {
-        CheckIn(
+    ) -> Self {
+        .init(
             id: id,
             rating: rating ?? self.rating,
             review: review ?? self.review,
