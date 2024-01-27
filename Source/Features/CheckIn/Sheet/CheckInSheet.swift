@@ -183,7 +183,7 @@ struct CheckInSheet: View {
                                 }
                             }
                     }
-                    
+
                     if let images {
                         ForEach(images) { image in
                             RemoteImage(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
@@ -198,7 +198,7 @@ struct CheckInSheet: View {
                             }
                             .contextMenu {
                                 ProgressButton("Delete") {
-                                   await deleteImage(entity: image)
+                                    await deleteImage(entity: image)
                                 }
                             }
                         }
@@ -391,7 +391,7 @@ struct CheckInSheet: View {
             logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
         }
     }
-    
+
     func deleteImage(entity: ImageEntity) async {
         switch await repository.imageEntity.delete(from: .checkInImages, entity: entity) {
         case .success:

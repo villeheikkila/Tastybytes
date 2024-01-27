@@ -2,7 +2,7 @@ import Models
 
 public protocol ImageEntityRepository: Sendable {
     func getByFileName(from: ImageCategory, fileName: String) async -> Result<ImageEntity, Error>
-    func delete(from: ImageCategory, entity: ImageEntity) async -> Result<Void, Error> 
+    func delete(from: ImageCategory, entity: ImageEntity) async -> Result<Void, Error>
 }
 
 public enum ImageCategory: String, Sendable {

@@ -21,7 +21,7 @@ struct SupabaseImageEntityRepository: ImageEntityRepository {
             return .failure(error)
         }
     }
-    
+
     func delete(from: ImageCategory, entity: ImageEntity) async -> Result<Void, Error> {
         do {
             try await client

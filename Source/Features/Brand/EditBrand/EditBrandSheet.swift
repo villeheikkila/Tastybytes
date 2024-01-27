@@ -41,31 +41,31 @@ struct EditBrandSheet: View {
             Section {
                 ForEach(brand.logos) { logo in
                     RemoteImage(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
-                            if let image = state.image {
-                                image.resizable()
-                            } else {
-                                ProgressView()
-                            }
+                        if let image = state.image {
+                            image.resizable()
+                        } else {
+                            ProgressView()
                         }
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 120, height: 120)
-                        .accessibility(hidden: true)
+                    }
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 120, height: 120)
+                    .accessibility(hidden: true)
                 }
-                
+
             } header: {
                 HStack {
-                Text("Logos")
-                Spacer()
+                    Text("Logos")
+                    Spacer()
                     if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
-                            PhotosPicker(
-                                selection: $selectedLogo,
-                                matching: .images,
-                                photoLibrary: .shared()
-                            ) {
-                                Label("Add", systemImage: "plus")
-                                    .labelStyle(.iconOnly)
-                            }
+                        PhotosPicker(
+                            selection: $selectedLogo,
+                            matching: .images,
+                            photoLibrary: .shared()
+                        ) {
+                            Label("Add", systemImage: "plus")
+                                .labelStyle(.iconOnly)
                         }
+                    }
                 }
             }
 

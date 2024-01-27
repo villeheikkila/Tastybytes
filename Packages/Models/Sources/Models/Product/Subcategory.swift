@@ -29,7 +29,7 @@ public struct Subcategory: Identifiable, Codable, Hashable, Sendable, Subcategor
 
     public func copyWith(name: String? = nil, isVerified: Bool? = nil) -> Self {
         .init(
-            id: self.id,
+            id: id,
             name: name ?? self.name,
             isVerified: isVerified ?? self.isVerified
         )
