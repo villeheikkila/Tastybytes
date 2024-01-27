@@ -215,8 +215,8 @@ public final class AppEnvironmentModel {
 
     public func addCategory(name: String) async {
         switch await repository.category.insert(newCategory: Models.Category.NewRequest(name: name)) {
-        case .success:
-            await loadCategories()
+        case let .success(category):
+            categories.append(category)
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

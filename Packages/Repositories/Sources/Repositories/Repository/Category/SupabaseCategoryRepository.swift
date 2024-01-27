@@ -22,15 +22,18 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
-    func insert(newCategory: Category.NewRequest) async -> Result<Void, Error> {
+    func insert(newCategory: Category.NewRequest) async -> Result<Models.Category.JoinedSubcategoriesServingStyles, Error> {
         do {
-            try await client
+            let result: Models.Category.JoinedSubcategoriesServingStyles = try await client
                 .database
                 .from(.categories)
                 .insert(newCategory, returning: .representation)
+                .select(Models.Category.getQuery(.joinedSubcaategoriesServingStyles(false)))
+                .single()
                 .execute()
+                .value
 
-            return .success(())
+            return .success(result)
         } catch {
             return .failure(error)
         }

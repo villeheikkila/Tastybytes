@@ -75,7 +75,7 @@ struct ReactionsView: View {
             case let .failure(error):
                 guard !error.isCancelled else { return }
                 alertError = .init()
-                logger.error("removing check-in reaction \(reaction.id) failed. Error: \(error) (\(#file):\(#line))")
+                logger.error("Removing check-in reaction \(reaction.id) failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
             switch await repository.checkInReactions
@@ -88,10 +88,7 @@ struct ReactionsView: View {
             case let .failure(error):
                 guard !error.isCancelled else { return }
                 alertError = .init()
-                logger
-                    .error(
-                        "adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed: \(error.localizedDescription)"
-                    )
+                logger.error("Adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed: \(error.localizedDescription)")
             }
         }
         isLoading = false

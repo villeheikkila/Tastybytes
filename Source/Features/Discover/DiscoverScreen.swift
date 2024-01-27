@@ -318,7 +318,7 @@ struct DiscoverScreen: View {
                 case let .failure(error):
                     guard !error.isCancelled else { return }
                     alertError = .init()
-                    logger.error("searching locations failed. Error: \(error) (\(#file):\(#line))")
+                    logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
         }
