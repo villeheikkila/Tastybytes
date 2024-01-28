@@ -58,7 +58,6 @@ enum Sheet: Identifiable, Equatable {
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
     case categoryPickerSheet(category: Binding<Int?>)
     case mergeLocationSheet(location: Location)
-    case productLogo(product: Product.Joined, onUpload: () async -> Void)
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
@@ -137,8 +136,6 @@ enum Sheet: Identifiable, Equatable {
             SubscriptionSheet()
         case let .mergeLocationSheet(location: location):
             MergeLocationSheet(location: location)
-        case let .productLogo(product, onUpload):
-            ProductLogoSheet(product: product, onUpload: onUpload)
         case let .sendEmail(email, callback):
             SendEmailView(email: email, callback: callback)
         case let .editComment(checkInComment, checkInComments):
@@ -252,8 +249,6 @@ enum Sheet: Identifiable, Equatable {
             "support"
         case let .mergeLocationSheet(location):
             "location_management_\(location.hashValue)"
-        case let .productLogo(product, _):
-            "product_logo_\(product.hashValue)"
         case .sendEmail:
             "send_email"
         case let .editComment(checkInComment, _):

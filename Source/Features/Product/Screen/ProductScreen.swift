@@ -175,12 +175,6 @@ struct ProductScreen: View {
                         Button("Barcodes", systemImage: "barcode", action: { sheet = .barcodeManagement(product: product) })
                     }
 
-                    if profileEnvironmentModel.hasPermission(.canAddProductLogo) {
-                        Button("Edit Logo", systemImage: "photo", action: { sheet = .productLogo(product: product, onUpload: {
-                            refreshId += 1
-                        }) })
-                    }
-
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                         Button(
                             "Delete",

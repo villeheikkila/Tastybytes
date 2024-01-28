@@ -38,22 +38,16 @@ struct EditBrandSheet: View {
 
     var body: some View {
         Form {
-            EditLogoSection(logos: brand.logos, onUpload: { imageData in
-                await uploadLogo(data: imageData)
-            }, onDelete: { imageEntity in
-                await deleteLogo(entity: imageEntity)
-            })
-
-            Section("Brand name") {
+            Section("Name") {
                 TextField("Name", text: $name)
                 ProgressButton("Edit") {
                     await editBrand {
                         await onUpdate()
                     }
                 }.disabled(!name.isValidLength(.normal) || brand.name == name)
-            }
-
-            Section("Brand Owner") {
+            }.headerProminence(.increased)
+            
+            Section("Owner") {
                 RouterLink(brandOwner.name, sheet: .companySearch(onSelect: { company in
                     brandOwner = company
                 }))
@@ -62,7 +56,13 @@ struct EditBrandSheet: View {
                         await onUpdate()
                     }
                 }.disabled(brandOwner.id == initialBrandOwner.id)
-            }
+            }.headerProminence(.increased)
+            
+            EditLogoSection(logos: brand.logos, onUpload: { imageData in
+                await uploadLogo(data: imageData)
+            }, onDelete: { imageEntity in
+                await deleteLogo(entity: imageEntity)
+            })
         }
         .navigationTitle("Edit Brand")
         .toolbar {

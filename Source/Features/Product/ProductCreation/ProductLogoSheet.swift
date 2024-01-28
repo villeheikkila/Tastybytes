@@ -15,7 +15,6 @@ struct ProductLogoSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var alertError: AlertError?
     @State private var selectedLogo: PhotosPickerItem?
-    @State private var logoFile: String?
     @State private var product: Product.Joined
 
     let onUpload: () async -> Void

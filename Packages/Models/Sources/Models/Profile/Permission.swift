@@ -43,4 +43,7 @@ public enum PermissionName: String, Codable, Equatable, Sendable {
     case canMergeLocations = "can_merge_locations"
     case canDeleteComments = "can_delete_comments"
     case canDeleteCheckInsAsModerator = "can_delete_check_ins_as_moderator"
+    case canDeleteCompanyLogo = "can_delete_company_logo"
+    case canDeleteBrandLogo = "can_delete_brand_logo"
+    case canDeleteProductLogo = "can_delete_product_logo"
 }

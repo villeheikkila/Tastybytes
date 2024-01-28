@@ -30,12 +30,6 @@ struct EditCompanySheet: View {
 
     var body: some View {
         Form {
-            EditLogoSection(logos: company.logos, onUpload: { imageData in
-                await uploadLogo(data: imageData)
-            }, onDelete: { imageEntity in
-                await deleteLogo(entity: imageEntity)
-            })
-
             Section(mode.nameSectionHeader) {
                 TextField("Name", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
@@ -46,6 +40,13 @@ struct EditCompanySheet: View {
                 })
                 .disabled(!newCompanyName.isValidLength(.normal))
             }
+            .headerProminence(.increased)
+            
+            EditLogoSection(logos: company.logos, onUpload: { imageData in
+                await uploadLogo(data: imageData)
+            }, onDelete: { imageEntity in
+                await deleteLogo(entity: imageEntity)
+            })
         }
         .alertError($alertError)
         .navigationTitle(mode.navigationTitle)
