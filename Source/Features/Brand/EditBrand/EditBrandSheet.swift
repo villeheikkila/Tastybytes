@@ -38,36 +38,11 @@ struct EditBrandSheet: View {
 
     var body: some View {
         Form {
-            Section {
-                ForEach(brand.logos) { logo in
-                    RemoteImage(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
-                        if let image = state.image {
-                            image.resizable()
-                        } else {
-                            ProgressView()
-                        }
-                    }
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 120, height: 120)
-                    .accessibility(hidden: true)
-                }
-
-            } header: {
-                HStack {
-                    Text("Logos")
-                    Spacer()
-                    if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
-                        PhotosPicker(
-                            selection: $selectedLogo,
-                            matching: .images,
-                            photoLibrary: .shared()
-                        ) {
-                            Label("Add", systemImage: "plus")
-                                .labelStyle(.iconOnly)
-                        }
-                    }
-                }
-            }
+            EditLogoSection(logos: brand.logos, onUpload: { imageData in
+                await uploadLogo(data: imageData)
+            }, onDelete: { imageEntity in
+                await deleteLogo(entity: imageEntity)
+            })
 
             Section("Brand name") {
                 TextField("Name", text: $name)
@@ -124,13 +99,86 @@ struct EditBrandSheet: View {
     func uploadLogo(data: Data) async {
         switch await repository.brand.uploadLogo(brandId: brand.id, data: data) {
         case let .success(imageEntity):
-            brand = brand.copyWith(logos: brand.logos + [imageEntity])
+            withAnimation {
+                brand = brand.copyWith(logos: brand.logos + [imageEntity])
+            }
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
             await onUpdate()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Uploading of a company logo failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Uploading of a brand logo failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func deleteLogo(entity: ImageEntity) async {
+        switch await repository.imageEntity.delete(from: .brandLogos, entity: entity) {
+        case .success:
+            withAnimation {
+                brand = brand.copyWith(logos: brand.logos.removing(entity))
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+@MainActor
+struct EditLogoSection: View {
+    private let logger = Logger(category: "EditLogoSection")
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @State private var selectedLogo: PhotosPickerItem?
+
+    let logos: [ImageEntity]
+    let onUpload: (Data) async -> Void
+    let onDelete: (ImageEntity) async -> Void
+
+    var body: some View {
+        Section {
+            ForEach(logos) { logo in
+                RemoteImage(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
+                    if let image = state.image {
+                        image.resizable()
+                    } else {
+                        ProgressView()
+                    }
+                }
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 120, height: 120)
+                .accessibility(hidden: true)
+                .contextMenu {
+                    ProgressButton("Delete") {
+                        await onDelete(logo)
+                    }
+                }
+            }
+        } header: {
+            HStack {
+                Text("Logos")
+                Spacer()
+                if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
+                    PhotosPicker(
+                        selection: $selectedLogo,
+                        matching: .images,
+                        photoLibrary: .shared()
+                    ) {
+                        Label("Add", systemImage: "plus")
+                            .labelStyle(.iconOnly)
+                    }
+                }
+            }
+        }
+        .headerProminence(.increased)
+        .task(id: selectedLogo) {
+            guard let selectedLogo else { return }
+            guard let data = await selectedLogo.getJPEG() else {
+                logger.error("Failed to convert image to JPEG")
+                return
+            }
+            await onUpload(data)
         }
     }
 }

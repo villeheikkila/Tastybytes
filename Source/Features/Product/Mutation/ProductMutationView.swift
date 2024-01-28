@@ -58,6 +58,7 @@ struct ProductMutationView: View {
     @State private var description: String = ""
     @State private var isDiscontinued = false
     @State private var barcode: Barcode?
+    @State private var logos: [ImageEntity] = []
 
     let mode: Mode
     let isSheet: Bool
@@ -95,6 +96,13 @@ struct ProductMutationView: View {
             categorySection
             brandSection
             productSection
+            if case .edit = mode {
+                EditLogoSection(logos: logos, onUpload: { imageData in
+                    await uploadData(data: imageData)
+                }, onDelete: { imageEntity in
+                    await deleteLogo(entity: imageEntity)
+                })
+            }
         }
         .navigationTitle(mode.navigationTitle)
         .foregroundColor(.primary)
@@ -261,9 +269,7 @@ struct ProductMutationView: View {
     func initialize() async {
         switch mode {
         case let .edit(initialProduct), let .editSuggestion(initialProduct):
-            switch await repository.brand
-                .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
-            {
+            switch await repository.brand.getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id) {
             case let .success(brandsWithSubBrands):
                 category = initialProduct.category.id
                 subcategories = Set(initialProduct.subcategories.map(\.id))
@@ -283,6 +289,7 @@ struct ProductMutationView: View {
                 name = initialProduct.name
                 description = initialProduct.description.orEmpty
                 isDiscontinued = initialProduct.isDiscontinued
+                logos = initialProduct.logos
                 status = .initialized
             case let .failure(error):
                 guard !error.isCancelled else { return }
@@ -341,6 +348,7 @@ struct ProductMutationView: View {
             if isSheet {
                 dismiss()
             }
+
             router.navigate(screen: .product(newProduct), removeLast: true)
             await onSuccess(newProduct)
         case let .failure(error):
@@ -408,6 +416,30 @@ struct ProductMutationView: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func deleteLogo(entity: ImageEntity) async {
+        switch await repository.imageEntity.delete(from: .productLogos, entity: entity) {
+        case .success:
+            withAnimation {
+                logos.remove(object: entity)
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func uploadData(data: Data) async {
+        guard case let .edit(product) = mode else { return }
+        switch await repository.product.uploadLogo(productId: product.id, data: data) {
+        case let .success(imageEntity):
+            logos.append(imageEntity)
+            logger.info("Succesfully uploaded logo \(imageEntity.file)")
+        case let .failure(error):
+            logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

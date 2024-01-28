@@ -155,7 +155,6 @@ struct CheckInSheet: View {
         }
     }
 
-    @MainActor
     @ViewBuilder private var topSection: some View {
         Section {
             ProductItemView(product: product)

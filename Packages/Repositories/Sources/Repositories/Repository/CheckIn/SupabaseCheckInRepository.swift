@@ -228,7 +228,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .storage
                 .from(.checkIns)
                 .upload(path: path, file: data, options: fileOptions)
-            
+
             if let blurHash {
                 return await updateImageBlurHash(file: path, blurHash: blurHash)
             } else {
@@ -238,7 +238,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             return .failure(error)
         }
     }
-    
+
     func updateImageBlurHash(file: String, blurHash: String) async -> Result<ImageEntity, Error> {
         do {
             let response: ImageEntity = try await client
@@ -248,7 +248,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .single()
                 .execute()
                 .value
-            
+
             return .success(response)
         } catch {
             return .failure(error)
@@ -259,7 +259,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
 struct UpdateCheckInImageBlurHashParams: Codable {
     let file: String
     let blurHash: String
-    
+
     enum CodingKeys: String, CodingKey {
         case file = "p_file"
         case blurHash = "p_blur_hash"

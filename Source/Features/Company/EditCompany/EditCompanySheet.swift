@@ -30,7 +30,12 @@ struct EditCompanySheet: View {
 
     var body: some View {
         Form {
-            companyPhotoSection
+            EditLogoSection(logos: company.logos, onUpload: { imageData in
+                await uploadLogo(data: imageData)
+            }, onDelete: { imageEntity in
+                await deleteLogo(entity: imageEntity)
+            })
+
             Section(mode.nameSectionHeader) {
                 TextField("Name", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
@@ -119,6 +124,19 @@ struct EditCompanySheet: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Uploading company logo failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func deleteLogo(entity: ImageEntity) async {
+        switch await repository.imageEntity.delete(from: .companyLogos, entity: entity) {
+        case .success:
+            withAnimation {
+                company = company.copyWith(logos: company.logos.removing(entity))
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

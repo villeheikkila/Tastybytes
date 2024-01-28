@@ -16,8 +16,8 @@ struct ProductLogoSheet: View {
     @State private var alertError: AlertError?
     @State private var selectedLogo: PhotosPickerItem?
     @State private var logoFile: String?
-
     @State private var product: Product.Joined
+
     let onUpload: () async -> Void
 
     init(product: Product.Joined, onUpload: @escaping () async -> Void) {
