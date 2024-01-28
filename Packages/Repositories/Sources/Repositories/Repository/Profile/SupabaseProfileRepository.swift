@@ -184,13 +184,14 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
             let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
+            let path = "\(userId.uuidString.lowercased())/\(fileName)"
 
             _ = try await client
                 .storage
                 .from(.avatars)
-                .upload(path: "\(userId.uuidString.lowercased())/\(fileName)", file: data, options: fileOptions)
+                .upload(path: path, file: data, options: fileOptions)
 
-            return await imageEntityRepository.getByFileName(from: .avatars, fileName: fileName)
+            return await imageEntityRepository.getByFileName(from: .avatars, fileName: path)
         } catch {
             return .failure(error)
         }

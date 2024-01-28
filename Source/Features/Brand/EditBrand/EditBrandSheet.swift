@@ -46,7 +46,7 @@ struct EditBrandSheet: View {
                     }
                 }.disabled(!name.isValidLength(.normal) || brand.name == name)
             }.headerProminence(.increased)
-            
+
             Section("Owner") {
                 RouterLink(brandOwner.name, sheet: .companySearch(onSelect: { company in
                     brandOwner = company
@@ -57,7 +57,7 @@ struct EditBrandSheet: View {
                     }
                 }.disabled(brandOwner.id == initialBrandOwner.id)
             }.headerProminence(.increased)
-            
+
             EditLogoSection(logos: brand.logos, onUpload: { imageData in
                 await uploadLogo(data: imageData)
             }, onDelete: { imageEntity in

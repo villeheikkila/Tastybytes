@@ -41,7 +41,7 @@ struct EditCompanySheet: View {
                 .disabled(!newCompanyName.isValidLength(.normal))
             }
             .headerProminence(.increased)
-            
+
             EditLogoSection(logos: company.logos, onUpload: { imageData in
                 await uploadLogo(data: imageData)
             }, onDelete: { imageEntity in

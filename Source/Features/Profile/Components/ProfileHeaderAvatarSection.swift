@@ -30,6 +30,13 @@ struct ProfileHeaderAvatarSection: View {
             Spacer()
             VStack(alignment: .center) {
                 Avatar(profile: profile, size: 90)
+                    .contextMenu {
+                        if let imageEntity = profile.avatars.first {
+                            ProgressButton("Delete avatar", role: .destructive) {
+                                await deleteAvatar(entity: imageEntity)
+                            }
+                        }
+                    }
                     .overlay(alignment: .bottomTrailing) {
                         if isCurrentUser {
                             PhotosPicker(selection: $selectedItem,
@@ -72,6 +79,18 @@ struct ProfileHeaderAvatarSection: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Uploading of a avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func deleteAvatar(entity: ImageEntity) async {
+        switch await repository.imageEntity.delete(from: .avatars, entity: entity) {
+        case .success:
+            withAnimation {
+                profile = profile.copyWith(avatars: profile.avatars.removing(entity))
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

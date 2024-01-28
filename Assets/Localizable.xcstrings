@@ -543,6 +543,7 @@
       }
     },
     "Brand name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1524,6 +1525,9 @@
           }
         }
       }
+    },
+    "Owner" : {
+
     },
     "Photo Gallery" : {
 
