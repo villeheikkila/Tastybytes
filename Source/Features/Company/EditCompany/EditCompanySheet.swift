@@ -47,7 +47,7 @@ struct EditCompanySheet: View {
             }, onDelete: { imageEntity in
                 await deleteLogo(entity: imageEntity)
             })
-            
+
             if profileEnvironmentModel.hasRole(.admin) {
                 Section("Info") {
                     LabeledContent("ID", value: "\(company.id)")

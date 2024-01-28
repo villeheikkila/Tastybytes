@@ -73,7 +73,7 @@ struct EditSubBrandSheet: View {
                     }
                 }
             }
-            
+
             if profileEnvironmentModel.hasRole(.admin) {
                 Section("Info") {
                     LabeledContent("ID", value: "\(subBrand.id)")

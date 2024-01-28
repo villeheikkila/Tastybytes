@@ -63,7 +63,7 @@ struct EditBrandSheet: View {
             }, onDelete: { imageEntity in
                 await deleteLogo(entity: imageEntity)
             })
-            
+
             if profileEnvironmentModel.hasRole(.admin) {
                 Section("Info") {
                     LabeledContent("ID", value: "\(brand.id)")

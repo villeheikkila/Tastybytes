@@ -2,6 +2,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 public struct BrandShareLinkView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let brand: Brand.JoinedSubBrandsProductsCompany
@@ -10,11 +11,15 @@ public struct BrandShareLinkView: View {
         self.brand = brand
     }
 
+    private var link: URL {
+        NavigatablePath.brand(id: brand.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl)
+    }
+
     private var title: String {
         "\(brand.brandOwner.name): \(brand.name)"
     }
 
     public var body: some View {
-        ShareLink("Share", item: NavigatablePath.brand(id: brand.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl), preview: SharePreview(title))
+        ShareLink(item: link, subject: Text("Brand"), message: Text(title))
     }
 }

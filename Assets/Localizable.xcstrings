@@ -763,6 +763,9 @@
         }
       }
     },
+    "Company" : {
+
+    },
     "Connect with others by sharing your name tag" : {
       "localizations" : {
         "en" : {
@@ -1205,6 +1208,9 @@
           }
         }
       }
+    },
+    "Location" : {
+
     },
     "Location & Friends" : {
       "localizations" : {
@@ -2002,9 +2008,6 @@
           }
         }
       }
-    },
-    "Share" : {
-
     },
     "Share your profile" : {
       "localizations" : {
