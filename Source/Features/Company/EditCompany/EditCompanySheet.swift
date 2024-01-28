@@ -31,7 +31,7 @@ struct EditCompanySheet: View {
     var body: some View {
         Form {
             Section(mode.nameSectionHeader) {
-                TextField("Name", text: $newCompanyName)
+                TextField("Name of the company", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
                     await submit(onSuccess: { @MainActor in
                         dismiss()
@@ -47,6 +47,14 @@ struct EditCompanySheet: View {
             }, onDelete: { imageEntity in
                 await deleteLogo(entity: imageEntity)
             })
+            
+            if profileEnvironmentModel.hasRole(.admin) {
+                Section("Info") {
+                    LabeledContent("ID", value: "\(company.id)")
+                        .textSelection(.enabled)
+                    LabeledContent("Verified", value: "\(company.isVerified)".capitalized)
+                }.headerProminence(.increased)
+            }
         }
         .alertError($alertError)
         .navigationTitle(mode.navigationTitle)
@@ -168,7 +176,7 @@ extension EditCompanySheet {
         var nameSectionHeader: String {
             switch self {
             case .edit:
-                "Company name"
+                "Name"
             case .editSuggestion:
                 "What should the company be called?"
             }

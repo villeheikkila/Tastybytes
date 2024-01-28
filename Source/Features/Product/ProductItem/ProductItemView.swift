@@ -27,6 +27,7 @@ struct ProductItemView: View {
                 HStack {
                     Text(product.getDisplayName(.fullName))
                         .font(.headline)
+                        .textSelection(.enabled)
                     Spacer()
                     if let currentUserCheckIns = product.currentUserCheckIns, currentUserCheckIns > 0,
                        extras.contains(.checkInCheck)
@@ -41,10 +42,12 @@ struct ProductItemView: View {
                 if let description = product.description {
                     Text(description)
                         .font(.caption)
+                        .textSelection(.enabled)
                 }
 
                 Text(product.getDisplayName(.brandOwner))
                     .font(.subheadline)
+                    .textSelection(.enabled)
                     .foregroundColor(.secondary)
                     .if(extras.contains(.companyLink), transform: { view in
                         view.contentShape(Rectangle())

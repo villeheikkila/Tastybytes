@@ -55,7 +55,7 @@ struct EditSubBrandSheet: View {
     var body: some View {
         Form {
             Section("Name") {
-                TextField("Name", text: $newSubBrandName)
+                TextField("Name of the sub-brand", text: $newSubBrandName)
                 ProgressButton("Edit") {
                     await editSubBrand(onSuccess: { @MainActor in
                         await onUpdate()
@@ -72,6 +72,14 @@ struct EditSubBrandSheet: View {
                         }
                     }
                 }
+            }
+            
+            if profileEnvironmentModel.hasRole(.admin) {
+                Section("Info") {
+                    LabeledContent("ID", value: "\(subBrand.id)")
+                        .textSelection(.enabled)
+                    LabeledContent("Verified", value: "\(subBrand.isVerified)".capitalized)
+                }.headerProminence(.increased)
             }
         }
         .navigationTitle("Edit \(subBrand.name.orEmpty)")

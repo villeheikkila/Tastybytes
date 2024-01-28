@@ -22,6 +22,7 @@ struct CheckInCardProduct: View {
                 Text(product.getDisplayName(.fullName))
                     .font(.headline)
                     .foregroundColor(.primary)
+                    .textSelection(.enabled)
 
                 if let description = product.description {
                     Text(description)
@@ -32,6 +33,7 @@ struct CheckInCardProduct: View {
                     Text(product.getDisplayName(.brandOwner))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                        .textSelection(.enabled)
                         .contentShape(Rectangle())
                         .accessibilityAddTraits(.isLink)
                         .onTapGesture {

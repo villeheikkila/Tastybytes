@@ -1140,6 +1140,9 @@
         }
       }
     },
+    "ID" : {
+
+    },
     "Identity" : {
       "localizations" : {
         "en" : {
@@ -1159,6 +1162,9 @@
           }
         }
       }
+    },
+    "Info" : {
+
     },
     "Joined %@" : {
       "localizations" : {
@@ -1326,7 +1332,16 @@
     "Name of subcategory" : {
 
     },
+    "Name of the brand" : {
+
+    },
+    "Name of the company" : {
+
+    },
     "Name of the serving style" : {
+
+    },
+    "Name of the sub-brand" : {
 
     },
     "Name Tag" : {
@@ -2378,6 +2393,9 @@
           }
         }
       }
+    },
+    "Verified" : {
+
     },
     "Wishlist" : {
       "localizations" : {

@@ -86,16 +86,19 @@ public struct CheckInEntityView: View {
 
                 Text(checkIn.product.getDisplayName(.fullName))
                     .font(.headline)
+                    .textSelection(.enabled)
                     .foregroundColor(.primary)
 
                 if let description = checkIn.product.description {
                     Text(description)
                         .font(.caption)
+                        .textSelection(.enabled)
                 }
 
                 HStack {
                     Text(checkIn.product.getDisplayName(.brandOwner))
                         .font(.subheadline)
+                        .textSelection(.enabled)
                         .foregroundColor(.secondary)
                         .contentShape(Rectangle())
                         .accessibilityAddTraits(.isLink)

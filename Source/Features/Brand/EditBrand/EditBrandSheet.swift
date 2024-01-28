@@ -39,7 +39,7 @@ struct EditBrandSheet: View {
     var body: some View {
         Form {
             Section("Name") {
-                TextField("Name", text: $name)
+                TextField("Name of the brand", text: $name)
                 ProgressButton("Edit") {
                     await editBrand {
                         await onUpdate()
@@ -63,6 +63,14 @@ struct EditBrandSheet: View {
             }, onDelete: { imageEntity in
                 await deleteLogo(entity: imageEntity)
             })
+            
+            if profileEnvironmentModel.hasRole(.admin) {
+                Section("Info") {
+                    LabeledContent("ID", value: "\(brand.id)")
+                        .textSelection(.enabled)
+                    LabeledContent("Verified", value: "\(brand.isVerified)".capitalized)
+                }.headerProminence(.increased)
+            }
         }
         .navigationTitle("Edit Brand")
         .toolbar {
