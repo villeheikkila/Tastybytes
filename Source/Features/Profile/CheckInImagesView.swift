@@ -85,7 +85,7 @@ struct CheckInImageCellView: View {
                         .cornerRadius(4)
                         .contentShape(Rectangle())
                 } else {
-                    BlurHashPlaceholder(blurHash: checkInImage.blurHash, height: 100)
+                    BlurHashPlaceholder(blurHash: checkInImage.images.first?.blurHash, height: 100)
                 }
             }
             .frame(width: 100, height: 100)

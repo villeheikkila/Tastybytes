@@ -53,7 +53,7 @@ public struct CheckInEntityView: View {
                             .clipped()
                             .contentShape(Rectangle())
                     } else {
-                        BlurHashPlaceholder(blurHash: checkIn.blurHash, height: 200)
+                        BlurHashPlaceholder(blurHash: checkIn.images.first?.blurHash, height: 200)
                     }
                 }.frame(height: 200)
             }

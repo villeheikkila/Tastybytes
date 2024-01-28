@@ -6,7 +6,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let rating: Double?
     public let review: String?
     public let checkInAt: Date?
-    public let blurHash: BlurHash?
     public let profile: Profile
     public let product: Product.Joined
     public let checkInReactions: [CheckInReaction]
@@ -27,7 +26,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         rating: Double? = nil,
         review: String? = nil,
         checkInAt: Date? = nil,
-        blurHash: BlurHash? = nil,
         profile: Profile,
         product: Product.Joined,
         checkInReactions: [CheckInReaction],
@@ -43,7 +41,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         self.rating = rating
         self.review = review
         self.checkInAt = checkInAt
-        self.blurHash = blurHash
         self.profile = profile
         self.product = product
         self.checkInReactions = checkInReactions
@@ -60,7 +57,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         rating: Double? = nil,
         review: String? = nil,
         checkInAt: Date? = nil,
-        blurHash: BlurHash? = nil,
         profile: Profile? = nil,
         product: Product.Joined? = nil,
         checkInReactions: [CheckInReaction]? = nil,
@@ -77,7 +73,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
             rating: rating ?? self.rating,
             review: review ?? self.review,
             checkInAt: checkInAt ?? self.checkInAt,
-            blurHash: blurHash ?? self.blurHash,
             profile: profile ?? self.profile,
             product: product ?? self.product,
             checkInReactions: checkInReactions ?? self.checkInReactions,
@@ -95,7 +90,6 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         case id
         case rating
         case review
-        case blurHash = "blur_hash"
         case checkInAt = "check_in_at"
         case profile = "profiles"
         case product = "products"
@@ -131,11 +125,9 @@ public extension CheckIn {
         public let id: Int
         public let createdBy: UUID
         public let images: [ImageEntity]
-        public let blurHash: BlurHash?
 
         enum CodingKeys: String, CodingKey {
             case id
-            case blurHash = "blur_hash"
             case images = "check_in_images"
             case createdBy = "created_by"
         }
@@ -157,7 +149,6 @@ public extension CheckIn {
         public let productId: Int
         public let rating: Double?
         public let review: String?
-        public let blurHash: String?
         public let manufacturerId: Int?
         public let servingStyleId: Int?
         public let friendIds: [String]?
@@ -170,7 +161,6 @@ public extension CheckIn {
             case productId = "p_product_id"
             case rating = "p_rating"
             case review = "p_review"
-            case blurHash = "p_blur_hash"
             case manufacturerId = "p_manufacturer_id"
             case servingStyleId = "p_serving_style_id"
             case friendIds = "p_friend_ids"
@@ -190,7 +180,6 @@ public extension CheckIn {
             rating: Double,
             location: Location?,
             purchaseLocation: Location?,
-            blurHash: String?,
             checkInAt: Date?
         ) {
             productId = product.id
@@ -202,7 +191,6 @@ public extension CheckIn {
             self.rating = rating
             locationId = location?.id.uuidString
             purchaseLocationId = purchaseLocation?.id.uuidString
-            self.blurHash = blurHash
             if let checkInAt {
                 self.checkInAt = checkInAt.customFormat(.timestampTz)
             } else {
@@ -216,7 +204,6 @@ public extension CheckIn {
         public let productId: Int
         public let rating: Double?
         public let review: String?
-        public let blurHash: String?
         public let manufacturerId: Int?
         public let servingStyleId: Int?
         public let friendIds: [String]?
@@ -236,7 +223,6 @@ public extension CheckIn {
             case flavorIds = "p_flavor_ids"
             case locationId = "p_location_id"
             case purchaseLocationId = "p_purchase_location_id"
-            case blurHash = "p_blur_hash"
             case checkInAt = "p_check_in_at"
         }
 
@@ -251,7 +237,6 @@ public extension CheckIn {
             rating: Double,
             location: Location?,
             purchaseLocation: Location?,
-            blurHash: String?,
             checkInAt: Date?
         ) {
             checkInId = checkIn.id
@@ -264,7 +249,6 @@ public extension CheckIn {
             self.rating = rating
             locationId = location?.id.uuidString
             purchaseLocationId = purchaseLocation?.id.uuidString
-            self.blurHash = blurHash
             if let checkInAt {
                 self.checkInAt = checkInAt.customFormat(.timestampTz)
             } else {

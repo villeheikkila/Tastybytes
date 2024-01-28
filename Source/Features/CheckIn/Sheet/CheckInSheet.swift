@@ -337,7 +337,6 @@ struct CheckInSheet: View {
             rating: rating,
             location: location,
             purchaseLocation: purchaseLocation,
-            blurHash: blurHash,
             checkInAt: isLegacyCheckIn ? nil : checkInAt
         )
 
@@ -372,7 +371,6 @@ struct CheckInSheet: View {
             rating: rating,
             location: nil,
             purchaseLocation: purchaseLocation,
-            blurHash: blurHash,
             checkInAt: isLegacyCheckIn ? nil : checkInAt
         )
 
