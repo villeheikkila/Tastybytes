@@ -84,9 +84,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func getCheckInImages(by: CheckInImageQueryType, from: Int,
-                          to: Int) async -> Result<[CheckIn.Image], Error>
-    {
+    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async -> Result<[CheckIn.Image], Error> {
         do {
             let response: [CheckIn.Image] = try await client
                 .database
@@ -105,9 +103,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func getByLocation(locationId: UUID, segment: CheckInSegment, from: Int,
-                       to: Int) async -> Result<[CheckIn], Error>
-    {
+    func getByLocation(locationId: UUID, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
                 .database
@@ -222,7 +218,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<ImageEntity, Error> {
+    func uploadImage(id: Int, data: Data, userId: UUID, blurHash: String?) async -> Result<ImageEntity, Error> {
         do {
             let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
             let path = "\(userId.uuidString.lowercased())/\(fileName)"
@@ -232,11 +228,41 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .storage
                 .from(.checkIns)
                 .upload(path: path, file: data, options: fileOptions)
-
-            return await imageEntityRepository.getByFileName(from: .checkInImages, fileName: path)
+            
+            if let blurHash {
+                return await updateImageBlurHash(file: path, blurHash: blurHash)
+            } else {
+                return await imageEntityRepository.getByFileName(from: .checkInImages, fileName: path)
+            }
         } catch {
             return .failure(error)
         }
+    }
+    
+    func updateImageBlurHash(file: String, blurHash: String) async -> Result<ImageEntity, Error> {
+        do {
+            let response: ImageEntity = try await client
+                .database
+                .rpc(fn: .updateCheckInImageBlurHash, params: UpdateCheckInImageBlurHashParams(file: file, blurHash: blurHash))
+                .select(ImageEntity.getQuery(.saved(nil)))
+                .single()
+                .execute()
+                .value
+            
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+}
+
+struct UpdateCheckInImageBlurHashParams: Codable {
+    let file: String
+    let blurHash: String
+    
+    enum CodingKeys: String, CodingKey {
+        case file = "p_file"
+        case blurHash = "p_blur_hash"
     }
 }
 

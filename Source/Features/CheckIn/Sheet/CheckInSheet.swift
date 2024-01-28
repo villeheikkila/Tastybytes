@@ -343,7 +343,7 @@ struct CheckInSheet: View {
         switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
         case let .success(updatedCheckIn):
             if let finalImage {
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: finalImage)
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: finalImage, blurHash: blurHash)
             }
             await onUpdate(updatedCheckIn.copyWith(images: images))
         case let .failure(error):
@@ -369,7 +369,7 @@ struct CheckInSheet: View {
             manufacturer: manufacturer,
             flavors: pickedFlavors,
             rating: rating,
-            location: nil,
+            location: location,
             purchaseLocation: purchaseLocation,
             checkInAt: isLegacyCheckIn ? nil : checkInAt
         )
@@ -377,7 +377,7 @@ struct CheckInSheet: View {
         switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
         case let .success(newCheckIn):
             if let finalImage {
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, image: finalImage)
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, image: finalImage, blurHash: blurHash)
             }
             await onCreation(newCheckIn)
         case let .failure(error):

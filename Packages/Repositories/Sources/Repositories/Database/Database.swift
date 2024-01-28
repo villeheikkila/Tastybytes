@@ -108,5 +108,6 @@ enum Database {
         case verifyProduct = "fnc__verify_product"
         case verifySubBrand = "fnc__verify_sub_brand"
         case verifySubcategory = "fnc__verify_subcategory"
+        case updateCheckInImageBlurHash = "fnc__update_check_in_image_blur_hash"
     }
 }
