@@ -145,10 +145,7 @@ struct CheckInSheet: View {
         }
         .task(id: finalImage, priority: .background) {
             if let finalImage, let hash = finalImage.resize(to: 100)?.blurHash(numberOfComponents: (5, 5)) {
-                blurHash =
-                    CheckIn
-                        .BlurHash(hash: hash, height: finalImage.size.height, width: finalImage.size.width)
-                        .encoded
+                blurHash = BlurHash(hash: hash, height: finalImage.size.height, width: finalImage.size.width).encoded
             }
         }
         .onAppear {

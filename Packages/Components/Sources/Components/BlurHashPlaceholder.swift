@@ -5,10 +5,10 @@ import SwiftUI
 public struct BlurHashPlaceholder: View {
     @State private var image: UIImage?
 
-    let blurHash: CheckIn.BlurHash?
+    let blurHash: BlurHash?
     let height: Double
 
-    public init(blurHash: CheckIn.BlurHash? = nil, height: Double) {
+    public init(blurHash: BlurHash? = nil, height: Double) {
         self.blurHash = blurHash
         self.height = height
     }
