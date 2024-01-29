@@ -25,7 +25,7 @@ struct ProfileStatisticsView: View {
                         HStack {
                             CategoryNameView(category: category, withBorder: false)
                             Spacer()
-                            Text(String(category.count)).font(.caption).bold()
+                            Text(category.count.formatted()).font(.caption).bold()
                         }
                         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 32))
                     })
@@ -100,7 +100,7 @@ struct SubcategoryStatisticsView: View {
                     HStack {
                         Text(subcategory.name)
                         Spacer()
-                        Text(String(subcategory.count))
+                        Text(subcategory.count.formatted())
                     }
                     .font(.caption)
                     .bold()

@@ -20,27 +20,27 @@ struct ContributionsScreen: View {
                     HStack {
                         Text("Products")
                         Spacer()
-                        Text(String(contributions.products))
+                        Text(contributions.products.formatted())
                     }
                     HStack {
                         Text("Companies")
                         Spacer()
-                        Text(String(contributions.companies))
+                        Text(contributions.companies.formatted())
                     }
                     HStack {
                         Text("Brands")
                         Spacer()
-                        Text(String(contributions.brands))
+                        Text(contributions.brands.formatted())
                     }
                     HStack {
                         Text("Sub-brands")
                         Spacer()
-                        Text(String(contributions.subBrands))
+                        Text(contributions.subBrands.formatted())
                     }
                     HStack {
                         Text("Barcodes")
                         Spacer()
-                        Text(String(contributions.barcodes))
+                        Text(contributions.barcodes.formatted())
                     }
                 } footer: {
                     Text("settings.contributions.description")

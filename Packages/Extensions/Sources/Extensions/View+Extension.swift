@@ -145,7 +145,7 @@ public struct DetectOrientation: ViewModifier {
                             (UIDevice.current.orientation == .portrait || UIDevice.current
                                 .orientation == .portraitUpsideDown)
                     }
-            #elseif os(macOS) || os(watchOS) || os(tvOS)
+            #elseif os(watchOS) || os(tvOS)
                 isPortrait = false
             #endif
         }

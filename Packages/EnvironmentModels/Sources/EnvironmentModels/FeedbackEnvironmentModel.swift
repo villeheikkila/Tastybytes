@@ -642,21 +642,6 @@ private struct AnimatedXmark: View {
     }
 }
 
-#if os(macOS)
-    struct ActivityIndicator: NSViewRepresentable {
-        func makeNSView(context: NSViewRepresentableContext<ActivityIndicator>) -> NSProgressIndicator {
-            let nsView = NSProgressIndicator()
-
-            nsView.isIndeterminate = true
-            nsView.style = .spinning
-            nsView.startAnimation(context)
-
-            return nsView
-        }
-
-        func updateNSView(_: NSProgressIndicator, context _: NSViewRepresentableContext<ActivityIndicator>) {}
-    }
-#else
     struct ActivityIndicator: UIViewRepresentable {
         func makeUIView(context _: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
             let progressView = UIActivityIndicatorView(style: .large)
@@ -667,27 +652,7 @@ private struct AnimatedXmark: View {
 
         func updateUIView(_: UIActivityIndicatorView, context _: UIViewRepresentableContext<ActivityIndicator>) {}
     }
-#endif
 
-#if os(macOS)
-    public struct BlurView: NSViewRepresentable {
-        public typealias NSViewType = NSVisualEffectView
-
-        public func makeNSView(context _: Context) -> NSVisualEffectView {
-            let effectView = NSVisualEffectView()
-            effectView.material = .hudWindow
-            effectView.blendingMode = .withinWindow
-            effectView.state = NSVisualEffectView.State.active
-            return effectView
-        }
-
-        public func updateNSView(_ nsView: NSVisualEffectView, context _: Context) {
-            nsView.material = .hudWindow
-            nsView.blendingMode = .withinWindow
-        }
-    }
-
-#else
     public struct BlurView: UIViewRepresentable {
         public typealias UIViewType = UIVisualEffectView
 
@@ -699,8 +664,6 @@ private struct AnimatedXmark: View {
             uiView.effect = UIBlurEffect(style: .systemMaterial)
         }
     }
-
-#endif
 
 private struct BackgroundModifier: ViewModifier {
     var color: Color?

@@ -46,7 +46,7 @@ struct TimePeriodStatisticSegmentView: View {
                 HStack {
                     Text("Check-ins")
                     Spacer()
-                    Text(String(checkIns))
+                    Text(checkIns.formatted())
                 }
                 .font(.caption)
                 .bold()
@@ -55,7 +55,7 @@ struct TimePeriodStatisticSegmentView: View {
                 HStack {
                     Text("New Products")
                     Spacer()
-                    Text(String(newUniqueProducts))
+                    Text(newUniqueProducts.formatted())
                 }
                 .font(.caption)
                 .bold()

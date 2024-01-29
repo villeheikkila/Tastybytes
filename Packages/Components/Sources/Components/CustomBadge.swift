@@ -5,7 +5,7 @@ struct Badge: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            Text(String(badgeCount))
+            Text(badgeCount.formatted())
                 .bold()
                 .font(.caption)
                 .padding(5)

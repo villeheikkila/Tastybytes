@@ -1,10 +1,4 @@
-#if os(macOS)
-    import AppKit
-
-    public typealias UIImage = NSImage
-#else
-    import UIKit
-#endif
+import UIKit
 
 public extension UIImage {
     func resize(to newHeight: Double) -> UIImage? {
