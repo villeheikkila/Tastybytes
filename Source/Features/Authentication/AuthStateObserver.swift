@@ -22,9 +22,6 @@ struct AuthStateObserver<Authenticated: View>: View {
                 EmptyView()
             }
         }
-        .task {
-            await profileEnvironmentModel.listenToAuthState()
-        }
         .onOpenURL { url in
             loadSessionFromUrlTask = Task {
                 await profileEnvironmentModel.loadSessionFromURL(url: url)

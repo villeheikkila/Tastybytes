@@ -45,6 +45,9 @@ struct EnvironmentProvider<Content: View>: View {
                 await appEnvironmentModel.initialize()
             }
             .task {
+                await profileEnvironmentModel.listenToAuthState()
+            }
+            .task {
                 locationEnvironmentModel.updateLocationAuthorizationStatus()
             }
     }

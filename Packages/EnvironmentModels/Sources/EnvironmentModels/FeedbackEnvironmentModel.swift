@@ -642,28 +642,28 @@ private struct AnimatedXmark: View {
     }
 }
 
-    struct ActivityIndicator: UIViewRepresentable {
-        func makeUIView(context _: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
-            let progressView = UIActivityIndicatorView(style: .large)
-            progressView.startAnimating()
+struct ActivityIndicator: UIViewRepresentable {
+    func makeUIView(context _: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
+        let progressView = UIActivityIndicatorView(style: .large)
+        progressView.startAnimating()
 
-            return progressView
-        }
-
-        func updateUIView(_: UIActivityIndicatorView, context _: UIViewRepresentableContext<ActivityIndicator>) {}
+        return progressView
     }
 
-    public struct BlurView: UIViewRepresentable {
-        public typealias UIViewType = UIVisualEffectView
+    func updateUIView(_: UIActivityIndicatorView, context _: UIViewRepresentableContext<ActivityIndicator>) {}
+}
 
-        public func makeUIView(context _: Context) -> UIVisualEffectView {
-            UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
-        }
+public struct BlurView: UIViewRepresentable {
+    public typealias UIViewType = UIVisualEffectView
 
-        public func updateUIView(_ uiView: UIVisualEffectView, context _: Context) {
-            uiView.effect = UIBlurEffect(style: .systemMaterial)
-        }
+    public func makeUIView(context _: Context) -> UIVisualEffectView {
+        UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
     }
+
+    public func updateUIView(_ uiView: UIVisualEffectView, context _: Context) {
+        uiView.effect = UIBlurEffect(style: .systemMaterial)
+    }
+}
 
 private struct BackgroundModifier: ViewModifier {
     var color: Color?
