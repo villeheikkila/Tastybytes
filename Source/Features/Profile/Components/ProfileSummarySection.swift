@@ -13,13 +13,13 @@ struct ProfileSummarySection: View {
     var body: some View {
         HStack {
             Spacer()
-            CheckInStatisticView(title: "Unrated", subtitle: String(profileSummary?.unrated ?? 0)) {
+            CheckInStatisticView(title: "Unrated", subtitle: profileSummary?.unrated.formatted() ?? "0") {
                 router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(onlyUnrated: true)))
             }
             Spacing(width: 12)
             Divider()
             Spacing(width: 12)
-            CheckInStatisticView(title: "Average", subtitle: profileSummary?.averageRating.toRatingString ?? "-") {
+            CheckInStatisticView(title: "Average", subtitle: profileSummary?.averageRating?.formatted(.number.precision(.fractionLength(2))) ?? "-") {
                 router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(sortBy: .highestRated)))
             }
             Spacer()

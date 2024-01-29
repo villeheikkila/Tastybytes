@@ -8,6 +8,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
     public let location: CLLocation?
     public let countryCode: String?
     public let country: Country?
+    public let source: String
 
     public init(mapItem: MKMapItem) {
         id = UUID()
@@ -16,23 +17,21 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         location = mapItem.placemark.location
         countryCode = mapItem.placemark.countryCode
         country = nil
+        source = "apple"
     }
 
     public init(coordinate: CLLocationCoordinate2D, countryCode: String?, country: Country?) {
         id = UUID()
-        name = String(
-            format: "Lat: %.3f°, Lon: %.3f° \(country?.name ?? "")",
-            coordinate.latitude,
-            coordinate.longitude
-        )
+        name = "Lat: \(coordinate.latitude.formatted(.number.precision(.fractionLength(2))))°, Lon: \(coordinate.longitude.formatted(.number.precision(.fractionLength(2))))° \(country?.name ?? "")"
         title = nil
         location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         self.countryCode = countryCode
         self.country = country
+        self.source = "image"
     }
 
     public init(id: UUID, name: String, title: String?, location: CLLocation?, countryCode: String?,
-                country: Country?)
+                country: Country?, source: String)
     {
         self.id = id
         self.name = name
@@ -40,6 +39,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         self.location = location
         self.countryCode = countryCode
         self.country = country
+        self.source = source
     }
 
     enum CodingKeys: String, CodingKey {
@@ -51,6 +51,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         case createdAt = "created_at"
         case countryCode = "country_code"
         case country = "countries"
+        case source
     }
 
     public init(from decoder: Decoder) throws {
@@ -63,6 +64,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         location = CLLocation(latitude: latitude, longitude: longitude)
         countryCode = try container.decode(String.self, forKey: .countryCode)
         country = try container.decode(Country.self, forKey: .country)
+        source = try container.decode(String.self, forKey: .source)
     }
 
     public func encode(to encoder: Encoder) throws {

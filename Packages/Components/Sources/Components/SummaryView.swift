@@ -57,7 +57,7 @@ struct SummaryRow: View {
             RatingView(rating: rating ?? 0, type: .small)
             Group {
                 if let rating {
-                    Text(rating.formatted())
+                    Text(rating.formatted(.number.precision(.fractionLength(2))))
                         .contentTransition(.numericText())
                 } else {
                     Text("-")

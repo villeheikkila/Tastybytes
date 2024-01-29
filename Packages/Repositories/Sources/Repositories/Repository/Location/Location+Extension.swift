@@ -4,7 +4,7 @@ import Models
 extension Location {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = Database.Table.locations.rawValue
-        let saved = "id, name, title, longitude, latitude, country_code"
+        let saved = "id, name, title, longitude, latitude, country_code, source"
 
         switch queryType {
         case .tableName:

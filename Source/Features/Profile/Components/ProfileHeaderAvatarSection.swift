@@ -23,7 +23,7 @@ struct ProfileHeaderAvatarSection: View {
         HStack(alignment: .center) {
             if showInFull {
                 Spacer()
-                CheckInStatisticView(title: "Check-ins", subtitle: String(profileSummary?.totalCheckIns ?? 0)) {
+                CheckInStatisticView(title: "Check-ins", subtitle: profileSummary?.totalCheckIns.formatted() ?? "0") {
                     router.navigate(screen: .profileProducts(profile))
                 }
             }
@@ -55,7 +55,7 @@ struct ProfileHeaderAvatarSection: View {
             }
             Spacer()
             if showInFull {
-                CheckInStatisticView(title: "Unique", subtitle: String(profileSummary?.uniqueCheckIns ?? 0)) {
+                CheckInStatisticView(title: "Unique", subtitle: profileSummary?.uniqueCheckIns.formatted() ?? "0") {
                     router.navigate(screen: .profileProducts(profile))
                 }
                 Spacer()

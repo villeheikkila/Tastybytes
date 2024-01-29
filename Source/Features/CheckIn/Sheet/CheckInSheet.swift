@@ -358,6 +358,17 @@ struct CheckInSheet: View {
         let country = appEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
         location = Location(coordinate: coordinate, countryCode: countryCode, country: country)
     }
+    
+    func storeLocation(_ location: Location) async {
+        switch await repository.location.insert(location: location) {
+        case let .success(savedLocation):
+            logger.info("Succesfully created a location \(savedLocation.name) from an image")
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
 
     func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) async -> Void) async {
         let newCheckParams = CheckIn.NewRequest(

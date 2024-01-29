@@ -37,7 +37,7 @@ struct ProfileProductListView: View {
             } else if (productFilter?.onlyUnrated) == true {
                 return "Unrated"
             } else if let rating = productFilter?.rating {
-                return "Rating: \(String(format: "%.1f", rating))"
+                return "Rating: \(rating.formatted(.number.precision(.fractionLength(1))))"
             } else {
                 return "Top Entries"
             }
