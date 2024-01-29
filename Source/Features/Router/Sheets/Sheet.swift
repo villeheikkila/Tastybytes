@@ -1,4 +1,5 @@
 import Components
+import CoreLocation
 import LegacyUIKit
 import Models
 import SwiftUI
@@ -42,6 +43,7 @@ enum Sheet: Identifiable, Equatable {
     case locationSearch(
         category: Location.RecentLocation,
         title: String,
+        initialLocation: CLLocationCoordinate2D,
         onSelect: (_ location: Location) -> Void
     )
     case legacyPhotoPicker(onSelection: @Sendable (_ image: UIImage, _ metadata: ImageMetadata) -> Void)
@@ -106,8 +108,8 @@ enum Sheet: Identifiable, Equatable {
             FriendSheet(taggedFriends: taggedFriends)
         case let .flavors(pickedFlavors: pickedFlavors):
             FlavorSheet(pickedFlavors: pickedFlavors)
-        case let .locationSearch(category: category, title: title, onSelect: onSelect):
-            LocationSearchSheet(category: category, title: title, onSelect: onSelect)
+        case let .locationSearch(category: category, title: title, initialLocation, onSelect: onSelect):
+            LocationSearchSheet(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect)
         case let .legacyPhotoPicker(onSelection: onSelection):
             LegacyPhotoPicker(onSelection: onSelection)
         case let .newFlavor(onSubmit: onSubmit):

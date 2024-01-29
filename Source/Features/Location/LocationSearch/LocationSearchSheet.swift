@@ -31,25 +31,26 @@ struct LocationSearchSheet: View {
     let category: Location.RecentLocation
     let title: String
     let onSelect: (_ location: Location) -> Void
+    let initialLocation: CLLocationCoordinate2D
 
-    init(category: Location.RecentLocation, title: String, onSelect: @escaping (_ location: Location) -> Void) {
+    init(category: Location.RecentLocation, title: String, initialLocation: CLLocationCoordinate2D, onSelect: @escaping (_ location: Location) -> Void) {
         self.title = title
         self.onSelect = onSelect
         self.category = category
+        self.initialLocation = initialLocation
     }
 
     var hasSearched: Bool {
         !searchText.isEmpty
     }
 
-    private var center = CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
     private let radius: CLLocationDistance = 2000
 
     func search(for query: String) {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
         request.resultTypes = .pointOfInterest
-        request.region = MKCoordinateRegion(center: center,
+        request.region = MKCoordinateRegion(center: initialLocation,
                                             latitudinalMeters: radius,
                                             longitudinalMeters: radius)
 

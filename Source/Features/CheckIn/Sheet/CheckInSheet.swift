@@ -255,13 +255,14 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("Location & Friends") {
-            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location) { location in
+            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location, initialLocation: location?.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)) { location in
                 self.location = location
             }
 
             LocationInputButton(
                 category: .purchase, title: "Purchase Location",
-                selection: purchaseLocation
+                selection: purchaseLocation,
+                initialLocation: location?.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
             ) { location in
                 purchaseLocation = location
             }
@@ -358,7 +359,7 @@ struct CheckInSheet: View {
         let country = appEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
         location = Location(coordinate: coordinate, countryCode: countryCode, country: country)
     }
-    
+
     func storeLocation(_ location: Location) async {
         switch await repository.location.insert(location: location) {
         case let .success(savedLocation):
@@ -426,11 +427,12 @@ struct LocationInputButton: View {
     let category: Location.RecentLocation
     let title: String
     let selection: Location?
+    let initialLocation: CLLocationCoordinate2D
     let onSelect: (_ location: Location) -> Void
 
     var body: some View {
         RouterLink(
-            sheet: .locationSearch(category: category, title: title, onSelect: onSelect),
+            sheet: .locationSearch(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect),
             label: {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)

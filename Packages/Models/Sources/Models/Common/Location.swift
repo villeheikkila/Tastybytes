@@ -27,7 +27,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         self.countryCode = countryCode
         self.country = country
-        self.source = "image"
+        source = "image"
     }
 
     public init(id: UUID, name: String, title: String?, location: CLLocation?, countryCode: String?,
