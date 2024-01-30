@@ -6,23 +6,23 @@ import SwiftUI
 struct CSVFile: FileDocument {
     static let readableContentTypes = [UTType.commaSeparatedText]
     static let writableContentTypes = UTType.commaSeparatedText
-    let text: String
 
-    init(initialText: String = "") {
-        text = initialText
+    let content: String
+
+    init(content: String) {
+        self.content = content
     }
 
     init(configuration: ReadConfiguration) throws {
         if let data = configuration.file.regularFileContents {
-            text = String(decoding: data, as: UTF8.self)
+            content = String(decoding: data, as: UTF8.self)
         } else {
-            text = ""
+            content = ""
         }
     }
 
     func fileWrapper(configuration _: WriteConfiguration) throws -> FileWrapper {
-        let data = Data(text.utf8)
-        return FileWrapper(regularFileWithContents: data)
+        .init(regularFileWithContents: .init(content.utf8))
     }
 }
 

@@ -140,7 +140,7 @@ struct AccountSettingsScreen: View {
     func exportData() async {
         switch await repository.profile.currentUserExport() {
         case let .success(csvText):
-            csvExport = CSVFile(initialText: csvText)
+            csvExport = CSVFile(content: csvText)
             showingExporter = true
         case let .failure(error):
             guard !error.isCancelled else { return }
