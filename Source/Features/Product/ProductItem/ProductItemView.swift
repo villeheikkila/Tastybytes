@@ -25,7 +25,7 @@ struct ProductItemView: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
-                    Text(product.getDisplayName(.fullName))
+                    Text(product.formatted(.fullName))
                         .font(.headline)
                         .textSelection(.enabled)
                     Spacer()
@@ -45,7 +45,7 @@ struct ProductItemView: View {
                         .textSelection(.enabled)
                 }
 
-                Text(product.getDisplayName(.brandOwner))
+                Text(product.formatted(.brandOwner))
                     .font(.subheadline)
                     .textSelection(.enabled)
                     .foregroundColor(.secondary)

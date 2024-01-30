@@ -19,7 +19,7 @@ struct CheckInCardProduct: View {
                     servingStyle: servingStyle
                 )
 
-                Text(product.getDisplayName(.fullName))
+                Text(product.formatted(.fullName))
                     .font(.headline)
                     .foregroundColor(.primary)
                     .textSelection(.enabled)
@@ -30,7 +30,7 @@ struct CheckInCardProduct: View {
                 }
 
                 HStack {
-                    Text(product.getDisplayName(.brandOwner))
+                    Text(product.formatted(.brandOwner))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .textSelection(.enabled)

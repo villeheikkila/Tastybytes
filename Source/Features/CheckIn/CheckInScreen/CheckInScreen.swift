@@ -75,7 +75,7 @@ struct CheckInScreen: View {
             presenting: checkIn
         ) { presenting in
             ProgressButton(
-                "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
+                "Delete \(presenting.product.formatted(.fullName)) check-in",
                 role: .destructive,
                 action: { await deleteCheckIn(presenting) }
             )

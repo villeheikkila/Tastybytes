@@ -13,7 +13,7 @@ struct CheckInReactionNotificationView: View {
                     """
                     \(checkInReaction.profile.preferredName)\
                      reacted to your check-in of\
-                     \(checkInReaction.checkIn.product.getDisplayName(.full))
+                     \(checkInReaction.checkIn.product.formatted(.full))
                     """
                 )
                 Spacer()

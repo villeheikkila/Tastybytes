@@ -38,7 +38,7 @@ struct DuplicateProductSheet: View {
         .listStyle(.plain)
         .background {
             if products.isEmpty, mode != .reportDuplicate {
-                DuplicateProductContentUnavailableView(productName: product.getDisplayName(.fullName))
+                DuplicateProductContentUnavailableView(productName: product.formatted(.fullName))
             }
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
@@ -63,7 +63,7 @@ struct DuplicateProductSheet: View {
             ProgressButton(
                 """
                 \(mode == .mergeDuplicate ? "Merge" : "Mark") \(product.name) \(
-                    mode == .mergeDuplicate ? "to" : "as duplicate of") \(presenting.getDisplayName(.fullName))
+                    mode == .mergeDuplicate ? "to" : "as duplicate of") \(presenting.formatted(.fullName))
                 """,
                 role: .destructive
             ) {

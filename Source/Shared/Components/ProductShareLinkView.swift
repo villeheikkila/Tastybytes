@@ -12,7 +12,7 @@ public struct ProductShareLinkView: View {
     }
 
     private var title: String {
-        product.getDisplayName(.fullName)
+        product.formatted(.fullName)
     }
 
     private var link: URL {

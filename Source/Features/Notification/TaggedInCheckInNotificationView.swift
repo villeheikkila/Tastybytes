@@ -10,7 +10,7 @@ struct TaggedInCheckInNotificationView: View {
             HStack {
                 Avatar(profile: checkIn.profile, size: 32)
                 Text(
-                    "\(checkIn.profile.preferredName) tagged you in a check-in of \(checkIn.product.getDisplayName(.full))"
+                    "\(checkIn.profile.preferredName) tagged you in a check-in of \(checkIn.product.formatted(.full))"
                 )
                 Spacer()
             }

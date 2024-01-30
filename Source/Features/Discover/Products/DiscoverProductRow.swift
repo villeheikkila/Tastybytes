@@ -45,7 +45,7 @@ struct DiscoverProductRow: View {
                 presenting: addBarcodeTo
             ) { presenting in
                 ProgressButton(
-                    "Add barcode to \(presenting.getDisplayName(.fullName))",
+                    "Add barcode to \(presenting.formatted(.fullName))",
                     action: {
                         await addBarcodeToProduct(presenting)
                     }

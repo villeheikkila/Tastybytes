@@ -84,7 +84,7 @@ public struct CheckInEntityView: View {
                     Spacer()
                 }
 
-                Text(checkIn.product.getDisplayName(.fullName))
+                Text(checkIn.product.formatted(.fullName))
                     .font(.headline)
                     .textSelection(.enabled)
                     .foregroundColor(.primary)
@@ -96,7 +96,7 @@ public struct CheckInEntityView: View {
                 }
 
                 HStack {
-                    Text(checkIn.product.getDisplayName(.brandOwner))
+                    Text(checkIn.product.formatted(.brandOwner))
                         .font(.subheadline)
                         .textSelection(.enabled)
                         .foregroundColor(.secondary)

@@ -64,7 +64,7 @@ struct DuplicateProductScreen: View {
                             presenting: deleteProduct)
         { presenting in
             ProgressButton(
-                "Delete \(presenting.getDisplayName(.fullName))",
+                "Delete \(presenting.formatted(.fullName))",
                 role: .destructive,
                 action: { await deleteProduct(presenting) }
             )

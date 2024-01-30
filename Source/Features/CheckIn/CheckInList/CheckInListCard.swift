@@ -100,7 +100,7 @@ struct CheckInListCard: View {
                 presenting: showDeleteConfirmationFor
             ) { presenting in
                 ProgressButton(
-                    "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
+                    "Delete \(presenting.product.formatted(.fullName)) check-in",
                     role: .destructive,
                     action: { await onDelete(checkIn) }
                 )

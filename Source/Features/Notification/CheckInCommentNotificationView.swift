@@ -13,7 +13,7 @@ struct CheckInCommentNotificationView: View {
                     """
                     \(checkInComment.profile.preferredName)\
                      commented on your check-in of \
-                    \(checkInComment.checkIn.product.getDisplayName(.full))
+                    \(checkInComment.checkIn.product.formatted(.full))
                     """
                 )
                 Spacer()

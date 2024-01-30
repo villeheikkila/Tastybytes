@@ -61,7 +61,7 @@ struct BrandScreenProductRow: View {
                             presenting: productToDelete)
         { presenting in
             ProgressButton(
-                "Delete \(presenting.getDisplayName(.fullName))",
+                "Delete \(presenting.formatted(.fullName))",
                 role: .destructive,
                 action: { await deleteProduct(presenting) }
             )

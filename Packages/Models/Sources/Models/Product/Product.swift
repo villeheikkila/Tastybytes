@@ -342,25 +342,6 @@ public extension Product {
         public let isDiscontinued: Bool
         public let logos: [ImageEntity]
 
-        public func getDisplayName(_ part: NameParts) -> String {
-            switch part {
-            case .full:
-                [
-                    subBrand.brand.brandOwner.name,
-                    subBrand.brand.name,
-                    subBrand.name,
-                    name,
-                    isDiscontinued ? "(discontinued)" : nil,
-                ]
-                .joinOptionalSpace()
-            case .brandOwner:
-                subBrand.brand.brandOwner.name
-            case .fullName:
-                [subBrand.brand.name, subBrand.name, name, isDiscontinued ? "(discontinued)" : nil]
-                    .joinOptionalSpace()
-            }
-        }
-
         enum CodingKeys: String, CodingKey, Sendable {
             case id
             case name
@@ -614,5 +595,43 @@ public extension Product.Joined {
     func getLogoUrl(baseUrl: URL) -> URL? {
         guard let logo = logos.first else { return nil }
         return logo.getLogoUrl(baseUrl: baseUrl)
+    }
+}
+
+public extension Product.Joined {
+    struct Formatter<Output> {
+        let format: (Product.Joined) -> Output
+    }
+
+    func formatted<Output>(_ formatter: Formatter<Output>) -> Output {
+        formatter.format(self)
+    }
+}
+
+public extension Product.Joined.Formatter where Output == String {
+    static var fullName: Self {
+        .init { value in
+            [value.subBrand.brand.name, value.subBrand.name, value.name, value.isDiscontinued ? "(discontinued)" : nil]
+                .joinOptionalSpace()
+        }
+    }
+
+    static var full: Self {
+        .init { value in
+            [
+                value.subBrand.brand.brandOwner.name,
+                value.subBrand.brand.name,
+                value.subBrand.name,
+                value.name,
+                value.isDiscontinued ? "(discontinued)" : nil,
+            ]
+            .joinOptionalSpace()
+        }
+    }
+
+    static var brandOwner: Self {
+        .init { value in
+            value.subBrand.brand.brandOwner.name
+        }
     }
 }
