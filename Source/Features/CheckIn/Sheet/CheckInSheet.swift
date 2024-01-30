@@ -255,13 +255,13 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("Location & Friends") {
-            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location, initialLocation: location?.location?.coordinate, onSelect: { location in
+            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: $location, initialLocation: location?.location?.coordinate, onSelect: { location in
                 self.location = location
             })
 
             LocationInputButton(
                 category: .purchase, title: "Purchase Location",
-                selection: purchaseLocation,
+                selection: $purchaseLocation,
                 initialLocation: location?.location?.coordinate,
                 onSelect: { location in
                     purchaseLocation = location
@@ -427,7 +427,7 @@ extension CheckInSheet {
 struct LocationInputButton: View {
     let category: Location.RecentLocation
     let title: String
-    let selection: Location?
+    @Binding var selection: Location?
     let initialLocation: CLLocationCoordinate2D?
     let onSelect: (_ location: Location) -> Void
 
@@ -435,18 +435,26 @@ struct LocationInputButton: View {
         RouterLink(
             sheet: .locationSearch(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect),
             label: {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(title)
 
-                    if let selection {
-                        Text(selection.name)
-                            .foregroundColor(.secondary)
-
-                        if let locationTitle = selection.title {
-                            Text(locationTitle)
+                        if let selection {
+                            Text(selection.name)
                                 .foregroundColor(.secondary)
-                                .font(.caption)
+
+                            if let locationTitle = selection.title {
+                                Text(locationTitle)
+                                    .foregroundColor(.secondary)
+                                    .font(.caption)
+                            }
                         }
+                    }
+                    Spacer()
+                    if selection != nil {
+                        Button("Reset", systemImage: "xmark") {
+                            selection = nil
+                        }.labelStyle(.iconOnly)
                     }
                 }
             }

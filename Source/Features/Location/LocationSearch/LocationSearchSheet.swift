@@ -44,6 +44,10 @@ struct LocationSearchSheet: View {
         !searchText.isEmpty || initialLocation != nil
     }
 
+    private var centerCoordinate: CLLocationCoordinate2D {
+        initialLocation ?? locationEnvironmentModel.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
+    }
+
     private let radius: CLLocationDistance = 2000
 
     var body: some View {
@@ -73,7 +77,11 @@ struct LocationSearchSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task(id: searchText, milliseconds: 500) {
+        .task(id: searchText, milliseconds: 500) { @MainActor [searchText] in
+            guard !searchText.isEmpty else {
+                searchResults = []
+                return
+            }
             await search(for: searchText)
         }
         .task {
@@ -104,15 +112,11 @@ struct LocationSearchSheet: View {
             let request = MKLocalSearch.Request()
             request.naturalLanguageQuery = query
             request.resultTypes = .pointOfInterest
-            request.region = MKCoordinateRegion(center: initialLocation ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384),
-                                                latitudinalMeters: radius,
-                                                longitudinalMeters: radius)
-
+            request.region = .init(center: centerCoordinate, latitudinalMeters: radius, longitudinalMeters: radius)
             let search = MKLocalSearch(request: request)
             do {
                 let response = try await search.start()
-                let rawResults = response.mapItems
-                searchResults = rawResults.map { Location(mapItem: $0) }
+                searchResults = response.mapItems.map { Location(mapItem: $0) }
             } catch {
                 logger.error("Error occured while looking up locations: \(error)")
             }
@@ -121,8 +125,7 @@ struct LocationSearchSheet: View {
             let search = MKLocalSearch(request: request)
             do {
                 let response = try await search.start()
-                let rawResults = response.mapItems
-                searchResults = rawResults.map { Location(mapItem: $0) }
+                searchResults = response.mapItems.map { Location(mapItem: $0) }
             } catch {
                 logger.error("Error occured while looking up locations: \(error)")
             }
