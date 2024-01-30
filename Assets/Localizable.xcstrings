@@ -2045,6 +2045,9 @@
     "Show filters" : {
 
     },
+    "Show full name" : {
+
+    },
     "Show name tag" : {
 
     },
@@ -2239,6 +2242,7 @@
       }
     },
     "This only takes effect if both first name and last name are provided." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2358,6 +2362,7 @@
       }
     },
     "Use Full Name Instead of Username" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2376,6 +2381,9 @@
           }
         }
       }
+    },
+    "Use your full name as a display name across the interface. This only takes effect if both first name and last name are provided." : {
+
     },
     "Username" : {
       "localizations" : {

@@ -46,24 +46,6 @@ struct LocationSearchSheet: View {
 
     private let radius: CLLocationDistance = 2000
 
-    func search(for query: String?) {
-        let request = MKLocalSearch.Request()
-        if let query {
-            request.naturalLanguageQuery = query
-        }
-        request.resultTypes = .pointOfInterest
-        request.region = MKCoordinateRegion(center: initialLocation ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384),
-                                            latitudinalMeters: radius,
-                                            longitudinalMeters: radius)
-
-        Task { @MainActor in
-            let search = MKLocalSearch(request: request)
-            let response = try? await search.start()
-            let rawResults = response?.mapItems ?? []
-            searchResults = rawResults.map { Location(mapItem: $0) }
-        }
-    }
-
     var body: some View {
         List {
             if !recentLocations.isEmpty, !hasSearched {
@@ -91,9 +73,9 @@ struct LocationSearchSheet: View {
         .toolbar {
             toolbarContent
         }
-        .onChange(of: searchText, debounceTime: 0.5, perform: { _ in
-            search(for: searchText)
-        })
+        .task(id: searchText, milliseconds: 500) {
+            await search(for: searchText)
+        }
         .task {
             await getRecentLocations()
         }
@@ -102,7 +84,7 @@ struct LocationSearchSheet: View {
         }
         .task {
             if initialLocation != nil {
-                search(for: nil)
+                await search(for: nil)
             }
         }
         .alertError($alertError)
@@ -115,6 +97,36 @@ struct LocationSearchSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
+    }
+
+    func search(for query: String?) async {
+        if let query {
+            let request = MKLocalSearch.Request()
+            request.naturalLanguageQuery = query
+            request.resultTypes = .pointOfInterest
+            request.region = MKCoordinateRegion(center: initialLocation ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384),
+                                                latitudinalMeters: radius,
+                                                longitudinalMeters: radius)
+
+            let search = MKLocalSearch(request: request)
+            do {
+                let response = try await search.start()
+                let rawResults = response.mapItems
+                searchResults = rawResults.map { Location(mapItem: $0) }
+            } catch {
+                logger.error("Error occured while looking up locations: \(error)")
+            }
+        } else if let initialLocation {
+            let request = MKLocalPointsOfInterestRequest(center: initialLocation, radius: radius)
+            let search = MKLocalSearch(request: request)
+            do {
+                let response = try await search.start()
+                let rawResults = response.mapItems
+                searchResults = rawResults.map { Location(mapItem: $0) }
+            } catch {
+                logger.error("Error occured while looking up locations: \(error)")
+            }
+        }
     }
 
     func getRecentLocations() async {

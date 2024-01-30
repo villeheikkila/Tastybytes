@@ -72,14 +72,14 @@ struct ProfileSettingsScreen: View {
 
     private var profileDisplaySettings: some View {
         Section {
-            Toggle("Use Full Name Instead of Username", isOn: .init(get: {
+            Toggle("Show full name", isOn: .init(get: {
                 profileEnvironmentModel.showFullName
             }, set: { newValue in
                 profileEnvironmentModel.showFullName = newValue
                 Task { await profileEnvironmentModel.updateDisplaySettings() }
             }))
         } footer: {
-            Text("This only takes effect if both first name and last name are provided.")
+            Text("Use your full name as a display name across the interface. This only takes effect if both first name and last name are provided.")
         }
     }
 }
