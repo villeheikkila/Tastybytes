@@ -18,13 +18,7 @@ struct AccountSettingsScreen: View {
     @State private var showEmailConfirmation = false
     @State private var showAccountDeleteScreen = false
     @State private var email = ""
-
-    @State private var csvExport: CSVFile? {
-        didSet {
-            showingExporter.toggle()
-        }
-    }
-
+    @State private var csvExport: CSVFile?
     @State private var showingExporter = false
     @State private var alertError: AlertError?
 

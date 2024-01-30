@@ -139,7 +139,7 @@ struct VerificationScreen: View {
                         Text(createdBy.preferredName).font(.caption).bold()
                         Spacer()
                         if let createdAt = product.createdAt {
-                            Text(createdAt.customFormat(.relativeTime)).font(.caption).bold()
+                            Text(createdAt.relativeTime).font(.caption).bold()
                         }
                     }
                 }

@@ -159,13 +159,12 @@ public struct CheckInEntityView: View {
     private var footer: some View {
         HStack {
             if let checkInAt = checkIn.checkInAt {
-                Text(checkInAt.customFormat(.relativeTime))
-                    .font(.caption).bold()
+                Text(checkInAt.relativeTime)
             } else {
                 Text("check-in.legacy.label")
-                    .font(.caption).bold()
             }
             Spacer()
         }
+        .font(.caption).bold()
     }
 }

@@ -155,6 +155,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             if let string = String(data: csv, encoding: .utf8) {
                 return .success(string)
             }
+
             throw DataConversionError.invalidData
         } catch {
             return .failure(error)

@@ -157,14 +157,10 @@ struct LocationRow: View {
     let currentLocation: CLLocation?
     let onSelect: (_ location: Location) -> Void
 
-    var distance: String? {
+    var distance: Measurement<UnitLength>? {
         guard let currentLocation, let clLocation = location.location else { return nil }
         let distanceInMeters = currentLocation.distance(from: clLocation)
-        let distance = Measurement(value: distanceInMeters, unit: UnitLength.meters)
-        let formatter = MeasurementFormatter()
-        formatter.unitStyle = .short
-        formatter.locale = Locale.current
-        return formatter.string(from: distance)
+        return .init(value: distanceInMeters, unit: UnitLength.meters)
     }
 
     var body: some View {
@@ -178,7 +174,7 @@ struct LocationRow: View {
                         .foregroundColor(.secondary)
                 }
                 if let distance {
-                    Text("Distance: \(distance)")
+                    Text("Distance: \(distance, format: .measurement(width: .narrow))")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }

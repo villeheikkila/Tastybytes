@@ -61,7 +61,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
     func uploadLogo(companyId: Int, data: Data) async -> Result<ImageEntity, Error> {
         do {
-            let fileName = "\(companyId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
+            let fileName = "\(companyId)_\(Date.now.timeIntervalSince1970).jpeg"
             let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
 
             _ = try await client
