@@ -145,14 +145,17 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func currentUserExport() async -> Result<String, Error> {
         do {
-            let csv: String = try await client
+            let csv = try await client
                 .database
                 .rpc(fn: .exportData)
                 .csv()
                 .execute()
-                .value
+                .data
 
-            return .success(csv)
+            if let string = String(data: csv, encoding: .utf8) {
+                return .success(string)
+            }
+            throw DataConversionError.invalidData
         } catch {
             return .failure(error)
         }

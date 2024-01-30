@@ -43,7 +43,7 @@ enum Sheet: Identifiable, Equatable {
     case locationSearch(
         category: Location.RecentLocation,
         title: String,
-        initialLocation: CLLocationCoordinate2D,
+        initialLocation: CLLocationCoordinate2D?,
         onSelect: (_ location: Location) -> Void
     )
     case legacyPhotoPicker(onSelection: @Sendable (_ image: UIImage, _ metadata: ImageMetadata) -> Void)

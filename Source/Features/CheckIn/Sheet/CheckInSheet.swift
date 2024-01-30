@@ -255,17 +255,18 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("Location & Friends") {
-            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location, initialLocation: location?.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)) { location in
+            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: location, initialLocation: location?.location?.coordinate, onSelect: { location in
                 self.location = location
-            }
+            })
 
             LocationInputButton(
                 category: .purchase, title: "Purchase Location",
                 selection: purchaseLocation,
-                initialLocation: location?.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
-            ) { location in
-                purchaseLocation = location
-            }
+                initialLocation: location?.location?.coordinate,
+                onSelect: { location in
+                    purchaseLocation = location
+                }
+            )
 
             if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
                 RouterLink(
@@ -427,7 +428,7 @@ struct LocationInputButton: View {
     let category: Location.RecentLocation
     let title: String
     let selection: Location?
-    let initialLocation: CLLocationCoordinate2D
+    let initialLocation: CLLocationCoordinate2D?
     let onSelect: (_ location: Location) -> Void
 
     var body: some View {

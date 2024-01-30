@@ -31,9 +31,9 @@ struct LocationSearchSheet: View {
     let category: Location.RecentLocation
     let title: String
     let onSelect: (_ location: Location) -> Void
-    let initialLocation: CLLocationCoordinate2D
+    let initialLocation: CLLocationCoordinate2D?
 
-    init(category: Location.RecentLocation, title: String, initialLocation: CLLocationCoordinate2D, onSelect: @escaping (_ location: Location) -> Void) {
+    init(category: Location.RecentLocation, title: String, initialLocation: CLLocationCoordinate2D?, onSelect: @escaping (_ location: Location) -> Void) {
         self.title = title
         self.onSelect = onSelect
         self.category = category
@@ -41,16 +41,18 @@ struct LocationSearchSheet: View {
     }
 
     var hasSearched: Bool {
-        !searchText.isEmpty
+        !searchText.isEmpty || initialLocation != nil
     }
 
     private let radius: CLLocationDistance = 2000
 
-    func search(for query: String) {
+    func search(for query: String?) {
         let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = query
+        if let query {
+            request.naturalLanguageQuery = query
+        }
         request.resultTypes = .pointOfInterest
-        request.region = MKCoordinateRegion(center: initialLocation,
+        request.region = MKCoordinateRegion(center: initialLocation ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384),
                                             latitudinalMeters: radius,
                                             longitudinalMeters: radius)
 
@@ -97,6 +99,11 @@ struct LocationSearchSheet: View {
         }
         .task {
             await locationEnvironmentModel.updateLocation()
+        }
+        .task {
+            if initialLocation != nil {
+                search(for: nil)
+            }
         }
         .alertError($alertError)
         .onChange(of: locationEnvironmentModel.location) { _, latestLocation in

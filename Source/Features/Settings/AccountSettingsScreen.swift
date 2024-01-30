@@ -60,7 +60,7 @@ struct AccountSettingsScreen: View {
             document: csvExport,
             contentType: UTType.commaSeparatedText,
             defaultFilename:
-            "\(appEnvironmentModel.infoPlist.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv"
+            "\(appEnvironmentModel.infoPlist.appName.lowercased())_export_\(Date.now.formatted(.iso8601.year().month().day().dateSeparator(.dash))).csv"
         ) { result in
             switch result {
             case .success:
