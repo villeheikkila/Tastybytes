@@ -53,14 +53,14 @@ struct LocationSearchSheet: View {
     var body: some View {
         List {
             if !recentLocations.isEmpty, !hasSearched {
-                Section("Recent locations") {
+                Section("location.recent") {
                     ForEach(recentLocations) { location in
                         LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                     }
                 }
             }
             if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty, !hasSearched {
-                Section("Nearby locations") {
+                Section("location.near-by") {
                     ForEach(nearbyLocations) { location in
                         LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                     }
@@ -189,7 +189,7 @@ struct LocationRow: View {
                         .foregroundColor(.secondary)
                 }
                 if let distance {
-                    Text("Distance: \(distance, format: .measurement(width: .narrow))")
+                    Text("location.distance \(distance, format: .measurement(width: .narrow))")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }

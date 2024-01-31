@@ -907,6 +907,7 @@
       }
     },
     "Distance: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1222,6 +1223,36 @@
         }
       }
     },
+    "location.distance %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance: %@"
+          }
+        }
+      }
+    },
+    "location.near-by" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby locations"
+          }
+        }
+      }
+    },
+    "location.recent" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent Locations"
+          }
+        }
+      }
+    },
     "Logo" : {
       "localizations" : {
         "en" : {
@@ -1361,6 +1392,7 @@
       }
     },
     "Nearby locations" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1743,6 +1775,7 @@
       }
     },
     "Recent locations" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -96,6 +96,7 @@ public struct RatingPickerView: View {
 }
 
 private protocol SizeKey: PreferenceKey {}
+
 private extension SizeKey {
     static var defaultValue: CGSize { .zero }
     static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
