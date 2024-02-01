@@ -40,7 +40,7 @@ struct OnboardingProfileSection: View {
                 Button(action: {
                     onContinue()
                 }, label: {
-                    Text("Continue")
+                    Text("actions.continue")
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .frame(height: 60)
                         .foregroundColor(.white)

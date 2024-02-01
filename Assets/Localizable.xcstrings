@@ -74,6 +74,7 @@
       }
     },
     "%@ Photo" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -207,6 +208,9 @@
         }
       }
     },
+    "actions.apply" : {
+
+    },
     "actions.cancel" : {
       "localizations" : {
         "en" : {
@@ -216,6 +220,15 @@
           }
         }
       }
+    },
+    "actions.continue" : {
+
+    },
+    "actions.skip" : {
+
+    },
+    "actions.tryAgain" : {
+
     },
     "Activity" : {
       "localizations" : {
@@ -393,6 +406,7 @@
       }
     },
     "Apply" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -638,6 +652,12 @@
     "Category created!" : {
 
     },
+    "category.picker.label" : {
+
+    },
+    "category.title" : {
+
+    },
     "Check the spelling or try a new search" : {
       "localizations" : {
         "en" : {
@@ -744,6 +764,7 @@
       }
     },
     "Checked-in %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -752,6 +773,30 @@
           }
         }
       }
+    },
+    "checkIn.date.checkInAt %@" : {
+
+    },
+    "checkIn.date.legacyCheckIn" : {
+
+    },
+    "checkIn.filter.onlyNotHad" : {
+
+    },
+    "checkIn.friends.tag" : {
+
+    },
+    "checkIn.location.reset" : {
+
+    },
+    "checkIn.rating.label" : {
+
+    },
+    "checkIn.review.label" : {
+
+    },
+    "checkIn.review.title" : {
+
     },
     "checkIn.section.additionalInformation.title" : {
       "localizations" : {
@@ -762,6 +807,12 @@
           }
         }
       }
+    },
+    "checkIn.section.locationsFriends.title" : {
+
+    },
+    "checkIn.title" : {
+
     },
     "Close" : {
       "extractionState" : "stale",
@@ -817,6 +868,7 @@
       }
     },
     "Continue" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1071,6 +1123,7 @@
       }
     },
     "Filter" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1099,6 +1152,9 @@
           }
         }
       }
+    },
+    "flavors.label" : {
+
     },
     "Friend Request Sent!" : {
 
@@ -1190,6 +1246,7 @@
       }
     },
     "How was it?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1238,6 +1295,12 @@
     "Keep up to date!" : {
 
     },
+    "labels.selectAll" : {
+
+    },
+    "labels.sortBy" : {
+
+    },
     "Leave a comment!" : {
       "localizations" : {
         "en" : {
@@ -1249,6 +1312,7 @@
       }
     },
     "Legacy Check-in" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1272,6 +1336,7 @@
 
     },
     "Location & Friends" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1577,6 +1642,7 @@
       }
     },
     "Not Selected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1607,6 +1673,7 @@
       }
     },
     "Only things I have not had" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1771,6 +1838,12 @@
         }
       }
     },
+    "product.filter.reset" : {
+
+    },
+    "product.filter.title" : {
+
+    },
     "Products" : {
       "localizations" : {
         "en" : {
@@ -1912,6 +1985,7 @@
 
     },
     "Reset" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1932,6 +2006,7 @@
       }
     },
     "Review" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2006,6 +2081,7 @@
       }
     },
     "Select All" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2042,6 +2118,7 @@
 
     },
     "Serving Style" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2060,6 +2137,12 @@
           }
         }
       }
+    },
+    "servingStyle.title" : {
+
+    },
+    "servingStyle.unselected" : {
+
     },
     "Set up your profile" : {
       "localizations" : {
@@ -2219,6 +2302,7 @@
       }
     },
     "Skip" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2239,6 +2323,7 @@
       }
     },
     "Sort By" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2302,6 +2387,7 @@
       }
     },
     "Subcategory" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2310,6 +2396,9 @@
           }
         }
       }
+    },
+    "subcategory.picker.label" : {
+
     },
     "Submit" : {
       "localizations" : {
@@ -2335,6 +2424,7 @@
       }
     },
     "Tag friends" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2396,9 +2486,6 @@
       }
     },
     "To keep you updated and informed, we need access to send you notifications." : {
-
-    },
-    "Try again" : {
 
     },
     "Turn the torch %@" : {

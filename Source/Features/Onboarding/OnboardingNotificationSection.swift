@@ -82,7 +82,7 @@ struct OnboardingSectionContent: View {
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 16) {
                 Button(action: onContinue, label: {
-                    Text("Continue")
+                    Text("actions.continue")
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .frame(height: 60)
                         .foregroundColor(.white)
@@ -91,7 +91,7 @@ struct OnboardingSectionContent: View {
                         .cornerRadius(15)
                 })
                 Button(action: onSkip, label: {
-                    Text("Skip")
+                    Text("actions.skip")
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .foregroundColor(color)
                         .font(.headline)
