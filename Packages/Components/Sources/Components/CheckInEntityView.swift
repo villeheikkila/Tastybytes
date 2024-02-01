@@ -106,7 +106,7 @@ public struct CheckInEntityView: View {
                     if let manufacturer = checkIn.variant?.manufacturer,
                        manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id
                     {
-                        Text("(\(manufacturer.name))")
+                        Text(manufacturer.name)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }

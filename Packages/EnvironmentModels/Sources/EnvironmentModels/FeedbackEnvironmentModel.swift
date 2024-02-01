@@ -415,19 +415,11 @@ public struct ToastModifier: ViewModifier {
     }
 
     private var screen: CGRect {
-        #if os(iOS)
-            return UIScreen.main.bounds
-        #else
-            return NSScreen.main?.frame ?? .zero
-        #endif
+        UIScreen.main.bounds
     }
 
     private var offset: CGFloat {
-        #if os(iOS)
-            return -hostRect.midY + alertRect.height
-        #else
-            return (-hostRect.midY + screen.midY) + alertRect.height
-        #endif
+        -hostRect.midY + alertRect.height
     }
 
     @ViewBuilder
