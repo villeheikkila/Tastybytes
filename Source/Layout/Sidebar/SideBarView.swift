@@ -66,7 +66,7 @@ struct SideBarView: View {
             List(selection: $selection) {
                 HStack(alignment: .firstTextBaseline) {
                     Text(appEnvironmentModel.infoPlist.appName)
-                        .font(Font.custom("Comfortaa-Bold", size: 24)).bold()
+                        .font(.custom("Comfortaa-Bold", size: 24)).bold()
                     Spacer()
                 }
                 Color.clear.frame(width: 0, height: 12)

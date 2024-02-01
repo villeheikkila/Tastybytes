@@ -63,8 +63,8 @@ public extension FeedbackEnvironmentModel {
     }
 
     enum ToastType {
-        case success(_ title: String)
-        case warning(_ title: String)
+        case success(_ title: LocalizedStringKey)
+        case warning(_ title: LocalizedStringKey)
     }
 
     enum FeedbackType: Int, Sendable {
@@ -111,15 +111,15 @@ public extension View {
 public struct Toast: View {
     let displayMode: DisplayMode
     let type: AlertType
-    let title: String?
-    let subTitle: String?
+    let title: LocalizedStringKey?
+    let subTitle: LocalizedStringKey?
     let style: AlertStyle?
     let onTap: (() -> Void)?
 
     public init(displayMode: DisplayMode = .alert,
                 type: AlertType,
-                title: String? = nil,
-                subTitle: String? = nil,
+                title: LocalizedStringKey? = nil,
+                subTitle: LocalizedStringKey? = nil,
                 style: AlertStyle? = nil,
                 onTap: (() -> Void)? = nil)
     {
@@ -158,14 +158,16 @@ public struct Toast: View {
                     case .regular:
                         EmptyView()
                     }
-
-                    Text(LocalizedStringKey(title ?? ""))
-                        .font(style?.titleFont ?? Font.headline.bold())
+                    
+                    if let title {
+                        Text(title)
+                            .font(style?.titleFont ?? .headline.bold())
+                    }
                 }
 
                 if let subTitle {
-                    Text(LocalizedStringKey(subTitle))
-                        .font(style?.subTitleFont ?? Font.subheadline)
+                    Text(subTitle)
+                        .font(style?.subTitleFont ?? .subheadline)
                 }
             }
             .fixedSize(horizontal: true, vertical: false)
@@ -216,14 +218,14 @@ public struct Toast: View {
 
                 if title != nil || subTitle != nil {
                     VStack(alignment: .center, spacing: 1) {
-                        if title != nil {
-                            Text(LocalizedStringKey(title ?? ""))
+                        if let title {
+                            Text(title)
                                 .font(.system(size: 14, weight: .medium, design: .rounded))
                                 .multilineTextAlignment(.center)
                                 .textColor(style?.titleColor)
                         }
-                        if subTitle != nil {
-                            Text(LocalizedStringKey(subTitle ?? ""))
+                        if let subTitle {
+                            Text(subTitle)
                                 .font(.system(size: 11.5, weight: .medium, design: .rounded))
                                 .opacity(0.7)
                                 .multilineTextAlignment(.center)
@@ -239,7 +241,7 @@ public struct Toast: View {
             .alertBackground(style?.backgroundColor)
             .clipShape(Capsule())
             .overlay(Capsule().stroke(Color.gray.opacity(0.06), lineWidth: 1))
-            .shadow(color: Color.black.opacity(0.1), radius: 5)
+            .shadow(color: .black.opacity(0.1), radius: 5)
             .compositingGroup()
         }
         .padding(.top)
@@ -284,15 +286,15 @@ public struct Toast: View {
             }
 
             VStack(spacing: type == .regular ? 8 : 2) {
-                if title != nil {
-                    Text(LocalizedStringKey(title ?? ""))
-                        .font(style?.titleFont ?? Font.body.bold())
+                if let title {
+                    Text(title)
+                        .font(style?.titleFont ?? .body.bold())
                         .multilineTextAlignment(.center)
                         .textColor(style?.titleColor)
                 }
-                if subTitle != nil {
-                    Text(LocalizedStringKey(subTitle ?? ""))
-                        .font(style?.subTitleFont ?? Font.footnote)
+                if let subTitle {
+                    Text(subTitle)
+                        .font(style?.subTitleFont ?? .footnote)
                         .opacity(0.7)
                         .multilineTextAlignment(.center)
                         .textColor(style?.subtitleColor)

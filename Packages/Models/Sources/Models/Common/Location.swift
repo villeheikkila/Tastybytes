@@ -161,3 +161,21 @@ public extension Location {
         case purchase
     }
 }
+
+public extension Location {
+    struct Formatter<Output> {
+        let format: (Location) -> Output
+    }
+
+    func formatted<Output>(_ formatter: Formatter<Output>) -> Output {
+        formatter.format(self)
+    }
+}
+
+public extension Location.Formatter where Output == String {
+    static var withEmoji: Self {
+        .init { value in
+            "\(value.name) \(value.country?.emoji ?? "")"
+        }
+    }
+}

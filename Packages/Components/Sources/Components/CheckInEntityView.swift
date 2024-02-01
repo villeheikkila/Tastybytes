@@ -33,7 +33,7 @@ public struct CheckInEntityView: View {
                 .foregroundColor(.primary)
             Spacer()
             if let location = checkIn.location {
-                Text("\(location.name) \(location.country?.emoji ?? "")")
+                Text(location.formatted(.withEmoji))
                     .font(.caption).bold()
                     .foregroundColor(.primary)
             }
@@ -142,7 +142,7 @@ public struct CheckInEntityView: View {
     @ViewBuilder private var taggedProfilesSection: some View {
         if !checkIn.taggedProfiles.isEmpty {
             HStack {
-                Text(verbatim: "Tagged friends")
+                Text("Tagged friends")
                     .font(.subheadline)
                     .fontWeight(.medium)
                 Spacer()

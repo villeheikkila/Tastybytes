@@ -486,6 +486,9 @@
         }
       }
     },
+    "Barcode added!" : {
+
+    },
     "Barcode Added!" : {
 
     },
@@ -563,6 +566,9 @@
         }
       }
     },
+    "Brand updated!" : {
+
+    },
     "brand.delete-warning" : {
       "localizations" : {
         "en" : {
@@ -622,6 +628,9 @@
           }
         }
       }
+    },
+    "Category created!" : {
+
     },
     "Check the spelling or try a new search" : {
       "localizations" : {
@@ -766,6 +775,9 @@
     "Company" : {
 
     },
+    "Company updated" : {
+
+    },
     "Connect with others by sharing your name tag" : {
       "localizations" : {
         "en" : {
@@ -825,6 +837,9 @@
           }
         }
       }
+    },
+    "Data was exported as CSV" : {
+
     },
     "Delete" : {
       "localizations" : {
@@ -984,6 +999,9 @@
     "Edit Suggestion" : {
 
     },
+    "Edit suggestion sent!" : {
+
+    },
     "Email" : {
       "localizations" : {
         "en" : {
@@ -1063,6 +1081,9 @@
           }
         }
       }
+    },
+    "Friend Request Sent!" : {
+
     },
     "Friends" : {
       "localizations" : {
@@ -1402,6 +1423,12 @@
         }
       }
     },
+    "New Brand Created!" : {
+
+    },
+    "New Company Created!" : {
+
+    },
     "New Products" : {
       "localizations" : {
         "en" : {
@@ -1411,6 +1438,9 @@
           }
         }
       }
+    },
+    "New Sub-brand Created!" : {
+
     },
     "No check-ins from friends" : {
       "localizations" : {
@@ -1835,6 +1865,9 @@
         }
       }
     },
+    "Report submitted!" : {
+
+    },
     "Reset" : {
       "localizations" : {
         "en" : {
@@ -1960,6 +1993,9 @@
       }
     },
     "Send Feedback" : {
+
+    },
+    "Sent!" : {
 
     },
     "Serving Style" : {
@@ -2187,6 +2223,9 @@
         }
       }
     },
+    "Sub-brand updated!" : {
+
+    },
     "Sub-brands" : {
       "localizations" : {
         "en" : {
@@ -2263,6 +2302,12 @@
           }
         }
       }
+    },
+    "Thanks for the feedback!" : {
+
+    },
+    "There is nothing to edit" : {
+
     },
     "These values are used in your personal page and can be seen by other users." : {
       "localizations" : {
@@ -2418,6 +2463,9 @@
     "Use your full name as a display name across the interface. This only takes effect if both first name and last name are provided." : {
 
     },
+    "User blocked" : {
+
+    },
     "Username" : {
       "localizations" : {
         "en" : {
@@ -2460,6 +2508,9 @@
           }
         }
       }
+    },
+    "You can only add %lld flavors" : {
+
     },
     "You don't have any friends yet" : {
       "localizations" : {

@@ -38,7 +38,7 @@ public struct SummaryView: View {
 }
 
 struct SummaryRow: View {
-    let title: String
+    let title: LocalizedStringKey
     let count: Int?
     let rating: Double?
 

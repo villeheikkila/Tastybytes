@@ -1,7 +1,7 @@
 import SwiftUI
 
 public struct ChipView: View {
-    public let title: String
+    public let title: LocalizedStringKey
 
     public var body: some View {
         HStack {
