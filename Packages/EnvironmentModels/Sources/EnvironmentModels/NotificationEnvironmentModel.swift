@@ -23,7 +23,7 @@ public final class NotificationEnvironmentModel {
         self.repository = repository
     }
 
-    public func getUnreadFriendRequestCount() -> Int {
+    public var unreadFriendRequestCount: Int {
         notifications
             .filter { notification in
                 switch notification.content {

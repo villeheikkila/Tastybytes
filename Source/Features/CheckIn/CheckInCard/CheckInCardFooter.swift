@@ -12,7 +12,7 @@ struct CheckInCardFooter: View {
         HStack {
             HStack {
                 if let checkInAt = checkIn.checkInAt {
-                    Text(checkInAt.relativeTime)
+                    Text(checkInAt.formatted(.customRelativetime))
                         .font(.caption)
                         .bold()
                 } else {

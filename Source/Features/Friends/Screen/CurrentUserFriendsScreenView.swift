@@ -32,8 +32,8 @@ struct CurrentUserFriendsScreen: View {
         List(filteredFriends) { friend in
             FriendListItemView(profile: friend.getFriend(userId: profileEnvironmentModel.profile.id)) {
                 HStack {
-                    if friend.status == Friend.Status.pending {
-                        Text("(\(friend.status.rawValue.capitalized))")
+                    if friend.status == .pending {
+                        Text(friend.status.label)
                             .font(.footnote)
                             .foregroundColor(.primary)
                     }
@@ -122,7 +122,7 @@ struct CurrentUserFriendsScreen: View {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
-        .navigationTitle("Friends (\(friendEnvironmentModel.friends.count))")
+        .navigationTitle("Friends (\(friendEnvironmentModel.friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)

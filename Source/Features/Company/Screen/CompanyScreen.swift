@@ -30,7 +30,7 @@ struct CompanyScreen: View {
 
     var sortedBrands: [Brand.JoinedSubBrandsProducts] {
         if let companyJoined {
-            return companyJoined.brands.sorted { lhs, rhs in lhs.getNumberOfProducts() > rhs.getNumberOfProducts() }
+            return companyJoined.brands.sorted { lhs, rhs in lhs.productCount > rhs.productCount }
         }
         return []
     }

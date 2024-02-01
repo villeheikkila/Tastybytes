@@ -1,5 +1,5 @@
 import Extensions
-import Foundation
+import SwiftUI
 
 public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let id: Int

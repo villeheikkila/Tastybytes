@@ -11,7 +11,7 @@ struct BarcodeManagementRow: View {
                 HStack {
                     Text(barcode.profile.preferredName).font(.caption)
                     Spacer()
-                    Text(barcode.createdAt.relativeTime).font(.caption2)
+                    Text(barcode.createdAt.formatted(.customRelativetime)).font(.caption2)
                 }
                 Text(barcode.barcode).font(.callout)
             }

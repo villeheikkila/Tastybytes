@@ -50,9 +50,7 @@ struct NotificationSettingsScreen: View {
                 } header: {
                     Text("System Settings")
                 } footer: {
-                    Text(
-                        "Enable or disable the app's permission to send notifications"
-                    )
+                    Text("Enable or disable the app's permission to send notifications")
                 }
             }
         }
@@ -124,8 +122,8 @@ struct NotificationSettingsScreen: View {
 struct NotificationDeliveryTypePicker: View {
     @Binding var notificationDeliveryType: NotificationDeliveryType
 
-    let title: String
-    let subtitle: String?
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey?
 
     var body: some View {
         Picker(selection: $notificationDeliveryType) {

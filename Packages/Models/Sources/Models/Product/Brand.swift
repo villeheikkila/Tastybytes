@@ -65,7 +65,7 @@ public extension Brand {
         public let subBrands: [SubBrand.JoinedProduct]
         public let logos: [ImageEntity]
 
-        public func getNumberOfProducts() -> Int {
+        public var productCount: Int {
             subBrands.flatMap(\.products).count
         }
 
@@ -113,7 +113,7 @@ public extension Brand {
             logos = brand.logos
         }
 
-        public func getNumberOfProducts() -> Int {
+        public var productCount: Int {
             subBrands.flatMap(\.products).count
         }
 

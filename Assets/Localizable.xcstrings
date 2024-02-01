@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "(%@" : {
+
+    },
     "(%@)" : {
 
     },
@@ -170,6 +173,9 @@
           }
         }
       }
+    },
+    "Access to location" : {
+
     },
     "Account" : {
       "localizations" : {
@@ -698,6 +704,15 @@
         }
       }
     },
+    "check-in.segment.everyone" : {
+
+    },
+    "check-in.segment.friends" : {
+
+    },
+    "check-in.segment.you" : {
+
+    },
     "Check-ins" : {
       "localizations" : {
         "en" : {
@@ -760,6 +775,9 @@
       }
     },
     "Comment..." : {
+
+    },
+    "Comments" : {
 
     },
     "Companies" : {
@@ -1085,6 +1103,18 @@
     "Friend Request Sent!" : {
 
     },
+    "Friend Requests" : {
+
+    },
+    "friend.status.accepted" : {
+
+    },
+    "friend.status.blocked" : {
+
+    },
+    "friend.status.pending" : {
+
+    },
     "Friends" : {
       "localizations" : {
         "en" : {
@@ -1095,7 +1125,11 @@
         }
       }
     },
+    "Friends (%@" : {
+
+    },
     "Friends (%lld)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1201,6 +1235,9 @@
         }
       }
     },
+    "Keep up to date!" : {
+
+    },
     "Leave a comment!" : {
       "localizations" : {
         "en" : {
@@ -1243,6 +1280,9 @@
           }
         }
       }
+    },
+    "Location is only used to suggest you venues for your check-ins and show near by activity" : {
+
     },
     "location.distance %@" : {
       "localizations" : {
@@ -1794,6 +1834,9 @@
         }
       }
     },
+    "Reactions" : {
+
+    },
     "Reason" : {
       "localizations" : {
         "en" : {
@@ -2133,6 +2176,18 @@
     "Show name tag or send friend request by QR code" : {
 
     },
+    "Show notification when someone comments on your check-in" : {
+
+    },
+    "Show notification when someone reacts to your check-in" : {
+
+    },
+    "Show notification when someone sends you a friend requests" : {
+
+    },
+    "Show notification when someone tags you in their check-in" : {
+
+    },
     "Show scanner" : {
       "localizations" : {
         "en" : {
@@ -2340,6 +2395,9 @@
         }
       }
     },
+    "To keep you updated and informed, we need access to send you notifications." : {
+
+    },
     "Try again" : {
 
     },
@@ -2488,6 +2546,16 @@
     },
     "Verified" : {
 
+    },
+    "Welcome to %@! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Welcome to %1$@! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](%2$@)"
+          }
+        }
+      }
     },
     "Wishlist" : {
       "localizations" : {

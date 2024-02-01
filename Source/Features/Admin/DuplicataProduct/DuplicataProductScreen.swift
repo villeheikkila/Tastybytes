@@ -31,7 +31,7 @@ struct DuplicateProductScreen: View {
                         Text(createdBy.preferredName).font(.caption).bold()
                         Spacer()
                         if let createdAt = product.createdAt {
-                            Text(createdAt.relativeTime).font(.caption).bold()
+                            Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
                         }
                     }
                 }

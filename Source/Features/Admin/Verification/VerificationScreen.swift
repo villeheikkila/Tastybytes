@@ -121,7 +121,7 @@ struct VerificationScreen: View {
                 HStack {
                     Text("\(brand.brandOwner.name): \(brand.name)")
                     Spacer()
-                    Text("(\(brand.getNumberOfProducts()))")
+                    Text("(\(brand.productCount.formatted())")
                 }
             }
             .swipeActions {
@@ -139,7 +139,7 @@ struct VerificationScreen: View {
                         Text(createdBy.preferredName).font(.caption).bold()
                         Spacer()
                         if let createdAt = product.createdAt {
-                            Text(createdAt.relativeTime).font(.caption).bold()
+                            Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
                         }
                     }
                 }

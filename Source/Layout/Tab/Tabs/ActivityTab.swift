@@ -30,7 +30,7 @@ struct ActivityTab: View {
             RouterLink("Friends page", systemImage: "person.2", screen: .currentUserFriends)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
-                .customBadge(notificationEnvironmentModel.getUnreadFriendRequestCount())
+                .customBadge(notificationEnvironmentModel.unreadFriendRequestCount)
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             RouterLink("Settings page", systemImage: "gear", screen: .settings)

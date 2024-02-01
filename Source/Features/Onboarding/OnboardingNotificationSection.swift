@@ -40,8 +40,8 @@ struct OnboardingSectionContent: View {
     let onSkip: () -> Void
     let color: Color
     let symbol: String
-    let title: String
-    let description: String
+    let title: LocalizedStringKey
+    let description: LocalizedStringKey
 
     var body: some View {
         VStack {

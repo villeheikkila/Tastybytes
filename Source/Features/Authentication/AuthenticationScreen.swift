@@ -41,7 +41,7 @@ struct AuthenticationScreen: View {
                 SparklesView()
             )
             Text(appEnvironmentModel.infoPlist.appName)
-                .font(Font.custom("Comfortaa-Bold", size: 38))
+                .font(.custom("Comfortaa-Bold", size: 38))
                 .bold()
         }
     }
@@ -62,7 +62,7 @@ struct PrivacyPolicy: View {
     @State private var openUrlInWebView: WebViewLink?
 
     var body: some View {
-        Text(.init("Welcome to \(appEnvironmentModel.infoPlist.appName)! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](\(appEnvironmentModel.config.privacyPolicyUrl))"))
+        Text("Welcome to \(appEnvironmentModel.infoPlist.appName)! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](\(appEnvironmentModel.config.privacyPolicyUrl))")
             .font(.caption)
             .environment(\.openURL, OpenURLAction { url in
                 openUrlInWebView = WebViewLink(title: "Privacy Policy", url: url)

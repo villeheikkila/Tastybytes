@@ -42,7 +42,7 @@ struct ProfileProductListView: View {
                 return "Top Entries"
             }
         }
-        return initialDataLoaded ? "Products (\(filteredProducts.count))" : "Products"
+        return initialDataLoaded ? "Products (\(filteredProducts.count.formatted()))" : "Products"
     }
 
     var filteredProducts: [Product.Joined] {

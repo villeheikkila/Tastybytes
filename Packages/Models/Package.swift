@@ -4,8 +4,9 @@ import PackageDescription
 
 let package = Package(
     name: "Models",
+    defaultLocalization: "en",
     platforms: [
-        .iOS(.v17), .watchOS(.v10), .macOS(.v14),
+        .iOS(.v17), .watchOS(.v10),
     ],
     products: [
         .library(

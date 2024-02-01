@@ -275,7 +275,7 @@ struct CheckInSheet: View {
                     Text(
                         isLegacyCheckIn
                             ? "Legacy Check-in"
-                            : "Checked-in \(checkInAt.relativeTime.lowercased())")
+                            : "Checked-in \(checkInAt.formatted(.customRelativetime).lowercased())")
                 }
             }
 

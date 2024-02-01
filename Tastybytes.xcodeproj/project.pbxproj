@@ -176,6 +176,7 @@
 		5C9058612B2894BE00EC157B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E32B2894BE00EC157B /* AppDelegate.swift */; };
 		5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */; };
 		5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* Sheets.swift */; };
+		5CA065E42B6C2DAE00588194 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA065E32B6C2DAE00588194 /* Localization.swift */; };
 		5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC442B5707C400E17629 /* CheckInListContent.swift */; };
 		5CA4AC492B586DF800E17629 /* DuplicateProductContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */; };
 		5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */; };
@@ -406,6 +407,7 @@
 		5C9057E32B2894BE00EC157B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStateObserver.swift; sourceTree = "<group>"; };
 		5C9583862B41EE0000A2A03B /* Sheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheets.swift; sourceTree = "<group>"; };
+		5CA065E32B6C2DAE00588194 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		5CA4AC442B5707C400E17629 /* CheckInListContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListContent.swift; sourceTree = "<group>"; };
 		5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductContentUnavailableView.swift; sourceTree = "<group>"; };
 		5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheetRow.swift; sourceTree = "<group>"; };
@@ -1176,6 +1178,14 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		5CA065E22B6C2DA700588194 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				5CA065E32B6C2DAE00588194 /* Localization.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		5CAADEF22B5C235700D956C1 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -1218,6 +1228,7 @@
 		5CC276322B31F07C001032CE /* CheckIn */ = {
 			isa = PBXGroup;
 			children = (
+				5CA065E22B6C2DA700588194 /* Helpers */,
 				5C9057762B2894BE00EC157B /* Sheet */,
 				5C9057B62B2894BE00EC157B /* CheckInScreen */,
 				5CCEE2872B2D0BBA00F276DF /* CheckInList */,
@@ -1547,6 +1558,7 @@
 				5C9057FC2B2894BE00EC157B /* UserSheet.swift in Sources */,
 				5C90585D2B2894BE00EC157B /* RouterProvider.swift in Sources */,
 				5C90583E2B2894BE00EC157B /* FriendListItemView.swift in Sources */,
+				5CA065E42B6C2DAE00588194 /* Localization.swift in Sources */,
 				5C9057EF2B2894BE00EC157B /* Sheet.swift in Sources */,
 				5C90585C2B2894BE00EC157B /* TabIdentifier.swift in Sources */,
 				5C9057E62B2894BE00EC157B /* Utils.swift in Sources */,

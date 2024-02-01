@@ -40,7 +40,7 @@ struct FriendsScreen: View {
             FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Friends (\(friends.count))")
+        .navigationTitle("Friends (\(friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
             if !searchTerm.isEmpty, filteredFriends.isEmpty {
@@ -101,6 +101,19 @@ struct FriendsScreen: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load friends' . Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+public extension Friend.Status {
+    var label: LocalizedStringKey {
+        switch self {
+        case .accepted:
+            "friend.status.accepted"
+        case .blocked:
+            "friend.status.blocked"
+        case .pending:
+            "friend.status.pending"
         }
     }
 }

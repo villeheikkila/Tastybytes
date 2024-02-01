@@ -158,7 +158,7 @@ public struct Toast: View {
                     case .regular:
                         EmptyView()
                     }
-                    
+
                     if let title {
                         Text(title)
                             .font(style?.titleFont ?? .headline.bold())
