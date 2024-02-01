@@ -37,25 +37,25 @@ struct ProductFilterSheet: View {
     var body: some View {
         Form {
             if sections.contains(.category) {
-                Section("Category") {
+                Section("category.title") {
                     Picker(selection: $categoryFilter) {
-                        Text("Select All").tag(Models.Category.JoinedSubcategoriesServingStyles?(nil))
+                        Text("labels.selectAll").tag(Models.Category.JoinedSubcategoriesServingStyles?(nil))
                         ForEach(appEnvironmentModel.categories) { category in
                             Text(category.name).tag(Optional(category))
                         }
                     } label: {
-                        Text("Category")
+                        Text("category.picker.label")
                     }
                     .pickerStyle(.navigationLink)
                     Picker(selection: $subcategoryFilter) {
-                        Text("Select All").tag(Subcategory?(nil))
+                        Text("labels.selectAll").tag(Subcategory?(nil))
                         if let categoryFilter {
                             ForEach(categoryFilter.subcategories) { subcategory in
                                 Text(subcategory.name).tag(Optional(subcategory))
                             }
                         }
                     } label: {
-                        Text("Subcategory")
+                        Text("subcategory.picker.label")
                     }
                     .pickerStyle(.navigationLink)
                     .disabled(categoryFilter == nil)
@@ -63,25 +63,25 @@ struct ProductFilterSheet: View {
             }
 
             if sections.contains(.checkIns) {
-                Section("Check-ins") {
-                    Toggle("Only things I have not had", isOn: $onlyNonCheckedIn)
+                Section("checkIn.title") {
+                    Toggle("checkIn.filter.onlyNotHad", isOn: $onlyNonCheckedIn)
                 }
             }
             if sections.contains(.sortBy) {
-                Section("Sort By") {
+                Section("labels.sortBy") {
                     Picker(selection: $sortBy) {
                         Text("None").tag(Product.Filter.SortBy?(nil))
                         ForEach(Product.Filter.SortBy.allCases) { sortBy in
                             Text(sortBy.label).tag(Optional(sortBy))
                         }
                     } label: {
-                        Text("Rating")
+                        Text("checkIn.rating.label")
                     }
                 }
             }
-            Button("Reset", action: { resetFilter() }).bold()
+            Button("product.filter.reset", action: { resetFilter() }).bold()
         }
-        .navigationTitle("Filter")
+        .navigationTitle("product.filter.title")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
@@ -91,7 +91,7 @@ struct ProductFilterSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .confirmationAction) {
-            Button("Apply", action: {
+            Button("actions.apply", action: {
                 onApply(getFilter())
                 dismiss()
             }).bold()

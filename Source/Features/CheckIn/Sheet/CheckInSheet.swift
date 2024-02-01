@@ -209,8 +209,8 @@ struct CheckInSheet: View {
     }
 
     @ViewBuilder private var reviewSection: some View {
-        Section("Review") {
-            TextField("How was it?", text: $review, axis: .vertical)
+        Section("checkIn.review.title") {
+            TextField("checkIn.review.label", text: $review, axis: .vertical)
                 .focused($focusedField, equals: .review)
             RouterLink(
                 sheet: .flavors(pickedFlavors: $pickedFlavors),
@@ -218,12 +218,12 @@ struct CheckInSheet: View {
                     if !pickedFlavors.isEmpty {
                         FlavorsView(flavors: pickedFlavors)
                     } else {
-                        Text("Flavors")
+                        Text("flavors.label")
                     }
                 }
             )
             Button(
-                "\(editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) == nil && image == nil ? "Add" : "Change") Photo",
+                "\(editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) == nil && image == nil ? "checkIn.image.actions.add" : "checkIn.image.actions.change")",
                 systemImage: "photo", action: { showPhotoMenu.toggle() }
             )
         }
@@ -234,18 +234,18 @@ struct CheckInSheet: View {
         Section("checkIn.section.additionalInformation.title") {
             if !servingStyles.isEmpty {
                 Picker(selection: $servingStyle) {
-                    Text("Not Selected").tag(ServingStyle?(nil))
+                    Text("servingStyle.unselected").tag(ServingStyle?(nil))
                     ForEach(servingStyles) { servingStyle in
                         Text(servingStyle.label).tag(Optional(servingStyle))
                     }
                 } label: {
-                    Text("Serving Style")
+                    Text("servingStyle.title")
                 }
                 .pickerStyle(.navigationLink)
             }
 
             RouterLink(
-                "Manufactured by \(manufacturer?.name ?? "")",
+                "checkIn.manufacturedBy.label \(manufacturer?.name ?? "")",
                 sheet: .companySearch(onSelect: { company in
                     manufacturer = company
                 })
@@ -254,13 +254,13 @@ struct CheckInSheet: View {
     }
 
     @ViewBuilder private var locationAndFriendsSection: some View {
-        Section("Location & Friends") {
-            LocationInputButton(category: .checkIn, title: "Check-in Location", selection: $location, initialLocation: location?.location?.coordinate, onSelect: { location in
+        Section("checkIn.section.locationsFriends.title") {
+            LocationInputButton(category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: location?.location?.coordinate, onSelect: { location in
                 self.location = location
             })
 
             LocationInputButton(
-                category: .purchase, title: "Purchase Location",
+                category: .purchase, title: "checkIn.purchaseLocation.add.label",
                 selection: $purchaseLocation,
                 initialLocation: location?.location?.coordinate,
                 onSelect: { location in
@@ -274,8 +274,8 @@ struct CheckInSheet: View {
                 ) {
                     Text(
                         isLegacyCheckIn
-                            ? "Legacy Check-in"
-                            : "Checked-in \(checkInAt.formatted(.customRelativetime).lowercased())")
+                            ? "checkIn.date.legacyCheckIn"
+                            : "checkIn.date.checkInAt \(checkInAt.formatted(.customRelativetime).lowercased())")
                 }
             }
 
@@ -283,7 +283,7 @@ struct CheckInSheet: View {
                 sheet: .friends(taggedFriends: $taggedFriends),
                 label: {
                     if taggedFriends.isEmpty {
-                        Text("Tag friends")
+                        Text("checkIn.friends.tag")
                     } else {
                         WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
                             ForEach(taggedFriends) { friend in
@@ -300,7 +300,7 @@ struct CheckInSheet: View {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(
-                action == .create ? "Check-in!" : "Update Check-in!",
+                action == .create ? "checkIn.actions.create" : "checkIn.actions.update",
                 action: {
                     switch action {
                     case .create:
@@ -452,7 +452,7 @@ struct LocationInputButton: View {
                     }
                     Spacer()
                     if selection != nil {
-                        Button("Reset", systemImage: "xmark") {
+                        Button("checkIn.location.reset", systemImage: "xmark") {
                             selection = nil
                         }.labelStyle(.iconOnly)
                     }

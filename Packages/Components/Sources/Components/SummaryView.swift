@@ -28,10 +28,10 @@ public struct SummaryView: View {
         GridRow {
             Text("")
             Spacer()
-            Text("Check-ins")
+            Text("summary.check-ins")
                 .font(.caption).bold()
             Spacer()
-            Text("Rating")
+            Text("summary.rating")
                 .font(.caption).bold()
         }
     }

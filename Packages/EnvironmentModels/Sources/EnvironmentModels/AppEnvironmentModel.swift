@@ -197,7 +197,7 @@ public final class AppEnvironmentModel {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error(
-                "Failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id). error: \(error)"
+                "Failed to \(isVerified ? "unverify" : "actions.verify") subcategory \(subcategory.id). error: \(error)"
             )
         }
     }

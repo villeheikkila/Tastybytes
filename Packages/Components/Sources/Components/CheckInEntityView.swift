@@ -134,7 +134,7 @@ public struct CheckInEntityView: View {
 
             FlavorsView(flavors: checkIn.flavors.map(\.flavor))
             if let purchaseLocation = checkIn.purchaseLocation {
-                Text("Purchased from __\(purchaseLocation.name)__")
+                Text("checkIn.location.purchasedFrom __\(purchaseLocation.name)__")
             }
         }
     }
@@ -142,7 +142,7 @@ public struct CheckInEntityView: View {
     @ViewBuilder private var taggedProfilesSection: some View {
         if !checkIn.taggedProfiles.isEmpty {
             HStack {
-                Text("Tagged friends")
+                Text("checkIn.friends.tagged.label")
                     .font(.subheadline)
                     .fontWeight(.medium)
                 Spacer()
