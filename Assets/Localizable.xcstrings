@@ -10,18 +10,8 @@
     "(%@)" : {
 
     },
-    "(%lld)" : {
-
-    },
     "%@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@"
-          }
-        }
-      }
+
     },
     "%@ %@" : {
       "localizations" : {
@@ -44,53 +34,17 @@
       }
     },
     "%@ app icon" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ app icon"
-          }
-        }
-      }
+
     },
     "%@ brand" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ brand"
-          }
-        }
-      }
+
     },
     "%@ commented on your check-in of %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ commented on your check-in of %@"
-          }
-        }
-      }
-    },
-    "%@ Photo" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Photo"
-          }
-        }
-      }
-    },
-    "%@ Pro" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Pro"
+            "state" : "new",
+            "value" : "%1$@ commented on your check-in of %2$@"
           }
         }
       }
@@ -106,21 +60,14 @@
       }
     },
     "%@ sent you a friend request!" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ sent you a friend request!"
-          }
-        }
-      }
+
     },
     "%@ sub-brand from %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ sub-brand from %@"
+            "state" : "new",
+            "value" : "%1$@ sub-brand from %2$@"
           }
         }
       }
@@ -129,21 +76,14 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ tagged you in a check-in of %@"
+            "state" : "new",
+            "value" : "%1$@ tagged you in a check-in of %2$@"
           }
         }
       }
     },
     "%@,you can assign the barcode to a product by searching again with the name or by creating a new product." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@,you can assign the barcode to a product by searching again with the name or by creating a new product."
-          }
-        }
-      }
+
     },
     "%@: %@" : {
       "localizations" : {
@@ -166,60 +106,25 @@
       }
     },
     "About" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About"
-          }
-        }
-      }
+
     },
     "Access to location" : {
 
     },
     "Account" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Account"
-          }
-        }
-      }
+
     },
     "Account Deleted" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Account Deleted"
-          }
-        }
-      }
+
     },
     "account.delete-confirmation.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to permanently delete your account? All data will be lost."
-          }
-        }
-      }
+
     },
     "actions.apply" : {
 
     },
     "actions.cancel" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
-          }
-        }
-      }
+
     },
     "actions.continue" : {
 
@@ -231,67 +136,25 @@
 
     },
     "Activity" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activity"
-          }
-        }
-      }
+
     },
     "Add" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add"
-          }
-        }
-      }
+
     },
     "Add Barcode" : {
 
     },
     "Add barcode confirmation" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add barcode confirmation"
-          }
-        }
-      }
+
     },
     "Add barcode manually" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add barcode manually"
-          }
-        }
-      }
+
     },
     "Add Category" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Category"
-          }
-        }
-      }
+
     },
     "Add Flavor" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Flavor"
-          }
-        }
-      }
+
     },
     "Add flavors" : {
 
@@ -300,64 +163,22 @@
 
     },
     "Add new" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add new"
-          }
-        }
-      }
+
     },
     "Add new brand for %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add new brand for %@"
-          }
-        }
-      }
+
     },
     "Add new company" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add new company"
-          }
-        }
-      }
+
     },
     "Add new serving style" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add new serving style"
-          }
-        }
-      }
+
     },
     "Add new sub-brand for %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add new sub-brand for %@"
-          }
-        }
-      }
+
     },
     "Add new subcategory" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add new subcategory"
-          }
-        }
-      }
+
     },
     "Add Product" : {
 
@@ -366,145 +187,43 @@
 
     },
     "Add subcategory" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add subcategory"
-          }
-        }
-      }
+
     },
     "Add Subcategory" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Subcategory"
-          }
-        }
-      }
+
     },
     "Add subcategory to %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add subcategory to %@"
-          }
-        }
-      }
+
     },
     "Admin" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Admin"
-          }
-        }
-      }
-    },
-    "Apply" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apply"
-          }
-        }
-      }
+
     },
     "Are you sure you want to delete check-in as a moderator?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete check-in as a moderator?"
-          }
-        }
-      }
+
     },
     "Are you sure you want to delete comment as a moderator?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete comment as a moderator?"
-          }
-        }
-      }
+
     },
     "Are you sure you want to delete subcategory?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete subcategory?"
-          }
-        }
-      }
+
     },
     "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost"
-          }
-        }
-      }
+
     },
     "Are you sure you want to delete the product and all of its check-ins?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete the product and all of its check-ins?"
-          }
-        }
-      }
+
     },
     "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted"
-          }
-        }
-      }
+
     },
     "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted."
-          }
-        }
-      }
+
     },
     "Back to search" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Back to search"
-          }
-        }
-      }
+
     },
     "Barcode (EAN13)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Barcode (EAN13)"
-          }
-        }
-      }
+
     },
     "Barcode added!" : {
 
@@ -516,138 +235,40 @@
 
     },
     "Barcode Scanner" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Barcode Scanner"
-          }
-        }
-      }
+
     },
     "Barcodes" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Barcodes"
-          }
-        }
-      }
+
     },
     "Blocked Users" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blocked Users"
-          }
-        }
-      }
+
     },
     "Blocked users can't see your check-ins or profile" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blocked users can't see your check-ins or profile"
-          }
-        }
-      }
+
     },
     "Brand" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brand"
-          }
-        }
-      }
-    },
-    "Brand name" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brand name"
-          }
-        }
-      }
-    },
-    "Brand Owner" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brand Owner"
-          }
-        }
-      }
+
     },
     "Brand updated!" : {
 
     },
     "brand.delete-warning" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete brand and all related sub-brands and products?"
-          }
-        }
-      }
+
     },
     "Brands" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brands"
-          }
-        }
-      }
+
     },
     "brands.delete-brand-warning" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete sub-brand and all related products?"
-          }
-        }
-      }
+
     },
     "Camera" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Camera"
-          }
-        }
-      }
+
     },
     "Categories" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Categories"
-          }
-        }
-      }
+
     },
     "Category" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Category"
-          }
-        }
-      }
+
     },
     "Category created!" : {
 
@@ -659,70 +280,28 @@
 
     },
     "Check the spelling or try a new search" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check the spelling or try a new search"
-          }
-        }
-      }
+
     },
     "Check-in" : {
 
     },
     "Check-in date" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check-in date"
-          }
-        }
-      }
+
     },
     "Check-in Date" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check-in Date"
-          }
-        }
-      }
+
     },
     "Check-in Locations" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check-in Locations"
-          }
-        }
-      }
+
     },
     "Check-in!" : {
 
     },
     "check-in.delete-confirmation.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete check-in? The data will be permanently lost."
-          }
-        }
-      }
+
     },
     "check-in.legacy.label" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "legacy check-in"
-          }
-        }
-      }
+
     },
     "check-in.segment.everyone" : {
 
@@ -734,45 +313,13 @@
 
     },
     "Check-ins" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check-ins"
-          }
-        }
-      }
+
     },
     "check-ins.empty-content" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Be first to check-in!"
-          }
-        }
-      }
+
     },
     "Checked-in" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Checked-in"
-          }
-        }
-      }
-    },
-    "Checked-in %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Checked-in %@"
-          }
-        }
-      }
+
     },
     "checkIn.date.checkInAt %@" : {
 
@@ -799,31 +346,13 @@
 
     },
     "checkIn.section.additionalInformation.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Additional Information"
-          }
-        }
-      }
+
     },
     "checkIn.section.locationsFriends.title" : {
 
     },
     "checkIn.title" : {
 
-    },
-    "Close" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
-          }
-        }
-      }
     },
     "Comment..." : {
 
@@ -832,14 +361,7 @@
 
     },
     "Companies" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Companies"
-          }
-        }
-      }
+
     },
     "Company" : {
 
@@ -848,220 +370,61 @@
 
     },
     "Connect with others by sharing your name tag" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connect with others by sharing your name tag"
-          }
-        }
-      }
+
     },
     "Content in question" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Content in question"
-          }
-        }
-      }
-    },
-    "Continue" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue"
-          }
-        }
-      }
+
     },
     "Copyright" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copyright"
-          }
-        }
-      }
+
     },
     "Create new company" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create new company"
-          }
-        }
-      }
+
     },
     "Create new product" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create new product"
-          }
-        }
-      }
+
     },
     "Data was exported as CSV" : {
 
     },
     "Delete" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
-          }
-        }
-      }
+
     },
     "Delete Account" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete Account"
-          }
-        }
-      }
+
     },
     "Delete as Moderator" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete as Moderator"
-          }
-        }
-      }
+
     },
     "Delete Company Confirmation" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete Company Confirmation"
-          }
-        }
-      }
+
     },
     "Didn't find a product you were looking for?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Didn't find a product you were looking for?"
-          }
-        }
-      }
+
     },
     "Didn't find the company you were looking for?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Didn't find the company you were looking for?"
-          }
-        }
-      }
+
     },
     "Discover" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Discover"
-          }
-        }
-      }
+
     },
     "Dismiss barcode" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dismiss barcode"
-          }
-        }
-      }
-    },
-    "Distance: %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distance: %@"
-          }
-        }
-      }
-    },
-    "Done" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Done"
-          }
-        }
-      }
+
     },
     "Edit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit"
-          }
-        }
-      }
+
     },
     "Edit %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit %@"
-          }
-        }
-      }
+
     },
     "Edit Brand" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit Brand"
-          }
-        }
-      }
+
     },
     "Edit Comment" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit Comment"
-          }
-        }
-      }
+
     },
     "Edit Serving Style" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit Serving Style"
-          }
-        }
-      }
+
     },
     "Edit Serving Styles" : {
 
@@ -1073,85 +436,25 @@
 
     },
     "Email" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email"
-          }
-        }
-      }
+
     },
     "Email is only used for login and is not shown for other users." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email is only used for login and is not shown for other users."
-          }
-        }
-      }
+
     },
     "Enable or disable the app's permission to send notifications" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enable or disable the app's permission to send notifications"
-          }
-        }
-      }
+
     },
     "Feed couldn't be loaded" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Feed couldn't be loaded"
-          }
-        }
-      }
+
     },
     "Feeds" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Feeds"
-          }
-        }
-      }
-    },
-    "Filter" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filter"
-          }
-        }
-      }
+
     },
     "Find products by rating" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Find products by rating"
-          }
-        }
-      }
+
     },
     "Flavors" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Flavors"
-          }
-        }
-      }
+
     },
     "flavors.label" : {
 
@@ -1172,125 +475,40 @@
 
     },
     "Friends" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Friends"
-          }
-        }
-      }
+
     },
     "Friends (%@" : {
 
     },
-    "Friends (%lld)" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Friends (%lld)"
-          }
-        }
-      }
-    },
     "friends.accept-request.label" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accept friend request"
-          }
-        }
-      }
+
     },
     "GitHub" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "GitHub"
-          }
-        }
-      }
+
     },
     "Group products by" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Group products by"
-          }
-        }
-      }
+
     },
     "Group Products By" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Group Products By"
-          }
-        }
-      }
+
     },
     "Has a sub-brand?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Has a sub-brand?"
-          }
-        }
-      }
-    },
-    "How was it?" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How was it?"
-          }
-        }
-      }
+
     },
     "ID" : {
 
     },
     "Identity" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Identity"
-          }
-        }
-      }
+
     },
     "Image of the check-in" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Image of the check-in"
-          }
-        }
-      }
+
     },
     "Info" : {
 
     },
     "Joined %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Joined %@"
-          }
-        }
-      }
+
     },
     "Keep up to date!" : {
 
@@ -1302,195 +520,61 @@
 
     },
     "Leave a comment!" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leave a comment!"
-          }
-        }
-      }
-    },
-    "Legacy Check-in" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Legacy Check-in"
-          }
-        }
-      }
+
     },
     "LinkedIn" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "LinkedIn"
-          }
-        }
-      }
+
     },
     "Location" : {
 
-    },
-    "Location & Friends" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Location & Friends"
-          }
-        }
-      }
     },
     "Location is only used to suggest you venues for your check-ins and show near by activity" : {
 
     },
     "location.distance %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distance: %@"
-          }
-        }
-      }
+
     },
     "location.near-by" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nearby locations"
-          }
-        }
-      }
+
     },
     "location.recent" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Recent Locations"
-          }
-        }
-      }
+
     },
     "Logo" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logo"
-          }
-        }
-      }
+
     },
     "Logos" : {
 
     },
     "Long press on a rating to find rated products" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Long press on a rating to find rated products"
-          }
-        }
-      }
+
     },
     "Mark as duplicate" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mark as duplicate"
-          }
-        }
-      }
+
     },
     "Mark as Duplicate" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mark as Duplicate"
-          }
-        }
-      }
+
     },
     "Mark as legacy check-in" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mark as legacy check-in"
-          }
-        }
-      }
+
     },
     "Merge duplicates" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Merge duplicates"
-          }
-        }
-      }
+
     },
     "Merge location to..." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Merge location to..."
-          }
-        }
-      }
+
     },
     "Merge to another sub-brand" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Merge to another sub-brand"
-          }
-        }
-      }
+
     },
     "Merge to..." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Merge to..."
-          }
-        }
-      }
+
     },
     "Moderation" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moderation"
-          }
-        }
-      }
+
     },
     "Name" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name"
-          }
-        }
-      }
+
     },
     "Name of subcategory" : {
 
@@ -1508,25 +592,7 @@
 
     },
     "Name Tag" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name Tag"
-          }
-        }
-      }
-    },
-    "Nearby locations" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nearby locations"
-          }
-        }
-      }
+
     },
     "New Brand Created!" : {
 
@@ -1535,186 +601,55 @@
 
     },
     "New Products" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New Products"
-          }
-        }
-      }
+
     },
     "New Sub-brand Created!" : {
 
     },
     "No check-ins from friends" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No check-ins from friends"
-          }
-        }
-      }
-    },
-    "No Companies  found for \"%@\"" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Companies  found for \"%@\""
-          }
-        }
-      }
+
     },
     "No Companies found for \"%@\"" : {
 
     },
     "No companies found with the searched name." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No companies found with the searched name."
-          }
-        }
-      }
+
     },
     "No Locations found for \"%@\"" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Locations found for \"%@\""
-          }
-        }
-      }
+
     },
     "No longer in production" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No longer in production"
-          }
-        }
-      }
+
     },
     "No Products found for \"%@\"" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Products found for \"%@\""
-          }
-        }
-      }
+
     },
     "No Products found with the barcode" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Products found with the barcode"
-          }
-        }
-      }
+
     },
     "No profiles found for \"%@\"" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No profiles found for \"%@\""
-          }
-        }
-      }
+
     },
     "None" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "None"
-          }
-        }
-      }
-    },
-    "Not Selected" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Not Selected"
-          }
-        }
-      }
+
     },
     "Not the product you were looking for?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Not the product you were looking for?"
-          }
-        }
-      }
+
     },
     "Notifications" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notifications"
-          }
-        }
-      }
-    },
-    "Only things I have not had" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Only things I have not had"
-          }
-        }
-      }
+
     },
     "Oops!" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oops!"
-          }
-        }
-      }
+
     },
     "Open App Store" : {
 
     },
     "Open System Notification Settings" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open System Notification Settings"
-          }
-        }
-      }
+
     },
     "Options menu" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Options menu"
-          }
-        }
-      }
+
     },
     "Owner" : {
 
@@ -1723,120 +658,43 @@
 
     },
     "Pick a photo" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pick a photo"
-          }
-        }
-      }
+
     },
     "Pick Serving Style" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pick Serving Style"
-          }
-        }
-      }
+
     },
     "Picked serving style" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Picked serving style"
-          }
-        }
-      }
+
     },
     "Please check your network connection and try again." : {
 
     },
     "Portfolio" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Portfolio"
-          }
-        }
-      }
+
     },
     "Privacy" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacy"
-          }
-        }
-      }
+
     },
     "Privacy policy here" : {
 
     },
     "Private profile" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Private profile"
-          }
-        }
-      }
+
     },
     "Private Profile" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Private Profile"
-          }
-        }
-      }
+
     },
     "Private profile hides check-ins and profile page from everyone else but your friends" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Private profile hides check-ins and profile page from everyone else but your friends"
-          }
-        }
-      }
+
     },
     "Product" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Product"
-          }
-        }
-      }
+
     },
     "Product Logo" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Product Logo"
-          }
-        }
-      }
+
     },
     "Product Merge Confirmation" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Product Merge Confirmation"
-          }
-        }
-      }
+
     },
     "product.filter.reset" : {
 
@@ -1845,271 +703,76 @@
 
     },
     "Products" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Products"
-          }
-        }
-      }
+
     },
     "Profile" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profile"
-          }
-        }
-      }
+
     },
     "Purchased from __%@__" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Purchased from __%@__"
-          }
-        }
-      }
+
     },
     "Quit the App" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quit the App"
-          }
-        }
-      }
+
     },
     "Rate %@" : {
 
     },
     "Rating" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rating"
-          }
-        }
-      }
+
     },
     "React to check-in" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "React to check-in"
-          }
-        }
-      }
+
     },
     "Reactions" : {
 
     },
     "Reason" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reason"
-          }
-        }
-      }
-    },
-    "Recent locations" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Recent locations"
-          }
-        }
-      }
+
     },
     "Reload" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reload"
-          }
-        }
-      }
+
     },
     "Remove friend request" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remove friend request"
-          }
-        }
-      }
+
     },
     "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins"
-          }
-        }
-      }
+
     },
     "Report" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Report"
-          }
-        }
-      }
+
     },
     "Report %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Report %@"
-          }
-        }
-      }
+
     },
     "Report submitted!" : {
 
     },
-    "Reset" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset"
-          }
-        }
-      }
-    },
     "Reset filter" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset filter"
-          }
-        }
-      }
-    },
-    "Review" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Review"
-          }
-        }
-      }
+
     },
     "Scan a barcode" : {
 
     },
     "Scan Name Tag" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan Name Tag"
-          }
-        }
-      }
+
     },
     "Search companies" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search companies"
-          }
-        }
-      }
+
     },
     "Search for a duplicate location" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search for a duplicate location"
-          }
-        }
-      }
+
     },
     "Search for a duplicate product" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search for a duplicate product"
-          }
-        }
-      }
-    },
-    "Search for duplicate of %@. Your request will be reviewed and products will be combined if appropriate." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search for duplicate of %@. Your request will be reviewed and products will be combined if appropriate."
-          }
-        }
-      }
+
     },
     "Search users" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search users"
-          }
-        }
-      }
-    },
-    "Select All" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select All"
-          }
-        }
-      }
+
     },
     "Select Logo" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Logo"
-          }
-        }
-      }
+
     },
     "Selected" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selected"
-          }
-        }
-      }
+
     },
     "Send Feedback" : {
 
@@ -2117,26 +780,8 @@
     "Sent!" : {
 
     },
-    "Serving Style" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Serving Style"
-          }
-        }
-      }
-    },
     "serving-style.delete-warning.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost"
-          }
-        }
-      }
+
     },
     "servingStyle.title" : {
 
@@ -2145,97 +790,34 @@
 
     },
     "Set up your profile" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set up your profile"
-          }
-        }
-      }
+
     },
     "Settings" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
-          }
-        }
-      }
+
     },
     "settings.account.delete.disclaimer" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All your personal information has been permanently deleted from the system."
-          }
-        }
-      }
+
     },
     "settings.appearance.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appearance"
-          }
-        }
-      }
+
     },
     "settings.appIcon.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Icon"
-          }
-        }
-      }
+
     },
     "settings.contributions.description" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All your verified contributions are counted here. Verification can take some days."
-          }
-        }
-      }
+
     },
     "Share your profile" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share your profile"
-          }
-        }
-      }
+
     },
     "Show All" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show All"
-          }
-        }
-      }
+
     },
     "Show block user sheet" : {
 
     },
     "Show check-ins from" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show check-ins from"
-          }
-        }
-      }
+
     },
     "Show filters" : {
 
@@ -2247,14 +829,7 @@
 
     },
     "Show Name Tag" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show Name Tag"
-          }
-        }
-      }
+
     },
     "Show name tag or send friend request by QR code" : {
 
@@ -2272,181 +847,49 @@
 
     },
     "Show scanner" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show scanner"
-          }
-        }
-      }
+
     },
     "Showing only products you haven't tried" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Showing only products you haven't tried"
-          }
-        }
-      }
+
     },
     "Sign Out" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sign Out"
-          }
-        }
-      }
-    },
-    "Skip" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skip"
-          }
-        }
-      }
+
     },
     "Sorry to see you go but you're always welcome back!" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sorry to see you go but you're always welcome back!"
-          }
-        }
-      }
-    },
-    "Sort By" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sort By"
-          }
-        }
-      }
+
     },
     "Sorted by %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sorted by %@"
-          }
-        }
-      }
+
     },
     "Statistics" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Statistics"
-          }
-        }
-      }
+
     },
     "Sub-brand" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sub-brand"
-          }
-        }
-      }
+
     },
     "Sub-brand updated!" : {
 
     },
     "Sub-brands" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sub-brands"
-          }
-        }
-      }
+
     },
     "Subcategories" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subcategories"
-          }
-        }
-      }
-    },
-    "Subcategory" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subcategory"
-          }
-        }
-      }
+
     },
     "subcategory.picker.label" : {
 
     },
     "Submit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Submit"
-          }
-        }
-      }
+
     },
     "Subscribe to Premium" : {
 
     },
     "System Settings" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "System Settings"
-          }
-        }
-      }
-    },
-    "Tag friends" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tag friends"
-          }
-        }
-      }
+
     },
     "Terms of service here" : {
 
-    },
-    "TextField" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TextField"
-          }
-        }
-      }
     },
     "Thanks for the feedback!" : {
 
@@ -2455,155 +898,49 @@
 
     },
     "These values are used in your personal page and can be seen by other users." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "These values are used in your personal page and can be seen by other users."
-          }
-        }
-      }
-    },
-    "This only takes effect if both first name and last name are provided." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This only takes effect if both first name and last name are provided."
-          }
-        }
-      }
+
     },
     "Time Period" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Time Period"
-          }
-        }
-      }
+
     },
     "To keep you updated and informed, we need access to send you notifications." : {
 
     },
     "Turn the torch %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Turn the torch %@"
-          }
-        }
-      }
+
     },
     "Unexpected error occured. Please try loading the app again later." : {
 
     },
     "Unlock additional features" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlock additional features"
-          }
-        }
-      }
+
     },
     "Unverified %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverified %@"
-          }
-        }
-      }
+
     },
     "Unverified Products" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverified Products"
-          }
-        }
-      }
+
     },
     "Unverify Brand" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify Brand"
-          }
-        }
-      }
+
     },
     "Unverify Company" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify Company"
-          }
-        }
-      }
+
     },
     "Unverify Product" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify Product"
-          }
-        }
-      }
+
     },
     "Unverify Sub-brand" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify Sub-brand"
-          }
-        }
-      }
+
     },
     "Update needed!" : {
 
     },
     "Use Dark Mode" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use Dark Mode"
-          }
-        }
-      }
-    },
-    "Use Full Name Instead of Username" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use Full Name Instead of Username"
-          }
-        }
-      }
+
     },
     "Use System Color Scheme" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use System Color Scheme"
-          }
-        }
-      }
+
     },
     "Use your full name as a display name across the interface. This only takes effect if both first name and last name are provided." : {
 
@@ -2611,25 +948,8 @@
     "User blocked" : {
 
     },
-    "Username" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Username"
-          }
-        }
-      }
-    },
     "Value" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Value"
-          }
-        }
-      }
+
     },
     "Verified" : {
 
@@ -2645,37 +965,16 @@
       }
     },
     "Wishlist" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wishlist"
-          }
-        }
-      }
+
     },
     "Wishlist is empty" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wishlist is empty"
-          }
-        }
-      }
+
     },
     "You can only add %lld flavors" : {
 
     },
     "You don't have any friends yet" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You don't have any friends yet"
-          }
-        }
-      }
+
     },
     "You have %@ %@. Thank you!" : {
       "localizations" : {
@@ -2687,46 +986,14 @@
         }
       }
     },
-    "You have %@ Pro. Thank you!" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You have %@ Pro. Thank you!"
-          }
-        }
-      }
-    },
     "You haven't blocked any users" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You haven't blocked any users"
-          }
-        }
-      }
+
     },
     "You haven't check-in yet" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You haven't check-in yet"
-          }
-        }
-      }
+
     },
     "Your Contributions" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your Contributions"
-          }
-        }
-      }
+
     },
     "Your current app version is no longer supported, please update the app in the App Store" : {
 
