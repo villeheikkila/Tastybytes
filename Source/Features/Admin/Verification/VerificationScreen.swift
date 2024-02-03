@@ -13,16 +13,16 @@ struct VerificationScreen: View {
 
         case products, brands, subBrands, companies
 
-        var label: String {
+        var label: LocalizedStringKey {
             switch self {
             case .products:
-                "Products"
+                "product.title"
             case .brands:
-                "Brands"
+                "brand.title"
             case .companies:
-                "Companies"
+                "company.title"
             case .subBrands:
-                "Sub-brands"
+                "subBrand.title"
             }
         }
     }
@@ -59,19 +59,19 @@ struct VerificationScreen: View {
             }
         }
         .listStyle(.plain)
-        .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
+        .confirmationDialog("product.delete.confirmation.title",
                             isPresented: $showDeleteProductConfirmationDialog,
                             titleVisibility: .visible,
                             presenting: deleteProduct)
         { presenting in
             ProgressButton(
-                "Delete \(presenting.formatted(.fullName))",
+                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
                 role: .destructive,
                 action: { await deleteProduct(presenting) }
             )
         }
         .alertError($alertError)
-        .navigationBarTitle("Unverified \(verificationType.label)")
+        .navigationBarTitle(Text("labels.unverified") + Text(verificationType.label))
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
@@ -167,7 +167,7 @@ struct VerificationScreen: View {
                 Button {
                     verificationType = type
                 } label: {
-                    Text("Unverified \(type.label)")
+                    Text("labels.unverified") + Text(type.label)
                 }
             }
         }

@@ -6,9 +6,9 @@ struct DiscoverProductAddNew: View {
     @Binding var barcode: Barcode?
 
     var body: some View {
-        Section("Didn't find a product you were looking for?") {
+        Section("product.createNew.description") {
             HStack {
-                Text("Add new")
+                Text("product.createNew.label")
                     .fontWeight(.medium)
                 Spacer()
             }

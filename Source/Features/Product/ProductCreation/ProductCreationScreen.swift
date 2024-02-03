@@ -52,7 +52,7 @@ struct ProductCreationBrandSection: View {
         }
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
-        .navigationTitle("Brand")
+        .navigationTitle("brand.title")
     }
 }
 

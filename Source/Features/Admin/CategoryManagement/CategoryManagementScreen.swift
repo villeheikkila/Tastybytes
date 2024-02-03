@@ -32,12 +32,12 @@ struct CategoryManagementScreen: View {
                     Spacer()
                     Menu {
                         Button(
-                            "Edit Serving Styles",
+                            "servingStyle.edit.menu.label",
                             systemImage: "pencil",
                             action: { sheet = .categoryServingStyle(category: category) }
                         )
                         Button(
-                            "Add Subcategory",
+                            "subcategory.add",
                             systemImage: "plus",
                             action: { sheet = .addSubcategory(category: category, onSubmit: { newSubcategoryName in
                                 await appEnvironmentModel.addSubcategory(
@@ -47,7 +47,7 @@ struct CategoryManagementScreen: View {
                             }) }
                         )
                     } label: {
-                        Label("Options menu", systemImage: "ellipsis")
+                        Label("labels.menu", systemImage: "ellipsis")
                             .labelStyle(.iconOnly)
                             .frame(width: 24, height: 24)
                     }

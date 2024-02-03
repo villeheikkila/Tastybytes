@@ -124,12 +124,12 @@ struct BrandScreen: View {
                     toolbarContent
                 }
                 .confirmationDialog(
-                    "Unverify Sub-brand",
+                    "subBrand.actions.unverify",
                     isPresented: $showSubBrandUnverificationConfirmation,
                     presenting: toUnverifySubBrand
                 ) { presenting in
                     ProgressButton(
-                        "Unverify \(presenting.name ?? "default") sub-brand",
+                        "subBrand.actions.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
                         action: {
                             await verifySubBrand(presenting, isVerified: false)
                         }
@@ -137,39 +137,39 @@ struct BrandScreen: View {
                 }
                 .alertError($alertError)
                 .confirmationDialog(
-                    "Unverify Brand",
+                    "brand.actions.unverify",
                     isPresented: $showBrandUnverificationConfirmation,
                     presenting: brand
                 ) { presenting in
                     ProgressButton(
-                        "Unverify \(presenting.name) brand",
+                        "brand.actions.unverify.disclaimer \(presenting.name)",
                         action: {
                             await verifyBrand(brand: presenting, isVerified: false)
                         }
                     )
                 }
                 .confirmationDialog(
-                    "Group products by",
+                    "brandScreen.groupProductsBy",
                     isPresented: $showProductGroupingPicker,
                     titleVisibility: .visible
                 ) {
-                    Button("Sub-brand") {
+                    Button("subBrand.title") {
                         productGrouping = .subBrand
                     }
                     .disabled(productGrouping == .subBrand)
-                    Button("Category") {
+                    Button("category.title") {
                         productGrouping = .category
                     }
                     .disabled(productGrouping == .category)
                 }
                 .confirmationDialog(
-                    "brands.delete-brand-warning",
+                    "subBrand.actions.delete.disclaimer",
                     isPresented: $showDeleteSubBrandConfirmation,
                     titleVisibility: .visible,
                     presenting: toDeleteSubBrand
                 ) { presenting in
                     ProgressButton(
-                        "Delete \(presenting.name ?? "default sub-brand")",
+                        "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
                         role: .destructive,
                         action: {
                             await deleteSubBrand(presenting)
@@ -177,13 +177,13 @@ struct BrandScreen: View {
                     )
                 }
                 .confirmationDialog(
-                    "brand.delete-warning",
+                    "brand.actions.delete.disclaimer",
                     isPresented: $showDeleteBrandConfirmationDialog,
                     titleVisibility: .visible,
                     presenting: brand
                 ) { presenting in
                     ProgressButton(
-                        "Delete \(presenting.name)", role: .destructive,
+                        "brand.actions.delete.label \(presenting.name)", role: .destructive,
                         action: {
                             await deleteBrand(presenting)
                         }
@@ -255,7 +255,7 @@ struct BrandScreen: View {
                         ReportButton(sheet: $sheet, entity: .subBrand(brand, subBrand))
                         if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                             Button(
-                                "Delete",
+                                "actions.delete",
                                 systemImage: "trash.fill",
                                 role: .destructive,
                                 action: { toDeleteSubBrand = subBrand }
@@ -263,7 +263,7 @@ struct BrandScreen: View {
                             .disabled(subBrand.isVerified)
                         }
                     } label: {
-                        Label("Options menu", systemImage: "ellipsis")
+                        Label("labels.menu", systemImage: "ellipsis")
                             .labelStyle(.iconOnly)
                             .frame(width: 24, height: 24)
                     }
@@ -322,7 +322,7 @@ struct BrandScreen: View {
                 )
                 Divider()
                 RouterLink(
-                    "Open Brand Owner",
+                    "company.screen.open",
                     systemImage: "network",
                     screen: .company(brand.brandOwner)
                 )
@@ -341,7 +341,7 @@ struct BrandScreen: View {
                     .disabled(brand.isVerified)
                 }
             } label: {
-                Label("Options menu", systemImage: "ellipsis")
+                Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }

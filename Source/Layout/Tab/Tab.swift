@@ -28,15 +28,15 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
     @ViewBuilder var label: some View {
         switch self {
         case .activity:
-            Label("Activity", systemImage: "list.star")
+            Label("tab.activity", systemImage: "list.star")
         case .discover:
-            Label("Discover", systemImage: "magnifyingglass")
+            Label("tab.discover", systemImage: "magnifyingglass")
         case .notifications:
-            Label("Notifications", systemImage: "bell")
+            Label("tab.notifications", systemImage: "bell")
         case .admin:
-            Label("Admin", systemImage: "exclamationmark.lock.fill")
+            Label("tab.admin", systemImage: "exclamationmark.lock.fill")
         case .profile:
-            Label("Profile", systemImage: "person.fill")
+            Label("tab.profile", systemImage: "person.fill")
         }
     }
 }

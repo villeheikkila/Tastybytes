@@ -20,15 +20,13 @@ struct ReportSheet: View {
 
     var body: some View {
         Form {
-            Section {
+            Section("report.section.content.title") {
                 reportedEntityView
-            } header: {
-                Text("Content in question")
             }
-            Section("Report") {
-                TextField("Reason", text: $reasonText, axis: .vertical)
+            Section("report.section.report.title") {
+                TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)
                     .lineLimit(8, reservesSpace: true)
-                ProgressButton("Submit", action: {
+                ProgressButton("label.submit", action: {
                     await submitReport()
                 }).bold()
             }

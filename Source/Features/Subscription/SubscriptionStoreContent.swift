@@ -35,7 +35,7 @@ struct SubscriptionStoreContentView: View {
     }
 
     var desctiption: some View {
-        Text("Unlock additional features")
+        Text("subscription.callToAction.description")
             .fixedSize(horizontal: false, vertical: true)
             .font(.title3.weight(.medium))
             .padding([.bottom, .horizontal])

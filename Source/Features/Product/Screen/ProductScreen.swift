@@ -136,13 +136,13 @@ struct ProductScreen: View {
                 Divider()
                 RouterLink("Open Product", systemImage: "grid", screen: .product(product))
                 RouterLink(
-                    "Open Sub-brand",
+                    "subBrand.screen.open",
                     systemImage: "cart",
                     screen: .fetchSubBrand(product.subBrand)
                 )
-                RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(product.subBrand.brand))
+                RouterLink("brand.screen.open", systemImage: "cart", screen: .fetchBrand(product.subBrand.brand))
                 RouterLink(
-                    "Open Brand Owner",
+                    "company.screen.open",
                     systemImage: "network",
                     screen: .company(product.subBrand.brand.brandOwner)
                 )
@@ -191,7 +191,7 @@ struct ProductScreen: View {
 
                 ReportButton(sheet: $sheet, entity: .product(product))
             } label: {
-                Label("Options menu", systemImage: "ellipsis")
+                Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }

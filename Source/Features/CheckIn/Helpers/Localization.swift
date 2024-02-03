@@ -4,9 +4,9 @@ import SwiftUI
 extension CheckInSegment {
     public var label: LocalizedStringKey {
         switch self {
-        case .everyone: "check-in.segment.everyone"
-        case .friends: "check-in.segment.friends"
-        case .you: "check-in.segment.you"
+        case .everyone: "checkIn.segment.everyone"
+        case .friends: "checkIn.segment.friends"
+        case .you: "checkIn.segment.you"
         }
     }
 }

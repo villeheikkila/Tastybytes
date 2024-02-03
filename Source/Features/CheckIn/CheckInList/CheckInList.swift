@@ -110,7 +110,7 @@ struct CheckInList<Header>: View where Header: View {
                 ContentUnavailableView {
                     Label("Feed couldn't be loaded", systemImage: "exclamationmark.triangle")
                 } actions: {
-                    Button("Reload") {
+                    Button("actions.reload") {
                         refreshId += 1
                     }
                 }

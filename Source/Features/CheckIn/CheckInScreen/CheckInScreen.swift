@@ -69,7 +69,7 @@ struct CheckInScreen: View {
         }
         .alertError($alertError)
         .confirmationDialog(
-            "check-in.delete-confirmation.title",
+            "checkIn.delete.confirmation.title",
             isPresented: $showDeleteConfirmation,
             titleVisibility: .visible,
             presenting: checkIn
@@ -81,13 +81,13 @@ struct CheckInScreen: View {
             )
         }
         .confirmationDialog(
-            "Are you sure you want to delete check-in as a moderator?",
+            "checkIn.delete.asModerator.title",
             isPresented: $showDeleteCheckInAsModeratorConfirmation,
             titleVisibility: .visible,
             presenting: toDeleteCheckInAsModerator
         ) { presenting in
             ProgressButton(
-                "Delete check-in from \(presenting.profile.preferredName)",
+                "checkIn.delete.asModerator.label \(presenting.profile.preferredName)",
                 role: .destructive,
                 action: { await deleteCheckInAsModerator(presenting) }
             )
@@ -104,7 +104,7 @@ struct CheckInScreen: View {
                     CheckInShareLinkView(checkIn: checkIn)
                     if checkIn.profile.id == profileEnvironmentModel.id {
                         Button(
-                            "Edit",
+                            "labels.edit",
                             systemImage: "pencil",
                             action: { sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
                                 checkIn = updatedCheckIn
@@ -112,7 +112,7 @@ struct CheckInScreen: View {
                             }
                         )
                         Button(
-                            "Delete",
+                            "labels.delete",
                             systemImage: "trash.fill",
                             role: .destructive,
                             action: {
@@ -121,7 +121,7 @@ struct CheckInScreen: View {
                         )
                     } else {
                         Button(
-                            "Check-in",
+                            "checkIn.add.label",
                             systemImage: "pencil",
                             action: { sheet = .newCheckIn(checkIn.product, onCreation: { checkIn in
                                 router.navigate(screen: .checkIn(checkIn))
@@ -134,30 +134,30 @@ struct CheckInScreen: View {
                 Divider()
                 RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
                 RouterLink(
-                    "Open Brand Owner",
+                    "company.screen.open",
                     systemImage: "network",
                     screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )
                 RouterLink(
-                    "Open Brand",
+                    "brand.screen.open",
                     systemImage: "cart",
                     screen: .fetchBrand(checkIn.product.subBrand.brand)
                 )
                 RouterLink(
-                    "Open Sub-brand",
+                    "subBrand.screen.open",
                     systemImage: "cart",
                     screen: .fetchSubBrand(checkIn.product.subBrand)
                 )
                 if let location = checkIn.location {
                     RouterLink(
-                        "Open Location",
+                        "checkIn.actions.openLocationScreen",
                         systemImage: "network",
                         screen: .location(location)
                     )
                 }
                 if let purchaseLocation = checkIn.purchaseLocation {
                     RouterLink(
-                        "Open Purchase Location",
+                        "checkIn.actions.openPurchaseLocationScreen",
                         systemImage: "network",
                         screen: .location(purchaseLocation)
                     )
@@ -174,7 +174,7 @@ struct CheckInScreen: View {
                     ControlGroup {
                         CheckInShareLinkView(checkIn: checkIn)
                         Button(
-                            "Edit", systemImage: "pencil",
+                            "labels.edit", systemImage: "pencil",
                             action: { sheet = .checkIn(
                                 checkIn,
                                 onUpdate: { updatedCheckIn in
@@ -184,7 +184,7 @@ struct CheckInScreen: View {
                             }
                         )
                         Button(
-                            "Delete",
+                            "labels.delete",
                             systemImage: "trash.fill",
                             role: .destructive,
                             action: { showDeleteConfirmation = true }
@@ -193,16 +193,16 @@ struct CheckInScreen: View {
                 }
                 Divider()
                 RouterLink(
-                    "Open Brand Owner",
+                    "company.screen.open",
                     systemImage: "network",
                     screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )
                 RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
                 RouterLink(
-                    "Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand)
+                    "brand.screen.open", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand)
                 )
                 RouterLink(
-                    "Open Sub-brand",
+                    "subBrand.screen.open",
                     systemImage: "cart",
                     screen: .fetchSubBrand(checkIn.product.subBrand)
                 )
@@ -213,7 +213,7 @@ struct CheckInScreen: View {
                 if profileEnvironmentModel.hasRole(.moderator) {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canDeleteCheckInsAsModerator) {
-                            Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
+                            Button("labels.delete.asModerator", systemImage: "trash.fill", role: .destructive) {
                                 toDeleteCheckInAsModerator = checkIn
                             }
                         }
@@ -223,7 +223,7 @@ struct CheckInScreen: View {
                     }
                 }
             } label: {
-                Label("Options menu", systemImage: "ellipsis")
+                Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }

@@ -2,11 +2,11 @@ import TipKit
 
 struct NameTagTip: Tip {
     var title: Text {
-        Text("Share your profile")
+        Text("profile.nameTag.tip.share")
     }
 
     var message: Text? {
-        Text("Connect with others by sharing your name tag")
+        Text("profile.nameTag.tip.description")
     }
 
     var asset: Image? {

@@ -108,6 +108,9 @@
     "About" : {
 
     },
+    "about.title" : {
+
+    },
     "Access to location" : {
 
     },
@@ -120,6 +123,9 @@
     "account.delete-confirmation.title" : {
 
     },
+    "account.title" : {
+
+    },
     "actions.apply" : {
 
     },
@@ -129,6 +135,12 @@
     "actions.continue" : {
 
     },
+    "actions.delete" : {
+
+    },
+    "actions.reload" : {
+
+    },
     "actions.skip" : {
 
     },
@@ -136,6 +148,9 @@
 
     },
     "Activity" : {
+
+    },
+    "activity.error.failedToLoad" : {
 
     },
     "Add" : {
@@ -157,12 +172,6 @@
 
     },
     "Add flavors" : {
-
-    },
-    "Add friend" : {
-
-    },
-    "Add new" : {
 
     },
     "Add new brand for %@" : {
@@ -198,9 +207,6 @@
     "Admin" : {
 
     },
-    "Are you sure you want to delete check-in as a moderator?" : {
-
-    },
     "Are you sure you want to delete comment as a moderator?" : {
 
     },
@@ -219,9 +225,6 @@
     "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted." : {
 
     },
-    "Back to search" : {
-
-    },
     "Barcode (EAN13)" : {
 
     },
@@ -237,6 +240,9 @@
     "Barcode Scanner" : {
 
     },
+    "barcode.title" : {
+
+    },
     "Barcodes" : {
 
     },
@@ -246,28 +252,28 @@
     "Blocked users can't see your check-ins or profile" : {
 
     },
-    "Brand" : {
+    "blockedUsers.title" : {
 
     },
     "Brand updated!" : {
 
     },
-    "brand.delete-warning" : {
+    "brand.actions.delete.disclaimer" : {
+
+    },
+    "brand.actions.unverify" : {
+
+    },
+    "brand.title" : {
 
     },
     "Brands" : {
 
     },
-    "brands.delete-brand-warning" : {
-
-    },
-    "Camera" : {
+    "brandScreen.groupProductsBy" : {
 
     },
     "Categories" : {
-
-    },
-    "Category" : {
 
     },
     "Category created!" : {
@@ -277,9 +283,6 @@
 
     },
     "category.title" : {
-
-    },
-    "Check the spelling or try a new search" : {
 
     },
     "Check-in" : {
@@ -303,15 +306,6 @@
     "check-in.legacy.label" : {
 
     },
-    "check-in.segment.everyone" : {
-
-    },
-    "check-in.segment.friends" : {
-
-    },
-    "check-in.segment.you" : {
-
-    },
     "Check-ins" : {
 
     },
@@ -321,10 +315,22 @@
     "Checked-in" : {
 
     },
+    "checkIn.action.createNew" : {
+
+    },
+    "checkIn.add.label" : {
+
+    },
     "checkIn.date.checkInAt %@" : {
 
     },
     "checkIn.date.legacyCheckIn" : {
+
+    },
+    "checkIn.delete.asModerator.title" : {
+
+    },
+    "checkIn.delete.confirmation.title" : {
 
     },
     "checkIn.filter.onlyNotHad" : {
@@ -333,7 +339,22 @@
     "checkIn.friends.tag" : {
 
     },
+    "checkIn.location.purchasedFrom __%@__" : {
+
+    },
     "checkIn.location.reset" : {
+
+    },
+    "checkIn.photo.picker.camera" : {
+
+    },
+    "checkIn.photo.picker.photoGallery" : {
+
+    },
+    "checkIn.photo.picker.title" : {
+
+    },
+    "checkIn.photo.title" : {
 
     },
     "checkIn.rating.label" : {
@@ -351,6 +372,27 @@
     "checkIn.section.locationsFriends.title" : {
 
     },
+    "checkIn.segment.everyone" : {
+
+    },
+    "checkIn.segment.friends" : {
+
+    },
+    "checkIn.segment.you" : {
+
+    },
+    "checkIn.shareLink.subject" : {
+
+    },
+    "checkIn.statistics.checkIns.label" : {
+
+    },
+    "checkIn.statistics.newProducts.label" : {
+
+    },
+    "checkIn.statistics.timePeriod.segment.picker" : {
+
+    },
     "checkIn.title" : {
 
     },
@@ -360,28 +402,19 @@
     "Comments" : {
 
     },
-    "Companies" : {
-
-    },
-    "Company" : {
-
-    },
     "Company updated" : {
 
     },
-    "Connect with others by sharing your name tag" : {
+    "company.shareLink.subject" : {
 
     },
-    "Content in question" : {
+    "company.title" : {
 
     },
-    "Copyright" : {
+    "contributions.title" : {
 
     },
     "Create new company" : {
-
-    },
-    "Create new product" : {
 
     },
     "Data was exported as CSV" : {
@@ -399,16 +432,76 @@
     "Delete Company Confirmation" : {
 
     },
-    "Didn't find a product you were looking for?" : {
-
-    },
     "Didn't find the company you were looking for?" : {
 
     },
     "Discover" : {
 
     },
+    "discover.barcode.notFound.title" : {
+
+    },
+    "discover.barcode.scan" : {
+
+    },
+    "discover.companies.label" : {
+
+    },
+    "discover.companies.notFound.description" : {
+
+    },
+    "discover.companies.notFound.title \"%@\"" : {
+
+    },
+    "discover.companies.prompot" : {
+
+    },
+    "discover.filter.show" : {
+
+    },
+    "discover.locations.label" : {
+
+    },
+    "discover.locations.notFound.description" : {
+
+    },
+    "discover.locations.notFound.title \"%@\"" : {
+
+    },
+    "discover.locations.prompt" : {
+
+    },
+    "discover.procucts.notFound.title \"%@\"" : {
+
+    },
+    "discover.products.label" : {
+
+    },
+    "discover.products.notFound.description" : {
+
+    },
+    "discover.products.prompt." : {
+
+    },
+    "discover.title" : {
+
+    },
+    "discover.users.label" : {
+
+    },
+    "discover.users.notFound.description" : {
+
+    },
+    "discover.users.notFound.title \"%@\"" : {
+
+    },
+    "discover.users.prompt" : {
+
+    },
     "Dismiss barcode" : {
+
+    },
+    "duplicateProducts.screen.title" : {
 
     },
     "Edit" : {
@@ -426,9 +519,6 @@
     "Edit Serving Style" : {
 
     },
-    "Edit Serving Styles" : {
-
-    },
     "Edit Suggestion" : {
 
     },
@@ -442,6 +532,9 @@
 
     },
     "Enable or disable the app's permission to send notifications" : {
+
+    },
+    "error.screen.title" : {
 
     },
     "Feed couldn't be loaded" : {
@@ -459,9 +552,6 @@
     "flavors.label" : {
 
     },
-    "Friend Request Sent!" : {
-
-    },
     "Friend Requests" : {
 
     },
@@ -477,28 +567,37 @@
     "Friends" : {
 
     },
-    "Friends (%@" : {
-
-    },
     "friends.accept-request.label" : {
 
     },
-    "GitHub" : {
+    "friends.acceptRequest.label" : {
 
     },
-    "Group products by" : {
+    "friends.action.removeFriendRequest.label" : {
+
+    },
+    "friends.actions.add.label" : {
+
+    },
+    "friends.actions.add.success" : {
+
+    },
+    "friends.contentUnavailable.noFriends" : {
+
+    },
+    "friends.title" : {
+
+    },
+    "friends.title (%@" : {
+
+    },
+    "friends.toolbar.showNameTag" : {
 
     },
     "Group Products By" : {
 
     },
-    "Has a sub-brand?" : {
-
-    },
     "ID" : {
-
-    },
-    "Identity" : {
 
     },
     "Image of the check-in" : {
@@ -507,10 +606,28 @@
     "Info" : {
 
     },
-    "Joined %@" : {
+    "Keep up to date!" : {
 
     },
-    "Keep up to date!" : {
+    "labels.copyright" : {
+
+    },
+    "labels.create" : {
+
+    },
+    "labels.delete" : {
+
+    },
+    "labels.delete.asModerator" : {
+
+    },
+    "labels.edit" : {
+
+    },
+    "labels.menu" : {
+
+    },
+    "labels.none" : {
 
     },
     "labels.selectAll" : {
@@ -519,13 +636,19 @@
     "labels.sortBy" : {
 
     },
+    "labels.submit" : {
+
+    },
+    "labels.unverified" : {
+
+    },
     "Leave a comment!" : {
 
     },
-    "LinkedIn" : {
+    "links.gitHub" : {
 
     },
-    "Location" : {
+    "links.portfolio" : {
 
     },
     "Location is only used to suggest you venues for your check-ins and show near by activity" : {
@@ -538,6 +661,9 @@
 
     },
     "location.recent" : {
+
+    },
+    "location.shareLink.subject" : {
 
     },
     "Logo" : {
@@ -600,46 +726,25 @@
     "New Company Created!" : {
 
     },
-    "New Products" : {
-
-    },
     "New Sub-brand Created!" : {
 
     },
     "No check-ins from friends" : {
 
     },
-    "No Companies found for \"%@\"" : {
-
-    },
     "No companies found with the searched name." : {
-
-    },
-    "No Locations found for \"%@\"" : {
 
     },
     "No longer in production" : {
 
     },
-    "No Products found for \"%@\"" : {
-
-    },
-    "No Products found with the barcode" : {
-
-    },
-    "No profiles found for \"%@\"" : {
-
-    },
-    "None" : {
-
-    },
-    "Not the product you were looking for?" : {
-
-    },
     "Notifications" : {
 
     },
-    "Oops!" : {
+    "notifications.title" : {
+
+    },
+    "onboarding.profile.title" : {
 
     },
     "Open App Store" : {
@@ -648,16 +753,7 @@
     "Open System Notification Settings" : {
 
     },
-    "Options menu" : {
-
-    },
     "Owner" : {
-
-    },
-    "Photo Gallery" : {
-
-    },
-    "Pick a photo" : {
 
     },
     "Pick Serving Style" : {
@@ -669,22 +765,10 @@
     "Please check your network connection and try again." : {
 
     },
-    "Portfolio" : {
-
-    },
-    "Privacy" : {
-
-    },
     "Privacy policy here" : {
 
     },
-    "Private profile" : {
-
-    },
-    "Private Profile" : {
-
-    },
-    "Private profile hides check-ins and profile page from everyone else but your friends" : {
+    "privacy.title" : {
 
     },
     "Product" : {
@@ -696,19 +780,85 @@
     "Product Merge Confirmation" : {
 
     },
+    "product.createNew.description" : {
+
+    },
+    "product.createNew.label" : {
+
+    },
+    "product.delete.confirmation.title" : {
+
+    },
+    "product.filter.overlay.resetFilter" : {
+
+    },
+    "product.filter.overlay.showingOnlyNotHad" : {
+
+    },
+    "product.filter.overlay.sortedBy %@" : {
+
+    },
     "product.filter.reset" : {
 
     },
     "product.filter.title" : {
 
     },
+    "product.loadedFromBarcode.backToSearch" : {
+
+    },
+    "product.loadedFromBarcode.title" : {
+
+    },
+    "product.mutation.create.title" : {
+
+    },
+    "product.mutation.edit.title" : {
+
+    },
+    "product.mutation.editSuggestion.title" : {
+
+    },
+    "product.mutation.hasSubBrand.label" : {
+
+    },
+    "product.mutation.pickCategory.label" : {
+
+    },
+    "product.shareLink.subject" : {
+
+    },
+    "product.title" : {
+
+    },
     "Products" : {
+
+    },
+    "products.title" : {
 
     },
     "Profile" : {
 
     },
-    "Purchased from __%@__" : {
+    "profile.joinedAt %@" : {
+
+    },
+    "profile.linkedIn" : {
+
+    },
+    "profile.nameTag.tip.description" : {
+
+    },
+    "profile.nameTag.tip.share" : {
+
+    },
+    "profile.private.title" : {
+
+    },
+    "profile.shareLink.subject" : {
+
+    },
+    "profile.title" : {
 
     },
     "Quit the App" : {
@@ -726,15 +876,6 @@
     "Reactions" : {
 
     },
-    "Reason" : {
-
-    },
-    "Reload" : {
-
-    },
-    "Remove friend request" : {
-
-    },
     "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins" : {
 
     },
@@ -747,10 +888,13 @@
     "Report submitted!" : {
 
     },
-    "Reset filter" : {
+    "report.section.content.title" : {
 
     },
-    "Scan a barcode" : {
+    "report.section.report.reason.label" : {
+
+    },
+    "report.section.report.title" : {
 
     },
     "Scan Name Tag" : {
@@ -783,19 +927,22 @@
     "serving-style.delete-warning.title" : {
 
     },
+    "servingStyle.edit.menu.label" : {
+
+    },
     "servingStyle.title" : {
 
     },
     "servingStyle.unselected" : {
 
     },
-    "Set up your profile" : {
-
-    },
     "Settings" : {
 
     },
     "settings.account.delete.disclaimer" : {
+
+    },
+    "settings.actions.signOut" : {
 
     },
     "settings.appearance.title" : {
@@ -807,7 +954,31 @@
     "settings.contributions.description" : {
 
     },
-    "Share your profile" : {
+    "settings.contributions.title" : {
+
+    },
+    "settings.privacy.privateProfile.description" : {
+
+    },
+    "settings.privacy.privateProfile.label" : {
+
+    },
+    "settings.privacy.title" : {
+
+    },
+    "settings.profile.section.identity.description" : {
+
+    },
+    "settings.profile.section.identity.title" : {
+
+    },
+    "settings.profile.title" : {
+
+    },
+    "settings.profile.useFullName.description" : {
+
+    },
+    "settings.profile.useFullName.label" : {
 
     },
     "Show All" : {
@@ -822,16 +993,10 @@
     "Show filters" : {
 
     },
-    "Show full name" : {
-
-    },
     "Show name tag" : {
 
     },
     "Show Name Tag" : {
-
-    },
-    "Show name tag or send friend request by QR code" : {
 
     },
     "Show notification when someone comments on your check-in" : {
@@ -849,22 +1014,10 @@
     "Show scanner" : {
 
     },
-    "Showing only products you haven't tried" : {
-
-    },
-    "Sign Out" : {
-
-    },
     "Sorry to see you go but you're always welcome back!" : {
 
     },
-    "Sorted by %@" : {
-
-    },
     "Statistics" : {
-
-    },
-    "Sub-brand" : {
 
     },
     "Sub-brand updated!" : {
@@ -873,19 +1026,62 @@
     "Sub-brands" : {
 
     },
+    "subBrand.actions.delete.disclaimer" : {
+
+    },
+    "subBrand.actions.unverify" : {
+
+    },
+    "subBrand.title" : {
+
+    },
     "Subcategories" : {
+
+    },
+    "subcategory.add" : {
 
     },
     "subcategory.picker.label" : {
 
     },
+    "subcategory.title" : {
+
+    },
     "Submit" : {
 
     },
-    "Subscribe to Premium" : {
+    "subscription.callToAction" : {
 
     },
+    "subscription.callToAction.description" : {
+
+    },
+    "subscription.thankYou %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %1$@ %2$@. Thank you!"
+          }
+        }
+      }
+    },
     "System Settings" : {
+
+    },
+    "tab.activity" : {
+
+    },
+    "tab.admin" : {
+
+    },
+    "tab.discover" : {
+
+    },
+    "tab.notifications" : {
+
+    },
+    "tab.profile" : {
 
     },
     "Terms of service here" : {
@@ -897,12 +1093,6 @@
     "There is nothing to edit" : {
 
     },
-    "These values are used in your personal page and can be seen by other users." : {
-
-    },
-    "Time Period" : {
-
-    },
     "To keep you updated and informed, we need access to send you notifications." : {
 
     },
@@ -912,25 +1102,10 @@
     "Unexpected error occured. Please try loading the app again later." : {
 
     },
-    "Unlock additional features" : {
-
-    },
-    "Unverified %@" : {
-
-    },
-    "Unverified Products" : {
-
-    },
-    "Unverify Brand" : {
-
-    },
     "Unverify Company" : {
 
     },
     "Unverify Product" : {
-
-    },
-    "Unverify Sub-brand" : {
 
     },
     "Update needed!" : {
@@ -940,9 +1115,6 @@
 
     },
     "Use System Color Scheme" : {
-
-    },
-    "Use your full name as a display name across the interface. This only takes effect if both first name and last name are provided." : {
 
     },
     "User blocked" : {
@@ -973,26 +1145,10 @@
     "You can only add %lld flavors" : {
 
     },
-    "You don't have any friends yet" : {
-
-    },
-    "You have %@ %@. Thank you!" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "You have %1$@ %2$@. Thank you!"
-          }
-        }
-      }
-    },
     "You haven't blocked any users" : {
 
     },
     "You haven't check-in yet" : {
-
-    },
-    "Your Contributions" : {
 
     },
     "Your current app version is no longer supported, please update the app in the App Store" : {

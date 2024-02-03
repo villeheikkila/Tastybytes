@@ -44,7 +44,7 @@ struct ProfileScreen: View {
                         )
                     }
                 } label: {
-                    Label("Options menu", systemImage: "ellipsis")
+                    Label("labels.menu", systemImage: "ellipsis")
                         .labelStyle(.iconOnly)
                 }
             }

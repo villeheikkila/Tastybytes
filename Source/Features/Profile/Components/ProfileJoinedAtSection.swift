@@ -15,7 +15,7 @@ struct ProfileJoinedAtSection: View {
     var body: some View {
         HStack {
             Spacer()
-            Text("Joined \(formattedJoinedAt)")
+            Text("profile.joinedAt \(formattedJoinedAt)")
                 .fontWeight(.medium)
             Spacer()
         }

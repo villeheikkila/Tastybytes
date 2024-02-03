@@ -99,7 +99,7 @@ struct NotificationScreen: View {
                     await notificationEnvironmentModel.deleteAll()
                 })
             } label: {
-                Label("Options menu", systemImage: "ellipsis")
+                Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
         }

@@ -84,7 +84,7 @@ struct OnboardingProfileSection: View {
     }
 
     private var titleSection: some View {
-        Text("Set up your profile")
+        Text("onboarding.profile.title")
             .font(.largeTitle)
             .fontWeight(.semibold)
             .listRowBackground(Color.clear)
@@ -132,19 +132,19 @@ struct OnboardingProfileSection: View {
 
     private var profileSection: some View {
         Section {
-            LabeledTextField(title: "Username", text: $username)
+            LabeledTextField(title: "settings.profile.username", text: $username)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .focused($focusedField, equals: .username)
                 .onTapGesture {
                     focusedField = .username
                 }
-            LabeledTextField(title: "First Name (optional)", text: $firstName)
+            LabeledTextField(title: "settings.profile.firstName", text: $firstName)
                 .focused($focusedField, equals: .firstName)
                 .onTapGesture {
                     focusedField = .firstName
                 }
-            LabeledTextField(title: "Last Name (optional)", text: $lastName)
+            LabeledTextField(title: "settings.profile.lastName", text: $lastName)
                 .focused($focusedField, equals: .lastName)
                 .onTapGesture {
                     focusedField = .lastName

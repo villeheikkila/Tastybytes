@@ -20,6 +20,6 @@ public struct LocationShareLinkView: View {
     }
 
     public var body: some View {
-        ShareLink(item: link, subject: Text("Location"), message: Text(title))
+        ShareLink(item: link, subject: Text("location.shareLink.subject"), message: Text(title))
     }
 }

@@ -18,27 +18,27 @@ struct ContributionsScreen: View {
             if let contributions {
                 Section {
                     HStack {
-                        Text("Products")
+                        Text("products.title")
                         Spacer()
                         Text(contributions.products.formatted())
                     }
                     HStack {
-                        Text("Companies")
+                        Text("company.title")
                         Spacer()
                         Text(contributions.companies.formatted())
                     }
                     HStack {
-                        Text("Brands")
+                        Text("brand.title")
                         Spacer()
                         Text(contributions.brands.formatted())
                     }
                     HStack {
-                        Text("Sub-brands")
+                        Text("subBrand.title")
                         Spacer()
                         Text(contributions.subBrands.formatted())
                     }
                     HStack {
-                        Text("Barcodes")
+                        Text("barcode.title")
                         Spacer()
                         Text(contributions.barcodes.formatted())
                     }
@@ -48,7 +48,7 @@ struct ContributionsScreen: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Your Contributions")
+        .navigationTitle("settings.contributions.title")
         .navigationBarTitleDisplayMode(.inline)
         .alertError($alertError)
         .task {

@@ -13,8 +13,8 @@ struct TimePeriodStatisticView: View {
     let profile: Profile
 
     var body: some View {
-        Section("Check-ins") {
-            Picker("Time Period", selection: $timePeriod) {
+        Section("checkIn.title") {
+            Picker("checkIn.statistics.timePeriod.segment.picker", selection: $timePeriod) {
                 ForEach(TimePeriodStatistic.TimePeriod.allCases, id: \.self) { segment in
                     Text(segment.label)
                 }
@@ -44,7 +44,7 @@ struct TimePeriodStatisticSegmentView: View {
         VStack {
             if let checkIns = timePeriodStatistics?.checkIns {
                 HStack {
-                    Text("Check-ins")
+                    Text("checkIn.statistics.checkIns.label")
                     Spacer()
                     Text(checkIns.formatted())
                 }
@@ -53,7 +53,7 @@ struct TimePeriodStatisticSegmentView: View {
             }
             if let newUniqueProducts = timePeriodStatistics?.newUniqueProducts {
                 HStack {
-                    Text("New Products")
+                    Text("checkIn.statistics.newProducts.label")
                     Spacer()
                     Text(newUniqueProducts.formatted())
                 }

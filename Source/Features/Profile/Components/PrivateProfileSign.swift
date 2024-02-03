@@ -11,7 +11,7 @@ struct PrivateProfileSign: View {
                         .scaledToFit()
                         .frame(width: 32, height: 32)
                         .accessibility(hidden: true)
-                    Text("Private profile")
+                    Text("profile.private.title")
                         .font(.title3)
                 }
                 Spacer()

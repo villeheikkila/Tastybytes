@@ -26,20 +26,20 @@ struct ProductFilterOverlayView: View {
                     }
                     if let sortBy = filters.sortBy {
                         HStack {
-                            Text("Sorted by \(sortBy.label)").bold()
+                            Text("product.filter.overlay.sortedBy \(sortBy.label)").bold()
                             Spacer()
                         }
                     }
 
                     if filters.onlyNonCheckedIn {
                         HStack {
-                            Text("Showing only products you haven't tried").fontWeight(.medium)
+                            Text("product.filter.overlay.showingOnlyNotHad").fontWeight(.medium)
                             Spacer()
                         }
                     }
                 }
                 Spacer()
-                Button("Reset filter", systemImage: "x.circle", action: { onReset() })
+                Button("product.filter.overlay.resetFilter", systemImage: "x.circle", action: { onReset() })
                     .labelStyle(.iconOnly)
                     .imageScale(.large)
             }

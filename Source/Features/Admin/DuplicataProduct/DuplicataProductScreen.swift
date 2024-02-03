@@ -69,7 +69,7 @@ struct DuplicateProductScreen: View {
                 action: { await deleteProduct(presenting) }
             )
         }
-        .navigationBarTitle("Unverified Products")
+        .navigationBarTitle("duplicateProducts.screen.title")
         #if !targetEnvironment(macCatalyst)
             .refreshable {
                 await loadProducts(withHaptics: true)

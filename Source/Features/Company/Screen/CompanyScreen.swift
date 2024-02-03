@@ -115,7 +115,7 @@ struct CompanyScreen: View {
             ControlGroup {
                 if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                     Button(
-                        "Brand",
+                        "brand.title",
                         systemImage: "plus",
                         action: { sheet = .addBrand(brandOwner: company, mode: .new) }
                     )
@@ -152,7 +152,7 @@ struct CompanyScreen: View {
                 .disabled(company.isVerified)
             }
         } label: {
-            Label("Options menu", systemImage: "ellipsis")
+            Label("labels.menu", systemImage: "ellipsis")
                 .labelStyle(.iconOnly)
         }
     }

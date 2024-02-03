@@ -122,19 +122,19 @@ struct ProductMutationView: View {
             ToolbarDismissAction()
         }
         ToolbarItemGroup(placement: .primaryAction) {
-            ProgressButton(mode.doneLabel, action: {
+            ProgressButton(mode.doneLabel) {
                 await primaryAction()
-            })
+            }
             .foregroundColor(isValid ? .primary : .secondary)
             .fontWeight(.medium)
             .disabled(!isValid)
         }
     }
-
+    
     private var categorySection: some View {
         Section {
             Button(
-                selectedCategory?.name ?? "Pick a category",
+                selectedCategory?.name ?? String(localized: "product.mutation.pickCategory.label"),
                 action: {
                     sheet = .categoryPickerSheet(category: $category)
                 }
@@ -150,7 +150,7 @@ struct ProductMutationView: View {
             }, label: {
                 HStack {
                     if subcategories.isEmpty {
-                        Text("Subcategories")
+                        Text("subcategory.title")
                     } else {
                         HStack(spacing: 4) {
                             ForEach(selectedSubcategories) { subcategory in
@@ -163,7 +163,7 @@ struct ProductMutationView: View {
             .disabled(category == nil)
         }
         header: {
-            Text("Category")
+            Text("category.title")
                 .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                     focusedField = nil
@@ -176,7 +176,7 @@ struct ProductMutationView: View {
         Section {
             PickerLinkRow(
                 shownSheet: $sheet,
-                label: "Brand Owner",
+                label: "brand.owner.title",
                 selection: brandOwner?.name,
                 sheet: .companySearch(onSelect: { company in
                     brandOwner = company
@@ -186,14 +186,14 @@ struct ProductMutationView: View {
             if let brandOwner {
                 PickerLinkRow(
                     shownSheet: $sheet,
-                    label: "Brand",
+                    label: "brand.title",
                     selection: brand?.name,
                     sheet: .brand(brandOwner: brandOwner, brand: $brand, mode: .select)
                 )
             }
 
             if brand != nil {
-                Toggle("Has a sub-brand?", isOn: .init(get: {
+                Toggle("product.mutation.hasSubBrand.label", isOn: .init(get: {
                     hasSubBrand
                 }, set: { newValue in
                     hasSubBrand = newValue
@@ -206,14 +206,14 @@ struct ProductMutationView: View {
             if hasSubBrand, let brand {
                 PickerLinkRow(
                     shownSheet: $sheet,
-                    label: "Sub-brand",
+                    label: "subBrand.title",
                     selection: subBrand?.name,
                     sheet: .subBrand(brandWithSubBrands: brand, subBrand: $subBrand)
                 )
             }
 
         } header: {
-            Text("Brand")
+            Text("brand.title")
                 .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                     focusedField = nil
@@ -239,7 +239,7 @@ struct ProductMutationView: View {
             }
             Toggle("No longer in production", isOn: $isDiscontinued)
         } header: {
-            Text("Product")
+            Text("product.title")
                 .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                     focusedField = nil
@@ -466,14 +466,14 @@ extension ProductMutationView {
              addToBrand(Brand.JoinedSubBrandsProductsCompany),
              addToSubBrand(Brand.JoinedSubBrandsProductsCompany, SubBrand.JoinedProduct)
 
-        var doneLabel: String {
+        var doneLabel: LocalizedStringKey {
             switch self {
             case .edit:
-                "Edit"
+                "labels.edit"
             case .editSuggestion:
-                "Submit"
+                "labels.submit"
             case .new, .addToBrand, .addToSubBrand:
-                "Create"
+                "labels.create"
             }
         }
 
@@ -486,14 +486,14 @@ extension ProductMutationView {
             }
         }
 
-        var navigationTitle: String {
+        var navigationTitle: LocalizedStringKey {
             switch self {
             case .addToBrand, .addToSubBrand, .new:
-                "Add Product"
+                "product.mutation.create.title"
             case .edit:
-                "Edit Product"
+                "product.mutation.edit.title"
             case .editSuggestion:
-                "Edit Suggestion"
+                "product.mutation.editSuggestion.title"
             }
         }
     }

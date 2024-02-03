@@ -91,7 +91,7 @@ struct DiscoverScreen: View {
                 searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
             }
         }
-        .navigationTitle("Discover")
+        .navigationTitle("discover.title")
         .toolbar {
             toolbarContent
         }
@@ -150,7 +150,7 @@ struct DiscoverScreen: View {
         if searchScope == .products {
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button(
-                    "Show filters",
+                    "discover.filter.show",
                     systemImage: "line.3.horizontal.decrease.circle",
                     action: { sheet = .productFilter(
                         initialFilter: productFilter,
@@ -165,7 +165,7 @@ struct DiscoverScreen: View {
             if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button(
-                        "Scan a barcode",
+                        "discover.barcode.scan",
                         systemImage: "barcode.viewfinder",
                         action: { sheet = .barcodeScanner(onComplete: { barcode in
                             self.barcode = barcode
@@ -182,9 +182,9 @@ struct DiscoverScreen: View {
         switch searchResultKey {
         case let .barcode(barcode):
             ContentUnavailableView {
-                Label("No Products found with the barcode", systemImage: "bubbles.and.sparkles")
+                Label("discover.barcode.notFound.title", systemImage: "bubbles.and.sparkles")
             } actions: {
-                Button("Create new product") {
+                Button("checkIn.action.createNew") {
                     router.navigate(screen: .addProduct(barcode))
                 }
             }
@@ -192,23 +192,23 @@ struct DiscoverScreen: View {
             switch searchScope {
             case .companies:
                 ContentUnavailableView {
-                    Label("No Companies found for \"\(searchTerm)\"", systemImage: "storefront")
+                    Label("discover.companies.notFound.title \"\(searchTerm)\"", systemImage: "storefront")
                 } description: {
-                    Text("Check the spelling or try a new search")
+                    Text("discover.companies.notFound.description")
                 }
             case .locations:
                 ContentUnavailableView {
-                    Label("No Locations found for \"\(searchTerm)\"", systemImage: "location.magnifyingglass")
+                    Label("discover.locations.notFound.title \"\(searchTerm)\"", systemImage: "location.magnifyingglass")
                 } description: {
-                    Text("Check the spelling or try a new search")
+                    Text("discover.locations.notFound.description")
                 }
             case .products:
                 ContentUnavailableView {
-                    Label("No Products found for \"\(searchTerm)\"", systemImage: "bubbles.and.sparkles")
+                    Label("discover.procucts.notFound.title \"\(searchTerm)\"", systemImage: "bubbles.and.sparkles")
                 } description: {
-                    Text("Check the spelling or try a new search")
+                    Text("discover.products.notFound.description")
                 } actions: {
-                    Button("Create new product") {
+                    Button("checkIn.action.createNew") {
                         let barcodeCopy = barcode
                         barcode = nil
                         router.navigate(screen: .addProduct(barcodeCopy))
@@ -217,11 +217,11 @@ struct DiscoverScreen: View {
             case .users:
                 ContentUnavailableView {
                     Label(
-                        "No profiles found for \"\(searchTerm)\"",
+                        "discover.users.notFound.title \"\(searchTerm)\"",
                         systemImage: "person.crop.circle.badge.questionmark"
                     )
                 } description: {
-                    Text("Check the spelling or try a new search")
+                    Text("discover.users.notFound.description")
                 }
             }
         case nil:

@@ -30,7 +30,7 @@ struct CheckInCardCheckIn: View {
 
             if let purchaseLocation = checkIn.purchaseLocation {
                 HStack {
-                    Text("Purchased from __\(purchaseLocation.name)__")
+                    Text("checkIn.location.purchasedFrom __\(purchaseLocation.name)__")
                         .accessibilityAddTraits(.isLink)
                         .allowsHitTesting(!loadedFrom.isLoadedFromLocation(purchaseLocation))
                         .onTapGesture {

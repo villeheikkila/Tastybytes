@@ -20,6 +20,6 @@ public struct CheckInShareLinkView: View {
     }
 
     public var body: some View {
-        ShareLink(item: link, subject: Text("Check-in"), message: Text(title))
+        ShareLink(item: link, subject: Text("checkIn.shareLink.subject"), message: Text(title))
     }
 }

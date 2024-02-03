@@ -56,9 +56,9 @@ struct ActivityScreen: View {
         .overlay {
             if errorContentUnavailable != nil {
                 ContentUnavailableView {
-                    Label("Feed couldn't be loaded", systemImage: "exclamationmark.triangle")
+                    Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
                 } actions: {
-                    Button("Reload") {
+                    Button("actions.reload") {
                         refreshId += 1
                     }
                 }
@@ -142,7 +142,7 @@ struct ActivityScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            let e = AlertError(title: "Error occured while trying to load check-ins")
+            let e = AlertError(title: "activity.error.failedToLoadMoreItems")
             if checkIns.isEmpty {
                 errorContentUnavailable = e
             } else {

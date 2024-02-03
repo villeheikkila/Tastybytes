@@ -87,7 +87,7 @@ struct AboutScreen: View {
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
 
-                            Text("GitHub")
+                            Text("links.gitHub")
                                 .fontWeight(.medium)
                         }
                     }
@@ -101,7 +101,7 @@ struct AboutScreen: View {
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
 
-                            Text("Portfolio")
+                            Text("links.portfolio")
                                 .fontWeight(.medium)
                         }
                     }
@@ -115,7 +115,7 @@ struct AboutScreen: View {
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
 
-                            Text("LinkedIn")
+                            Text("profile.linkedIn")
                                 .fontWeight(.medium)
                         }
                     }
@@ -132,7 +132,7 @@ struct AboutScreen: View {
                 HStack {
                     Spacer()
                     HStack(alignment: .center, spacing: 2) {
-                        Label("Copyright", systemImage: "c.circle")
+                        Label("labels.copyright", systemImage: "c.circle")
                             .labelStyle(.iconOnly)
                         if let appConfig = appEnvironmentModel.appConfig {
                             Text("\(appConfig.copyrightTimeRange) \(appConfig.copyrightHolder)")

@@ -70,7 +70,7 @@ struct ProductFilterSheet: View {
             if sections.contains(.sortBy) {
                 Section("labels.sortBy") {
                     Picker(selection: $sortBy) {
-                        Text("None").tag(Product.Filter.SortBy?(nil))
+                        Text("labels.none").tag(Product.Filter.SortBy?(nil))
                         ForEach(Product.Filter.SortBy.allCases) { sortBy in
                             Text(sortBy.label).tag(Optional(sortBy))
                         }

@@ -32,7 +32,7 @@ struct ProfileStatisticsView: View {
                 }
             } header: {
                 if !categoryStatistics.isEmpty {
-                    Text("Category")
+                    Text("category.title")
                 }
             }
             .headerProminence(.increased)

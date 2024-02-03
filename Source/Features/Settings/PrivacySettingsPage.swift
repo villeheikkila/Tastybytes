@@ -10,22 +10,22 @@ struct PrivacySettingsScreen: View {
         Form {
             privacySection
         }
-        .navigationTitle("Privacy")
+        .navigationTitle("settings.privacy.title")
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private var privacySection: some View {
         Section {
-            Toggle("Private Profile", isOn: .init(get: {
+            Toggle("settings.privacy.privateProfile.label", isOn: .init(get: {
                 profileEnvironmentModel.isPrivateProfile
             }, set: { newValue in
                 profileEnvironmentModel.isPrivateProfile = newValue
                 Task { await profileEnvironmentModel.updatePrivacySettings() }
             }))
         } header: {
-            Text("Profile")
+            Text("profile.title")
         } footer: {
-            Text("Private profile hides check-ins and profile page from everyone else but your friends")
+            Text("settings.privacy.privateProfile.description")
         }
         .headerProminence(.increased)
     }

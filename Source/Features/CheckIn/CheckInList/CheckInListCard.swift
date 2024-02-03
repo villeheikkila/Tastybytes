@@ -30,7 +30,7 @@ struct CheckInListCard: View {
                     CheckInShareLinkView(checkIn: checkIn)
                     if checkIn.profile.id == profileEnvironmentModel.id {
                         Button(
-                            "Edit",
+                            "labels.edit",
                             systemImage: "pencil",
                             action: {
                                 sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
@@ -39,7 +39,7 @@ struct CheckInListCard: View {
                             }
                         )
                         Button(
-                            "Delete",
+                            "labels.delete",
                             systemImage: "trash.fill",
                             role: .destructive,
                             action: {
@@ -48,7 +48,7 @@ struct CheckInListCard: View {
                         )
                     } else {
                         Button(
-                            "Check-in",
+                            "checkIn.title",
                             systemImage: "pencil",
                             action: {
                                 sheet = .newCheckIn(checkIn.product, onCreation: { checkIn in
@@ -62,17 +62,17 @@ struct CheckInListCard: View {
                 Divider()
                 RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
                 RouterLink(
-                    "Open Brand Owner",
+                    "company.screen.open",
                     systemImage: "network",
                     screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )
                 RouterLink(
-                    "Open Brand",
+                    "brand.screen.open",
                     systemImage: "cart",
                     screen: .fetchBrand(checkIn.product.subBrand.brand)
                 )
                 RouterLink(
-                    "Open Sub-brand",
+                    "subBrand.screen.open",
                     systemImage: "cart",
                     screen: .fetchSubBrand(checkIn.product.subBrand)
                 )
@@ -100,7 +100,7 @@ struct CheckInListCard: View {
                 presenting: showDeleteConfirmationFor
             ) { presenting in
                 ProgressButton(
-                    "Delete \(presenting.product.formatted(.fullName)) check-in",
+                    "checkIn.delete.disclaimer \(presenting.product.formatted(.fullName))",
                     role: .destructive,
                     action: { await onDelete(checkIn) }
                 )

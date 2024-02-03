@@ -105,10 +105,10 @@ struct CheckInSheet: View {
         }
         .foregroundColor(.primary)
         .sheets(item: $sheet)
-        .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
-            Button("Camera", action: { showCamera.toggle() })
+        .confirmationDialog("checkIn.photo.title", isPresented: $showPhotoMenu) {
+            Button("checkIn.photo.picker.camera", action: { showCamera.toggle() })
             Button(
-                "Photo Gallery",
+                "checkIn.photo.picker.photoGallery",
                 action: { sheet = .legacyPhotoPicker(onSelection: { image, metadata in
                     DispatchQueue.main.async {
                         imageMetadata = metadata
@@ -119,7 +119,7 @@ struct CheckInSheet: View {
                 }
             )
         } message: {
-            Text("Pick a photo")
+            Text("checkIn.photo.picker.title")
         }
         .fullScreenCamera(
             isPresented: $showCamera,

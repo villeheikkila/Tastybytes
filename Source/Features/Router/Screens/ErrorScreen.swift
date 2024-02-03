@@ -9,7 +9,7 @@ struct ErrorScreen: View {
                 .font(.system(size: 60))
                 .foregroundColor(.red)
                 .accessibilityHidden(true)
-            Text("Oops!")
+            Text("error.screen.title")
                 .font(.title)
                 .bold()
                 .padding(.bottom, 2)

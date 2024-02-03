@@ -88,6 +88,18 @@ public extension ProgressButton where LabelView == Text {
     }
 }
 
+public extension ProgressButton where LabelView == Text {
+    init(_ label: LocalizedStringKey,
+         role: ButtonRole? = nil,
+         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
+         action: @escaping () async -> Void)
+    {
+        self.init(role: role, action: action, actionOptions: actionOptions) {
+            Text(label)
+        }
+    }
+}
+
 public extension ProgressButton where LabelView == Label<Text, Image> {
     init(_ title: String, systemImage: String,
          role: ButtonRole? = nil,

@@ -9,9 +9,9 @@ struct ProductScreenLoadedFromBarcodeOverlay: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Not the product you were looking for?")
+                Text("product.loadedFromBarcode.title")
                 HStack {
-                    Button("Back to search") {
+                    Button("product.loadedFromBarcode.backToSearch") {
                         router.removeLast()
                     }
                 }

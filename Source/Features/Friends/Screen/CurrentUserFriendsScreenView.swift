@@ -40,14 +40,14 @@ struct CurrentUserFriendsScreen: View {
                     Spacer()
                     if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                         HStack(alignment: .center) {
-                            Label("Remove friend request", systemImage: "person.fill.xmark")
+                            Label("friends.action.removeFriendRequest.label", systemImage: "person.fill.xmark")
                                 .imageScale(.large)
                                 .labelStyle(.iconOnly)
                                 .accessibilityAddTraits(.isButton)
                                 .onTapGesture {
                                     friendToBeRemoved = friend
                                 }
-                            Label("friends.accept-request.label", systemImage: "person.badge.plus")
+                            Label("friends.acceptRequest.label", systemImage: "person.badge.plus")
                                 .imageScale(.large)
                                 .labelStyle(.iconOnly)
                                 .accessibilityAddTraits(.isButton)
@@ -67,7 +67,7 @@ struct CurrentUserFriendsScreen: View {
                 Group {
                     if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                         ProgressButton(
-                            "friends.accept-request.label",
+                            "friends.acceptRequest.label",
                             systemImage: "person.badge.plus",
                             action: {
                                 await friendEnvironmentModel.updateFriendRequest(
@@ -79,13 +79,13 @@ struct CurrentUserFriendsScreen: View {
                         .tint(.green)
                     }
                     Button(
-                        "Delete",
+                        "labels.delete",
                         systemImage: "person.fill.xmark",
                         role: .destructive,
                         action: { friendToBeRemoved = friend }
                     )
                     ProgressButton(
-                        "Block",
+                        "friends.actions.block.label",
                         systemImage: "person.2.slash",
                         action: {
                             await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
@@ -95,13 +95,13 @@ struct CurrentUserFriendsScreen: View {
             }
             .contextMenu {
                 Button(
-                    "Delete",
+                    "labels.delete",
                     systemImage: "person.fill.xmark",
                     role: .destructive,
                     action: { friendToBeRemoved = friend }
                 )
                 ProgressButton(
-                    "Block",
+                    "friends.actions.block.label",
                     systemImage: "person.2.slash",
                     action: {
                         await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
@@ -116,13 +116,13 @@ struct CurrentUserFriendsScreen: View {
         .overlay {
             if friendEnvironmentModel.friends.isEmpty {
                 ContentUnavailableView {
-                    Label("You don't have any friends yet", systemImage: "person.3")
+                    Label("friends.contentUnavailable.noFriends", systemImage: "person.3")
                 }
             } else if !searchTerm.isEmpty, filteredFriends.isEmpty {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
-        .navigationTitle("Friends (\(friendEnvironmentModel.friends.count.formatted())")
+        .navigationTitle("friends.title (\(friendEnvironmentModel.friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)
@@ -160,7 +160,7 @@ struct CurrentUserFriendsScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Button(
-                "Show name tag or send friend request by QR code",
+                "friends.toolbar.showNameTag",
                 systemImage: "qrcode",
                 action: { sheet = .nameTag(onSuccess: { profileId in
                     Task {
@@ -173,11 +173,11 @@ struct CurrentUserFriendsScreen: View {
             .popoverTip(NameTagTip())
 
             Button(
-                "Add friend", systemImage: "plus",
+                "friends.actions.add.label", systemImage: "plus",
                 action: { sheet = .userSheet(
                     mode: .add,
                     onSubmit: {
-                        feedbackEnvironmentModel.toggle(.success("Friend Request Sent!"))
+                        feedbackEnvironmentModel.toggle(.success("friends.actions.add.success"))
                     }
                 ) }
             )

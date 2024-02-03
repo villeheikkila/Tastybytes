@@ -40,7 +40,7 @@ struct FriendsScreen: View {
             FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Friends (\(friends.count.formatted())")
+        .navigationTitle("friends.title (\(friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
             if !searchTerm.isEmpty, filteredFriends.isEmpty {
@@ -74,7 +74,7 @@ struct FriendsScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
                 ProgressButton(
-                    "Add friend",
+                    "friends.actions.add.label",
                     systemImage: "person.fill.badge.plus",
                     action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
                 )

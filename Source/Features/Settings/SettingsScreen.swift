@@ -28,7 +28,7 @@ struct SettingsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Subscribe to Premium", systemImage: "crown.fill", action: { sheet = .subscribe })
+            Button("subscription.callToAction", systemImage: "crown.fill", action: { sheet = .subscribe })
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
                 .foregroundColor(.yellow)
@@ -37,10 +37,10 @@ struct SettingsScreen: View {
 
     @ViewBuilder private var profileSection: some View {
         Section {
-            RouterLink("Profile", systemName: "person.fill", color: .indigo, screen: .profileSettings)
-            RouterLink("Account", systemName: "gear", color: .gray, screen: .accountSettings)
-            RouterLink("Privacy", systemName: "key.fill", color: .yellow, screen: .privacySettings)
-            RouterLink("Blocked Users", systemName: "person.fill.xmark", color: .green, screen: .blockedUsers)
+            RouterLink("profile.title", systemName: "person.fill", color: .indigo, screen: .profileSettings)
+            RouterLink("account.title", systemName: "gear", color: .gray, screen: .accountSettings)
+            RouterLink("privacy.title", systemName: "key.fill", color: .yellow, screen: .privacySettings)
+            RouterLink("blockedUsers.title", systemName: "person.fill.xmark", color: .green, screen: .blockedUsers)
         }
     }
 
@@ -48,7 +48,7 @@ struct SettingsScreen: View {
         Section {
             RouterLink("settings.appearance.title", systemName: "paintbrush.fill", color: .blue, screen: .appearanaceSettings)
             RouterLink(
-                "Notifications",
+                "notifications.title",
                 systemName: "bell.badge.fill",
                 color: .red,
                 screen: .notificationSettingsScreen
@@ -62,17 +62,17 @@ struct SettingsScreen: View {
     @ViewBuilder private var aboutSection: some View {
         Section {
             RouterLink(
-                "Your Contributions",
+                "contributions.title",
                 systemName: "plus",
                 color: .teal,
                 screen: .contributions
             )
-            RouterLink("About", systemName: "at", color: .blue, screen: .about)
+            RouterLink("about.title", systemName: "at", color: .blue, screen: .about)
         } footer: {
             if case .subscribed = subscriptionEnvironmentModel.subscriptionStatus, let subscriptionName = appEnvironmentModel.subscriptionGroup?.name {
                 HStack {
                     Spacer()
-                    Text("You have \(appEnvironmentModel.infoPlist.appName) \(subscriptionName). Thank you!")
+                    Text("subscription.thankYou \(appEnvironmentModel.infoPlist.appName) \(subscriptionName)")
                     Spacer()
                 }
             }
@@ -85,7 +85,7 @@ struct SettingsScreen: View {
                 await profileEnvironmentModel.logOut()
             }, label: {
                 Spacer()
-                Text("Sign Out")
+                Text("settings.actions.signOut")
                     .fontWeight(.medium)
                     .foregroundColor(.red)
                 Spacer()

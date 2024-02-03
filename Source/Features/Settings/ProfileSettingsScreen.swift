@@ -22,7 +22,7 @@ struct ProfileSettingsScreen: View {
             profileSection
             profileDisplaySettings
         }
-        .navigationTitle("Profile")
+        .navigationTitle("settings.profile.title")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: username) {
             usernameIsAvailable = false
@@ -46,15 +46,15 @@ struct ProfileSettingsScreen: View {
 
     private var profileSection: some View {
         Section {
-            LabeledTextField(title: "Username", text: $username)
+            LabeledTextField(title: "settings.profile.username.title", text: $username)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-            LabeledTextField(title: "First Name", text: $firstName)
-            LabeledTextField(title: "Last Name", text: $lastName)
+            LabeledTextField(title: "settings.profile.firstName.title", text: $firstName)
+            LabeledTextField(title: "settings.profile.lastName.title", text: $lastName)
 
             if profileEnvironmentModel.hasChanged(username: username, firstName: firstName, lastName: lastName) {
                 ProgressButton(
-                    "Update",
+                    "settings.profile.update",
                     action: { await profileEnvironmentModel.updateProfile(update: Profile.UpdateRequest(
                         username: username,
                         firstName: firstName,
@@ -63,23 +63,23 @@ struct ProfileSettingsScreen: View {
                 ).disabled(!canUpdateUsername)
             }
         } header: {
-            Text("Identity")
+            Text("settings.profile.section.identity.title")
         } footer: {
-            Text("These values are used in your personal page and can be seen by other users.")
+            Text("settings.profile.section.identity.description")
         }
         .headerProminence(.increased)
     }
 
     private var profileDisplaySettings: some View {
         Section {
-            Toggle("Show full name", isOn: .init(get: {
+            Toggle("settings.profile.useFullName.label", isOn: .init(get: {
                 profileEnvironmentModel.showFullName
             }, set: { newValue in
                 profileEnvironmentModel.showFullName = newValue
                 Task { await profileEnvironmentModel.updateDisplaySettings() }
             }))
         } footer: {
-            Text("Use your full name as a display name across the interface. This only takes effect if both first name and last name are provided.")
+            Text("settings.profile.useFullName.description")
         }
     }
 }

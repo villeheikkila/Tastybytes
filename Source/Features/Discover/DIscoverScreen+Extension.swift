@@ -6,29 +6,29 @@ extension DiscoverScreen {
         var id: Self { self }
         case products, companies, users, locations
 
-        var label: String {
+        var label: LocalizedStringKey {
             switch self {
             case .products:
-                "Products"
+                "discover.products.label"
             case .companies:
-                "Companies"
+                "discover.companies.label"
             case .users:
-                "Users"
+                "discover.users.label"
             case .locations:
-                "Locations"
+                "discover.locations.label"
             }
         }
 
-        var prompt: String {
+        var prompt: LocalizedStringKey {
             switch self {
             case .products:
-                "Search products, brands..."
+                "discover.products.prompt."
             case .users:
-                "Search users"
+                "discover.users.prompt"
             case .companies:
-                "Search companies"
+                "discover.companies.prompot"
             case .locations:
-                "Search locations"
+                "discover.locations.prompt"
             }
         }
     }

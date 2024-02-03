@@ -161,7 +161,7 @@ public struct CheckInEntityView: View {
             if let checkInAt = checkIn.checkInAt {
                 Text(checkInAt.formatted(.customRelativetime))
             } else {
-                Text("check-in.legacy.label")
+                Text("checkIn.legacy.label")
             }
             Spacer()
         }
