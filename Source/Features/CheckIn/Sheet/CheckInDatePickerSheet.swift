@@ -8,12 +8,12 @@ struct CheckInDatePickerSheet: View {
 
     var body: some View {
         Form {
-            DatePicker("Check-in date", selection: $checkInAt, in: ...Date.now)
+            DatePicker("checkIn.datePicker.label", selection: $checkInAt, in: ...Date.now)
                 .datePickerStyle(.graphical)
                 .disabled(isLegacyCheckIn)
-            Toggle("Mark as legacy check-in", isOn: $isLegacyCheckIn)
+            Toggle("checkIn.datePicker.markAsLegacy.label", isOn: $isLegacyCheckIn)
         }
-        .navigationTitle("Check-in Date")
+        .navigationTitle("checkIn.datePicker.title")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent

@@ -288,12 +288,6 @@
     "Check-in" : {
 
     },
-    "Check-in date" : {
-
-    },
-    "Check-in Date" : {
-
-    },
     "Check-in Locations" : {
 
     },
@@ -327,6 +321,15 @@
     "checkIn.date.legacyCheckIn" : {
 
     },
+    "checkIn.datePicker.label" : {
+
+    },
+    "checkIn.datePicker.markAsLegacy.label" : {
+
+    },
+    "checkIn.datePicker.title" : {
+
+    },
     "checkIn.delete.asModerator.title" : {
 
     },
@@ -337,6 +340,12 @@
 
     },
     "checkIn.friends.tag" : {
+
+    },
+    "checkIn.friends.tagged.label" : {
+
+    },
+    "checkIn.legacy.label" : {
 
     },
     "checkIn.location.purchasedFrom __%@__" : {
@@ -633,6 +642,9 @@
     "labels.selectAll" : {
 
     },
+    "labels.showAll" : {
+
+    },
     "labels.sortBy" : {
 
     },
@@ -681,9 +693,6 @@
     "Mark as Duplicate" : {
 
     },
-    "Mark as legacy check-in" : {
-
-    },
     "Merge duplicates" : {
 
     },
@@ -729,13 +738,28 @@
     "New Sub-brand Created!" : {
 
     },
+    "No check-in comment notifications" : {
+
+    },
+    "No check-in reaction notifications" : {
+
+    },
+    "No check-in tag notifications" : {
+
+    },
     "No check-ins from friends" : {
 
     },
     "No companies found with the searched name." : {
 
     },
+    "No friend request notifications" : {
+
+    },
     "No longer in production" : {
+
+    },
+    "No messages" : {
 
     },
     "Notifications" : {
@@ -789,16 +813,22 @@
     "product.delete.confirmation.title" : {
 
     },
+    "product.discontinued.label" : {
+
+    },
     "product.filter.overlay.resetFilter" : {
 
     },
     "product.filter.overlay.showingOnlyNotHad" : {
 
     },
-    "product.filter.overlay.sortedBy %@" : {
+    "product.filter.reset" : {
 
     },
-    "product.filter.reset" : {
+    "product.filter.sortBy.highestRated.label" : {
+
+    },
+    "product.filter.sortBy.lowestRated.label" : {
 
     },
     "product.filter.title" : {
@@ -981,9 +1011,6 @@
     "settings.profile.useFullName.label" : {
 
     },
-    "Show All" : {
-
-    },
     "Show block user sheet" : {
 
     },
@@ -1143,6 +1170,9 @@
 
     },
     "You can only add %lld flavors" : {
+
+    },
+    "You have no notifications" : {
 
     },
     "You haven't blocked any users" : {

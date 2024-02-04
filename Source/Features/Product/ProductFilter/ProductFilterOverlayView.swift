@@ -26,7 +26,7 @@ struct ProductFilterOverlayView: View {
                     }
                     if let sortBy = filters.sortBy {
                         HStack {
-                            Text("product.filter.overlay.sortedBy \(sortBy.label)").bold()
+                            Text(sortBy.label).bold()
                             Spacer()
                         }
                     }

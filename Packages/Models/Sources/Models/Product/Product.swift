@@ -102,15 +102,6 @@ public extension Product {
 
             case highestRated = "highest_rated"
             case lowestRated = "lowest_rated"
-
-            public var label: String {
-                switch self {
-                case .highestRated:
-                    "Highest Rated First"
-                case .lowestRated:
-                    "Lowest Rated First"
-                }
-            }
         }
 
         public let category: Models.Category.JoinedSubcategoriesServingStyles?
@@ -309,21 +300,10 @@ public extension Product {
         case full
     }
 
-    enum FeedType: Hashable, Identifiable, Codable, Sendable {
-        public var id: String { label }
+    enum FeedType: String, Hashable, Identifiable, Codable, Sendable {
+        public var id: String { self.rawValue }
 
         case topRated, trending, latest
-
-        public var label: String {
-            switch self {
-            case .topRated:
-                "Top Rated"
-            case .trending:
-                "Trending"
-            case .latest:
-                "Latest"
-            }
-        }
     }
 
     struct Joined: Identifiable, Hashable, Codable, Sendable {
@@ -598,40 +578,4 @@ public extension Product.Joined {
     }
 }
 
-public extension Product.Joined {
-    struct Formatter<Output> {
-        let format: (Product.Joined) -> Output
-    }
 
-    func formatted<Output>(_ formatter: Formatter<Output>) -> Output {
-        formatter.format(self)
-    }
-}
-
-public extension Product.Joined.Formatter where Output == String {
-    static var fullName: Self {
-        .init { value in
-            [value.subBrand.brand.name, value.subBrand.name, value.name, value.isDiscontinued ? "(discontinued)" : nil]
-                .joinOptionalSpace()
-        }
-    }
-
-    static var full: Self {
-        .init { value in
-            [
-                value.subBrand.brand.brandOwner.name,
-                value.subBrand.brand.name,
-                value.subBrand.name,
-                value.name,
-                value.isDiscontinued ? "(discontinued)" : nil,
-            ]
-            .joinOptionalSpace()
-        }
-    }
-
-    static var brandOwner: Self {
-        .init { value in
-            value.subBrand.brand.brandOwner.name
-        }
-    }
-}

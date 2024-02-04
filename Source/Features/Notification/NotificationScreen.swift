@@ -109,7 +109,7 @@ struct NotificationScreen: View {
                     filter = nil
                 }
             } label: {
-                Label("Show All", systemImage: "bell.fill")
+                Label("labels.showAll", systemImage: "bell.fill")
             }
             Divider()
             ForEach(NotificationType.allCases) { type in
@@ -181,7 +181,7 @@ extension NotificationType {
 }
 
 struct ContentUnavailableViewProps {
-    let title: String
-    let description: String
+    let title: LocalizedStringKey
+    let description: LocalizedStringKey
     let icon: String
 }

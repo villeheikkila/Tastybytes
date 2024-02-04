@@ -32,7 +32,7 @@ struct ProductFeedScreen: View {
         if let categoryFilter {
             "\(feed.label): \(categoryFilter.name)"
         } else {
-            feed.label
+            String(localized: LocalizedStringResource(stringLiteral: feed.label))
         }
     }
 
