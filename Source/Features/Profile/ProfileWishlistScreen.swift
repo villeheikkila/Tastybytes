@@ -33,7 +33,7 @@ struct ProfileWishlistScreen: View {
             }
             .swipeActions(allowsFullSwipe: true) {
                 ProgressButton(
-                    "Delete",
+                    "labels.delete",
                     systemImage: "xmark",
                     role: .destructive,
                     action: {

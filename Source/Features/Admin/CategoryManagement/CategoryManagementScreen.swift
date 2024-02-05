@@ -57,7 +57,7 @@ struct CategoryManagementScreen: View {
             .headerProminence(.increased)
         }
         .listStyle(.insetGrouped)
-        .navigationBarTitle("Categories")
+        .navigationBarTitle("category.title")
         .toolbar {
             toolbarContent
         }

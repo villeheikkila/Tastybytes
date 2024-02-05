@@ -155,30 +155,30 @@ extension EditCompanySheet {
         case edit
         case editSuggestion
 
-        var primaryAction: String {
+        var primaryAction: LocalizedStringKey {
             switch self {
             case .edit:
-                "Edit"
+                "labels.edit"
             case .editSuggestion:
-                "Send"
+                "labels.send"
             }
         }
 
-        var navigationTitle: String {
+        var navigationTitle: LocalizedStringKey {
             switch self {
             case .edit:
-                "Edit Company"
+                "company.edit.label"
             case .editSuggestion:
-                "Edit Suggestion"
+                "company.editSuggestion.label"
             }
         }
 
-        var nameSectionHeader: String {
+        var nameSectionHeader: LocalizedStringKey {
             switch self {
             case .edit:
-                "Name"
+                "company.edit.section.name.title"
             case .editSuggestion:
-                "What should the company be called?"
+                "company.editSuggestion.section.name.title"
             }
         }
     }

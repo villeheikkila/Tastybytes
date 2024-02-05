@@ -52,10 +52,10 @@ struct ServingStyleManagementSheet: View {
                     }
                 )
                 .swipeActions {
-                    Button("Edit", systemImage: "pencil", action: { editServingStyle = servingStyle }).tint(
+                    Button("labels.edit", systemImage: "pencil", action: { editServingStyle = servingStyle }).tint(
                         .yellow)
                     Button(
-                        "Delete",
+                        "labels.delete",
                         systemImage: "trash",
                         role: .destructive,
                         action: { toDeleteServingStyle = servingStyle }
@@ -80,7 +80,7 @@ struct ServingStyleManagementSheet: View {
                 TextField("Name of the serving style", text: $servingStyleName)
                 Button("actions.cancel", role: .cancel, action: {})
                 ProgressButton(
-                    "Edit",
+                    "labels.edit",
                     action: {
                         await saveEditServingStyle()
                     }

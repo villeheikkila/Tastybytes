@@ -121,16 +121,16 @@ struct CompanyScreen: View {
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("Edit", systemImage: "pencil", action: { sheet = .editCompany(company: company, onSuccess: {
+                    Button("labels.edit", systemImage: "pencil", action: { sheet = .editCompany(company: company, onSuccess: {
                         await getCompanyData(withHaptics: true)
-                        feedbackEnvironmentModel.toggle(.success("Company updated"))
+                        feedbackEnvironmentModel.toggle(.success("company.update.success.toast"))
                     }) })
                 } else {
                     Button(
-                        "Edit Suggestion",
+                        "company.editSuggestion.title",
                         systemImage: "pencil",
                         action: { sheet = .companyEditSuggestion(company: company, onSuccess: {
-                            feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
+                            feedbackEnvironmentModel.toggle(.success("company.editSuggestion.success.toast"))
                         }) }
                     )
                 }
@@ -144,7 +144,7 @@ struct CompanyScreen: View {
             ReportButton(sheet: $sheet, entity: .company(company))
             if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
                 Button(
-                    "Delete",
+                    "labels.delete",
                     systemImage: "trash.fill",
                     role: .destructive,
                     action: { showDeleteCompanyConfirmationDialog = true }

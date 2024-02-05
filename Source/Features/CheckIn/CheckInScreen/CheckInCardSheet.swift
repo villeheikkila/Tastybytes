@@ -36,7 +36,7 @@ struct CheckInCommentEditSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .primaryAction) {
-            ProgressButton("Edit") {
+            ProgressButton("labels.edit") {
                 await updateComment()
             }
         }

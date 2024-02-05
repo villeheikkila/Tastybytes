@@ -40,7 +40,7 @@ struct EditBrandSheet: View {
         Form {
             Section("Name") {
                 TextField("Name of the brand", text: $name)
-                ProgressButton("Edit") {
+                ProgressButton("labels.edit") {
                     await editBrand {
                         await onUpdate()
                     }
@@ -158,7 +158,7 @@ struct EditLogoSection: View {
                 .frame(width: 120, height: 120)
                 .accessibility(hidden: true)
                 .contextMenu {
-                    ProgressButton("Delete") {
+                    ProgressButton("labels.delete") {
                         await onDelete(logo)
                     }
                 }

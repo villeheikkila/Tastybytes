@@ -56,7 +56,7 @@ struct EditSubBrandSheet: View {
         Form {
             Section("Name") {
                 TextField("Name of the sub-brand", text: $newSubBrandName)
-                ProgressButton("Edit") {
+                ProgressButton("labels.edit") {
                     await editSubBrand(onSuccess: { @MainActor in
                         await onUpdate()
                     })

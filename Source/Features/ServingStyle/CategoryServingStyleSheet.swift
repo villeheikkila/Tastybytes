@@ -36,7 +36,7 @@ struct CategoryServingStyleSheet: View {
             }
             .swipeActions {
                 Button(
-                    "Delete",
+                    "labels.delete",
                     systemImage: "trash",
                     role: .destructive,
                     action: { toDeleteServingStyle = servingStyle }

@@ -155,7 +155,7 @@ struct VerificationScreen: View {
                         RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
                             await loadData(refresh: true)
                         })).tint(.yellow)
-                        Button("Delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })
+                        Button("labels.delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })
                     }
             }
         }

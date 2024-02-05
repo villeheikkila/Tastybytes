@@ -40,10 +40,10 @@ struct CheckInCommentRow: View {
             }
             .contextMenu {
                 if comment.profile == profileEnvironmentModel.profile {
-                    Button("Edit", systemImage: "pencil") {
+                    Button("labels.edit", systemImage: "pencil") {
                         sheet = .editComment(checkInComment: comment, checkInComments: $checkInComments)
                     }
-                    ProgressButton("Delete", systemImage: "trash.fill", role: .destructive) {
+                    ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive) {
                         await deleteComment(comment)
                     }
                 } else {

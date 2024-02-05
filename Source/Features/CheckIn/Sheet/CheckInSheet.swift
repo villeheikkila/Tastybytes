@@ -174,7 +174,7 @@ struct CheckInSheet: View {
                             .shadow(radius: 4)
                             .accessibilityLabel("Image of the check-in")
                             .contextMenu {
-                                ProgressButton("Delete") {
+                                ProgressButton("labels.delete") {
                                     finalImage = nil
                                 }
                             }
@@ -193,7 +193,7 @@ struct CheckInSheet: View {
                                 }
                             }
                             .contextMenu {
-                                ProgressButton("Delete") {
+                                ProgressButton("labels.delete") {
                                     await deleteImage(entity: image)
                                 }
                             }

@@ -44,11 +44,11 @@ struct DuplicateProductScreen: View {
                     .swipeActions {
                         ProgressButton("actions.verify", systemImage: "checkmark", action: { await verifyProduct(product) })
                             .tint(.green)
-                        RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
+                        RouterLink("labels.edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
                             await loadProducts()
                         })).tint(.yellow)
                         Button(
-                            "Delete",
+                            "labels.delete",
                             systemImage: "trash",
                             role: .destructive,
                             action: { deleteProduct = product }

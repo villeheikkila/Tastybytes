@@ -242,7 +242,7 @@ struct BrandScreen: View {
                         }
                         if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
                             Button(
-                                "Edit",
+                                "labels.edit",
                                 systemImage: "pencil",
                                 action: { sheet = .editSubBrand(
                                     brand: brand, subBrand: subBrand,
@@ -301,7 +301,7 @@ struct BrandScreen: View {
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         Button(
-                            "Edit", systemImage: "pencil",
+                            "labels.edit", systemImage: "pencil",
                             action: { sheet = .editBrand(
                                 brand: brand,
                                 onUpdate: {
@@ -333,7 +333,7 @@ struct BrandScreen: View {
                 ReportButton(sheet: $sheet, entity: .brand(brand))
                 if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                     Button(
-                        "Delete",
+                        "labels.delete",
                         systemImage: "trash.fill",
                         role: .destructive,
                         action: { showDeleteBrandConfirmationDialog = true }

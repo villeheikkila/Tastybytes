@@ -44,7 +44,7 @@ struct BrandScreenProductRow: View {
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                         Button(
-                            "Delete",
+                            "labels.delete",
                             systemImage: "trash.fill",
                             role: .destructive,
                             action: { productToDelete = product }

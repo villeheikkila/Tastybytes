@@ -148,7 +148,7 @@ struct ProductScreen: View {
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("Edit", systemImage: "pencil", action: { sheet = .productEdit(product: product, onEdit: {
+                    Button("labels.edit", systemImage: "pencil", action: { sheet = .productEdit(product: product, onEdit: {
                         refreshId += 1
                     }) })
                 } else {
@@ -177,7 +177,7 @@ struct ProductScreen: View {
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
                         Button(
-                            "Delete",
+                            "labels.delete",
                             systemImage: "trash.fill",
                             role: .destructive,
                             action: { showDeleteProductConfirmationDialog = true }
