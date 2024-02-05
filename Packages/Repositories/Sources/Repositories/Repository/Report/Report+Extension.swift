@@ -1,13 +1,13 @@
 import Foundation
 import Models
 
-extension Report {
+extension Report: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, message"
 
         switch queryType {
         case let .saved(withTableName):
-            return queryWithTableName(.reports, [saved], withTableName)
+            return buildQuery(.reports, [saved], withTableName)
         }
     }
 

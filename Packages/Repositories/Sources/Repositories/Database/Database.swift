@@ -111,3 +111,16 @@ enum Database {
         case updateCheckInImageBlurHash = "fnc__update_check_in_image_blur_hash"
     }
 }
+
+protocol Queryable {
+    associatedtype QueryType
+
+    static func getQuery(_ queryType: QueryType) -> String
+}
+
+extension Queryable {
+    static func buildQuery(_ tableName: Database.Table, _ query: [String], _ withTableName: Bool) -> String {
+        withTableName ? "\(tableName.rawValue) (\(query.joined(separator: ", ")))" : query.joined(separator: ", ")
+    }
+}
+

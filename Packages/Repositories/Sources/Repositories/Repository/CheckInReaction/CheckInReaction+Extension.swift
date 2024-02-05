@@ -1,19 +1,19 @@
 import Foundation
 import Models
 
-extension CheckInReaction {
+extension CheckInReaction: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id"
 
         switch queryType {
         case let .joinedProfileCheckIn(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .checkInReactions,
                 [saved, Profile.getQuery(.minimal(true)), CheckIn.getQuery(.joined(true))],
                 withTableName
             )
         case let .joinedProfile(withTableName):
-            return queryWithTableName(.checkInReactions, [saved, Profile.getQuery(.minimal(true))], withTableName)
+            return buildQuery(.checkInReactions, [saved, Profile.getQuery(.minimal(true))], withTableName)
         }
     }
 

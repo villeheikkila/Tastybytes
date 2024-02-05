@@ -1,13 +1,13 @@
 import Foundation
 import Models
 
-extension Location {
+extension Location: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name, title, longitude, latitude, country_code, source"
 
         switch queryType {
         case let .joined(withTableName):
-            return queryWithTableName(.locations, [saved, Country.getQuery(.saved(true))], withTableName)
+            return buildQuery(.locations, [saved, Country.getQuery(.saved(true))], withTableName)
         }
     }
 

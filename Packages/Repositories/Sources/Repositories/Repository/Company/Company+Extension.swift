@@ -1,19 +1,19 @@
 import Foundation
 import Models
 
-extension Company {
+extension Company: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let editSuggestionTable = "company_edit_suggestions"
         let saved = "id, name, is_verified"
-        let owner = queryWithTableName(.companies, [saved], true)
+        let owner = buildQuery(.companies, [saved], true)
 
         switch queryType {
         case .editSuggestionTable:
             return editSuggestionTable
         case let .saved(withTableName):
-            return queryWithTableName(.companies, [saved, ImageEntity.getQuery(.saved(.companyLogos))], withTableName)
+            return buildQuery(.companies, [saved, ImageEntity.getQuery(.saved(.companyLogos))], withTableName)
         case let .joinedBrandSubcategoriesOwner(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .companies,
                 [saved, owner, Brand.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.companyLogos))],
                 withTableName

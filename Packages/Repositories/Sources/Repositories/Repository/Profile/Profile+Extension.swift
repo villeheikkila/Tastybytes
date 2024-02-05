@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-extension Profile {
+extension Profile: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let minimal = "id, is_private, preferred_name, joined_at"
         let saved =
@@ -9,9 +9,9 @@ extension Profile {
 
         switch queryType {
         case let .minimal(withTableName):
-            return queryWithTableName(.profiles, [minimal, ImageEntity.getQuery(.saved(.profileAvatars))], withTableName)
+            return buildQuery(.profiles, [minimal, ImageEntity.getQuery(.saved(.profileAvatars))], withTableName)
         case let .extended(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .profiles,
                 [saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
                 withTableName
@@ -25,13 +25,13 @@ extension Profile {
     }
 }
 
-extension Role {
+extension Role: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name"
 
         switch queryType {
         case let .joined(withTableName):
-            return queryWithTableName(.roles, [saved, Permission.getQuery(.saved(true))], withTableName)
+            return buildQuery(.roles, [saved, Permission.getQuery(.saved(true))], withTableName)
         }
     }
 
@@ -40,13 +40,13 @@ extension Role {
     }
 }
 
-extension Permission {
+extension Permission: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name"
 
         switch queryType {
         case let .saved(withTableName):
-            return queryWithTableName(.permissions, [saved], withTableName)
+            return buildQuery(.permissions, [saved], withTableName)
         }
     }
 
@@ -55,13 +55,13 @@ extension Permission {
     }
 }
 
-extension ProfileWishlist {
+extension ProfileWishlist: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "created_by"
 
         switch queryType {
         case let .joined(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .profileWishlistItems,
                 [saved, Product.getQuery(.joinedBrandSubcategories(true))],
                 withTableName
@@ -74,7 +74,7 @@ extension ProfileWishlist {
     }
 }
 
-extension ProfileSettings {
+extension ProfileSettings: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved =
             """
@@ -84,7 +84,7 @@ extension ProfileSettings {
 
         switch queryType {
         case let .saved(withTableName):
-            return queryWithTableName(.profileSettings, [saved], withTableName)
+            return buildQuery(.profileSettings, [saved], withTableName)
         }
     }
 

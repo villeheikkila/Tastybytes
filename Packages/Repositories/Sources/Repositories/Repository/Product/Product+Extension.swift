@@ -1,22 +1,22 @@
 import Foundation
 import Models
 
-extension Product {
+extension Product: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name, description, is_verified, is_discontinued"
 
         switch queryType {
         case let .saved(withTableName):
-            return queryWithTableName(.products, [saved], withTableName)
+            return buildQuery(.products, [saved], withTableName)
         case let .joinedBrandSubcategories(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .products,
                 [saved, SubBrand.getQuery(.joinedBrand(true)), Category.getQuery(.saved(true)),
                  Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.productLogos))],
                 withTableName
             )
         case let .joinedBrandSubcategoriesCreator(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .products,
                 [
                     saved,
@@ -30,7 +30,7 @@ extension Product {
                 withTableName
             )
         case let .joinedBrandSubcategoriesRatings(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .products,
                 [
                     saved,
@@ -45,7 +45,7 @@ extension Product {
                 withTableName
             )
         case let .joinedBrandSubcategoriesProfileRatings(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .products,
                 [
                     saved,
@@ -71,13 +71,13 @@ extension Product {
     }
 }
 
-extension ProductVariant {
+extension ProductVariant: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id"
 
         switch queryType {
         case let .joined(withTableName):
-            return queryWithTableName(.productVariants, [saved, Company.getQuery(.saved(true))], withTableName)
+            return buildQuery(.productVariants, [saved, Company.getQuery(.saved(true))], withTableName)
         }
     }
 
@@ -86,13 +86,13 @@ extension ProductVariant {
     }
 }
 
-extension ProductDuplicateSuggestion {
+extension ProductDuplicateSuggestion: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "product_id, duplicate_of_product_id"
 
         switch queryType {
         case let .saved(withTableName):
-            return queryWithTableName(.productDuplicateSuggestions, [saved], withTableName)
+            return buildQuery(.productDuplicateSuggestions, [saved], withTableName)
         }
     }
 
@@ -100,3 +100,4 @@ extension ProductDuplicateSuggestion {
         case saved(_ withTableName: Bool)
     }
 }
+

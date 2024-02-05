@@ -1,15 +1,15 @@
 import Foundation
 import Models
 
-extension Subcategory {
+extension Subcategory: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name, is_verified"
 
         switch queryType {
         case let .saved(withTableName):
-            return queryWithTableName(.subcategories, [saved], withTableName)
+            return buildQuery(.subcategories, [saved], withTableName)
         case let .joinedCategory(withTableName):
-            return queryWithTableName(.subcategories, [saved, Category.getQuery(.saved(true))], withTableName)
+            return buildQuery(.subcategories, [saved, Category.getQuery(.saved(true))], withTableName)
         }
     }
 

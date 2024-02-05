@@ -1,21 +1,21 @@
 import Foundation
 import Models
 
-extension SubBrand {
+extension SubBrand: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name, is_verified"
 
         switch queryType {
         case let .saved(withTableName):
-            return queryWithTableName(.subBrands, [saved], withTableName)
+            return buildQuery(.subBrands, [saved], withTableName)
         case let .joined(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .subBrands,
                 [saved, Product.getQuery(.joinedBrandSubcategories(true))],
                 withTableName
             )
         case let .joinedBrand(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .subBrands,
                 [saved, Brand.getQuery(.joinedCompany(true))],
                 withTableName

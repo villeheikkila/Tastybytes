@@ -1,15 +1,15 @@
 import Foundation
 import Models
 
-extension CheckInComment {
+extension CheckInComment: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, content, created_at"
 
         switch queryType {
         case let .joinedProfile(withTableName):
-            return queryWithTableName(.checkInComments, [saved, Profile.getQuery(.minimal(true))], withTableName)
+            return buildQuery(.checkInComments, [saved, Profile.getQuery(.minimal(true))], withTableName)
         case let .joinedCheckIn(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .checkInComments,
                 [saved, Profile.getQuery(.minimal(true)), CheckIn.getQuery(.joined(true))],
                 withTableName

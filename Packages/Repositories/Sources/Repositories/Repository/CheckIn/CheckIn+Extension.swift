@@ -1,38 +1,23 @@
 import Foundation
 import Models
 
-extension CheckIn {
+extension CheckIn: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
-        let fromFriendsView = "view_check_ins_from_friends"
         let image = "id, blur_hash, created_by"
         let saved = "id, rating, review, check_in_at, blur_hash"
-        let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
-        let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
-        let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
 
         switch queryType {
-        case .fromFriendsView:
-            return fromFriendsView
-        case let .segmentedView(segment):
-            switch segment {
-            case .everyone:
-                return Database.Table.checkIns.rawValue
-            case .friends:
-                return "view__check_ins_from_friends"
-            case .you:
-                return "view__check_ins_from_current_user"
-            }
         case let .joined(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .categories,
                 [
                     saved,
                     Profile.getQuery(.minimal(true)),
                     Product.getQuery(.joinedBrandSubcategories(true)),
                     CheckInReaction.getQuery(.joinedProfile(true)),
-                    checkInTaggedProfilesJoined,
-                    checkInFlavorsJoined,
-                    productVariantJoined,
+                    buildQuery(.checkInTaggedProfiles, [Profile.getQuery(.minimal(true))], true),
+                    buildQuery(.checkInFlavors, [Flavor.getQuery(.saved(true))], true),
+                    buildQuery(.productVariants, [Company.getQuery(.saved(true))], true),
                     ServingStyle.getQuery(.saved(true)),
                     "locations:location_id (\(Location.getQuery(.joined(false))))",
                     "purchase_location:purchase_location_id (\(Location.getQuery(.joined(false))))",
@@ -41,7 +26,7 @@ extension CheckIn {
                 withTableName
             )
         case let .image(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .categories,
                 [image, ImageEntity.getQuery(.saved(.checkInImages))],
                 withTableName
@@ -50,20 +35,18 @@ extension CheckIn {
     }
 
     enum QueryType {
-        case segmentedView(CheckInSegment)
-        case fromFriendsView
         case joined(_ withTableName: Bool)
         case image(_ withTableName: Bool)
     }
 }
 
-extension Models.Notification.CheckInTaggedProfiles {
+extension Models.Notification.CheckInTaggedProfiles: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id"
 
         switch queryType {
         case let .joined(withTableName):
-            return queryWithTableName(
+            return buildQuery(
                 .checkInTaggedProfiles,
                 [saved, CheckIn.getQuery(.joined(true))],
                 withTableName

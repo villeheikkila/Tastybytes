@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-extension Friend {
+extension Friend: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let joined =
             """
@@ -11,7 +11,7 @@ extension Friend {
 
         switch queryType {
         case let .joined(withTableName):
-            return queryWithTableName(.friends, [joined], withTableName)
+            return buildQuery(.friends, [joined], withTableName)
         }
     }
 

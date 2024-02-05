@@ -1,13 +1,13 @@
 import Foundation
 import Models
 
-extension Document {
+extension Document: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "document"
 
         switch queryType {
         case let .saved(withTableName):
-            return queryWithTableName(.documents, [saved], withTableName)
+            return buildQuery(.documents, [saved], withTableName)
         }
     }
 
