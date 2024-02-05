@@ -301,7 +301,7 @@ public extension Product {
     }
 
     enum FeedType: String, Hashable, Identifiable, Codable, Sendable {
-        public var id: String { self.rawValue }
+        public var id: String { rawValue }
 
         case topRated, trending, latest
     }
@@ -577,5 +577,3 @@ public extension Product.Joined {
         return logo.getLogoUrl(baseUrl: baseUrl)
     }
 }
-
-

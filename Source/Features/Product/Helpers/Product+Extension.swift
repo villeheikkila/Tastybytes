@@ -40,19 +40,19 @@ public extension Product.Joined.Formatter where Output == String {
     }
 }
 
-extension Product.Filter.SortBy {
-        public var label: LocalizedStringKey {
-            switch self {
-            case .highestRated:
-                "product.filter.sortBy.highestRated.label"
-            case .lowestRated:
-                "product.filter.sortBy.lowestRated.label"
-            }
+public extension Product.Filter.SortBy {
+    var label: LocalizedStringKey {
+        switch self {
+        case .highestRated:
+            "product.filter.sortBy.highestRated.label"
+        case .lowestRated:
+            "product.filter.sortBy.lowestRated.label"
         }
+    }
 }
 
-extension Product.FeedType{
-    public var label: String {
+public extension Product.FeedType {
+    var label: String {
         switch self {
         case .topRated:
             "product.feed.topRated.label"

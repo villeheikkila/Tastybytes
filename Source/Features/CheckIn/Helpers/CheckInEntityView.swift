@@ -1,6 +1,6 @@
+import Components
 import Models
 import SwiftUI
-import Components
 
 public struct CheckInEntityView: View {
     let checkIn: CheckIn

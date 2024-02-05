@@ -130,7 +130,7 @@ struct ProductMutationView: View {
             .disabled(!isValid)
         }
     }
-    
+
     private var categorySection: some View {
         Section {
             Button(
