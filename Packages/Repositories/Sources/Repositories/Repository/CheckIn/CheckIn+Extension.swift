@@ -3,7 +3,6 @@ import Models
 
 extension CheckIn {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.checkIns.rawValue
         let fromFriendsView = "view_check_ins_from_friends"
         let image = "id, blur_hash, created_by"
         let saved = "id, rating, review, check_in_at, blur_hash"
@@ -12,14 +11,12 @@ extension CheckIn {
         let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
 
         switch queryType {
-        case .tableName:
-            return tableName
         case .fromFriendsView:
             return fromFriendsView
         case let .segmentedView(segment):
             switch segment {
             case .everyone:
-                return tableName
+                return Database.Table.checkIns.rawValue
             case .friends:
                 return "view__check_ins_from_friends"
             case .you:
@@ -27,7 +24,7 @@ extension CheckIn {
             }
         case let .joined(withTableName):
             return queryWithTableName(
-                tableName,
+                .categories,
                 [
                     saved,
                     Profile.getQuery(.minimal(true)),
@@ -40,20 +37,19 @@ extension CheckIn {
                     "locations:location_id (\(Location.getQuery(.joined(false))))",
                     "purchase_location:purchase_location_id (\(Location.getQuery(.joined(false))))",
                     ImageEntity.getQuery(.saved(.checkInImages)),
-                ].joinComma(),
+                ],
                 withTableName
             )
         case let .image(withTableName):
             return queryWithTableName(
-                tableName,
-                [image, ImageEntity.getQuery(.saved(.checkInImages))].joinComma(),
+                .categories,
+                [image, ImageEntity.getQuery(.saved(.checkInImages))],
                 withTableName
             )
         }
     }
 
     enum QueryType {
-        case tableName
         case segmentedView(CheckInSegment)
         case fromFriendsView
         case joined(_ withTableName: Bool)
@@ -63,23 +59,19 @@ extension CheckIn {
 
 extension Models.Notification.CheckInTaggedProfiles {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.checkInTaggedProfiles.rawValue
         let saved = "id"
 
         switch queryType {
-        case .tableName:
-            return tableName
         case let .joined(withTableName):
             return queryWithTableName(
-                tableName,
-                [saved, CheckIn.getQuery(.joined(true))].joinComma(),
+                .checkInTaggedProfiles,
+                [saved, CheckIn.getQuery(.joined(true))],
                 withTableName
             )
         }
     }
 
     enum QueryType {
-        case tableName
         case joined(_ withTableName: Bool)
     }
 }

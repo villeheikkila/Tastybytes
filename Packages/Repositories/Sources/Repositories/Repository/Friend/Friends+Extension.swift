@@ -3,7 +3,6 @@ import Models
 
 extension Friend {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.friends.rawValue
         let joined =
             """
               id, status, sender:user_id_1 (\(Profile.getQuery(.minimal(false)))),\
@@ -11,15 +10,12 @@ extension Friend {
             """
 
         switch queryType {
-        case .tableName:
-            return tableName
         case let .joined(withTableName):
-            return queryWithTableName(tableName, joined, withTableName)
+            return queryWithTableName(.friends, [joined], withTableName)
         }
     }
 
     enum QueryType {
-        case tableName
         case joined(_ withTableName: Bool)
     }
 }

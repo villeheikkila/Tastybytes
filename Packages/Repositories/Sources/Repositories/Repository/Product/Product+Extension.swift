@@ -3,24 +3,21 @@ import Models
 
 extension Product {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.products.rawValue
         let saved = "id, name, description, is_verified, is_discontinued"
 
         switch queryType {
-        case .tableName:
-            return tableName
         case let .saved(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
+            return queryWithTableName(.products, [saved], withTableName)
         case let .joinedBrandSubcategories(withTableName):
             return queryWithTableName(
-                tableName,
+                .products,
                 [saved, SubBrand.getQuery(.joinedBrand(true)), Category.getQuery(.saved(true)),
-                 Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.productLogos))].joinComma(),
+                 Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.productLogos))],
                 withTableName
             )
         case let .joinedBrandSubcategoriesCreator(withTableName):
             return queryWithTableName(
-                tableName,
+                .products,
                 [
                     saved,
                     "created_at",
@@ -29,12 +26,12 @@ extension Product {
                     Subcategory.getQuery(.joinedCategory(true)),
                     ProductBarcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
-                ].joinComma(),
+                ],
                 withTableName
             )
         case let .joinedBrandSubcategoriesRatings(withTableName):
             return queryWithTableName(
-                tableName,
+                .products,
                 [
                     saved,
                     "current_user_check_ins",
@@ -44,12 +41,12 @@ extension Product {
                     Subcategory.getQuery(.joinedCategory(true)),
                     ProductBarcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
-                ].joinComma(),
+                ],
                 withTableName
             )
         case let .joinedBrandSubcategoriesProfileRatings(withTableName):
             return queryWithTableName(
-                tableName,
+                .products,
                 [
                     saved,
                     "check_ins",
@@ -59,14 +56,13 @@ extension Product {
                     Subcategory.getQuery(.joinedCategory(true)),
                     ProductBarcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
-                ].joinComma(),
+                ],
                 withTableName
             )
         }
     }
 
     enum QueryType {
-        case tableName
         case saved(_ withTableName: Bool)
         case joinedBrandSubcategories(_ withTableName: Bool)
         case joinedBrandSubcategoriesCreator(_ withTableName: Bool)
@@ -77,12 +73,11 @@ extension Product {
 
 extension ProductVariant {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.productVariants.rawValue
         let saved = "id"
 
         switch queryType {
         case let .joined(withTableName):
-            return queryWithTableName(tableName, [saved, Company.getQuery(.saved(true))].joinComma(), withTableName)
+            return queryWithTableName(.productVariants, [saved, Company.getQuery(.saved(true))], withTableName)
         }
     }
 
@@ -93,19 +88,15 @@ extension ProductVariant {
 
 extension ProductDuplicateSuggestion {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "product_duplicate_suggestions"
         let saved = "product_id, duplicate_of_product_id"
 
         switch queryType {
-        case .tableName:
-            return tableName
         case let .saved(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
+            return queryWithTableName(.productDuplicateSuggestions, [saved], withTableName)
         }
     }
 
     enum QueryType {
-        case tableName
         case saved(_ withTableName: Bool)
     }
 }

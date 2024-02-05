@@ -3,19 +3,15 @@ import Models
 
 extension Location {
     static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = Database.Table.locations.rawValue
         let saved = "id, name, title, longitude, latitude, country_code, source"
 
         switch queryType {
-        case .tableName:
-            return tableName
         case let .joined(withTableName):
-            return queryWithTableName(tableName, [saved, Country.getQuery(.saved(true))].joinComma(), withTableName)
+            return queryWithTableName(.locations, [saved, Country.getQuery(.saved(true))], withTableName)
         }
     }
 
     enum QueryType {
-        case tableName
         case joined(_ withTableName: Bool)
     }
 }

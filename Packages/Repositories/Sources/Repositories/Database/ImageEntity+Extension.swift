@@ -7,7 +7,7 @@ extension ImageEntity {
         switch queryType {
         case let .saved(tableName):
             if let tableName {
-                return queryWithTableName(tableName.rawValue, saved, true)
+                return queryWithTableName(tableName, [saved], true)
             } else {
                 return saved
             }
