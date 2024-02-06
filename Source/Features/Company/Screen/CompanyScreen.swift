@@ -44,7 +44,7 @@ struct CompanyScreen: View {
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
             }
-            Section("Brands") {
+            Section("brand.title") {
                 ForEach(sortedBrands) { brand in
                     RouterLink(
                         screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company, brand: brand))

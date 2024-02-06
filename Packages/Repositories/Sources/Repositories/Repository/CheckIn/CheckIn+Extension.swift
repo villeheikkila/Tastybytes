@@ -19,8 +19,8 @@ extension CheckIn: Queryable {
                     buildQuery(.checkInFlavors, [Flavor.getQuery(.saved(true))], true),
                     buildQuery(.productVariants, [Company.getQuery(.saved(true))], true),
                     ServingStyle.getQuery(.saved(true)),
-                    "locations:location_id (\(Location.getQuery(.joined(false))))",
-                    "purchase_location:purchase_location_id (\(Location.getQuery(.joined(false))))",
+                    buildQuery(name: "locations", foreignKey: "location_id", [Location.getQuery(.joined(false))]),
+                    buildQuery(name: "purchase_location", foreignKey: "purchase_location_id", [Location.getQuery(.joined(false))]),
                     ImageEntity.getQuery(.saved(.checkInImages)),
                 ],
                 withTableName

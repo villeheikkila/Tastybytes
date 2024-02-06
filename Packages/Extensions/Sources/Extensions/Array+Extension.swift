@@ -37,11 +37,6 @@ public extension Array {
     }
 }
 
-public extension [String] {
-    func joinComma() -> String {
-        joined(separator: ", ")
-    }
-}
 
 public extension Array {
     func joinOptionalSpace<T>() -> String where T: ExpressibleByStringLiteral, Element == T? {

@@ -9,7 +9,7 @@ struct CompanyBrandRow: View {
             BrandLogo(brand: brand, size: 42)
             Text(brand.name)
             Spacer()
-            Text("(\(brand.productCount.formatted())")
+            Text("(\(brand.productCount.formatted()))")
         }
     }
 }
