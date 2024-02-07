@@ -23,10 +23,10 @@ struct CheckInCommentEditSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Comment...", text: $editCommentText)
+                TextField("comment.edit.placeholder", text: $editCommentText)
             }
             .scrollBounceBehavior(.basedOnSize)
-            .navigationTitle("Edit Comment")
+            .navigationTitle("comment.edit.navigationTitle")
             .toolbar {
                 toolbarContent
             }

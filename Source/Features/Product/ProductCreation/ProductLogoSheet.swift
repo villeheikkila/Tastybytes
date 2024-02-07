@@ -63,7 +63,7 @@ struct ProductLogoSheet: View {
             }
             await uploadLogo(data: data)
         }
-        .navigationTitle("Product Logo")
+        .navigationTitle("product.logo.navigationTitle")
         .toolbar {
             toolbarContent
         }

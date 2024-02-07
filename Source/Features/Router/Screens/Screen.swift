@@ -36,7 +36,6 @@ enum Screen: Hashable, Codable, Sendable {
     case contributions
     case about
     case error(reason: String)
-    case createProductNew
 
     @ViewBuilder var view: some View {
         switch self {
@@ -106,8 +105,6 @@ enum Screen: Hashable, Codable, Sendable {
             AboutScreen()
         case let .error(reason):
             ErrorScreen(reason: reason)
-        case .createProductNew:
-            ProductCreationScreen()
         }
     }
 }

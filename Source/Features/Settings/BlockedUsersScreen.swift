@@ -22,17 +22,17 @@ struct BlockedUsersScreen: View {
         .listStyle(.insetGrouped)
         .overlay {
             ContentUnavailableView {
-                Label("You haven't blocked any users", systemImage: "person.fill.xmark")
+                Label("blockedUsers.empty.title", systemImage: "person.fill.xmark")
             } description: {
-                Text("Blocked users can't see your check-ins or profile")
+                Text("blockedUsers.empty.description")
             } actions: {
-                RouterLink("Block user", sheet: .userSheet(mode: .block, onSubmit: {
-                    feedbackEnvironmentModel.toggle(.success("User blocked"))
+                RouterLink("blockedUsers.empty.block.label", sheet: .userSheet(mode: .block, onSubmit: {
+                    feedbackEnvironmentModel.toggle(.success("blockedUsers.block.success"))
                 }))
             }
             .opacity(friendEnvironmentModel.blockedUsers.isEmpty ? 1 : 0)
         }
-        .navigationTitle("Blocked Users")
+        .navigationTitle("blockedUsers.title")
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -49,8 +49,8 @@ struct BlockedUsersScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
-                Button("Show block user sheet", systemImage: "plus", action: { sheet = .userSheet(mode: .block, onSubmit: {
-                    feedbackEnvironmentModel.toggle(.success("User blocked"))
+                Button("blockedUsers.block.label", systemImage: "plus", action: { sheet = .userSheet(mode: .block, onSubmit: {
+                    feedbackEnvironmentModel.toggle(.success("blockedUsers.block.success"))
                 }) })
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
@@ -71,7 +71,7 @@ struct BlockedUserListItemView: View {
                 HStack {
                     Text(profile.preferredName)
                     Spacer()
-                    ProgressButton("Unblock", systemImage: "hand.raised.slash.fill", action: { await onUnblockUser() })
+                    ProgressButton("blockedUsers.unblock.label", systemImage: "hand.raised.slash.fill", action: { await onUnblockUser() })
                 }
             }
         }

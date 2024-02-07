@@ -114,9 +114,6 @@
     "Access to location" : {
 
     },
-    "Account" : {
-
-    },
     "Account Deleted" : {
 
     },
@@ -168,9 +165,6 @@
     "Add Category" : {
 
     },
-    "Add Flavor" : {
-
-    },
     "Add flavors" : {
 
     },
@@ -186,9 +180,6 @@
     "Add new sub-brand for %@" : {
 
     },
-    "Add new subcategory" : {
-
-    },
     "Add Product" : {
 
     },
@@ -196,12 +187,6 @@
 
     },
     "Add subcategory" : {
-
-    },
-    "Add Subcategory" : {
-
-    },
-    "Add subcategory to %@" : {
 
     },
     "Admin" : {
@@ -225,19 +210,19 @@
     "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted." : {
 
     },
-    "Barcode (EAN13)" : {
-
-    },
     "Barcode added!" : {
 
     },
     "Barcode Added!" : {
 
     },
-    "Barcode Management" : {
+    "barcode.management.navigationTitle" : {
 
     },
-    "Barcode Scanner" : {
+    "barcode.scanner.input.placeholder" : {
+
+    },
+    "barcode.scanner.navigationTitle" : {
 
     },
     "barcode.title" : {
@@ -246,10 +231,16 @@
     "Barcodes" : {
 
     },
-    "Blocked Users" : {
+    "blockedUsers.block.label" : {
 
     },
-    "Blocked users can't see your check-ins or profile" : {
+    "blockedUsers.block.success" : {
+
+    },
+    "blockedUsers.empty.description" : {
+
+    },
+    "blockedUsers.empty.title" : {
 
     },
     "blockedUsers.title" : {
@@ -267,13 +258,16 @@
     "brand.title" : {
 
     },
-    "Brands" : {
-
-    },
     "brandScreen.groupProductsBy" : {
 
     },
     "Category created!" : {
+
+    },
+    "category.add.navigationTitle" : {
+
+    },
+    "category.name.placeholder" : {
 
     },
     "category.picker.label" : {
@@ -402,7 +396,10 @@
     "checkIn.title" : {
 
     },
-    "Comment..." : {
+    "comment.edit.navigationTitle" : {
+
+    },
+    "comment.edit.placeholder" : {
 
     },
     "Comments" : {
@@ -534,9 +531,6 @@
     "Edit Brand" : {
 
     },
-    "Edit Comment" : {
-
-    },
     "Edit Serving Style" : {
 
     },
@@ -565,6 +559,15 @@
 
     },
     "Find products by rating" : {
+
+    },
+    "flavor.add.navigationTitle" : {
+
+    },
+    "flavor.name.placeholder" : {
+
+    },
+    "flavor.navigationTitle" : {
 
     },
     "Flavors" : {
@@ -628,6 +631,9 @@
 
     },
     "Keep up to date!" : {
+
+    },
+    "labels.cancel" : {
 
     },
     "labels.copyright" : {
@@ -726,9 +732,6 @@
     "Name" : {
 
     },
-    "Name of subcategory" : {
-
-    },
     "Name of the brand" : {
 
     },
@@ -741,7 +744,13 @@
     "Name of the sub-brand" : {
 
     },
-    "Name Tag" : {
+    "nameTag.navigationTitle" : {
+
+    },
+    "nameTag.scan.label" : {
+
+    },
+    "nameTag.show.label" : {
 
     },
     "New Brand Created!" : {
@@ -813,9 +822,6 @@
     "Product" : {
 
     },
-    "Product Logo" : {
-
-    },
     "Product Merge Confirmation" : {
 
     },
@@ -853,6 +859,9 @@
 
     },
     "product.loadedFromBarcode.title" : {
+
+    },
+    "product.logo.navigationTitle" : {
 
     },
     "product.mutation.create.title" : {
@@ -942,9 +951,6 @@
     "report.section.report.title" : {
 
     },
-    "Scan Name Tag" : {
-
-    },
     "Search companies" : {
 
     },
@@ -987,6 +993,9 @@
     "settings.account.delete.disclaimer" : {
 
     },
+    "settings.account.title" : {
+
+    },
     "settings.actions.signOut" : {
 
     },
@@ -1000,6 +1009,9 @@
 
     },
     "settings.contributions.title" : {
+
+    },
+    "settings.notifications.title" : {
 
     },
     "settings.privacy.privateProfile.description" : {
@@ -1026,19 +1038,10 @@
     "settings.profile.useFullName.label" : {
 
     },
-    "Show block user sheet" : {
-
-    },
     "Show check-ins from" : {
 
     },
     "Show filters" : {
-
-    },
-    "Show name tag" : {
-
-    },
-    "Show Name Tag" : {
 
     },
     "Show notification when someone comments on your check-in" : {
@@ -1077,19 +1080,31 @@
     "subBrand.title" : {
 
     },
-    "Subcategories" : {
+    "subcategory.add" : {
 
     },
-    "subcategory.add" : {
+    "subcategory.add.name" : {
+
+    },
+    "subcategory.addTo.category.navigationTitle %@" : {
+
+    },
+    "subcategory.addTo.category.title" : {
+
+    },
+    "subcategory.edit.navigationTitle %@" : {
+
+    },
+    "subcategory.name.placeholder" : {
+
+    },
+    "subcategory.navigationTitle" : {
 
     },
     "subcategory.picker.label" : {
 
     },
     "subcategory.title" : {
-
-    },
-    "Submit" : {
 
     },
     "subscription.callToAction" : {
@@ -1159,9 +1174,6 @@
     "Use System Color Scheme" : {
 
     },
-    "User blocked" : {
-
-    },
     "Value" : {
 
     },
@@ -1181,16 +1193,16 @@
     "Wishlist" : {
 
     },
-    "Wishlist is empty" : {
+    "wishlist.empty.title" : {
+
+    },
+    "wishlist.navigationTitle" : {
 
     },
     "You can only add %lld flavors" : {
 
     },
     "You have no notifications" : {
-
-    },
-    "You haven't blocked any users" : {
 
     },
     "You haven't check-in yet" : {

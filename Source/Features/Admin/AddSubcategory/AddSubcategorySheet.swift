@@ -10,9 +10,9 @@ struct AddSubcategorySheet: View {
 
     var body: some View {
         Form {
-            Section("Add Subcategory") {
-                TextField("Name", text: $newSubcategoryName)
-                ProgressButton("Add", action: {
+            Section("subcategory.addTo.category.title") {
+                TextField("subcategory.name.placeholder", text: $newSubcategoryName)
+                ProgressButton("label.add", action: {
                     await onSubmit(newSubcategoryName)
                     await MainActor.run {
                         dismiss()
@@ -20,7 +20,7 @@ struct AddSubcategorySheet: View {
                 }).disabled(newSubcategoryName.isEmpty)
             }
         }
-        .navigationTitle("Add subcategory to \(category.name)")
+        .navigationTitle("subcategory.addTo.category.navigationTitle \(category.name)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent

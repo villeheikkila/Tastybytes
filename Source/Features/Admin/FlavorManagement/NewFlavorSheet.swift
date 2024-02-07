@@ -9,15 +9,15 @@ struct NewFlavorSheet: View {
 
     var body: some View {
         Form {
-            TextField("Name", text: $name)
-            ProgressButton("Add", action: {
+            TextField("flavor.name.placeholder", text: $name)
+            ProgressButton("labels.add", action: {
                 await onSubmit(name)
                 await MainActor.run {
                     dismiss()
                 }
             })
         }
-        .navigationTitle("Add Flavor")
+        .navigationTitle("flavor.add.navigationTitle")
         .toolbar {
             toolbarContent
         }

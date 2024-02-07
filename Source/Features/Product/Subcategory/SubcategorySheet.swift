@@ -41,14 +41,14 @@ struct SubcategorySheet: View {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
-        .navigationTitle("Subcategories")
+        .navigationTitle("subcategory.navigationTitle")
         .toolbar {
             toolbarContent
         }
-        .alert("Add new subcategory", isPresented: $showAddSubcategory, actions: {
-            TextField("Name of subcategory", text: $newSubcategoryName)
-            Button("actions.cancel", role: .cancel, action: {})
-            ProgressButton("Create", action: {
+        .alert("subcategory.add.name", isPresented: $showAddSubcategory, actions: {
+            TextField("subcategory.name.placeholder", text: $newSubcategoryName)
+            Button("labels.cancel", role: .cancel, action: {})
+            ProgressButton("labels.create", action: {
                 await appEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
             })
         })

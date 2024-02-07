@@ -54,7 +54,7 @@ struct NotificationSettingsScreen: View {
                 }
             }
         }
-        .navigationTitle("Notifications")
+        .navigationTitle("settings.notifications.title")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: reactioNotificationDeliveryType) { _, newState in
             Task {

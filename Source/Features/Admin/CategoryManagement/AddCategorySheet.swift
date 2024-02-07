@@ -11,15 +11,15 @@ struct AddCategorySheet: View {
 
     var body: some View {
         Form {
-            TextField("Name", text: $newCategoryName)
-            ProgressButton("Add", action: {
+            TextField("category.name.placeholder", text: $newCategoryName)
+            ProgressButton("labels.add", action: {
                 await appEnvironmentModel.addCategory(name: newCategoryName)
                 await MainActor.run {
                     dismiss()
                 }
             }).disabled(newCategoryName.isEmpty)
         }
-        .navigationTitle("Add Category")
+        .navigationTitle("category.add.navigationTitle")
         .toolbar {
             toolbarContent
         }

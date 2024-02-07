@@ -16,9 +16,9 @@ struct BarcodeScannerSheet: View {
         VStack {
             if showBarcodeTextField {
                 Form {
-                    TextField("Barcode (EAN13)", text: $barcodeInput)
+                    TextField("barcode.scanner.input.placeholder", text: $barcodeInput)
                         .keyboardType(.decimalPad)
-                    Button("Submit", action: {
+                    Button("labels.submit", action: {
                         onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13.rawValue))
                         dismiss()
                     }).disabled(!isValidEAN13(input: barcodeInput))
@@ -32,7 +32,7 @@ struct BarcodeScannerSheet: View {
                 }, isTorchOn: isTorchOn)
             }
         }
-        .navigationTitle("Barcode Scanner")
+        .navigationTitle("barcode.scanner.navigationTitle")
         .toolbar {
             toolbarContent
         }

@@ -28,7 +28,7 @@ struct AccountSettingsScreen: View {
             emailSection
             deleteAccount
         }
-        .navigationTitle("Account")
+        .navigationTitle("settings.account.title")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(
             isPresented: $showAccountDeleteScreen,

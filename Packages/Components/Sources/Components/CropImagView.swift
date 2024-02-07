@@ -31,7 +31,7 @@ struct CropView: View {
 
     var body: some View {
         imageView()
-            .navigationTitle("Crop")
+            .navigationTitle("crop.navigationTitle")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color.black, for: .navigationBar)
@@ -49,7 +49,7 @@ struct CropView: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(action: { renderFinalImage() }, label: {
-                Label("Done", systemImage: "checkmark")
+                Label("labels.done", systemImage: "checkmark")
                     .labelStyle(.iconOnly)
                     .font(.callout)
                     .fontWeight(.semibold)
@@ -61,7 +61,7 @@ struct CropView: View {
                 finalImage = image
                 dismiss()
             }, label: {
-                Label("Close", systemImage: "xmark")
+                Label("labels.close", systemImage: "xmark")
                     .labelStyle(.iconOnly)
                     .font(.callout)
                     .fontWeight(.semibold)
@@ -78,7 +78,7 @@ struct CropView: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .accessibilityLabel("Image to be resized")
+                    .accessibilityLabel("crop.resize.accessibilityLabel")
                     .overlay {
                         GeometryReader { proxy in
                             let rect = proxy.frame(in: .named(coordinateSpace))
@@ -166,14 +166,14 @@ enum Crop: Equatable {
     case square
     case custom(CGSize)
 
-    func name() -> String {
+    func name() -> LocalizedStringKey {
         switch self {
         case .rectangle:
-            "Rectangle"
+            "crop.rectangle"
         case .square:
-            "Square"
+            "crop.square"
         case let .custom(cGSize):
-            "Custom \(Int(cGSize.width))X\(Int(cGSize.height))"
+            "crop.custom \(Int(cGSize.width))X\(Int(cGSize.height))"
         }
     }
 

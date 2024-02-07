@@ -47,11 +47,11 @@ struct ProfileWishlistScreen: View {
         .background {
             if isEmpty {
                 ContentUnavailableView {
-                    Label("Wishlist is empty", systemImage: "list.star")
+                    Label("wishlist.empty.title", systemImage: "list.star")
                 }
             }
         }
-        .navigationTitle("Wishlist")
+        .navigationTitle("wishlist.navigationTitle")
         .refreshable {
             await loadProducts()
         }

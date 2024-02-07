@@ -43,7 +43,7 @@ struct BarcodeManagementSheet: View {
             await getBarcodes()
         }
         .alertError($alertError)
-        .navigationTitle("Barcode Management")
+        .navigationTitle("barcode.management.navigationTitle")
         .toolbar {
             toolbarContent
         }
