@@ -150,6 +150,9 @@
     "activity.error.failedToLoad" : {
 
     },
+    "activity.navigationTitle" : {
+
+    },
     "Add" : {
 
     },
@@ -190,6 +193,9 @@
 
     },
     "Admin" : {
+
+    },
+    "admin.navigationTitle" : {
 
     },
     "Are you sure you want to delete comment as a moderator?" : {
@@ -489,6 +495,9 @@
     "discover.locations.prompt" : {
 
     },
+    "discover.navigationTitle" : {
+
+    },
     "discover.procucts.notFound.title \"%@\"" : {
 
     },
@@ -607,6 +616,9 @@
 
     },
     "friends.contentUnavailable.noFriends" : {
+
+    },
+    "friends.navigationTitle" : {
 
     },
     "friends.title" : {
@@ -789,6 +801,9 @@
     "Notifications" : {
 
     },
+    "notifications.navigationTitle" : {
+
+    },
     "notifications.title" : {
 
     },
@@ -906,6 +921,9 @@
     "profile.nameTag.tip.share" : {
 
     },
+    "profile.navigationTitle" : {
+
+    },
     "profile.private.title" : {
 
     },
@@ -1009,6 +1027,9 @@
 
     },
     "settings.contributions.title" : {
+
+    },
+    "settings.navigationTitle" : {
 
     },
     "settings.notifications.title" : {
