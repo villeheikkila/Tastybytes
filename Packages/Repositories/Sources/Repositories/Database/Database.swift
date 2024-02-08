@@ -122,7 +122,7 @@ extension Queryable {
     static func buildQuery(_ tableName: Database.Table, _ query: [String], _ withTableName: Bool) -> String {
         withTableName ? "\(tableName.rawValue) (\(query.joinQueryParts()))" : query.joinQueryParts()
     }
-    
+
     static func buildQuery(name: String, foreignKey: String, _ query: [String]) -> String {
         "\(name):\(foreignKey) (\(query.joinQueryParts()))"
     }

@@ -100,4 +100,3 @@ extension ProductDuplicateSuggestion: Queryable {
         case saved(_ withTableName: Bool)
     }
 }
-

@@ -37,7 +37,6 @@ public extension Array {
     }
 }
 
-
 public extension Array {
     func joinOptionalSpace<T>() -> String where T: ExpressibleByStringLiteral, Element == T? {
         compactMap { $0 as? String }.joined(separator: " ")
