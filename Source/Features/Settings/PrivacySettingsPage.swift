@@ -10,7 +10,7 @@ struct PrivacySettingsScreen: View {
         Form {
             privacySection
         }
-        .navigationTitle("settings.privacy.title")
+        .navigationTitle("settings.privacy.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
     }
 

@@ -22,11 +22,11 @@ extension DiscoverScreen {
         var prompt: LocalizedStringKey {
             switch self {
             case .products:
-                "discover.products.prompt."
+                "discover.products.prompt"
             case .users:
                 "discover.users.prompt"
             case .companies:
-                "discover.companies.prompot"
+                "discover.companies.prompt"
             case .locations:
                 "discover.locations.prompt"
             }

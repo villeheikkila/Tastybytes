@@ -411,6 +411,9 @@
     "Comments" : {
 
     },
+    "company.create.label" : {
+
+    },
     "company.edit.label" : {
 
     },
@@ -429,6 +432,9 @@
     "company.editSuggestion.title" : {
 
     },
+    "company.search.navigationTitle" : {
+
+    },
     "company.shareLink.subject" : {
 
     },
@@ -439,9 +445,6 @@
 
     },
     "contributions.title" : {
-
-    },
-    "Create new company" : {
 
     },
     "Data was exported as CSV" : {
@@ -477,7 +480,7 @@
     "discover.companies.notFound.title \"%@\"" : {
 
     },
-    "discover.companies.prompot" : {
+    "discover.companies.prompt" : {
 
     },
     "discover.filter.show" : {
@@ -507,7 +510,7 @@
     "discover.products.notFound.description" : {
 
     },
-    "discover.products.prompt." : {
+    "discover.products.prompt" : {
 
     },
     "discover.title" : {
@@ -619,9 +622,6 @@
 
     },
     "friends.navigationTitle" : {
-
-    },
-    "friends.title" : {
 
     },
     "friends.title (%@" : {
@@ -954,10 +954,10 @@
     "Report" : {
 
     },
-    "Report %@" : {
+    "Report submitted!" : {
 
     },
-    "Report submitted!" : {
+    "report.navigationTitle %@" : {
 
     },
     "report.section.content.title" : {
@@ -969,16 +969,10 @@
     "report.section.report.title" : {
 
     },
-    "Search companies" : {
-
-    },
     "Search for a duplicate location" : {
 
     },
     "Search for a duplicate product" : {
-
-    },
-    "Search users" : {
 
     },
     "Select Logo" : {
@@ -1017,6 +1011,9 @@
     "settings.actions.signOut" : {
 
     },
+    "settings.appearance.navigationTitle" : {
+
+    },
     "settings.appearance.title" : {
 
     },
@@ -1026,7 +1023,7 @@
     "settings.contributions.description" : {
 
     },
-    "settings.contributions.title" : {
+    "settings.contributions.navigationTitle" : {
 
     },
     "settings.navigationTitle" : {
@@ -1035,22 +1032,22 @@
     "settings.notifications.title" : {
 
     },
+    "settings.privacy.navigationTitle" : {
+
+    },
     "settings.privacy.privateProfile.description" : {
 
     },
     "settings.privacy.privateProfile.label" : {
 
     },
-    "settings.privacy.title" : {
+    "settings.profile.navigationTitle" : {
 
     },
     "settings.profile.section.identity.description" : {
 
     },
     "settings.profile.section.identity.title" : {
-
-    },
-    "settings.profile.title" : {
 
     },
     "settings.profile.useFullName.description" : {
@@ -1089,9 +1086,6 @@
     "Sub-brand updated!" : {
 
     },
-    "Sub-brands" : {
-
-    },
     "subBrand.actions.delete.disclaimer" : {
 
     },
@@ -1099,6 +1093,9 @@
 
     },
     "subBrand.title" : {
+
+    },
+    "subBrands.navigationTitle" : {
 
     },
     "subcategory.add" : {
@@ -1193,6 +1190,9 @@
 
     },
     "Use System Color Scheme" : {
+
+    },
+    "user.search.navigationTitle" : {
 
     },
     "Value" : {

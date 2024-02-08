@@ -79,7 +79,7 @@ struct NotificationScreen: View {
         .onAppear {
             notificationEnvironmentModel.refresh()
         }
-        .navigationTitle(filter?.label ?? "Notifications")
+        .navigationTitle(filter?.label ?? "notifications.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
@@ -90,11 +90,11 @@ struct NotificationScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
-                ProgressButton("Mark all read", systemImage: "envelope.open", action: {
+                ProgressButton("notifications.markAsRead.label", systemImage: "envelope.open", action: {
                     feedbackEnvironmentModel.trigger(.impact(intensity: .low))
                     await notificationEnvironmentModel.markAllAsRead()
                 })
-                ProgressButton("Delete all", systemImage: "trash", action: {
+                ProgressButton("notifications.deleteAll.label", systemImage: "trash", action: {
                     feedbackEnvironmentModel.trigger(.impact(intensity: .low))
                     await notificationEnvironmentModel.deleteAll()
                 })

@@ -50,7 +50,7 @@ struct FriendSheet: View {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
-        .navigationTitle("friends.title")
+        .navigationTitle("friends.navigationTitle")
         .toolbar {
             toolbarContent
         }

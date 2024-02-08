@@ -48,7 +48,7 @@ struct ContributionsScreen: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("settings.contributions.title")
+        .navigationTitle("settings.contributions.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .alertError($alertError)
         .task {

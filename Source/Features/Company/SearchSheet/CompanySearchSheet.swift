@@ -73,7 +73,7 @@ struct CompanySearchSheet: View {
                 VStack {
                     Text("No companies found with the searched name.")
                     if profileEnvironmentModel.hasPermission(.canCreateCompanies) {
-                        Button("Create new company", action: { createNew() })
+                        Button("company.create.label", action: { createNew() })
                     }
                 }
             }
@@ -82,7 +82,7 @@ struct CompanySearchSheet: View {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
-        .navigationTitle("Search companies")
+        .navigationTitle("company.search.navigationTitle")
         .toolbar {
             toolbarContent
         }

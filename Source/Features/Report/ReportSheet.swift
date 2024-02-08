@@ -31,7 +31,7 @@ struct ReportSheet: View {
                 }).bold()
             }
         }
-        .navigationTitle("Report \(entity.label)")
+        .navigationTitle("report.navigationTitle \(entity.label)")
         .toolbar {
             toolbarContent
         }

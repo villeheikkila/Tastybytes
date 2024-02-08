@@ -56,7 +56,7 @@ struct SubBrandSheet: View {
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
         .alertError($alertError)
-        .navigationTitle("Sub-brands")
+        .navigationTitle("subBrands.navigationTitle")
         .toolbar {
             toolbarContent
         }

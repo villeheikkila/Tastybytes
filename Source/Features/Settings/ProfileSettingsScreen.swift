@@ -22,7 +22,7 @@ struct ProfileSettingsScreen: View {
             profileSection
             profileDisplaySettings
         }
-        .navigationTitle("settings.profile.title")
+        .navigationTitle("settings.profile.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: username) {
             usernameIsAvailable = false
