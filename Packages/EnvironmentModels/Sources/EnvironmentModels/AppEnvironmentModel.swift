@@ -16,6 +16,29 @@ public enum SplashScreenState {
     case showing, dismissing, finished
 }
 
+enum AppDataKey: String, CaseIterable {
+    case appDataCategories = "app_data_categories"
+    case appDataCountries = "app_data_countries"
+    case appDataFlavors = "app_data_flavors"
+    case appDataAboutPage = "app_data_about_page"
+    case appDataAppConfig = "app_data_app_config"
+    case appDataSubscriptionGroup = "app_data_subcategories"
+    case profileData = "profile_data"
+}
+
+extension UserDefaults {
+    static func set(value: some Codable, forKey key: AppDataKey) {
+        let data = try? JSONEncoder().encode(value)
+        UserDefaults.standard.setValue(data, forKey: key.rawValue)
+    }
+
+    static func read<Element: Codable>(forKey key: AppDataKey) -> Element? {
+        guard let data = UserDefaults.standard.data(forKey: key.rawValue) else { return nil }
+        let element = try? JSONDecoder().decode(Element.self, from: data)
+        return element
+    }
+}
+
 @MainActor
 @Observable
 public final class AppEnvironmentModel {
@@ -30,12 +53,83 @@ public final class AppEnvironmentModel {
 
     public var alertError: AlertError?
     // App data
-    public var categories = [Models.Category.JoinedSubcategoriesServingStyles]()
-    public var flavors = [Flavor]()
-    public var countries = [Country]()
-    public var aboutPage: AboutPage?
-    public var appConfig: AppConfig?
-    public var subscriptionGroup: SubscriptionGroup.Joined?
+    public var categories: [Models.Category.JoinedSubcategoriesServingStyles] {
+        get {
+            access(keyPath: \.categories)
+            return UserDefaults.read(forKey: .appDataCategories) ?? []
+        }
+
+        set {
+            withMutation(keyPath: \.categories) {
+                UserDefaults.set(value: newValue, forKey: .appDataCategories)
+            }
+        }
+    }
+
+    public var appConfig: AppConfig? {
+        get {
+            access(keyPath: \.appConfig)
+            return UserDefaults.read(forKey: .appDataAppConfig)
+        }
+
+        set {
+            withMutation(keyPath: \.appConfig) {
+                UserDefaults.set(value: newValue, forKey: .appDataAppConfig)
+            }
+        }
+    }
+
+    public var flavors: [Flavor] {
+        get {
+            access(keyPath: \.flavors)
+            return UserDefaults.read(forKey: .appDataFlavors) ?? []
+        }
+
+        set {
+            withMutation(keyPath: \.flavors) {
+                UserDefaults.set(value: newValue, forKey: .appDataFlavors)
+            }
+        }
+    }
+
+    public var countries: [Country] {
+        get {
+            access(keyPath: \.countries)
+            return UserDefaults.read(forKey: .appDataCountries) ?? []
+        }
+
+        set {
+            withMutation(keyPath: \.countries) {
+                UserDefaults.set(value: newValue, forKey: .appDataCountries)
+            }
+        }
+    }
+
+    public var subscriptionGroup: SubscriptionGroup.Joined? {
+        get {
+            access(keyPath: \.subscriptionGroup)
+            return UserDefaults.read(forKey: .appDataSubscriptionGroup)
+        }
+
+        set {
+            withMutation(keyPath: \.subscriptionGroup) {
+                UserDefaults.set(value: newValue, forKey: .appDataSubscriptionGroup)
+            }
+        }
+    }
+
+    public var aboutPage: AboutPage? {
+        get {
+            access(keyPath: \.aboutPage)
+            return UserDefaults.read(forKey: .appDataAboutPage)
+        }
+
+        set {
+            withMutation(keyPath: \.aboutPage) {
+                UserDefaults.set(value: newValue, forKey: .appDataAboutPage)
+            }
+        }
+    }
 
     // Getters that are only available after initialization, calling these before authentication causes an app crash
     public var config: AppConfig {
@@ -72,9 +166,15 @@ public final class AppEnvironmentModel {
     public func initialize(reset: Bool = false) async {
         defer { isInitializing = false }
         guard !isInitializing else { return }
-        logger.notice("\(reset ? "Refreshing" : "Initializing") app data")
-        isInitializing = true
         let startTime = DispatchTime.now()
+        let isPreviouslyInitialied = aboutPage != nil && subscriptionGroup != nil && appConfig != nil && !countries.isEmpty && !flavors.isEmpty && !categories.isEmpty
+
+        logger.notice("\(reset || isPreviouslyInitialied ? "Refreshing" : "Initializing") app data")
+        if isPreviouslyInitialied {
+            state = .operational
+            logger.info("App optimistically loaded from stored data")
+        }
+
         async let appConfigPromise = repository.appConfig.get()
         async let aboutPagePromise = repository.document.getAboutPage()
         async let flavorPromise = repository.flavor.getAll()

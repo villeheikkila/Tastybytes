@@ -36,7 +36,20 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public var appIcon: AppIcon = .ramune
 
     private let repository: Repository
-    private var extendedProfile: Profile.Extended?
+    
+    public var extendedProfile: Profile.Extended? {
+        get {
+            access(keyPath: \.extendedProfile)
+            return UserDefaults.read(forKey: .profileData)
+        }
+
+        set {
+            withMutation(keyPath: \.extendedProfile) {
+                UserDefaults.set(value: newValue, forKey: .profileData)
+            }
+        }
+    }
+
 
     public init(repository: Repository) {
         self.repository = repository
@@ -135,6 +148,19 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public func initialize() async {
         logger.notice("Initializing user data")
+        if let extendedProfile {
+            showFullName = extendedProfile.nameDisplay == Profile.NameDisplay.fullName
+            isPrivateProfile = extendedProfile.isPrivate
+            reactionNotifications = extendedProfile.settings.sendReactionNotifications
+            friendRequestNotifications = extendedProfile.settings.sendFriendRequestNotifications
+            checkInTagNotifications = extendedProfile.settings.sendTaggedCheckInNotifications
+            sendCommentNotifications = extendedProfile.settings.sendCommentNotifications
+            appIcon = getCurrentAppIcon()
+            initialValuesLoaded = true
+            profileState = .initialized
+            logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
+        }
+        
         let startTime = DispatchTime.now()
         async let profilePromise = await repository.profile.getCurrentUser()
         async let userPromise = await repository.auth.getUser()

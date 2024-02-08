@@ -10,6 +10,12 @@ enum UserDefaultsKey: String, CaseIterable {
     case colorScheme = "color_scheme"
     case notificationOnboardingSectionSkipped = "notification_onboarding_section_skipped"
     case locationOnboardingSectionSkipped = "location_onboarding_section_skipped"
+    case appDataCategories = "app_data_categories"
+    case appDataCountries = "app_data_countries"
+    case appDataFlavors = "app_data_flavors"
+    case appDataAboutPage = "app_data_about_page"
+    case appDataAppConfig = "app_data_app_config"
+    case appDataSubscriptionGroup = "app_data_subcategories"
 }
 
 extension UserDefaults {
