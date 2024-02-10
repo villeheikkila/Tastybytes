@@ -78,7 +78,7 @@ struct EditSubBrandSheet: View {
                 Section("Info") {
                     LabeledContent("ID", value: "\(subBrand.id)")
                         .textSelection(.enabled)
-                    LabeledContent("Verified", value: "\(subBrand.isVerified)".capitalized)
+                    LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
                 }.headerProminence(.increased)
             }
         }

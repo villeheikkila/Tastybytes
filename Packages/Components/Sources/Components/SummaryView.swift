@@ -12,12 +12,12 @@ public struct SummaryView: View {
         Grid(alignment: .leading) {
             header
             Divider().gridCellUnsizedAxes(.horizontal)
-            SummaryRow(title: "Everyone", count: summary?.totalCheckIns, rating: summary?.averageRating)
+            SummaryRow(title: "checkIn.segment.everyone", count: summary?.totalCheckIns, rating: summary?.averageRating)
             Divider().gridCellUnsizedAxes(.horizontal)
-            SummaryRow(title: "Friends", count: summary?.friendsTotalCheckIns, rating: summary?.friendsAverageRating)
+            SummaryRow(title: "checkIn.segment.friends", count: summary?.friendsTotalCheckIns, rating: summary?.friendsAverageRating)
             Divider().gridCellUnsizedAxes(.horizontal)
             SummaryRow(
-                title: "You",
+                title: "checkIn.segment.you",
                 count: summary?.currentUserTotalCheckIns,
                 rating: summary?.currentUserAverageRating
             )

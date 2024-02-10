@@ -6,7 +6,7 @@ struct ReportButton: View {
     let entity: Report.Entity
 
     var body: some View {
-        Button("Report", systemImage: "exclamationmark.bubble.fill") {
+        Button("report.open", systemImage: "exclamationmark.bubble.fill") {
             sheet = .report(entity)
         }
     }

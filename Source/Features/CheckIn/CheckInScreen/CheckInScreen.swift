@@ -132,7 +132,7 @@ struct CheckInScreen: View {
                     }
                 }
                 Divider()
-                RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
+                RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
                 RouterLink(
                     "company.screen.open",
                     systemImage: "network",
@@ -197,7 +197,7 @@ struct CheckInScreen: View {
                     systemImage: "network",
                     screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )
-                RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
+                RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
                 RouterLink(
                     "brand.screen.open", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand)
                 )

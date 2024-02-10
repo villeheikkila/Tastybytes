@@ -186,9 +186,9 @@ struct CheckInList<Header>: View where Header: View {
 
     @ViewBuilder
     private var checkInSegments: some View {
-        Picker("Show check-ins from", selection: $showCheckInsFrom) {
+        Picker("checkIn.segment.picker.title", selection: $showCheckInsFrom) {
             ForEach(CheckInSegment.allCases, id: \.self) { segment in
-                Text(segment.rawValue.capitalized)
+                Text(segment.label)
             }
         }
         .pickerStyle(.segmented)

@@ -195,6 +195,9 @@
     "Admin" : {
 
     },
+    "admin.menuSection.title" : {
+
+    },
     "admin.navigationTitle" : {
 
     },
@@ -225,6 +228,9 @@
     "barcode.management.navigationTitle" : {
 
     },
+    "barcode.management.open" : {
+
+    },
     "barcode.scanner.input.placeholder" : {
 
     },
@@ -232,9 +238,6 @@
 
     },
     "barcode.title" : {
-
-    },
-    "Barcodes" : {
 
     },
     "blockedUsers.block.label" : {
@@ -282,13 +285,7 @@
     "category.title" : {
 
     },
-    "Check-in" : {
-
-    },
     "Check-in Locations" : {
-
-    },
-    "Check-in!" : {
 
     },
     "check-in.delete-confirmation.title" : {
@@ -310,6 +307,12 @@
 
     },
     "checkIn.add.label" : {
+
+    },
+    "checkIn.create.label" : {
+
+    },
+    "checkIn.create.label.prominent" : {
 
     },
     "checkIn.date.checkInAt %@" : {
@@ -382,6 +385,9 @@
 
     },
     "checkIn.segment.friends" : {
+
+    },
+    "checkIn.segment.picker.title" : {
 
     },
     "checkIn.segment.you" : {
@@ -645,6 +651,9 @@
     "Keep up to date!" : {
 
     },
+    "labels.add" : {
+
+    },
     "labels.cancel" : {
 
     },
@@ -879,6 +888,12 @@
     "product.logo.navigationTitle" : {
 
     },
+    "product.markAsDuplicate.label" : {
+
+    },
+    "product.mergeTo.label" : {
+
+    },
     "product.mutation.create.title" : {
 
     },
@@ -951,13 +966,13 @@
     "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins" : {
 
     },
-    "Report" : {
-
-    },
     "Report submitted!" : {
 
     },
     "report.navigationTitle %@" : {
+
+    },
+    "report.open" : {
 
     },
     "report.section.content.title" : {
@@ -1054,9 +1069,6 @@
 
     },
     "settings.profile.useFullName.label" : {
-
-    },
-    "Show check-ins from" : {
 
     },
     "Show filters" : {
@@ -1198,7 +1210,7 @@
     "Value" : {
 
     },
-    "Verified" : {
+    "verification.verified.label" : {
 
     },
     "Welcome to %@! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](%@)" : {

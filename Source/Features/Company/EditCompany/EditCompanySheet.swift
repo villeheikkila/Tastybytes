@@ -52,7 +52,7 @@ struct EditCompanySheet: View {
                 Section("Info") {
                     LabeledContent("ID", value: "\(company.id)")
                         .textSelection(.enabled)
-                    LabeledContent("Verified", value: "\(company.isVerified)".capitalized)
+                    LabeledContent("verification.verified.label", value: "\(company.isVerified)".capitalized)
                 }.headerProminence(.increased)
             }
         }

@@ -113,14 +113,14 @@ struct ProductScreen: View {
             ProductShareLinkView(product: product)
             Menu {
                 ControlGroup {
-                    Button("Check-in", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: { _ in
+                    Button("checkIn.create.label", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: { _ in
                         refreshCheckIns()
                     }) })
                     .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     ProductShareLinkView(product: product)
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                         Button(
-                            "Add",
+                            "labels.add",
                             systemImage: "barcode.viewfinder",
                             action: { sheet = .barcodeScanner(onComplete: { barcode in
                                 Task { await addBarcodeToProduct(barcode) }
@@ -134,7 +134,7 @@ struct ProductScreen: View {
                     showUnverifyProductConfirmation = true
                 })
                 Divider()
-                RouterLink("Open Product", systemImage: "grid", screen: .product(product))
+                RouterLink("product.screen.open", systemImage: "grid", screen: .product(product))
                 RouterLink(
                     "subBrand.screen.open",
                     systemImage: "cart",
@@ -164,15 +164,15 @@ struct ProductScreen: View {
                     product: product
                 ) }, label: {
                     if profileEnvironmentModel.hasPermission(.canMergeProducts) {
-                        Label("Merge to...", systemImage: "doc.on.doc")
+                        Label("product.mergeTo.label", systemImage: "doc.on.doc")
                     } else {
-                        Label("Mark as Duplicate", systemImage: "doc.on.doc")
+                        Label("product.markAsDuplicate.label", systemImage: "doc.on.doc")
                     }
                 })
 
                 Menu {
                     if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
-                        Button("Barcodes", systemImage: "barcode", action: { sheet = .barcodeManagement(product: product) })
+                        Button("barcode.management.open", systemImage: "barcode", action: { sheet = .barcodeManagement(product: product) })
                     }
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
@@ -185,7 +185,7 @@ struct ProductScreen: View {
                         .disabled(product.isVerified)
                     }
                 } label: {
-                    Label("Admin", systemImage: "gear")
+                    Label("admin.menuSection.title", systemImage: "gear")
                         .labelStyle(.iconOnly)
                 }
 

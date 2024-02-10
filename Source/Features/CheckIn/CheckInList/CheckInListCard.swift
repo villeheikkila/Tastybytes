@@ -60,7 +60,7 @@ struct CheckInListCard: View {
                     }
                 }
                 Divider()
-                RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
+                RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
                 RouterLink(
                     "company.screen.open",
                     systemImage: "network",

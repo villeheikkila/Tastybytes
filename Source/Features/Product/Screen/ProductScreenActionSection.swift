@@ -18,7 +18,7 @@ struct ProductScreenActionSection: View {
     var body: some View {
         HStack(spacing: 0) {
             RouterLink(
-                "Check-in!",
+                "checkIn.create.label.prominent",
                 systemImage: "checkmark.circle",
                 sheet: .newCheckIn(product, onCreation: { _ in
                     await onRefreshCheckIns()
@@ -30,7 +30,7 @@ struct ProductScreenActionSection: View {
             .background(Color.accentColor)
             .foregroundColor(.white)
             .cornerRadius(4, corners: [.topLeft, .bottomLeft])
-            ProgressButton("Wishlist", systemImage: "star", actionOptions: []) {
+            ProgressButton("wishlist.add.label", systemImage: "star", actionOptions: []) {
                 await toggleWishlist()
             }
             .symbolVariant(isOnWishlist ? .fill : .none)

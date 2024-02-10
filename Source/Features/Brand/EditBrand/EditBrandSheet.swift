@@ -68,7 +68,7 @@ struct EditBrandSheet: View {
                 Section("Info") {
                     LabeledContent("ID", value: "\(brand.id)")
                         .textSelection(.enabled)
-                    LabeledContent("Verified", value: "\(brand.isVerified)".capitalized)
+                    LabeledContent("verification.verified.label", value: "\(brand.isVerified)".capitalized)
                 }.headerProminence(.increased)
             }
         }
