@@ -59,13 +59,13 @@ struct LocationScreen: View {
         }
         .sensoryFeedback(.success, trigger: isSuccess)
         .confirmationDialog(
-            "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost",
+            "location.delete.confirmation.description",
             isPresented: $showDeleteLocationConfirmation,
             titleVisibility: .visible,
             presenting: location
         ) { presenting in
             ProgressButton(
-                "Delete \(presenting.name)",
+                "location.delete.confirmation.label \(presenting.name)",
                 role: .destructive,
                 action: { await deleteLocation(presenting) }
             )

@@ -66,13 +66,13 @@ struct CategoryManagementScreen: View {
             await appEnvironmentModel.initialize(reset: true)
         }
         #endif
-        .confirmationDialog("Are you sure you want to delete subcategory?",
+        .confirmationDialog("subcategory.delete.confirmation.description",
                             isPresented: $showDeleteSubcategoryConfirmation,
                             titleVisibility: .visible,
                             presenting: deleteSubcategory)
         { presenting in
             ProgressButton(
-                "Delete \(presenting.name)",
+                "subcategory.delete.confirmation.label \(presenting.name)",
                 role: .destructive,
                 action: { await appEnvironmentModel.deleteSubcategory(presenting) }
             )
@@ -82,10 +82,10 @@ struct CategoryManagementScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Button(
-                "Add Category",
+                "category.add.label",
                 systemImage: "plus",
                 action: { sheet = .addCategory(onSubmit: { _ in
-                    feedbackEnvironmentModel.toggle(.success("Category created!"))
+                    feedbackEnvironmentModel.toggle(.success("category.add.success.toast"))
                 }) }
             )
             .labelStyle(.iconOnly)

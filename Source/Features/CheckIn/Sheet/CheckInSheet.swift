@@ -172,7 +172,7 @@ struct CheckInSheet: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(height: 150, alignment: .top)
                             .shadow(radius: 4)
-                            .accessibilityLabel("Image of the check-in")
+                            .accessibilityLabel("checkIn.image.label")
                             .contextMenu {
                                 ProgressButton("labels.delete") {
                                     finalImage = nil
@@ -189,7 +189,7 @@ struct CheckInSheet: View {
                                         .aspectRatio(contentMode: .fit)
                                         .frame(height: 150, alignment: .top)
                                         .shadow(radius: 4)
-                                        .accessibilityLabel("Image of the check-in")
+                                        .accessibilityLabel("checkIn.image.label")
                                 }
                             }
                             .contextMenu {

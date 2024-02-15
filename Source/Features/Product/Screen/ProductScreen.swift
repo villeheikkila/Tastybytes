@@ -71,21 +71,21 @@ struct ProductScreen: View {
             toolbarContent
         }
         .alertError($alertError)
-        .confirmationDialog("Unverify Product",
+        .confirmationDialog("product.unverify.confirmation.description",
                             isPresented: $showUnverifyProductConfirmation,
                             presenting: product)
         { presenting in
-            ProgressButton("Unverify \(presenting.name) product", role: .destructive, action: {
+            ProgressButton("product.unverify.confirmation.label \(presenting.name)", role: .destructive, action: {
                 await verifyProduct(product: presenting, isVerified: false)
             })
         }
-        .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
+        .confirmationDialog("product.delete.confirmation.description",
                             isPresented: $showDeleteProductConfirmationDialog,
                             titleVisibility: .visible,
                             presenting: product)
         { presenting in
             ProgressButton(
-                "Delete \(presenting.formatted(.fullName))",
+                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
                 role: .destructive,
                 action: { await deleteProduct(presenting) }
             )
@@ -153,7 +153,7 @@ struct ProductScreen: View {
                     }) })
                 } else {
                     Button(
-                        "Edit Suggestion",
+                        "product.editSuggestion.label",
                         systemImage: "pencil",
                         action: { sheet = .productEditSuggestion(product: product) }
                     )

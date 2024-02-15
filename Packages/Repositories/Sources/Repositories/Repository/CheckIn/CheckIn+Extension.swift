@@ -17,7 +17,7 @@ extension CheckIn: Queryable {
                     CheckInReaction.getQuery(.joinedProfile(true)),
                     buildQuery(.checkInTaggedProfiles, [Profile.getQuery(.minimal(true))], true),
                     buildQuery(.checkInFlavors, [Flavor.getQuery(.saved(true))], true),
-                    buildQuery(.productVariants, [Company.getQuery(.saved(true))], true),
+                    buildQuery(.productVariants, ["id", Company.getQuery(.saved(true))], true),
                     ServingStyle.getQuery(.saved(true)),
                     buildQuery(name: "locations", foreignKey: "location_id", [Location.getQuery(.joined(false))]),
                     buildQuery(name: "purchase_location", foreignKey: "purchase_location_id", [Location.getQuery(.joined(false))]),

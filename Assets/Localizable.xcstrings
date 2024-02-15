@@ -49,16 +49,6 @@
         }
       }
     },
-    "%@ reacted to your check-in of %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ reacted to your check-in of %2$@"
-          }
-        }
-      }
-    },
     "%@ sent you a friend request!" : {
 
     },
@@ -111,9 +101,6 @@
     "about.title" : {
 
     },
-    "Access to location" : {
-
-    },
     "Account Deleted" : {
 
     },
@@ -144,9 +131,6 @@
     "actions.tryAgain" : {
 
     },
-    "Activity" : {
-
-    },
     "activity.error.failedToLoad" : {
 
     },
@@ -163,9 +147,6 @@
 
     },
     "Add barcode manually" : {
-
-    },
-    "Add Category" : {
 
     },
     "Add flavors" : {
@@ -199,24 +180,6 @@
 
     },
     "admin.navigationTitle" : {
-
-    },
-    "Are you sure you want to delete comment as a moderator?" : {
-
-    },
-    "Are you sure you want to delete subcategory?" : {
-
-    },
-    "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost" : {
-
-    },
-    "Are you sure you want to delete the product and all of its check-ins?" : {
-
-    },
-    "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted" : {
-
-    },
-    "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted." : {
 
     },
     "Barcode added!" : {
@@ -270,10 +233,13 @@
     "brandScreen.groupProductsBy" : {
 
     },
-    "Category created!" : {
+    "category.add.label" : {
 
     },
     "category.add.navigationTitle" : {
+
+    },
+    "category.add.success.toast" : {
 
     },
     "category.name.placeholder" : {
@@ -345,6 +311,9 @@
     "checkIn.friends.tagged.label" : {
 
     },
+    "checkIn.image.label" : {
+
+    },
     "checkIn.legacy.label" : {
 
     },
@@ -353,6 +322,16 @@
     },
     "checkIn.location.reset" : {
 
+    },
+    "checkIn.notifications.userReactedToYourCheckIn.body %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "checkIn.notifications.userReactedToYourCheckIn.body %1$@ %2$@"
+          }
+        }
+      }
     },
     "checkIn.photo.picker.camera" : {
 
@@ -408,13 +387,13 @@
     "checkIn.title" : {
 
     },
+    "comment.deleteAsModerator.confirmation.description" : {
+
+    },
     "comment.edit.navigationTitle" : {
 
     },
     "comment.edit.placeholder" : {
-
-    },
-    "Comments" : {
 
     },
     "company.create.label" : {
@@ -459,16 +438,10 @@
     "Delete Account" : {
 
     },
-    "Delete as Moderator" : {
-
-    },
     "Delete Company Confirmation" : {
 
     },
     "Didn't find the company you were looking for?" : {
-
-    },
-    "Discover" : {
 
     },
     "discover.barcode.notFound.title" : {
@@ -537,6 +510,18 @@
     "Dismiss barcode" : {
 
     },
+    "duplicateProduct.markAsDuplicate.navigationTitle" : {
+
+    },
+    "duplicateProduct.mergeDuplicates.navigationTitle" : {
+
+    },
+    "duplicateProduct.mergeTo.description" : {
+
+    },
+    "duplicateProduct.search.prompt" : {
+
+    },
     "duplicateProducts.screen.title" : {
 
     },
@@ -552,9 +537,6 @@
     "Edit Serving Style" : {
 
     },
-    "Edit Suggestion" : {
-
-    },
     "Edit suggestion sent!" : {
 
     },
@@ -562,9 +544,6 @@
 
     },
     "Email is only used for login and is not shown for other users." : {
-
-    },
-    "Enable or disable the app's permission to send notifications" : {
 
     },
     "error.screen.title" : {
@@ -592,9 +571,6 @@
 
     },
     "flavors.label" : {
-
-    },
-    "Friend Requests" : {
 
     },
     "friend.status.accepted" : {
@@ -640,9 +616,6 @@
 
     },
     "ID" : {
-
-    },
-    "Image of the check-in" : {
 
     },
     "Info" : {
@@ -705,10 +678,19 @@
     "links.portfolio" : {
 
     },
-    "Location is only used to suggest you venues for your check-ins and show near by activity" : {
+    "location.delete.confirmation.description" : {
 
     },
     "location.distance %@" : {
+
+    },
+    "location.merge.confirmation.description" : {
+
+    },
+    "location.mergeTo.navigationTitle." : {
+
+    },
+    "location.mergeTo.search.placeholder" : {
 
     },
     "location.near-by" : {
@@ -729,16 +711,7 @@
     "Long press on a rating to find rated products" : {
 
     },
-    "Mark as duplicate" : {
-
-    },
     "Mark as Duplicate" : {
-
-    },
-    "Merge duplicates" : {
-
-    },
-    "Merge location to..." : {
 
     },
     "Merge to another sub-brand" : {
@@ -748,6 +721,12 @@
 
     },
     "Moderation" : {
+
+    },
+    "moderation.deleteAsModerator.label" : {
+
+    },
+    "moderation.section.title" : {
 
     },
     "Name" : {
@@ -807,22 +786,58 @@
     "No messages" : {
 
     },
-    "Notifications" : {
+    "notifications.empty.label" : {
 
     },
     "notifications.navigationTitle" : {
 
     },
+    "notifications.settings.checkIns.label" : {
+
+    },
+    "notifications.settings.checkIns.subtitle" : {
+
+    },
+    "notifications.settings.comments.label" : {
+
+    },
+    "notifications.settings.comments.subtitle" : {
+
+    },
+    "notifications.settings.friendRequest.label" : {
+
+    },
+    "notifications.settings.friendRequest.subtitle" : {
+
+    },
+    "notifications.settings.reactions.label" : {
+
+    },
+    "notifications.settings.reactions.subtitle" : {
+
+    },
     "notifications.title" : {
+
+    },
+    "notitifications.systemSettings.description" : {
+
+    },
+    "notitifications.systemSettings.link" : {
+
+    },
+    "notitifications.systemSettings.title" : {
+
+    },
+    "onboarding.locationPermission.accessToLocation.description" : {
+
+    },
+    "onboarding.locationPermission.accessToLocation.title" : {
 
     },
     "onboarding.profile.title" : {
 
     },
     "Open App Store" : {
-
-    },
-    "Open System Notification Settings" : {
 
     },
     "Owner" : {
@@ -846,19 +861,22 @@
     "Product" : {
 
     },
-    "Product Merge Confirmation" : {
-
-    },
     "product.createNew.description" : {
 
     },
     "product.createNew.label" : {
 
     },
+    "product.delete.confirmation.description" : {
+
+    },
     "product.delete.confirmation.title" : {
 
     },
     "product.discontinued.label" : {
+
+    },
+    "product.editSuggestion.label" : {
 
     },
     "product.filter.overlay.resetFilter" : {
@@ -915,13 +933,13 @@
     "product.title" : {
 
     },
+    "product.unverify.confirmation.description" : {
+
+    },
     "Products" : {
 
     },
     "products.title" : {
-
-    },
-    "Profile" : {
 
     },
     "profile.joinedAt %@" : {
@@ -960,9 +978,6 @@
     "React to check-in" : {
 
     },
-    "Reactions" : {
-
-    },
     "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins" : {
 
     },
@@ -982,12 +997,6 @@
 
     },
     "report.section.report.title" : {
-
-    },
-    "Search for a duplicate location" : {
-
-    },
-    "Search for a duplicate product" : {
 
     },
     "Select Logo" : {
@@ -1032,6 +1041,12 @@
     "settings.appearance.title" : {
 
     },
+    "settings.appearance.useDarkMode.label" : {
+
+    },
+    "settings.appearance.useSystemColorScheme.label" : {
+
+    },
     "settings.appIcon.title" : {
 
     },
@@ -1074,18 +1089,6 @@
     "Show filters" : {
 
     },
-    "Show notification when someone comments on your check-in" : {
-
-    },
-    "Show notification when someone reacts to your check-in" : {
-
-    },
-    "Show notification when someone sends you a friend requests" : {
-
-    },
-    "Show notification when someone tags you in their check-in" : {
-
-    },
     "Show scanner" : {
 
     },
@@ -1104,6 +1107,9 @@
     "subBrand.actions.unverify" : {
 
     },
+    "subBrand.mergeTo.confirmation.description" : {
+
+    },
     "subBrand.title" : {
 
     },
@@ -1120,6 +1126,9 @@
 
     },
     "subcategory.addTo.category.title" : {
+
+    },
+    "subcategory.delete.confirmation.description" : {
 
     },
     "subcategory.edit.navigationTitle %@" : {
@@ -1152,9 +1161,6 @@
           }
         }
       }
-    },
-    "System Settings" : {
-
     },
     "tab.activity" : {
 
@@ -1192,16 +1198,7 @@
     "Unverify Company" : {
 
     },
-    "Unverify Product" : {
-
-    },
     "Update needed!" : {
-
-    },
-    "Use Dark Mode" : {
-
-    },
-    "Use System Color Scheme" : {
 
     },
     "user.search.navigationTitle" : {
@@ -1233,9 +1230,6 @@
 
     },
     "You can only add %lld flavors" : {
-
-    },
-    "You have no notifications" : {
 
     },
     "You haven't check-in yet" : {

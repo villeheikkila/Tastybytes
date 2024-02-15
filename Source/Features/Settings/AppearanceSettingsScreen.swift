@@ -10,7 +10,7 @@ struct AppearanceSettingsScreen: View {
 
     var body: some View {
         Form {
-            Toggle("Use System Color Scheme", isOn: .init(get: {
+            Toggle("settings.appearance.useSystemColorScheme.label", isOn: .init(get: {
                 scheme == .system
             }, set: { newValue in
                 if newValue {
@@ -20,7 +20,7 @@ struct AppearanceSettingsScreen: View {
                         .rawValue
                 }
             }))
-            Toggle("Use Dark Mode", isOn: .init(get: {
+            Toggle("settings.appearance.useDarkMode.label", isOn: .init(get: {
                 scheme == .system ? systemColorScheme == .dark : scheme == .dark
             }, set: { newValue in
                 colorScheme = newValue ? CustomColorScheme.dark.rawValue : CustomColorScheme.light.rawValue

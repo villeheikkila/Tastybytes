@@ -55,13 +55,13 @@ struct BrandScreenProductRow: View {
                 }
                 .sheets(item: $sheet)
         }
-        .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
+        .confirmationDialog("product.delete.confirmation.description",
                             isPresented: $showDeleteProductConfirmationDialog,
                             titleVisibility: .visible,
                             presenting: productToDelete)
         { presenting in
             ProgressButton(
-                "Delete \(presenting.formatted(.fullName))",
+                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
                 role: .destructive,
                 action: { await deleteProduct(presenting) }
             )

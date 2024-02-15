@@ -88,13 +88,13 @@ struct EditSubBrandSheet: View {
         }
         .alertError($alertError)
         .confirmationDialog(
-            "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted",
+            "subBrand.mergeTo.confirmation.description",
             isPresented: $showMergeSubBrandsConfirmation,
             titleVisibility: .visible,
             presenting: mergeTo
         ) { presenting in
             ProgressButton(
-                "Merge \(subBrand.name ?? "default sub-brand") to \(presenting.name ?? "default sub-brand")",
+                "subBrand.mergeTo.confirmation.label \(subBrand.name ?? "default sub-brand") \(presenting.name ?? "default sub-brand")",
                 role: .destructive,
                 action: {
                     await mergeToSubBrand(subBrand: subBrand, onSuccess: {

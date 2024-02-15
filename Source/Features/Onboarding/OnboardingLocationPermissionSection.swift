@@ -21,8 +21,8 @@ struct OnboardingLocationPermissionSection: View {
                                  },
                                  color: color,
                                  symbol: "location.fill",
-                                 title: "Access to location",
-                                 description: "Location is only used to suggest you venues for your check-ins and show near by activity")
+                                 title: "onboarding.locationPermission.accessToLocation.title",
+                                 description: "onboarding.locationPermission.accessToLocation.description")
             .background(
                 AppGradient(color: Color.blue),
                 alignment: .bottom

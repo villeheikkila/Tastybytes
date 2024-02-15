@@ -42,9 +42,9 @@ struct DuplicateProductSheet: View {
             }
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
-                    prompt: "Search for a duplicate product")
+                    prompt: "duplicateProduct.search.prompt")
         .disableAutocorrection(true)
-        .navigationTitle(mode == .mergeDuplicate ? "Merge duplicates" : "Mark as duplicate")
+        .navigationTitle(mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.navigationTitle" : "duplicateProduct.markAsDuplicate.navigationTitle")
         .toolbar {
             toolbarContent
         }
@@ -56,14 +56,13 @@ struct DuplicateProductSheet: View {
             UISearchBar.appearance().tintColor = UIColor(Color.primary)
         }
         .alertError($alertError)
-        .confirmationDialog("Product Merge Confirmation",
+        .confirmationDialog("duplicateProduct.mergeTo.description",
                             isPresented: $showMergeToProductConfirmation,
                             presenting: mergeToProduct)
         { presenting in
             ProgressButton(
                 """
-                \(mode == .mergeDuplicate ? "Merge" : "Mark") \(product.name) \(
-                    mode == .mergeDuplicate ? "to" : "as duplicate of") \(presenting.formatted(.fullName))
+                \(mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.label" : "duplicateProduct.markAsDuplicate.label") \(product.name) \(presenting.formatted(.fullName))
                 """,
                 role: .destructive
             ) {
@@ -92,10 +91,7 @@ struct DuplicateProductSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger
-                .error(
-                    "reporting duplicate product \(product.id) of \(to.id) failed. error: \(error)"
-                )
+            logger.error("reporting duplicate product \(product.id) of \(to.id) failed. error: \(error)")
         }
     }
 
@@ -107,8 +103,7 @@ struct DuplicateProductSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger
-                .error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 

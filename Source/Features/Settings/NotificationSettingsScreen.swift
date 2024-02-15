@@ -25,32 +25,32 @@ struct NotificationSettingsScreen: View {
             Section {
                 NotificationDeliveryTypePicker(
                     notificationDeliveryType: $reactioNotificationDeliveryType,
-                    title: "Reactions",
-                    subtitle: "Show notification when someone reacts to your check-in"
+                    title: "notifications.settings.reactions.label",
+                    subtitle: "notifications.settings.reactions.subtitle"
                 )
                 NotificationDeliveryTypePicker(
                     notificationDeliveryType: $checkInCommentNotificationsDeliveryType,
-                    title: "Comments",
-                    subtitle: "Show notification when someone comments on your check-in"
+                    title: "notifications.settings.comments.label",
+                    subtitle: "notifications.settings.comments.subtitle"
                 )
                 NotificationDeliveryTypePicker(
-                    notificationDeliveryType: $reactioNotificationDeliveryType,
-                    title: "Check-ins",
-                    subtitle: "Show notification when someone tags you in their check-in"
+                    notificationDeliveryType: $checkInNotificationDeliveryType,
+                    title: "notifications.settings.checkIns.label",
+                    subtitle: "notifications.settings.checkIns.subtitle"
                 )
                 NotificationDeliveryTypePicker(
                     notificationDeliveryType: $friendRequestNotificationDeliveryType,
-                    title: "Friend Requests",
-                    subtitle: "Show notification when someone sends you a friend requests"
+                    title: "notifications.settings.friendRequest.label",
+                    subtitle: "notifications.settings.friendRequest.subtitle"
                 )
             }
             if let settingsUrl = URL(string: UIApplication.openNotificationSettingsURLString) {
                 Section {
-                    Link("Open System Notification Settings", destination: settingsUrl)
+                    Link("notitifications.systemSettings.link", destination: settingsUrl)
                 } header: {
-                    Text("System Settings")
+                    Text("notitifications.systemSettings.title")
                 } footer: {
-                    Text("Enable or disable the app's permission to send notifications")
+                    Text("notitifications.systemSettings.description")
                 }
             }
         }

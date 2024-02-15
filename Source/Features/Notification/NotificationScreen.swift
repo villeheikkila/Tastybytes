@@ -54,7 +54,7 @@ struct NotificationScreen: View {
             .overlay {
                 ContentUnavailableView {
                     Label(
-                        filter?.contentUnavailableViewProps.title ?? "You have no notifications",
+                        filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
                         systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
                     )
                 } description: {

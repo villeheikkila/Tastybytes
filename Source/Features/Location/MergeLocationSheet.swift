@@ -38,9 +38,9 @@ struct MergeLocationSheet: View {
             .buttonStyle(.plain)
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
-                    prompt: "Search for a duplicate location")
+                    prompt: "location.mergeTo.search.placeholder")
         .disableAutocorrection(true)
-        .navigationTitle("Merge location to...")
+        .navigationTitle("location.mergeTo.navigationTitle.")
         .toolbar {
             toolbarContent
         }
@@ -48,13 +48,13 @@ struct MergeLocationSheet: View {
             await searchLocations(name: searchTerm)
         }
         .confirmationDialog(
-            "Are you sure you want to merge these locations? All check-ins will be transfered and old location deleted.",
+            "location.merge.confirmation.description",
             isPresented: $showMergeToProductConfirmation,
             titleVisibility: .visible,
             presenting: mergeToLocation
         ) { presenting in
             ProgressButton(
-                "Merge \(location.name) to \(presenting.name)",
+                "location.merge.confirmation.label \(location.name) \(presenting.name)",
                 role: .destructive
             ) {
                 await mergeLocation(to: presenting)

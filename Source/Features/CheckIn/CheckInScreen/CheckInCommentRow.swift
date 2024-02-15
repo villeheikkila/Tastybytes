@@ -27,13 +27,13 @@ struct CheckInCommentRow: View {
         CheckInCommentView(comment: comment)
             .sheets(item: $sheet)
             .confirmationDialog(
-                "Are you sure you want to delete comment as a moderator?",
+                "comment.deleteAsModerator.confirmation.description",
                 isPresented: $showDeleteCommentAsModeratorConfirmation,
                 titleVisibility: .visible,
                 presenting: deleteAsCheckInCommentAsModerator
             ) { presenting in
                 ProgressButton(
-                    "Delete comment from \(presenting.profile.preferredName)",
+                    "comment.deleteAsModerator.confirmation.label \(presenting.profile.preferredName)",
                     role: .destructive,
                     action: { await deleteCommentAsModerator(presenting) }
                 )
@@ -53,12 +53,12 @@ struct CheckInCommentRow: View {
                 if profileEnvironmentModel.hasRole(.moderator) {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canDeleteComments) {
-                            Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
+                            Button("moderation.deleteAsModerator.label", systemImage: "trash.fill", role: .destructive) {
                                 deleteAsCheckInCommentAsModerator = comment
                             }
                         }
                     } label: {
-                        Label("Moderation", systemImage: "gear")
+                        Label("moderation.section.title", systemImage: "gear")
                             .labelStyle(.iconOnly)
                     }
                 }

@@ -15,7 +15,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
         switch self {
         case .activity:
             .init(
-                type: "Activity",
+                type: "activity.navigationTitle",
                 localizedTitle: "tab.activity",
                 localizedSubtitle: "",
                 icon: UIApplicationShortcutIcon(systemImageName: "list.star"),
@@ -23,7 +23,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
             )
         case .discover:
             .init(
-                type: "Discover",
+                type: "discover.navigationTitle",
                 localizedTitle: "tab.discover",
                 localizedSubtitle: "",
                 icon: UIApplicationShortcutIcon(systemImageName: "magnifyingglass"),
@@ -31,7 +31,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
             )
         case .notifications:
             .init(
-                type: "Notifications",
+                type: "notifications.navigationTitle",
                 localizedTitle: "tab.notifications",
                 localizedSubtitle: "",
                 icon: UIApplicationShortcutIcon(systemImageName: "bell"),
@@ -39,7 +39,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
             )
         case .profile:
             .init(
-                type: "Profile",
+                type: "profile.navigationTitle",
                 localizedTitle: "tab.profile",
                 localizedSubtitle: "",
                 icon: UIApplicationShortcutIcon(systemImageName: "person.fill"),
