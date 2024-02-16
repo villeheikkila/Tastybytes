@@ -98,6 +98,15 @@
     "About" : {
 
     },
+    "about.rateApp.label %@" : {
+
+    },
+    "about.sendFeedback.label" : {
+
+    },
+    "about.sendFeedback.success.toast" : {
+
+    },
     "about.title" : {
 
     },
@@ -969,9 +978,6 @@
     "Quit the App" : {
 
     },
-    "Rate %@" : {
-
-    },
     "Rating" : {
 
     },
@@ -1003,9 +1009,6 @@
 
     },
     "Selected" : {
-
-    },
-    "Send Feedback" : {
 
     },
     "Sent!" : {
@@ -1178,9 +1181,6 @@
 
     },
     "Terms of service here" : {
-
-    },
-    "Thanks for the feedback!" : {
 
     },
     "There is nothing to edit" : {

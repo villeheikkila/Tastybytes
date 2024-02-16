@@ -52,13 +52,13 @@ struct AboutScreen: View {
 
     @ViewBuilder var support: some View {
         RouterLink(
-            "Send Feedback",
+            "about.sendFeedback.label",
             systemName: "envelope",
             color: .green,
             sheet: .sendEmail(email: $email, callback: { result in
                 switch result {
                 case let .success(successResult) where successResult == MFMailComposeResult.sent:
-                    feedbackEnvironmentModel.toggle(.success("Thanks for the feedback!"))
+                    feedbackEnvironmentModel.toggle(.success("about.sendFeedback.success.toast"))
                 case .failure:
                     alertError = .init()
                 default:
@@ -66,7 +66,7 @@ struct AboutScreen: View {
                 }
             })
         )
-        ProgressButton("Rate \(appEnvironmentModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
+        ProgressButton("about.rateApp.label \(appEnvironmentModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
             requestReview()
         })
     }
