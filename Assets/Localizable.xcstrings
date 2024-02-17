@@ -316,8 +316,21 @@
     "checkIn.friends.tagged.label" : {
 
     },
-    "checkIn.image.label" : {
+    "checkIn.image.add" : {
 
+    },
+    "checkIn.image.change" : {
+
+    },
+    "checkIn.image.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image of the check-in"
+          }
+        }
+      }
     },
     "checkIn.legacy.label" : {
 
@@ -339,7 +352,14 @@
       }
     },
     "checkIn.photo.picker.camera" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canera"
+          }
+        }
+      }
     },
     "checkIn.photo.picker.photoGallery" : {
       "localizations" : {
@@ -352,10 +372,24 @@
       }
     },
     "checkIn.photo.picker.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a photo"
+          }
+        }
+      }
     },
     "checkIn.photo.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a photo"
+          }
+        }
+      }
     },
     "checkIn.rating.label" : {
 
@@ -364,10 +398,24 @@
 
     },
     "checkIn.review.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How was it?"
+          }
+        }
+      }
     },
     "checkIn.review.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review"
+          }
+        }
+      }
     },
     "checkIn.section.additionalInformation.title" : {
 
@@ -632,7 +680,14 @@
 
     },
     "flavors.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flavors"
+          }
+        }
+      }
     },
     "friend.delete.confirmation.title" : {
 
@@ -698,10 +753,24 @@
 
     },
     "labels.delete" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "labels.delete.asModerator" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete as a moderator"
+          }
+        }
+      }
     },
     "labels.done" : {
 

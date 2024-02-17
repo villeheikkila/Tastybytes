@@ -223,7 +223,7 @@ struct CheckInSheet: View {
                 }
             )
             Button(
-                "\(editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) == nil && image == nil ? "checkIn.image.add" : "checkIn.image.change")",
+                editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) == nil && image == nil ? "checkIn.image.add" : "checkIn.image.change",
                 systemImage: "photo", action: { showPhotoMenu.toggle() }
             )
         }
