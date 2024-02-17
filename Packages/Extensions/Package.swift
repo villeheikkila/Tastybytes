@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Extensions",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17), .watchOS(.v10), .macOS(.v14),
     ],

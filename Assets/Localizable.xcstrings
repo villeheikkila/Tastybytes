@@ -51,7 +51,14 @@
       }
     },
     "about.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
     },
     "about.rateApp.label %@" : {
 
@@ -326,7 +333,14 @@
 
     },
     "checkIn.photo.picker.photoGallery" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo Gallery"
+          }
+        }
+      }
     },
     "checkIn.photo.picker.title" : {
 
@@ -692,7 +706,14 @@
 
     },
     "labels.submit" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submit"
+          }
+        }
+      }
     },
     "labels.tryAgain" : {
 
