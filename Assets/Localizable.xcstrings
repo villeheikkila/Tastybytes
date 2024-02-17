@@ -125,19 +125,10 @@
     "actions.cancel" : {
 
     },
-    "actions.continue" : {
-
-    },
     "actions.delete" : {
 
     },
     "actions.reload" : {
-
-    },
-    "actions.skip" : {
-
-    },
-    "actions.tryAgain" : {
 
     },
     "activity.error.failedToLoad" : {
@@ -534,9 +525,6 @@
     "duplicateProducts.screen.title" : {
 
     },
-    "Edit" : {
-
-    },
     "Edit %@" : {
 
     },
@@ -636,6 +624,9 @@
     "labels.cancel" : {
 
     },
+    "labels.continue" : {
+
+    },
     "labels.copyright" : {
 
     },
@@ -666,10 +657,16 @@
     "labels.showAll" : {
 
     },
+    "labels.skip" : {
+
+    },
     "labels.sortBy" : {
 
     },
     "labels.submit" : {
+
+    },
+    "labels.tryAgain" : {
 
     },
     "labels.unverified" : {
@@ -972,13 +969,16 @@
     "Quit the App" : {
 
     },
-    "Rating" : {
+    "ratingChart.rating.label" : {
 
     },
     "ratingChart.tip.message" : {
 
     },
     "ratingChart.tip.title" : {
+
+    },
+    "ratingChart.value.label" : {
 
     },
     "React to check-in" : {
@@ -1202,9 +1202,6 @@
 
     },
     "user.search.navigationTitle" : {
-
-    },
-    "Value" : {
 
     },
     "verification.verified.label" : {

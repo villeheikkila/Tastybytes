@@ -33,7 +33,7 @@ struct RatingChartView: View {
                     }
 
                     BarMark(
-                        x: .value("ratingChart.rating.label", "\(Double(index) / 2.0 + 0.5)"),
+                        x: .value("ratingChart.rating.label", (Double(index) / 2.0 + 0.5).formatted(.number)),
                         y: .value("ratingChart.value.label", rating)
                     )
                 }

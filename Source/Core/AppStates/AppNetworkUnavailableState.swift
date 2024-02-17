@@ -13,7 +13,7 @@ struct AppNetworkUnavailableState: View {
                         await appEnvironmentModel.initialize()
                     }
                 }, label: {
-                    Text("actions.tryAgain")
+                    Text("labels.tryAgain")
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .frame(height: 50)
                         .foregroundColor(.white)
