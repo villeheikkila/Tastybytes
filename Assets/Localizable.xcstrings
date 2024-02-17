@@ -110,9 +110,6 @@
     "about.title" : {
 
     },
-    "Account Deleted" : {
-
-    },
     "account.delete-confirmation.title" : {
 
     },
@@ -180,6 +177,15 @@
 
     },
     "admin.navigationTitle" : {
+
+    },
+    "app.unsupportedVersion.description" : {
+
+    },
+    "app.unsupportedVersion.openAppStore.label" : {
+
+    },
+    "app.unsupportedVersion.title" : {
 
     },
     "Barcode added!" : {
@@ -255,9 +261,6 @@
 
     },
     "check-in.delete-confirmation.title" : {
-
-    },
-    "check-in.legacy.label" : {
 
     },
     "Check-ins" : {
@@ -439,6 +442,15 @@
 
     },
     "Delete Company Confirmation" : {
+
+    },
+    "deleteAccount.success.done.label" : {
+
+    },
+    "deleteAccount.success.title" : {
+
+    },
+    "deleteAccount.success.welcomeBack" : {
 
     },
     "Didn't find the company you were looking for?" : {
@@ -837,9 +849,6 @@
     "onboarding.profile.title" : {
 
     },
-    "Open App Store" : {
-
-    },
     "Owner" : {
 
     },
@@ -850,9 +859,6 @@
 
     },
     "Please check your network connection and try again." : {
-
-    },
-    "Privacy policy here" : {
 
     },
     "privacy.title" : {
@@ -964,9 +970,6 @@
 
     },
     "profile.title" : {
-
-    },
-    "Quit the App" : {
 
     },
     "ratingChart.rating.label" : {
@@ -1095,9 +1098,6 @@
     "Show scanner" : {
 
     },
-    "Sorry to see you go but you're always welcome back!" : {
-
-    },
     "Statistics" : {
 
     },
@@ -1180,9 +1180,6 @@
     "tab.profile" : {
 
     },
-    "Terms of service here" : {
-
-    },
     "There is nothing to edit" : {
 
     },
@@ -1196,9 +1193,6 @@
 
     },
     "Unverify Company" : {
-
-    },
-    "Update needed!" : {
 
     },
     "user.search.navigationTitle" : {
@@ -1230,9 +1224,6 @@
 
     },
     "You haven't check-in yet" : {
-
-    },
-    "Your current app version is no longer supported, please update the app in the App Store" : {
 
     }
   },

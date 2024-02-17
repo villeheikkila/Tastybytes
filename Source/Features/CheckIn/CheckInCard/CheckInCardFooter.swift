@@ -16,7 +16,7 @@ struct CheckInCardFooter: View {
                         .font(.caption)
                         .bold()
                 } else {
-                    Text("check-in.legacy.label")
+                    Text("checkIn.legacy.label")
                         .font(.caption)
                         .bold()
                 }

@@ -26,7 +26,7 @@ public struct SummaryView: View {
 
     private var header: some View {
         GridRow {
-            Text("")
+            Text(verbatim: "")
             Spacer()
             Text("summary.check-ins")
                 .font(.caption).bold()
@@ -51,7 +51,7 @@ struct SummaryRow: View {
                     .contentTransition(.numericText())
                     .font(.caption)
             } else {
-                Text("")
+                Text(verbatim: "")
             }
             Spacer()
             RatingView(rating: rating ?? 0, type: .small)
@@ -62,7 +62,7 @@ struct SummaryRow: View {
                         .contentTransition(.numericText()
                         )
                 } else {
-                    Text("-")
+                    Text(verbatim: "-")
                 }
             }
             .font(.caption)

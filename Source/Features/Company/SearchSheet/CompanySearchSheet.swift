@@ -48,13 +48,13 @@ struct CompanySearchSheet: View {
             if profileEnvironmentModel.hasPermission(.canCreateCompanies), !showEmptyResults {
                 switch status {
                 case .searched:
-                    Section("Didn't find the company you were looking for?") {
-                        Button("Add", action: { createNew() })
+                    Section("company.create.notFound.section.title") {
+                        Button("company.create.label", action: { createNew() })
                     }.textCase(nil)
                 case .add:
-                    Section("Add new company") {
+                    Section("company.create.section.title") {
                         ScanTextField(title: "Name", text: $companyName)
-                        ProgressButton("Create") {
+                        ProgressButton("company.create.label") {
                             await createNewCompany(onSuccess: { company in
                                 onSelect(company)
                                 dismiss()
@@ -71,7 +71,7 @@ struct CompanySearchSheet: View {
         .safeAreaInset(edge: .top, content: {
             if showEmptyResults {
                 VStack {
-                    Text("No companies found with the searched name.")
+                    Text("company.search.noResults.title")
                     if profileEnvironmentModel.hasPermission(.canCreateCompanies) {
                         Button("company.create.label", action: { createNew() })
                     }

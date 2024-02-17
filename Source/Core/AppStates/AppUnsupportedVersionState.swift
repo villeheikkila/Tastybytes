@@ -6,12 +6,12 @@ import SwiftUI
 struct AppUnsupportedVersionState: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     var body: some View {
-        ContentUnavailableView("Update needed!", systemImage: "arrow.triangle.2.circlepath", description: Text("Your current app version is no longer supported, please update the app in the App Store"))
+        ContentUnavailableView("app.unsupportedVersion.title", systemImage: "arrow.triangle.2.circlepath", description: Text("app.unsupportedVersion.description"))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(alignment: .bottom) {
                 if let appleStoreUrl = appEnvironmentModel.appConfig?.appleStoreUrl {
                     Link(destination: appleStoreUrl) {
-                        Text("Open App Store")
+                        Text("app.unsupportedVersion.openAppStore.label")
                     }
                     .frame(minWidth: 0, maxWidth: .infinity)
                     .frame(height: 50)

@@ -14,10 +14,10 @@ struct SubscriptionSheet: View {
             .backgroundStyle(.clear)
             .storeButton(.visible, for: .restorePurchases, .redeemCode)
             .subscriptionStorePolicyDestination(for: .privacyPolicy) {
-                Text("Privacy policy here")
+                EmptyView()
             }
             .subscriptionStorePolicyDestination(for: .termsOfService) {
-                Text("Terms of service here")
+                EmptyView()
             }
             .subscriptionStoreButtonLabel(.multiline)
             .subscriptionStoreControlStyle(.prominentPicker)

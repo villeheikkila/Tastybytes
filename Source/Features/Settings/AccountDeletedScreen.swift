@@ -14,12 +14,12 @@ struct AccountDeletedScreen: View {
                         .frame(width: 60, height: 60)
                         .foregroundColor(.red)
                         .accessibility(hidden: true)
-                    Text("Account Deleted")
+                    Text("deleteAccount.success.title")
                         .font(.title)
 
                     VStack(spacing: 8) {
                         Text("settings.account.delete.disclaimer")
-                        Text("Sorry to see you go but you're always welcome back!")
+                        Text("deleteAccount.success.welcomeBack")
                     }
                     .multilineTextAlignment(.center)
 
@@ -28,7 +28,7 @@ struct AccountDeletedScreen: View {
                             exit(0)
                         },
                         label: {
-                            Text("Quit the App")
+                            Text("deleteAccount.success.done.label")
                                 .font(.headline)
                                 .padding(.all, 8)
                         }

@@ -121,7 +121,7 @@ struct VerificationScreen: View {
                 HStack {
                     Text("\(brand.brandOwner.name): \(brand.name)")
                     Spacer()
-                    Text("(\(brand.productCount.formatted())")
+                    Text(brand.productCount.formatted())
                 }
             }
             .swipeActions {
