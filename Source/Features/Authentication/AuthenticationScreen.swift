@@ -75,7 +75,7 @@ struct PrivacyPolicy: View {
                         .navigationTitle(link.title)
                         .toolbar {
                             ToolbarItemGroup(placement: .cancellationAction) {
-                                CloseButtonView { openUrlInWebView = nil }
+                                CloseButton { openUrlInWebView = nil }
                             }
                         }
                         .navigationBarTitleDisplayMode(.inline)

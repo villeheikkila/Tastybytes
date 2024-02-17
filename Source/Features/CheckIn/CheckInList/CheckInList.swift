@@ -290,7 +290,7 @@ extension CheckInList {
         var emptyContentView: some View {
             switch self {
             case .activityFeed:
-                EmptyActivityFeed()
+                EmptyActivityFeedView()
             default:
                 EmptyView()
             }

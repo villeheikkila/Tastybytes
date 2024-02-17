@@ -33,7 +33,7 @@ public struct RatingView: View {
                     .frame(width: type.size, height: type.size)
             }
         }
-        .accessibilityLabel("\(rating) stars")
+        .accessibilityLabel("rating.stars \(rating)")
     }
 }
 

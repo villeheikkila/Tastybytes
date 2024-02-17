@@ -67,7 +67,7 @@ struct CategoryServingStyleSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneAction()
+        ToolbarDoneActionView()
         ToolbarItemGroup(placement: .primaryAction) {
             Button(
                 "servingStyle.create.label",

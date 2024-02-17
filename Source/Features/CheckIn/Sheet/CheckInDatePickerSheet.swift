@@ -21,6 +21,6 @@ struct CheckInDatePickerSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneAction()
+        ToolbarDoneActionView()
     }
 }

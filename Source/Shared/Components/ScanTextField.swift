@@ -2,12 +2,12 @@ import Extensions
 import SwiftUI
 
 public struct ScanTextField: View {
-    let title: String
+    let title: LocalizedStringKey
     @State private var scannedText: String = ""
 
     @Binding var text: String
 
-    public init(title: String, text: Binding<String>) {
+    public init(title: LocalizedStringKey, text: Binding<String>) {
         self.title = title
         _text = text
     }

@@ -1,13 +1,8 @@
 import SwiftUI
 
-public struct CloseButtonView: View {
+public struct CloseButton: View {
     @State private var isPressed = false
-
     let action: @MainActor () -> Void
-
-    public init(action: @MainActor @escaping () -> Void) {
-        self.action = action
-    }
 
     public var body: some View {
         Button(action: {
@@ -34,5 +29,5 @@ public struct CloseButtonView: View {
 }
 
 #Preview {
-    CloseButtonView(action: {})
+    CloseButton(action: {})
 }

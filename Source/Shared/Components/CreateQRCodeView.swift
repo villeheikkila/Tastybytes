@@ -12,12 +12,12 @@ public struct CreateQRCodeView: View {
             if let qrCode = qrCodeText.asQRCode(), let uiImage = UIImage(data: qrCode) {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .accessibilityLabel("qr code")
+                    .accessibilityLabel("qrcode.label")
 
             } else {
                 Image(systemName: "qrcode")
                     .resizable()
-                    .accessibilityLabel("placeholder qr code")
+                    .accessibilityLabel("qrcode.placeholder.label")
             }
         }
         .frame(width: 180, height: 180)

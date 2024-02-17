@@ -1,13 +1,13 @@
 import SwiftUI
 
-public struct ToolbarDoneAction: ToolbarContent {
+public struct ToolbarDoneActionView: ToolbarContent {
     @Environment(\.dismiss) private var dismiss
 
     public init() {}
 
     public var body: some ToolbarContent {
         ToolbarItemGroup(placement: .confirmationAction) {
-            Button("Done", action: { dismiss() })
+            Button("labels.done", action: { dismiss() })
         }
     }
 }

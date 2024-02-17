@@ -63,7 +63,7 @@ struct ActivityScreen: View {
                     }
                 }
             } else if isContentUnavailable {
-                EmptyActivityFeed()
+                EmptyActivityFeedView()
             } else {
                 EmptyView()
             }

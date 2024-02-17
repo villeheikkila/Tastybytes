@@ -102,6 +102,12 @@
     "activity.navigationTitle" : {
 
     },
+    "activityFeed.emptyContent.description" : {
+
+    },
+    "activityFeed.emptyContent.title" : {
+
+    },
     "admin.menuSection.title" : {
 
     },
@@ -218,6 +224,9 @@
 
     },
     "brand.edit.success.toast" : {
+
+    },
+    "brand.name.placeholder" : {
 
     },
     "brand.product.groupBy.label" : {
@@ -456,6 +465,9 @@
     "company.logo.title" : {
 
     },
+    "company.name.placeholder" : {
+
+    },
     "company.search.navigationTitle" : {
 
     },
@@ -475,6 +487,28 @@
 
     },
     "contributions.title" : {
+
+    },
+    "crop.custom %lldX%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "crop.custom %1$lldX%2$lld"
+          }
+        }
+      }
+    },
+    "crop.navigationTitle" : {
+
+    },
+    "crop.rectangle" : {
+
+    },
+    "crop.resize.accessibilityLabel" : {
+
+    },
+    "crop.square" : {
 
     },
     "customRelativeTimeFormat.justNow" : {
@@ -651,6 +685,9 @@
     "labels.cancel" : {
 
     },
+    "labels.close" : {
+
+    },
     "labels.continue" : {
 
     },
@@ -664,6 +701,9 @@
 
     },
     "labels.delete.asModerator" : {
+
+    },
+    "labels.done" : {
 
     },
     "labels.edit" : {
@@ -909,6 +949,9 @@
     "product.delete.confirmation.title" : {
 
     },
+    "product.description.placeholder" : {
+
+    },
     "product.discontinued.label" : {
 
     },
@@ -984,6 +1027,9 @@
     "product.mutation.pickCategory.label" : {
 
     },
+    "product.name.placeholder" : {
+
+    },
     "product.shareLink.subject" : {
 
     },
@@ -1053,6 +1099,18 @@
     "profileStatistics.navigationTitle" : {
 
     },
+    "qrcode.label" : {
+
+    },
+    "qrcode.placeholder.label" : {
+
+    },
+    "rating.outOf5 %lf" : {
+
+    },
+    "rating.stars %lf" : {
+
+    },
     "rating.topEntries.label" : {
 
     },
@@ -1109,6 +1167,9 @@
       }
     },
     "report.submit.success.toast" : {
+
+    },
+    "scanTextButton.label" : {
 
     },
     "servingStyle.create.label" : {
@@ -1288,6 +1349,12 @@
           }
         }
       }
+    },
+    "summary.checkIns" : {
+
+    },
+    "summary.rating" : {
+
     },
     "tab.activity" : {
 

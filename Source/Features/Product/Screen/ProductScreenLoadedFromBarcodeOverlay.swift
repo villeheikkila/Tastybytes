@@ -18,7 +18,7 @@ struct ProductScreenLoadedFromBarcodeOverlay: View {
             }
             .padding(.vertical, 10)
             Spacer()
-            CloseButtonView {
+            CloseButton {
                 loadedWithBarcode = nil
             }
             .labelStyle(.iconOnly)

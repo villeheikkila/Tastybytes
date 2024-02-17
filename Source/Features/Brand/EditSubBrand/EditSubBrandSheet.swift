@@ -107,7 +107,7 @@ struct EditSubBrandSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneAction()
+        ToolbarDoneActionView()
     }
 
     func mergeToSubBrand(subBrand: SubBrand.JoinedProduct, onSuccess: @escaping () async -> Void) async {
