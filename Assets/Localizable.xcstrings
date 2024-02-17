@@ -87,6 +87,9 @@
     "account.email.section.title" : {
 
     },
+    "account.export.failure.alert" : {
+
+    },
     "account.export.success.toast" : {
 
     },
@@ -98,6 +101,16 @@
     },
     "activity.error.failedToLoad" : {
 
+    },
+    "activity.error.failedToLoadMoreItems" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error occured while trying to load check-ins"
+          }
+        }
+      }
     },
     "activity.navigationTitle" : {
 
@@ -122,10 +135,19 @@
         }
       }
     },
+    "admin.category.title" : {
+
+    },
+    "admin.duplicates.title" : {
+
+    },
     "admin.menuSection.title" : {
 
     },
     "admin.navigationTitle" : {
+
+    },
+    "admin.verification.title" : {
 
     },
     "app.error.unexpected.title" : {
@@ -223,6 +245,9 @@
     "blockedUsers.block.success" : {
 
     },
+    "blockedUsers.empty.block.label" : {
+
+    },
     "blockedUsers.empty.description" : {
 
     },
@@ -272,6 +297,9 @@
 
     },
     "brand.product.groupBy.label" : {
+
+    },
+    "brand.screen.open" : {
 
     },
     "brand.select.navigationTitle" : {
@@ -346,6 +374,9 @@
     "checkIn.delete.confirmation.title" : {
 
     },
+    "checkIn.delete.failure.alert" : {
+
+    },
     "checkIn.deleteConfirmation.title" : {
 
     },
@@ -383,6 +414,9 @@
     "checkIn.location.reset" : {
 
     },
+    "checkIn.manufacturedBy.label %@" : {
+
+    },
     "checkIn.notifications.userReactedToYourCheckIn.body %@ %@" : {
       "localizations" : {
         "en" : {
@@ -392,6 +426,12 @@
           }
         }
       }
+    },
+    "checkIn.openLocationScreen" : {
+
+    },
+    "checkIn.openPurchaseLocationScreen" : {
+
     },
     "checkIn.photo.picker.camera" : {
       "localizations" : {
@@ -529,6 +569,9 @@
     "checkIn.title" : {
 
     },
+    "checkInList.error.failedToLoad.alert" : {
+
+    },
     "checkInList.error.failedToLoad.description" : {
 
     },
@@ -584,6 +627,9 @@
 
     },
     "company.name.placeholder" : {
+
+    },
+    "company.screen.open" : {
 
     },
     "company.search.navigationTitle" : {
@@ -1130,6 +1176,15 @@
     "location.nearBy" : {
 
     },
+    "location.open" : {
+
+    },
+    "location.open %@" : {
+
+    },
+    "location.open.purchaseLocation" : {
+
+    },
     "location.recent" : {
 
     },
@@ -1407,6 +1462,9 @@
     "product.name.placeholder" : {
 
     },
+    "product.screen.open" : {
+
+    },
     "product.shareLink.subject" : {
 
     },
@@ -1423,6 +1481,21 @@
 
     },
     "profile.linkedIn" : {
+
+    },
+    "profile.links.checkIns" : {
+
+    },
+    "profile.links.friends" : {
+
+    },
+    "profile.links.locations" : {
+
+    },
+    "profile.links.statistics" : {
+
+    },
+    "profile.links.wishlist" : {
 
     },
     "profile.locations.navigationTitle" : {
@@ -1670,6 +1743,9 @@
     "settings.signOut" : {
 
     },
+    "settings.title" : {
+
+    },
     "subBrand.addSubBrandFor.title %@" : {
 
     },
@@ -1697,6 +1773,9 @@
     "subBrand.navigationTitle" : {
 
     },
+    "subBrand.screen.open" : {
+
+    },
     "subBrand.title" : {
 
     },
@@ -1716,10 +1795,24 @@
 
     },
     "subcategory.addTo.category.navigationTitle %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add subcategory to"
+          }
+        }
+      }
     },
     "subcategory.addTo.category.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Subcategory"
+          }
+        }
+      }
     },
     "subcategory.delete.confirmation.description" : {
 
@@ -1728,7 +1821,14 @@
 
     },
     "subcategory.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "subcategory.navigationTitle" : {
 
@@ -1737,6 +1837,9 @@
 
     },
     "subcategory.title" : {
+
+    },
+    "subcategoryStatistics.all.open" : {
 
     },
     "subscription.callToAction" : {
@@ -1806,6 +1909,9 @@
 
     },
     "torch.on.label" : {
+
+    },
+    "Uploading of a product logo failed." : {
 
     },
     "user.search.navigationTitle" : {

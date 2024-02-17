@@ -40,7 +40,7 @@ struct CheckInListContent: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = AlertError(title: "Error occured while trying to delete a check-in. Please try again!")
+            alertError = AlertError(title: "checkIn.delete.failure.alert")
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
         }
     }

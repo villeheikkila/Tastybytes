@@ -65,22 +65,6 @@ struct RouterLink<LabelView: View>: View {
 }
 
 extension RouterLink where LabelView == Text {
-    init(_ label: String, screen: Screen, asTapGesture: Bool = false) {
-        self.init(screen: screen, asTapGesture: asTapGesture) {
-            Text(label)
-        }
-    }
-}
-
-extension RouterLink where LabelView == Text {
-    init(_ label: String, sheet: Sheet, asTapGesture: Bool = false) {
-        self.init(sheet: sheet, asTapGesture: asTapGesture) {
-            Text(label)
-        }
-    }
-}
-
-extension RouterLink where LabelView == Text {
     init(_ label: LocalizedStringKey, screen: Screen, asTapGesture: Bool = false) {
         self.init(screen: screen, asTapGesture: asTapGesture) {
             Text(label)
@@ -96,7 +80,26 @@ extension RouterLink where LabelView == Text {
     }
 }
 
+extension RouterLink where LabelView == Text {
+    @_disfavoredOverload
+    init(_ label: String, screen: Screen, asTapGesture: Bool = false) {
+        self.init(screen: screen, asTapGesture: asTapGesture) {
+            Text(label)
+        }
+    }
+}
+
+extension RouterLink where LabelView == Text {
+    @_disfavoredOverload
+    init(_ label: String, sheet: Sheet, asTapGesture: Bool = false) {
+        self.init(sheet: sheet, asTapGesture: asTapGesture) {
+            Text(label)
+        }
+    }
+}
+
 extension RouterLink where LabelView == Label<Text, Image> {
+    @_disfavoredOverload
     init(_ titleKey: String, systemImage: String, screen: Screen, asTapGesture: Bool = false) {
         self.init(screen: screen, asTapGesture: asTapGesture, label: {
             Label(titleKey, systemImage: systemImage)

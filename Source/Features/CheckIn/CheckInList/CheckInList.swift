@@ -225,7 +225,7 @@ struct CheckInList<Header>: View where Header: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            let e = AlertError(title: "Error occured while trying to load check-ins")
+            let e = AlertError(title: "checkInList.error.failedToLoad.alert")
             if checkIns.isEmpty {
                 errorContentUnavailable = e
             } else {

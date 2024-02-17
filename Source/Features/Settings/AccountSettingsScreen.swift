@@ -60,7 +60,7 @@ struct AccountSettingsScreen: View {
             case .success:
                 feedbackEnvironmentModel.toggle(.success("account.export.success.toast"))
             case .failure:
-                alertError = .init(title: "Error occurred while trying to export data")
+                alertError = .init(title: "account.export.failure.alert")
             }
         }
         .alertError($alertError)

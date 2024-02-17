@@ -154,14 +154,14 @@ public struct DetectOrientation: ViewModifier {
 
 public struct AlertError: Identifiable, Equatable {
     public let id: UUID
-    public let title: String
+    public let title: LocalizedStringKey
 
     public init() {
         title = "Unexpected error occured"
         id = UUID()
     }
 
-    public init(title: String) {
+    public init(title: LocalizedStringKey) {
         self.title = title
         id = UUID()
     }
