@@ -36,7 +36,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
     public var appIcon: AppIcon = .ramune
 
     private let repository: Repository
-    
+
     public var extendedProfile: Profile.Extended? {
         get {
             access(keyPath: \.extendedProfile)
@@ -49,7 +49,6 @@ public final class ProfileEnvironmentModel: ObservableObject {
             }
         }
     }
-
 
     public init(repository: Repository) {
         self.repository = repository
@@ -160,7 +159,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             profileState = .initialized
             logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
         }
-        
+
         let startTime = DispatchTime.now()
         async let profilePromise = await repository.profile.getCurrentUser()
         async let userPromise = await repository.auth.getUser()

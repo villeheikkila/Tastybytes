@@ -564,9 +564,6 @@
     "Feeds" : {
 
     },
-    "Find products by rating" : {
-
-    },
     "flavor.add.navigationTitle" : {
 
     },
@@ -715,9 +712,6 @@
 
     },
     "Logos" : {
-
-    },
-    "Long press on a rating to find rated products" : {
 
     },
     "Mark as Duplicate" : {
@@ -979,6 +973,12 @@
 
     },
     "Rating" : {
+
+    },
+    "ratingChart.tip.message" : {
+
+    },
+    "ratingChart.tip.title" : {
 
     },
     "React to check-in" : {

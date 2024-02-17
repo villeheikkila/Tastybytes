@@ -9,50 +9,34 @@ struct RatingChartView: View {
     let profile: Profile
     let profileSummary: ProfileSummary?
 
+    var ratings: [KeyPath<ProfileSummary, Int>] = [
+        \.rating1,
+        \.rating2,
+        \.rating3,
+        \.rating4,
+        \.rating5,
+        \.rating6,
+        \.rating7,
+        \.rating8,
+        \.rating9,
+        \.rating10,
+    ]
+
     var body: some View {
         Section {
             Chart {
-                BarMark(
-                    x: .value("Rating", "0.5"),
-                    y: .value("Value", profileSummary?.rating1 ?? 0)
-                )
+                ForEach(Array(0 ..< ratings.count), id: \.self) { index in
+                    let rating = if let profileSummary {
+                        profileSummary[keyPath: ratings[index]]
+                    } else {
+                        0
+                    }
 
-                BarMark(
-                    x: .value("Rating", "1"),
-                    y: .value("Value", profileSummary?.rating2 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "1.5"),
-                    y: .value("Value", profileSummary?.rating3 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "2"),
-                    y: .value("Value", profileSummary?.rating4 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "2.5"),
-                    y: .value("Value", profileSummary?.rating5 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "3"),
-                    y: .value("Value", profileSummary?.rating6 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "3.5"),
-                    y: .value("Value", profileSummary?.rating7 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "4"),
-                    y: .value("Value", profileSummary?.rating8 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "4.5"),
-                    y: .value("Value", profileSummary?.rating9 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "5"),
-                    y: .value("Value", profileSummary?.rating10 ?? 0)
-                )
+                    BarMark(
+                        x: .value("ratingChart.rating.label", "\(Double(index) / 2.0 + 0.5)"),
+                        y: .value("ratingChart.value.label", rating)
+                    )
+                }
             }
             .chartLegend(.hidden)
             .chartYAxis(.hidden)
@@ -81,11 +65,11 @@ struct RatingChartTip: Tip {
     }
 
     var title: Text {
-        Text("Find products by rating")
+        Text("ratingChart.tip.title")
     }
 
     var message: Text? {
-        Text("Long press on a rating to find rated products")
+        Text("ratingChart.tip.message")
     }
 
     var asset: Image? {
