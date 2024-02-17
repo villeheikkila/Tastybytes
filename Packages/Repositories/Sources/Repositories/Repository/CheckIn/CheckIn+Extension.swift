@@ -9,7 +9,7 @@ extension CheckIn: Queryable {
         switch queryType {
         case let .joined(withTableName):
             return buildQuery(
-                .categories,
+                .checkIns,
                 [
                     saved,
                     Profile.getQuery(.minimal(true)),
@@ -27,7 +27,7 @@ extension CheckIn: Queryable {
             )
         case let .image(withTableName):
             return buildQuery(
-                .categories,
+                .checkIns,
                 [image, ImageEntity.getQuery(.saved(.checkInImages))],
                 withTableName
             )

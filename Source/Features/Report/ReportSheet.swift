@@ -31,7 +31,7 @@ struct ReportSheet: View {
                 }).bold()
             }
         }
-        .navigationTitle("report.navigationTitle \(entity.label)")
+        .navigationTitle(entity.navigationTitle)
         .toolbar {
             toolbarContent
         }
@@ -74,6 +74,25 @@ struct ReportSheet: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Submitting report failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+public extension Report.Entity {
+    var navigationTitle: LocalizedStringKey {
+        switch self {
+        case .product:
+            "report.navigationTitle.product"
+        case .company:
+            "report.navigationTitle.company"
+        case .brand:
+            "report.navigationTitle.brand"
+        case .subBrand:
+            "report.navigationTitle.subBrand"
+        case .checkIn:
+            "report.navigationTitle.checkIn"
+        case .comment:
+            "report.navigationTitle.comment"
         }
     }
 }

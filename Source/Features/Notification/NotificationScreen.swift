@@ -185,3 +185,35 @@ struct ContentUnavailableViewProps {
     let description: LocalizedStringKey
     let icon: String
 }
+
+public extension NotificationType {
+    var label: LocalizedStringKey {
+        switch self {
+        case .message:
+            "notification.message.label"
+        case .friendRequest:
+            "notification.friendRequest.label"
+        case .taggedCheckIn:
+            "notification.taggedCheckIn.label"
+        case .checkInReaction:
+            "notification.checkInReaction.label"
+        case .checkInComment:
+            "notification.checkInComment.label"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .message:
+            "bell"
+        case .friendRequest:
+            "person.badge.plus"
+        case .taggedCheckIn:
+            "tag"
+        case .checkInReaction:
+            "hand.thumbsup"
+        case .checkInComment:
+            "bubble.left"
+        }
+    }
+}

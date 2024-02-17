@@ -28,11 +28,11 @@ struct ProductFeedScreen: View {
         products.unique(selector: { $0.id == $1.id })
     }
 
-    var title: String {
+    var title: LocalizedStringKey {
         if let categoryFilter {
-            "\(feed.label): \(categoryFilter.name)"
+            .init(stringLiteral: "\(feed.label): \(categoryFilter.name)")
         } else {
-            String(localized: LocalizedStringResource(stringLiteral: feed.label))
+            feed.label
         }
     }
 

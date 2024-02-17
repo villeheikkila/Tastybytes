@@ -463,6 +463,9 @@
     "contributions.title" : {
 
     },
+    "customRelativeTimeFormat.justNow" : {
+
+    },
     "deleteAccount.success.done.label" : {
 
     },
@@ -748,6 +751,9 @@
     "nameTag.show.label" : {
 
     },
+    "notification.checkInComment.label" : {
+
+    },
     "notification.checkInComment.userCommentedOnYourCheckIn %@ %@" : {
       "localizations" : {
         "en" : {
@@ -761,16 +767,37 @@
     "notification.checkInComments.empty.title" : {
 
     },
+    "notification.checkInReaction.label" : {
+
+    },
     "notification.checkInReactions.empty.title" : {
 
     },
     "notification.checkInTags.empty.title" : {
 
     },
+    "notification.deliveryType.disabled" : {
+
+    },
+    "notification.deliveryType.disabled.inApp" : {
+
+    },
+    "notification.deliveryType.push" : {
+
+    },
+    "notification.friendRequest.label" : {
+
+    },
     "notification.friendRequests.empty.title" : {
 
     },
+    "notification.message.label" : {
+
+    },
     "notification.messages.empty.title" : {
+
+    },
+    "notification.taggedCheckIn.label" : {
 
     },
     "notification.taggedCheckIn.userTaggedYou %@ %@" : {
@@ -871,6 +898,15 @@
 
     },
     "product.editSuggestion.success.toast" : {
+
+    },
+    "product.feed.latest.label" : {
+
+    },
+    "product.feed.topRated.label" : {
+
+    },
+    "product.feed.trending.label" : {
 
     },
     "product.filter.overlay.resetFilter" : {
@@ -1011,7 +1047,22 @@
     "ratingChart.value.label" : {
 
     },
-    "report.navigationTitle %@" : {
+    "report.navigationTitle.brand" : {
+
+    },
+    "report.navigationTitle.checkIn" : {
+
+    },
+    "report.navigationTitle.comment" : {
+
+    },
+    "report.navigationTitle.company" : {
+
+    },
+    "report.navigationTitle.product" : {
+
+    },
+    "report.navigationTitle.subBrand" : {
 
     },
     "report.open" : {
@@ -1232,6 +1283,18 @@
     "tab.profile" : {
 
     },
+    "timePeriod.all" : {
+
+    },
+    "timePeriod.month" : {
+
+    },
+    "timePeriod.week" : {
+
+    },
+    "timePeriod.year" : {
+
+    },
     "torch.off.label" : {
 
     },
@@ -1242,6 +1305,9 @@
 
     },
     "verification.verified.label" : {
+
+    },
+    "verification.waitingForVerification.label" : {
 
     },
     "wishlist.empty.title" : {

@@ -1,5 +1,5 @@
+import Foundation
 import Supabase
-import SwiftUI
 
 public protocol RepositoryProtocol: Sendable {
     var appConfig: AppConfigRepository { get }

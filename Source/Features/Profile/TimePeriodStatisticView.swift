@@ -83,3 +83,18 @@ struct TimePeriodStatisticSegmentView: View {
         isLoading = false
     }
 }
+
+extension TimePeriodStatistic.TimePeriod {
+    var label: LocalizedStringKey {
+        switch self {
+        case .all:
+            "timePeriod.all"
+        case .year:
+            "timePeriod.year"
+        case .month:
+            "timePeriod.month"
+        case .week:
+            "timePeriod.week"
+        }
+    }
+}

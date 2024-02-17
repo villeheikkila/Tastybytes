@@ -290,10 +290,6 @@ public struct CategoryStatistics: Identifiable, Codable, Sendable, CategoryProto
 public struct TimePeriodStatistic: Codable, Sendable {
     public enum TimePeriod: String, CaseIterable, Sendable {
         case week, month, year, all
-
-        public var label: String {
-            rawValue.capitalized
-        }
     }
 
     public let checkIns: Int

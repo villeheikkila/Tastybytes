@@ -33,7 +33,7 @@ struct ProfileProductListView: View {
             if let subcategoryName, let categoryName {
                 return "\(categoryName): \(subcategoryName)"
             } else if let categoryName {
-                return LocalizedStringKey(stringLiteral: categoryName)
+                return .init(stringLiteral: categoryName)
             } else if (productFilter?.onlyUnrated) == true {
                 return "profileProductList.unrated.navigationTitle"
             } else if let rating = productFilter?.rating {

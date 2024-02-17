@@ -103,7 +103,7 @@ struct BrandSheet: View {
 extension BrandSheet {
     enum Mode: Sendable {
         case select, new
-        
+
         var navigationTitle: LocalizedStringKey {
             switch self {
             case .new:

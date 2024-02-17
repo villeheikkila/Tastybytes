@@ -1,5 +1,5 @@
+import Foundation
 import OSLog
-import SwiftUI
 
 public enum NavigatablePath: Sendable {
     case product(id: Int)

@@ -296,9 +296,7 @@ public final class AppEnvironmentModel {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error(
-                "Failed to \(isVerified ? "unverify" : "labels.verify") subcategory \(subcategory.id). error: \(error)"
-            )
+            logger.error("Failed to \(isVerified ? "unverify" : "labels.verify") subcategory \(subcategory.id). error: \(error)")
         }
     }
 
@@ -334,10 +332,7 @@ public final class AppEnvironmentModel {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger
-                .error(
-                    "Failed to create subcategory '\(name)' to category \(category.name). Error: \(error) (\(#file):\(#line))"
-                )
+            logger.error("Failed to create subcategory '\(name)' to category \(category.name). Error: \(error) (\(#file):\(#line))")
         }
     }
 

@@ -28,7 +28,7 @@ public struct SummaryView: View {
         GridRow {
             Text(verbatim: "")
             Spacer()
-            Text("summary.check-ins")
+            Text("summary.checkIns")
                 .font(.caption).bold()
             Spacer()
             Text("summary.rating")

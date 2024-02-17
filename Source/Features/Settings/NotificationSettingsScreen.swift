@@ -1,13 +1,20 @@
 import EnvironmentModels
 import SwiftUI
 
-enum NotificationDeliveryType: String, CaseIterable {
-    case disabled = "Disabled"
-    case inApp = "In-App"
-    case pushNotification = "Push "
+enum NotificationDeliveryType: CaseIterable {
+    case disabled
+    case inApp
+    case pushNotification
 
-    var label: String {
-        rawValue
+    var label: LocalizedStringKey {
+        switch self {
+        case .disabled:
+            "notification.deliveryType.disabled"
+        case .inApp:
+            "notification.deliveryType.disabled.inApp"
+        case .pushNotification:
+            "notification.deliveryType.push"
+        }
     }
 }
 

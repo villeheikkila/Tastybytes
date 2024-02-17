@@ -51,7 +51,7 @@ public extension Product.Filter.SortBy {
 }
 
 public extension Product.FeedType {
-    var label: String {
+    var label: LocalizedStringKey {
         switch self {
         case .topRated:
             "product.feed.topRated.label"

@@ -135,36 +135,6 @@ public enum NotificationType: String, CaseIterable, Identifiable, Sendable {
     }
 
     case message, friendRequest, taggedCheckIn, checkInReaction, checkInComment
-
-    public var label: String {
-        switch self {
-        case .message:
-            "Alerts"
-        case .friendRequest:
-            "Friend Requests"
-        case .taggedCheckIn:
-            "Tagged check-ins"
-        case .checkInReaction:
-            "Reactions"
-        case .checkInComment:
-            "Comments"
-        }
-    }
-
-    public var systemImage: String {
-        switch self {
-        case .message:
-            "bell"
-        case .friendRequest:
-            "person.badge.plus"
-        case .taggedCheckIn:
-            "tag"
-        case .checkInReaction:
-            "hand.thumbsup"
-        case .checkInComment:
-            "bubble.left"
-        }
-    }
 }
 
 public struct ProfilePushNotification: Codable, Identifiable, Sendable {

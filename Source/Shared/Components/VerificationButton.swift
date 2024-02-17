@@ -8,7 +8,7 @@ struct VerificationButton: View {
     let verify: () async -> Void
     let unverify: () async -> Void
 
-    var label: String { isVerified ? "verification.verified.label" : "verification.waitingForVerification.label" }
+    var label: LocalizedStringKey { isVerified ? "verification.verified.label" : "verification.waitingForVerification.label" }
     var systemImage: String { isVerified ? "checkmark.circle" : "x.circle" }
     var action: () async -> Void {
         isVerified ? unverify : verify

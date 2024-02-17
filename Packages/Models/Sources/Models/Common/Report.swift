@@ -78,22 +78,5 @@ public struct Report: Codable, Identifiable {
         case subBrand(Brand.JoinedSubBrandsProductsCompany, SubBrand.JoinedProduct)
         case checkIn(CheckIn)
         case comment(CheckInComment)
-
-        public var label: String {
-            switch self {
-            case .product:
-                "product"
-            case .company:
-                "company"
-            case .brand:
-                "brand"
-            case .subBrand:
-                "sub-brand"
-            case .checkIn:
-                "check-in"
-            case .comment:
-                "comment"
-            }
-        }
     }
 }

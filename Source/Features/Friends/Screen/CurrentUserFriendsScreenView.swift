@@ -139,18 +139,18 @@ struct CurrentUserFriendsScreen: View {
             }
             .sheets(item: $sheet)
             .confirmationDialog("friend.delete.confirmation.title",
-                isPresented: $showRemoveFriendConfirmation,
-                titleVisibility: .visible,
-                presenting: friendToBeRemoved
-            ) { presenting in
-                ProgressButton(
-                    "friend.delete.confirmation.label \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName)",
-                    role: .destructive,
-                    action: {
-                        await friendEnvironmentModel.removeFriendRequest(presenting)
-                    }
-                )
-            }
+                                isPresented: $showRemoveFriendConfirmation,
+                                titleVisibility: .visible,
+                                presenting: friendToBeRemoved)
+        { presenting in
+            ProgressButton(
+                "friend.delete.confirmation.label \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName)",
+                role: .destructive,
+                action: {
+                    await friendEnvironmentModel.removeFriendRequest(presenting)
+                }
+            )
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
