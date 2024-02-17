@@ -36,18 +36,18 @@ extension AppIcon {
         }
     }
 
-    var label: String {
+    var label: LocalizedStringKey {
         switch self {
         case .ramune:
-            "Ramune"
+            "appIcon.ramune"
         case .juice:
-            "Juice"
+            "appIcon.juice"
         case .energyDrink:
-            "Energy Drink"
+            "appIcon.energyDrink"
         case .kombucha:
-            "Kombucha"
+            "appIcon.kombucha"
         case .cola:
-            "Cola"
+            "appIcon.cola"
         }
     }
 

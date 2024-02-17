@@ -18,7 +18,7 @@ struct SettingsScreen: View {
             logOutSection
         }
         .listStyle(.insetGrouped)
-        .navigationBarTitle("Settings")
+        .navigationBarTitle("settings.navigationTitle")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             toolbarContent
@@ -38,9 +38,9 @@ struct SettingsScreen: View {
     @ViewBuilder private var profileSection: some View {
         Section {
             RouterLink("profile.title", systemName: "person.fill", color: .indigo, screen: .profileSettings)
-            RouterLink("account.title", systemName: "gear", color: .gray, screen: .accountSettings)
-            RouterLink("privacy.title", systemName: "key.fill", color: .yellow, screen: .privacySettings)
-            RouterLink("blockedUsers.title", systemName: "person.fill.xmark", color: .green, screen: .blockedUsers)
+            RouterLink("account.navigationTitle", systemName: "gear", color: .gray, screen: .accountSettings)
+            RouterLink("settings.privacy.navigationTitle", systemName: "key.fill", color: .yellow, screen: .privacySettings)
+            RouterLink("blockedUsers.navigationTitle", systemName: "person.fill.xmark", color: .green, screen: .blockedUsers)
         }
     }
 
@@ -85,7 +85,7 @@ struct SettingsScreen: View {
                 await profileEnvironmentModel.logOut()
             }, label: {
                 Spacer()
-                Text("settings.actions.signOut")
+                Text("settings.signOut")
                     .fontWeight(.medium)
                     .foregroundColor(.red)
                 Spacer()

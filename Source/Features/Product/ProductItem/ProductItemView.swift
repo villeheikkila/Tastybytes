@@ -32,7 +32,7 @@ struct ProductItemView: View {
                     if let currentUserCheckIns = product.currentUserCheckIns, currentUserCheckIns > 0,
                        extras.contains(.checkInCheck)
                     {
-                        Label("Checked-in", systemImage: "checkmark.circle")
+                        Label("checkIn.checkedIn.label", systemImage: "checkmark.circle")
                             .labelStyle(.iconOnly)
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(.green, .secondary)

@@ -26,23 +26,23 @@ struct ProfileProductListView: View {
         _productFilter = State(initialValue: productFilter)
     }
 
-    var navigationTitle: String {
+    var navigationTitle: LocalizedStringKey {
         if locked {
             let subcategoryName = productFilter?.subcategory?.name
             let categoryName = productFilter?.category?.name
             if let subcategoryName, let categoryName {
                 return "\(categoryName): \(subcategoryName)"
             } else if let categoryName {
-                return categoryName
+                return LocalizedStringKey(stringLiteral: categoryName)
             } else if (productFilter?.onlyUnrated) == true {
-                return "Unrated"
+                return "profileProductList.unrated.navigationTitle"
             } else if let rating = productFilter?.rating {
-                return "Rating: \(rating.formatted(.number.precision(.fractionLength(1))))"
+                return "profileProductList.rated.navigationTitle \(rating.formatted(.number.precision(.fractionLength(1))))"
             } else {
-                return "Top Entries"
+                return "rating.topEntries.label"
             }
         }
-        return initialDataLoaded ? "Products (\(filteredProducts.count.formatted()))" : "Products"
+        return initialDataLoaded ? "profileProductList.navigationTitle (\(filteredProducts.count.formatted()))" : "profileProductList.navigationTitle"
     }
 
     var filteredProducts: [Product.Joined] {
@@ -96,7 +96,7 @@ struct ProfileProductListView: View {
         if !locked {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button(
-                    "Show filters",
+                    "profileProductList.filters.show.label",
                     systemImage: "line.3.horizontal.decrease.circle",
                     action: { sheet = .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
                                                      onApply: { filter in productFilter = filter }) }

@@ -53,7 +53,7 @@ struct CompanySearchSheet: View {
                     }.textCase(nil)
                 case .add:
                     Section("company.create.section.title") {
-                        ScanTextField(title: "Name", text: $companyName)
+                        ScanTextField(title: "company.name.placeholder", text: $companyName)
                         ProgressButton("company.create.label") {
                             await createNewCompany(onSuccess: { company in
                                 onSelect(company)
@@ -120,7 +120,7 @@ struct CompanySearchSheet: View {
         let newCompany = Company.NewRequest(name: companyName)
         switch await repository.company.insert(newCompany: newCompany) {
         case let .success(newCompany):
-            feedbackEnvironmentModel.toggle(.success("New Company Created!"))
+            feedbackEnvironmentModel.toggle(.success("company.create.success.toast"))
             onSuccess(newCompany)
         case let .failure(error):
             guard !error.isCancelled else { return }

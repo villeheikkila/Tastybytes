@@ -26,7 +26,7 @@ struct AboutScreen: View {
         }
         .foregroundColor(.primary)
         .listStyle(.insetGrouped)
-        .navigationTitle("About")
+        .navigationTitle("about.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             email = Email(adress: appEnvironmentModel.config.feedbackEmail,
@@ -81,7 +81,7 @@ struct AboutScreen: View {
                 if let githubUrl = URL(string: aboutPage.githubUrl) {
                     Link(destination: githubUrl) {
                         HStack {
-                            Image("github")
+                            Image(.github)
                                 .accessibilityHidden(true)
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)
@@ -109,7 +109,7 @@ struct AboutScreen: View {
                 if let linkedInUrl = URL(string: aboutPage.linkedInUrl) {
                     Link(destination: linkedInUrl) {
                         HStack {
-                            Image("linkedin")
+                            Image(.linkedin)
                                 .accessibilityHidden(true)
                                 .frame(width: 18, height: 18)
                                 .padding(.leading, 5)

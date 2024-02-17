@@ -33,7 +33,7 @@ struct ReactionsView: View {
                 Avatar(profile: reaction.profile, size: size)
             }
             Label(
-                "React to check-in",
+                "checkIn.reaction.react.label",
                 systemImage: "hand.thumbsup"
             )
             .labelStyle(.iconOnly)

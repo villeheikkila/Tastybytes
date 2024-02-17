@@ -58,7 +58,7 @@ struct ActivityScreen: View {
                 ContentUnavailableView {
                     Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
                 } actions: {
-                    Button("actions.reload") {
+                    Button("labels.reload") {
                         refreshId += 1
                     }
                 }

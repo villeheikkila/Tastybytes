@@ -56,7 +56,7 @@ struct ReportSheet: View {
             }
         case let .subBrand(brand, subBrand):
             HStack {
-                Text("\(subBrand.name ?? "Default") sub-brand from \(brand.name)")
+                Text("report.subBrand \(subBrand.name ?? "Default") from \(brand.name)")
             }
         case let .comment(comment):
             CheckInCommentView(comment: comment)
@@ -69,7 +69,7 @@ struct ReportSheet: View {
         switch await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
         case .success:
             dismiss()
-            feedbackEnvironmentModel.toggle(.success("Report submitted!"))
+            feedbackEnvironmentModel.toggle(.success("report.submit.success.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

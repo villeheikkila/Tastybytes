@@ -15,14 +15,14 @@ struct AppIconScreen: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 40, height: 40)
                     .cornerRadius(8)
-                    .accessibilityLabel("\(appIcon.label) app icon")
+                    .accessibilityLabel(appIcon.label)
 
                 Text(appIcon.label)
                     .fontWeight(.medium)
 
                 Spacer()
 
-                Label("Selected", systemImage: "checkmark")
+                Label("settings.appIcon.selected", systemImage: "checkmark")
                     .labelStyle(.iconOnly)
                     .opacity(appIcon == selection ? 1 : 0)
             }

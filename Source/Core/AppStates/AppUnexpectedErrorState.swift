@@ -5,7 +5,7 @@ import SwiftUI
 struct AppUnexpectedErrorState: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     var body: some View {
-        ContentUnavailableView("Unexpected error occured. Please try loading the app again later.", systemImage: "exclamationmark.triangle")
+        ContentUnavailableView("app.error.unexpected.title", systemImage: "exclamationmark.triangle")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(alignment: .bottom) {
                 Button(action: {

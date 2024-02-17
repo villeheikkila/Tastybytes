@@ -7,7 +7,7 @@ public struct CustomRelativeTimeFormat: FormatStyle {
         let minuteAgo = Calendar.current.date(byAdding: .minute, value: -1, to: now)
 
         if let minuteAgo, value > minuteAgo {
-            return String(localized: "Just now")
+            return String(localized: "customRelativeTimeFormat.justNow")
         }
         if let monthAgo, value < monthAgo {
             return value.formatted()

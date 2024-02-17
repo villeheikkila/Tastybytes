@@ -224,20 +224,20 @@ struct ProductMutationView: View {
 
     private var productSection: some View {
         Section {
-            ScanTextField(title: "Name", text: $name)
+            ScanTextField(title: "product.name.placeholder", text: $name)
                 .focused($focusedField, equals: .name)
-            ScanTextField(title: "Description (optional)", text: $description)
+            ScanTextField(title: "product.description.placeholder", text: $description)
                 .focused($focusedField, equals: .description)
 
             if mode.showBarcodeSection {
                 Button(
-                    barcode == nil ? "Add Barcode" : "Barcode Added!",
+                    barcode == nil ? "product.bracode.add.label" : "product.bracode.added.label",
                     action: { sheet = .barcodeScanner(onComplete: { barcode in
                         self.barcode = barcode
                     }) }
                 )
             }
-            Toggle("No longer in production", isOn: $isDiscontinued)
+            Toggle("product.isDiscontinued.label", isOn: $isDiscontinued)
         } header: {
             Text("product.title")
                 .accessibilityAddTraits(.isButton)
@@ -371,7 +371,7 @@ struct ProductMutationView: View {
 
         let diffFromCurrent = editSuggestion.diff(from: product)
         guard let diffFromCurrent else {
-            feedbackEnvironmentModel.toggle(.warning("There is nothing to edit"))
+            feedbackEnvironmentModel.toggle(.warning("product.editSuggestion.nothingToEdit.toast"))
             return
         }
 
@@ -380,14 +380,11 @@ struct ProductMutationView: View {
         {
         case .success:
             dismiss()
-            feedbackEnvironmentModel.toggle(.success("Edit suggestion sent!"))
+            feedbackEnvironmentModel.toggle(.success("product.editSuggestion.success.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger
-                .error(
-                    "Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))"
-                )
+            logger.error("Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 

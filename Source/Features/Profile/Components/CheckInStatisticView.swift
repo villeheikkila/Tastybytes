@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct CheckInStatisticView: View {
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     let onTap: () -> Void
 
     var body: some View {

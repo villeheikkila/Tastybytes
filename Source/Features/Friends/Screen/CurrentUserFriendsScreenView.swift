@@ -85,7 +85,7 @@ struct CurrentUserFriendsScreen: View {
                         action: { friendToBeRemoved = friend }
                     )
                     ProgressButton(
-                        "friends.actions.block.label",
+                        "friends.block.label",
                         systemImage: "person.2.slash",
                         action: {
                             await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
@@ -101,7 +101,7 @@ struct CurrentUserFriendsScreen: View {
                     action: { friendToBeRemoved = friend }
                 )
                 ProgressButton(
-                    "friends.actions.block.label",
+                    "friends.block.label",
                     systemImage: "person.2.slash",
                     action: {
                         await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .blocked)
@@ -138,17 +138,13 @@ struct CurrentUserFriendsScreen: View {
                 toolbarContent
             }
             .sheets(item: $sheet)
-            .confirmationDialog(
-                """
-                Remove user from your friends, you will no longer be able to see each other's check-ins on your
-                activity feed nor be able to tag each other check-ins
-                """,
+            .confirmationDialog("friend.delete.confirmation.title",
                 isPresented: $showRemoveFriendConfirmation,
                 titleVisibility: .visible,
                 presenting: friendToBeRemoved
             ) { presenting in
                 ProgressButton(
-                    "Remove \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName) from friends",
+                    "friend.delete.confirmation.label \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName)",
                     role: .destructive,
                     action: {
                         await friendEnvironmentModel.removeFriendRequest(presenting)
@@ -173,11 +169,11 @@ struct CurrentUserFriendsScreen: View {
             .popoverTip(NameTagTip())
 
             Button(
-                "friends.actions.add.label", systemImage: "plus",
+                "friends.add.label", systemImage: "plus",
                 action: { sheet = .userSheet(
                     mode: .add,
                     onSubmit: {
-                        feedbackEnvironmentModel.toggle(.success("friends.actions.add.success"))
+                        feedbackEnvironmentModel.toggle(.success("friends.add.success"))
                     }
                 ) }
             )

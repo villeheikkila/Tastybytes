@@ -16,7 +16,7 @@ public struct CheckInShareLinkView: View {
     }
 
     private var title: String {
-        "\(checkIn.profile.preferredName) had \(checkIn.product.formatted(.fullName))"
+        "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))"
     }
 
     public var body: some View {

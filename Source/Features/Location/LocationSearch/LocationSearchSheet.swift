@@ -60,7 +60,7 @@ struct LocationSearchSheet: View {
                 }
             }
             if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty, !hasSearched {
-                Section("location.near-by") {
+                Section("location.nearBy") {
                     ForEach(nearbyLocations) { location in
                         LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                     }

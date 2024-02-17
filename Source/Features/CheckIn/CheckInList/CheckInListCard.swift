@@ -78,14 +78,14 @@ struct CheckInListCard: View {
                 )
                 if let location = checkIn.location {
                     RouterLink(
-                        "Open Location",
+                        "location.open",
                         systemImage: "network",
                         screen: .location(location)
                     )
                 }
                 if let purchaseLocation = checkIn.purchaseLocation {
                     RouterLink(
-                        "Open Purchase Location",
+                        "location.open.purchaseLocation",
                         systemImage: "network",
                         screen: .location(purchaseLocation)
                     )
@@ -94,7 +94,7 @@ struct CheckInListCard: View {
             }
             .sheets(item: $sheet)
             .confirmationDialog(
-                "check-in.delete-confirmation.title",
+                "checkIn.deleteConfirmation.title",
                 isPresented: $showDeleteCheckInConfirmationDialog,
                 titleVisibility: .visible,
                 presenting: showDeleteConfirmationFor

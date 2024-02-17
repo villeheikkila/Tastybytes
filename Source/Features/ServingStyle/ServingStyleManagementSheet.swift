@@ -45,7 +45,7 @@ struct ServingStyleManagementSheet: View {
                             Text(servingStyle.label)
                             Spacer()
                             if pickedServingStyles.contains(servingStyle) {
-                                Label("Picked serving style", systemImage: "checkmark")
+                                Label("servingStyle.selected.label", systemImage: "checkmark")
                                     .labelStyle(.iconOnly)
                             }
                         }
@@ -62,23 +62,23 @@ struct ServingStyleManagementSheet: View {
                     )
                 }
             }
-            Section("Add new serving style") {
-                TextField("Name", text: $newServingStyleName)
-                ProgressButton("Create") {
+            Section("servingStyle.name.add.title") {
+                TextField("servingStyle.name.placeholder", text: $newServingStyleName)
+                ProgressButton("labels.create") {
                     await createServingStyle()
                 }
                 .disabled(!newServingStyleName.isValidLength(.normal))
             }
         }
-        .navigationBarTitle("Pick Serving Style")
+        .navigationBarTitle("servingStyle.picker.navigationTitle")
         .toolbar {
             toolbarContent
         }
         .alert(
-            "Edit Serving Style", isPresented: $showEditServingStyle,
+            "servingStyle.name.edit.title", isPresented: $showEditServingStyle,
             actions: {
-                TextField("Name of the serving style", text: $servingStyleName)
-                Button("actions.cancel", role: .cancel, action: {})
+                TextField("servingStyle.name.placeholder", text: $servingStyleName)
+                Button("labels.cancel", role: .cancel, action: {})
                 ProgressButton(
                     "labels.edit",
                     action: {
@@ -88,13 +88,13 @@ struct ServingStyleManagementSheet: View {
             }
         )
         .confirmationDialog(
-            "serving-style.delete-warning.title",
+            "servingStyle.deleteConfirmation.title",
             isPresented: $showDeleteServingStyleConfirmation,
             titleVisibility: .visible,
             presenting: toDeleteServingStyle
         ) { presenting in
             ProgressButton(
-                "Delete \(presenting.name)",
+                "servingStyle.deleteConfirmation.label \(presenting.name)",
                 role: .destructive,
                 action: { await deleteServingStyle(presenting) }
             )

@@ -23,7 +23,7 @@ struct ProfileHeaderAvatarSection: View {
         HStack(alignment: .center) {
             if showInFull {
                 Spacer()
-                CheckInStatisticView(title: "Check-ins", subtitle: profileSummary?.totalCheckIns.formatted() ?? "0") {
+                CheckInStatisticView(title: "profile.summary.total", subtitle: .init(stringLiteral: profileSummary?.totalCheckIns.formatted() ?? "0")) {
                     router.navigate(screen: .profileProducts(profile))
                 }
             }
@@ -32,7 +32,7 @@ struct ProfileHeaderAvatarSection: View {
                 Avatar(profile: profile, size: 90)
                     .contextMenu {
                         if let imageEntity = profile.avatars.first {
-                            ProgressButton("Delete avatar", role: .destructive) {
+                            ProgressButton("profile.avatar.delete.label", role: .destructive) {
                                 await deleteAvatar(entity: imageEntity)
                             }
                         }
@@ -55,7 +55,7 @@ struct ProfileHeaderAvatarSection: View {
             }
             Spacer()
             if showInFull {
-                CheckInStatisticView(title: "Unique", subtitle: profileSummary?.uniqueCheckIns.formatted() ?? "0") {
+                CheckInStatisticView(title: "profile.summary.unique", subtitle: .init(stringLiteral: profileSummary?.uniqueCheckIns.formatted() ?? "0")) {
                     router.navigate(screen: .profileProducts(profile))
                 }
                 Spacer()

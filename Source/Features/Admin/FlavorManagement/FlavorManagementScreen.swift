@@ -18,7 +18,7 @@ struct FlavorManagementScreen: View {
                 }
         }
         .listStyle(.insetGrouped)
-        .navigationBarTitle("Flavors")
+        .navigationBarTitle("flavor.navigationTitle")
         .toolbar {
             toolbarContent
         }
@@ -32,7 +32,7 @@ struct FlavorManagementScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
-            Button("Add flavors", systemImage: "plus", action: { sheet = .newFlavor(onSubmit: { newFlavor in
+            Button("flavor.add.labels", systemImage: "plus", action: { sheet = .newFlavor(onSubmit: { newFlavor in
                 await appEnvironmentModel.addFlavor(name: newFlavor)
             }) }).labelStyle(.iconOnly)
         }

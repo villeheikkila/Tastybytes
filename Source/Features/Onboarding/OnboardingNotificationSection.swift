@@ -20,8 +20,8 @@ struct OnboardingNotificationSection: View {
                                  },
                                  color: color,
                                  symbol: "bell.fill",
-                                 title: "Keep up to date!",
-                                 description: "To keep you updated and informed, we need access to send you notifications.")
+                                 title: "onboarding.notification.title",
+                                 description: "onboarding.notification.description")
             .background(
                 AppGradient(color: color),
                 alignment: .bottom

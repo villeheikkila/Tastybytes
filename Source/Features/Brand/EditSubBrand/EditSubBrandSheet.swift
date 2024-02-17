@@ -54,8 +54,8 @@ struct EditSubBrandSheet: View {
 
     var body: some View {
         Form {
-            Section("Name") {
-                TextField("Name of the sub-brand", text: $newSubBrandName)
+            Section("subBrand.name.title") {
+                TextField("subBrand.name.placeholder", text: $newSubBrandName)
                 ProgressButton("labels.edit") {
                     await editSubBrand(onSuccess: { @MainActor in
                         await onUpdate()
@@ -65,7 +65,7 @@ struct EditSubBrandSheet: View {
             }
 
             if !subBrandsToMergeTo.isEmpty {
-                Section("Merge to another sub-brand") {
+                Section("subBrand.mergeToAnotherSubBrand.title") {
                     ForEach(subBrandsToMergeTo) { subBrand in
                         if let name = subBrand.name {
                             Button(name, action: { mergeTo = subBrand })
@@ -75,14 +75,14 @@ struct EditSubBrandSheet: View {
             }
 
             if profileEnvironmentModel.hasRole(.admin) {
-                Section("Info") {
-                    LabeledContent("ID", value: "\(subBrand.id)")
+                Section("labels.info") {
+                    LabeledContent("labels.id", value: "\(subBrand.id)")
                         .textSelection(.enabled)
                     LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
                 }.headerProminence(.increased)
             }
         }
-        .navigationTitle("Edit \(subBrand.name.orEmpty)")
+        .navigationTitle("labels.edit \(subBrand.name.orEmpty)")
         .toolbar {
             toolbarContent
         }
@@ -94,7 +94,7 @@ struct EditSubBrandSheet: View {
             presenting: mergeTo
         ) { presenting in
             ProgressButton(
-                "subBrand.mergeTo.confirmation.label \(subBrand.name ?? "default sub-brand") \(presenting.name ?? "default sub-brand")",
+                "subBrand.mergeTo.confirmation.label \(subBrand.label) \(presenting.label)",
                 role: .destructive,
                 action: {
                     await mergeToSubBrand(subBrand: subBrand, onSuccess: {
@@ -121,10 +121,7 @@ struct EditSubBrandSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger
-                .error(
-                    "Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))"
-                )
+            logger.error("Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -133,12 +130,22 @@ struct EditSubBrandSheet: View {
             .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
         {
         case .success:
-            feedbackEnvironmentModel.toggle(.success("Sub-brand updated!"))
+            feedbackEnvironmentModel.toggle(.success("subBrand.updated.toast"))
             await onSuccess()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+extension SubBrandProtocol {
+    var label: LocalizedStringKey {
+        if let name {
+            LocalizedStringKey(stringLiteral: name)
+        } else {
+            "subBrand.defaultSubBrand.label"
         }
     }
 }

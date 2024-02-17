@@ -42,9 +42,9 @@ struct SubBrandSheet: View {
             }
 
             if profileEnvironmentModel.hasPermission(.canCreateBrands) {
-                Section("Add new sub-brand for \(brandWithSubBrands.name)") {
-                    ScanTextField(title: "Name", text: $subBrandName)
-                    ProgressButton("Create", action: { await createNewSubBrand() })
+                Section("subBrand.addSubBrandFor.title \(brandWithSubBrands.name)") {
+                    ScanTextField(title: "subBrand.name.placeholder", text: $subBrandName)
+                    ProgressButton("labels.create", action: { await createNewSubBrand() })
                         .disabled(!subBrandName.isValidLength(.normal))
                 }
             }
@@ -56,7 +56,7 @@ struct SubBrandSheet: View {
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
         .alertError($alertError)
-        .navigationTitle("subBrands.navigationTitle")
+        .navigationTitle("subBrand.navigationTitle")
         .toolbar {
             toolbarContent
         }
@@ -71,7 +71,7 @@ struct SubBrandSheet: View {
             .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
         {
         case let .success(newSubBrand):
-            feedbackEnvironmentModel.toggle(.success("New Sub-brand Created!"))
+            feedbackEnvironmentModel.toggle(.success("subBrand.create.success.toast"))
             subBrand = newSubBrand
             dismiss()
         case let .failure(error):

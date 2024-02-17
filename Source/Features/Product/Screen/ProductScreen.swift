@@ -276,7 +276,7 @@ struct ProductScreen: View {
     func addBarcodeToProduct(_ barcode: Barcode) async {
         switch await repository.productBarcode.addToProduct(product: product, barcode: barcode) {
         case .success:
-            feedbackEnvironmentModel.toggle(.success("Barcode added!"))
+            feedbackEnvironmentModel.toggle(.success("bracode.add.success.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

@@ -38,8 +38,8 @@ struct EditBrandSheet: View {
 
     var body: some View {
         Form {
-            Section("Name") {
-                TextField("Name of the brand", text: $name)
+            Section("brand.edit.name.title") {
+                TextField("brand.edit.name.placeholder", text: $name)
                 ProgressButton("labels.edit") {
                     await editBrand {
                         await onUpdate()
@@ -47,11 +47,11 @@ struct EditBrandSheet: View {
                 }.disabled(!name.isValidLength(.normal) || brand.name == name)
             }.headerProminence(.increased)
 
-            Section("Owner") {
+            Section("brand.edit.brandOwner.title") {
                 RouterLink(brandOwner.name, sheet: .companySearch(onSelect: { company in
                     brandOwner = company
                 }))
-                ProgressButton("Change brand owner") {
+                ProgressButton("brand.edit.brandOwner.label") {
                     await editBrand {
                         await onUpdate()
                     }
@@ -65,14 +65,14 @@ struct EditBrandSheet: View {
             })
 
             if profileEnvironmentModel.hasRole(.admin) {
-                Section("Info") {
-                    LabeledContent("ID", value: "\(brand.id)")
+                Section("labels.info") {
+                    LabeledContent("labels.id", value: "\(brand.id)")
                         .textSelection(.enabled)
                     LabeledContent("verification.verified.label", value: "\(brand.isVerified)".capitalized)
                 }.headerProminence(.increased)
             }
         }
-        .navigationTitle("Edit Brand")
+        .navigationTitle("brand.edit.navigationTitle")
         .toolbar {
             toolbarContent
         }
@@ -94,7 +94,7 @@ struct EditBrandSheet: View {
     func editBrand(onSuccess: @escaping () async -> Void) async {
         switch await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id)) {
         case let .success(brand):
-            feedbackEnvironmentModel.toggle(.success("Brand updated!"))
+            feedbackEnvironmentModel.toggle(.success("brand.edit.success.toast"))
             self.brand = brand
             await onSuccess()
         case let .failure(error):
@@ -165,7 +165,7 @@ struct EditLogoSection: View {
             }
         } header: {
             HStack {
-                Text("Logos")
+                Text("logos.edit.title")
                 Spacer()
                 if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
                     PhotosPicker(
@@ -173,7 +173,7 @@ struct EditLogoSection: View {
                         matching: .images,
                         photoLibrary: .shared()
                     ) {
-                        Label("Add", systemImage: "plus")
+                        Label("labels.add", systemImage: "plus")
                             .labelStyle(.iconOnly)
                     }
                 }

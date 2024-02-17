@@ -26,7 +26,7 @@ struct ProductLogoSheet: View {
 
     var body: some View {
         Form {
-            Section("Select Logo") {
+            Section("product.logo.section.title") {
                 PhotosPicker(
                     selection: $selectedLogo,
                     matching: .images,

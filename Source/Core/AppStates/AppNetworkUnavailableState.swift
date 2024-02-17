@@ -5,7 +5,7 @@ import SwiftUI
 struct AppNetworkUnavailableState: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     var body: some View {
-        ContentUnavailableView("Please check your network connection and try again.", systemImage: "wifi.slash")
+        ContentUnavailableView("app.networkUnavailable.description", systemImage: "wifi.slash")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(alignment: .bottom) {
                 Button(action: {

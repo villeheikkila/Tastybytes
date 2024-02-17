@@ -44,9 +44,9 @@ struct BrandSheet: View {
             }
 
             if profileEnvironmentModel.hasPermission(.canCreateBrands) {
-                Section("Add new brand for \(brandOwner.name)") {
-                    ScanTextField(title: "Name", text: $brandName)
-                    ProgressButton("Create", action: { await createNewBrand() })
+                Section("brand.addBrandForCompany.title \(brandOwner.name)") {
+                    ScanTextField(title: "brand.name.placeholder", text: $brandName)
+                    ProgressButton("labels.create", action: { await createNewBrand() })
                         .disabled(!brandName.isValidLength(.normal))
                 }
             }
@@ -57,7 +57,7 @@ struct BrandSheet: View {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
-        .navigationTitle("\(mode == .select ? "Select" : "Add") brand")
+        .navigationTitle(mode.navigationTitle)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .toolbar {
             toolbarContent
@@ -86,7 +86,7 @@ struct BrandSheet: View {
     func createNewBrand() async {
         switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
         case let .success(brandWithSubBrands):
-            feedbackEnvironmentModel.toggle(.success("New Brand Created!"))
+            feedbackEnvironmentModel.toggle(.success("brand.created.toast"))
             if mode == .new {
                 router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
             }
@@ -103,5 +103,14 @@ struct BrandSheet: View {
 extension BrandSheet {
     enum Mode: Sendable {
         case select, new
+        
+        var navigationTitle: LocalizedStringKey {
+            switch self {
+            case .new:
+                "brand.add.navigationTitle"
+            case .select:
+                "brand.select.navigationTitle"
+            }
+        }
     }
 }

@@ -32,7 +32,7 @@ struct BlockedUsersScreen: View {
             }
             .opacity(friendEnvironmentModel.blockedUsers.isEmpty ? 1 : 0)
         }
-        .navigationTitle("blockedUsers.title")
+        .navigationTitle("blockedUsers.navigationTitle")
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

@@ -16,7 +16,7 @@ struct BarcodeScannerSheet: View {
         VStack {
             if showBarcodeTextField {
                 Form {
-                    TextField("barcode.scanner.input.placeholder", text: $barcodeInput)
+                    TextField("barcode.scanner.textInput.placeholder", text: $barcodeInput)
                         .keyboardType(.decimalPad)
                     Button("labels.submit", action: {
                         onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13.rawValue))
@@ -42,11 +42,11 @@ struct BarcodeScannerSheet: View {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .topBarTrailing) {
             Group {
-                Button(showBarcodeTextField ? "Show scanner" : "Add barcode manually",
+                Button(showBarcodeTextField ? "barcode.scanner.showScanner.label" : "barcode.scanner.textInput.label",
                        systemImage: showBarcodeTextField ? "barcode.viewfinder" : "character.cursor.ibeam",
                        action: { withAnimation { showBarcodeTextField.toggle() } })
 
-                Button("Turn the torch \(isTorchOn ? "off" : "on")",
+                Button(isTorchOn ? "torch.off.label" : "torch.on.label",
                        systemImage: isTorchOn ? "flashlight.on.fill" : "flashlight.off.fill",
                        action: { withAnimation { isTorchOn.toggle() } })
             }

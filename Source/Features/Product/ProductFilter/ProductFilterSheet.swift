@@ -91,7 +91,7 @@ struct ProductFilterSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .confirmationAction) {
-            Button("actions.apply", action: {
+            Button("labels.apply", action: {
                 onApply(getFilter())
                 dismiss()
             }).bold()

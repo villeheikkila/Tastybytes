@@ -31,7 +31,7 @@ struct EditCompanySheet: View {
     var body: some View {
         Form {
             Section(mode.nameSectionHeader) {
-                TextField("Name of the company", text: $newCompanyName)
+                TextField("company.edit.name.placeholder", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
                     await submit(onSuccess: { @MainActor in
                         dismiss()
@@ -49,8 +49,8 @@ struct EditCompanySheet: View {
             })
 
             if profileEnvironmentModel.hasRole(.admin) {
-                Section("Info") {
-                    LabeledContent("ID", value: "\(company.id)")
+                Section("labels.info") {
+                    LabeledContent("labels.id", value: "\(company.id)")
                         .textSelection(.enabled)
                     LabeledContent("verification.verified.label", value: "\(company.isVerified)".capitalized)
                 }.headerProminence(.increased)
@@ -78,7 +78,7 @@ struct EditCompanySheet: View {
     @MainActor
     @ViewBuilder var companyPhotoSection: some View {
         if profileEnvironmentModel.hasPermission(.canAddCompanyLogo) {
-            Section("Logo") {
+            Section("company.logo.title") {
                 PhotosPicker(
                     selection: $selectedLogo,
                     matching: .images,

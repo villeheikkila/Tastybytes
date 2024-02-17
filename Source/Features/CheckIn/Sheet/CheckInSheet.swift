@@ -223,7 +223,7 @@ struct CheckInSheet: View {
                 }
             )
             Button(
-                "\(editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) == nil && image == nil ? "checkIn.image.actions.add" : "checkIn.image.actions.change")",
+                "\(editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) == nil && image == nil ? "checkIn.image.add" : "checkIn.image.change")",
                 systemImage: "photo", action: { showPhotoMenu.toggle() }
             )
         }
@@ -300,7 +300,7 @@ struct CheckInSheet: View {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(
-                action == .create ? "checkIn.actions.create" : "checkIn.actions.update",
+                action == .create ? "checkIn.create.label" : "checkIn.update.label",
                 action: {
                     switch action {
                     case .create:

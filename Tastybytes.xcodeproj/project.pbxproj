@@ -184,7 +184,6 @@
 		5CA4AC4D2B586FDF00E17629 /* BarcodeManagementRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */; };
 		5CA4AC4F2B5870BB00E17629 /* BarcodeManagementContentUnavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4E2B5870BB00E17629 /* BarcodeManagementContentUnavailable.swift */; };
 		5CA4AC512B58F5D300E17629 /* PickerLinkRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC502B58F5D300E17629 /* PickerLinkRow.swift */; };
-		5CAADEEB2B59C21200D956C1 /* ProductMutationCategorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAADEEA2B59C21200D956C1 /* ProductMutationCategorySection.swift */; };
 		5CAADEF42B5C235D00D956C1 /* CompanyLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAADEF32B5C235D00D956C1 /* CompanyLogo.swift */; };
 		5CAADEF62B5C23C700D956C1 /* CompanyRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAADEF52B5C23C700D956C1 /* CompanyRow.swift */; };
 		5CAADEF82B5C45B800D956C1 /* DiscoverCompanyResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAADEF72B5C45B800D956C1 /* DiscoverCompanyResults.swift */; };
@@ -415,7 +414,6 @@
 		5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementRow.swift; sourceTree = "<group>"; };
 		5CA4AC4E2B5870BB00E17629 /* BarcodeManagementContentUnavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementContentUnavailable.swift; sourceTree = "<group>"; };
 		5CA4AC502B58F5D300E17629 /* PickerLinkRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLinkRow.swift; sourceTree = "<group>"; };
-		5CAADEEA2B59C21200D956C1 /* ProductMutationCategorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductMutationCategorySection.swift; sourceTree = "<group>"; };
 		5CAADEF32B5C235D00D956C1 /* CompanyLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyLogo.swift; sourceTree = "<group>"; };
 		5CAADEF52B5C23C700D956C1 /* CompanyRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyRow.swift; sourceTree = "<group>"; };
 		5CAADEF72B5C45B800D956C1 /* DiscoverCompanyResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverCompanyResults.swift; sourceTree = "<group>"; };
@@ -1229,7 +1227,6 @@
 			children = (
 				5C9057CC2B2894BE00EC157B /* ProductMutationView.swift */,
 				5CA4AC502B58F5D300E17629 /* PickerLinkRow.swift */,
-				5CAADEEA2B59C21200D956C1 /* ProductMutationCategorySection.swift */,
 			);
 			path = Mutation;
 			sourceTree = "<group>";
@@ -1533,7 +1530,6 @@
 				5C9058032B2894BE00EC157B /* EditSubcategorySheet.swift in Sources */,
 				5C90585E2B2894BE00EC157B /* App.swift in Sources */,
 				5C24E1D12B5DADD4003AB7C8 /* BrandSheetRow.swift in Sources */,
-				5CAADEEB2B59C21200D956C1 /* ProductMutationCategorySection.swift in Sources */,
 				5C90582C2B2894BE00EC157B /* Screen.swift in Sources */,
 				5C9058142B2894BE00EC157B /* SettingsScreen.swift in Sources */,
 				5C9058262B2894BE00EC157B /* CheckInCommentNotificationView.swift in Sources */,

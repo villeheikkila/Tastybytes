@@ -96,7 +96,7 @@ struct LocationScreen: View {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canMergeLocations) {
                             Button(action: { sheet = .mergeLocationSheet(location: location) }, label: {
-                                Label("Merge to...", systemImage: "doc.on.doc")
+                                Label("location.mergeTo.label", systemImage: "doc.on.doc")
                             })
                         }
                         if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
@@ -108,7 +108,7 @@ struct LocationScreen: View {
                             )
                         }
                     } label: {
-                        Label("Admin", systemImage: "gear")
+                        Label("labels.admin", systemImage: "gear")
                             .labelStyle(.iconOnly)
                     }
                 }

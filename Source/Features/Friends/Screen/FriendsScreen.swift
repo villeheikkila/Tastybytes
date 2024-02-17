@@ -74,7 +74,7 @@ struct FriendsScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
                 ProgressButton(
-                    "friends.actions.add.label",
+                    "friends.add.label",
                     systemImage: "person.fill.badge.plus",
                     action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
                 )

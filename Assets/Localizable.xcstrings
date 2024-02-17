@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "(%@" : {
-
-    },
     "(%@)" : {
 
     },
@@ -33,48 +30,6 @@
         }
       }
     },
-    "%@ app icon" : {
-
-    },
-    "%@ brand" : {
-
-    },
-    "%@ commented on your check-in of %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ commented on your check-in of %2$@"
-          }
-        }
-      }
-    },
-    "%@ sent you a friend request!" : {
-
-    },
-    "%@ sub-brand from %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ sub-brand from %2$@"
-          }
-        }
-      }
-    },
-    "%@ tagged you in a check-in of %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ tagged you in a check-in of %2$@"
-          }
-        }
-      }
-    },
-    "%@,you can assign the barcode to a product by searching again with the name or by creating a new product." : {
-
-    },
     "%@: %@" : {
       "localizations" : {
         "en" : {
@@ -95,7 +50,7 @@
         }
       }
     },
-    "About" : {
+    "about.navigationTitle" : {
 
     },
     "about.rateApp.label %@" : {
@@ -110,22 +65,28 @@
     "about.title" : {
 
     },
-    "account.delete-confirmation.title" : {
+    "account.delete.confirmationDialog.title" : {
 
     },
-    "account.title" : {
+    "account.delete.label" : {
 
     },
-    "actions.apply" : {
+    "account.email.placeholder" : {
 
     },
-    "actions.cancel" : {
+    "account.email.section.footer" : {
 
     },
-    "actions.delete" : {
+    "account.email.section.title" : {
 
     },
-    "actions.reload" : {
+    "account.export.success.toast" : {
+
+    },
+    "account.feedback.sent.toast" : {
+
+    },
+    "account.navigationTitle" : {
 
     },
     "activity.error.failedToLoad" : {
@@ -134,49 +95,16 @@
     "activity.navigationTitle" : {
 
     },
-    "Add" : {
-
-    },
-    "Add Barcode" : {
-
-    },
-    "Add barcode confirmation" : {
-
-    },
-    "Add barcode manually" : {
-
-    },
-    "Add flavors" : {
-
-    },
-    "Add new brand for %@" : {
-
-    },
-    "Add new company" : {
-
-    },
-    "Add new serving style" : {
-
-    },
-    "Add new sub-brand for %@" : {
-
-    },
-    "Add Product" : {
-
-    },
-    "Add Serving Style" : {
-
-    },
-    "Add subcategory" : {
-
-    },
-    "Admin" : {
-
-    },
     "admin.menuSection.title" : {
 
     },
     "admin.navigationTitle" : {
+
+    },
+    "app.error.unexpected.title" : {
+
+    },
+    "app.networkUnavailable.description" : {
 
     },
     "app.unsupportedVersion.description" : {
@@ -188,11 +116,30 @@
     "app.unsupportedVersion.title" : {
 
     },
-    "Barcode added!" : {
+    "appIcon.cola" : {
 
     },
-    "Barcode Added!" : {
+    "appIcon.energyDrink" : {
 
+    },
+    "appIcon.juice" : {
+
+    },
+    "appIcon.kombucha" : {
+
+    },
+    "appIcon.ramune" : {
+
+    },
+    "authentication.welcomeAndPrivacyPolicy %@ [Privacy Policy](%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "authentication.welcomeAndPrivacyPolicy %1$@ [Privacy Policy](%2$@)"
+          }
+        }
+      }
     },
     "barcode.management.navigationTitle" : {
 
@@ -200,10 +147,16 @@
     "barcode.management.open" : {
 
     },
-    "barcode.scanner.input.placeholder" : {
+    "barcode.scanner.navigationTitle" : {
 
     },
-    "barcode.scanner.navigationTitle" : {
+    "barcode.scanner.showScanner.label" : {
+
+    },
+    "barcode.scanner.textInput.label" : {
+
+    },
+    "barcode.scanner.textInput.placeholder" : {
 
     },
     "barcode.title" : {
@@ -221,19 +174,55 @@
     "blockedUsers.empty.title" : {
 
     },
-    "blockedUsers.title" : {
+    "blockedUsers.navigationTitle" : {
 
     },
-    "Brand updated!" : {
+    "bracode.add.success.toast" : {
 
     },
-    "brand.actions.delete.disclaimer" : {
+    "brand.add.navigationTitle" : {
 
     },
-    "brand.actions.unverify" : {
+    "brand.addBrandForCompany.title %@" : {
+
+    },
+    "brand.addProduct.menu.label" : {
+
+    },
+    "brand.created.toast" : {
+
+    },
+    "brand.createProduct.label" : {
+
+    },
+    "brand.delete.disclaimer" : {
+
+    },
+    "brand.edit.brandOwner.title" : {
+
+    },
+    "brand.edit.name.placeholder" : {
+
+    },
+    "brand.edit.name.title" : {
+
+    },
+    "brand.edit.navigationTitle" : {
+
+    },
+    "brand.edit.success.toast" : {
+
+    },
+    "brand.product.groupBy.label" : {
+
+    },
+    "brand.select.navigationTitle" : {
 
     },
     "brand.title" : {
+
+    },
+    "brand.unverify.confirmation.title" : {
 
     },
     "brandScreen.groupProductsBy" : {
@@ -257,25 +246,19 @@
     "category.title" : {
 
     },
-    "Check-in Locations" : {
-
-    },
-    "check-in.delete-confirmation.title" : {
-
-    },
-    "Check-ins" : {
-
-    },
-    "check-ins.empty-content" : {
-
-    },
-    "Checked-in" : {
-
-    },
     "checkIn.action.createNew" : {
 
     },
     "checkIn.add.label" : {
+
+    },
+    "checkIn.addBarcode.confirmation.title" : {
+
+    },
+    "checkIn.addBarcode.success.toast" : {
+
+    },
+    "checkIn.checkedIn.label" : {
 
     },
     "checkIn.create.label" : {
@@ -303,6 +286,9 @@
 
     },
     "checkIn.delete.confirmation.title" : {
+
+    },
+    "checkIn.deleteConfirmation.title" : {
 
     },
     "checkIn.filter.onlyNotHad" : {
@@ -351,6 +337,9 @@
     "checkIn.rating.label" : {
 
     },
+    "checkIn.reaction.react.label" : {
+
+    },
     "checkIn.review.label" : {
 
     },
@@ -366,13 +355,22 @@
     "checkIn.segment.everyone" : {
 
     },
+    "checkIn.segment.everyone.emptyContent.title" : {
+
+    },
     "checkIn.segment.friends" : {
+
+    },
+    "checkIn.segment.friends.emptyContent.title" : {
 
     },
     "checkIn.segment.picker.title" : {
 
     },
     "checkIn.segment.you" : {
+
+    },
+    "checkIn.segment.you.emptyContent.title" : {
 
     },
     "checkIn.shareLink.subject" : {
@@ -390,6 +388,9 @@
     "checkIn.title" : {
 
     },
+    "checkInList.error.failedToLoad.description" : {
+
+    },
     "comment.deleteAsModerator.confirmation.description" : {
 
     },
@@ -399,10 +400,28 @@
     "comment.edit.placeholder" : {
 
     },
+    "comment.textField.placeholder" : {
+
+    },
     "company.create.label" : {
 
     },
+    "company.create.notFound.section.title" : {
+
+    },
+    "company.create.section.title" : {
+
+    },
+    "company.create.success.toast" : {
+
+    },
+    "company.delete.confirmationDialog.title" : {
+
+    },
     "company.edit.label" : {
+
+    },
+    "company.edit.name.placeholder" : {
 
     },
     "company.edit.section.name.title" : {
@@ -420,7 +439,13 @@
     "company.editSuggestion.title" : {
 
     },
+    "company.logo.title" : {
+
+    },
     "company.search.navigationTitle" : {
+
+    },
+    "company.search.noResults.title" : {
 
     },
     "company.shareLink.subject" : {
@@ -429,19 +454,13 @@
     "company.title" : {
 
     },
+    "company.unverify.confirmationDialog.title" : {
+
+    },
     "company.update.success.toast" : {
 
     },
     "contributions.title" : {
-
-    },
-    "Data was exported as CSV" : {
-
-    },
-    "Delete Account" : {
-
-    },
-    "Delete Company Confirmation" : {
 
     },
     "deleteAccount.success.done.label" : {
@@ -453,10 +472,16 @@
     "deleteAccount.success.welcomeBack" : {
 
     },
-    "Didn't find the company you were looking for?" : {
+    "discover.barcode.dismiss.label" : {
+
+    },
+    "discover.barcode.noResults.description" : {
 
     },
     "discover.barcode.notFound.title" : {
+
+    },
+    "discover.barcode.results.description" : {
 
     },
     "discover.barcode.scan" : {
@@ -519,9 +544,6 @@
     "discover.users.prompt" : {
 
     },
-    "Dismiss barcode" : {
-
-    },
     "duplicateProduct.markAsDuplicate.navigationTitle" : {
 
     },
@@ -537,31 +559,16 @@
     "duplicateProducts.screen.title" : {
 
     },
-    "Edit %@" : {
-
-    },
-    "Edit Brand" : {
-
-    },
-    "Edit Serving Style" : {
-
-    },
-    "Edit suggestion sent!" : {
-
-    },
-    "Email" : {
-
-    },
-    "Email is only used for login and is not shown for other users." : {
-
-    },
     "error.screen.title" : {
 
     },
-    "Feed couldn't be loaded" : {
+    "Feeds" : {
 
     },
-    "Feeds" : {
+    "flavor.add.labels" : {
+
+    },
+    "flavor.add.maxAmountReached.toast %lld" : {
 
     },
     "flavor.add.navigationTitle" : {
@@ -573,10 +580,10 @@
     "flavor.navigationTitle" : {
 
     },
-    "Flavors" : {
+    "flavors.label" : {
 
     },
-    "flavors.label" : {
+    "friend.delete.confirmation.title" : {
 
     },
     "friend.status.accepted" : {
@@ -588,9 +595,6 @@
     "friend.status.pending" : {
 
     },
-    "Friends" : {
-
-    },
     "friends.accept-request.label" : {
 
     },
@@ -600,10 +604,10 @@
     "friends.action.removeFriendRequest.label" : {
 
     },
-    "friends.actions.add.label" : {
+    "friends.add.label" : {
 
     },
-    "friends.actions.add.success" : {
+    "friends.add.success" : {
 
     },
     "friends.contentUnavailable.noFriends" : {
@@ -618,19 +622,13 @@
     "friends.toolbar.showNameTag" : {
 
     },
-    "Group Products By" : {
-
-    },
-    "ID" : {
-
-    },
-    "Info" : {
-
-    },
-    "Keep up to date!" : {
-
-    },
     "labels.add" : {
+
+    },
+    "labels.admin" : {
+
+    },
+    "labels.apply" : {
 
     },
     "labels.cancel" : {
@@ -654,10 +652,25 @@
     "labels.edit" : {
 
     },
+    "labels.edit %@" : {
+
+    },
+    "labels.id" : {
+
+    },
+    "labels.info" : {
+
+    },
     "labels.menu" : {
 
     },
+    "labels.moderation" : {
+
+    },
     "labels.none" : {
+
+    },
+    "labels.reload" : {
 
     },
     "labels.selectAll" : {
@@ -684,9 +697,6 @@
     "labels.unverified" : {
 
     },
-    "Leave a comment!" : {
-
-    },
     "links.gitHub" : {
 
     },
@@ -702,13 +712,16 @@
     "location.merge.confirmation.description" : {
 
     },
+    "location.mergeTo.label" : {
+
+    },
     "location.mergeTo.navigationTitle." : {
 
     },
     "location.mergeTo.search.placeholder" : {
 
     },
-    "location.near-by" : {
+    "location.nearBy" : {
 
     },
     "location.recent" : {
@@ -717,43 +730,13 @@
     "location.shareLink.subject" : {
 
     },
-    "Logo" : {
-
-    },
-    "Logos" : {
-
-    },
-    "Mark as Duplicate" : {
-
-    },
-    "Merge to another sub-brand" : {
-
-    },
-    "Merge to..." : {
-
-    },
-    "Moderation" : {
+    "logos.edit.title" : {
 
     },
     "moderation.deleteAsModerator.label" : {
 
     },
     "moderation.section.title" : {
-
-    },
-    "Name" : {
-
-    },
-    "Name of the brand" : {
-
-    },
-    "Name of the company" : {
-
-    },
-    "Name of the serving style" : {
-
-    },
-    "Name of the sub-brand" : {
 
     },
     "nameTag.navigationTitle" : {
@@ -765,40 +748,45 @@
     "nameTag.show.label" : {
 
     },
-    "New Brand Created!" : {
+    "notification.checkInComment.userCommentedOnYourCheckIn %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "notification.checkInComment.userCommentedOnYourCheckIn %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "notification.checkInComments.empty.title" : {
 
     },
-    "New Company Created!" : {
+    "notification.checkInReactions.empty.title" : {
 
     },
-    "New Sub-brand Created!" : {
+    "notification.checkInTags.empty.title" : {
 
     },
-    "No check-in comment notifications" : {
+    "notification.friendRequests.empty.title" : {
 
     },
-    "No check-in reaction notifications" : {
+    "notification.messages.empty.title" : {
 
     },
-    "No check-in tag notifications" : {
-
-    },
-    "No check-ins from friends" : {
-
-    },
-    "No companies found with the searched name." : {
-
-    },
-    "No friend request notifications" : {
-
-    },
-    "No longer in production" : {
-
-    },
-    "No messages" : {
-
+    "notification.taggedCheckIn.userTaggedYou %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "notification.taggedCheckIn.userTaggedYou %1$@ %2$@"
+          }
+        }
+      }
     },
     "notifications.empty.label" : {
+
+    },
+    "notifications.friendRequest.recievedFrom %@" : {
 
     },
     "notifications.navigationTitle" : {
@@ -846,25 +834,19 @@
     "onboarding.locationPermission.accessToLocation.title" : {
 
     },
+    "onboarding.notification.description" : {
+
+    },
+    "onboarding.notification.title" : {
+
+    },
     "onboarding.profile.title" : {
 
     },
-    "Owner" : {
+    "product.bracode.add.label" : {
 
     },
-    "Pick Serving Style" : {
-
-    },
-    "Picked serving style" : {
-
-    },
-    "Please check your network connection and try again." : {
-
-    },
-    "privacy.title" : {
-
-    },
-    "Product" : {
+    "product.bracode.added.label" : {
 
     },
     "product.createNew.description" : {
@@ -885,6 +867,12 @@
     "product.editSuggestion.label" : {
 
     },
+    "product.editSuggestion.nothingToEdit.toast" : {
+
+    },
+    "product.editSuggestion.success.toast" : {
+
+    },
     "product.filter.overlay.resetFilter" : {
 
     },
@@ -903,6 +891,9 @@
     "product.filter.title" : {
 
     },
+    "product.isDiscontinued.label" : {
+
+    },
     "product.loadedFromBarcode.backToSearch" : {
 
     },
@@ -910,6 +901,9 @@
 
     },
     "product.logo.navigationTitle" : {
+
+    },
+    "product.logo.section.title" : {
 
     },
     "product.markAsDuplicate.label" : {
@@ -942,9 +936,6 @@
     "product.unverify.confirmation.description" : {
 
     },
-    "Products" : {
-
-    },
     "products.title" : {
 
     },
@@ -952,6 +943,9 @@
 
     },
     "profile.linkedIn" : {
+
+    },
+    "profile.locations.navigationTitle" : {
 
     },
     "profile.nameTag.tip.description" : {
@@ -969,7 +963,40 @@
     "profile.shareLink.subject" : {
 
     },
+    "profile.summary.average" : {
+
+    },
+    "profile.summary.total" : {
+
+    },
+    "profile.summary.unique" : {
+
+    },
+    "profile.summary.unrated" : {
+
+    },
     "profile.title" : {
+
+    },
+    "profileProductList.filters.show.label" : {
+
+    },
+    "profileProductList.navigationTitle" : {
+
+    },
+    "profileProductList.navigationTitle (%@)" : {
+
+    },
+    "profileProductList.rated.navigationTitle %@" : {
+
+    },
+    "profileProductList.unrated.navigationTitle" : {
+
+    },
+    "profileStatistics.navigationTitle" : {
+
+    },
+    "rating.topEntries.label" : {
 
     },
     "ratingChart.rating.label" : {
@@ -982,15 +1009,6 @@
 
     },
     "ratingChart.value.label" : {
-
-    },
-    "React to check-in" : {
-
-    },
-    "Remove user from your friends, you will no longer be able to see each other's check-ins on your\nactivity feed nor be able to tag each other check-ins" : {
-
-    },
-    "Report submitted!" : {
 
     },
     "report.navigationTitle %@" : {
@@ -1008,19 +1026,44 @@
     "report.section.report.title" : {
 
     },
-    "Select Logo" : {
+    "report.subBrand %@ from %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "report.subBrand %1$@ from %2$@"
+          }
+        }
+      }
+    },
+    "report.submit.success.toast" : {
 
     },
-    "Selected" : {
+    "servingStyle.create.label" : {
 
     },
-    "Sent!" : {
+    "servingStyle.deleteConfirmation.title" : {
 
     },
-    "serving-style.delete-warning.title" : {
+    "servingStyle.deleteWarning.title" : {
 
     },
     "servingStyle.edit.menu.label" : {
+
+    },
+    "servingStyle.name.add.title" : {
+
+    },
+    "servingStyle.name.edit.title" : {
+
+    },
+    "servingStyle.name.placeholder" : {
+
+    },
+    "servingStyle.picker.navigationTitle" : {
+
+    },
+    "servingStyle.selected.label" : {
 
     },
     "servingStyle.title" : {
@@ -1029,16 +1072,7 @@
     "servingStyle.unselected" : {
 
     },
-    "Settings" : {
-
-    },
     "settings.account.delete.disclaimer" : {
-
-    },
-    "settings.account.title" : {
-
-    },
-    "settings.actions.signOut" : {
 
     },
     "settings.appearance.navigationTitle" : {
@@ -1051,6 +1085,9 @@
 
     },
     "settings.appearance.useSystemColorScheme.label" : {
+
+    },
+    "settings.appIcon.selected" : {
 
     },
     "settings.appIcon.title" : {
@@ -1092,37 +1129,52 @@
     "settings.profile.useFullName.label" : {
 
     },
-    "Show filters" : {
+    "settings.signOut" : {
 
     },
-    "Show scanner" : {
+    "subBrand.addSubBrandFor.title %@" : {
 
     },
-    "Statistics" : {
+    "subBrand.create.success.toast" : {
 
     },
-    "Sub-brand updated!" : {
+    "subBrand.defaultSubBrand.label" : {
 
     },
-    "subBrand.actions.delete.disclaimer" : {
-
-    },
-    "subBrand.actions.unverify" : {
+    "subBrand.delete.disclaimer" : {
 
     },
     "subBrand.mergeTo.confirmation.description" : {
 
     },
+    "subBrand.mergeToAnotherSubBrand.title" : {
+
+    },
+    "subBrand.name.placeholder" : {
+
+    },
+    "subBrand.name.title" : {
+
+    },
+    "subBrand.navigationTitle" : {
+
+    },
     "subBrand.title" : {
 
     },
-    "subBrands.navigationTitle" : {
+    "subBrand.unverify" : {
+
+    },
+    "subBrand.updated.toast" : {
 
     },
     "subcategory.add" : {
 
     },
     "subcategory.add.name" : {
+
+    },
+    "subcategory.add.openSheet.label" : {
 
     },
     "subcategory.addTo.category.navigationTitle %@" : {
@@ -1180,19 +1232,10 @@
     "tab.profile" : {
 
     },
-    "There is nothing to edit" : {
+    "torch.off.label" : {
 
     },
-    "To keep you updated and informed, we need access to send you notifications." : {
-
-    },
-    "Turn the torch %@" : {
-
-    },
-    "Unexpected error occured. Please try loading the app again later." : {
-
-    },
-    "Unverify Company" : {
+    "torch.on.label" : {
 
     },
     "user.search.navigationTitle" : {
@@ -1201,29 +1244,10 @@
     "verification.verified.label" : {
 
     },
-    "Welcome to %@! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](%@)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Welcome to %1$@! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](%2$@)"
-          }
-        }
-      }
-    },
-    "Wishlist" : {
-
-    },
     "wishlist.empty.title" : {
 
     },
     "wishlist.navigationTitle" : {
-
-    },
-    "You can only add %lld flavors" : {
-
-    },
-    "You haven't check-in yet" : {
 
     }
   },

@@ -67,20 +67,20 @@ struct CompanyScreen: View {
             .toolbar {
                 toolbarContent
             }
-            .confirmationDialog("Unverify Company",
+            .confirmationDialog("company.unverify.confirmationDialog.title",
                                 isPresented: $showUnverifyCompanyConfirmation,
                                 presenting: company)
         { presenting in
-            ProgressButton("Unverify \(presenting.name) company", action: {
+            ProgressButton("company.unverify.confirmationDialog.label \(presenting.name)", action: {
                 await verifyCompany(isVerified: false)
             })
         }
         .alertError($alertError)
-        .confirmationDialog("Delete Company Confirmation",
+        .confirmationDialog("company.delete.confirmationDialog.title",
                             isPresented: $showDeleteCompanyConfirmationDialog,
                             presenting: company)
         { presenting in
-            ProgressButton("Delete \(presenting.name) Company", role: .destructive, action: {
+            ProgressButton("company.delete.confirmationDialog.label \(presenting.name)", role: .destructive, action: {
                 await deleteCompany(presenting)
             })
         }

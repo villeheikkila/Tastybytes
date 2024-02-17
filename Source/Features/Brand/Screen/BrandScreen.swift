@@ -124,12 +124,12 @@ struct BrandScreen: View {
                     toolbarContent
                 }
                 .confirmationDialog(
-                    "subBrand.actions.unverify",
+                    "subBrand.unverify",
                     isPresented: $showSubBrandUnverificationConfirmation,
                     presenting: toUnverifySubBrand
                 ) { presenting in
                     ProgressButton(
-                        "subBrand.actions.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
+                        "subBrand.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
                         action: {
                             await verifySubBrand(presenting, isVerified: false)
                         }
@@ -137,12 +137,12 @@ struct BrandScreen: View {
                 }
                 .alertError($alertError)
                 .confirmationDialog(
-                    "brand.actions.unverify",
+                    "brand.unverify.confirmation.title",
                     isPresented: $showBrandUnverificationConfirmation,
                     presenting: brand
                 ) { presenting in
                     ProgressButton(
-                        "brand.actions.unverify.disclaimer \(presenting.name)",
+                        "brand.unverify.confirmation.label \(presenting.name)",
                         action: {
                             await verifyBrand(brand: presenting, isVerified: false)
                         }
@@ -163,7 +163,7 @@ struct BrandScreen: View {
                     .disabled(productGrouping == .category)
                 }
                 .confirmationDialog(
-                    "subBrand.actions.delete.disclaimer",
+                    "subBrand.delete.disclaimer",
                     isPresented: $showDeleteSubBrandConfirmation,
                     titleVisibility: .visible,
                     presenting: toDeleteSubBrand
@@ -177,13 +177,13 @@ struct BrandScreen: View {
                     )
                 }
                 .confirmationDialog(
-                    "brand.actions.delete.disclaimer",
+                    "brand.delete.disclaimer",
                     isPresented: $showDeleteBrandConfirmationDialog,
                     titleVisibility: .visible,
                     presenting: brand
                 ) { presenting in
                     ProgressButton(
-                        "brand.actions.delete.label \(presenting.name)", role: .destructive,
+                        "brand.delete.label \(presenting.name)", role: .destructive,
                         action: {
                             await deleteBrand(presenting)
                         }
@@ -233,7 +233,7 @@ struct BrandScreen: View {
                         Divider()
                         if profileEnvironmentModel.hasPermission(.canCreateProducts) {
                             Button(
-                                "Add Product",
+                                "brand.createProduct.label",
                                 systemImage: "plus",
                                 action: {
                                     sheet = .addProductToSubBrand(brand: brand, subBrand: subBrand)
@@ -255,7 +255,7 @@ struct BrandScreen: View {
                         ReportButton(sheet: $sheet, entity: .subBrand(brand, subBrand))
                         if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                             Button(
-                                "actions.delete",
+                                "labels.delete",
                                 systemImage: "trash.fill",
                                 role: .destructive,
                                 action: { toDeleteSubBrand = subBrand }
@@ -286,7 +286,7 @@ struct BrandScreen: View {
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             ProgressButton(
-                isLikedByCurrentUser ? "Unlike" : "Like", systemImage: "heart",
+                isLikedByCurrentUser ? "labels.unlike" : "labels.like", systemImage: "heart",
                 action: {
                     await toggleLike()
                 }
@@ -297,7 +297,7 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        Button("Product", systemImage: "plus", action: { sheet = .addProductToBrand(brand: brand) })
+                        Button("brand.addProduct.menu.label", systemImage: "plus", action: { sheet = .addProductToBrand(brand: brand) })
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         Button(
@@ -327,7 +327,7 @@ struct BrandScreen: View {
                     screen: .company(brand.brandOwner)
                 )
                 Divider()
-                Button("Group Products By", systemImage: "list.bullet.indent") {
+                Button("brand.product.groupBy.label", systemImage: "list.bullet.indent") {
                     showProductGroupingPicker = true
                 }
                 ReportButton(sheet: $sheet, entity: .brand(brand))

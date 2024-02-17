@@ -58,7 +58,7 @@ struct SubcategorySheet: View {
         ToolbarDoneAction()
         if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
             ToolbarItemGroup(placement: .topBarLeading) {
-                Button("Add subcategory", systemImage: "plus", action: { showAddSubcategory.toggle() })
+                Button("subcategory.add.openSheet.label", systemImage: "plus", action: { showAddSubcategory.toggle() })
                     .labelStyle(.iconOnly)
                     .bold()
             }

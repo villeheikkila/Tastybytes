@@ -17,10 +17,10 @@ struct CheckInLeaveComment: View {
             Spacer()
             VStack {
                 HStack {
-                    TextField("Leave a comment!", text: $commentText)
+                    TextField("comment.textField.placeholder", text: $commentText)
                         .focused($focusedField, equals: .checkInComment)
                     ProgressButton(
-                        "Send the comment", systemImage: "paperplane.fill", action: { await sendComment() }
+                        "comment.textField.send.label", systemImage: "paperplane.fill", action: { await sendComment() }
                     )
                     .labelStyle(.iconOnly)
                     .disabled(commentText.isEmpty)

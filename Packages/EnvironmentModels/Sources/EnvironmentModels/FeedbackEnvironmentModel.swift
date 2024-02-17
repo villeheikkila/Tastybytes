@@ -4,7 +4,7 @@ import SwiftUI
 @Observable
 public final class FeedbackEnvironmentModel {
     public var show = false
-    public var toast = Toast(type: .regular, title: "")
+    public var toast = Toast(type: .regular)
     public var sensoryFeedback: SensoryFeedbackEvent?
 
     public init() {}

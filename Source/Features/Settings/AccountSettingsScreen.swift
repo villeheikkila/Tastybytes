@@ -28,7 +28,7 @@ struct AccountSettingsScreen: View {
             emailSection
             deleteAccount
         }
-        .navigationTitle("settings.account.title")
+        .navigationTitle("account.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(
             isPresented: $showAccountDeleteScreen,
@@ -58,19 +58,19 @@ struct AccountSettingsScreen: View {
         ) { result in
             switch result {
             case .success:
-                feedbackEnvironmentModel.toggle(.success("Data was exported as CSV"))
+                feedbackEnvironmentModel.toggle(.success("account.export.success.toast"))
             case .failure:
                 alertError = .init(title: "Error occurred while trying to export data")
             }
         }
         .alertError($alertError)
         .confirmationDialog(
-            "account.delete-confirmation.title",
+            "account.delete.confirmationDialog.title",
             isPresented: $showDeleteConfirmation,
             titleVisibility: .visible
         ) {
             ProgressButton(
-                "Delete Account",
+                "account.delete.label",
                 role: .destructive,
                 action: {
                     await profileEnvironmentModel.deleteCurrentAccount(onAccountDeletion: {
@@ -83,7 +83,7 @@ struct AccountSettingsScreen: View {
 
     private var emailSection: some View {
         Section {
-            TextField("Email", text: $email)
+            TextField("account.email.placeholder", text: $email)
                 .keyboardType(.emailAddress)
                 .textContentType(.emailAddress)
                 .autocapitalization(.none)
@@ -91,7 +91,7 @@ struct AccountSettingsScreen: View {
 
             if showEmailConfirmation {
                 ProgressButton(
-                    "Send Verification Link",
+                    "account.email.sendVerificationLink.label",
                     actionOptions: [],
                     action: {
                         await changeEmail()
@@ -101,9 +101,9 @@ struct AccountSettingsScreen: View {
             }
 
         } header: {
-            Text("Email")
+            Text("account.email.section.title")
         } footer: {
-            Text("Email is only used for login and is not shown for other users.")
+            Text("account.email.section.footer")
         }
         .headerProminence(.increased)
     }
@@ -112,12 +112,12 @@ struct AccountSettingsScreen: View {
         Section {
             Group {
                 ProgressButton(
-                    "Export CSV",
+                    "account.export.label",
                     systemImage: "square.and.arrow.up",
                     action: { await exportData() }
                 )
                 Button(
-                    "Delete Account",
+                    "account.delete.label",
                     systemImage: "person.crop.circle.badge.minus",
                     role: .destructive,
                     action: { showDeleteConfirmation = true }
@@ -129,7 +129,7 @@ struct AccountSettingsScreen: View {
     func changeEmail() async {
         switch await repository.auth.sendEmailVerification(email: email) {
         case .success:
-            feedbackEnvironmentModel.toggle(.success("Sent!"))
+            feedbackEnvironmentModel.toggle(.success("account.feedback.sent.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

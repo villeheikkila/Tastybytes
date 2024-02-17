@@ -108,9 +108,9 @@ struct CheckInList<Header>: View where Header: View {
         .overlay {
             if errorContentUnavailable != nil {
                 ContentUnavailableView {
-                    Label("Feed couldn't be loaded", systemImage: "exclamationmark.triangle")
+                    Label("checkInList.error.failedToLoad.description", systemImage: "exclamationmark.triangle")
                 } actions: {
-                    Button("actions.reload") {
+                    Button("labels.reload") {
                         refreshId += 1
                     }
                 }
@@ -265,15 +265,15 @@ extension CheckInSegment {
         switch self {
         case .everyone:
             ContentUnavailableView {
-                Label("check-ins.empty-content", systemImage: "list.star")
+                Label("checkIn.segment.everyone.emptyContent.title", systemImage: "list.star")
             }
         case .friends:
             ContentUnavailableView {
-                Label("No check-ins from friends", systemImage: "list.star")
+                Label("checkIn.segment.friends.emptyContent.title", systemImage: "list.star")
             }
         case .you:
             ContentUnavailableView {
-                Label("You haven't check-in yet", systemImage: "list.star")
+                Label("checkIn.segment.you.emptyContent.title", systemImage: "list.star")
             }
         }
     }

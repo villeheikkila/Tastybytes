@@ -39,14 +39,14 @@ struct ProfileLocationsScreen: View {
             if let selectedLocation {
                 HStack {
                     Spacer()
-                    RouterLink("Open \(selectedLocation.name)", screen: .location(selectedLocation))
+                    RouterLink("location.open \(selectedLocation.name)", screen: .location(selectedLocation))
                     Spacer()
                 }
                 .padding()
                 .background(.ultraThinMaterial)
             }
         })
-        .navigationTitle("Check-in Locations")
+        .navigationTitle("profile.locations.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .alertError($alertError)
         .task {

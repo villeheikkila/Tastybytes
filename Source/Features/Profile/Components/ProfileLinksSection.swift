@@ -9,15 +9,15 @@ struct ProfileLinksSection: View {
         VStack(spacing: 3) {
             Group {
                 RouterLink(
-                    "Friends",
+                    "profile.links.friends",
                     systemImage: "person.crop.rectangle.stack",
                     screen: isCurrentUser ? .currentUserFriends : .friends(profile)
                 )
-                RouterLink("Check-ins", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
-                RouterLink("Statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))
-                RouterLink("Wishlist", systemImage: "heart", screen: .profileWishlist(profile))
+                RouterLink("profile.links.checkIns", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
+                RouterLink("profile.links.statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))
+                RouterLink("profile.links.wishlist", systemImage: "heart", screen: .profileWishlist(profile))
                 if isCurrentUser {
-                    RouterLink("Locations", systemImage: "map", screen: .profileLocations(profile))
+                    RouterLink("profile.links.locations", systemImage: "map", screen: .profileLocations(profile))
                 }
             }
             .font(.subheadline)

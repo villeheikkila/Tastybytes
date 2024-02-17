@@ -42,7 +42,7 @@ struct ProfileStatisticsView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Statistics")
+        .navigationTitle("profileStatistics.navigationTitle")
         #if !targetEnvironment(macCatalyst)
             .refreshable {
                 await loadStatistics()
@@ -107,7 +107,7 @@ struct SubcategoryStatisticsView: View {
                 }
             }
         } header: {
-            RouterLink("Subcategories (all)", systemImage: "tag", screen: .profileProductsByFilter(
+            RouterLink("subcategoryStatistics.all.open", systemImage: "tag", screen: .profileProductsByFilter(
                 profile,
                 Product
                     .Filter(category: category.category, subcategory: nil, onlyNonCheckedIn: false,

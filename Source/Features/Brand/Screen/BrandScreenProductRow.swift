@@ -36,9 +36,9 @@ struct BrandScreenProductRow: View {
                         product: product
                     ) }, label: {
                         if profileEnvironmentModel.hasPermission(.canMergeProducts) {
-                            Label("Merge to...", systemImage: "doc.on.doc")
+                            Label("product.mergeTo.label", systemImage: "doc.on.doc")
                         } else {
-                            Label("Mark as Duplicate", systemImage: "doc.on.doc")
+                            Label("product.markAsDuplicate.label", systemImage: "doc.on.doc")
                         }
                     })
 

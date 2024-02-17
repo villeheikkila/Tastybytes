@@ -150,14 +150,14 @@ struct CheckInScreen: View {
                 )
                 if let location = checkIn.location {
                     RouterLink(
-                        "checkIn.actions.openLocationScreen",
+                        "checkIn.openLocationScreen",
                         systemImage: "network",
                         screen: .location(location)
                     )
                 }
                 if let purchaseLocation = checkIn.purchaseLocation {
                     RouterLink(
-                        "checkIn.actions.openPurchaseLocationScreen",
+                        "checkIn.openPurchaseLocationScreen",
                         systemImage: "network",
                         screen: .location(purchaseLocation)
                     )
@@ -218,7 +218,7 @@ struct CheckInScreen: View {
                             }
                         }
                     } label: {
-                        Label("Moderation", systemImage: "gear")
+                        Label("labels.moderation", systemImage: "gear")
                             .labelStyle(.iconOnly)
                     }
                 }

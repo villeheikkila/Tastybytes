@@ -11,7 +11,7 @@ struct FriendRequestNotificationView: View {
         RouterLink(screen: .currentUserFriends) {
             HStack {
                 Avatar(profile: friend.sender, size: 32)
-                Text("\(friend.sender.preferredName) sent you a friend request!")
+                Text("notifications.friendRequest.recievedFrom \(friend.sender.preferredName)")
                 Spacer()
             }
         }

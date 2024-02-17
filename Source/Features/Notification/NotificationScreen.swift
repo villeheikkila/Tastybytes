@@ -148,31 +148,31 @@ extension NotificationType {
         switch self {
         case .checkInComment:
             ContentUnavailableViewProps(
-                title: "No check-in comment notifications",
+                title: "notification.checkInComments.empty.title",
                 description: "",
                 icon: "tray"
             )
         case .checkInReaction:
             ContentUnavailableViewProps(
-                title: "No check-in reaction notifications",
+                title: "notification.checkInReactions.empty.title",
                 description: "",
                 icon: "tray"
             )
         case .friendRequest:
             ContentUnavailableViewProps(
-                title: "No friend request notifications",
+                title: "notification.friendRequests.empty.title",
                 description: "",
                 icon: "tray"
             )
         case .message:
             ContentUnavailableViewProps(
-                title: "No messages",
+                title: "notification.messages.empty.title",
                 description: "",
                 icon: "tray"
             )
         case .taggedCheckIn:
             ContentUnavailableViewProps(
-                title: "No check-in tag notifications",
+                title: "notification.checkInTags.empty.title",
                 description: "",
                 icon: "tray"
             )

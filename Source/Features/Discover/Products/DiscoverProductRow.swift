@@ -40,12 +40,12 @@ struct DiscoverProductRow: View {
                 }
             }
             .confirmationDialog(
-                "Add barcode confirmation",
+                "checkIn.addBarcode.confirmation.title",
                 isPresented: $showAddBarcodeConfirmation,
                 presenting: addBarcodeTo
             ) { presenting in
                 ProgressButton(
-                    "Add barcode to \(presenting.formatted(.fullName))",
+                    "checkIn.addBarcode.label \(presenting.formatted(.fullName))",
                     action: {
                         await addBarcodeToProduct(presenting)
                     }
@@ -61,14 +61,11 @@ struct DiscoverProductRow: View {
             self.barcode = nil
             self.addBarcodeTo = nil
             showAddBarcodeConfirmation = false
-            feedbackEnvironmentModel.toggle(.success("Barcode added!"))
+            feedbackEnvironmentModel.toggle(.success("checkIn.addBarcode.success.toast"))
             router.navigate(screen: .product(addBarcodeTo))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            logger
-                .error(
-                    "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed. error: \(error)"
-                )
+            logger.error("Adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed. error: \(error)")
         }
     }
 }

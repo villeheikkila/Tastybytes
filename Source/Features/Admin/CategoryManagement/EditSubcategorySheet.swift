@@ -16,8 +16,8 @@ struct EditSubcategorySheet: View {
 
     var body: some View {
         Form {
-            TextField("Name", text: $subcategoryName)
-            ProgressButton("Save changes", action: {
+            TextField("subcategory.name.placeholder", text: $subcategoryName)
+            ProgressButton("labels.saveChanges", action: {
                 await onSubmit(subcategoryName)
                 await MainActor.run {
                     dismiss()

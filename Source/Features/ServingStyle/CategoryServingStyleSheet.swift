@@ -51,13 +51,13 @@ struct CategoryServingStyleSheet: View {
         }
         .alertError($alertError)
         .confirmationDialog(
-            "serving-style.delete-warning.title",
+            "servingStyle.deleteWarning.title",
             isPresented: $showDeleteServingStyleConfirmation,
             titleVisibility: .visible,
             presenting: toDeleteServingStyle
         ) { presenting in
             ProgressButton(
-                "Remove \(presenting.name) from \(category.name)",
+                "servingStyle.deleteWarning.label \(presenting.name) from \(category.name)",
                 role: .destructive,
                 action: {
                     await deleteServingStyle(presenting)
@@ -70,7 +70,7 @@ struct CategoryServingStyleSheet: View {
         ToolbarDoneAction()
         ToolbarItemGroup(placement: .primaryAction) {
             Button(
-                "Add Serving Style",
+                "servingStyle.create.label",
                 systemImage: "plus",
                 action: {
                     sheet = .servingStyleManagement(

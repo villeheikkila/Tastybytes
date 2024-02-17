@@ -7,14 +7,8 @@ struct DiscoverProductAssignBarcode: View {
 
     var body: some View {
         Section {
-            Text(
-                """
-                \(isEmpty ? "No results were found" : "If none of the results match"),\
-                you can assign the barcode to a product by searching again \
-                with the name or by creating a new product.
-                """
-            )
-            Button("Dismiss barcode", action: {
+            Text(isEmpty ? "discover.barcode.noResults.description" : "discover.barcode.results.description")
+            Button("discover.barcode.dismiss.label", action: {
                 barcode = nil
             })
         }

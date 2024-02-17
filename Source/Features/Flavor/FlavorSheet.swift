@@ -59,7 +59,7 @@ struct FlavorSheet: View {
             let added = newValue.addedValueTo(oldValue)
             if let added, newValue.count > maxFlavors {
                 pickedFlavorIds.remove(added)
-                feedbackEnvironmentModel.toggle(.warning("You can only add \(maxFlavors) flavors"))
+                feedbackEnvironmentModel.toggle(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)"))
                 return
             }
         }
