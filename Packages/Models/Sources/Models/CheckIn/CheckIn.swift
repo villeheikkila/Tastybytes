@@ -16,6 +16,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let location: Location?
     public let purchaseLocation: Location?
     public let images: [ImageEntity]
+    public let isNostalgic: Bool
 
     public var isEmpty: Bool {
         [rating == nil, review.isNilOrEmpty, flavors.isEmpty, purchaseLocation == nil].allSatisfy { $0 }
@@ -35,7 +36,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         servingStyle: ServingStyle? = nil,
         location: Location? = nil,
         purchaseLocation: Location? = nil,
-        images: [ImageEntity]
+        images: [ImageEntity],
+        isNostalgic: Bool = false
     ) {
         self.id = id
         self.rating = rating
@@ -51,6 +53,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         self.location = location
         self.purchaseLocation = purchaseLocation
         self.images = images
+        self.isNostalgic = isNostalgic
     }
 
     public func copyWith(
@@ -66,6 +69,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         servingStyle: ServingStyle? = nil,
         location: Location? = nil,
         purchaseLocation: Location? = nil,
+        isNostalgic: Bool? = nil,
         images: [ImageEntity]? = nil
     ) -> Self {
         .init(
@@ -82,7 +86,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
             servingStyle: servingStyle ?? self.servingStyle,
             location: location ?? self.location,
             purchaseLocation: purchaseLocation ?? self.purchaseLocation,
-            images: images ?? self.images
+            images: images ?? self.images,
+            isNostalgic: isNostalgic ?? self.isNostalgic
         )
     }
 
@@ -101,6 +106,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         case location = "locations"
         case purchaseLocation = "purchase_location"
         case images = "check_in_images"
+        case isNostalgic = "is_nostalgic"
     }
 }
 
@@ -156,6 +162,7 @@ public extension CheckIn {
         public let locationId: String?
         public let purchaseLocationId: String?
         public let checkInAt: Date?
+        public let isNostalgic: Bool
 
         enum CodingKeys: String, CodingKey {
             case productId = "p_product_id"
@@ -168,6 +175,7 @@ public extension CheckIn {
             case locationId = "p_location_id"
             case purchaseLocationId = "p_purchase_location_id"
             case checkInAt = "p_check_in_at"
+            case isNostalgic = "p_is_nostalgic"
         }
 
         public init(
@@ -180,7 +188,8 @@ public extension CheckIn {
             rating: Double,
             location: Location?,
             purchaseLocation: Location?,
-            checkInAt: Date?
+            checkInAt: Date?,
+            isNostalgic: Bool
         ) {
             productId = product.id
             self.review = review.isNilOrEmpty ? nil : review
@@ -192,6 +201,7 @@ public extension CheckIn {
             locationId = location?.id.uuidString
             purchaseLocationId = purchaseLocation?.id.uuidString
             self.checkInAt = checkInAt
+            self.isNostalgic = isNostalgic
         }
     }
 
@@ -207,6 +217,7 @@ public extension CheckIn {
         public let locationId: String?
         public let purchaseLocationId: String?
         public let checkInAt: Date?
+        public let isNostalgic: Bool
 
         enum CodingKeys: String, CodingKey {
             case checkInId = "p_check_in_id"
@@ -220,6 +231,7 @@ public extension CheckIn {
             case locationId = "p_location_id"
             case purchaseLocationId = "p_purchase_location_id"
             case checkInAt = "p_check_in_at"
+            case isNostalgic = "p_is_nostalgic"
         }
 
         public init(
@@ -233,7 +245,8 @@ public extension CheckIn {
             rating: Double,
             location: Location?,
             purchaseLocation: Location?,
-            checkInAt: Date?
+            checkInAt: Date?,
+            isNostalgic: Bool
         ) {
             checkInId = checkIn.id
             productId = product.id
@@ -246,6 +259,7 @@ public extension CheckIn {
             locationId = location?.id.uuidString
             purchaseLocationId = purchaseLocation?.id.uuidString
             self.checkInAt = checkInAt
+            self.isNostalgic = isNostalgic
         }
     }
 }

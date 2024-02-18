@@ -31,6 +31,7 @@ struct CheckInSheet: View {
     @State private var purchaseLocation: Location?
     @State private var checkInAt: Date = .now
     @State private var isLegacyCheckIn: Bool
+    @State private var isNostalgic: Bool
     @State private var blurHash: String?
     @State private var alertError: AlertError?
     @State private var image: UIImage?
@@ -72,6 +73,7 @@ struct CheckInSheet: View {
         onUpdate = nil
         action = .create
         _isLegacyCheckIn = State(initialValue: false)
+        _isNostalgic = State(initialValue: false)
     }
 
     init(
@@ -94,6 +96,7 @@ struct CheckInSheet: View {
         _purchaseLocation = State(wrappedValue: checkIn.purchaseLocation)
         _checkInAt = State(wrappedValue: checkIn.checkInAt ?? Date.now)
         _isLegacyCheckIn = State(initialValue: checkIn.checkInAt == nil)
+        _isNostalgic = State(initialValue: checkIn.isNostalgic)
     }
 
     var body: some View {
@@ -270,7 +273,7 @@ struct CheckInSheet: View {
 
             if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
                 RouterLink(
-                    sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn)
+                    sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic)
                 ) {
                     Text(
                         isLegacyCheckIn
@@ -338,7 +341,8 @@ struct CheckInSheet: View {
             rating: rating,
             location: location,
             purchaseLocation: purchaseLocation,
-            checkInAt: isLegacyCheckIn ? nil : checkInAt
+            checkInAt: isLegacyCheckIn ? nil : checkInAt,
+            isNostalgic: isNostalgic
         )
 
         switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
@@ -382,7 +386,8 @@ struct CheckInSheet: View {
             rating: rating,
             location: location,
             purchaseLocation: purchaseLocation,
-            checkInAt: isLegacyCheckIn ? nil : checkInAt
+            checkInAt: isLegacyCheckIn ? nil : checkInAt,
+            isNostalgic: isNostalgic
         )
 
         switch await repository.checkIn.create(newCheckInParams: newCheckParams) {

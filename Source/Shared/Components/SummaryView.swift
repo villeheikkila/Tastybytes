@@ -54,7 +54,8 @@ struct SummaryRow: View {
                 Text(verbatim: "")
             }
             Spacer()
-            RatingView(rating: rating ?? 0, type: .small)
+            RatingView(rating: rating ?? 0)
+                .ratingSize(.small)
             Group {
                 if let rating {
                     Text(rating.formatted(

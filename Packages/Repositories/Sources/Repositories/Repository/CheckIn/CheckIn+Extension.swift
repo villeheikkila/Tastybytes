@@ -4,7 +4,7 @@ import Models
 extension CheckIn: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let image = "id, blur_hash, created_by"
-        let saved = "id, rating, review, check_in_at, blur_hash"
+        let saved = "id, rating, review, check_in_at, is_nostalgic"
 
         switch queryType {
         case let .joined(withTableName):

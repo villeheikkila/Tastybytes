@@ -61,7 +61,8 @@ struct ProductItemView: View {
                     CategoryView(category: product.category, subcategories: product.subcategories)
                     Spacer()
                     if let averageRating = product.averageRating, extras.contains(.rating) {
-                        RatingView(rating: averageRating, type: .small)
+                        RatingView(rating: averageRating)
+                            .ratingSize(.small)
                     }
                 }
             }

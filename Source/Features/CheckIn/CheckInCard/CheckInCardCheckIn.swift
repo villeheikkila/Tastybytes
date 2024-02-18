@@ -13,6 +13,7 @@ struct CheckInCardCheckIn: View {
             if let rating = checkIn.rating {
                 HStack {
                     RatingView(rating: rating)
+                        .ratingColor(checkIn.isNostalgic ? .purple : .yellow)
                     Spacer()
                 }
             }

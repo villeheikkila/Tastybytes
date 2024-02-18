@@ -896,6 +896,16 @@
         }
       }
     },
+    "checkIn.datePicker.markAsNostalgic.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as nostalgic check-in"
+          }
+        }
+      }
+    },
     "checkIn.datePicker.title" : {
       "localizations" : {
         "en" : {

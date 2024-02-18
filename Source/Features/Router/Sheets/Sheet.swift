@@ -57,7 +57,7 @@ enum Sheet: Identifiable, Equatable {
     case editCompany(company: Company, onSuccess: () async -> Void)
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
     case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
-    case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
+    case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
     case categoryPickerSheet(category: Binding<Int?>)
     case mergeLocationSheet(location: Location)
     case subscribe
@@ -130,8 +130,8 @@ enum Sheet: Identifiable, Equatable {
             EditCompanySheet(company: company, onSuccess: onSuccess, mode: .editSuggestion)
         case let .userSheet(mode: mode, onSubmit: onSubmit):
             UserSheet(mode: mode, onSubmit: onSubmit)
-        case let .checkInDatePicker(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn):
-            CheckInDatePickerSheet(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn)
+        case let .checkInDatePicker(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic):
+            CheckInDatePickerSheet(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic)
         case let .categoryPickerSheet(category: category):
             CategoryPickerSheet(category: category)
         case .subscribe:
