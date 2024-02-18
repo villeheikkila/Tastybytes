@@ -111,7 +111,14 @@
 
     },
     "account.delete.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account"
+          }
+        }
+      }
     },
     "account.email.placeholder" : {
 
@@ -143,10 +150,24 @@
       }
     },
     "account.export.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export (.csv)"
+          }
+        }
+      }
     },
     "account.export.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Succesfully exported"
+          }
+        }
+      }
     },
     "account.feedback.sent.toast" : {
 
@@ -1232,10 +1253,24 @@
 
     },
     "checkIn.statistics.checkIns.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-ins"
+          }
+        }
+      }
     },
     "checkIn.statistics.newProducts.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New products"
+          }
+        }
+      }
     },
     "checkIn.statistics.timePeriod.segment.picker" : {
       "localizations" : {
