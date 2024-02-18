@@ -38,7 +38,7 @@ struct ActivityScreen: View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         ScrollView {
             LazyVStack {
-                CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onLoadMore: {
+                CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: onCheckInUpdate, onLoadMore: {
                     onLoadMore()
                 })
                 ProgressView()
@@ -108,6 +108,11 @@ struct ActivityScreen: View {
                 }
             }
         }
+    }
+
+    func onCheckInUpdate(_ checkIn: CheckIn) {
+        guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
+        checkIns[index] = checkIn
     }
 
     func onLoadMore() {

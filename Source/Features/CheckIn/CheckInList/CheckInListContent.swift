@@ -9,10 +9,12 @@ import SwiftUI
 @MainActor
 struct CheckInListContent: View {
     private let logger = Logger(category: "CheckInList")
+    @State private var sheet: Sheet?
     @Environment(Repository.self) private var repository
     @Binding var checkIns: [CheckIn]
     @Binding var alertError: AlertError?
     let loadedFrom: CheckInCard.LoadedFrom
+    let onCheckInUpdate: @MainActor (_ checkIn: CheckIn) -> Void
     let onLoadMore: () -> Void
 
     var body: some View {
@@ -21,7 +23,8 @@ struct CheckInListContent: View {
                 checkIn: checkIn,
                 loadedFrom: loadedFrom,
                 onUpdate: onCheckInUpdate,
-                onDelete: deleteCheckIn
+                onDelete: deleteCheckIn,
+                sheet: $sheet
             )
             .id(checkIn.id)
             .onAppear {
@@ -30,6 +33,7 @@ struct CheckInListContent: View {
                 }
             }
         }
+        .sheets(item: $sheet)
     }
 
     func deleteCheckIn(_ checkIn: CheckIn) async {
@@ -43,10 +47,5 @@ struct CheckInListContent: View {
             alertError = AlertError(title: "checkIn.delete.failure.alert")
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
         }
-    }
-
-    func onCheckInUpdate(_ checkIn: CheckIn) {
-        guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
-        checkIns[index] = checkIn
     }
 }

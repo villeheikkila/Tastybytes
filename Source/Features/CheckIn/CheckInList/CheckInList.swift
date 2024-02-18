@@ -86,7 +86,7 @@ struct CheckInList<Header>: View where Header: View {
                 if fetcher.showCheckInSegmentationPicker {
                     checkInSegments
                 }
-                CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: loadedFrom, onLoadMore: {
+                CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: loadedFrom, onCheckInUpdate: onCheckInUpdate, onLoadMore: {
                     onLoadMore()
                 })
                 ProgressView()
@@ -192,6 +192,11 @@ struct CheckInList<Header>: View where Header: View {
             }
         }
         .pickerStyle(.segmented)
+    }
+
+    func onCheckInUpdate(_ checkIn: CheckIn) {
+        guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
+        checkIns[index] = checkIn
     }
 
     func onLoadMore() {

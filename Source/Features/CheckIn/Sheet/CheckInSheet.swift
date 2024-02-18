@@ -350,8 +350,7 @@ struct CheckInSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error(
-                "Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
