@@ -58,7 +58,9 @@ struct NotificationScreen: View {
                         systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
                     )
                 } description: {
-                    Text(filter?.contentUnavailableViewProps.description ?? "")
+                    if let description = filter?.contentUnavailableViewProps.description {
+                        Text(description)
+                    }
                 }
                 .opacity(showContentUnavailableView ? 1 : 0)
             }

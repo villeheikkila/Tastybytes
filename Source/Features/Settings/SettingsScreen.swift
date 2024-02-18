@@ -27,11 +27,13 @@ struct SettingsScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("subscription.callToAction", systemImage: "crown.fill", action: { sheet = .subscribe })
-                .labelStyle(.iconOnly)
-                .imageScale(.large)
-                .foregroundColor(.yellow)
+        if let subscriptionGroup = appEnvironmentModel.subscriptionGroup {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", action: { sheet = .subscribe })
+                    .labelStyle(.iconOnly)
+                    .imageScale(.large)
+                    .foregroundColor(.yellow)
+            }
         }
     }
 

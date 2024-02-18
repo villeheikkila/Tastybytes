@@ -157,7 +157,7 @@ struct CheckInScreen: View {
                 }
                 if let purchaseLocation = checkIn.purchaseLocation {
                     RouterLink(
-                        "checkIn.openPurchaseLocationScreen",
+                        "location.open.purchaseLocation",
                         systemImage: "network",
                         screen: .location(purchaseLocation)
                     )

@@ -7,7 +7,7 @@ struct AppNameView: View {
 
     var body: some View {
         Text(appEnvironmentModel.infoPlist.appName)
-            .font(Font.custom("Comfortaa-Bold", size: 28))
+            .font(.custom("Comfortaa-Bold", size: 28))
             .bold()
     }
 }

@@ -17,7 +17,7 @@ public struct CloseButton: View {
                         .foregroundColor(.primary)
                 )
         })
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .symbolEffect(.bounce.down, value: isPressed)
         .task(id: isPressed) {
             guard isPressed else { return }

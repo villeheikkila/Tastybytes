@@ -3,7 +3,7 @@ import SwiftUI
 
 struct DiscoverProductLinks: View {
     var body: some View {
-        Section("Feeds") {
+        Section("discover.product.links") {
             Group {
                 RouterLink(
                     Product.FeedType.trending.label,
