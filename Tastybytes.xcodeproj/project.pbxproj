@@ -560,7 +560,6 @@
 		5C3907652B32093D0036253E /* Admin */ = {
 			isa = PBXGroup;
 			children = (
-				5C9057632B2894BE00EC157B /* AddCategory */,
 				5C9057552B2894BE00EC157B /* AddSubcategory */,
 				5C9057B92B2894BE00EC157B /* DuplicataProduct */,
 				5C90579F2B2894BE00EC157B /* Verification */,
@@ -862,13 +861,6 @@
 				5C9057592B2894BE00EC157B /* UserSheet.swift */,
 			);
 			path = User;
-			sourceTree = "<group>";
-		};
-		5C9057632B2894BE00EC157B /* AddCategory */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = AddCategory;
 			sourceTree = "<group>";
 		};
 		5C9057652B2894BE00EC157B /* DuplicateProduct */ = {
