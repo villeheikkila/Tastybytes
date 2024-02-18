@@ -205,7 +205,7 @@ struct CheckInSheet: View {
                     Spacer()
                 }
             }
-            RatingPickerView(rating: $rating, incrementType: .small)
+            RatingPickerView(rating: $rating)
         }
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)

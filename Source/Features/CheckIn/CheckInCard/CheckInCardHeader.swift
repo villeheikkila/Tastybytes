@@ -13,6 +13,7 @@ struct CheckInCardHeader: View {
     var body: some View {
         HStack {
             Avatar(profile: profile)
+                .avatarSize(.medium)
             Text(profile.preferredName)
                 .font(.caption).bold()
                 .foregroundColor(.primary)

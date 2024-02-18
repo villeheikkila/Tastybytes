@@ -1,33 +1,16 @@
 import SwiftUI
 
 public struct RatingPickerView: View {
-    public enum IncrementType {
-        case small, large
-
-        var divider: Double {
-            switch self {
-            case .large:
-                2
-            case .small:
-                4
-            }
-        }
-    }
-
     @Binding var rating: Double
     @State private var starSize: CGSize = .zero
     @State private var controlSize: CGSize = .zero
     @GestureState private var dragging = false
 
-    let incrementType: IncrementType
-    let outOf = 5
+    let outOf: Int
 
-    public init(
-        rating: Binding<Double>,
-        incrementType: IncrementType
-    ) {
+    public init(rating: Binding<Double>, outOf: Int = 5) {
         _rating = rating
-        self.incrementType = incrementType
+        self.outOf = outOf
     }
 
     public var body: some View {
@@ -91,7 +74,7 @@ public struct RatingPickerView: View {
         let xAxis = Double(position.x)
         let starIdx = Int(xAxis / starWithSpaceWidth)
         let starPercent = xAxis.truncatingRemainder(dividingBy: starWithSpaceWidth) / Double(singleStarWidth)
-        let rating = Double(starIdx) + round(starPercent * incrementType.divider) / incrementType.divider
+        let rating = Double(starIdx) + round(starPercent * 4) / 4
         return min(Double(outOf), max(0, rating))
     }
 }
