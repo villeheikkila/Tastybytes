@@ -426,7 +426,7 @@ extension CheckInSheet {
 
 struct LocationInputButton: View {
     let category: Location.RecentLocation
-    let title: String
+    let title: LocalizedStringKey
     @Binding var selection: Location?
     let initialLocation: CLLocationCoordinate2D?
     let onSelect: (_ location: Location) -> Void

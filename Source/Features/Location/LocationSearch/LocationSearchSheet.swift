@@ -29,11 +29,11 @@ struct LocationSearchSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     let category: Location.RecentLocation
-    let title: String
+    let title: LocalizedStringKey
     let onSelect: (_ location: Location) -> Void
     let initialLocation: CLLocationCoordinate2D?
 
-    init(category: Location.RecentLocation, title: String, initialLocation: CLLocationCoordinate2D?, onSelect: @escaping (_ location: Location) -> Void) {
+    init(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: CLLocationCoordinate2D?, onSelect: @escaping (_ location: Location) -> Void) {
         self.title = title
         self.onSelect = onSelect
         self.category = category

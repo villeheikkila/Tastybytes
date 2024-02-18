@@ -77,6 +77,7 @@ public struct ProgressButton<LabelView: View>: View {
 }
 
 public extension ProgressButton where LabelView == Text {
+    @_disfavoredOverload
     init(_ label: String,
          role: ButtonRole? = nil,
          actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
@@ -101,6 +102,7 @@ public extension ProgressButton where LabelView == Text {
 }
 
 public extension ProgressButton where LabelView == Label<Text, Image> {
+    @_disfavoredOverload
     init(_ title: String, systemImage: String,
          role: ButtonRole? = nil,
          actionOptions: Set<ActionOption> = Set(ActionOption.allCases),

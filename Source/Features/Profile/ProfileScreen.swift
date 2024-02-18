@@ -31,12 +31,12 @@ struct ProfileScreen: View {
                 Menu {
                     if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
                         ProgressButton(
-                            "Send Friend Request",
+                            "friend.friendRequest.send.label",
                             action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
                         )
                     } else if let friend = friendEnvironmentModel.isPendingUserApproval(profile) {
                         ProgressButton(
-                            "Accept Friend Request",
+                            "friend.friendRequest.accept.label",
 
                             action: {
                                 await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)

@@ -42,7 +42,7 @@ enum Sheet: Identifiable, Equatable {
     case flavors(pickedFlavors: Binding<[Flavor]>)
     case locationSearch(
         category: Location.RecentLocation,
-        title: String,
+        title: LocalizedStringKey,
         initialLocation: CLLocationCoordinate2D?,
         onSelect: (_ location: Location) -> Void
     )

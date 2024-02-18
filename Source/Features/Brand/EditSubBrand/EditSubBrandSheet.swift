@@ -141,11 +141,11 @@ struct EditSubBrandSheet: View {
 }
 
 extension SubBrandProtocol {
-    var label: LocalizedStringKey {
+    var label: String {
         if let name {
-            .init(stringLiteral: name)
+             name
         } else {
-            "subBrand.defaultSubBrand.label"
+            String(localized: "subBrand.defaultSubBrand.label")
         }
     }
 }

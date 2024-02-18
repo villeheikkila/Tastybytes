@@ -75,7 +75,7 @@ struct CheckInScreen: View {
             presenting: checkIn
         ) { presenting in
             ProgressButton(
-                "Delete \(presenting.product.formatted(.fullName)) check-in",
+                "checkIn.delete.confirmation.label \(presenting.product.formatted(.fullName))",
                 role: .destructive,
                 action: { await deleteCheckIn(presenting) }
             )
@@ -150,7 +150,7 @@ struct CheckInScreen: View {
                 )
                 if let location = checkIn.location {
                     RouterLink(
-                        "checkIn.openLocationScreen",
+                        "location.open",
                         systemImage: "network",
                         screen: .location(location)
                     )

@@ -30,6 +30,16 @@
         }
       }
     },
+    "%@ %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@ %3$@"
+          }
+        }
+      }
+    },
     "%@: %@" : {
       "localizations" : {
         "en" : {
@@ -87,7 +97,13 @@
     "account.email.section.title" : {
 
     },
+    "account.email.sendVerificationLink.label" : {
+
+    },
     "account.export.failure.alert" : {
+
+    },
+    "account.export.label" : {
 
     },
     "account.export.success.toast" : {
@@ -136,19 +152,47 @@
       }
     },
     "admin.category.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categories"
+          }
+        }
+      }
     },
     "admin.duplicates.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicates"
+          }
+        }
+      }
     },
     "admin.menuSection.title" : {
 
     },
     "admin.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Admin"
+          }
+        }
+      }
     },
     "admin.verification.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verification"
+          }
+        }
+      }
     },
     "app.error.unexpected.title" : {
       "localizations" : {
@@ -212,8 +256,8 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "authentication.welcomeAndPrivacyPolicy %1$@ [Privacy Policy](%2$@)"
+            "state" : "translated",
+            "value" : "Welcome to %1$@! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](%2$@)"
           }
         }
       }
@@ -257,80 +301,267 @@
     "blockedUsers.navigationTitle" : {
 
     },
+    "blockedUsers.unblock.label" : {
+
+    },
     "bracode.add.success.toast" : {
 
     },
     "brand.add.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add brand"
+          }
+        }
+      }
     },
     "brand.addBrandForCompany.title %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new brand for %@"
+          }
+        }
+      }
     },
     "brand.addProduct.menu.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product"
+          }
+        }
+      }
     },
     "brand.created.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Brand Created!"
+          }
+        }
+      }
     },
     "brand.createProduct.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Product"
+          }
+        }
+      }
     },
     "brand.delete.disclaimer" : {
 
     },
+    "brand.delete.label %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@"
+          }
+        }
+      }
+    },
+    "brand.edit.brandOwner.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change brand owner"
+          }
+        }
+      }
+    },
     "brand.edit.brandOwner.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Owner"
+          }
+        }
+      }
     },
     "brand.edit.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name of the brand"
+          }
+        }
+      }
     },
     "brand.edit.name.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "brand.edit.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Brand"
+          }
+        }
+      }
     },
     "brand.edit.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand updated!"
+          }
+        }
+      }
     },
     "brand.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "brand.product.groupBy.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group Products By"
+          }
+        }
+      }
     },
     "brand.screen.open" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Brand"
+          }
+        }
+      }
     },
     "brand.select.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select brand"
+          }
+        }
+      }
     },
     "brand.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brands"
+          }
+        }
+      }
+    },
+    "brand.unverify.confirmation.label %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify %@ brand"
+          }
+        }
+      }
     },
     "brand.unverify.confirmation.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify Brand"
+          }
+        }
+      }
     },
     "brandScreen.groupProductsBy" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group products by"
+          }
+        }
+      }
     },
     "category.add.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Category"
+          }
+        }
+      }
     },
     "category.add.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Category"
+          }
+        }
+      }
     },
     "category.add.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category created!"
+          }
+        }
+      }
     },
     "category.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "category.picker.label" : {
 
     },
     "category.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categories"
+          }
+        }
+      }
     },
     "checkIn.action.createNew" : {
 
@@ -339,6 +570,9 @@
 
     },
     "checkIn.addBarcode.confirmation.title" : {
+
+    },
+    "checkIn.addBarcode.label %@" : {
 
     },
     "checkIn.addBarcode.success.toast" : {
@@ -360,24 +594,76 @@
 
     },
     "checkIn.datePicker.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in date"
+          }
+        }
+      }
     },
     "checkIn.datePicker.markAsLegacy.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as legacy check-in"
+          }
+        }
+      }
     },
     "checkIn.datePicker.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in Date"
+          }
+        }
+      }
+    },
+    "checkIn.delete.asModerator.label %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete check-in from %@"
+          }
+        }
+      }
     },
     "checkIn.delete.asModerator.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete check-in as a moderator?"
+          }
+        }
+      }
+    },
+    "checkIn.delete.confirmation.label %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@"
+          }
+        }
+      }
     },
     "checkIn.delete.confirmation.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to permanently delete the check-in?"
+          }
+        }
+      }
     },
     "checkIn.delete.failure.alert" : {
-
-    },
-    "checkIn.deleteConfirmation.title" : {
 
     },
     "checkIn.filter.onlyNotHad" : {
@@ -387,13 +673,34 @@
 
     },
     "checkIn.friends.tagged.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tagged friends"
+          }
+        }
+      }
     },
     "checkIn.image.add" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add photo"
+          }
+        }
+      }
     },
     "checkIn.image.change" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change photo"
+          }
+        }
+      }
     },
     "checkIn.image.label" : {
       "localizations" : {
@@ -406,16 +713,40 @@
       }
     },
     "checkIn.legacy.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "legacy check-in"
+          }
+        }
+      }
+    },
+    "checkIn.location.add.label" : {
 
     },
     "checkIn.location.purchasedFrom __%@__" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchased from __%@__"
+          }
+        }
+      }
     },
     "checkIn.location.reset" : {
 
     },
     "checkIn.manufacturedBy.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manufactured by %@"
+          }
+        }
+      }
     },
     "checkIn.notifications.userReactedToYourCheckIn.body %@ %@" : {
       "localizations" : {
@@ -427,9 +758,6 @@
         }
       }
     },
-    "checkIn.openLocationScreen" : {
-
-    },
     "checkIn.openPurchaseLocationScreen" : {
 
     },
@@ -438,7 +766,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Canera"
+            "value" : "Camera"
           }
         }
       }
@@ -473,11 +801,21 @@
         }
       }
     },
+    "checkIn.purchaseLocation.add.label" : {
+
+    },
     "checkIn.rating.label" : {
 
     },
     "checkIn.reaction.react.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "React to check-in"
+          }
+        }
+      }
     },
     "checkIn.review.label" : {
       "localizations" : {
@@ -503,7 +841,14 @@
 
     },
     "checkIn.section.locationsFriends.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location & Friends"
+          }
+        }
+      }
     },
     "checkIn.segment.everyone" : {
       "localizations" : {
@@ -516,7 +861,14 @@
       }
     },
     "checkIn.segment.everyone.emptyContent.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Be first to check-in!"
+          }
+        }
+      }
     },
     "checkIn.segment.friends" : {
       "localizations" : {
@@ -529,7 +881,14 @@
       }
     },
     "checkIn.segment.friends.emptyContent.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No check-ins from friends"
+          }
+        }
+      }
     },
     "checkIn.segment.picker.title" : {
       "localizations" : {
@@ -552,7 +911,14 @@
       }
     },
     "checkIn.segment.you.emptyContent.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven't check-in yet"
+          }
+        }
+      }
     },
     "checkIn.shareLink.subject" : {
 
@@ -569,23 +935,81 @@
     "checkIn.title" : {
 
     },
+    "checkIn.update.label" : {
+
+    },
     "checkInList.error.failedToLoad.alert" : {
 
     },
     "checkInList.error.failedToLoad.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feed couldn't be loaded"
+          }
+        }
+      }
     },
     "comment.deleteAsModerator.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete comment as a moderator?"
+          }
+        }
+      }
+    },
+    "comment.deleteAsModerator.confirmation.label %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete comment from %@"
+          }
+        }
+      }
     },
     "comment.edit.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Comment"
+          }
+        }
+      }
     },
     "comment.edit.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment..."
+          }
+        }
+      }
     },
     "comment.textField.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave a comment!"
+          }
+        }
+      }
+    },
+    "comment.textField.send.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send the comment"
+          }
+        }
+      }
     },
     "company.create.label" : {
 
@@ -597,6 +1021,9 @@
 
     },
     "company.create.success.toast" : {
+
+    },
+    "company.delete.confirmationDialog.label %@" : {
 
     },
     "company.delete.confirmationDialog.title" : {
@@ -630,7 +1057,14 @@
 
     },
     "company.screen.open" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Brand Owner"
+          }
+        }
+      }
     },
     "company.search.navigationTitle" : {
 
@@ -642,6 +1076,16 @@
 
     },
     "company.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Companies"
+          }
+        }
+      }
+    },
+    "company.unverify.confirmationDialog.label %@" : {
 
     },
     "company.unverify.confirmationDialog.title" : {
@@ -807,7 +1251,14 @@
 
     },
     "duplicateProducts.screen.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified Products"
+          }
+        }
+      }
     },
     "error.screen.title" : {
 
@@ -816,19 +1267,47 @@
 
     },
     "flavor.add.labels" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add flavors"
+          }
+        }
+      }
     },
     "flavor.add.maxAmountReached.toast %lld" : {
 
     },
     "flavor.add.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Flavor"
+          }
+        }
+      }
     },
     "flavor.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "flavor.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flavors"
+          }
+        }
+      }
     },
     "flavors.label" : {
       "localizations" : {
@@ -840,7 +1319,16 @@
         }
       }
     },
+    "friend.delete.confirmation.label %@" : {
+
+    },
     "friend.delete.confirmation.title" : {
+
+    },
+    "friend.friendRequest.accept.label" : {
+
+    },
+    "friend.friendRequest.send.label" : {
 
     },
     "friend.status.accepted" : {
@@ -867,6 +1355,9 @@
     "friends.add.success" : {
 
     },
+    "friends.block.label" : {
+
+    },
     "friends.contentUnavailable.noFriends" : {
 
     },
@@ -877,6 +1368,12 @@
 
     },
     "friends.toolbar.showNameTag" : {
+
+    },
+    "label.add" : {
+
+    },
+    "label.submit" : {
 
     },
     "labels.add" : {
@@ -1029,6 +1526,16 @@
         }
       }
     },
+    "labels.like" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Like"
+          }
+        }
+      }
+    },
     "labels.menu" : {
       "localizations" : {
         "en" : {
@@ -1065,6 +1572,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reload"
+          }
+        }
+      }
+    },
+    "labels.saveChanges" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save changes"
           }
         }
       }
@@ -1139,12 +1656,32 @@
         }
       }
     },
+    "labels.unlike" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlike"
+          }
+        }
+      }
+    },
     "labels.unverified" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unverified"
+          }
+        }
+      }
+    },
+    "labels.verify" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verify"
           }
         }
       }
@@ -1158,11 +1695,24 @@
     "location.delete.confirmation.description" : {
 
     },
+    "location.delete.confirmation.label %@" : {
+
+    },
     "location.distance %@" : {
 
     },
     "location.merge.confirmation.description" : {
 
+    },
+    "location.merge.confirmation.label %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "location.merge.confirmation.label %1$@ %2$@"
+          }
+        }
+      }
     },
     "location.mergeTo.label" : {
 
@@ -1177,13 +1727,34 @@
 
     },
     "location.open" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Location"
+          }
+        }
+      }
     },
     "location.open %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open %@"
+          }
+        }
+      }
     },
     "location.open.purchaseLocation" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Purchase Location"
+          }
+        }
+      }
     },
     "location.recent" : {
 
@@ -1192,13 +1763,34 @@
 
     },
     "logos.edit.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logos"
+          }
+        }
+      }
     },
     "moderation.deleteAsModerator.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete as Moderator"
+          }
+        }
+      }
     },
     "moderation.section.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moderation"
+          }
+        }
+      }
     },
     "nameTag.navigationTitle" : {
 
@@ -1268,10 +1860,16 @@
         }
       }
     },
+    "notifications.deleteAll.label" : {
+
+    },
     "notifications.empty.label" : {
 
     },
     "notifications.friendRequest.recievedFrom %@" : {
+
+    },
+    "notifications.markAsRead.label" : {
 
     },
     "notifications.navigationTitle" : {
@@ -1341,10 +1939,34 @@
 
     },
     "product.delete.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the product and all of its check-ins?"
+          }
+        }
+      }
+    },
+    "product.delete.confirmation.label %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "product.delete.confirmation.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the product and all of its check-ins?"
+          }
+        }
+      }
     },
     "product.description.placeholder" : {
 
@@ -1439,10 +2061,24 @@
 
     },
     "product.markAsDuplicate.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as Duplicate"
+          }
+        }
+      }
     },
     "product.mergeTo.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge to..."
+          }
+        }
+      }
     },
     "product.mutation.create.title" : {
 
@@ -1463,18 +2099,38 @@
 
     },
     "product.screen.open" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Product"
+          }
+        }
+      }
     },
     "product.shareLink.subject" : {
 
     },
     "product.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products"
+          }
+        }
+      }
     },
     "product.unverify.confirmation.description" : {
 
     },
+    "product.unverify.confirmation.label %@" : {
+
+    },
     "products.title" : {
+
+    },
+    "profile.avatar.delete.label" : {
 
     },
     "profile.joinedAt %@" : {
@@ -1650,17 +2306,40 @@
     "scanTextButton.label" : {
 
     },
+    "Send Friend Request" : {
+
+    },
     "servingStyle.create.label" : {
+
+    },
+    "servingStyle.deleteConfirmation.label %@" : {
 
     },
     "servingStyle.deleteConfirmation.title" : {
 
     },
+    "servingStyle.deleteWarning.label %@ from %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "servingStyle.deleteWarning.label %1$@ from %2$@"
+          }
+        }
+      }
+    },
     "servingStyle.deleteWarning.title" : {
 
     },
     "servingStyle.edit.menu.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Serving Styles"
+          }
+        }
+      }
     },
     "servingStyle.name.add.title" : {
 
@@ -1678,10 +2357,24 @@
 
     },
     "servingStyle.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serving Style"
+          }
+        }
+      }
     },
     "servingStyle.unselected" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Selected"
+          }
+        }
+      }
     },
     "settings.account.delete.disclaimer" : {
 
@@ -1734,6 +2427,9 @@
     "settings.profile.section.identity.title" : {
 
     },
+    "settings.profile.update" : {
+
+    },
     "settings.profile.useFullName.description" : {
 
     },
@@ -1747,46 +2443,167 @@
 
     },
     "subBrand.addSubBrandFor.title %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new sub-brand for %@"
+          }
+        }
+      }
     },
     "subBrand.create.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Sub-brand Created!"
+          }
+        }
+      }
     },
     "subBrand.defaultSubBrand.label" : {
 
     },
+    "subBrand.delete %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@"
+          }
+        }
+      }
+    },
     "subBrand.delete.disclaimer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the sub-brand and all its products?"
+          }
+        }
+      }
     },
     "subBrand.mergeTo.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted"
+          }
+        }
+      }
+    },
+    "subBrand.mergeTo.confirmation.label %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge %1$@ to %2$@"
+          }
+        }
+      }
     },
     "subBrand.mergeToAnotherSubBrand.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge to another sub-brand"
+          }
+        }
+      }
     },
     "subBrand.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name of the sub-brand"
+          }
+        }
+      }
     },
     "subBrand.name.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "subBrand.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brands"
+          }
+        }
+      }
     },
     "subBrand.screen.open" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Sub-brand"
+          }
+        }
+      }
     },
     "subBrand.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brands"
+          }
+        }
+      }
     },
     "subBrand.unverify" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify Sub-brand"
+          }
+        }
+      }
+    },
+    "subBrand.unverify.disclaimer %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify %@ sub-brand"
+          }
+        }
+      }
     },
     "subBrand.updated.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brand updated!"
+          }
+        }
+      }
     },
     "subcategory.add" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Subcategory"
+          }
+        }
+      }
     },
     "subcategory.add.name" : {
 
@@ -1815,10 +2632,34 @@
       }
     },
     "subcategory.delete.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete subcategory?"
+          }
+        }
+      }
+    },
+    "subcategory.delete.confirmation.label %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "subcategory.edit.navigationTitle %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
     },
     "subcategory.name.placeholder" : {
       "localizations" : {
@@ -1914,13 +2755,29 @@
     "Uploading of a product logo failed." : {
 
     },
+    "user.addFriend.label" : {
+
+    },
+    "user.block.label" : {
+
+    },
     "user.search.navigationTitle" : {
 
     },
     "verification.verified.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verified"
+          }
+        }
+      }
     },
     "verification.waitingForVerification.label" : {
+
+    },
+    "wishlist.add.label" : {
 
     },
     "wishlist.empty.title" : {

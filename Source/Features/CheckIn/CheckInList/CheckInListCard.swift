@@ -94,13 +94,13 @@ struct CheckInListCard: View {
             }
             .sheets(item: $sheet)
             .confirmationDialog(
-                "checkIn.deleteConfirmation.title",
+                "checkIn.delete.confirmation.title",
                 isPresented: $showDeleteCheckInConfirmationDialog,
                 titleVisibility: .visible,
                 presenting: showDeleteConfirmationFor
             ) { presenting in
                 ProgressButton(
-                    "checkIn.delete.disclaimer \(presenting.product.formatted(.fullName))",
+                    "checkIn.delete.confirmation.label \(presenting.product.formatted(.fullName))",
                     role: .destructive,
                     action: { await onDelete(checkIn) }
                 )
