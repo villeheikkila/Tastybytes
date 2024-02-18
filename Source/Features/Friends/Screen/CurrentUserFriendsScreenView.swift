@@ -122,7 +122,7 @@ struct CurrentUserFriendsScreen: View {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
-        .navigationTitle("friends.title (\(friendEnvironmentModel.friends.count.formatted())")
+        .navigationTitle("friends.title \(friendEnvironmentModel.friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         #if !targetEnvironment(macCatalyst)

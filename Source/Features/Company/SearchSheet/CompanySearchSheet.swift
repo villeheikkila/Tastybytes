@@ -73,7 +73,7 @@ struct CompanySearchSheet: View {
                 VStack {
                     Text("company.search.noResults.title")
                     if profileEnvironmentModel.hasPermission(.canCreateCompanies) {
-                        Button("company.create.label", action: { createNew() })
+                        Button("company.search.noResults.create.label", action: { createNew() })
                     }
                 }
             }

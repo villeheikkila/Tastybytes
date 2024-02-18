@@ -47,9 +47,7 @@ private func randomString(length: Int = 32) -> String {
     var randomBytes = [UInt8](repeating: 0, count: length)
     let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
     if errorCode != errSecSuccess {
-        fatalError(
-            "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-        )
+        fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
     }
 
     let charset: [Character] = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")

@@ -564,34 +564,90 @@
       }
     },
     "checkIn.action.createNew" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new product"
+          }
+        }
+      }
     },
     "checkIn.add.label" : {
 
     },
     "checkIn.addBarcode.confirmation.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add barcode confirmation"
+          }
+        }
+      }
     },
     "checkIn.addBarcode.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "checkIn.addBarcode.label %@"
+          }
+        }
+      }
     },
     "checkIn.addBarcode.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barcode added!"
+          }
+        }
+      }
     },
     "checkIn.checkedIn.label" : {
 
     },
     "checkIn.create.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in!"
+          }
+        }
+      }
     },
     "checkIn.create.label.prominent" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in!"
+          }
+        }
+      }
     },
     "checkIn.date.checkInAt %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checked-in %@"
+          }
+        }
+      }
     },
     "checkIn.date.legacyCheckIn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legacy Check-in"
+          }
+        }
+      }
     },
     "checkIn.datePicker.label" : {
       "localizations" : {
@@ -670,7 +726,14 @@
 
     },
     "checkIn.friends.tag" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag friends"
+          }
+        }
+      }
     },
     "checkIn.friends.tagged.label" : {
       "localizations" : {
@@ -723,7 +786,14 @@
       }
     },
     "checkIn.location.add.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in Location"
+          }
+        }
+      }
     },
     "checkIn.location.purchasedFrom __%@__" : {
       "localizations" : {
@@ -736,7 +806,14 @@
       }
     },
     "checkIn.location.reset" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
     },
     "checkIn.manufacturedBy.label %@" : {
       "localizations" : {
@@ -802,7 +879,14 @@
       }
     },
     "checkIn.purchaseLocation.add.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase Location"
+          }
+        }
+      }
     },
     "checkIn.rating.label" : {
 
@@ -936,7 +1020,14 @@
 
     },
     "checkIn.update.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update Check-in!"
+          }
+        }
+      }
     },
     "checkInList.error.failedToLoad.alert" : {
 
@@ -1012,49 +1103,154 @@
       }
     },
     "company.create.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create"
+          }
+        }
+      }
     },
     "company.create.notFound.section.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Didn't find the company you were looking for?\""
+          }
+        }
+      }
     },
     "company.create.section.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new company"
+          }
+        }
+      }
     },
     "company.create.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Company Created!"
+          }
+        }
+      }
     },
     "company.delete.confirmationDialog.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@ Company"
+          }
+        }
+      }
     },
     "company.delete.confirmationDialog.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Company Confirmation"
+          }
+        }
+      }
     },
     "company.edit.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Company"
+          }
+        }
+      }
     },
     "company.edit.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name of the company"
+          }
+        }
+      }
     },
     "company.edit.section.name.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "company.editSuggestion.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Suggestion"
+          }
+        }
+      }
     },
     "company.editSuggestion.section.name.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What should the company be called?"
+          }
+        }
+      }
     },
     "company.editSuggestion.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit suggestion sent!"
+          }
+        }
+      }
     },
     "company.editSuggestion.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Suggestion"
+          }
+        }
+      }
     },
     "company.logo.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logo"
+          }
+        }
+      }
     },
     "company.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "company.screen.open" : {
       "localizations" : {
@@ -1067,10 +1263,34 @@
       }
     },
     "company.search.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search companies"
+          }
+        }
+      }
+    },
+    "company.search.noResults.create.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new company\""
+          }
+        }
+      }
     },
     "company.search.noResults.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No companies found with the searched name."
+          }
+        }
+      }
     },
     "company.shareLink.subject" : {
 
@@ -1086,13 +1306,34 @@
       }
     },
     "company.unverify.confirmationDialog.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify %@ company"
+          }
+        }
+      }
     },
     "company.unverify.confirmationDialog.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify Company"
+          }
+        }
+      }
     },
     "company.update.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Company updated!"
+          }
+        }
+      }
     },
     "contributions.title" : {
 
@@ -1170,73 +1411,227 @@
 
     },
     "discover.barcode.noResults.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No results were found, you can assign the barcode to a product by searching again with the name or by creating a new product"
+          }
+        }
+      }
     },
     "discover.barcode.notFound.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Products found with the barcode"
+          }
+        }
+      }
     },
     "discover.barcode.results.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If none of the results match, you can assign the barcode to a product by searching again with the name or by creating a new product."
+          }
+        }
+      }
     },
     "discover.barcode.scan" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan a barcode"
+          }
+        }
+      }
     },
     "discover.companies.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Companies"
+          }
+        }
+      }
     },
     "discover.companies.notFound.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the spelling or try a new search"
+          }
+        }
+      }
     },
     "discover.companies.notFound.title \"%@\"" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Companies found for \"%@\""
+          }
+        }
+      }
     },
     "discover.companies.prompt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search companies"
+          }
+        }
+      }
     },
     "discover.filter.show" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show filters"
+          }
+        }
+      }
     },
     "discover.locations.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locations"
+          }
+        }
+      }
     },
     "discover.locations.notFound.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the spelling or try a new search"
+          }
+        }
+      }
     },
     "discover.locations.notFound.title \"%@\"" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Locations found for \"%@\""
+          }
+        }
+      }
     },
     "discover.locations.prompt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search locations"
+          }
+        }
+      }
     },
     "discover.navigationTitle" : {
 
     },
     "discover.procucts.notFound.title \"%@\"" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Products found for \"%@\""
+          }
+        }
+      }
     },
     "discover.products.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products"
+          }
+        }
+      }
     },
     "discover.products.notFound.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the spelling or try a new search"
+          }
+        }
+      }
     },
     "discover.products.prompt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search products, brands..."
+          }
+        }
+      }
     },
     "discover.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discover"
+          }
+        }
+      }
     },
     "discover.users.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Users"
+          }
+        }
+      }
     },
     "discover.users.notFound.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the spelling or try a new search"
+          }
+        }
+      }
     },
     "discover.users.notFound.title \"%@\"" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No profiles found for \"%@\""
+          }
+        }
+      }
     },
     "discover.users.prompt" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search users"
+          }
+        }
+      }
     },
     "duplicateProduct.markAsDuplicate.navigationTitle" : {
 
@@ -1277,7 +1672,14 @@
       }
     },
     "flavor.add.maxAmountReached.toast %lld" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can only add %lld flavors"
+          }
+        }
+      }
     },
     "flavor.add.navigationTitle" : {
       "localizations" : {
@@ -1344,10 +1746,24 @@
 
     },
     "friends.acceptRequest.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept friend request"
+          }
+        }
+      }
     },
     "friends.action.removeFriendRequest.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove friend request"
+          }
+        }
+      }
     },
     "friends.add.label" : {
 
@@ -1356,16 +1772,37 @@
 
     },
     "friends.block.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Block"
+          }
+        }
+      }
     },
     "friends.contentUnavailable.noFriends" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any friends yet"
+          }
+        }
+      }
     },
     "friends.navigationTitle" : {
 
     },
-    "friends.title (%@" : {
-
+    "friends.title %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Friends (%@)"
+          }
+        }
+      }
     },
     "friends.toolbar.showNameTag" : {
 
@@ -1933,10 +2370,24 @@
 
     },
     "product.createNew.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Didn't find a product you were looking for?"
+          }
+        }
+      }
     },
     "product.createNew.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add new"
+          }
+        }
+      }
     },
     "product.delete.confirmation.description" : {
       "localizations" : {
