@@ -153,8 +153,6 @@ public struct Toast: View {
                         Image(name)
                             .foregroundColor(color)
                             .accessibilityHidden(true)
-                    case .loading:
-                        ActivityIndicator()
                     case .regular:
                         EmptyView()
                     }
@@ -210,8 +208,6 @@ public struct Toast: View {
                         .hudModifier()
                         .foregroundColor(color)
                         .accessibilityHidden(true)
-                case .loading:
-                    ActivityIndicator()
                 case .regular:
                     EmptyView()
                 }
@@ -279,8 +275,6 @@ public struct Toast: View {
                     .foregroundColor(color)
                     .padding(.bottom)
                 Spacer()
-            case .loading:
-                ActivityIndicator()
             case .regular:
                 EmptyView()
             }
@@ -303,7 +297,7 @@ public struct Toast: View {
         }
         .fixedSize(horizontal: true, vertical: false)
         .padding()
-        .withFrame(type != .regular && type != .loading)
+        .withFrame(type != .regular)
         .alertBackground(style?.backgroundColor)
         .cornerRadius(10)
     }
@@ -336,7 +330,6 @@ public extension Toast {
         case error(_ color: Color)
         case systemImage(_ name: String, _ color: Color)
         case image(_ name: String, _ color: Color)
-        case loading
         case regular
     }
 
@@ -471,7 +464,7 @@ public struct ToastModifier: ViewModifier {
                     .onDisappear(perform: {
                         completion?()
                     })
-                    .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
+                    .transition(.move(edge: .top).combined(with: .opacity))
             case .banner:
                 alert()
                     .onTapGesture {
@@ -551,11 +544,6 @@ public struct ToastModifier: ViewModifier {
     }
 
     private func onAppearAction() {
-        if alert().type == .loading {
-            duration = 0
-            tapToDismiss = false
-        }
-
         if duration > 0 {
             workItem?.cancel()
 
@@ -572,18 +560,22 @@ public struct ToastModifier: ViewModifier {
 }
 
 private struct AnimatedCheckmark: View {
-    var color: Color = .black
-    var size: Int = 50
-
-    var height: CGFloat {
-        CGFloat(size)
-    }
-
-    var width: CGFloat {
-        CGFloat(size)
-    }
-
     @State private var percentage: CGFloat = .zero
+    let color: Color
+    let size: Int
+
+    init(color: Color = .black, size: Int = 50) {
+        self.color = color
+        self.size = size
+    }
+
+    private var height: CGFloat {
+        CGFloat(size)
+    }
+
+    private var width: CGFloat {
+        CGFloat(size)
+    }
 
     var body: some View {
         Path { path in
@@ -602,22 +594,26 @@ private struct AnimatedCheckmark: View {
 }
 
 private struct AnimatedXmark: View {
-    var color: Color = .black
-    var size: Int = 50
+    @State private var percentage: CGFloat = .zero
+    let color: Color
+    let size: Int
 
-    var height: CGFloat {
+    init(color: Color = .black, size: Int = 50) {
+        self.color = color
+        self.size = size
+    }
+
+    private var height: CGFloat {
         CGFloat(size)
     }
 
-    var width: CGFloat {
+    private var width: CGFloat {
         CGFloat(size)
     }
 
-    var rect: CGRect {
+    private var rect: CGRect {
         CGRect(x: 0, y: 0, width: size, height: size)
     }
-
-    @State private var percentage: CGFloat = .zero
 
     var body: some View {
         Path { path in
@@ -636,29 +632,6 @@ private struct AnimatedXmark: View {
     }
 }
 
-struct ActivityIndicator: UIViewRepresentable {
-    func makeUIView(context _: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
-        let progressView = UIActivityIndicatorView(style: .large)
-        progressView.startAnimating()
-
-        return progressView
-    }
-
-    func updateUIView(_: UIActivityIndicatorView, context _: UIViewRepresentableContext<ActivityIndicator>) {}
-}
-
-public struct BlurView: UIViewRepresentable {
-    public typealias UIViewType = UIVisualEffectView
-
-    public func makeUIView(context _: Context) -> UIVisualEffectView {
-        UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
-    }
-
-    public func updateUIView(_ uiView: UIVisualEffectView, context _: Context) {
-        uiView.effect = UIBlurEffect(style: .systemMaterial)
-    }
-}
-
 private struct BackgroundModifier: ViewModifier {
     var color: Color?
 
@@ -669,7 +642,7 @@ private struct BackgroundModifier: ViewModifier {
                 .background(color)
         } else {
             content
-                .background(BlurView())
+                .background(.thinMaterial)
         }
     }
 }
