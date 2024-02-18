@@ -115,7 +115,7 @@ struct AboutScreen: View {
                                 .padding(.leading, 5)
                                 .padding(.trailing, 15)
 
-                            Text("profile.linkedIn")
+                            Text("links.linkedIn")
                                 .fontWeight(.medium)
                         }
                     }

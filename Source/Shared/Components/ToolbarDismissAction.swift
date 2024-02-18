@@ -1,6 +1,6 @@
 import SwiftUI
 
- struct ToolbarDismissAction: ToolbarContent {
+struct ToolbarDismissAction: ToolbarContent {
     @Environment(\.dismiss) private var dismiss
 
     public var body: some ToolbarContent {

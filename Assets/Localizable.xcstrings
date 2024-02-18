@@ -5,7 +5,14 @@
 
     },
     "(%@)" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%@)"
+          }
+        }
+      }
     },
     "%@" : {
 
@@ -61,16 +68,44 @@
       }
     },
     "about.rateApp.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rate %@"
+          }
+        }
+      }
     },
     "about.sendFeedback.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submit feedback"
+          }
+        }
+      }
     },
     "about.sendFeedback.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank you!"
+          }
+        }
+      }
     },
     "about.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
     },
     "account.delete.confirmationDialog.title" : {
 
@@ -82,7 +117,14 @@
 
     },
     "account.email.section.footer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email is only used for account recovery and is never shown to other users."
+          }
+        }
+      }
     },
     "account.email.section.title" : {
 
@@ -91,7 +133,14 @@
 
     },
     "account.export.failure.alert" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export failed"
+          }
+        }
+      }
     },
     "account.export.label" : {
 
@@ -113,7 +162,14 @@
       }
     },
     "activity.error.failedToLoad" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to load activity feed"
+          }
+        }
+      }
     },
     "activity.error.failedToLoadMoreItems" : {
       "localizations" : {
@@ -332,7 +388,14 @@
       }
     },
     "barcode.scanner.showScanner.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show scanner"
+          }
+        }
+      }
     },
     "barcode.scanner.textInput.label" : {
 
@@ -351,10 +414,24 @@
 
     },
     "blockedUsers.block.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Block"
+          }
+        }
+      }
     },
     "blockedUsers.block.success" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocked!"
+          }
+        }
+      }
     },
     "blockedUsers.empty.block.label" : {
 
@@ -383,7 +460,14 @@
       }
     },
     "blockedUsers.unblock.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unblock"
+          }
+        }
+      }
     },
     "bracode.add.success.toast" : {
       "localizations" : {
@@ -528,6 +612,16 @@
         }
       }
     },
+    "brand.owner.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand owner"
+          }
+        }
+      }
+    },
     "brand.product.groupBy.label" : {
       "localizations" : {
         "en" : {
@@ -563,7 +657,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brands"
+            "value" : "Brand"
           }
         }
       }
@@ -672,7 +766,14 @@
       }
     },
     "checkIn.add.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in"
+          }
+        }
+      }
     },
     "checkIn.addBarcode.confirmation.title" : {
       "localizations" : {
@@ -705,7 +806,14 @@
       }
     },
     "checkIn.checkedIn.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checked-in"
+          }
+        }
+      }
     },
     "checkIn.create.label" : {
       "localizations" : {
@@ -991,7 +1099,14 @@
       }
     },
     "checkIn.rating.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating"
+          }
+        }
+      }
     },
     "checkIn.reaction.react.label" : {
       "localizations" : {
@@ -1024,7 +1139,14 @@
       }
     },
     "checkIn.section.additionalInformation.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Additional Information"
+          }
+        }
+      }
     },
     "checkIn.section.locationsFriends.title" : {
       "localizations" : {
@@ -1126,7 +1248,14 @@
       }
     },
     "checkIn.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in"
+          }
+        }
+      }
     },
     "checkIn.update.label" : {
       "localizations" : {
@@ -1386,7 +1515,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create new company\""
+            "value" : "Create new company"
           }
         }
       }
@@ -1515,7 +1644,14 @@
       }
     },
     "deleteAccount.success.done.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account deleted"
+          }
+        }
+      }
     },
     "deleteAccount.success.title" : {
       "localizations" : {
@@ -2363,10 +2499,34 @@
       }
     },
     "links.gitHub" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GitHub"
+          }
+        }
+      }
+    },
+    "links.linkedIn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LinkedIn"
+          }
+        }
+      }
     },
     "links.portfolio" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Portfolio"
+          }
+        }
+      }
     },
     "location.delete.confirmation.description" : {
       "localizations" : {
@@ -2542,14 +2702,21 @@
       }
     },
     "nameTag.scan.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan"
+          }
+        }
+      }
     },
     "nameTag.show.label" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show Name Tag"
+            "value" : "Show Tag"
           }
         }
       }
@@ -2789,20 +2956,34 @@
       }
     },
     "notitifications.systemSettings.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable or disable the app's permission to send notifications"
+          }
+        }
+      }
     },
     "notitifications.systemSettings.link" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open system settings"
+            "value" : "Open System Notification Settings"
           }
         }
       }
     },
     "notitifications.systemSettings.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permissions"
+          }
+        }
+      }
     },
     "onboarding.locationPermission.accessToLocation.description" : {
       "localizations" : {
@@ -2854,11 +3035,25 @@
         }
       }
     },
-    "product.bracode.add.label" : {
-
+    "product.barcode.add.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a barcode"
+          }
+        }
+      }
     },
-    "product.bracode.added.label" : {
-
+    "product.barcode.added.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barcode added!"
+          }
+        }
+      }
     },
     "product.createNew.description" : {
       "localizations" : {
@@ -2911,7 +3106,14 @@
       }
     },
     "product.description.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description"
+          }
+        }
+      }
     },
     "product.discontinued.label" : {
 
@@ -2923,7 +3125,14 @@
 
     },
     "product.editSuggestion.success.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updated!"
+          }
+        }
+      }
     },
     "product.feed.latest.label" : {
       "localizations" : {
@@ -2956,7 +3165,14 @@
       }
     },
     "product.filter.overlay.resetFilter" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
     },
     "product.filter.overlay.showingOnlyNotHad" : {
 
@@ -2995,7 +3211,14 @@
 
     },
     "product.isDiscontinued.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product has been discontinued"
+          }
+        }
+      }
     },
     "product.loadedFromBarcode.backToSearch" : {
 
@@ -3014,7 +3237,14 @@
       }
     },
     "product.logo.section.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logo"
+          }
+        }
+      }
     },
     "product.markAsDuplicate.label" : {
       "localizations" : {
@@ -3037,7 +3267,14 @@
       }
     },
     "product.mutation.create.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a new product"
+          }
+        }
+      }
     },
     "product.mutation.edit.title" : {
 
@@ -3046,13 +3283,34 @@
 
     },
     "product.mutation.hasSubBrand.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Has a sub-brand?"
+          }
+        }
+      }
     },
     "product.mutation.pickCategory.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
     },
     "product.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name of the product"
+          }
+        }
+      }
     },
     "product.screen.open" : {
       "localizations" : {
@@ -3078,7 +3336,14 @@
       }
     },
     "product.unverify.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to unverify the product"
+          }
+        }
+      }
     },
     "product.unverify.confirmation.label %@" : {
 
@@ -3094,7 +3359,14 @@
       }
     },
     "profile.avatar.delete.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete avatar"
+          }
+        }
+      }
     },
     "profile.joinedAt %@" : {
       "localizations" : {
@@ -3105,9 +3377,6 @@
           }
         }
       }
-    },
-    "profile.linkedIn" : {
-
     },
     "profile.links.checkIns" : {
       "localizations" : {
@@ -3246,7 +3515,14 @@
       }
     },
     "profile.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
     },
     "profileProductList.filters.show.label" : {
 
@@ -3272,7 +3548,14 @@
       }
     },
     "profileProductList.rated.navigationTitle %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating %@"
+          }
+        }
+      }
     },
     "profileProductList.unrated.navigationTitle" : {
       "localizations" : {
@@ -3307,14 +3590,35 @@
     "qrcode.placeholder.label" : {
 
     },
-    "rating.outOf5 %lf" : {
-
+    "rating.outOf %lf %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rating %1$lf/%2$lld"
+          }
+        }
+      }
     },
     "rating.stars %lf" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stars %lf"
+          }
+        }
+      }
     },
     "rating.topEntries.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top Entries"
+          }
+        }
+      }
     },
     "ratingChart.rating.label" : {
 
@@ -3491,7 +3795,14 @@
       }
     },
     "servingStyle.name.add.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "servingStyle.name.edit.title" : {
 
@@ -3628,10 +3939,24 @@
 
     },
     "settings.privacy.privateProfile.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private Profile"
+          }
+        }
+      }
     },
     "settings.profile.firstName" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Name (Optional)"
+          }
+        }
+      }
     },
     "settings.profile.lastName" : {
       "localizations" : {
@@ -3693,7 +4018,14 @@
       }
     },
     "settings.signOut" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign Out"
+          }
+        }
+      }
     },
     "settings.title" : {
       "localizations" : {
@@ -3869,7 +4201,14 @@
       }
     },
     "subcategory.add.name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new subcategory"
+          }
+        }
+      }
     },
     "subcategory.add.openSheet.label" : {
 
@@ -3948,7 +4287,14 @@
 
     },
     "subcategory.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subcategory"
+          }
+        }
+      }
     },
     "subcategoryStatistics.all.open" : {
 
@@ -4143,7 +4489,14 @@
       }
     },
     "verification.waitingForVerification.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for verification"
+          }
+        }
+      }
     },
     "wishlist.add.label" : {
       "localizations" : {

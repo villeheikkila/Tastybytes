@@ -1,8 +1,7 @@
 import SwiftUI
 
- struct EmptyActivityFeedView: View {
-
-     var body: some View {
+struct EmptyActivityFeedView: View {
+    var body: some View {
         ContentUnavailableView {
             Label("activityFeed.emptyContent.title", systemImage: "list.star")
         } description: {

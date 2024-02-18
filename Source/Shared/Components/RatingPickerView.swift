@@ -20,6 +20,7 @@ public struct RatingPickerView: View {
     @GestureState private var dragging = false
 
     let incrementType: IncrementType
+    let outOf = 5
 
     public init(
         rating: Binding<Double>,
@@ -32,7 +33,7 @@ public struct RatingPickerView: View {
     public var body: some View {
         ZStack {
             HStack {
-                ForEach(0 ... 4, id: \.self) { i in
+                ForEach(0 ... outOf - 1, id: \.self) { i in
                     Image(systemName: "star")
                         .accessibilityHidden(true)
                         .overlay(
@@ -57,7 +58,7 @@ public struct RatingPickerView: View {
                         )
                         .frame(width: starSize.width, height: starSize.height)
                         .foregroundColor(.yellow)
-                }.accessibilityLabel("rating.outOf5 \(rating)")
+                }.accessibilityLabel("rating.outOf \(rating) \(outOf)")
             }
             .background(
                 GeometryReader { proxy in
@@ -84,14 +85,14 @@ public struct RatingPickerView: View {
 
     private func rating(at position: CGPoint) -> Double {
         let singleStarWidth = starSize.width
-        let totalPaddingWidth = controlSize.width - Double(5) * singleStarWidth
-        let singlePaddingWidth = totalPaddingWidth / (Double(5) - 1)
+        let totalPaddingWidth = controlSize.width - Double(outOf) * singleStarWidth
+        let singlePaddingWidth = totalPaddingWidth / (Double(outOf) - 1)
         let starWithSpaceWidth = Double(singleStarWidth + singlePaddingWidth)
         let xAxis = Double(position.x)
         let starIdx = Int(xAxis / starWithSpaceWidth)
         let starPercent = xAxis.truncatingRemainder(dividingBy: starWithSpaceWidth) / Double(singleStarWidth)
         let rating = Double(starIdx) + round(starPercent * incrementType.divider) / incrementType.divider
-        return min(5, max(0, rating))
+        return min(Double(outOf), max(0, rating))
     }
 }
 

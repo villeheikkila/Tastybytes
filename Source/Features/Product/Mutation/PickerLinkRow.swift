@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PickerLinkRow: View {
     @Binding var shownSheet: Sheet?
-    let label: String
+    let label: LocalizedStringKey
     let selection: String?
     let sheet: Sheet
 

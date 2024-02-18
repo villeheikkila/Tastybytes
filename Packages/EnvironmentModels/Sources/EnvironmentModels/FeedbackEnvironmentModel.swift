@@ -592,7 +592,7 @@ private struct AnimatedCheckmark: View {
             path.addLine(to: CGPoint(x: width, y: 0))
         }
         .trim(from: 0, to: percentage)
-        .stroke(color, style: StrokeStyle(lineWidth: CGFloat(size / 8), lineCap: .round, lineJoin: .round))
+        .stroke(color, style: .init(lineWidth: CGFloat(size / 8), lineCap: .round, lineJoin: .round))
         .animation(.spring.speed(0.75).delay(0.25), value: percentage)
         .onAppear {
             percentage = 1.0

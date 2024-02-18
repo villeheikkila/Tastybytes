@@ -231,7 +231,7 @@ struct ProductMutationView: View {
 
             if mode.showBarcodeSection {
                 Button(
-                    barcode == nil ? "product.bracode.add.label" : "product.bracode.added.label",
+                    barcode == nil ? "product.barcode.add.label" : "product.barcode.added.label",
                     action: { sheet = .barcodeScanner(onComplete: { barcode in
                         self.barcode = barcode
                     }) }

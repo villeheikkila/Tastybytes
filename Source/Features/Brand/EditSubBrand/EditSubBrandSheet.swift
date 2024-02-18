@@ -143,7 +143,7 @@ struct EditSubBrandSheet: View {
 extension SubBrandProtocol {
     var label: String {
         if let name {
-             name
+            name
         } else {
             String(localized: "subBrand.defaultSubBrand.label")
         }
