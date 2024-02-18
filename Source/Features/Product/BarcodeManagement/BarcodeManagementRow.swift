@@ -6,7 +6,8 @@ struct BarcodeManagementRow: View {
 
     var body: some View {
         HStack {
-            Avatar(profile: barcode.profile, size: 32)
+            Avatar(profile: barcode.profile)
+                .avatarSize(.medium)
             VStack(alignment: .leading, spacing: 2) {
                 HStack {
                     Text(barcode.profile.preferredName).font(.caption)

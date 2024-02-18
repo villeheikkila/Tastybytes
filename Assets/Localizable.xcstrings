@@ -3161,7 +3161,14 @@
       }
     },
     "product.discontinued.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(discontinued)"
+          }
+        }
+      }
     },
     "product.editSuggestion.label" : {
 

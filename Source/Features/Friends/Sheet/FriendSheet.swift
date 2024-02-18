@@ -39,7 +39,8 @@ struct FriendSheet: View {
     var body: some View {
         List(sortedShownProfiles, selection: $selectedFriendIds) { friend in
             HStack {
-                Avatar(profile: friend, size: 42)
+                Avatar(profile: friend)
+                    .avatarSize(.extraLarge)
                 Text(friend.preferredName).padding(.leading, 8)
                 Spacer()
             }

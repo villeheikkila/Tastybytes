@@ -37,7 +37,8 @@ struct UserSheet: View {
     var body: some View {
         List(searchResults) { profile in
             HStack {
-                Avatar(profile: profile, size: 32)
+                Avatar(profile: profile)
+                    .avatarSize(.large)
                 Text(profile.preferredName)
                 Spacer()
                 HStack {

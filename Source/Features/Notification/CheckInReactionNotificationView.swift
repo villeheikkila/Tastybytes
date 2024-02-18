@@ -8,7 +8,8 @@ struct CheckInReactionNotificationView: View {
     var body: some View {
         RouterLink(screen: .checkIn(checkInReaction.checkIn)) {
             HStack {
-                Avatar(profile: checkInReaction.profile, size: 32)
+                Avatar(profile: checkInReaction.profile)
+                    .avatarSize(.large)
                 Text("checkIn.notifications.userReactedToYourCheckIn.body \(checkInReaction.profile.preferredName) \(checkInReaction.checkIn.product.formatted(.full))")
                 Spacer()
             }

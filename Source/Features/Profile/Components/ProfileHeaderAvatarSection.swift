@@ -29,7 +29,8 @@ struct ProfileHeaderAvatarSection: View {
             }
             Spacer()
             VStack(alignment: .center) {
-                Avatar(profile: profile, size: 90)
+                Avatar(profile: profile)
+                    .avatarSize(.custom(90))
                     .contextMenu {
                         if let imageEntity = profile.avatars.first {
                             ProgressButton("profile.avatar.delete.label", role: .destructive) {

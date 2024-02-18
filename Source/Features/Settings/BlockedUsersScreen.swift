@@ -66,7 +66,8 @@ struct BlockedUserListItemView: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            Avatar(profile: profile, size: 32)
+            Avatar(profile: profile)
+                .avatarSize(.large)
             VStack {
                 HStack {
                     Text(profile.preferredName)

@@ -11,7 +11,8 @@ struct CheckInCommentView: View {
 
     var body: some View {
         HStack {
-            Avatar(profile: comment.profile, size: 32)
+            Avatar(profile: comment.profile)
+                .avatarSize(.medium)
             VStack(alignment: .leading) {
                 HStack {
                     Text(comment.profile.preferredName).font(.caption)

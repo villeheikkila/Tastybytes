@@ -7,14 +7,12 @@ struct Avatar: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 
     let profile: Profile
-    let size: Double
 
-    public init(profile: Profile, size: Double = 24) {
+    public init(profile: Profile) {
         self.profile = profile
-        self.size = size
     }
 
     var body: some View {
-        AvatarView(profile: profile, baseUrl: appEnvironmentModel.infoPlist.supabaseUrl, size: size)
+        AvatarView(profile: profile, baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
     }
 }

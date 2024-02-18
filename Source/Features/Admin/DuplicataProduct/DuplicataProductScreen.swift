@@ -27,7 +27,8 @@ struct DuplicateProductScreen: View {
             VStack {
                 if let createdBy = product.createdBy {
                     HStack {
-                        Avatar(profile: createdBy, size: 16)
+                        Avatar(profile: createdBy)
+                            .avatarSize(.small)
                         Text(createdBy.preferredName).font(.caption).bold()
                         Spacer()
                         if let createdAt = product.createdAt {

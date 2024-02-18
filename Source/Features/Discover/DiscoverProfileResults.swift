@@ -8,7 +8,8 @@ struct DiscoverProfileResults: View {
         ForEach(profiles) { profile in
             RouterLink(screen: .profile(profile)) {
                 HStack(alignment: .center) {
-                    Avatar(profile: profile, size: 42)
+                    Avatar(profile: profile)
+                        .avatarSize(.extraLarge)
                     VStack {
                         HStack {
                             Text(profile.preferredName)

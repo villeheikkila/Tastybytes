@@ -19,8 +19,6 @@ struct ReactionsView: View {
 
     let checkIn: CheckIn
 
-    private let size: Double = 24
-
     init(checkIn: CheckIn) {
         self.checkIn = checkIn
         _checkInReactions = State(initialValue: checkIn.checkInReactions)
@@ -30,18 +28,16 @@ struct ReactionsView: View {
         HStack(alignment: .center) {
             Spacer()
             ForEach(checkInReactions) { reaction in
-                Avatar(profile: reaction.profile, size: size)
+                Avatar(profile: reaction.profile)
+                    .avatarSize(.medium)
             }
-            Label(
-                "checkIn.reaction.react.label",
-                systemImage: "hand.thumbsup"
-            )
-            .labelStyle(.iconOnly)
-            .symbolVariant(hasReacted(profileEnvironmentModel.profile) ? .fill : .none)
-            .imageScale(.large)
-            .foregroundColor(Color(.systemYellow))
+            Label("checkIn.reaction.react.label", systemImage: "hand.thumbsup")
+                .labelStyle(.iconOnly)
+                .symbolVariant(hasReacted(profileEnvironmentModel.profile) ? .fill : .none)
+                .imageScale(.large)
+                .foregroundColor(Color(.systemYellow))
         }
-        .frame(maxWidth: 80, minHeight: size + 4)
+        .frame(maxWidth: 80, minHeight: 28)
         .contentShape(Rectangle())
         .alertError($alertError)
         .accessibilityAddTraits(.isButton)

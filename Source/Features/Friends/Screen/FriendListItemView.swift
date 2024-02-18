@@ -20,7 +20,8 @@ struct FriendListItemView<RootView: View>: View {
     var body: some View {
         RouterLink(screen: .profile(profile)) {
             HStack {
-                Avatar(profile: profile, size: 42)
+                Avatar(profile: profile)
+                    .avatarSize(.extraLarge)
                 Text(profile.preferredName)
                     .padding(.leading, 8)
                     .foregroundColor(.primary)

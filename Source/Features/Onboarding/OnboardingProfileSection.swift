@@ -99,23 +99,21 @@ struct OnboardingProfileSection: View {
                 matching: .images,
                 photoLibrary: .shared()
             ) {
-                Avatar(
-                    profile: profileEnvironmentModel.profile,
-                    size: 140
-                )
-                .overlay(alignment: .bottomTrailing) {
-                    PhotosPicker(selection: $selectedItem,
-                                 matching: .images,
-                                 photoLibrary: .shared())
-                    {
-                        Image(systemName: "pencil.circle.fill")
-                            .accessibilityHidden(true)
-                            .symbolRenderingMode(.multicolor)
-                            .font(.system(size: 32))
-                            .foregroundColor(color)
+                Avatar(profile: profileEnvironmentModel.profile)
+                    .avatarSize(.custom(140))
+                    .overlay(alignment: .bottomTrailing) {
+                        PhotosPicker(selection: $selectedItem,
+                                     matching: .images,
+                                     photoLibrary: .shared())
+                        {
+                            Image(systemName: "pencil.circle.fill")
+                                .accessibilityHidden(true)
+                                .symbolRenderingMode(.multicolor)
+                                .font(.system(size: 32))
+                                .foregroundColor(color)
+                        }
+                        .buttonStyle(.borderless)
                     }
-                    .buttonStyle(.borderless)
-                }
             }
             .onChange(of: selectedItem) { _, newValue in
                 guard let newValue else { return }

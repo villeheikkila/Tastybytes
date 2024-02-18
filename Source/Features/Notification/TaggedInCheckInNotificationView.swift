@@ -8,7 +8,8 @@ struct TaggedInCheckInNotificationView: View {
     var body: some View {
         RouterLink(screen: .checkIn(checkIn)) {
             HStack {
-                Avatar(profile: checkIn.profile, size: 32)
+                Avatar(profile: checkIn.profile)
+                    .avatarSize(.large)
                 Text(
                     "notification.taggedCheckIn.userTaggedYou \(checkIn.profile.preferredName) \(checkIn.product.formatted(.full))"
                 )
