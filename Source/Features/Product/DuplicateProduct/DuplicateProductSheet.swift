@@ -61,9 +61,7 @@ struct DuplicateProductSheet: View {
                             presenting: mergeToProduct)
         { presenting in
             ProgressButton(
-                """
-                \(mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.label" : "duplicateProduct.markAsDuplicate.label") \(product.name) \(presenting.formatted(.fullName))
-                """,
+                mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.label \(product.name) \(presenting.formatted(.fullName))" : "duplicateProduct.markAsDuplicate.label \(product.name) \(presenting.formatted(.fullName))",
                 role: .destructive
             ) {
                 switch mode {

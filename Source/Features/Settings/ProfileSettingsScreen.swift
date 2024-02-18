@@ -46,11 +46,11 @@ struct ProfileSettingsScreen: View {
 
     private var profileSection: some View {
         Section {
-            LabeledTextField(title: "settings.profile.username.title", text: $username)
+            LabeledTextField(title: "settings.profile.username", text: $username)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-            LabeledTextField(title: "settings.profile.firstName.title", text: $firstName)
-            LabeledTextField(title: "settings.profile.lastName.title", text: $lastName)
+            LabeledTextField(title: "settings.profile.firstName", text: $firstName)
+            LabeledTextField(title: "settings.profile.lastName", text: $lastName)
 
             if profileEnvironmentModel.hasChanged(username: username, firstName: firstName, lastName: lastName) {
                 ProgressButton(

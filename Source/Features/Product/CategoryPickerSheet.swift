@@ -42,7 +42,7 @@ struct CategoryPickerSheet: View {
             dismiss()
         }
         .searchable(text: $searchTerm)
-        .navigationTitle("category.title")
+        .navigationTitle("category.navigationTitle")
         .toolbar {
             toolbarContent
         }
