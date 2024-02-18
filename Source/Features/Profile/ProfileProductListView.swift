@@ -42,7 +42,7 @@ struct ProfileProductListView: View {
                 return "rating.topEntries.label"
             }
         }
-        return initialDataLoaded ? "profileProductList.navigationTitle (\(filteredProducts.count.formatted()))" : "profileProductList.navigationTitle"
+        return initialDataLoaded ? "profileProductList.navigationTitle \(filteredProducts.count.formatted())" : "profileProductList.navigationTitle"
     }
 
     var filteredProducts: [Product.Joined] {

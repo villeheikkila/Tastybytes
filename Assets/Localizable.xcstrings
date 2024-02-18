@@ -829,8 +829,8 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "checkIn.notifications.userReactedToYourCheckIn.body %1$@ %2$@"
+            "state" : "translated",
+            "value" : "%1$@ reacted to your check-in of %2$@"
           }
         }
       }
@@ -1722,10 +1722,24 @@
       }
     },
     "friend.delete.confirmation.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove %@ from friends"
+          }
+        }
+      }
     },
     "friend.delete.confirmation.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove user from your friends, you will no longer be able to see each other's check-ins on your activity feed nor be able to tag each other check-ins"
+          }
+        }
+      }
     },
     "friend.friendRequest.accept.label" : {
 
@@ -1734,13 +1748,34 @@
 
     },
     "friend.status.accepted" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepted"
+          }
+        }
+      }
     },
     "friend.status.blocked" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocked"
+          }
+        }
+      }
     },
     "friend.status.pending" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pending"
+          }
+        }
+      }
     },
     "friends.accept-request.label" : {
 
@@ -1766,10 +1801,24 @@
       }
     },
     "friends.add.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add friend"
+          }
+        }
+      }
     },
     "friends.add.success" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Friend Request Sent!"
+          }
+        }
+      }
     },
     "friends.block.label" : {
       "localizations" : {
@@ -1792,7 +1841,14 @@
       }
     },
     "friends.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Friends"
+          }
+        }
+      }
     },
     "friends.title %@" : {
       "localizations" : {
@@ -1805,7 +1861,14 @@
       }
     },
     "friends.toolbar.showNameTag" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show name tag or send friend request by QR code"
+          }
+        }
+      }
     },
     "label.add" : {
 
@@ -2130,38 +2193,94 @@
 
     },
     "location.delete.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost"
+          }
+        }
+      }
     },
     "location.delete.confirmation.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@"
+          }
+        }
+      }
     },
     "location.distance %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance: %@"
+          }
+        }
+      }
     },
     "location.merge.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to merge these locations? All check-ins will be transferred and old location deleted."
+          }
+        }
+      }
     },
     "location.merge.confirmation.label %@ %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "location.merge.confirmation.label %1$@ %2$@"
+            "state" : "translated",
+            "value" : "Merge %1$@ to %2$@"
           }
         }
       }
     },
     "location.mergeTo.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge to..."
+          }
+        }
+      }
     },
     "location.mergeTo.navigationTitle." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge location to..."
+          }
+        }
+      }
     },
     "location.mergeTo.search.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a duplicate location"
+          }
+        }
+      }
     },
     "location.nearBy" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby locations"
+          }
+        }
+      }
     },
     "location.open" : {
       "localizations" : {
@@ -2194,7 +2313,14 @@
       }
     },
     "location.recent" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recent locations"
+          }
+        }
+      }
     },
     "location.shareLink.subject" : {
 
@@ -2245,23 +2371,44 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "notification.checkInComment.userCommentedOnYourCheckIn %1$@ %2$@"
+            "state" : "translated",
+            "value" : "%1$@ commented on your check-in of%2$@"
           }
         }
       }
     },
     "notification.checkInComments.empty.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No check-in comment notifications"
+          }
+        }
+      }
     },
     "notification.checkInReaction.label" : {
 
     },
     "notification.checkInReactions.empty.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No check-in reaction notifications"
+          }
+        }
+      }
     },
     "notification.checkInTags.empty.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No check-in tag notifications"
+          }
+        }
+      }
     },
     "notification.deliveryType.disabled" : {
 
@@ -2276,13 +2423,27 @@
 
     },
     "notification.friendRequests.empty.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No friend request notifications"
+          }
+        }
+      }
     },
     "notification.message.label" : {
 
     },
     "notification.messages.empty.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No messages"
+          }
+        }
+      }
     },
     "notification.taggedCheckIn.label" : {
 
@@ -2291,26 +2452,61 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "notification.taggedCheckIn.userTaggedYou %1$@ %2$@"
+            "state" : "translated",
+            "value" : "%1$@ tagged you in a check-in of %2$@"
           }
         }
       }
     },
     "notifications.deleteAll.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete all"
+          }
+        }
+      }
     },
     "notifications.empty.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have no notifications"
+          }
+        }
+      }
     },
     "notifications.friendRequest.recievedFrom %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sent you a friend request!"
+          }
+        }
+      }
     },
     "notifications.markAsRead.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark all read"
+          }
+        }
+      }
     },
     "notifications.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        }
+      }
     },
     "notifications.settings.checkIns.label" : {
 
@@ -2349,19 +2545,54 @@
 
     },
     "onboarding.locationPermission.accessToLocation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location is only used to suggest you venues for your check-ins and show near by activity"
+          }
+        }
+      }
     },
     "onboarding.locationPermission.accessToLocation.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access to location"
+          }
+        }
+      }
     },
     "onboarding.notification.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To keep you updated and informed, we need access to send you notifications."
+          }
+        }
+      }
     },
     "onboarding.notification.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep up to date!"
+          }
+        }
+      }
     },
     "onboarding.profile.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set up your profile"
+          }
+        }
+      }
     },
     "product.bracode.add.label" : {
 
@@ -2609,10 +2840,24 @@
 
     },
     "profile.nameTag.tip.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect with others by sharing your name tag"
+          }
+        }
+      }
     },
     "profile.nameTag.tip.share" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share your profile"
+          }
+        }
+      }
     },
     "profile.navigationTitle" : {
 
@@ -2672,7 +2917,7 @@
     "profileProductList.navigationTitle" : {
 
     },
-    "profileProductList.navigationTitle (%@)" : {
+    "profileProductList.navigationTitle %@" : {
 
     },
     "profileProductList.rated.navigationTitle %@" : {
