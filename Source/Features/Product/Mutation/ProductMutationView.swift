@@ -322,6 +322,9 @@ struct ProductMutationView: View {
                 subBrands: subBrandsFromBrand,
                 logos: brand.logos
             )
+            if subBrand.name != nil {
+                hasSubBrand = true
+            }
             self.subBrand = subBrandsFromBrand.first(where: { $0.id == subBrand.id })
             status = .initialized
         case .new:
