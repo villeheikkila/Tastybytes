@@ -4393,7 +4393,14 @@
       }
     },
     "subcategoryStatistics.all.open" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show all"
+          }
+        }
+      }
     },
     "subscription.callToAction  %@" : {
       "localizations" : {

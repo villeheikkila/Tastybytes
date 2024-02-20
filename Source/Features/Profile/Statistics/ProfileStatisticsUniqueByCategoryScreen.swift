@@ -16,28 +16,10 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
     let profile: Profile
 
     var body: some View {
-        List {
-            Section {
-                ForEach(categoryStatistics) { category in
-                    DisclosureGroup(content: {
-                        SubcategoryStatisticsView(profile: profile, category: category)
-                    }, label: {
-                        HStack {
-                            CategoryNameView(category: category, withBorder: false)
-                            Spacer()
-                            Text(category.count.formatted()).font(.caption).bold()
-                        }
-                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 32))
-                    })
-                }
-            } header: {
-                if !categoryStatistics.isEmpty {
-                    Text("category.title")
-                }
-            }
-            .headerProminence(.increased)
+        List(categoryStatistics) { category in
+            ProfileStatisticsUniqueByCategoryRow(profile: profile, category: category)
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .navigationTitle("profileStatistics.uniqueByCategory.navigationTitle")
         #if !targetEnvironment(macCatalyst)
             .refreshable {
@@ -64,6 +46,23 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
     }
 }
 
+struct ProfileStatisticsUniqueByCategoryRow: View {
+    let profile: Profile
+    let category: CategoryStatistics
+
+    var body: some View {
+        DisclosureGroup(content: {
+            SubcategoryStatisticsView(profile: profile, category: category)
+        }, label: {
+            HStack {
+                CategoryNameView(category: category, withBorder: false)
+                Spacer()
+                Text(category.count.formatted()).font(.caption).bold()
+            }
+        })
+    }
+}
+
 struct SubcategoryStatisticsView: View {
     private let logger = Logger(category: "SubcategoryStatisticsView")
     @Environment(Repository.self) private var repository
@@ -81,35 +80,12 @@ struct SubcategoryStatisticsView: View {
                 ProgressView()
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
-            }
-            ForEach(subcategoryStatistics) { subcategory in
-                RouterLink(screen: .profileProductsByFilter(
-                    profile,
-                    Product
-                        .Filter(
-                            category: category.category,
-                            subcategory: subcategory.subcategory,
-                            onlyNonCheckedIn: false,
-                            sortBy: .highestRated
-                        )
-                )) {
-                    HStack {
-                        Text(subcategory.name)
-                        Spacer()
-                        Text(subcategory.count.formatted())
-                    }
-                    .font(.caption)
-                    .bold()
+            } else {
+                SubcategoryStatisticsRow(profile: profile, category: category.category, subcategory: nil)
+                ForEach(subcategoryStatistics) { subcategory in
+                    SubcategoryStatisticsRow(profile: profile, category: category.category, subcategory: subcategory)
                 }
             }
-        } header: {
-            RouterLink("subcategoryStatistics.all.open", systemImage: "tag", screen: .profileProductsByFilter(
-                profile,
-                .init(category: category.category, sortBy: .highestRated)
-            ))
-            .foregroundColor(Color.primary)
-            .font(.caption)
-            .bold()
         }
         .alertError($alertError)
         .task {
@@ -131,5 +107,36 @@ struct SubcategoryStatisticsView: View {
             logger.error("Failed loading subcategory statistics. Error: \(error) (\(#file):\(#line))")
         }
         isLoading = false
+    }
+}
+
+struct SubcategoryStatisticsRow: View {
+    let profile: Profile
+    let category: Models.Category
+    let subcategory: SubcategoryStatistics?
+
+    var body: some View {
+        RouterLink(screen: .profileProductsByFilter(
+            profile,
+            .init(
+                category: category,
+                subcategory: subcategory?.subcategory,
+                sortBy: .highestRated
+            )
+        )) {
+            if let subcategory {
+                HStack {
+                    Text(subcategory.name)
+                    Spacer()
+                    Text(subcategory.count.formatted())
+                }
+                .font(.caption)
+            } else {
+                Text("subcategoryStatistics.all.open")
+                    .foregroundColor(Color.primary)
+                    .font(.caption)
+                    .bold()
+            }
+        }
     }
 }
