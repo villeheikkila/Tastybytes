@@ -20,7 +20,7 @@ INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad[sdk=iphone*] = UIInterfaceOr
 INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone[sdk=iphone*] = UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 
 //-- Deployment Targets
-MACOSX_DEPLOYMENT_TARGET = 14.0
+MACOSX_DEPLOYMENT_TARGET = 14.3
 IPHONEOS_DEPLOYMENT_TARGET = 17.2
 TVOS_DEPLOYMENT_TARGET = 17.2
 WATCHOS_DEPLOYMENT_TARGET = 10.0

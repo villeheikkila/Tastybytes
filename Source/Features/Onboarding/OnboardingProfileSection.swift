@@ -134,19 +134,10 @@ struct OnboardingProfileSection: View {
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .focused($focusedField, equals: .username)
-                .onTapGesture {
-                    focusedField = .username
-                }
             LabeledTextField(title: "settings.profile.firstName", text: $firstName)
                 .focused($focusedField, equals: .firstName)
-                .onTapGesture {
-                    focusedField = .firstName
-                }
             LabeledTextField(title: "settings.profile.lastName", text: $lastName)
                 .focused($focusedField, equals: .lastName)
-                .onTapGesture {
-                    focusedField = .lastName
-                }
         }
     }
 }
