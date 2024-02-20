@@ -38,11 +38,9 @@ struct BlockedUsersScreen: View {
         .toolbar {
             toolbarContent
         }
-        #if !targetEnvironment(macCatalyst)
         .refreshable {
             await friendEnvironmentModel.refresh()
         }
-        #endif
         .sheets(item: $sheet)
     }
 

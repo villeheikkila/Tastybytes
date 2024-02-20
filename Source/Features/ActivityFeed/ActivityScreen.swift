@@ -95,11 +95,9 @@ struct ActivityScreen: View {
         .onDisappear {
             loadingCheckInsOnAppear?.cancel()
         }
-        #if !targetEnvironment(macCatalyst)
         .refreshable {
             await fetchFeedItems(reset: true)
         }
-        #endif
         .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
             if let updatedCheckIn = newValue {
                 imageUploadEnvironmentModel.uploadedImageForCheckIn = nil

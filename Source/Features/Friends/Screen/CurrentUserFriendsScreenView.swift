@@ -125,23 +125,21 @@ struct CurrentUserFriendsScreen: View {
         .navigationTitle("friends.title \(friendEnvironmentModel.friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
-        #if !targetEnvironment(macCatalyst)
-            .refreshable {
-                await friendEnvironmentModel.refresh(withHaptics: true)
-            }
-        #endif
-            .task {
-                await friendEnvironmentModel.refresh()
-                await notificationEnvironmentModel.markAllFriendRequestsAsRead()
-            }
-            .toolbar {
-                toolbarContent
-            }
-            .sheets(item: $sheet)
-            .confirmationDialog("friend.delete.confirmation.title",
-                                isPresented: $showRemoveFriendConfirmation,
-                                titleVisibility: .visible,
-                                presenting: friendToBeRemoved)
+        .refreshable {
+            await friendEnvironmentModel.refresh(withHaptics: true)
+        }
+        .task {
+            await friendEnvironmentModel.refresh()
+            await notificationEnvironmentModel.markAllFriendRequestsAsRead()
+        }
+        .toolbar {
+            toolbarContent
+        }
+        .sheets(item: $sheet)
+        .confirmationDialog("friend.delete.confirmation.title",
+                            isPresented: $showRemoveFriendConfirmation,
+                            titleVisibility: .visible,
+                            presenting: friendToBeRemoved)
         { presenting in
             ProgressButton(
                 "friend.delete.confirmation.label \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName)",

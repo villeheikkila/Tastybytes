@@ -22,11 +22,9 @@ struct FlavorManagementScreen: View {
         .toolbar {
             toolbarContent
         }
-        #if !targetEnvironment(macCatalyst)
         .refreshable {
             await appEnvironmentModel.refreshFlavors()
         }
-        #endif
         .sheets(item: $sheet)
     }
 

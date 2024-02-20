@@ -64,11 +64,9 @@ struct NotificationScreen: View {
                 }
                 .opacity(showContentUnavailableView ? 1 : 0)
             }
-            #if !targetEnvironment(macCatalyst)
             .refreshable {
                 notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
             }
-            #endif
             .onChange(of: scrollToTop) {
                 withAnimation {
                     filter = nil

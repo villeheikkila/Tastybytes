@@ -59,17 +59,15 @@ struct CompanyScreen: View {
             .headerProminence(.increased)
         }
         .listStyle(.plain)
-        #if !targetEnvironment(macCatalyst)
-            .refreshable {
-                await getCompanyData()
-            }
-        #endif
-            .toolbar {
-                toolbarContent
-            }
-            .confirmationDialog("company.unverify.confirmationDialog.title",
-                                isPresented: $showUnverifyCompanyConfirmation,
-                                presenting: company)
+        .refreshable {
+            await getCompanyData()
+        }
+        .toolbar {
+            toolbarContent
+        }
+        .confirmationDialog("company.unverify.confirmationDialog.title",
+                            isPresented: $showUnverifyCompanyConfirmation,
+                            presenting: company)
         { presenting in
             ProgressButton("company.unverify.confirmationDialog.label \(presenting.name)", action: {
                 await verifyCompany(isVerified: false)

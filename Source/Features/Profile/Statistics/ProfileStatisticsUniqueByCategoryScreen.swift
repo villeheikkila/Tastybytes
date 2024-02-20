@@ -21,15 +21,13 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
         }
         .listStyle(.plain)
         .navigationTitle("profileStatistics.uniqueByCategory.navigationTitle")
-        #if !targetEnvironment(macCatalyst)
-            .refreshable {
-                await loadStatistics()
-            }
-        #endif
-            .alertError($alertError)
-            .task {
-                await loadStatistics()
-            }
+        .refreshable {
+            await loadStatistics()
+        }
+        .alertError($alertError)
+        .task {
+            await loadStatistics()
+        }
     }
 
     func loadStatistics() async {

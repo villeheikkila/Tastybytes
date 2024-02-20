@@ -62,29 +62,27 @@ struct ProductFeedScreen: View {
         }
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
-        #if !targetEnvironment(macCatalyst)
-            .refreshable {
-                await refresh()
+        .refreshable {
+            await refresh()
+        }
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
+            toolbarContent
+        }
+        .alertError($alertError)
+        .task(id: categoryFilter) {
+            await refresh()
+        }
+        .onDisappear {
+            loadingAdditionalItemsTask?.cancel()
+        }
+        .task {
+            if products.isEmpty {
+                await fetchProductFeedItems()
             }
-        #endif
-            .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                toolbarContent
-            }
-            .alertError($alertError)
-            .task(id: categoryFilter) {
-                await refresh()
-            }
-            .onDisappear {
-                loadingAdditionalItemsTask?.cancel()
-            }
-            .task {
-                if products.isEmpty {
-                    await fetchProductFeedItems()
-                }
-            }
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

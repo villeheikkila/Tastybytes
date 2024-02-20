@@ -71,14 +71,12 @@ struct DuplicateProductScreen: View {
             )
         }
         .navigationBarTitle("duplicateProducts.screen.title")
-        #if !targetEnvironment(macCatalyst)
-            .refreshable {
-                await loadProducts(withHaptics: true)
-            }
-        #endif
-            .task {
-                await loadProducts()
-            }
+        .refreshable {
+            await loadProducts(withHaptics: true)
+        }
+        .task {
+            await loadProducts()
+        }
     }
 
     func verifyProduct(_ product: Product.Joined) async {

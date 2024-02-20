@@ -1,5 +1,5 @@
 //-- Platforms
-SUPPORTED_PLATFORMS = macosx iphonesimulator iphoneos appletvsimulator appletvos xrsimulator xros watchsimulator watchos
+SUPPORTED_PLATFORMS = iphonesimulator iphoneos appletvsimulator appletvos xrsimulator xros watchsimulator watchos
 
 //-- Device Types
 // 1: iPhone

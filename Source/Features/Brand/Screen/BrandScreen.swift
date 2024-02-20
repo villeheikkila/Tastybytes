@@ -106,89 +106,87 @@ struct BrandScreen: View {
                 }
             }
             .listStyle(.plain)
-            #if !targetEnvironment(macCatalyst)
-                .refreshable {
-                    await getBrandData(withHaptics: true)
+            .refreshable {
+                await getBrandData(withHaptics: true)
+            }
+            .task(id: refreshId) { [refreshId] in
+                guard refreshId != resultId else { return }
+                logger.info("Refreshing brand screen with id: \(refreshId)")
+                await getBrandData()
+                resultId = refreshId
+                if refreshId == 0, let initialScrollPosition {
+                    scrollProxy.scrollTo(initialScrollPosition, anchor: .top)
                 }
-            #endif
-                .task(id: refreshId) { [refreshId] in
-                    guard refreshId != resultId else { return }
-                    logger.info("Refreshing brand screen with id: \(refreshId)")
-                    await getBrandData()
-                    resultId = refreshId
-                    if refreshId == 0, let initialScrollPosition {
-                        scrollProxy.scrollTo(initialScrollPosition, anchor: .top)
+            }
+            .toolbar {
+                toolbarContent
+            }
+            .confirmationDialog(
+                "subBrand.unverify",
+                isPresented: $showSubBrandUnverificationConfirmation,
+                presenting: toUnverifySubBrand
+            ) { presenting in
+                ProgressButton(
+                    "subBrand.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
+                    action: {
+                        await verifySubBrand(presenting, isVerified: false)
                     }
-                }
-                .toolbar {
-                    toolbarContent
-                }
-                .confirmationDialog(
-                    "subBrand.unverify",
-                    isPresented: $showSubBrandUnverificationConfirmation,
-                    presenting: toUnverifySubBrand
-                ) { presenting in
-                    ProgressButton(
-                        "subBrand.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
-                        action: {
-                            await verifySubBrand(presenting, isVerified: false)
-                        }
-                    )
-                }
-                .alertError($alertError)
-                .confirmationDialog(
-                    "brand.unverify.confirmation.title",
-                    isPresented: $showBrandUnverificationConfirmation,
-                    presenting: brand
-                ) { presenting in
-                    ProgressButton(
-                        "brand.unverify.confirmation.label \(presenting.name)",
-                        action: {
-                            await verifyBrand(brand: presenting, isVerified: false)
-                        }
-                    )
-                }
-                .confirmationDialog(
-                    "brandScreen.groupProductsBy",
-                    isPresented: $showProductGroupingPicker,
-                    titleVisibility: .visible
-                ) {
-                    Button("subBrand.title") {
-                        productGrouping = .subBrand
+                )
+            }
+            .alertError($alertError)
+            .confirmationDialog(
+                "brand.unverify.confirmation.title",
+                isPresented: $showBrandUnverificationConfirmation,
+                presenting: brand
+            ) { presenting in
+                ProgressButton(
+                    "brand.unverify.confirmation.label \(presenting.name)",
+                    action: {
+                        await verifyBrand(brand: presenting, isVerified: false)
                     }
-                    .disabled(productGrouping == .subBrand)
-                    Button("category.title") {
-                        productGrouping = .category
+                )
+            }
+            .confirmationDialog(
+                "brandScreen.groupProductsBy",
+                isPresented: $showProductGroupingPicker,
+                titleVisibility: .visible
+            ) {
+                Button("subBrand.title") {
+                    productGrouping = .subBrand
+                }
+                .disabled(productGrouping == .subBrand)
+                Button("category.title") {
+                    productGrouping = .category
+                }
+                .disabled(productGrouping == .category)
+            }
+            .confirmationDialog(
+                "subBrand.delete.disclaimer",
+                isPresented: $showDeleteSubBrandConfirmation,
+                titleVisibility: .visible,
+                presenting: toDeleteSubBrand
+            ) { presenting in
+                ProgressButton(
+                    "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
+                    role: .destructive,
+                    action: {
+                        await deleteSubBrand(presenting)
                     }
-                    .disabled(productGrouping == .category)
-                }
-                .confirmationDialog(
-                    "subBrand.delete.disclaimer",
-                    isPresented: $showDeleteSubBrandConfirmation,
-                    titleVisibility: .visible,
-                    presenting: toDeleteSubBrand
-                ) { presenting in
-                    ProgressButton(
-                        "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
-                        role: .destructive,
-                        action: {
-                            await deleteSubBrand(presenting)
-                        }
-                    )
-                }
-                .confirmationDialog(
-                    "brand.delete.disclaimer",
-                    isPresented: $showDeleteBrandConfirmationDialog,
-                    titleVisibility: .visible,
-                    presenting: brand
-                ) { presenting in
-                    ProgressButton(
-                        "brand.delete.label \(presenting.name)", role: .destructive,
-                        action: {
-                            await deleteBrand(presenting)
-                        }
-                    )
-                }
+                )
+            }
+            .confirmationDialog(
+                "brand.delete.disclaimer",
+                isPresented: $showDeleteBrandConfirmationDialog,
+                titleVisibility: .visible,
+                presenting: brand
+            ) { presenting in
+                ProgressButton(
+                    "brand.delete.label \(presenting.name)", role: .destructive,
+                    action: {
+                        await deleteBrand(presenting)
+                    }
+                )
+            }
         }
     }
 

@@ -61,11 +61,9 @@ struct CategoryManagementScreen: View {
         .toolbar {
             toolbarContent
         }
-        #if !targetEnvironment(macCatalyst)
         .refreshable {
             await appEnvironmentModel.initialize(reset: true)
         }
-        #endif
         .confirmationDialog("subcategory.delete.confirmation.description",
                             isPresented: $showDeleteSubcategoryConfirmation,
                             titleVisibility: .visible,

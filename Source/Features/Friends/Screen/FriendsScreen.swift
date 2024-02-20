@@ -63,11 +63,9 @@ struct FriendsScreen: View {
             toolbarContent
         }
         .alertError($alertError)
-        #if !targetEnvironment(macCatalyst)
-            .refreshable {
-                await loadFriends()
-            }
-        #endif
+        .refreshable {
+            await loadFriends()
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
