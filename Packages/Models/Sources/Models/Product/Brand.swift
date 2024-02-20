@@ -24,15 +24,15 @@ public extension Brand {
         public let isVerified: Bool
         public let subBrands: [SubBrand]
         public let logos: [ImageEntity]
-        
+
         public init(brand: Brand.JoinedSubBrandsProductsCompany) {
             self.init(
-                  id: brand.id,
-                  name: brand.name,
-                  isVerified: brand.isVerified,
-                  subBrands: brand.subBrands.map(\.subBrand),
-                  logos: brand.logos
-              )
+                id: brand.id,
+                name: brand.name,
+                isVerified: brand.isVerified,
+                subBrands: brand.subBrands.map(\.subBrand),
+                logos: brand.logos
+            )
         }
 
         enum CodingKeys: String, CodingKey {

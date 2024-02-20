@@ -149,7 +149,7 @@ public extension Product {
             onlyUnrated = nil
         }
 
-        public init(category: Category?, subcategory: Subcategory?, onlyNonCheckedIn: Bool, sortBy: SortBy?) {
+        public init(category: Category? = nil, subcategory: Subcategory? = nil, onlyNonCheckedIn: Bool = false, sortBy: SortBy? = nil) {
             if let category {
                 self.category = Models.Category.JoinedSubcategoriesServingStyles(
                     id: category.id,

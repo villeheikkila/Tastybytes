@@ -134,7 +134,14 @@
       }
     },
     "account.email.section.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
     },
     "account.email.sendVerificationLink.label" : {
 
@@ -432,7 +439,14 @@
       }
     },
     "barcode.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barcodes"
+          }
+        }
+      }
     },
     "blockedUsers.block.label" : {
       "localizations" : {
@@ -3619,12 +3633,42 @@
         }
       }
     },
+    "profileStatistics.links.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistics"
+          }
+        }
+      }
+    },
     "profileStatistics.navigationTitle" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Statistics"
+          }
+        }
+      }
+    },
+    "profileStatistics.uniqueByCategory.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unique by Category"
+          }
+        }
+      }
+    },
+    "profileStatistics.uniqueByCategory.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unique by Category"
           }
         }
       }

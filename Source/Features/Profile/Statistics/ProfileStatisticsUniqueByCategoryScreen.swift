@@ -6,7 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct ProfileStatisticsView: View {
+struct ProfileStatisticsUniqueByCategoryScreen: View {
     private let logger = Logger(category: "ProfileStatisticsView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -36,13 +36,9 @@ struct ProfileStatisticsView: View {
                 }
             }
             .headerProminence(.increased)
-
-            Section {
-                TimePeriodStatisticView(profile: profile)
-            }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("profileStatistics.navigationTitle")
+        .navigationTitle("profileStatistics.uniqueByCategory.navigationTitle")
         #if !targetEnvironment(macCatalyst)
             .refreshable {
                 await loadStatistics()
@@ -94,7 +90,7 @@ struct SubcategoryStatisticsView: View {
                             category: category.category,
                             subcategory: subcategory.subcategory,
                             onlyNonCheckedIn: false,
-                            sortBy: Product.Filter.SortBy.highestRated
+                            sortBy: .highestRated
                         )
                 )) {
                     HStack {
@@ -109,9 +105,7 @@ struct SubcategoryStatisticsView: View {
         } header: {
             RouterLink("subcategoryStatistics.all.open", systemImage: "tag", screen: .profileProductsByFilter(
                 profile,
-                Product
-                    .Filter(category: category.category, subcategory: nil, onlyNonCheckedIn: false,
-                            sortBy: Product.Filter.SortBy.highestRated)
+                .init(category: category.category, sortBy: .highestRated)
             ))
             .foregroundColor(Color.primary)
             .font(.caption)

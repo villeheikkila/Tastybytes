@@ -13,7 +13,7 @@ struct TimePeriodStatisticView: View {
     let profile: Profile
 
     var body: some View {
-        Section("checkIn.title") {
+        Section {
             Picker("checkIn.statistics.timePeriod.segment.picker", selection: $timePeriod) {
                 ForEach(TimePeriodStatistic.TimePeriod.allCases, id: \.self) { segment in
                     Text(segment.label)
@@ -22,8 +22,8 @@ struct TimePeriodStatisticView: View {
             .pickerStyle(.segmented)
             .padding(.horizontal, -8)
             TimePeriodStatisticSegmentView(profile: profile, timePeriod: timePeriod)
+                .headerProminence(.increased)
         }
-        .headerProminence(.increased)
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)
     }

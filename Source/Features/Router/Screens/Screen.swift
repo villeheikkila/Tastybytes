@@ -16,6 +16,7 @@ enum Screen: Hashable, Codable, Sendable {
     case profileWishlist(Profile)
     case profileProductsByFilter(Profile, Product.Filter)
     case profileStatistics(Profile)
+    case profileStatisticsUniqueProducts(Profile)
     case profileLocations(Profile)
     case settings
     case currentUserFriends
@@ -56,7 +57,9 @@ enum Screen: Hashable, Codable, Sendable {
         case let .profileProducts(profile):
             ProfileProductListView(profile: profile, locked: false)
         case let .profileStatistics(profile):
-            ProfileStatisticsView(profile: profile)
+            ProfileStatisticsScreen(profile: profile)
+        case let .profileStatisticsUniqueProducts(profile):
+            ProfileStatisticsUniqueByCategoryScreen(profile: profile)
         case let .profileWishlist(profile):
             ProfileWishlistScreen(profile: profile)
         case let .profileLocations(profile):
