@@ -274,14 +274,7 @@ struct ProductMutationView: View {
                 category = initialProduct.category.id
                 subcategories = Set(initialProduct.subcategories.map(\.id))
                 brandOwner = initialProduct.subBrand.brand.brandOwner
-                brand = Brand.JoinedSubBrands(
-                    id: initialProduct.subBrand.brand.id,
-                    name: initialProduct.subBrand.brand.name,
-                    isVerified: initialProduct.subBrand.brand.isVerified,
-                    subBrands: brandsWithSubBrands
-                        .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? [],
-                    logos: initialProduct.subBrand.brand.logos
-                )
+                brand = brandsWithSubBrands.first(where: { $0.id == initialProduct.subBrand.brand.id })
                 if initialProduct.subBrand.name != nil {
                     hasSubBrand = true
                 }
@@ -298,37 +291,17 @@ struct ProductMutationView: View {
             }
         case let .addToBrand(brand):
             brandOwner = brand.brandOwner
-            self.brand = Brand.JoinedSubBrands(
-                id: brand.id,
-                name: brand.name,
-                isVerified: brand.isVerified,
-                subBrands: brand.subBrands
-                    .map { subBrand in
-                        SubBrand(id: subBrand.id, name: subBrand.name,
-                                 isVerified: subBrand.isVerified)
-                    },
-                logos: brand.logos
-            )
+            self.brand = .init(brand: brand)
             status = .initialized
         case let .addToSubBrand(brand, subBrand):
-            let subBrandsFromBrand = brand.subBrands
-                .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
-
             brandOwner = brand.brandOwner
-            self.brand = Brand.JoinedSubBrands(
-                id: brand.id,
-                name: brand.name,
-                isVerified: brand.isVerified,
-                subBrands: subBrandsFromBrand,
-                logos: brand.logos
-            )
+            self.brand = .init(brand: brand)
             if subBrand.name != nil {
                 hasSubBrand = true
             }
-            self.subBrand = subBrandsFromBrand.first(where: { $0.id == subBrand.id })
+            self.subBrand = brand.subBrands.map(\.subBrand).first(where: { $0.id == subBrand.id })
             status = .initialized
         case .new:
-            category = appEnvironmentModel.categories.first?.id
             status = .initialized
         }
     }

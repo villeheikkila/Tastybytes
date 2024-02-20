@@ -66,6 +66,10 @@ public extension SubBrand {
         public let isVerified: Bool
         public let products: [Product.JoinedCategory]
 
+        public var subBrand: SubBrand {
+            .init(id: id, name: name, isVerified: isVerified)
+        }
+
         enum CodingKeys: String, CodingKey {
             case id
             case name
