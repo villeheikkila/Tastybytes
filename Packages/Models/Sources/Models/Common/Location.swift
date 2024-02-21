@@ -142,6 +142,11 @@ public extension Location {
             latitude = location.coordinate.latitude
             longitude = location.coordinate.longitude
         }
+
+        public init(coordinate: CLLocationCoordinate2D) {
+            latitude = coordinate.latitude
+            longitude = coordinate.longitude
+        }
     }
 
     struct SummaryRequest: Codable, Sendable {

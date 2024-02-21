@@ -19,25 +19,23 @@ struct LocationSearchSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
+    @Environment(\.dismiss) private var dismiss
     @State private var searchResults = [Location]()
     @State private var recentLocations = [Location]()
     @State private var nearbyLocations = [Location]()
-    @State private var currentLocation: CLLocation?
     @State private var searchText = ""
     @State private var alertError: AlertError?
-
-    @Environment(\.dismiss) private var dismiss
+    @State private var initialLocation: CLLocationCoordinate2D?
 
     let category: Location.RecentLocation
     let title: LocalizedStringKey
     let onSelect: (_ location: Location) -> Void
-    let initialLocation: CLLocationCoordinate2D?
 
     init(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: CLLocationCoordinate2D?, onSelect: @escaping (_ location: Location) -> Void) {
         self.title = title
         self.onSelect = onSelect
         self.category = category
-        self.initialLocation = initialLocation
+        _initialLocation =  State(initialValue: initialLocation)
     }
 
     var hasSearched: Bool {
@@ -55,52 +53,45 @@ struct LocationSearchSheet: View {
             if !recentLocations.isEmpty, !hasSearched {
                 Section("location.recent") {
                     ForEach(recentLocations) { location in
-                        LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
+                        LocationRow(location: location, onSelect: onSelect)
                     }
                 }
             }
             if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty, !hasSearched {
                 Section("location.nearBy") {
                     ForEach(nearbyLocations) { location in
-                        LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
+                        LocationRow(location: location, onSelect: onSelect)
                     }
                 }
             }
             if hasSearched {
                 ForEach(searchResults) { location in
-                    LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
+                    LocationRow(location: location, onSelect: onSelect)
                 }
             }
         }
         .searchable(text: $searchText)
+        .safeAreaInset(edge: .bottom, alignment: .trailing) {
+            if initialLocation != nil {
+                InitialLocationOverlay(initialLocation: $initialLocation)
+            }
+        }
         .navigationTitle(title)
         .toolbar {
             toolbarContent
         }
         .task(id: searchText, milliseconds: 500) { @MainActor [searchText] in
+            guard initialLocation == nil else { return }
             guard !searchText.isEmpty else {
                 searchResults = []
                 return
             }
-            await search(for: searchText)
+                await search(for: searchText)
         }
         .task {
-            await getRecentLocations()
-        }
-        .task {
-            await locationEnvironmentModel.updateLocation()
-        }
-        .task {
-            if initialLocation != nil {
-                await search(for: nil)
-            }
+                await loadInitialData()
         }
         .alertError($alertError)
-        .onChange(of: locationEnvironmentModel.location) { _, latestLocation in
-            guard nearbyLocations.isEmpty else { return }
-            currentLocation = latestLocation
-            Task { await getSuggestions(latestLocation) }
-        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -132,8 +123,27 @@ struct LocationSearchSheet: View {
         }
     }
 
-    func getRecentLocations() async {
-        switch await repository.location.getRecentLocations(category: category) {
+    func loadInitialData() async {
+        if initialLocation != nil {
+            await search(for: nil)
+        }
+        let coordinate = await locationEnvironmentModel.getCurrentLocation()?.coordinate ?? centerCoordinate
+        async let recentLocationsPromise = repository.location.getRecentLocations(category: category)
+        async let suggestionsPromise = repository.location.getSuggestions(location: Location.SuggestionParams(coordinate: coordinate))
+
+        let (recentLocationsResult, suggestionResult) = await (recentLocationsPromise, suggestionsPromise)
+
+        switch suggestionResult {
+        case let .success(nearbyLocations):
+            withAnimation {
+                self.nearbyLocations = nearbyLocations
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to load location suggestions. Error: \(error) (\(#file):\(#line))")
+        }
+        switch recentLocationsResult {
         case let .success(recentLocations):
             withAnimation {
                 self.recentLocations = recentLocations
@@ -144,20 +154,6 @@ struct LocationSearchSheet: View {
             logger.error("Failed to load recemt locations. Error: \(error) (\(#file):\(#line))")
         }
     }
-
-    func getSuggestions(_ location: CLLocation?) async {
-        guard let location else { return }
-        switch await repository.location.getSuggestions(location: Location.SuggestionParams(location: location)) {
-        case let .success(nearbyLocations):
-            withAnimation {
-                self.nearbyLocations = nearbyLocations
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to load location suggestions. Error: \(error) (\(#file):\(#line))")
-        }
-    }
 }
 
 @MainActor
@@ -165,15 +161,15 @@ struct LocationRow: View {
     private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var alertError: AlertError?
 
     let location: Location
-    let currentLocation: CLLocation?
     let onSelect: (_ location: Location) -> Void
 
     var distance: Measurement<UnitLength>? {
-        guard let currentLocation, let clLocation = location.location else { return nil }
+        guard let currentLocation = locationEnvironmentModel.location, let clLocation = location.location else { return nil }
         let distanceInMeters = currentLocation.distance(from: clLocation)
         return .init(value: distanceInMeters, unit: UnitLength.meters)
     }
@@ -207,6 +203,29 @@ struct LocationRow: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct InitialLocationOverlay: View {
+    @Binding var initialLocation: CLLocationCoordinate2D?
+
+    var body: some View {
+        if let coordinate = initialLocation {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("location.initialLocationOverlay.description \(coordinate.latitude.formatted(.number.precision(.fractionLength(2)))) \(coordinate.longitude.formatted(.number.precision(.fractionLength(2))))")
+                }
+                .padding(.vertical, 10)
+                Spacer()
+                CloseButton {
+                    initialLocation = nil
+                }
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+            }
+            .padding(.horizontal, 10)
+            .background(.thinMaterial)
         }
     }
 }

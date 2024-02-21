@@ -65,4 +65,21 @@ public final class LocationEnvironmentModel {
             logger.error("Error occured while trying to read current location")
         }
     }
+
+    public func getCurrentLocation() async -> CLLocation? {
+        requestLocationAuthorization()
+        logger.info("Updating location...")
+        let updates = CLLocationUpdate.liveUpdates()
+        do {
+            for try await update in updates {
+                if let location = update.location {
+                    self.location = location
+                    return location
+                }
+            }
+        } catch {
+            logger.error("Error occured while trying to read current location")
+        }
+        return nil
+    }
 }

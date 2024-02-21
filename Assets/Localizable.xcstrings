@@ -2617,6 +2617,16 @@
         }
       }
     },
+    "location.initialLocationOverlay.description %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Searching for locations around Lat: %1$@°, Long: %2$@°"
+          }
+        }
+      }
+    },
     "location.merge.confirmation.description" : {
       "localizations" : {
         "en" : {
