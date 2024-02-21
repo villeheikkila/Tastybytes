@@ -12,8 +12,8 @@ public protocol CheckInRepository: Sendable {
     func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error>
     func getByProductId(id: Int, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getByLocation(locationId: UUID, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error>
-    func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[CheckIn.Image], Error>
-    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async -> Result<[CheckIn.Image], Error>
+    func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[ImageEntity.JoinedCheckIn], Error>
+    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async -> Result<[ImageEntity.JoinedCheckIn], Error>
     func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
     func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error>
     func delete(id: Int) async -> Result<Void, Error>

@@ -23,7 +23,7 @@ struct ProductScreen: View {
     @State private var alertError: AlertError?
 
     // check-in images
-    @State private var checkInImages = [CheckIn.Image]()
+    @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoadingCheckInImages = false
     @State private var checkInImagesPage = 0
 
@@ -96,6 +96,7 @@ struct ProductScreen: View {
         ProductScreenHeader(
             product: product,
             summary: summary,
+            checkInImages: checkInImages,
             loadMoreImages: {
                 checkInImageTask = Task {
                     defer { checkInImageTask = nil }

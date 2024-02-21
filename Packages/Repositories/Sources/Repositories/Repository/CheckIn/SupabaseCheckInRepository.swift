@@ -66,11 +66,11 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[CheckIn.Image], Error> {
+    func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[ImageEntity.JoinedCheckIn], Error> {
         do {
-            let response: [CheckIn.Image] = try await client
+            let response: [ImageEntity.JoinedCheckIn] = try await client
                 .database
-                .from(.checkIns)
+                .from(.checkInImages)
                 .select(CheckIn.getQuery(.image(false)))
                 .eq("created_by", value: id)
                 .order("created_at", ascending: false)
@@ -84,14 +84,13 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async -> Result<[CheckIn.Image], Error> {
+    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async -> Result<[ImageEntity.JoinedCheckIn], Error> {
         do {
-            let response: [CheckIn.Image] = try await client
+            let response: [ImageEntity.JoinedCheckIn] = try await client
                 .database
-                .from(.checkIns)
+                .from(.checkInImages)
                 .select(CheckIn.getQuery(.image(false)))
                 .eq(by.column, value: by.id)
-                // .notEquals("check_in_images", value: "null")
                 .order("created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
@@ -275,7 +274,7 @@ public enum CheckInImageQueryType: Sendable {
         case .profile:
             "created_by"
         case .product:
-            "product_id"
+            "check_ins.product_id"
         }
     }
 

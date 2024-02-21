@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct ProfileCheckInImagesSection: View {
-    let checkInImages: [CheckIn.Image]
+    let checkInImages: [ImageEntity.JoinedCheckIn]
     let isLoading: Bool
     let onLoadMore: () -> Void
 

@@ -9,7 +9,7 @@ import SwiftUI
 struct ProductScreenHeader: View {
     let product: Product.Joined
     let summary: Summary?
-    let checkInImages = [CheckIn.Image]()
+    let checkInImages: [ImageEntity.JoinedCheckIn]
     let isLoadingCheckInImages = false
     let loadMoreImages: () -> Void
     let onRefreshCheckIns: () -> Void

@@ -18,7 +18,7 @@ struct ProfileHeader: View {
     @State private var profile: Profile
     @State private var profileSummary: ProfileSummary?
     @State private var alertError: AlertError?
-    @State private var checkInImages = [CheckIn.Image]()
+    @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoading = false
     @State private var loadImagesTask: Task<Void, Never>?
     @State private var page = 0

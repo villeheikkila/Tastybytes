@@ -3,7 +3,6 @@ import Models
 
 extension CheckIn: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
-        let image = "id, blur_hash, created_by"
         let saved = "id, rating, review, check_in_at, is_nostalgic"
 
         switch queryType {
@@ -27,8 +26,8 @@ extension CheckIn: Queryable {
             )
         case let .image(withTableName):
             return buildQuery(
-                .checkIns,
-                [image, ImageEntity.getQuery(.saved(.checkInImages))],
+                .checkInImages,
+                [ImageEntity.getQuery(.saved(nil)), "check_ins!inner(id, created_by)"],
                 withTableName
             )
         }

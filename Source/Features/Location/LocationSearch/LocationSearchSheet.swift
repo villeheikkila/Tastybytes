@@ -35,7 +35,7 @@ struct LocationSearchSheet: View {
         self.title = title
         self.onSelect = onSelect
         self.category = category
-        _initialLocation =  State(initialValue: initialLocation)
+        _initialLocation = State(initialValue: initialLocation)
     }
 
     var hasSearched: Bool {
@@ -86,10 +86,10 @@ struct LocationSearchSheet: View {
                 searchResults = []
                 return
             }
-                await search(for: searchText)
+            await search(for: searchText)
         }
         .task {
-                await loadInitialData()
+            await loadInitialData()
         }
         .alertError($alertError)
     }

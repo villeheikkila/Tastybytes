@@ -10,7 +10,7 @@ struct CheckInImagesView: View {
     private let logger = Logger(category: "CheckInImagesView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var checkInImages = [CheckIn.Image]()
+    @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoading = false
     @State private var page = 0
     @State private var alertError: AlertError?
@@ -71,11 +71,11 @@ struct CheckInImageCellView: View {
     @Environment(Repository.self) private var repository
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 
-    let checkInImage: CheckIn.Image
+    let checkInImage: ImageEntity.JoinedCheckIn
 
     var body: some View {
         HStack {
-            RemoteImage(url: checkInImage.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
+            RemoteImage(url: checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
                 if let image = state.image {
                     image
                         .resizable()
@@ -85,12 +85,12 @@ struct CheckInImageCellView: View {
                         .cornerRadius(4)
                         .contentShape(Rectangle())
                 } else {
-                    BlurHashPlaceholder(blurHash: checkInImage.images.first?.blurHash, height: 100)
+                    BlurHashPlaceholder(blurHash: checkInImage.blurHash, height: 100)
                 }
             }
             .frame(width: 100, height: 100)
             .onTapGesture {
-                router.fetchAndNavigateTo(repository, .checkIn(id: checkInImage.id))
+                router.fetchAndNavigateTo(repository, .checkIn(id: checkInImage.checkIn.id))
             }
             .accessibilityAddTraits(.isButton)
         }

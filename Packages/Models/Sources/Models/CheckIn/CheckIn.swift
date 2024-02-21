@@ -139,6 +139,16 @@ public extension CheckIn {
         }
     }
 
+    struct Minimal: Codable, Hashable, Sendable, Identifiable {
+        public let id: Int
+        public let createdBy: UUID
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case createdBy = "created_by"
+        }
+    }
+
     struct DeleteAsAdminRequest: Codable, Sendable {
         public let id: Int
 
