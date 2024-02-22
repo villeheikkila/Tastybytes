@@ -43,32 +43,12 @@ struct ProfileHeader: View {
     }
 
     var body: some View {
-        VStack {
-            ProfileHeaderAvatarSection(
-                profile: $profile,
-                isCurrentUser: isCurrentUser,
-                showInFull: showInFull,
-                profileSummary: profileSummary
-            )
-            .id(topAnchor)
-            if showInFull {
-                RatingChartView(profile: profile, profileSummary: profileSummary)
-                    .padding(.vertical, 10)
-                ProfileCheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
-                    loadImagesTask = Task {
-                        await fetchImages()
-                    }
-                })
-                .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
-                ProfileSummarySection(profile: profile, profileSummary: profileSummary)
-                ProfileJoinedAtSection(joinedAt: profile.joinedAt)
-                sendFriendRequestSection
-                ProfileLinksSection(profile: profile, isCurrentUser: isCurrentUser)
-            } else {
-                PrivateProfileSign()
-                sendFriendRequestSection
-            }
-        }
+        ProfileHeaderAvatarSection(
+            profile: $profile,
+            isCurrentUser: isCurrentUser,
+            showInFull: showInFull,
+            profileSummary: profileSummary
+        )
         .task(id: refreshId) { [refreshId] in
             guard refreshId != resultId else { return }
             logger.info("Refreshing profile screen with id: \(refreshId)")
@@ -78,6 +58,25 @@ struct ProfileHeader: View {
         .alertError($alertError)
         .onDisappear {
             loadImagesTask?.cancel()
+        }
+        .id(topAnchor)
+
+        if showInFull {
+            RatingChartView(profile: profile, profileSummary: profileSummary)
+                .padding(.vertical, 10)
+            ProfileCheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
+                loadImagesTask = Task {
+                    await fetchImages()
+                }
+            })
+            .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+            ProfileSummarySection(profile: profile, profileSummary: profileSummary)
+            ProfileJoinedAtSection(joinedAt: profile.joinedAt)
+            sendFriendRequestSection
+            ProfileLinksSection(profile: profile, isCurrentUser: isCurrentUser)
+        } else {
+            PrivateProfileSign()
+            sendFriendRequestSection
         }
     }
 

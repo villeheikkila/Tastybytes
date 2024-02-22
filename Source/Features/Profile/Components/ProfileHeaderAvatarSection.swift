@@ -31,13 +31,6 @@ struct ProfileHeaderAvatarSection: View {
             VStack(alignment: .center) {
                 Avatar(profile: profile)
                     .avatarSize(.custom(90))
-                    .contextMenu {
-                        if let imageEntity = profile.avatars.first {
-                            ProgressButton("profile.avatar.delete.label", role: .destructive) {
-                                await deleteAvatar(entity: imageEntity)
-                            }
-                        }
-                    }
                     .overlay(alignment: .bottomTrailing) {
                         if isCurrentUser {
                             PhotosPicker(selection: $selectedItem,
@@ -64,6 +57,11 @@ struct ProfileHeaderAvatarSection: View {
         }
         .contextMenu {
             ProfileShareLinkView(profile: profile)
+            if let imageEntity = profile.avatars.first, isCurrentUser {
+                ProgressButton("profile.avatar.delete.label", systemImage: "trash", role: .destructive) {
+                    await deleteAvatar(entity: imageEntity)
+                }
+            }
         }
         .onChange(of: selectedItem) { _, newValue in
             Task {

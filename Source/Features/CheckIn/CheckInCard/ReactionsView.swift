@@ -37,17 +37,17 @@ struct ReactionsView: View {
                     .fixedSize()
             }
             Label("checkIn.reaction.react.label", systemImage: "hand.thumbsup")
-            .labelStyle(.iconOnly)
-            .imageScale(.large)
-            .symbolVariant(currentlyUserHasReacted ? .fill : .none)
-            .foregroundColor(.yellow)
-            .accessibilityAddTraits(.isButton)
-            .onTapGesture {
-                task = Task(priority: .userInitiated) {
-                    await toggleReaction()
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+                .symbolVariant(currentlyUserHasReacted ? .fill : .none)
+                .foregroundColor(.yellow)
+                .accessibilityAddTraits(.isButton)
+                .onTapGesture {
+                    task = Task(priority: .userInitiated) {
+                        await toggleReaction()
+                    }
                 }
-            }
-            .allowsHitTesting(!isLoading)
+                .allowsHitTesting(!isLoading)
         }
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxHeight: 24)
