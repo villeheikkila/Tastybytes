@@ -6,26 +6,25 @@ struct ProfileLinksSection: View {
     let isCurrentUser: Bool
 
     var body: some View {
-        VStack(spacing: 3) {
             Group {
                 RouterLink(
                     "profile.links.friends",
                     systemImage: "person.crop.rectangle.stack",
-                    screen: isCurrentUser ? .currentUserFriends : .friends(profile)
+                    screen: isCurrentUser ? .currentUserFriends : .friends(profile),
+                    asTapGesture: true
                 )
-                RouterLink("profile.links.checkIns", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
-                RouterLink("profile.links.statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))
-                RouterLink("profile.links.wishlist", systemImage: "heart", screen: .profileWishlist(profile))
+                RouterLink("profile.links.checkIns", systemImage: "checkmark.rectangle", screen: .profileProducts(profile), asTapGesture: true)
+                RouterLink("profile.links.statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile), asTapGesture: true)
+                RouterLink("profile.links.wishlist", systemImage: "heart", screen: .profileWishlist(profile), asTapGesture: true)
                 if isCurrentUser {
-                    RouterLink("profile.links.locations", systemImage: "map", screen: .profileLocations(profile))
+                    RouterLink("profile.links.locations", systemImage: "map", screen: .profileLocations(profile), asTapGesture: true)
                 }
             }
             .font(.subheadline)
             .bold()
-            .foregroundColor(Color.blue)
+            .foregroundColor(.blue)
             .padding()
-            .background(Color(.systemGray6))
+            .background(.gray.quinary)
             .cornerRadius(8.0)
-        }
     }
 }

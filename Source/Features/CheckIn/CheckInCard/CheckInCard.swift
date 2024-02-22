@@ -11,14 +11,6 @@ struct CheckInCard: View {
 
     var body: some View {
         CheckInCardContainer(checkIn: checkIn, loadedFrom: loadedFrom) {
-            header
-            CheckInCardImage(checkIn: checkIn)
-            footer
-        }
-    }
-
-    private var header: some View {
-        Group {
             CheckInCardHeader(
                 profile: checkIn.profile,
                 loadedFrom: loadedFrom,
@@ -30,15 +22,11 @@ struct CheckInCard: View {
                 productVariant: checkIn.variant,
                 servingStyle: checkIn.servingStyle
             )
-        }.padding(.horizontal, 12)
-    }
-
-    private var footer: some View {
-        Group {
+            CheckInCardImage(checkIn: checkIn)
             CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
             CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
             CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
-        }.padding(.horizontal, 12)
+        }
     }
 }
 

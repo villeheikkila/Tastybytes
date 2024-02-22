@@ -31,6 +31,6 @@ struct ProductScreenHeader: View {
                     onLoadMore: loadMoreImages
                 )
             }
-        }.padding(.horizontal)
+        }
     }
 }

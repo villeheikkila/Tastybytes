@@ -29,6 +29,7 @@ struct RouterLink<LabelView: View>: View {
         if asTapGesture {
             label
                 .accessibilityAddTraits(.isLink)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
                 .onTapGesture {
                     if let screen {

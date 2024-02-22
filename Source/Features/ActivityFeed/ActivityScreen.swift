@@ -15,7 +15,6 @@ struct ActivityScreen: View {
     @State private var loadingCheckInsOnAppear: Task<Void, Error>?
     // Scroll position
     @Binding var scrollToTop: Int
-    @State private var scrolledID: Int?
     // Feed state
     @State private var refreshId = 0
     @State private var resultId: Int?
@@ -36,73 +35,73 @@ struct ActivityScreen: View {
 
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
-        ScrollView {
-            LazyVStack {
+        ScrollViewReader { proxy in
+            List {
                 CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: onCheckInUpdate, onLoadMore: {
                     onLoadMore()
                 })
                 ProgressView()
                     .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
                     .opacity(isLoading && !isRefreshing ? 1 : 0)
+                    .listRowSeparator(.hidden)
             }
-            .scrollTargetLayout()
-        }
-        .scrollPosition(id: $scrolledID)
-        .scrollContentBackground(.hidden)
-        .scrollIndicators(.hidden)
-        .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
-            oldValue && !newValue
-        }
-        .overlay {
-            if errorContentUnavailable != nil {
-                ContentUnavailableView {
-                    Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
-                } actions: {
-                    Button("labels.reload") {
-                        refreshId += 1
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .scrollIndicators(.hidden)
+            .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
+                oldValue && !newValue
+            }
+            .overlay {
+                if errorContentUnavailable != nil {
+                    ContentUnavailableView {
+                        Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
+                    } actions: {
+                        Button("labels.reload") {
+                            refreshId += 1
+                        }
                     }
+                } else if isContentUnavailable {
+                    EmptyActivityFeedView()
+                } else {
+                    EmptyView()
                 }
-            } else if isContentUnavailable {
-                EmptyActivityFeedView()
-            } else {
-                EmptyView()
             }
-        }
-        .alertError($alertError)
-        .onChange(of: scrollToTop) {
-            guard let first = checkIns.first else { return }
-            withAnimation {
-                scrolledID = first.id
+            .alertError($alertError)
+            .onChange(of: scrollToTop) {
+                guard let first = checkIns.first else { return }
+                withAnimation {
+                    proxy.scrollTo(first.id, anchor: .top)
+                }
             }
-        }
-        .task(id: refreshId) { [refreshId] in
-            guard refreshId != resultId else {
-                logger.info("Already loaded data with id: \(refreshId)")
-                return
-            }
-            if refreshId == 0 {
-                logger.info("Loading initial check-in feed data")
-                await fetchFeedItems()
+            .task(id: refreshId) { [refreshId] in
+                guard refreshId != resultId else {
+                    logger.info("Already loaded data with id: \(refreshId)")
+                    return
+                }
+                if refreshId == 0 {
+                    logger.info("Loading initial check-in feed data")
+                    await fetchFeedItems()
+                    resultId = refreshId
+                    return
+                }
+                logger.info("Refreshing check-in feed data with id: \(refreshId)")
+                isRefreshing = true
+                await fetchFeedItems(reset: true)
+                isRefreshing = false
                 resultId = refreshId
-                return
             }
-            logger.info("Refreshing check-in feed data with id: \(refreshId)")
-            isRefreshing = true
-            await fetchFeedItems(reset: true)
-            isRefreshing = false
-            resultId = refreshId
-        }
-        .onDisappear {
-            loadingCheckInsOnAppear?.cancel()
-        }
-        .refreshable {
-            await fetchFeedItems(reset: true)
-        }
-        .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
-            if let updatedCheckIn = newValue {
-                imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
-                    checkIns[index] = updatedCheckIn
+            .onDisappear {
+                loadingCheckInsOnAppear?.cancel()
+            }
+            .refreshable {
+                await fetchFeedItems(reset: true)
+            }
+            .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
+                if let updatedCheckIn = newValue {
+                    imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
+                    if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
+                        checkIns[index] = updatedCheckIn
+                    }
                 }
             }
         }

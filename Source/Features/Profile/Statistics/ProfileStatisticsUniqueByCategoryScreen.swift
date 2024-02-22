@@ -131,7 +131,7 @@ struct SubcategoryStatisticsRow: View {
                 .font(.caption)
             } else {
                 Text("subcategoryStatistics.all.open")
-                    .foregroundColor(Color.primary)
+                    .foregroundColor(.primary)
                     .font(.caption)
                     .bold()
             }

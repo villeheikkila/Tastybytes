@@ -24,29 +24,34 @@ struct ReactionsView: View {
         _checkInReactions = State(initialValue: checkIn.checkInReactions)
     }
 
+    var currentlyUserHasReacted: Bool {
+        checkInReactions.contains(where: { $0.profile.id == profileEnvironmentModel.profile.id })
+    }
+
     var body: some View {
         HStack(alignment: .center) {
             Spacer()
             ForEach(checkInReactions) { reaction in
                 Avatar(profile: reaction.profile)
                     .avatarSize(.medium)
+                    .fixedSize()
             }
             Label("checkIn.reaction.react.label", systemImage: "hand.thumbsup")
-                .labelStyle(.iconOnly)
-                .symbolVariant(hasReacted(profileEnvironmentModel.profile) ? .fill : .none)
-                .imageScale(.large)
-                .foregroundColor(Color(.systemYellow))
-        }
-        .frame(maxWidth: 80, minHeight: 28)
-        .contentShape(Rectangle())
-        .alertError($alertError)
-        .accessibilityAddTraits(.isButton)
-        .allowsHitTesting(!isLoading)
-        .onTapGesture {
-            task = Task(priority: .userInitiated) {
-                await toggleReaction()
+            .labelStyle(.iconOnly)
+            .imageScale(.large)
+            .symbolVariant(currentlyUserHasReacted ? .fill : .none)
+            .foregroundColor(.yellow)
+            .accessibilityAddTraits(.isButton)
+            .onTapGesture {
+                task = Task(priority: .userInitiated) {
+                    await toggleReaction()
+                }
             }
+            .allowsHitTesting(!isLoading)
         }
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxHeight: 24)
+        .alertError($alertError)
         .disabled(isLoading)
         .onDisappear {
             task?.cancel()
@@ -54,10 +59,6 @@ struct ReactionsView: View {
         .sensoryFeedback(trigger: checkInReactions) { oldValue, newValue in
             newValue.count > oldValue.count ? .success : .impact(weight: .light)
         }
-    }
-
-    func hasReacted(_ profile: Profile) -> Bool {
-        checkInReactions.contains(where: { $0.profile.id == profile.id })
     }
 
     func toggleReaction() async {

@@ -33,6 +33,7 @@ struct ProductScreenActionSection: View {
             ProgressButton("wishlist.add.label", systemImage: "star", actionOptions: []) {
                 await toggleWishlist()
             }
+            .buttonStyle(.plain)
             .symbolVariant(isOnWishlist ? .fill : .none)
             .frame(maxWidth: .infinity)
             .padding(.all, 6)
