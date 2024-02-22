@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 import Supabase
 
 public protocol RepositoryProtocol: Sendable {
@@ -24,60 +25,4 @@ public protocol RepositoryProtocol: Sendable {
     var report: ReportRepository { get }
     var subscription: SubscriptionRepository { get }
     var imageEntity: ImageEntityRepository { get }
-}
-
-@Observable
-public final class Repository: RepositoryProtocol {
-    public let appConfig: AppConfigRepository
-    public let profile: ProfileRepository
-    public let checkIn: CheckInRepository
-    public let checkInComment: CheckInCommentRepository
-    public let checkInReactions: CheckInReactionsRepository
-    public let product: ProductRepository
-    public let productBarcode: ProductBarcodeRepository
-    public let auth: AuthRepository
-    public let company: CompanyRepository
-    public let friend: FriendRepository
-    public let category: CategoryRepository
-    public let subcategory: SubcategoryRepository
-    public let servingStyle: ServingStyleRepository
-    public let brand: BrandRepository
-    public let subBrand: SubBrandRepository
-    public let flavor: FlavorRepository
-    public let notification: NotificationRepository
-    public let location: LocationRepository
-    public let document: DocumentRepository
-    public let report: ReportRepository
-    public let subscription: SubscriptionRepository
-    public let imageEntity: ImageEntityRepository
-
-    public init(supabaseURL: URL, supabaseKey: String, headers: [String: String]) {
-        let client = SupabaseClient(
-            supabaseURL: supabaseURL,
-            supabaseKey: supabaseKey,
-            options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers))
-        )
-        appConfig = SupabaseAppConfigRepository(client: client)
-        imageEntity = SupabaseImageEntityRepository(client: client)
-        profile = SupabaseProfileRepository(client: client, imageEntityRepository: imageEntity)
-        checkIn = SupabaseCheckInRepository(client: client, imageEntityRepository: imageEntity)
-        checkInComment = SupabaseCheckInCommentRepository(client: client)
-        checkInReactions = SupabaseCheckInReactionsRepository(client: client)
-        product = SupabaseProductRepository(client: client, imageEntityRepository: imageEntity)
-        productBarcode = SupabaseProductBarcodeRepository(client: client)
-        auth = SupabaseAuthRepository(client: client)
-        company = SupabaseCompanyRepository(client: client, imageEntityRepository: imageEntity)
-        friend = SupabaseFriendsRepository(client: client)
-        category = SupabaseCategoryRepository(client: client)
-        subcategory = SupabaseSubcategoryRepository(client: client)
-        servingStyle = SupabaseServingStyleRepository(client: client)
-        brand = SupabaseBrandRepository(client: client, imageEntityRepository: imageEntity)
-        subBrand = SupabaseSubBrandRepository(client: client)
-        flavor = SupabaseFlavorRepository(client: client)
-        notification = SupabaseNotificationRepository(client: client)
-        location = SupabaseLocationRepository(client: client)
-        document = SupabaseDocumentRepository(client: client)
-        report = SupabaseReportRepository(client: client)
-        subscription = SupabaseSubscriptionRepository(client: client)
-    }
 }
