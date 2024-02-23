@@ -46,6 +46,7 @@ struct FlavorSheet: View {
     var body: some View {
         List(sortedFlavors, selection: $pickedFlavorIds) { pickedFlavor in
             Text(pickedFlavor.name.capitalized)
+                .listRowBackground(Color.clear)
         }
         .environment(\.defaultMinListRowHeight, 48)
         .environment(\.editMode, .constant(.active))

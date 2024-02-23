@@ -58,7 +58,7 @@ struct OnboardingProfileSection: View {
         )
         .ignoresSafeArea(edges: .bottom)
         .listStyle(.plain)
-        .scrollContentBackground(.hidden)
+        .defaultScrollContentBackground()
         .scrollDisabled(true)
         .simultaneousGesture(DragGesture())
         .accessibility(hidden: true)

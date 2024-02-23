@@ -50,7 +50,7 @@ struct CheckInScreen: View {
             }
         }
         .listStyle(.plain)
-        .scrollContentBackground(.hidden)
+        .defaultScrollContentBackground()
         .scrollIndicators(.hidden)
         .refreshable {
             await loadCheckInData()

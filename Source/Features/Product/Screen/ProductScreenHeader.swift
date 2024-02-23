@@ -16,21 +16,19 @@ struct ProductScreenHeader: View {
     @Binding var isOnWishlist: Bool
 
     var body: some View {
-        VStack {
-            ProductItemView(product: product, extras: [.companyLink, .logoOnRight])
-            SummaryView(summary: summary).padding(.top, 4)
-            ProductScreenActionSection(
-                isOnWishlist: $isOnWishlist,
-                product: product,
-                onRefreshCheckIns: onRefreshCheckIns
+        ProductItemView(product: product, extras: [.companyLink, .logoOnRight])
+        SummaryView(summary: summary).padding(.top, 4)
+        ProductScreenActionSection(
+            isOnWishlist: $isOnWishlist,
+            product: product,
+            onRefreshCheckIns: onRefreshCheckIns
+        )
+        if !checkInImages.isEmpty {
+            ProfileCheckInImagesSection(
+                checkInImages: checkInImages,
+                isLoading: isLoadingCheckInImages,
+                onLoadMore: loadMoreImages
             )
-            if !checkInImages.isEmpty {
-                ProfileCheckInImagesSection(
-                    checkInImages: checkInImages,
-                    isLoading: isLoadingCheckInImages,
-                    onLoadMore: loadMoreImages
-                )
-            }
         }
     }
 }

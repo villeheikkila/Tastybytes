@@ -100,7 +100,7 @@ struct CheckInList<Header>: View where Header: View {
                 }
             }
             .listStyle(.plain)
-            .scrollContentBackground(.hidden)
+            .defaultScrollContentBackground()
             .scrollIndicators(.hidden)
             .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
                 oldValue && !newValue

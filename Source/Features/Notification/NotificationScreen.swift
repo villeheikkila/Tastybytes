@@ -48,6 +48,7 @@ struct NotificationScreen: View {
                     await notificationEnvironmentModel.deleteFromIndex(at: index)
                 } })
             }
+            .defaultScrollContentBackground()
             .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }
@@ -215,5 +216,23 @@ public extension NotificationType {
         case .checkInComment:
             "bubble.left"
         }
+    }
+}
+
+struct DefaultScrollContentBackground: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+
+    func body(content: Content) -> some View {
+        if colorScheme == .dark {
+            content.scrollContentBackground(.hidden)
+        } else {
+            content.scrollContentBackground(.visible)
+        }
+    }
+}
+
+extension View {
+    func defaultScrollContentBackground() -> some View {
+        modifier(DefaultScrollContentBackground())
     }
 }

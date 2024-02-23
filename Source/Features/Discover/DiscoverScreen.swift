@@ -75,6 +75,7 @@ struct DiscoverScreen: View {
             }
         }
         .listStyle(.plain)
+        .defaultScrollContentBackground()
         .sheets(item: $sheet)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: searchScope.prompt)

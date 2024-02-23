@@ -60,7 +60,7 @@ struct ProductFeedScreen: View {
                     .listRowSeparator(.hidden)
             }
         }
-        .scrollContentBackground(.hidden)
+        .defaultScrollContentBackground()
         .listStyle(.plain)
         .refreshable {
             await refresh()

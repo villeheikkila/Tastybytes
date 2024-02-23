@@ -191,6 +191,7 @@ struct LocationRow: View {
                 }
             }
         })
+        .listRowBackground(Color.clear)
         .alertError($alertError)
     }
 
