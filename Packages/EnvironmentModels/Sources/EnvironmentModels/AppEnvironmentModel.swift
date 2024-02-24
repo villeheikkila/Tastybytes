@@ -171,6 +171,7 @@ public final class AppEnvironmentModel {
 
         logger.notice("\(reset || isPreviouslyInitialied ? "Refreshing" : "Initializing") app data")
         if isPreviouslyInitialied {
+            splashScreenState = .finished
             state = .operational
             logger.info("App optimistically loaded from stored data")
         }
