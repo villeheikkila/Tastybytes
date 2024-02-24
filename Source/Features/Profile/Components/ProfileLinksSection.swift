@@ -17,6 +17,10 @@ struct ProfileLinksSection: View {
                 RouterLink("profile.links.locations", systemImage: "map", screen: .profileLocations(profile))
             }
         }
+        .listRowSeparator(.visible)
+        .alignmentGuide(.listRowSeparatorLeading) { _ in
+            0
+        }
         .font(.subheadline)
         .bold()
         .cornerRadius(8.0)
