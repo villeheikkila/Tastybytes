@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct CheckInCommentView: View {
     let comment: CheckInComment
 

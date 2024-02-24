@@ -5,6 +5,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ContributionsScreen: View {
     private let logger = Logger(category: "ContributionsScreen")
     @Environment(Repository.self) private var repository

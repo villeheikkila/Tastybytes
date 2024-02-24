@@ -208,6 +208,7 @@ struct LocationRow: View {
     }
 }
 
+@MainActor
 struct InitialLocationOverlay: View {
     @Binding var initialLocation: CLLocationCoordinate2D?
 

@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 struct ReportButton: View {
     @Binding var sheet: Sheet?
     let entity: Report.Entity

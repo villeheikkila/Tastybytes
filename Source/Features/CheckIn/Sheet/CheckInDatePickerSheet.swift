@@ -1,6 +1,7 @@
 import Components
 import SwiftUI
 
+@MainActor
 struct CheckInDatePickerSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var checkInAt: Date

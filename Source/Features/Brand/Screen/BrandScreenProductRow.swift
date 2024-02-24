@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct BrandScreenProductRow: View {
     private let logger = Logger(category: "BrandScreenProductRow")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

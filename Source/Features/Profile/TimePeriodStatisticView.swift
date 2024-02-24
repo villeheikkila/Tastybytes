@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct TimePeriodStatisticView: View {
     private let logger = Logger(category: "TimePeriodStatisticView")
     @State private var timePeriod: TimePeriodStatistic.TimePeriod = .week
@@ -29,6 +30,7 @@ struct TimePeriodStatisticView: View {
     }
 }
 
+@MainActor
 struct TimePeriodStatisticSegmentView: View {
     private let logger = Logger(category: "TimePeriodStatisticSegmentView")
     @Environment(Repository.self) private var repository

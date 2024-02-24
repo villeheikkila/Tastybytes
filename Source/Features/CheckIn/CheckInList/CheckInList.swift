@@ -290,6 +290,7 @@ extension CheckInList {
         case profile(Profile)
         case location(Location)
 
+        @MainActor
         @ViewBuilder
         var emptyContentView: some View {
             switch self {

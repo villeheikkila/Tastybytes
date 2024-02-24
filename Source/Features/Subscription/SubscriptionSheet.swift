@@ -2,6 +2,7 @@ import EnvironmentModels
 import StoreKit
 import SwiftUI
 
+@MainActor
 struct SubscriptionSheet: View {
     @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel

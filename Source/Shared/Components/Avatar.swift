@@ -3,6 +3,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct Avatar: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 

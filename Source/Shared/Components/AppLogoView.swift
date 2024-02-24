@@ -2,6 +2,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct AppLogoView: View {
     let appIcon: AppIcon?
     let size: Double

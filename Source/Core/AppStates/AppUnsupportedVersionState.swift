@@ -3,6 +3,7 @@ import EnvironmentModels
 import Extensions
 import SwiftUI
 
+@MainActor
 struct AppUnsupportedVersionState: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     var body: some View {

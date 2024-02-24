@@ -3,6 +3,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct ProfileSummarySection: View {
     @Environment(Router.self) private var router
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel

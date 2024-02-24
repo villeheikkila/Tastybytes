@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 struct DiscoverProductAddNew: View {
     @Environment(Router.self) private var router
     @Binding var barcode: Barcode?

@@ -2,6 +2,7 @@ import Components
 import Models
 import SwiftUI
 
+@MainActor
 struct CheckInCardCheckIn: View {
     @Environment(Router.self) private var router
 

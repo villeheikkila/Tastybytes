@@ -2,6 +2,7 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
+@MainActor
 struct VerificationButton: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     let isVerified: Bool

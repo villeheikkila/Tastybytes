@@ -2,6 +2,7 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
+@MainActor
 struct SplashScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var dismissAnimation = false

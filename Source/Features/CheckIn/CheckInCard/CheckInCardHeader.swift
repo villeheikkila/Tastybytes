@@ -3,6 +3,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct CheckInCardHeader: View {
     @Environment(Router.self) private var router
 

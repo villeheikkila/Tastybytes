@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct PickerLinkRow: View {
     @Binding var shownSheet: Sheet?
     let label: LocalizedStringKey

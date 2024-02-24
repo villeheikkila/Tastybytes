@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 struct DiscoverLocationResults: View {
     let locations: [Location]
 

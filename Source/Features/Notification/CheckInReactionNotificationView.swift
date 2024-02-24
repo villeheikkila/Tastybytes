@@ -2,6 +2,7 @@ import Components
 import Models
 import SwiftUI
 
+@MainActor
 struct CheckInReactionNotificationView: View {
     let checkInReaction: CheckInReaction.JoinedCheckIn
 

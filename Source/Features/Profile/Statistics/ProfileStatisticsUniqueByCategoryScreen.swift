@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ProfileStatisticsUniqueByCategoryScreen: View {
     private let logger = Logger(category: "ProfileStatisticsView")
     @Environment(Repository.self) private var repository
@@ -44,6 +45,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
     }
 }
 
+@MainActor
 struct ProfileStatisticsUniqueByCategoryRow: View {
     let profile: Profile
     let category: CategoryStatistics
@@ -61,6 +63,7 @@ struct ProfileStatisticsUniqueByCategoryRow: View {
     }
 }
 
+@MainActor
 struct SubcategoryStatisticsView: View {
     private let logger = Logger(category: "SubcategoryStatisticsView")
     @Environment(Repository.self) private var repository
@@ -108,6 +111,7 @@ struct SubcategoryStatisticsView: View {
     }
 }
 
+@MainActor
 struct SubcategoryStatisticsRow: View {
     let profile: Profile
     let category: Models.Category

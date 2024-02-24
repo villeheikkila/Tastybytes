@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 public struct FlavorsView: View {
     let flavors: [Flavor]
 

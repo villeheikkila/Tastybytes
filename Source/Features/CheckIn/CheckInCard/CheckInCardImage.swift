@@ -3,6 +3,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct CheckInCardImage: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var showFullPicture = false

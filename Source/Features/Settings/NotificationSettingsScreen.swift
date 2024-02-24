@@ -18,6 +18,7 @@ enum NotificationDeliveryType: CaseIterable {
     }
 }
 
+@MainActor
 struct NotificationSettingsScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel

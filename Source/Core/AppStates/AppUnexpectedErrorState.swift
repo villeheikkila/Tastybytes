@@ -2,6 +2,7 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
+@MainActor
 struct AppUnexpectedErrorState: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     var body: some View {

@@ -2,6 +2,7 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
+@MainActor
 struct AddCategorySheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel

@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 struct ProfileStatisticsScreen: View {
     let profile: Profile
 

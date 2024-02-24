@@ -2,6 +2,7 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
+@MainActor
 struct OnboardingLocationPermissionSection: View {
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @AppStorage(.locationOnboardingSectionSkipped) private var locationOnboardingSectionSkipped = false

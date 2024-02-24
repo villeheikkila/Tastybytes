@@ -96,6 +96,7 @@ struct SettingsScreen: View {
     }
 }
 
+@MainActor
 struct AppIconLabelRow: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 

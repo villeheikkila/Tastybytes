@@ -1,6 +1,7 @@
 import Components
 import SwiftUI
 
+@MainActor
 struct NewFlavorSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""

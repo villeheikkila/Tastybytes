@@ -1,6 +1,7 @@
 import Components
 import SwiftUI
 
+@MainActor
 struct AccountDeletedScreen: View {
     var body: some View {
         VStack {

@@ -2,6 +2,7 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
+@MainActor
 struct OnboardingNotificationSection: View {
     @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @AppStorage(.notificationOnboardingSectionSkipped) private var notificationOnboardingSectionSkipped = false
@@ -34,6 +35,7 @@ struct OnboardingNotificationSection: View {
     }
 }
 
+@MainActor
 struct OnboardingSectionContent: View {
     @State private var isMounted = false
     let onContinue: () -> Void

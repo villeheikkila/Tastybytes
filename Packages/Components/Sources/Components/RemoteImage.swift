@@ -1,6 +1,7 @@
 import NukeUI
 import SwiftUI
 
+@MainActor
 public struct RemoteImage<Content: View>: View {
     let url: URL?
     let content: (LazyImageState) -> Content

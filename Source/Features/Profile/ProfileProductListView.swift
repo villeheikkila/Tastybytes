@@ -150,6 +150,7 @@ struct ProfileProductListView: View {
     }
 }
 
+@MainActor
 struct ProfileProductListRow: View {
     let product: Product.Joined
 

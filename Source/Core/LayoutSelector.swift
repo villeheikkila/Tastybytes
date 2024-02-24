@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct LayoutSelector: View {
     var body: some View {
         switch UIDevice.current.userInterfaceIdiom {

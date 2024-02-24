@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 public struct SummaryView: View {
     public let summary: Summary?
 
@@ -37,6 +38,7 @@ public struct SummaryView: View {
     }
 }
 
+@MainActor
 struct SummaryRow: View {
     let title: LocalizedStringKey
     let count: Int?

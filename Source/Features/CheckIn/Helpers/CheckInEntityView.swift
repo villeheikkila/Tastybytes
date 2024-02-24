@@ -2,6 +2,7 @@ import Components
 import Models
 import SwiftUI
 
+@MainActor
 public struct CheckInEntityView: View {
     let checkIn: CheckIn
     let baseUrl: URL

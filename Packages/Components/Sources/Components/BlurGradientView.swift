@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 public struct BlurGradientView<TopContent: View, BottomContent: View>: View {
     let position: Position
     let height: CGFloat?

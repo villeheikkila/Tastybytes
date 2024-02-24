@@ -2,6 +2,7 @@ import Extensions
 import Models
 import SwiftUI
 
+@MainActor
 public struct BlurHashPlaceholder: View {
     @State private var image: UIImage?
 

@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 struct CompanyBrandRow: View {
     let brand: Brand.JoinedSubBrandsProducts
 

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 public struct LabeledTextField: View {
     let title: LocalizedStringKey
     let placeholder: LocalizedStringKey?

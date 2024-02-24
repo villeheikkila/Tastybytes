@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 struct ProductFilterOverlayView: View {
     let filters: Product.Filter
     let onReset: () -> Void

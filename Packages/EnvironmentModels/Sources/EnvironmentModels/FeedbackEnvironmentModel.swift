@@ -108,6 +108,7 @@ public extension View {
     }
 }
 
+@MainActor
 public struct Toast: View {
     let displayMode: DisplayMode
     let type: AlertType
@@ -559,6 +560,7 @@ public struct ToastModifier: ViewModifier {
     }
 }
 
+@MainActor
 private struct AnimatedCheckmark: View {
     @State private var percentage: CGFloat = .zero
     let color: Color
@@ -593,6 +595,7 @@ private struct AnimatedCheckmark: View {
     }
 }
 
+@MainActor
 private struct AnimatedXmark: View {
     @State private var percentage: CGFloat = .zero
     let color: Color

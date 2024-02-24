@@ -429,6 +429,7 @@ extension CheckInSheet {
     }
 }
 
+@MainActor
 struct LocationInputButton: View {
     let category: Location.RecentLocation
     let title: LocalizedStringKey

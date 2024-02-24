@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 public struct AvatarView: View {
     @Environment(\.avatarSize) private var avatarSize
     let avatarUrl: URL?

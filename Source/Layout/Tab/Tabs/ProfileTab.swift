@@ -3,6 +3,7 @@ import Models
 import Repositories
 import SwiftUI
 
+@MainActor
 struct ProfileTab: View {
     @Environment(Router.self) private var router
     @Environment(TabManager.self) private var tabManager

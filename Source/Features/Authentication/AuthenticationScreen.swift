@@ -57,6 +57,7 @@ struct AuthenticationScreen: View {
     }
 }
 
+@MainActor
 struct PrivacyPolicy: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var openUrlInWebView: WebViewLink?

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 public struct RatingPickerView: View {
     @Binding var rating: Double
     @State private var starSize: CGSize = .zero

@@ -5,6 +5,7 @@ import StoreKit
 import SwiftUI
 import TipKit
 
+@MainActor
 struct NotificationObserver<Content: View>: View {
     private let logger = Logger(category: "MainContent")
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel

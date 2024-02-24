@@ -1,6 +1,7 @@
 import Models
 import SwiftUI
 
+@MainActor
 struct DiscoverProfileResults: View {
     let profiles: [Profile]
 

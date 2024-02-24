@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 public struct Spacing: View {
     var height: Double?
     var width: Double?

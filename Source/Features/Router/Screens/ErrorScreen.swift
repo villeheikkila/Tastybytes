@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct ErrorScreen: View {
     let reason: String
 

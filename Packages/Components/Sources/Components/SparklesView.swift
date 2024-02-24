@@ -1,6 +1,7 @@
 import Extensions
 import SwiftUI
 
+@MainActor
 public struct SparklesView: View {
     public init() {}
 
@@ -11,6 +12,7 @@ public struct SparklesView: View {
     }
 }
 
+@MainActor
 struct SparkleView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @State private var timer = Timer.publish(every: 1, on: .current, in: .common).autoconnect()

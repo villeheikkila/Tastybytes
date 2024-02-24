@@ -6,6 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
+@MainActor
 struct CheckInImagesView: View {
     private let logger = Logger(category: "CheckInImagesView")
     @Environment(Repository.self) private var repository
@@ -66,6 +67,7 @@ struct CheckInImagesView: View {
     }
 }
 
+@MainActor
 struct CheckInImageCellView: View {
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository

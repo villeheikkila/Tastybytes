@@ -57,6 +57,7 @@ struct BlockedUsersScreen: View {
     }
 }
 
+@MainActor
 struct BlockedUserListItemView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let profile: Profile

@@ -2,6 +2,7 @@ import Components
 import Models
 import SwiftUI
 
+@MainActor
 struct TaggedInCheckInNotificationView: View {
     let checkIn: CheckIn
 

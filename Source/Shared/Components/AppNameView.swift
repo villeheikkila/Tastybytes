@@ -2,6 +2,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
+@MainActor
 struct AppNameView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 

@@ -140,6 +140,7 @@ public extension ProgressButton where LabelView == LinkIconLabel {
     }
 }
 
+@MainActor
 public struct LinkIconLabel: View {
     let titleKey: LocalizedStringKey
     let systemName: String
