@@ -82,6 +82,7 @@ struct EditSubBrandSheet: View {
                 }.headerProminence(.increased)
             }
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("labels.edit \(subBrand.name.orEmpty)")
         .toolbar {
             toolbarContent

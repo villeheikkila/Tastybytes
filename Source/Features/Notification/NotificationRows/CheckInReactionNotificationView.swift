@@ -5,14 +5,13 @@ import SwiftUI
 @MainActor
 struct CheckInReactionNotificationView: View {
     let checkInReaction: CheckInReaction.JoinedCheckIn
+    let createdAt: Date
+    let seenAt: Date?
 
     var body: some View {
-        RouterLink(screen: .checkIn(checkInReaction.checkIn)) {
-            HStack {
-                Avatar(profile: checkInReaction.profile)
-                    .avatarSize(.large)
+        RouterLink(screen: .checkIn(checkInReaction.checkIn), asTapGesture: true) {
+            NotificationFromUserWrapper(profile: checkInReaction.profile, createdAt: createdAt) {
                 Text("checkIn.notifications.userReactedToYourCheckIn.body \(checkInReaction.profile.preferredName) \(checkInReaction.checkIn.product.formatted(.full))")
-                Spacer()
             }
         }
         .buttonStyle(.plain)

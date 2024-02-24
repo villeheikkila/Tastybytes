@@ -2805,7 +2805,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ commented on your check-in of%2$@"
+            "value" : "%1$@ commented on your check-in of %2$@"
           }
         }
       }

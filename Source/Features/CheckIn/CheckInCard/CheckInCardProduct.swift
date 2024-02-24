@@ -52,7 +52,9 @@ struct CheckInCardProduct: View {
                     Spacer()
                 }
             }
-            ProductLogo(product: product, size: 48)
+            if !product.logos.isEmpty {
+                ProductLogo(product: product, size: 48)
+            }
         }
         .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)

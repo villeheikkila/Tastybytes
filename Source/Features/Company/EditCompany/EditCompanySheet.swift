@@ -56,6 +56,7 @@ struct EditCompanySheet: View {
                 }.headerProminence(.increased)
             }
         }
+        .scrollContentBackground(.hidden)
         .alertError($alertError)
         .navigationTitle(mode.navigationTitle)
         .toolbar {

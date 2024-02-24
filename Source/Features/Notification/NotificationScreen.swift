@@ -113,12 +113,10 @@ struct NotificationScreen: View {
             }
             Divider()
             ForEach(NotificationType.allCases) { type in
-                Button {
+                Button(type.label, systemImage: type.systemImage) {
                     withAnimation {
                         filter = type
                     }
-                } label: {
-                    Label(type.label, systemImage: type.systemImage)
                 }
             }
         }
@@ -132,13 +130,13 @@ extension Models.Notification {
         case let .message(message):
             MessageNotificationView(message: message)
         case let .friendRequest(friendRequest):
-            FriendRequestNotificationView(friend: friendRequest)
+            FriendRequestNotificationView(friend: friendRequest, createdAt: createdAt, seenAt: seenAt)
         case let .taggedCheckIn(taggedCheckIn):
-            TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
+            TaggedInCheckInNotificationView(checkIn: taggedCheckIn, createdAt: createdAt, seenAt: seenAt)
         case let .checkInComment(checkInComment):
-            CheckInCommentNotificationView(checkInComment: checkInComment)
+            CheckInCommentNotificationView(checkInComment: checkInComment, createdAt: createdAt, seenAt: seenAt)
         case let .checkInReaction(checkInReaction):
-            CheckInReactionNotificationView(checkInReaction: checkInReaction)
+            CheckInReactionNotificationView(checkInReaction: checkInReaction, createdAt: createdAt, seenAt: seenAt)
         }
     }
 }

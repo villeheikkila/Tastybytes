@@ -5,16 +5,15 @@ import SwiftUI
 @MainActor
 struct TaggedInCheckInNotificationView: View {
     let checkIn: CheckIn
+    let createdAt: Date
+    let seenAt: Date?
 
     var body: some View {
-        RouterLink(screen: .checkIn(checkIn)) {
-            HStack {
-                Avatar(profile: checkIn.profile)
-                    .avatarSize(.large)
+        RouterLink(screen: .checkIn(checkIn), asTapGesture: true) {
+            NotificationFromUserWrapper(profile: checkIn.profile, createdAt: createdAt) {
                 Text(
                     "notification.taggedCheckIn.userTaggedYou \(checkIn.profile.preferredName) \(checkIn.product.formatted(.full))"
                 )
-                Spacer()
             }
         }
         .buttonStyle(.plain)

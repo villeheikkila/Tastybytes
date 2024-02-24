@@ -85,11 +85,11 @@ struct CheckInList<Header>: View where Header: View {
                     .listRowSeparator(.hidden)
                 if fetcher.showCheckInSegmentationPicker {
                     checkInSegments
-                        .listRowSeparator(.hidden)
                 }
                 CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: loadedFrom, onCheckInUpdate: onCheckInUpdate, onLoadMore: {
                     onLoadMore()
                 })
+
                 ProgressView()
                     .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
                     .opacity(isLoading && !isRefreshing ? 1 : 0)
@@ -191,6 +191,10 @@ struct CheckInList<Header>: View where Header: View {
             }
         }
         .pickerStyle(.segmented)
+        .listRowSeparator(.visible, edges: .bottom)
+        .alignmentGuide(.listRowSeparatorLeading) { _ in
+            0
+        }
     }
 
     func onCheckInUpdate(_ checkIn: CheckIn) {

@@ -104,6 +104,7 @@ struct ProductMutationView: View {
                 })
             }
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle(mode.navigationTitle)
         .foregroundColor(.primary)
         .alertError($alertError)

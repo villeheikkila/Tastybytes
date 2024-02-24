@@ -44,11 +44,11 @@ struct LocationScreen: View {
                         MapCompass()
                     }
                     .frame(height: 200)
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 4, trailing: 0))
                 }
                 Section {
                     SummaryView(summary: summary)
                 }
-                .padding(.horizontal).padding(.vertical, 4)
                 .sheets(item: $sheet)
             }
         )

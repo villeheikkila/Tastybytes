@@ -7,12 +7,12 @@ import SwiftUI
 struct FriendRequestNotificationView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let friend: Friend
+    let createdAt: Date
+    let seenAt: Date?
 
     var body: some View {
-        RouterLink(screen: .currentUserFriends) {
-            HStack {
-                Avatar(profile: friend.sender)
-                    .avatarSize(.large)
+        RouterLink(screen: .currentUserFriends, asTapGesture: true) {
+            NotificationFromUserWrapper(profile: friend.sender, createdAt: createdAt) {
                 Text("notifications.friendRequest.recievedFrom \(friend.sender.preferredName)")
                 Spacer()
             }

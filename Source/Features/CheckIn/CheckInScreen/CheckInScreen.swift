@@ -41,6 +41,11 @@ struct CheckInScreen: View {
     var body: some View {
         List {
             header
+                .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+                .listRowSeparator(.visible, edges: .bottom)
+                .alignmentGuide(.listRowSeparatorLeading) { _ in
+                    -50
+                }
                 .onTapGesture {
                     focusedField = nil
                 }
@@ -96,8 +101,6 @@ struct CheckInScreen: View {
 
     private var header: some View {
         CheckInCard(checkIn: checkIn, loadedFrom: .checkIn)
-            .listRowSeparator(.hidden)
-            .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
             .sheets(item: $sheet)
             .contextMenu {
                 ControlGroup {

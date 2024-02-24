@@ -82,6 +82,7 @@ struct ProductFilterSheet: View {
             }
             Button("product.filter.reset", action: { resetFilter() }).bold()
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("product.filter.title")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

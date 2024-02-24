@@ -12,21 +12,25 @@ struct CheckInCard: View {
 
     var body: some View {
         CheckInCardContainer(checkIn: checkIn, loadedFrom: loadedFrom) {
-            CheckInCardHeader(
-                profile: checkIn.profile,
-                loadedFrom: loadedFrom,
-                location: checkIn.location
-            )
-            CheckInCardProduct(
-                product: checkIn.product,
-                loadedFrom: loadedFrom,
-                productVariant: checkIn.variant,
-                servingStyle: checkIn.servingStyle
-            )
+            Group {
+                CheckInCardHeader(
+                    profile: checkIn.profile,
+                    loadedFrom: loadedFrom,
+                    location: checkIn.location
+                )
+                CheckInCardProduct(
+                    product: checkIn.product,
+                    loadedFrom: loadedFrom,
+                    productVariant: checkIn.variant,
+                    servingStyle: checkIn.servingStyle
+                )
+            }.padding(.horizontal, 8)
             CheckInCardImage(checkIn: checkIn)
-            CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
-            CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
-            CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
+            Group {
+                CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
+                CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
+                CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
+            }.padding(.horizontal, 8)
         }
     }
 }

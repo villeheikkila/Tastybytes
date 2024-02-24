@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct CheckInCardHeader: View {
     @Environment(Router.self) private var router
 
@@ -14,7 +13,7 @@ struct CheckInCardHeader: View {
     var body: some View {
         HStack {
             Avatar(profile: profile)
-                .avatarSize(.medium)
+                .avatarSize(.large)
             Text(profile.preferredName)
                 .font(.caption).bold()
                 .foregroundColor(.primary)

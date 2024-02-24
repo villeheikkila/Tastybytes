@@ -26,6 +26,11 @@ struct CheckInListContent: View {
                 onDelete: deleteCheckIn,
                 sheet: $sheet
             )
+            .listRowSeparator(.visible, edges: .bottom)
+            .alignmentGuide(.listRowSeparatorLeading) { _ in
+                -50
+            }
+            .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
             .id(checkIn.id)
             .onAppear {
                 if checkIn == checkIns.last {

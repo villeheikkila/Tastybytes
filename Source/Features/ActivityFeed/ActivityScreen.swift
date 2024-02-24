@@ -40,6 +40,8 @@ struct ActivityScreen: View {
                 CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: onCheckInUpdate, onLoadMore: {
                     onLoadMore()
                 })
+                .listRowSeparator(.hidden)
+
                 ProgressView()
                     .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
                     .opacity(isLoading && !isRefreshing ? 1 : 0)

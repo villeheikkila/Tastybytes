@@ -72,6 +72,7 @@ struct EditBrandSheet: View {
                 }.headerProminence(.increased)
             }
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("brand.edit.navigationTitle")
         .toolbar {
             toolbarContent

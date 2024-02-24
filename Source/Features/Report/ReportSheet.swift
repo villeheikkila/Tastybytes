@@ -31,6 +31,7 @@ struct ReportSheet: View {
                 }).bold()
             }
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle(entity.navigationTitle)
         .toolbar {
             toolbarContent

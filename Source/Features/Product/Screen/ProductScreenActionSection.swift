@@ -40,7 +40,7 @@ struct ProductScreenActionSection: View {
             .background(Color.orange)
             .foregroundColor(.white)
             .cornerRadius(3, corners: [.topRight, .bottomRight])
-        }.padding(.top, 4)
+        }
     }
 
     func toggleWishlist() async {
