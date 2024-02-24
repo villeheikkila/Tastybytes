@@ -38,12 +38,7 @@ struct FriendSheet: View {
 
     var body: some View {
         List(sortedShownProfiles, selection: $selectedFriendIds) { friend in
-            HStack {
-                Avatar(profile: friend)
-                    .avatarSize(.extraLarge)
-                Text(friend.preferredName).padding(.leading, 8)
-                Spacer()
-            }
+            FriendSheetRow(friend: friend)
         }
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
@@ -62,5 +57,20 @@ struct FriendSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDoneActionView()
+    }
+}
+
+@MainActor
+struct FriendSheetRow: View {
+    let friend: Profile
+
+    var body: some View {
+        HStack {
+            Avatar(profile: friend)
+                .avatarSize(.extraLarge)
+            Text(friend.preferredName).padding(.leading, 8)
+            Spacer()
+        }
+        .listRowBackground(Color.clear)
     }
 }
