@@ -41,14 +41,13 @@ struct NotificationScreen: View {
             List {
                 ForEach(filteredNotifications) { notification in
                     notification.notificationView
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(notification.seenAt == nil ? nil : Color(.systemGray5))
+                        .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
                 }
                 .onDelete(perform: { index in Task {
                     await notificationEnvironmentModel.deleteFromIndex(at: index)
                 } })
             }
-            .defaultScrollContentBackground()
+            .listStyle(.plain)
             .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }

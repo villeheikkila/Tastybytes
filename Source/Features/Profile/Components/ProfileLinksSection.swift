@@ -17,7 +17,6 @@ struct ProfileLinksSection: View {
                 RouterLink("profile.links.locations", systemImage: "map", screen: .profileLocations(profile))
             }
         }
-        .listRowSeparator(.visible)
         .font(.subheadline)
         .bold()
         .cornerRadius(8.0)
