@@ -95,7 +95,6 @@ struct BrandScreen: View {
                 }
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
-                .id(Optional(initialScrollPosition))
                 .sheets(item: $sheet)
 
                 switch productGrouping {
@@ -266,9 +265,9 @@ struct BrandScreen: View {
                             .frame(width: 24, height: 24)
                     }
                 }
-                .id(subBrand)
             }
             .headerProminence(.increased)
+            .id(subBrand)
         }
     }
 

@@ -9,7 +9,6 @@ struct ProductFilterOverlayView: View {
     var body: some View {
         VStack {
             Spacer()
-
             HStack {
                 VStack {
                     HStack {
@@ -40,9 +39,9 @@ struct ProductFilterOverlayView: View {
                     }
                 }
                 Spacer()
-                Button("product.filter.overlay.resetFilter", systemImage: "x.circle", action: { onReset() })
-                    .labelStyle(.iconOnly)
-                    .imageScale(.large)
+                CloseButton {
+                    onReset()
+                }
             }
             .padding()
             .background(.ultraThinMaterial)

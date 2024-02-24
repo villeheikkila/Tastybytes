@@ -35,6 +35,17 @@ struct ProductFilterSheet: View {
         sortBy = initialFilter?.sortBy
     }
 
+    var filter: Product.Filter? {
+        guard !(categoryFilter == nil && subcategoryFilter == nil && onlyNonCheckedIn == false && sortBy == nil)
+        else { return nil }
+        return .init(
+            category: categoryFilter,
+            subcategory: subcategoryFilter,
+            onlyNonCheckedIn: onlyNonCheckedIn,
+            sortBy: sortBy
+        )
+    }
+
     var body: some View {
         Form {
             if sections.contains(.category) {
@@ -83,7 +94,7 @@ struct ProductFilterSheet: View {
             Button("product.filter.reset", action: { resetFilter() }).bold()
         }
         .scrollContentBackground(.hidden)
-        .navigationTitle("product.filter.title")
+        .navigationTitle("product.filter.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
@@ -94,21 +105,10 @@ struct ProductFilterSheet: View {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .confirmationAction) {
             Button("labels.apply", action: {
-                onApply(getFilter())
+                onApply(filter)
                 dismiss()
             }).bold()
         }
-    }
-
-    func getFilter() -> Product.Filter? {
-        guard !(categoryFilter == nil && subcategoryFilter == nil && onlyNonCheckedIn == false && sortBy == nil)
-        else { return nil }
-        return Product.Filter(
-            category: categoryFilter,
-            subcategory: subcategoryFilter,
-            onlyNonCheckedIn: onlyNonCheckedIn,
-            sortBy: sortBy
-        )
     }
 
     func resetFilter() {

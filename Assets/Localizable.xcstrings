@@ -3240,7 +3240,11 @@
         }
       }
     },
+    "product.filter.navigationTitle" : {
+
+    },
     "product.filter.overlay.resetFilter" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3282,9 +3286,6 @@
           }
         }
       }
-    },
-    "product.filter.title" : {
-
     },
     "product.isDiscontinued.label" : {
       "localizations" : {
