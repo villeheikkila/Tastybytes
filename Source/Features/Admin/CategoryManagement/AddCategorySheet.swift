@@ -20,6 +20,7 @@ struct AddCategorySheet: View {
                 }
             }).disabled(newCategoryName.isEmpty)
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("category.add.navigationTitle")
         .toolbar {
             toolbarContent

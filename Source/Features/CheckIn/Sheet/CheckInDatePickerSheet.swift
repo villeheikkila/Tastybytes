@@ -16,6 +16,7 @@ struct CheckInDatePickerSheet: View {
             Toggle("checkIn.datePicker.markAsLegacy.label", isOn: $isLegacyCheckIn)
             Toggle("checkIn.datePicker.markAsNostalgic.label", isOn: $isNostalgic)
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("checkIn.datePicker.title")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

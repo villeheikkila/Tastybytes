@@ -106,6 +106,7 @@ struct CheckInSheet: View {
             additionalInformationSection
             locationAndFriendsSection
         }
+        .scrollContentBackground(.hidden)
         .foregroundColor(.primary)
         .sheets(item: $sheet)
         .confirmationDialog("checkIn.photo.title", isPresented: $showPhotoMenu) {

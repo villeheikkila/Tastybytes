@@ -21,6 +21,7 @@ struct AddSubcategorySheet: View {
                 }).disabled(newSubcategoryName.isEmpty)
             }
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("subcategory.addTo.category.navigationTitle \(category.name)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

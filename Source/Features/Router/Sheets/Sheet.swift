@@ -112,6 +112,7 @@ enum Sheet: Identifiable, Equatable {
             LocationSearchSheet(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect)
         case let .legacyPhotoPicker(onSelection: onSelection):
             LegacyPhotoPicker(onSelection: onSelection)
+                .ignoresSafeArea(edges: .bottom)
         case let .newFlavor(onSubmit: onSubmit):
             NewFlavorSheet(onSubmit: onSubmit)
         case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):
@@ -140,6 +141,7 @@ enum Sheet: Identifiable, Equatable {
             MergeLocationSheet(location: location)
         case let .sendEmail(email, callback):
             SendEmailView(email: email, callback: callback)
+                .ignoresSafeArea(edges: .bottom)
         case let .editComment(checkInComment, checkInComments):
             CheckInCommentEditSheet(checkInComment: checkInComment, checkInComments: checkInComments)
         }

@@ -25,6 +25,7 @@ struct EditSubcategorySheet: View {
                 }
             }).disabled(subcategoryName.isEmpty || subcategory.name == subcategoryName)
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("subcategory.edit.navigationTitle \(subcategory.name)")
         .toolbar {
             toolbarContent

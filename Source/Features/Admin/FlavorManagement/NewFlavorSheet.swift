@@ -18,6 +18,7 @@ struct NewFlavorSheet: View {
                 }
             })
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("flavor.add.navigationTitle")
         .toolbar {
             toolbarContent
