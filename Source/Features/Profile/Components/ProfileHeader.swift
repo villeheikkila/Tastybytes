@@ -63,7 +63,6 @@ struct ProfileHeader: View {
 
         if showInFull {
             RatingChartView(profile: profile, profileSummary: profileSummary)
-                .padding(.vertical, 10)
             ProfileCheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
                 loadImagesTask = Task {
                     await fetchImages()

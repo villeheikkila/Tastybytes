@@ -116,6 +116,7 @@ struct CheckInList<Header>: View where Header: View {
                     }
                 } else if isContentUnavailable {
                     fetcher.emptyContentView
+                        .listRowSeparator(.hidden)
                 } else {
                     EmptyView()
                 }

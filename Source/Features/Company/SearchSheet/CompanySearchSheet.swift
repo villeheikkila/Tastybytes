@@ -32,10 +32,6 @@ struct CompanySearchSheet: View {
         !isLoading && searchResults.isEmpty && status == .searched && !searchTerm.isEmpty
     }
 
-    var showContentUnavailableView: Bool {
-        !searchTerm.isEmpty && searchResults.isEmpty
-    }
-
     var body: some View {
         List {
             ForEach(searchResults) { company in
@@ -50,7 +46,7 @@ struct CompanySearchSheet: View {
                 case .searched:
                     Section("company.create.notFound.section.title") {
                         Button("company.create.label", action: { createNew() })
-                    }.textCase(nil)
+                    }
                 case .add:
                     Section("company.create.section.title") {
                         ScanTextField(title: "company.name.placeholder", text: $companyName)
@@ -79,8 +75,13 @@ struct CompanySearchSheet: View {
             }
         })
         .overlay {
-            ContentUnavailableView.search(text: searchTerm)
-                .opacity(showContentUnavailableView ? 1 : 0)
+            if searchResults.isEmpty {
+                if  !searchTerm.isEmpty {
+                    ContentUnavailableView.search(text: searchTerm)
+                } else {
+                    ContentUnavailableView("company.search.empty.title", systemImage: "magnifyingglass")
+                }
+            }
         }
         .navigationTitle("company.search.navigationTitle")
         .toolbar {

@@ -202,6 +202,7 @@
 		5CAADF092B5C548700D956C1 /* DiscoverProductAssignBarcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAADF082B5C548700D956C1 /* DiscoverProductAssignBarcode.swift */; };
 		5CAADF0B2B5C566F00D956C1 /* ProductLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAADF0A2B5C566F00D956C1 /* ProductLogo.swift */; };
 		5CAADF102B5C634E00D956C1 /* BrandLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAADF0F2B5C634E00D956C1 /* BrandLogo.swift */; };
+		5CB33AD22B8A56DF00CDC09F /* MapThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB33AD12B8A56DF00CDC09F /* MapThumbnail.swift */; };
 		5CCEE2772B2C6AAF00F276DF /* CheckInCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */; };
 		5CCEE2792B2C6CEA00F276DF /* CheckInCardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */; };
 		5CCEE27B2B2C770A00F276DF /* CheckInCardProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE27A2B2C770A00F276DF /* CheckInCardProduct.swift */; };
@@ -446,6 +447,7 @@
 		5CAADF082B5C548700D956C1 /* DiscoverProductAssignBarcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverProductAssignBarcode.swift; sourceTree = "<group>"; };
 		5CAADF0A2B5C566F00D956C1 /* ProductLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductLogo.swift; sourceTree = "<group>"; };
 		5CAADF0F2B5C634E00D956C1 /* BrandLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandLogo.swift; sourceTree = "<group>"; };
+		5CB33AD12B8A56DF00CDC09F /* MapThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapThumbnail.swift; sourceTree = "<group>"; };
 		5CBF5A072B3C70F700227A19 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCard.swift; sourceTree = "<group>"; };
 		5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardHeader.swift; sourceTree = "<group>"; };
@@ -1083,6 +1085,7 @@
 		5C9057AD2B2894BE00EC157B /* Location */ = {
 			isa = PBXGroup;
 			children = (
+				5CB33AD02B8A56C800CDC09F /* Components */,
 				5C90577C2B2894BE00EC157B /* LocationSearch */,
 				5C9057AE2B2894BE00EC157B /* LocationScreen.swift */,
 				5C9057572B2894BE00EC157B /* MergeLocationSheet.swift */,
@@ -1271,6 +1274,14 @@
 				5CAADF0F2B5C634E00D956C1 /* BrandLogo.swift */,
 			);
 			path = Brand;
+			sourceTree = "<group>";
+		};
+		5CB33AD02B8A56C800CDC09F /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				5CB33AD12B8A56DF00CDC09F /* MapThumbnail.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		5CC276312B31F01B001032CE /* Mutation */ = {
@@ -1680,6 +1691,7 @@
 				5C82E89E2B2F7AC700F2B369 /* ProfileSummarySection.swift in Sources */,
 				5C9057EA2B2894BE00EC157B /* DiscoverTab.swift in Sources */,
 				5C9057FB2B2894BE00EC157B /* MergeLocationSheet.swift in Sources */,
+				5CB33AD22B8A56DF00CDC09F /* MapThumbnail.swift in Sources */,
 				5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailableState.swift in Sources */,
 				5C9057F02B2894BE00EC157B /* FriendSheet.swift in Sources */,
 				5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */,

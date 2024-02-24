@@ -15,10 +15,14 @@ struct ProductScreenHeader: View {
     let loadMoreImages: () -> Void
     let onRefreshCheckIns: () -> Void
     @Binding var isOnWishlist: Bool
+    
+    var productItemViewExtras: Set<ProductItemView.Extra> {
+         product.logos.isEmpty ? [.companyLink] : [.companyLink, .logoOnRight]
+    }
 
     var body: some View {
-        ProductItemView(product: product, extras: [.companyLink, .logoOnRight])
-        SummaryView(summary: summary).padding(.top, 4)
+        ProductItemView(product: product, extras: productItemViewExtras)
+        SummaryView(summary: summary)
         ProductScreenActionSection(
             isOnWishlist: $isOnWishlist,
             product: product,

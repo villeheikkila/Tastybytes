@@ -57,7 +57,6 @@ struct ProfileHeaderAvatarSection: View {
             }
         }
         .contextMenu {
-            ProfileShareLinkView(profile: profile)
             if let imageEntity = profile.avatars.first, isCurrentUser {
                 ProgressButton("profile.avatar.delete.label", systemImage: "trash", role: .destructive) {
                     await deleteAvatar(entity: imageEntity)

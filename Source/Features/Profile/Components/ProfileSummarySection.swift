@@ -25,6 +25,5 @@ struct ProfileSummarySection: View {
             }
             Spacer()
         }
-        .padding(.vertical, 10)
     }
 }

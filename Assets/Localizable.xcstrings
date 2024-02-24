@@ -1559,6 +1559,16 @@
         }
       }
     },
+    "company.search.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a company"
+          }
+        }
+      }
+    },
     "company.search.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -3242,17 +3252,6 @@
     },
     "product.filter.navigationTitle" : {
 
-    },
-    "product.filter.overlay.resetFilter" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset"
-          }
-        }
-      }
     },
     "product.filter.overlay.showingOnlyNotHad" : {
 
