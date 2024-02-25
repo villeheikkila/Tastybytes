@@ -76,7 +76,7 @@ struct CompanySearchSheet: View {
         })
         .overlay {
             if searchResults.isEmpty {
-                if  !searchTerm.isEmpty {
+                if !searchTerm.isEmpty {
                     ContentUnavailableView.search(text: searchTerm)
                 } else {
                     ContentUnavailableView("company.search.empty.title", systemImage: "magnifyingglass")

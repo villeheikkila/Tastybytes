@@ -443,7 +443,7 @@ struct LocationInputButton: View {
             sheet: .locationSearch(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect),
             label: {
                 HStack {
-                    if let location = selection, let coordinate = selection?.location?.coordinate  {
+                    if let location = selection, let coordinate = selection?.location?.coordinate {
                         MapThumbnail(location: location, coordinate: coordinate, distance: nil)
                     }
                     VStack(alignment: .leading, spacing: 2) {

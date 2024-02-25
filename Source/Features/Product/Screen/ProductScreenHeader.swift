@@ -15,9 +15,9 @@ struct ProductScreenHeader: View {
     let loadMoreImages: () -> Void
     let onRefreshCheckIns: () -> Void
     @Binding var isOnWishlist: Bool
-    
+
     var productItemViewExtras: Set<ProductItemView.Extra> {
-         product.logos.isEmpty ? [.companyLink] : [.companyLink, .logoOnRight]
+        product.logos.isEmpty ? [.companyLink] : [.companyLink, .logoOnRight]
     }
 
     var body: some View {
