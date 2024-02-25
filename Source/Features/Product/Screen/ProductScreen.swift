@@ -30,6 +30,7 @@ struct ProductInnerScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Environment(Router.self) private var router
+    @State private var isInitialized = false
     @State private var product: Product.Joined
     @State private var summary: Summary?
     @State private var showDeleteProductConfirmationDialog = false
@@ -104,7 +105,7 @@ struct ProductInnerScreen: View {
         .onDisappear {
             checkInImageTask?.cancel()
         }
-        .task {
+        .initialTask {
             await getProductData()
         }
         .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
@@ -275,6 +276,7 @@ struct ProductInnerScreen: View {
         switch await repository.product.verification(id: product.id, isVerified: isVerified) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
+            self.product = product.copyWith(isVerified: isVerified)
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

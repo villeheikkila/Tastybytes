@@ -10,16 +10,24 @@ struct VerificationButton: View {
     let unverify: () async -> Void
 
     var label: LocalizedStringKey { isVerified ? "verification.verified.label" : "verification.waitingForVerification.label" }
-    var systemImage: String { isVerified ? "checkmark.circle" : "x.circle" }
+    var systemImage: String? { isVerified ? "checkmark.circle" : nil }
     var action: () async -> Void {
         isVerified ? unverify : verify
     }
 
     var body: some View {
         if profileEnvironmentModel.hasPermission(.canVerify) {
-            ProgressButton(label, systemImage: systemImage, action: { await action() })
+            if let systemImage {
+                ProgressButton(label, systemImage: systemImage, action: { await action() })
+            } else {
+                ProgressButton(label, action: { await action() })
+            }
         } else {
-            Label(label, systemImage: systemImage)
+            if let systemImage {
+                Label(label, systemImage: systemImage)
+            } else {
+                Text(label)
+            }
         }
     }
 }

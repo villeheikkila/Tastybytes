@@ -193,3 +193,22 @@ public extension View {
         frame(width: size.width, height: size.height)
     }
 }
+
+public extension View {
+    func initialTask(_ action: @escaping @Sendable () async -> Void) -> some View {
+        modifier(InitialTask(action: action))
+    }
+}
+
+private struct InitialTask: ViewModifier {
+    @State private var isInitial = true
+    let action: @Sendable () async -> Void
+
+    func body(content: Content) -> some View {
+        content.task {
+            guard isInitial else { return }
+            isInitial = false
+            await action()
+        }
+    }
+}

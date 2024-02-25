@@ -3354,7 +3354,14 @@
       }
     },
     "product.mutation.edit.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Product"
+          }
+        }
+      }
     },
     "product.mutation.editSuggestion.title" : {
 
