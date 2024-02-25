@@ -18,32 +18,12 @@ struct BrandScreen: View {
     @State private var isLikedByCurrentUser = false
     @State private var productGrouping: GroupProductsBy = .subBrand
     @State private var showProductGroupingPicker = false
-    @State private var toUnverifySubBrand: SubBrand.JoinedProduct? {
-        didSet {
-            showSubBrandUnverificationConfirmation = true
-        }
-    }
+    @State private var toUnverifySubBrand: SubBrand.JoinedProduct?
 
-    @State private var showSubBrandUnverificationConfirmation = false
     @State private var showBrandUnverificationConfirmation = false
     @State private var alertError: AlertError?
     @State private var showDeleteBrandConfirmationDialog = false
-    @State private var brandToDelete: Brand.JoinedSubBrandsProducts? {
-        didSet {
-            showDeleteBrandConfirmationDialog = true
-        }
-    }
-
-    @State private var showDeleteSubBrandConfirmation = false
-    @State private var toDeleteSubBrand: SubBrand.JoinedProduct? {
-        didSet {
-            if oldValue == nil {
-                showDeleteSubBrandConfirmation = true
-            } else {
-                showDeleteSubBrandConfirmation = false
-            }
-        }
-    }
+    @State private var toDeleteSubBrand: SubBrand.JoinedProduct?
 
     @State private var refreshId = 0
     @State private var resultId: Int?
@@ -122,7 +102,7 @@ struct BrandScreen: View {
             }
             .confirmationDialog(
                 "subBrand.unverify",
-                isPresented: $showSubBrandUnverificationConfirmation,
+                isPresented: $toUnverifySubBrand.isNotNull(),
                 presenting: toUnverifySubBrand
             ) { presenting in
                 ProgressButton(
@@ -161,7 +141,7 @@ struct BrandScreen: View {
             }
             .confirmationDialog(
                 "subBrand.delete.disclaimer",
-                isPresented: $showDeleteSubBrandConfirmation,
+                isPresented: $toDeleteSubBrand.isNotNull(),
                 titleVisibility: .visible,
                 presenting: toDeleteSubBrand
             ) { presenting in

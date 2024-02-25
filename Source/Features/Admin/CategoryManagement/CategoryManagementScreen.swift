@@ -9,14 +9,9 @@ struct CategoryManagementScreen: View {
     private let logger = Logger(category: "CategoryManagementScreen")
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @State private var showDeleteSubcategoryConfirmation = false
     @State private var verifySubcategory: Subcategory?
     @State private var sheet: Sheet?
-    @State private var deleteSubcategory: Subcategory? {
-        didSet {
-            showDeleteSubcategoryConfirmation = true
-        }
-    }
+    @State private var deleteSubcategory: Subcategory?
 
     var body: some View {
         List(appEnvironmentModel.categories) { category in
@@ -65,7 +60,7 @@ struct CategoryManagementScreen: View {
             await appEnvironmentModel.initialize(reset: true)
         }
         .confirmationDialog("subcategory.delete.confirmation.description",
-                            isPresented: $showDeleteSubcategoryConfirmation,
+                            isPresented: $deleteSubcategory.isNotNull(),
                             titleVisibility: .visible,
                             presenting: deleteSubcategory)
         { presenting in

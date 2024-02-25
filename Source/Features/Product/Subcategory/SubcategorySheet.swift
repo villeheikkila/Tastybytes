@@ -16,9 +16,10 @@ struct SubcategorySheet: View {
     @State private var showAddSubcategory = false
     @State private var newSubcategoryName = ""
     @State private var searchTerm = ""
+    
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
-    var shownSubcategories: [Subcategory] {
+    private var shownSubcategories: [Subcategory] {
         category.subcategories.sorted().filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
     }
 
@@ -26,7 +27,7 @@ struct SubcategorySheet: View {
         shownSubcategories.sorted { subcategories.contains($0.id) && !subcategories.contains($1.id) }
     }
 
-    var showContentUnavailableView: Bool {
+    private var showContentUnavailableView: Bool {
         !searchTerm.isEmpty && shownSubcategories.isEmpty
     }
 

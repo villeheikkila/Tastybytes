@@ -14,13 +14,7 @@ struct DuplicateProductScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var products = [Product.Joined]()
     @State private var alertError: AlertError?
-    @State private var deleteProduct: Product.Joined? {
-        didSet {
-            showDeleteProductConfirmationDialog = true
-        }
-    }
-
-    @State private var showDeleteProductConfirmationDialog = false
+    @State private var deleteProduct: Product.Joined?
 
     var body: some View {
         List(products) { product in
@@ -60,7 +54,7 @@ struct DuplicateProductScreen: View {
         .listStyle(.plain)
         .alertError($alertError)
         .confirmationDialog("product.delete.confirmation.description",
-                            isPresented: $showDeleteProductConfirmationDialog,
+                            isPresented: $deleteProduct.isNotNull(),
                             titleVisibility: .visible,
                             presenting: deleteProduct)
         { presenting in

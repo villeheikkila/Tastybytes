@@ -13,7 +13,7 @@ struct CategoryPickerSheet: View {
 
     @State private var searchTerm = ""
 
-    var shownCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
+    private var shownCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
         appEnvironmentModel.categories.filter { category in
             searchTerm.isEmpty ||
                 category.name.contains(searchTerm) ||

@@ -17,14 +17,9 @@ struct DuplicateProductSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var products = [Product.Joined]()
-    @State private var showMergeToProductConfirmation = false
     @State private var searchTerm = ""
     @State private var alertError: AlertError?
-    @State private var mergeToProduct: Product.Joined? {
-        didSet {
-            showMergeToProductConfirmation = true
-        }
-    }
+    @State private var mergeToProduct: Product.Joined?
 
     let mode: Mode
     let product: Product.Joined
@@ -57,7 +52,7 @@ struct DuplicateProductSheet: View {
         }
         .alertError($alertError)
         .confirmationDialog("duplicateProduct.mergeTo.description",
-                            isPresented: $showMergeToProductConfirmation,
+                            isPresented: $mergeToProduct.isNotNull(),
                             presenting: mergeToProduct)
         { presenting in
             ProgressButton(

@@ -37,13 +37,7 @@ struct VerificationScreen: View {
     @State private var subBrands = [SubBrand.JoinedBrand]()
     @State private var verificationType: VerificationType = .products
     @State private var alertError: AlertError?
-    @State private var deleteProduct: Product.Joined? {
-        didSet {
-            showDeleteProductConfirmationDialog = true
-        }
-    }
-
-    @State private var showDeleteProductConfirmationDialog = false
+    @State private var deleteProduct: Product.Joined?
 
     var body: some View {
         List {
@@ -60,7 +54,7 @@ struct VerificationScreen: View {
         }
         .listStyle(.plain)
         .confirmationDialog("product.delete.confirmation.title",
-                            isPresented: $showDeleteProductConfirmationDialog,
+                            isPresented: $deleteProduct.isNotNull(),
                             titleVisibility: .visible,
                             presenting: deleteProduct)
         { presenting in

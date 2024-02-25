@@ -16,13 +16,7 @@ struct BrandScreenProductRow: View {
     @State private var alertError: AlertError?
     @State private var showDeleteProductConfirmationDialog = false
     @State private var sheet: Sheet?
-    @State private var productToDelete: Product.Joined? {
-        didSet {
-            if productToDelete != nil {
-                showDeleteProductConfirmationDialog = true
-            }
-        }
-    }
+    @State private var productToDelete: Product.Joined?
 
     let product: Product.Joined
 
@@ -57,7 +51,7 @@ struct BrandScreenProductRow: View {
                 .sheets(item: $sheet)
         }
         .confirmationDialog("product.delete.confirmation.description",
-                            isPresented: $showDeleteProductConfirmationDialog,
+                            isPresented: $productToDelete.isNotNull(),
                             titleVisibility: .visible,
                             presenting: productToDelete)
         { presenting in

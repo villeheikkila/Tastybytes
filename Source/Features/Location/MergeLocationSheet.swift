@@ -14,13 +14,7 @@ struct MergeLocationSheet: View {
     @State private var alertError: AlertError?
     @Environment(\.dismiss) private var dismiss
     @State private var locations = [Location]()
-    @State private var mergeToLocation: Location? {
-        didSet {
-            showMergeToProductConfirmation = true
-        }
-    }
-
-    @State private var showMergeToProductConfirmation = false
+    @State private var mergeToLocation: Location?
     @State private var searchTerm = ""
     @State private var searchTask: Task<Void, Never>?
 
@@ -49,7 +43,7 @@ struct MergeLocationSheet: View {
         }
         .confirmationDialog(
             "location.merge.confirmation.description",
-            isPresented: $showMergeToProductConfirmation,
+            isPresented: $mergeToLocation.isNotNull(),
             titleVisibility: .visible,
             presenting: mergeToLocation
         ) { presenting in

@@ -16,11 +16,7 @@ struct CategoryServingStyleSheet: View {
     @State private var servingStyles: [ServingStyle]
     @State private var showDeleteServingStyleConfirmation = false
     @State private var alertError: AlertError?
-    @State private var toDeleteServingStyle: ServingStyle? {
-        didSet {
-            showDeleteServingStyleConfirmation = true
-        }
-    }
+    @State private var toDeleteServingStyle: ServingStyle?
 
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
@@ -52,7 +48,7 @@ struct CategoryServingStyleSheet: View {
         .alertError($alertError)
         .confirmationDialog(
             "servingStyle.deleteWarning.title",
-            isPresented: $showDeleteServingStyleConfirmation,
+            isPresented: $toDeleteServingStyle.isNotNull(),
             titleVisibility: .visible,
             presenting: toDeleteServingStyle
         ) { presenting in

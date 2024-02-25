@@ -9,13 +9,7 @@ struct CurrentUserFriendsScreen: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @State private var friendToBeRemoved: Friend? {
-        didSet {
-            showRemoveFriendConfirmation = true
-        }
-    }
-
-    @State private var showRemoveFriendConfirmation = false
+    @State private var friendToBeRemoved: Friend?
     @State private var showUserSearchSheet = false
     @State private var searchTerm = ""
     @State private var sheet: Sheet?
@@ -137,7 +131,7 @@ struct CurrentUserFriendsScreen: View {
         }
         .sheets(item: $sheet)
         .confirmationDialog("friend.delete.confirmation.title",
-                            isPresented: $showRemoveFriendConfirmation,
+                            isPresented: $friendToBeRemoved.isNotNull(),
                             titleVisibility: .visible,
                             presenting: friendToBeRemoved)
         { presenting in

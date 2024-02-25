@@ -12,14 +12,7 @@ struct CheckInCommentRow: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var sheet: Sheet?
-    @State private var showDeleteCommentAsModeratorConfirmation = false
-    @State private var deleteAsCheckInCommentAsModerator: CheckInComment? {
-        didSet {
-            if deleteAsCheckInCommentAsModerator != nil {
-                showDeleteCommentAsModeratorConfirmation = true
-            }
-        }
-    }
+    @State private var deleteAsCheckInCommentAsModerator: CheckInComment?
 
     let comment: CheckInComment
     @Binding var checkInComments: [CheckInComment]
@@ -29,7 +22,7 @@ struct CheckInCommentRow: View {
             .sheets(item: $sheet)
             .confirmationDialog(
                 "comment.deleteAsModerator.confirmation.description",
-                isPresented: $showDeleteCommentAsModeratorConfirmation,
+                isPresented: $deleteAsCheckInCommentAsModerator.isNotNull(),
                 titleVisibility: .visible,
                 presenting: deleteAsCheckInCommentAsModerator
             ) { presenting in

@@ -16,13 +16,8 @@ struct ServingStyleManagementSheet: View {
     @State private var servingStyleName = ""
     @State private var newServingStyleName = ""
     @State private var alertError: AlertError?
-    @State private var toDeleteServingStyle: ServingStyle? {
-        didSet {
-            showDeleteServingStyleConfirmation = true
-        }
-    }
+    @State private var toDeleteServingStyle: ServingStyle?
 
-    @State private var showDeleteServingStyleConfirmation = false
     @State private var editServingStyle: ServingStyle? {
         didSet {
             showEditServingStyle = true
@@ -89,7 +84,7 @@ struct ServingStyleManagementSheet: View {
         )
         .confirmationDialog(
             "servingStyle.deleteConfirmation.title",
-            isPresented: $showDeleteServingStyleConfirmation,
+            isPresented: $toDeleteServingStyle.isNotNull(),
             titleVisibility: .visible,
             presenting: toDeleteServingStyle
         ) { presenting in

@@ -15,19 +15,11 @@ struct CheckInScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState private var focusedField: CheckInLeaveComment.Focusable?
-    @State private var showDeleteCheckInAsModeratorConfirmation = false
     @State private var sheet: Sheet?
     @State private var checkIn: CheckIn
     @State private var checkInComments = [CheckInComment]()
     @State private var showDeleteConfirmation = false
-
-    @State private var toDeleteCheckInAsModerator: CheckIn? {
-        didSet {
-            if toDeleteCheckInAsModerator != nil {
-                showDeleteCheckInAsModeratorConfirmation = true
-            }
-        }
-    }
+    @State private var toDeleteCheckInAsModerator: CheckIn?
 
     @State private var alertError: AlertError?
     // Refresh status
@@ -87,7 +79,7 @@ struct CheckInScreen: View {
         }
         .confirmationDialog(
             "checkIn.delete.asModerator.title",
-            isPresented: $showDeleteCheckInAsModeratorConfirmation,
+            isPresented: $toDeleteCheckInAsModerator.isNotNull(),
             titleVisibility: .visible,
             presenting: toDeleteCheckInAsModerator
         ) { presenting in

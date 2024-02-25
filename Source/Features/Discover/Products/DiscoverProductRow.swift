@@ -13,12 +13,7 @@ struct DiscoverProductRow: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @State private var sheet: Sheet?
-    @State private var showAddBarcodeConfirmation = false
-    @State private var addBarcodeTo: Product.Joined? {
-        didSet {
-            showAddBarcodeConfirmation = true
-        }
-    }
+    @State private var addBarcodeTo: Product.Joined?
 
     let product: Product.Joined
     @Binding var barcode: Barcode?
@@ -41,7 +36,7 @@ struct DiscoverProductRow: View {
             }
             .confirmationDialog(
                 "checkIn.addBarcode.confirmation.title",
-                isPresented: $showAddBarcodeConfirmation,
+                isPresented: $addBarcodeTo.isNotNull(),
                 presenting: addBarcodeTo
             ) { presenting in
                 ProgressButton(
@@ -60,7 +55,6 @@ struct DiscoverProductRow: View {
         case .success:
             self.barcode = nil
             self.addBarcodeTo = nil
-            showAddBarcodeConfirmation = false
             feedbackEnvironmentModel.toggle(.success("checkIn.addBarcode.success.toast"))
             router.navigate(screen: .product(addBarcodeTo))
         case let .failure(error):

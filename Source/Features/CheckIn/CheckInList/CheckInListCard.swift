@@ -10,12 +10,7 @@ import SwiftUI
 struct CheckInListCard: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var showDeleteCheckInConfirmationDialog = false
-    @State private var showDeleteConfirmationFor: CheckIn? {
-        didSet {
-            showDeleteCheckInConfirmationDialog = true
-        }
-    }
+    @State private var showDeleteConfirmationFor: CheckIn?
 
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
@@ -94,7 +89,7 @@ struct CheckInListCard: View {
             }
             .confirmationDialog(
                 "checkIn.delete.confirmation.title",
-                isPresented: $showDeleteCheckInConfirmationDialog,
+                isPresented: $showDeleteConfirmationFor.isNotNull(),
                 titleVisibility: .visible,
                 presenting: showDeleteConfirmationFor
             ) { presenting in

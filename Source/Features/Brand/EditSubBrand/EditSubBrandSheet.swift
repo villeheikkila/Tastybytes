@@ -14,18 +14,9 @@ struct EditSubBrandSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var showMergeSubBrandsConfirmation = false
     @State private var newSubBrandName: String
     @State private var subBrand: SubBrand.JoinedProduct
-    @State private var mergeTo: SubBrand.JoinedProduct? {
-        didSet {
-            if oldValue != nil {
-                showMergeSubBrandsConfirmation = true
-            } else {
-                showMergeSubBrandsConfirmation = false
-            }
-        }
-    }
+    @State private var mergeTo: SubBrand.JoinedProduct?
 
     @State private var alertError: AlertError?
 
@@ -90,7 +81,7 @@ struct EditSubBrandSheet: View {
         .alertError($alertError)
         .confirmationDialog(
             "subBrand.mergeTo.confirmation.description",
-            isPresented: $showMergeSubBrandsConfirmation,
+            isPresented: $mergeTo.isNotNull(),
             titleVisibility: .visible,
             presenting: mergeTo
         ) { presenting in
