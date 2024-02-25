@@ -39,6 +39,7 @@ struct CheckInListLoadingIndicator: View {
 struct CheckInList<Header>: View where Header: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     // Tasks
@@ -115,7 +116,9 @@ struct CheckInList<Header>: View where Header: View {
                 if fetcher.showCheckInSegmentationPicker {
                     CheckInListSegmentPicker(showCheckInsFrom: $showCheckInsFrom)
                 }
-                CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: loadedFrom, onCheckInUpdate: onCheckInUpdate, onLoadMore: {
+                CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: loadedFrom, onCheckInUpdate: onCheckInUpdate, onCreateCheckIn: { checkIn in
+                    router.navigate(screen: .checkIn(checkIn))
+                }, onLoadMore: {
                     onLoadMore()
                 })
                 CheckInListLoadingIndicator(isLoading: $isLoading, isRefreshing: $isRefreshing)

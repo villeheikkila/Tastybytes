@@ -79,13 +79,12 @@ struct ProductInnerScreen: View {
             )
             .listRowSeparator(.hidden)
             CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onLoadMore: {
+            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
                 checkInLoader.onLoadMore()
             })
             CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
         }
         .listStyle(.plain)
-        .defaultScrollContentBackground()
         .scrollIndicators(.hidden)
         .refreshable {
             await getProductData()
@@ -269,7 +268,7 @@ struct ProductInnerScreen: View {
             alertError = .init()
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
-        logger.info("Refreshing product page completed, refresh id: \(checkInLoader.refreshId)")
+        logger.info("Refreshing product page completed")
     }
 
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {

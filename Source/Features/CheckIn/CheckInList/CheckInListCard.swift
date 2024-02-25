@@ -21,6 +21,8 @@ struct CheckInListCard: View {
     let loadedFrom: CheckInCard.LoadedFrom
     let onUpdate: @MainActor (_ checkIn: CheckIn) -> Void
     let onDelete: @MainActor (_ checkIn: CheckIn) async -> Void
+    let onCreate: @MainActor (_ checkIn: CheckIn) -> Void
+
     @Binding var sheet: Sheet?
 
     var body: some View {
@@ -51,9 +53,7 @@ struct CheckInListCard: View {
                             "checkIn.title",
                             systemImage: "pencil",
                             action: {
-                                sheet = .newCheckIn(checkIn.product, onCreation: { checkIn in
-                                    router.navigate(screen: .checkIn(checkIn))
-                                })
+                                sheet = .newCheckIn(checkIn.product, onCreation: onCreate)
                             }
                         )
                         ReportButton(sheet: $sheet, entity: .checkIn(checkIn))

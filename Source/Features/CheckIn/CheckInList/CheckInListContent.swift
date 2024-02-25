@@ -15,6 +15,7 @@ struct CheckInListContent: View {
     @Binding var alertError: AlertError?
     let loadedFrom: CheckInCard.LoadedFrom
     let onCheckInUpdate: @MainActor (_ checkIn: CheckIn) -> Void
+    let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) -> Void
     let onLoadMore: () -> Void
 
     var body: some View {
@@ -24,6 +25,7 @@ struct CheckInListContent: View {
                 loadedFrom: loadedFrom,
                 onUpdate: onCheckInUpdate,
                 onDelete: deleteCheckIn,
+                onCreate: onCreateCheckIn,
                 sheet: $sheet
             )
             .listRowSeparator(.visible, edges: .bottom)
