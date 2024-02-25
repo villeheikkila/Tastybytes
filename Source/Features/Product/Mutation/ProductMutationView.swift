@@ -106,6 +106,7 @@ struct ProductMutationView: View {
                 })
             }
         }
+        .scrollContentBackground(isSheet ? .hidden : .visible)
         .navigationTitle(mode.navigationTitle)
         .foregroundColor(.primary)
         .alertError($alertError)
