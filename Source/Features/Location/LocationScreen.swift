@@ -132,7 +132,6 @@ struct LocationScreen: View {
         }
     }
 
-    @MainActor
     func deleteLocation(_ location: Location) async {
         switch await repository.location.delete(id: location.id) {
         case .success:

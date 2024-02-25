@@ -72,7 +72,6 @@ struct BrandScreenProductRow: View {
         }
     }
 
-    @MainActor
     func deleteProduct(_ product: Product.Joined) async {
         switch await repository.product.delete(id: product.id) {
         case .success:

@@ -33,7 +33,7 @@ struct EditCompanySheet: View {
             Section(mode.nameSectionHeader) {
                 TextField("company.edit.name.placeholder", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
-                    await submit(onSuccess: { @MainActor in
+                    await submit(onSuccess: {
                         dismiss()
                         await onSuccess()
                     })
@@ -76,7 +76,6 @@ struct EditCompanySheet: View {
         ToolbarDismissAction()
     }
 
-    @MainActor
     @ViewBuilder var companyPhotoSection: some View {
         if profileEnvironmentModel.hasPermission(.canAddCompanyLogo) {
             Section("company.logo.title") {
@@ -93,7 +92,7 @@ struct EditCompanySheet: View {
         }
     }
 
-    func submit(onSuccess: @Sendable () async -> Void) async {
+    func submit(onSuccess: @MainActor @Sendable () async -> Void) async {
         switch mode {
         case .edit:
             await editCompany(onSuccess: onSuccess)

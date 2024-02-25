@@ -1,5 +1,6 @@
 import EnvironmentModels
 import Models
+import Repositories
 import SwiftUI
 
 enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
@@ -31,6 +32,7 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
 
 @MainActor
 struct SideBarView: View {
+    @Environment(Repository.self) private var repository
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -93,7 +95,7 @@ struct SideBarView: View {
             NavigationStack(path: $router.path) {
                 switch selection {
                 case .activity:
-                    ActivityScreen(scrollToTop: $scrollToTop)
+                    ActivityScreen(repository: repository, scrollToTop: $scrollToTop)
                 case .discover:
                     DiscoverScreen(scrollToTop: $scrollToTop)
                 case .notifications:

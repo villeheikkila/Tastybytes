@@ -13,16 +13,14 @@ struct ProductScreenActionSection: View {
     @Binding var isOnWishlist: Bool
 
     let product: Product.Joined
-    let onRefreshCheckIns: () async -> Void
+    let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
 
     var body: some View {
         HStack(spacing: 0) {
             RouterLink(
                 "checkIn.create.label.prominent",
                 systemImage: "checkmark.circle",
-                sheet: .newCheckIn(product, onCreation: { _ in
-                    await onRefreshCheckIns()
-                }),
+                sheet: .newCheckIn(product, onCreation: onCreateCheckIn),
                 asTapGesture: true
             )
             .frame(maxWidth: .infinity)

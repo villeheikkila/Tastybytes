@@ -57,7 +57,7 @@ struct EditSubBrandSheet: View {
             Section("subBrand.name.title") {
                 TextField("subBrand.name.placeholder", text: $newSubBrandName)
                 ProgressButton("labels.edit") {
-                    await editSubBrand(onSuccess: { @MainActor in
+                    await editSubBrand(onSuccess: {
                         await onUpdate()
                     })
                 }
@@ -126,7 +126,7 @@ struct EditSubBrandSheet: View {
         }
     }
 
-    @Sendable func editSubBrand(onSuccess: @Sendable @escaping () async -> Void) async {
+    @Sendable func editSubBrand(onSuccess: @MainActor @Sendable @escaping () async -> Void) async {
         switch await repository.subBrand
             .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
         {

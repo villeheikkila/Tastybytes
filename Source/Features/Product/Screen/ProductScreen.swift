@@ -8,67 +8,113 @@ import SwiftUI
 
 @MainActor
 struct ProductScreen: View {
+    @Environment(Repository.self) private var repository
+    let product: Product.Joined
+    let loadedWithBarcode: Barcode?
+
+    init(product: Product.Joined, loadedWithBarcode: Barcode? = nil) {
+        self.product = product
+        self.loadedWithBarcode = loadedWithBarcode
+    }
+
+    var body: some View {
+        ProductInnerScreen(repository: repository, product: product, loadedWithBarcode: loadedWithBarcode)
+    }
+}
+
+@MainActor
+struct ProductInnerScreen: View {
     private let logger = Logger(category: "ProductScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Environment(Router.self) private var router
     @State private var product: Product.Joined
     @State private var summary: Summary?
     @State private var showDeleteProductConfirmationDialog = false
     @State private var showUnverifyProductConfirmation = false
-    @State private var resetView: Int = 0
 
     @State private var loadedWithBarcode: Barcode?
     @State private var alertError: AlertError?
 
     // check-in images
+    @State private var checkInImageTask: Task<Void, Never>?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoadingCheckInImages = false
     @State private var checkInImagesPage = 0
 
     // state
-    @State private var refreshId = 0
-    @State private var resultId: Int?
-    @State private var checkInImageTask: Task<Void, Never>?
     @State private var sheet: Sheet?
 
     // wishlist
     @State private var isOnWishlist = false
 
-    init(product: Product.Joined, loadedWithBarcode: Barcode? = nil) {
+    @State private var checkInLoader: CheckInListLoader
+
+    init(repository: Repository, product: Product.Joined, loadedWithBarcode: Barcode? = nil) {
+        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
+            await repository.checkIn.getByProductId(id: product.id, segment: segment, from: from, to: to)
+        }, id: "ActivityScreen"))
         _product = State(wrappedValue: product)
         _loadedWithBarcode = State(wrappedValue: loadedWithBarcode)
     }
 
     var body: some View {
-        CheckInList(
-            id: "ProductScreen",
-            fetcher: .product(product),
-            onRefresh: {
-                refreshId += 1
-            },
-            header: {
-                header
-            }
-        )
+        @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
+        List {
+            ProductScreenHeader(
+                product: product,
+                summary: summary,
+                checkInImages: checkInImages,
+                loadMoreImages: {
+                    checkInImageTask = Task {
+                        defer { checkInImageTask = nil }
+                        await fetchImages(reset: false)
+                    }
+                },
+                onCreateCheckIn: checkInLoader.onCreateCheckIn,
+                isOnWishlist: $isOnWishlist
+            )
+            .listRowSeparator(.hidden)
+            CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
+            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onLoadMore: {
+                checkInLoader.onLoadMore()
+            })
+            CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+        }
+        .listStyle(.plain)
+        .defaultScrollContentBackground()
+        .scrollIndicators(.hidden)
+        .refreshable {
+            await getProductData()
+        }
+        .sheets(item: $sheet)
+        .sensoryFeedback(.success, trigger: checkInLoader.isRefreshing) { oldValue, newValue in
+            oldValue && !newValue
+        }
         .safeAreaInset(edge: .top, alignment: .trailing) {
             if loadedWithBarcode != nil {
                 ProductScreenLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
             }
         }
-        .id(resetView)
+        .toolbar {
+            toolbarContent
+        }
         .onDisappear {
             checkInImageTask?.cancel()
         }
-        .task(id: refreshId) { [refreshId] in
-            guard refreshId != resultId else { return }
-            logger.info("Refreshing product screen with id: \(refreshId)")
+        .task(id: checkInLoader.refreshId) {
+            guard checkInLoader.refreshId != checkInLoader.resultId else { return }
+            logger.info("Refreshing product screen with id: \(checkInLoader.refreshId)")
             await getProductData()
-            resultId = refreshId
+            checkInLoader.resultId = checkInLoader.refreshId
         }
-        .toolbar {
-            toolbarContent
+        .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
+            if let updatedCheckIn = newValue {
+                imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
+                checkInLoader.onCheckInUpdate(updatedCheckIn)
+            }
         }
         .alertError($alertError)
         .confirmationDialog("product.unverify.confirmation.description",
@@ -92,32 +138,13 @@ struct ProductScreen: View {
         }
     }
 
-    @ViewBuilder private var header: some View {
-        ProductScreenHeader(
-            product: product,
-            summary: summary,
-            checkInImages: checkInImages,
-            loadMoreImages: {
-                checkInImageTask = Task {
-                    defer { checkInImageTask = nil }
-                    await fetchImages(reset: false)
-                }
-            },
-            onRefreshCheckIns: refreshCheckIns,
-            isOnWishlist: $isOnWishlist
-        )
-        .sheets(item: $sheet)
-    }
-
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             ProductShareLinkView(product: product)
             Menu {
                 ControlGroup {
-                    Button("checkIn.create.label", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: { _ in
-                        refreshCheckIns()
-                    }) })
-                    .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
+                    Button("checkIn.create.label", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: checkInLoader.onCreateCheckIn) })
+                        .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     ProductShareLinkView(product: product)
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                         Button(
@@ -150,7 +177,7 @@ struct ProductScreen: View {
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     Button("labels.edit", systemImage: "pencil", action: { sheet = .productEdit(product: product, onEdit: {
-                        refreshId += 1
+                        await getProductData()
                     }) })
                 } else {
                     Button(
@@ -199,17 +226,17 @@ struct ProductScreen: View {
     }
 
     func getProductData() async {
+        async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(refreshId: 0)
         async let productPromise = repository.product.getById(id: product.id)
         async let summaryPromise = repository.product.getSummaryById(id: product.id)
         async let wishlistPromise = repository.product.checkIfOnWishlist(id: product.id)
         async let fetchImagePromise: Void = fetchImages(reset: true)
 
-        let (productResult, summaryResult, wishlistResult, _) = await (
-            productPromise,
-            summaryPromise,
-            wishlistPromise,
-            fetchImagePromise
-        )
+        let (_, productResult, summaryResult, wishlistResult, _) = await (loadInitialCheckInsPromise,
+                                                                          productPromise,
+                                                                          summaryPromise,
+                                                                          wishlistPromise,
+                                                                          fetchImagePromise)
 
         switch productResult {
         case let .success(refreshedProduct):
@@ -241,19 +268,13 @@ struct ProductScreen: View {
             alertError = .init()
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
-        logger.info("Refreshing product page completed, refresh id: \(refreshId)")
-    }
-
-    func refreshCheckIns() {
-        resetView += 1
-        refreshId += 1
+        logger.info("Refreshing product page completed, refresh id: \(checkInLoader.refreshId)")
     }
 
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {
         switch await repository.product.verification(id: product.id, isVerified: isVerified) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            refreshId += 1
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -261,7 +282,6 @@ struct ProductScreen: View {
         }
     }
 
-    @MainActor
     func deleteProduct(_ product: Product.Joined) async {
         switch await repository.product.delete(id: product.id) {
         case .success:

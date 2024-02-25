@@ -42,7 +42,6 @@ public struct CheckInEntityView: View {
         }
     }
 
-    @MainActor
     @ViewBuilder private var checkInImage: some View {
         if let imageUrl = checkIn.getImageUrl(baseUrl: baseUrl) {
             HStack {

@@ -13,7 +13,7 @@ struct ProductScreenHeader: View {
     let checkInImages: [ImageEntity.JoinedCheckIn]
     let isLoadingCheckInImages = false
     let loadMoreImages: () -> Void
-    let onRefreshCheckIns: () -> Void
+    let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
     @Binding var isOnWishlist: Bool
 
     var productItemViewExtras: Set<ProductItemView.Extra> {
@@ -26,7 +26,7 @@ struct ProductScreenHeader: View {
         ProductScreenActionSection(
             isOnWishlist: $isOnWishlist,
             product: product,
-            onRefreshCheckIns: onRefreshCheckIns
+            onCreateCheckIn: onCreateCheckIn
         )
         if !checkInImages.isEmpty {
             ProfileCheckInImagesSection(

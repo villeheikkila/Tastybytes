@@ -32,7 +32,6 @@ struct SplashScreen: View {
         .opacity(startFadeoutAnimation ? 0 : 1)
     }
 
-    @MainActor
     private func updateAnimation() {
         switch appEnvironmentModel.splashScreenState {
         case .showing:

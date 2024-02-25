@@ -6,6 +6,35 @@ import OSLog
 import Repositories
 import SwiftUI
 
+struct CheckInListSegmentPicker: View {
+    @Binding var showCheckInsFrom: CheckInSegment
+
+    var body: some View {
+        Picker("checkIn.segment.picker.title", selection: $showCheckInsFrom) {
+            ForEach(CheckInSegment.allCases, id: \.self) { segment in
+                Text(segment.label)
+            }
+        }
+        .pickerStyle(.segmented)
+        .listRowSeparator(.visible, edges: .bottom)
+        .alignmentGuide(.listRowSeparatorLeading) { _ in
+            0
+        }
+    }
+}
+
+struct CheckInListLoadingIndicator: View {
+    @Binding var isLoading: Bool
+    @Binding var isRefreshing: Bool
+
+    var body: some View {
+        ProgressView()
+            .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+            .opacity(isLoading && !isRefreshing ? 1 : 0)
+            .listRowSeparator(.hidden)
+    }
+}
+
 @MainActor
 struct CheckInList<Header>: View where Header: View {
     private let logger = Logger(category: "CheckInList")
@@ -84,19 +113,14 @@ struct CheckInList<Header>: View where Header: View {
                 header
                     .listRowSeparator(.hidden)
                 if fetcher.showCheckInSegmentationPicker {
-                    checkInSegments
+                    CheckInListSegmentPicker(showCheckInsFrom: $showCheckInsFrom)
                 }
                 CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: loadedFrom, onCheckInUpdate: onCheckInUpdate, onLoadMore: {
                     onLoadMore()
                 })
-
-                ProgressView()
-                    .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-                    .opacity(isLoading && !isRefreshing ? 1 : 0)
-                    .listRowSeparator(.hidden)
+                CheckInListLoadingIndicator(isLoading: $isLoading, isRefreshing: $isRefreshing)
                 if showSegmentContentUnavailableView {
-                    showCheckInsFrom.emptyContentView
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    showCheckInsFrom.emptyContentView.frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
             .listStyle(.plain)
@@ -117,8 +141,6 @@ struct CheckInList<Header>: View where Header: View {
                 } else if isContentUnavailable {
                     fetcher.emptyContentView
                         .listRowSeparator(.hidden)
-                } else {
-                    EmptyView()
                 }
             }
             .alertError($imageUploadEnvironmentModel.alertError)
@@ -181,20 +203,6 @@ struct CheckInList<Header>: View where Header: View {
                     }
                 }
             }
-        }
-    }
-
-    @ViewBuilder
-    private var checkInSegments: some View {
-        Picker("checkIn.segment.picker.title", selection: $showCheckInsFrom) {
-            ForEach(CheckInSegment.allCases, id: \.self) { segment in
-                Text(segment.label)
-            }
-        }
-        .pickerStyle(.segmented)
-        .listRowSeparator(.visible, edges: .bottom)
-        .alignmentGuide(.listRowSeparatorLeading) { _ in
-            0
         }
     }
 

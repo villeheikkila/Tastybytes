@@ -95,7 +95,6 @@ struct VerificationScreen: View {
         }
     }
 
-    @MainActor
     private var unverifiedSubBrands: some View {
         ForEach(subBrands) { subBrand in
             HStack {

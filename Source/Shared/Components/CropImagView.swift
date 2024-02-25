@@ -46,7 +46,6 @@ struct CropView: View {
             }
     }
 
-    @MainActor
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(action: { renderFinalImage() }, label: {
@@ -149,7 +148,6 @@ struct CropView: View {
         .frame(cropSize)
     }
 
-    @MainActor
     func renderFinalImage() {
         let renderer = ImageRenderer(content: imageView())
         renderer.proposedSize = .init(crop.size())

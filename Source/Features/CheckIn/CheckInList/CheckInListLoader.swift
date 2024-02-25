@@ -9,7 +9,7 @@ import SwiftUI
 @MainActor
 @Observable
 final class CheckInListLoader {
-    typealias Fetcher = (_ from: Int, _ to: Int) async -> Result<[CheckIn], Error>
+    typealias Fetcher = (_ from: Int, _ to: Int, _ segment: CheckInSegment) async -> Result<[CheckIn], Error>
     private let logger = Logger(category: "CheckInLoader")
 
     var loadingCheckInsOnAppear: Task<Void, Error>?
@@ -64,9 +64,17 @@ final class CheckInListLoader {
         resultId = refreshId
     }
 
+    func onCreateCheckIn(_ checkIn: CheckIn) {
+        withAnimation {
+            checkIns.insert(checkIn, at: 0)
+        }
+    }
+
     func onCheckInUpdate(_ checkIn: CheckIn) {
         guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
-        checkIns[index] = checkIn
+        withAnimation {
+            checkIns[index] = checkIn
+        }
     }
 
     func onLoadMore() {
@@ -85,7 +93,7 @@ final class CheckInListLoader {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
         errorContentUnavailable = nil
-        switch await fetcher(from, to) {
+        switch await fetcher(from, to, showCheckInsFrom) {
         case let .success(fetchedCheckIns):
             withAnimation {
                 if reset {

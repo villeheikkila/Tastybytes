@@ -200,6 +200,7 @@
       }
     },
     "activity.error.failedToLoadMoreItems" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

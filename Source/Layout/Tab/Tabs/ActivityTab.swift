@@ -1,5 +1,6 @@
 import EnvironmentModels
 import Models
+import Repositories
 import SwiftUI
 
 @MainActor
@@ -7,10 +8,11 @@ struct ActivityTab: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(TabManager.self) private var tabManager
+    @Environment(Repository.self) private var repository
     @State private var scrollToTop: Int = 0
 
     var body: some View {
-        ActivityScreen(scrollToTop: $scrollToTop)
+        ActivityScreen(repository: repository, scrollToTop: $scrollToTop)
             .toolbar {
                 toolbarContent
             }

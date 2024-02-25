@@ -91,7 +91,6 @@ struct CompanyScreen: View {
         .sheets(item: $sheet)
     }
 
-    @MainActor
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
