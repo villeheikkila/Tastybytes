@@ -8,6 +8,8 @@ import SwiftUI
 
 @MainActor
 struct ProductMutationView: View {
+    typealias ProductCallback = @MainActor (_ product: Product.Joined) async -> Void
+
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
@@ -62,15 +64,15 @@ struct ProductMutationView: View {
 
     let mode: Mode
     let isSheet: Bool
-    let onEdit: (() async -> Void)?
-    let onCreate: ((_ product: Product.Joined) async -> Void)?
+    let onEdit: ProductCallback?
+    let onCreate: ProductCallback?
 
     init(
         mode: Mode,
         isSheet: Bool = true,
         initialBarcode: Barcode? = nil,
-        onEdit: (() async -> Void)? = nil,
-        onCreate: ((_ product: Product.Joined) -> Void)? = nil
+        onEdit: ProductCallback? = nil,
+        onCreate: ProductCallback? = nil
     ) {
         self.mode = mode
         self.isSheet = isSheet
@@ -254,9 +256,6 @@ struct ProductMutationView: View {
             await createProductEditSuggestion(product: product)
         case let .edit(product):
             await editProduct(product: product)
-            if let onEdit {
-                await onEdit()
-            }
         case .new, .addToBrand, .addToSubBrand:
             await createProduct(onSuccess: { product in
                 if let onCreate {
@@ -379,12 +378,12 @@ struct ProductMutationView: View {
         )
 
         switch await repository.product.editProduct(productEditParams: productEditParams) {
-        case .success:
+        case let .success(updatedProduct):
             isSuccess = true
-            dismiss()
             if let onEdit {
-                await onEdit()
+                await onEdit(updatedProduct)
             }
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

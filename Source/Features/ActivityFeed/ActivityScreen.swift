@@ -34,6 +34,9 @@ struct ActivityScreen: View {
             .listStyle(.plain)
             .defaultScrollContentBackground()
             .scrollIndicators(.hidden)
+            .refreshable {
+                await checkInLoader.fetchFeedItems(reset: true)
+            }
             .sensoryFeedback(.success, trigger: checkInLoader.isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }
@@ -57,11 +60,8 @@ struct ActivityScreen: View {
                     proxy.scrollTo(first.id, anchor: .top)
                 }
             }
-            .task(id: checkInLoader.refreshId) {
-                await checkInLoader.loadData(refreshId: checkInLoader.refreshId)
-            }
-            .refreshable {
-                await checkInLoader.fetchFeedItems(reset: true)
+            .task {
+                await checkInLoader.loadData()
             }
             .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
                 if let updatedCheckIn = newValue {

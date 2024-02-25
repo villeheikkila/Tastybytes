@@ -37,31 +37,24 @@ final class CheckInListLoader {
 
     private let pageSize = 10
 
-    func loadData(refreshId: Int) async {
-        let id = id
-        guard refreshId != resultId else {
-            logger.info("Already loaded data for \(id) with id: \(self.refreshId)")
+    func loadData(isRefresh: Bool = false) async {
+        if isRefresh {
+            logger.info("Refreshing check-in feed data")
+            isRefreshing = true
+            await fetchFeedItems(
+                reset: true,
+                onComplete: { _ in
+                    self.logger.info("Refreshing check-ins completed for \(self.id) with id: \(self.refreshId)")
+                }
+            )
+            isRefreshing = false
             return
         }
-        if refreshId == 0 {
-            logger.info("Loading initial check-in feed data for \(id)")
-            await fetchFeedItems(onComplete: { _ in
-                self.logger.info("Loading initial check-ins completed for \(self.id)")
-            })
-            resultId = refreshId
-            return
-        }
-        logger.info("Refreshing check-in feed data for \(id) with id: \(self.refreshId)")
-        isRefreshing = true
-        async let feedItemsPromise: Void = fetchFeedItems(
-            reset: true,
+        await fetchFeedItems(
             onComplete: { _ in
                 self.logger.info("Refreshing check-ins completed for \(self.id) with id: \(self.refreshId)")
             }
         )
-        _ = await (feedItemsPromise)
-        isRefreshing = false
-        resultId = refreshId
     }
 
     func onCreateCheckIn(_ checkIn: CheckIn) {
@@ -74,6 +67,16 @@ final class CheckInListLoader {
         guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
         withAnimation {
             checkIns[index] = checkIn
+        }
+    }
+
+    func onUpdateProduct(_ product: Product.Joined) {
+        checkIns = checkIns.map { checkIn in
+            if checkIn.product.id == product.id {
+                checkIn.copyWith(product: product)
+            } else {
+                checkIn
+            }
         }
     }
 

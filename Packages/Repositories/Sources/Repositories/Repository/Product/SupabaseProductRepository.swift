@@ -330,15 +330,24 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error> {
+    func editProduct(productEditParams: Product.EditRequest) async -> Result<Product.Joined, Error> {
         do {
-            try await client
+            let updateResult: Product.Joined = try await client
                 .database
                 .rpc(fn: .editProduct, params: productEditParams)
+                .select(Product.getQuery(.joinedBrandSubcategories(false)))
+                .limit(1)
+                .single()
                 .execute()
                 .value
 
-            return .success(())
+            // TODO: Fix this when it is possible
+            switch await getById(id: updateResult.id) {
+            case let .success(product):
+                return .success(product)
+            case let .failure(error):
+                return .failure(error)
+            }
         } catch {
             return .failure(error)
         }

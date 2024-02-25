@@ -20,7 +20,7 @@ public protocol ProductRepository: Sendable {
     func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error>
     func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
     func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async -> Result<Void, Error>
-    func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
+    func editProduct(productEditParams: Product.EditRequest) async -> Result<Product.Joined, Error>
     func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<Void, Error>
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
 }

@@ -56,8 +56,8 @@ struct ProductInnerScreen: View {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
             await repository.checkIn.getByProductId(id: product.id, segment: segment, from: from, to: to)
         }, id: "ActivityScreen"))
-        _product = State(wrappedValue: product)
-        _loadedWithBarcode = State(wrappedValue: loadedWithBarcode)
+        _product = State(initialValue: product)
+        _loadedWithBarcode = State(initialValue: loadedWithBarcode)
     }
 
     var body: some View {
@@ -104,11 +104,8 @@ struct ProductInnerScreen: View {
         .onDisappear {
             checkInImageTask?.cancel()
         }
-        .task(id: checkInLoader.refreshId) {
-            guard checkInLoader.refreshId != checkInLoader.resultId else { return }
-            logger.info("Refreshing product screen with id: \(checkInLoader.refreshId)")
+        .task {
             await getProductData()
-            checkInLoader.resultId = checkInLoader.refreshId
         }
         .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
             if let updatedCheckIn = newValue {
@@ -176,8 +173,11 @@ struct ProductInnerScreen: View {
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: { sheet = .productEdit(product: product, onEdit: {
-                        await getProductData()
+                    Button("labels.edit", systemImage: "pencil", action: { sheet = .productEdit(product: product, onEdit: { updatedProduct in
+                        withAnimation {
+                            product = updatedProduct
+                            checkInLoader.onUpdateProduct(updatedProduct)
+                        }
                     }) })
                 } else {
                     Button(
@@ -225,8 +225,8 @@ struct ProductInnerScreen: View {
         }
     }
 
-    func getProductData() async {
-        async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(refreshId: 0)
+    func getProductData(isRefresh: Bool = false) async {
+        async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let productPromise = repository.product.getById(id: product.id)
         async let summaryPromise = repository.product.getSummaryById(id: product.id)
         async let wishlistPromise = repository.product.checkIfOnWishlist(id: product.id)

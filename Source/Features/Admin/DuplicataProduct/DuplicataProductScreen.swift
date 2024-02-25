@@ -45,7 +45,7 @@ struct DuplicateProductScreen: View {
                     .swipeActions {
                         ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifyProduct(product) })
                             .tint(.green)
-                        RouterLink("labels.edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
+                        RouterLink("labels.edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: { _ in
                             await loadProducts()
                         })).tint(.yellow)
                         Button(

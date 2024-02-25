@@ -28,7 +28,7 @@ enum Sheet: Identifiable, Equatable {
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany)
     case addProductToSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct)
-    case productEdit(product: Product.Joined, onEdit: (() async -> Void)? = nil)
+    case productEdit(product: Product.Joined, onEdit: ProductMutationView.ProductCallback? = nil)
     case productEditSuggestion(product: Product.Joined)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
     case barcodeManagement(product: Product.Joined)
@@ -92,7 +92,7 @@ enum Sheet: Identifiable, Equatable {
             BarcodeManagementSheet(product: product)
         case let .productEditSuggestion(product: product):
             ProductMutationView(mode: .editSuggestion(product))
-        case let .productEdit(product: product, onEdit: onEdit):
+        case let .productEdit(product, onEdit):
             ProductMutationView(mode: .edit(product), onEdit: onEdit)
         case let .addProductToBrand(brand: brand):
             ProductMutationView(mode: .addToBrand(brand))
