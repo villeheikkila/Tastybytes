@@ -4067,7 +4067,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "First Name (Optional)"
+            "value" : "First Name*"
           }
         }
       }
@@ -4077,7 +4077,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Last Name (optional)"
+            "value" : "Last Name*"
           }
         }
       }
@@ -4116,10 +4116,24 @@
       }
     },
     "settings.profile.useFullName.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use your real name instead of username in the app"
+          }
+        }
+      }
     },
     "settings.profile.useFullName.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show full name"
+          }
+        }
+      }
     },
     "settings.profile.username" : {
       "localizations" : {
@@ -4585,6 +4599,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Block"
+          }
+        }
+      }
+    },
+    "user.search.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start typing to search for other users"
           }
         }
       }

@@ -31,7 +31,7 @@ struct UserSheet: View {
     }
 
     private var showContentUnavailableView: Bool {
-        !searchTerm.isEmpty && !isLoading && searchResults.isEmpty
+        !isLoading && searchResults.isEmpty
     }
 
     var body: some View {
@@ -83,6 +83,8 @@ struct UserSheet: View {
         .overlay {
             if showContentUnavailableView, let searchedFor {
                 ContentUnavailableView.search(text: searchedFor)
+            } else if showContentUnavailableView {
+                ContentUnavailableView("user.search.empty.title", systemImage: "magnifyingglass")
             } else if isLoading {
                 ProgressView()
             }

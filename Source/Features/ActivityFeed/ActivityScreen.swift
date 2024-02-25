@@ -11,7 +11,7 @@ struct ActivityScreen: View {
     enum ScreenState {
         case initial, initialized
     }
-    
+
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -33,9 +33,9 @@ struct ActivityScreen: View {
             List {
                 CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: { checkIn in
                     checkInLoader.onCreateCheckIn(checkIn)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                         proxy.scrollTo(checkIn.id, anchor: .top)
-                    })
+                    }
                 }, onLoadMore: {
                     checkInLoader.onLoadMore()
                 })
