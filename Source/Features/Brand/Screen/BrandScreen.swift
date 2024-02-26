@@ -153,19 +153,6 @@ struct BrandScreen: View {
                     }
                 )
             }
-            .confirmationDialog(
-                "brand.delete.disclaimer",
-                isPresented: $showDeleteBrandConfirmationDialog,
-                titleVisibility: .visible,
-                presenting: brand
-            ) { presenting in
-                ProgressButton(
-                    "brand.delete.label \(presenting.name)", role: .destructive,
-                    action: {
-                        await deleteBrand(presenting)
-                    }
-                )
-            }
         }
     }
 
@@ -320,6 +307,19 @@ struct BrandScreen: View {
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
+            }
+            .confirmationDialog(
+                "brand.delete.disclaimer",
+                isPresented: $showDeleteBrandConfirmationDialog,
+                titleVisibility: .visible,
+                presenting: brand
+            ) { presenting in
+                ProgressButton(
+                    "brand.delete.label \(presenting.name)", role: .destructive,
+                    action: {
+                        await deleteBrand(presenting)
+                    }
+                )
             }
         }
     }

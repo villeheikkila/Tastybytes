@@ -43,13 +43,13 @@ struct BarcodeScannerSheet: View {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .topBarTrailing) {
             Group {
-                Button(showBarcodeTextField ? "barcode.scanner.showScanner.label" : "barcode.scanner.textInput.label",
-                       systemImage: showBarcodeTextField ? "barcode.viewfinder" : "character.cursor.ibeam",
-                       action: { withAnimation { showBarcodeTextField.toggle() } })
-
                 Button(isTorchOn ? "torch.off.label" : "torch.on.label",
                        systemImage: isTorchOn ? "flashlight.on.fill" : "flashlight.off.fill",
                        action: { withAnimation { isTorchOn.toggle() } })
+                    .opacity(showBarcodeTextField ? 0 : 1)
+                Button(showBarcodeTextField ? "barcode.scanner.showScanner.label" : "barcode.scanner.textInput.label",
+                       systemImage: showBarcodeTextField ? "barcode.viewfinder" : "character.cursor.ibeam",
+                       action: { withAnimation { showBarcodeTextField.toggle() } })
             }
             .labelStyle(.iconOnly)
             .imageScale(.large)

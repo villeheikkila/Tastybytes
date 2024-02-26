@@ -12,7 +12,7 @@ struct CheckInCommentRow: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var sheet: Sheet?
-    @State private var deleteAsCheckInCommentAsModerator: CheckInComment?
+    @State private var showDeleteAsModeratorConfirmationDialog = false
 
     let comment: CheckInComment
     @Binding var checkInComments: [CheckInComment]
@@ -22,9 +22,9 @@ struct CheckInCommentRow: View {
             .sheets(item: $sheet)
             .confirmationDialog(
                 "comment.deleteAsModerator.confirmation.description",
-                isPresented: $deleteAsCheckInCommentAsModerator.isNotNull(),
+                isPresented: $showDeleteAsModeratorConfirmationDialog,
                 titleVisibility: .visible,
-                presenting: deleteAsCheckInCommentAsModerator
+                presenting: comment
             ) { presenting in
                 ProgressButton(
                     "comment.deleteAsModerator.confirmation.label \(presenting.profile.preferredName)",
@@ -48,7 +48,7 @@ struct CheckInCommentRow: View {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canDeleteComments) {
                             Button("moderation.deleteAsModerator.label", systemImage: "trash.fill", role: .destructive) {
-                                deleteAsCheckInCommentAsModerator = comment
+                                showDeleteAsModeratorConfirmationDialog = true
                             }
                         }
                     } label: {

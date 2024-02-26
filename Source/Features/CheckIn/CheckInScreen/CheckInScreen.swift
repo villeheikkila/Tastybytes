@@ -65,30 +65,6 @@ struct CheckInScreen: View {
             resultId = refreshId
         }
         .alertError($alertError)
-        .confirmationDialog(
-            "checkIn.delete.confirmation.title",
-            isPresented: $showDeleteConfirmation,
-            titleVisibility: .visible,
-            presenting: checkIn
-        ) { presenting in
-            ProgressButton(
-                "checkIn.delete.confirmation.label \(presenting.product.formatted(.fullName))",
-                role: .destructive,
-                action: { await deleteCheckIn(presenting) }
-            )
-        }
-        .confirmationDialog(
-            "checkIn.delete.asModerator.title",
-            isPresented: $toDeleteCheckInAsModerator.isNotNull(),
-            titleVisibility: .visible,
-            presenting: toDeleteCheckInAsModerator
-        ) { presenting in
-            ProgressButton(
-                "checkIn.delete.asModerator.label \(presenting.profile.preferredName)",
-                role: .destructive,
-                action: { await deleteCheckInAsModerator(presenting) }
-            )
-        }
     }
 
     private var header: some View {
@@ -220,6 +196,30 @@ struct CheckInScreen: View {
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
+            }
+            .confirmationDialog(
+                "checkIn.delete.confirmation.title",
+                isPresented: $showDeleteConfirmation,
+                titleVisibility: .visible,
+                presenting: checkIn
+            ) { presenting in
+                ProgressButton(
+                    "checkIn.delete.confirmation.label \(presenting.product.formatted(.fullName))",
+                    role: .destructive,
+                    action: { await deleteCheckIn(presenting) }
+                )
+            }
+            .confirmationDialog(
+                "checkIn.delete.asModerator.title",
+                isPresented: $toDeleteCheckInAsModerator.isNotNull(),
+                titleVisibility: .visible,
+                presenting: toDeleteCheckInAsModerator
+            ) { presenting in
+                ProgressButton(
+                    "checkIn.delete.asModerator.label \(presenting.profile.preferredName)",
+                    role: .destructive,
+                    action: { await deleteCheckInAsModerator(presenting) }
+                )
             }
         }
     }

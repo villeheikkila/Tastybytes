@@ -114,25 +114,6 @@ struct ProductInnerScreen: View {
             }
         }
         .alertError($alertError)
-        .confirmationDialog("product.unverify.confirmation.description",
-                            isPresented: $showUnverifyProductConfirmation,
-                            presenting: product)
-        { presenting in
-            ProgressButton("product.unverify.confirmation.label \(presenting.name)", role: .destructive, action: {
-                await verifyProduct(product: presenting, isVerified: false)
-            })
-        }
-        .confirmationDialog("product.delete.confirmation.description",
-                            isPresented: $showDeleteProductConfirmationDialog,
-                            titleVisibility: .visible,
-                            presenting: product)
-        { presenting in
-            ProgressButton(
-                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
-                role: .destructive,
-                action: { await deleteProduct(presenting) }
-            )
-        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -221,6 +202,25 @@ struct ProductInnerScreen: View {
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
+            }
+            .confirmationDialog("product.unverify.confirmation.description",
+                                isPresented: $showUnverifyProductConfirmation,
+                                presenting: product)
+            { presenting in
+                ProgressButton("product.unverify.confirmation.label \(presenting.name)", role: .destructive, action: {
+                    await verifyProduct(product: presenting, isVerified: false)
+                })
+            }
+            .confirmationDialog("product.delete.confirmation.description",
+                                isPresented: $showDeleteProductConfirmationDialog,
+                                titleVisibility: .visible,
+                                presenting: product)
+            { presenting in
+                ProgressButton(
+                    "product.delete.confirmation.label \(presenting.formatted(.fullName))",
+                    role: .destructive,
+                    action: { await deleteProduct(presenting) }
+                )
             }
         }
     }
