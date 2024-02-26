@@ -23,6 +23,8 @@ struct LocationScreen: View {
     @State private var isSuccess = false
     @State private var sheet: Sheet?
 
+    @State private var checkInListLoader: CheckInListLoader
+
     let location: Location
 
     var body: some View {
@@ -32,24 +34,8 @@ struct LocationScreen: View {
             scrollToTop: $scrollToTop,
             onRefresh: getSummary,
             header: {
-                if let coordinate = location.location?.coordinate {
-                    Map(initialPosition: MapCameraPosition
-                        .camera(.init(centerCoordinate: coordinate, distance: 200)))
-                    {
-                        Marker(location.name, coordinate: coordinate)
-                        UserAnnotation()
-                    }
-                    .mapControls {
-                        MapUserLocationButton()
-                        MapCompass()
-                    }
-                    .frame(height: 200)
-                    .listRowInsets(.init(top: 0, leading: 0, bottom: 4, trailing: 0))
-                }
-                Section {
-                    SummaryView(summary: summary)
-                }
-                .sheets(item: $sheet)
+                LocationScreenHeader(location: location, summary: summary)
+                    .sheets(item: $sheet)
             }
         )
         .navigationTitle(location.name)
@@ -141,6 +127,32 @@ struct LocationScreen: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+@MainActor
+struct LocationScreenHeader: View {
+    let location: Location
+    let summary: Summary?
+
+    var body: some View {
+        if let coordinate = location.location?.coordinate {
+            Map(initialPosition: MapCameraPosition
+                .camera(.init(centerCoordinate: coordinate, distance: 200)))
+            {
+                Marker(location.name, coordinate: coordinate)
+                UserAnnotation()
+            }
+            .mapControls {
+                MapUserLocationButton()
+                MapCompass()
+            }
+            .frame(height: 200)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 4, trailing: 0))
+        }
+        Section {
+            SummaryView(summary: summary)
         }
     }
 }
