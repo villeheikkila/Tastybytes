@@ -175,10 +175,12 @@ struct CheckInSheet: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(height: 150, alignment: .top)
+                            .clipped()
+                            .cornerRadius(4)
                             .shadow(radius: 4)
                             .accessibilityLabel("checkIn.image.label")
                             .contextMenu {
-                                ProgressButton("labels.delete") {
+                                ProgressButton("labels.delete", systemImage: "trash", role: .destructive) {
                                     finalImage = nil
                                 }
                             }
