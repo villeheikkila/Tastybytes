@@ -49,7 +49,7 @@ struct LocationInnerScreen: View {
             LocationScreenHeader(location: location, summary: summary)
                 .sheets(item: $sheet)
             CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .location(location), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
                 checkInLoader.onLoadMore()
             })
             CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
