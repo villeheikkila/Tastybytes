@@ -56,7 +56,7 @@ struct ProductInnerScreen: View {
     init(repository: Repository, product: Product.Joined, loadedWithBarcode: Barcode? = nil) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
             await repository.checkIn.getByProductId(id: product.id, segment: segment, from: from, to: to)
-        }, id: "ActivityScreen"))
+        }, id: "ProductScreen"))
         _product = State(initialValue: product)
         _loadedWithBarcode = State(initialValue: loadedWithBarcode)
     }

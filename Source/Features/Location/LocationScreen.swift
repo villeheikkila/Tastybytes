@@ -11,6 +11,16 @@ import SwiftUI
 
 @MainActor
 struct LocationScreen: View {
+    @Environment(Repository.self) private var repository
+    let location: Location
+
+    var body: some View {
+        LocationInnerScreen(repository: repository, location: location)
+    }
+}
+
+@MainActor
+struct LocationInnerScreen: View {
     private let logger = Logger(category: "LocationScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
@@ -23,42 +33,40 @@ struct LocationScreen: View {
     @State private var isSuccess = false
     @State private var sheet: Sheet?
 
-    @State private var checkInListLoader: CheckInListLoader
+    @State private var checkInLoader: CheckInListLoader
 
     let location: Location
 
+    init(repository: Repository, location: Location) {
+        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
+            await repository.checkIn.getByLocation(locationId: location.id, segment: segment, from: from, to: to)
+        }, id: "LocationScreen"))
+        self.location = location
+    }
+
     var body: some View {
-        CheckInList(
-            id: "LocationScreen",
-            fetcher: .location(location),
-            scrollToTop: $scrollToTop,
-            onRefresh: getSummary,
-            header: {
-                LocationScreenHeader(location: location, summary: summary)
-                    .sheets(item: $sheet)
-            }
-        )
+        List {
+            LocationScreenHeader(location: location, summary: summary)
+                .sheets(item: $sheet)
+            CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
+            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+                checkInLoader.onLoadMore()
+            })
+            CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+        }
+        .listStyle(.plain)
+        .refreshable {
+            await getLocationData(isRefresh: true)
+        }
         .navigationTitle(location.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
         .sensoryFeedback(.success, trigger: isSuccess)
-        .confirmationDialog(
-            "location.delete.confirmation.description",
-            isPresented: $showDeleteLocationConfirmation,
-            titleVisibility: .visible,
-            presenting: location
-        ) { presenting in
-            ProgressButton(
-                "location.delete.confirmation.label \(presenting.name)",
-                role: .destructive,
-                action: { await deleteLocation(presenting) }
-            )
-        }
         .alertError($alertError)
-        .task {
-            await getSummary()
+        .initialTask {
+            await getLocationData()
         }
     }
 
@@ -102,11 +110,28 @@ struct LocationScreen: View {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
+            .confirmationDialog(
+                "location.delete.confirmation.description",
+                isPresented: $showDeleteLocationConfirmation,
+                titleVisibility: .visible,
+                presenting: location
+            ) { presenting in
+                ProgressButton(
+                    "location.delete.confirmation.label \(presenting.name)",
+                    role: .destructive,
+                    action: { await deleteLocation(presenting) }
+                )
+            }
         }
     }
 
-    func getSummary() async {
-        switch await repository.location.getSummaryById(id: location.id) {
+    func getLocationData(isRefresh: Bool = false) async {
+        async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
+        async let summaryPromise = repository.location.getSummaryById(id: location.id)
+
+        let (_, summaryResult) = await (loadInitialCheckInsPromise, summaryPromise)
+
+        switch summaryResult {
         case let .success(summary):
             withAnimation {
                 self.summary = summary
