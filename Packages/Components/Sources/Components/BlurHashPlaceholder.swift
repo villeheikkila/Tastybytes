@@ -14,6 +14,17 @@ public struct BlurHashPlaceholder: View {
         self.height = height
     }
 
+    nonisolated func getBlurHashImage(blurHash: BlurHash) async -> UIImage? {
+        let aspectRatio = blurHash.height / blurHash.width
+        let width = 32.0
+        let height = width * aspectRatio
+
+        return UIImage(
+            blurHash: blurHash.hash,
+            size: CGSize(width: width, height: height)
+        )
+    }
+
     public var body: some View {
         HStack {
             if let image {
@@ -29,22 +40,7 @@ public struct BlurHashPlaceholder: View {
         }
         .task(id: blurHash) {
             guard let blurHash else { return }
-            await withTaskGroup(of: UIImage?.self) { group in
-                group.addTask(priority: .background) {
-                    await withCheckedContinuation { continuation in
-                        DispatchQueue.global().async {
-                            let decodedImage = UIImage(
-                                blurHash: blurHash.hash,
-                                size: CGSize(width: 50, height: 50)
-                            )
-                            continuation.resume(returning: decodedImage)
-                        }
-                    }
-                }
-                for await decodedImage in group {
-                    image = decodedImage
-                }
-            }
+            image = await getBlurHashImage(blurHash: blurHash)
         }
     }
 }

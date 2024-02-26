@@ -16,7 +16,7 @@ struct SubcategorySheet: View {
     @State private var showAddSubcategory = false
     @State private var newSubcategoryName = ""
     @State private var searchTerm = ""
-    
+
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
     private var shownSubcategories: [Subcategory] {
