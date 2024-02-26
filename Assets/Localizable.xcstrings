@@ -3701,9 +3701,6 @@
         }
       }
     },
-    "qrcode.placeholder.label" : {
-
-    },
     "rating.outOf %lf %lld" : {
       "localizations" : {
         "en" : {

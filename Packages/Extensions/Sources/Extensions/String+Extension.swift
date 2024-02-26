@@ -35,7 +35,7 @@ public extension String? {
 
 #if !os(watchOS)
     public extension String {
-        func asQRCode() -> Data? {
+        func asQRCode() async -> Data? {
             guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
             filter.setValue(data(using: .ascii, allowLossyConversion: false), forKey: "inputMessage")
             guard let ciimage = filter.outputImage else { return nil }

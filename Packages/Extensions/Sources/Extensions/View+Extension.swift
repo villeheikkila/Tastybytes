@@ -195,14 +195,14 @@ public extension View {
 }
 
 public extension View {
-    func initialTask(_ action: @escaping @Sendable () async -> Void) -> some View {
+    func initialTask(_ action: @escaping @MainActor @Sendable () async -> Void) -> some View {
         modifier(InitialTask(action: action))
     }
 }
 
 private struct InitialTask: ViewModifier {
     @State private var isInitial = true
-    let action: @Sendable () async -> Void
+    let action: @MainActor @Sendable () async -> Void
 
     func body(content: Content) -> some View {
         content.task {
