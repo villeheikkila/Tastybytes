@@ -23,5 +23,6 @@ struct CheckInImagesSection: View {
             }
             .scrollIndicators(.hidden)
         }
+        .listRowInsets(.init())
     }
 }

@@ -7,67 +7,6 @@ import Repositories
 import SwiftUI
 
 @MainActor
-struct CheckInImagesView: View {
-    private let logger = Logger(category: "CheckInImagesView")
-    @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
-    @State private var isLoading = false
-    @State private var page = 0
-    @State private var alertError: AlertError?
-    @State private var loadImagesTask: Task<Void, Never>?
-
-    private let pageSize = 10
-
-    let queryType: CheckInImageQueryType
-
-    var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack {
-                ForEach(checkInImages) { checkInImage in
-                    CheckInImageCellView(checkInImage: checkInImage)
-                        .onAppear {
-                            if checkInImage == checkInImages.last, isLoading != true {
-                                loadImagesTask = Task {
-                                    await fetchImages()
-                                }
-                            }
-                        }
-                }
-            }
-        }
-        .alertError($alertError)
-        .onDisappear {
-            loadImagesTask?.cancel()
-        }
-        .task {
-            await fetchImages()
-        }
-    }
-
-    func fetchImages() async {
-        let (from, to) = getPagination(page: page, size: pageSize)
-        isLoading = true
-
-        switch await repository.checkIn.getCheckInImages(by: queryType, from: from, to: to) {
-        case let .success(checkIns):
-            withAnimation {
-                checkInImages.append(contentsOf: checkIns)
-            }
-            page += 1
-            isLoading = false
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger
-                .error(
-                    "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
-                )
-        }
-    }
-}
-
-@MainActor
 struct CheckInImageCellView: View {
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository

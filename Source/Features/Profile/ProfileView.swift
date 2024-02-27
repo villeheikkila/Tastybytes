@@ -73,7 +73,6 @@ struct ProfileInnerView: View {
                                 await fetchImages()
                             }
                         })
-                        .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
                         ProfileSummarySection(profile: profile, profileSummary: profileSummary)
                         ProfileJoinedAtSection(joinedAt: profile.joinedAt)
                         sendFriendRequestSection
