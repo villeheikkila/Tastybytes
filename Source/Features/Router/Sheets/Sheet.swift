@@ -32,11 +32,11 @@ enum Sheet: Identifiable, Equatable {
     case productEditSuggestion(product: Product.Joined)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
     case barcodeManagement(product: Product.Joined)
-    case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: () async -> Void)
+    case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: EditBrandSheet.BrandUpdateCallback)
     case editSubBrand(
         brand: Brand.JoinedSubBrandsProductsCompany,
         subBrand: SubBrand.JoinedProduct,
-        onUpdate: () async -> Void
+        onUpdate: EditSubBrandSheet.UpdateSubBrandCallback
     )
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)

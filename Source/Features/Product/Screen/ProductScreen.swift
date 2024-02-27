@@ -89,17 +89,17 @@ struct ProductInnerScreen: View {
         .refreshable {
             await getProductData()
         }
-        .sheets(item: $sheet)
-        .sensoryFeedback(.success, trigger: checkInLoader.isRefreshing) { oldValue, newValue in
-            oldValue && !newValue
+        .toolbar {
+            toolbarContent
         }
         .safeAreaInset(edge: .top, alignment: .trailing) {
             if loadedWithBarcode != nil {
                 ProductScreenLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
             }
         }
-        .toolbar {
-            toolbarContent
+        .sheets(item: $sheet)
+        .sensoryFeedback(.success, trigger: checkInLoader.isRefreshing) { oldValue, newValue in
+            oldValue && !newValue
         }
         .onDisappear {
             checkInImageTask?.cancel()

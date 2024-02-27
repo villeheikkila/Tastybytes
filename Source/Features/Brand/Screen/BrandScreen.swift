@@ -68,7 +68,7 @@ struct BrandScreen: View {
     }
 
     var body: some View {
-        ScrollViewReader { scrollProxy in
+        ScrollViewReader { _ in
             List {
                 Section {
                     SummaryView(summary: summary)
@@ -88,14 +88,8 @@ struct BrandScreen: View {
             .refreshable {
                 await getBrandData(withHaptics: true)
             }
-            .task(id: refreshId) { [refreshId] in
-                guard refreshId != resultId else { return }
-                logger.info("Refreshing brand screen with id: \(refreshId)")
+            .initialTask {
                 await getBrandData()
-                resultId = refreshId
-                if refreshId == 0, let initialScrollPosition {
-                    scrollProxy.scrollTo(initialScrollPosition, anchor: .top)
-                }
             }
             .toolbar {
                 toolbarContent
@@ -210,8 +204,9 @@ struct BrandScreen: View {
                                 systemImage: "pencil",
                                 action: { sheet = .editSubBrand(
                                     brand: brand, subBrand: subBrand,
-                                    onUpdate: {
-                                        refreshId += 1
+                                    onUpdate: { updatedSubBrand in
+                                        let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
+                                        brand = brand.copyWith(subBrands: updatedSubBrands)
                                     }
                                 ) }
                             )
@@ -268,8 +263,8 @@ struct BrandScreen: View {
                             "labels.edit", systemImage: "pencil",
                             action: { sheet = .editBrand(
                                 brand: brand,
-                                onUpdate: {
-                                    refreshId += 1
+                                onUpdate: { updatedBrand in
+                                    brand = updatedBrand
                                 }
                             ) }
                         )

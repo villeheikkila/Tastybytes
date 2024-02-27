@@ -21,7 +21,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    func update(updateRequest: SubBrand.Update) async -> Result<Void, Error> {
+    func update(updateRequest: SubBrand.Update) async -> Result<SubBrand, Error> {
         do {
             let baseQuery = await client
                 .database
@@ -29,18 +29,25 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
 
             switch updateRequest {
             case let .brand(update):
-                try await baseQuery
+                let result: SubBrand = try await baseQuery
                     .update(update)
                     .eq("id", value: update.id)
+                    .select(SubBrand.getQuery(.saved(false)))
+                    .single()
                     .execute()
+                    .value
+                return .success(result)
             case let .name(update):
-                try await baseQuery
+                let result: SubBrand = try await baseQuery
                     .update(update)
                     .eq("id", value: update.id)
+                    .select(SubBrand.getQuery(.saved(false)))
+                    .single()
                     .execute()
+                    .value
+                return .success(result)
             }
 
-            return .success(())
         } catch {
             return .failure(error)
         }

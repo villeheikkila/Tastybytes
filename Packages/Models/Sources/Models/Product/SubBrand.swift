@@ -84,6 +84,15 @@ public extension SubBrand {
             case (_?, nil): false
             }
         }
+
+        public func copyWith(name: String? = nil, isVerified: Bool? = nil, products: [Product.JoinedCategory]? = nil) -> Self {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                isVerified: isVerified ?? self.isVerified,
+                products: products ?? self.products
+            )
+        }
     }
 }
 

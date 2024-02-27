@@ -9,6 +9,7 @@ import SwiftUI
 
 @MainActor
 struct EditBrandSheet: View {
+    typealias BrandUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
     private let logger = Logger(category: "EditBrandSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -22,12 +23,12 @@ struct EditBrandSheet: View {
     @State private var alertError: AlertError?
     @State private var selectedLogo: PhotosPickerItem?
 
-    let onUpdate: () async -> Void
+    let onUpdate: BrandUpdateCallback
     let initialBrandOwner: Company
 
     init(
         brand: Brand.JoinedSubBrandsProductsCompany,
-        onUpdate: @escaping () async -> Void
+        onUpdate: @escaping BrandUpdateCallback
     ) {
         self.onUpdate = onUpdate
         initialBrandOwner = brand.brandOwner
@@ -41,8 +42,8 @@ struct EditBrandSheet: View {
             Section("brand.edit.name.title") {
                 TextField("brand.edit.name.placeholder", text: $name)
                 ProgressButton("labels.edit") {
-                    await editBrand {
-                        await onUpdate()
+                    await editBrand { updatedBrand in
+                        await onUpdate(updatedBrand)
                     }
                 }.disabled(!name.isValidLength(.normal) || brand.name == name)
             }.headerProminence(.increased)
@@ -52,8 +53,8 @@ struct EditBrandSheet: View {
                     brandOwner = company
                 }))
                 ProgressButton("brand.edit.brandOwner.label") {
-                    await editBrand {
-                        await onUpdate()
+                    await editBrand { updatedBrand in
+                        await onUpdate(updatedBrand)
                     }
                 }.disabled(brandOwner.id == initialBrandOwner.id)
             }.headerProminence(.increased)
@@ -92,12 +93,12 @@ struct EditBrandSheet: View {
         ToolbarDismissAction()
     }
 
-    func editBrand(onSuccess: @escaping () async -> Void) async {
+    func editBrand(onSuccess: @escaping BrandUpdateCallback) async {
         switch await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id)) {
         case let .success(brand):
             feedbackEnvironmentModel.toggle(.success("brand.edit.success.toast"))
             self.brand = brand
-            await onSuccess()
+            await onSuccess(brand)
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -112,7 +113,7 @@ struct EditBrandSheet: View {
                 brand = brand.copyWith(logos: brand.logos + [imageEntity])
             }
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
-            await onUpdate()
+            await onUpdate(brand)
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

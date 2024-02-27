@@ -9,6 +9,8 @@ import SwiftUI
 
 @MainActor
 struct EditSubBrandSheet: View {
+    typealias UpdateSubBrandCallback = (_ subBrand: SubBrand.JoinedProduct) async -> Void
+
     private let logger = Logger(category: "EditSubBrandSheet")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -20,13 +22,13 @@ struct EditSubBrandSheet: View {
 
     @State private var alertError: AlertError?
 
-    let onUpdate: () async -> Void
+    let onUpdate: UpdateSubBrandCallback
     let brand: Brand.JoinedSubBrandsProductsCompany
 
     init(
         brand: Brand.JoinedSubBrandsProductsCompany,
         subBrand: SubBrand.JoinedProduct,
-        onUpdate: @escaping () async -> Void
+        onUpdate: @escaping UpdateSubBrandCallback
     ) {
         self.brand = brand
         _subBrand = State(wrappedValue: subBrand)
@@ -48,9 +50,7 @@ struct EditSubBrandSheet: View {
             Section("subBrand.name.title") {
                 TextField("subBrand.name.placeholder", text: $newSubBrandName)
                 ProgressButton("labels.edit") {
-                    await editSubBrand(onSuccess: {
-                        await onUpdate()
-                    })
+                    await editSubBrand(onSuccess: onUpdate)
                 }
                 .disabled(invalidNewName)
             }
@@ -91,7 +91,7 @@ struct EditSubBrandSheet: View {
                 action: {
                     await mergeToSubBrand(subBrand: subBrand, onSuccess: {
                         feedbackEnvironmentModel.trigger(.notification(.success))
-                        await onUpdate()
+                        await onUpdate(subBrand)
                     })
                 }
             )
@@ -117,13 +117,11 @@ struct EditSubBrandSheet: View {
         }
     }
 
-    @Sendable func editSubBrand(onSuccess: @MainActor @Sendable @escaping () async -> Void) async {
-        switch await repository.subBrand
-            .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
-        {
-        case .success:
+    func editSubBrand(onSuccess: @escaping UpdateSubBrandCallback) async {
+        switch await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName))) {
+        case let .success(updatedSubBrand):
             feedbackEnvironmentModel.toggle(.success("subBrand.updated.toast"))
-            await onSuccess()
+            await onSuccess(subBrand.copyWith(name: updatedSubBrand.name))
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

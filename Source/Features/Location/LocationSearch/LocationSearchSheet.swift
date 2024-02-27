@@ -50,23 +50,26 @@ struct LocationSearchSheet: View {
 
     var body: some View {
         List {
-            if !recentLocations.isEmpty, !hasSearched {
-                Section("location.recent") {
-                    ForEach(recentLocations) { location in
-                        LocationRow(location: location, onSelect: onSelect)
-                    }
-                }
-            }
-            if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty, !hasSearched {
-                Section("location.nearBy") {
-                    ForEach(nearbyLocations) { location in
-                        LocationRow(location: location, onSelect: onSelect)
-                    }
-                }
-            }
             if hasSearched {
                 ForEach(searchResults) { location in
-                    LocationRow(location: location, onSelect: onSelect)
+                    LocationSheetRow(location: location, onSelect: onSelect)
+                }
+            } else {
+                if !recentLocations.isEmpty {
+                    Section("location.recent") {
+                        ForEach(recentLocations) { location in
+                            LocationSheetRow(location: location, onSelect: onSelect)
+                        }
+                    }
+                    .headerProminence(.increased)
+                }
+                if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty {
+                    Section("location.nearBy") {
+                        ForEach(nearbyLocations) { location in
+                            LocationSheetRow(location: location, onSelect: onSelect)
+                        }
+                    }
+                    .headerProminence(.increased)
                 }
             }
         }
@@ -218,6 +221,7 @@ struct LocationRow: View {
                         .foregroundColor(.secondary)
                 }
             }
+            .contentShape(Rectangle())
             .onTapGesture {
                 onSelect(location)
             }
@@ -233,9 +237,7 @@ struct InitialLocationOverlay: View {
     var body: some View {
         if let coordinate = initialLocation {
             HStack {
-                VStack(alignment: .leading) {
-                    Text("location.initialLocationOverlay.description \(coordinate.latitude.formatted(.number.precision(.fractionLength(2)))) \(coordinate.longitude.formatted(.number.precision(.fractionLength(2))))")
-                }
+                Text("location.initialLocationOverlay.description \(coordinate.latitude.formatted(.number.precision(.fractionLength(2)))) \(coordinate.longitude.formatted(.number.precision(.fractionLength(2))))")
                 Spacer()
                 CloseButton {
                     initialLocation = nil
@@ -243,7 +245,7 @@ struct InitialLocationOverlay: View {
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
             }
-            .padding(.horizontal, 10)
+            .padding()
             .background(.thinMaterial)
         }
     }

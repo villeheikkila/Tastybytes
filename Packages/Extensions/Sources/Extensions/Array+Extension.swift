@@ -25,6 +25,16 @@ public extension Array where Element: Equatable {
     }
 }
 
+public extension Array where Element: Equatable {
+    func replacing(_ element: Element, with new: Element) -> [Element] {
+        var newArray = self
+        if let toReplace = newArray.firstIndex(where: { $0 == element }) {
+            newArray[toReplace] = new
+        }
+        return newArray
+    }
+}
+
 public extension Array {
     func unique(selector: (Element, Element) -> Bool) -> [Element] {
         reduce([Element]()) { result, element in
