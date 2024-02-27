@@ -23,6 +23,7 @@ struct CheckInImagesSection: View {
             }
             .scrollIndicators(.hidden)
         }
+        .contentMargins(.horizontal, 20.0, for: .scrollContent)
         .listRowInsets(.init())
     }
 }
