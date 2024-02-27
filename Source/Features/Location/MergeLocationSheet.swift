@@ -26,11 +26,10 @@ struct MergeLocationSheet: View {
 
     var body: some View {
         List(shownLocations) { location in
-            Button(action: { mergeToLocation = location }, label: {
-                Text(location.name)
-            })
-            .buttonStyle(.plain)
+            MergeLocationSheetRow(location: location, mergeLocation: mergeLocation)
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: "location.mergeTo.search.placeholder")
         .disableAutocorrection(true)
@@ -38,21 +37,8 @@ struct MergeLocationSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task(id: searchTerm, milliseconds: 200) { @MainActor in
+        .task(id: searchTerm, milliseconds: 200) {
             await searchLocations(name: searchTerm)
-        }
-        .confirmationDialog(
-            "location.merge.confirmation.description",
-            isPresented: $mergeToLocation.isNotNull(),
-            titleVisibility: .visible,
-            presenting: mergeToLocation
-        ) { presenting in
-            ProgressButton(
-                "location.merge.confirmation.label \(location.name) \(presenting.name)",
-                role: .destructive
-            ) {
-                await mergeLocation(to: presenting)
-            }
         }
     }
 
@@ -60,7 +46,7 @@ struct MergeLocationSheet: View {
         ToolbarDismissAction()
     }
 
-    func mergeLocation(to: Location) async {
+    func mergeLocation(_ to: Location) async {
         switch await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -82,5 +68,30 @@ struct MergeLocationSheet: View {
             alertError = .init()
             logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")
         }
+    }
+}
+
+@MainActor
+struct MergeLocationSheetRow: View {
+    @State private var mergeToLocation: Location?
+
+    let location: Location
+    let mergeLocation: (_ location: Location) async -> Void
+
+    var body: some View {
+        LocationRow(location: location, onSelect: { location in mergeToLocation = location })
+            .confirmationDialog(
+                "location.merge.confirmation.description",
+                isPresented: $mergeToLocation.isNotNull(),
+                titleVisibility: .visible,
+                presenting: mergeToLocation
+            ) { presenting in
+                ProgressButton(
+                    "location.merge.confirmation.label \(location.name) \(presenting.name)",
+                    role: .destructive
+                ) {
+                    await mergeLocation(presenting)
+                }
+            }
     }
 }

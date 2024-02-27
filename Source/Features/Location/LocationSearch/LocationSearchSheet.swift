@@ -157,13 +157,40 @@ struct LocationSearchSheet: View {
 }
 
 @MainActor
-struct LocationRow: View {
+struct LocationSheetRow: View {
     private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var alertError: AlertError?
+
+    let location: Location
+    let onSelect: (_ location: Location) -> Void
+
+    var body: some View {
+        LocationRow(location: location) { location in
+            Task {
+                await storeLocation(location)
+            }
+        }
+        .alertError($alertError)
+    }
+
+    func storeLocation(_ location: Location) async {
+        switch await repository.location.insert(location: location) {
+        case let .success(savedLocation):
+            onSelect(savedLocation)
+            dismiss()
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+@MainActor
+struct LocationRow: View {
+    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
 
     let location: Location
     let onSelect: (_ location: Location) -> Void
@@ -192,24 +219,10 @@ struct LocationRow: View {
                 }
             }
             .onTapGesture {
-                Task { await storeLocation(location)
-                }
+                onSelect(location)
             }
         }
         .listRowBackground(Color.clear)
-        .alertError($alertError)
-    }
-
-    func storeLocation(_ location: Location) async {
-        switch await repository.location.insert(location: location) {
-        case let .success(savedLocation):
-            onSelect(savedLocation)
-            dismiss()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
-        }
     }
 }
 
