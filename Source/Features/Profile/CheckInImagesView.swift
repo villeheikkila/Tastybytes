@@ -83,14 +83,14 @@ struct CheckInImageCellView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 100, height: 100)
-                        .clipped()
-                        .cornerRadius(4)
-                        .contentShape(Rectangle())
                 } else {
                     BlurHashPlaceholder(blurHash: checkInImage.blurHash, height: 100)
                 }
             }
             .frame(width: 100, height: 100)
+            .clipShape(
+                RoundedRectangle(cornerRadius: 4)
+            )
             .onTapGesture {
                 router.fetchAndNavigateTo(repository, .checkIn(id: checkInImage.checkIn.id))
             }
