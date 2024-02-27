@@ -29,7 +29,7 @@ struct ProductScreenHeader: View {
             onCreateCheckIn: onCreateCheckIn
         )
         if !checkInImages.isEmpty {
-            ProfileCheckInImagesSection(
+            CheckInImagesSection(
                 checkInImages: checkInImages,
                 isLoading: isLoadingCheckInImages,
                 onLoadMore: loadMoreImages

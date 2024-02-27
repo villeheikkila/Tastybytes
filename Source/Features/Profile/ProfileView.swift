@@ -26,14 +26,12 @@ struct ProfileInnerView: View {
     @Environment(Repository.self) private var repository
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @State private var alertError: AlertError?
-    @State private var refreshId = 0
     @State private var profile: Profile
     @State private var profileSummary: ProfileSummary?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoading = false
     @State private var loadImagesTask: Task<Void, Never>?
     @State private var page = 0
-    @State private var resultId: Int?
     @Binding var scrollToTop: Int
 
     private let topAnchor = 0
@@ -70,7 +68,7 @@ struct ProfileInnerView: View {
                     .id(topAnchor)
                     if showInFull {
                         RatingChartView(profile: profile, profileSummary: profileSummary)
-                        ProfileCheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
+                        CheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
                             loadImagesTask = Task {
                                 await fetchImages()
                             }
@@ -103,9 +101,6 @@ struct ProfileInnerView: View {
             .initialTask {
                 await getProfileData()
             }
-            .initialTask {
-                await checkInLoader.loadData()
-            }
             .onChange(of: scrollToTop) {
                 withAnimation {
                     proxy.scrollTo(topAnchor, anchor: .top)
@@ -123,18 +118,15 @@ struct ProfileInnerView: View {
         }
     }
 
-    func getProfileData(isRefresh _: Bool = false) async {
+    func getProfileData(isRefresh: Bool = false) async {
+        async let productPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
         async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile), from: 0, to: pageSize)
-
-        let (summaryResult, imagesResult) = await (
-            summaryPromise,
-            imagesPromise
-        )
+        let (summaryResult, imagesResult) = await (summaryPromise, imagesPromise)
 
         switch summaryResult {
         case let .success(summary):
-            withAnimation(.easeIn) {
+            withAnimation {
                 profileSummary = summary
             }
         case let .failure(error):
@@ -144,9 +136,13 @@ struct ProfileInnerView: View {
         }
 
         switch imagesResult {
-        case let .success(checkIns):
+        case let .success(images):
             withAnimation {
-                checkInImages.append(contentsOf: checkIns)
+                if isRefresh {
+                    checkInImages = images
+                } else {
+                    checkInImages.append(contentsOf: images)
+                }
             }
             page += 1
             isLoading = false
@@ -158,6 +154,8 @@ struct ProfileInnerView: View {
                     "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
                 )
         }
+
+        await productPromise
     }
 
     func fetchImages() async {

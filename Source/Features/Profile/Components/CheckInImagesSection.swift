@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 @MainActor
-struct ProfileCheckInImagesSection: View {
+struct CheckInImagesSection: View {
     let checkInImages: [ImageEntity.JoinedCheckIn]
     let isLoading: Bool
     let onLoadMore: () -> Void
@@ -21,6 +21,7 @@ struct ProfileCheckInImagesSection: View {
                     }
                 }
             }
+            .scrollIndicators(.hidden)
         }
     }
 }

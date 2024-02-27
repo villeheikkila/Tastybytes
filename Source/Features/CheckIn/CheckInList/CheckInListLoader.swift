@@ -29,13 +29,13 @@ final class CheckInListLoader {
 
     let fetcher: Fetcher
     let id: String
+    let pageSize: Int
 
-    init(fetcher: @escaping Fetcher, id: String) {
+    init(fetcher: @escaping Fetcher, id: String, pageSize: Int = 10) {
         self.fetcher = fetcher
         self.id = id
+        self.pageSize = pageSize
     }
-
-    private let pageSize = 10
 
     func loadData(isRefresh: Bool = false) async {
         if isRefresh {
