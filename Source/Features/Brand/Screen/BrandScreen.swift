@@ -24,21 +24,15 @@ struct BrandScreen: View {
     @State private var alertError: AlertError?
     @State private var showDeleteBrandConfirmationDialog = false
     @State private var toDeleteSubBrand: SubBrand.JoinedProduct?
-
-    @State private var refreshId = 0
-    @State private var resultId: Int?
     @State private var sheet: Sheet?
 
-    let refreshOnLoad: Bool
     let initialScrollPosition: SubBrand.JoinedBrand?
 
     init(
         brand: Brand.JoinedSubBrandsProductsCompany,
-        refreshOnLoad: Bool? = false,
         initialScrollPosition: SubBrand.JoinedBrand? = nil
     ) {
         _brand = State(wrappedValue: brand)
-        self.refreshOnLoad = refreshOnLoad ?? false
         self.initialScrollPosition = initialScrollPosition
     }
 
@@ -107,32 +101,6 @@ struct BrandScreen: View {
                 )
             }
             .alertError($alertError)
-            .confirmationDialog(
-                "brand.unverify.confirmation.title",
-                isPresented: $showBrandUnverificationConfirmation,
-                presenting: brand
-            ) { presenting in
-                ProgressButton(
-                    "brand.unverify.confirmation.label \(presenting.name)",
-                    action: {
-                        await verifyBrand(brand: presenting, isVerified: false)
-                    }
-                )
-            }
-            .confirmationDialog(
-                "brandScreen.groupProductsBy",
-                isPresented: $showProductGroupingPicker,
-                titleVisibility: .visible
-            ) {
-                Button("subBrand.title") {
-                    productGrouping = .subBrand
-                }
-                .disabled(productGrouping == .subBrand)
-                Button("category.title") {
-                    productGrouping = .category
-                }
-                .disabled(productGrouping == .category)
-            }
             .confirmationDialog(
                 "subBrand.delete.disclaimer",
                 isPresented: $toDeleteSubBrand.isNotNull(),
@@ -316,6 +284,32 @@ struct BrandScreen: View {
                     }
                 )
             }
+            .confirmationDialog(
+                "brandScreen.groupProductsBy",
+                isPresented: $showProductGroupingPicker,
+                titleVisibility: .visible
+            ) {
+                Button("subBrand.title") {
+                    productGrouping = .subBrand
+                }
+                .disabled(productGrouping == .subBrand)
+                Button("category.title") {
+                    productGrouping = .category
+                }
+                .disabled(productGrouping == .category)
+            }
+            .confirmationDialog(
+                "brand.unverify.confirmation.title",
+                isPresented: $showBrandUnverificationConfirmation,
+                presenting: brand
+            ) { presenting in
+                ProgressButton(
+                    "brand.unverify.confirmation.label \(presenting.name)",
+                    action: {
+                        await verifyBrand(brand: presenting, isVerified: false)
+                    }
+                )
+            }
         }
     }
 
@@ -411,7 +405,8 @@ struct BrandScreen: View {
     func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) async {
         switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
         case .success:
-            refreshId += 1
+            let updatedSubBrands = brand.subBrands.replacing(subBrand, with: subBrand.copyWith(isVerified: isVerified))
+            brand = brand.copyWith(subBrands: updatedSubBrands)
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -432,17 +427,19 @@ struct BrandScreen: View {
         }
     }
 
-    func deleteSubBrand(_: SubBrand.JoinedProduct) async {
-        guard let toDeleteSubBrand else { return }
-        switch await repository.subBrand.delete(id: toDeleteSubBrand.id) {
+    func deleteSubBrand(_ subBrand: SubBrand.JoinedProduct) async {
+        switch await repository.subBrand.delete(id: subBrand.id) {
         case .success:
-            refreshId += 1
+            let updatedSubBrands = brand.subBrands.removing(subBrand)
             feedbackEnvironmentModel.trigger(.notification(.success))
+            withAnimation {
+                brand = brand.copyWith(subBrands: updatedSubBrands)
+            }
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error(
-                "Failed to delete brand '\(toDeleteSubBrand.id)'. Error: \(error) (\(#file):\(#line))")
+                "Failed to delete brand '\(subBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }
