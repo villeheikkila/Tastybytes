@@ -20,8 +20,6 @@ struct CompanyScreen: View {
     @State private var showUnverifyCompanyConfirmation = false
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var alertError: AlertError?
-    @State private var refreshId = 0
-    @State private var resultId: Int?
     @State private var sheet: Sheet?
 
     init(company: Company) {
@@ -60,35 +58,15 @@ struct CompanyScreen: View {
         }
         .listStyle(.plain)
         .refreshable {
-            await getCompanyData()
+            await getCompanyData(withHaptics: true)
         }
         .toolbar {
             toolbarContent
         }
-        .confirmationDialog("company.unverify.confirmationDialog.title",
-                            isPresented: $showUnverifyCompanyConfirmation,
-                            presenting: company)
-        { presenting in
-            ProgressButton("company.unverify.confirmationDialog.label \(presenting.name)", action: {
-                await verifyCompany(isVerified: false)
-            })
-        }
-        .alertError($alertError)
-        .confirmationDialog("company.delete.confirmationDialog.title",
-                            isPresented: $showDeleteCompanyConfirmationDialog,
-                            presenting: company)
-        { presenting in
-            ProgressButton("company.delete.confirmationDialog.label \(presenting.name)", role: .destructive, action: {
-                await deleteCompany(presenting)
-            })
-        }
-        .task(id: refreshId) { [refreshId] in
-            guard refreshId != resultId else { return }
-            logger.info("Refreshing company screen with id: \(refreshId)")
-            await getCompanyData()
-            resultId = refreshId
-        }
         .sheets(item: $sheet)
+        .initialTask {
+            await getCompanyData()
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -151,6 +129,23 @@ struct CompanyScreen: View {
         } label: {
             Label("labels.menu", systemImage: "ellipsis")
                 .labelStyle(.iconOnly)
+        }
+        .confirmationDialog("company.unverify.confirmationDialog.title",
+                            isPresented: $showUnverifyCompanyConfirmation,
+                            presenting: company)
+        { presenting in
+            ProgressButton("company.unverify.confirmationDialog.label \(presenting.name)", action: {
+                await verifyCompany(isVerified: false)
+            })
+        }
+        .alertError($alertError)
+        .confirmationDialog("company.delete.confirmationDialog.title",
+                            isPresented: $showDeleteCompanyConfirmationDialog,
+                            presenting: company)
+        { presenting in
+            ProgressButton("company.delete.confirmationDialog.label \(presenting.name)", role: .destructive, action: {
+                await deleteCompany(presenting)
+            })
         }
     }
 

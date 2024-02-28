@@ -18,12 +18,10 @@ struct BrandScreen: View {
     @State private var isLikedByCurrentUser = false
     @State private var productGrouping: GroupProductsBy = .subBrand
     @State private var showProductGroupingPicker = false
-    @State private var toUnverifySubBrand: SubBrand.JoinedProduct?
 
     @State private var showBrandUnverificationConfirmation = false
-    @State private var alertError: AlertError?
     @State private var showDeleteBrandConfirmationDialog = false
-    @State private var toDeleteSubBrand: SubBrand.JoinedProduct?
+    @State private var alertError: AlertError?
     @State private var sheet: Sheet?
 
     let initialScrollPosition: SubBrand.JoinedBrand?
