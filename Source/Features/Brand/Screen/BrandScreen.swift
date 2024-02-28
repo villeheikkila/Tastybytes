@@ -88,33 +88,7 @@ struct BrandScreen: View {
             .toolbar {
                 toolbarContent
             }
-            .confirmationDialog(
-                "subBrand.unverify",
-                isPresented: $toUnverifySubBrand.isNotNull(),
-                presenting: toUnverifySubBrand
-            ) { presenting in
-                ProgressButton(
-                    "subBrand.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
-                    action: {
-                        await verifySubBrand(presenting, isVerified: false)
-                    }
-                )
-            }
             .alertError($alertError)
-            .confirmationDialog(
-                "subBrand.delete.disclaimer",
-                isPresented: $toDeleteSubBrand.isNotNull(),
-                titleVisibility: .visible,
-                presenting: toDeleteSubBrand
-            ) { presenting in
-                ProgressButton(
-                    "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
-                    role: .destructive,
-                    action: {
-                        await deleteSubBrand(presenting)
-                    }
-                )
-            }
         }
     }
 
@@ -141,60 +115,7 @@ struct BrandScreen: View {
                         ))
                 }
             } header: {
-                HStack {
-                    if let name = subBrand.name {
-                        Text(name)
-                    }
-                    Spacer()
-                    Menu {
-                        VerificationButton(
-                            isVerified: subBrand.isVerified,
-                            verify: {
-                                await verifySubBrand(subBrand, isVerified: true)
-                            },
-                            unverify: {
-                                toUnverifySubBrand = subBrand
-                            }
-                        )
-                        Divider()
-                        if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                            Button(
-                                "brand.createProduct.label",
-                                systemImage: "plus",
-                                action: {
-                                    sheet = .addProductToSubBrand(brand: brand, subBrand: subBrand)
-                                }
-                            )
-                        }
-                        if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
-                            Button(
-                                "labels.edit",
-                                systemImage: "pencil",
-                                action: { sheet = .editSubBrand(
-                                    brand: brand, subBrand: subBrand,
-                                    onUpdate: { updatedSubBrand in
-                                        let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
-                                        brand = brand.copyWith(subBrands: updatedSubBrands)
-                                    }
-                                ) }
-                            )
-                        }
-                        ReportButton(sheet: $sheet, entity: .subBrand(brand, subBrand))
-                        if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
-                            Button(
-                                "labels.delete",
-                                systemImage: "trash.fill",
-                                role: .destructive,
-                                action: { toDeleteSubBrand = subBrand }
-                            )
-                            .disabled(subBrand.isVerified)
-                        }
-                    } label: {
-                        Label("labels.menu", systemImage: "ellipsis")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 24, height: 24)
-                    }
-                }
+                SubBrandSectionHeader(brand: $brand, sheet: $sheet, subBrand: subBrand, verifySubBrand: verifySubBrand, deleteSubBrand: deleteSubBrand)
             }
             .headerProminence(.increased)
             .id(subBrand)
@@ -402,7 +323,7 @@ struct BrandScreen: View {
         }
     }
 
-    func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) async {
+    func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, _ isVerified: Bool) async {
         switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
         case .success:
             let updatedSubBrands = brand.subBrands.replacing(subBrand, with: subBrand.copyWith(isVerified: isVerified))
@@ -455,4 +376,100 @@ private struct ProductsByCategory: Identifiable {
 
 private enum GroupProductsBy: String, CaseIterable {
     case subBrand, category
+}
+
+@MainActor
+struct SubBrandSectionHeader: View {
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Binding var brand: Brand.JoinedSubBrandsProductsCompany
+    @Binding var sheet: Sheet?
+    @State private var showUnverifyConfirmation = false
+    @State private var showDeleteConfirmation = false
+    let subBrand: SubBrand.JoinedProduct
+
+    let verifySubBrand: (_ subBrand: SubBrand.JoinedProduct, _ isVerified: Bool) async -> Void
+    let deleteSubBrand: (_ subBrand: SubBrand.JoinedProduct) async -> Void
+
+    var body: some View {
+        HStack {
+            if let name = subBrand.name {
+                Text(name)
+            }
+            Spacer()
+            Menu {
+                VerificationButton(
+                    isVerified: subBrand.isVerified,
+                    verify: {
+                        await verifySubBrand(subBrand, true)
+                    },
+                    unverify: {
+                        showUnverifyConfirmation = true
+                    }
+                )
+                Divider()
+                if profileEnvironmentModel.hasPermission(.canCreateProducts) {
+                    Button(
+                        "brand.createProduct.label",
+                        systemImage: "plus",
+                        action: {
+                            sheet = .addProductToSubBrand(brand: brand, subBrand: subBrand)
+                        }
+                    )
+                }
+                if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
+                    Button(
+                        "labels.edit",
+                        systemImage: "pencil",
+                        action: { sheet = .editSubBrand(
+                            brand: brand, subBrand: subBrand,
+                            onUpdate: { updatedSubBrand in
+                                let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
+                                brand = brand.copyWith(subBrands: updatedSubBrands)
+                            }
+                        ) }
+                    )
+                }
+                ReportButton(sheet: $sheet, entity: .subBrand(brand, subBrand))
+                if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
+                    Button(
+                        "labels.delete",
+                        systemImage: "trash.fill",
+                        role: .destructive,
+                        action: { showDeleteConfirmation = true }
+                    )
+                    .disabled(subBrand.isVerified)
+                }
+            } label: {
+                Label("labels.menu", systemImage: "ellipsis")
+                    .labelStyle(.iconOnly)
+                    .frame(width: 24, height: 24)
+            }
+        }
+        .confirmationDialog(
+            "subBrand.unverify",
+            isPresented: $showUnverifyConfirmation,
+            presenting: subBrand
+        ) { presenting in
+            ProgressButton(
+                "subBrand.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
+                action: {
+                    await verifySubBrand(presenting, false)
+                }
+            )
+        }
+        .confirmationDialog(
+            "subBrand.delete.disclaimer",
+            isPresented: $showDeleteConfirmation,
+            titleVisibility: .visible,
+            presenting: subBrand
+        ) { presenting in
+            ProgressButton(
+                "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
+                role: .destructive,
+                action: {
+                    await deleteSubBrand(presenting)
+                }
+            )
+        }
+    }
 }
