@@ -122,8 +122,10 @@ struct CurrentUserFriendsScreen: View {
         .refreshable {
             await friendEnvironmentModel.refresh(withHaptics: true)
         }
-        .task {
+        .initialTask {
             await friendEnvironmentModel.refresh()
+        }
+        .task {
             await notificationEnvironmentModel.markAllFriendRequestsAsRead()
         }
         .toolbar {
