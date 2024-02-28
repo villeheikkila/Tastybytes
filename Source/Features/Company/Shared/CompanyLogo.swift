@@ -6,7 +6,7 @@ import SwiftUI
 @MainActor
 struct CompanyLogo: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    let company: Company
+    let company: CompanyLogoProtocol
     let size: Double
 
     public var body: some View {

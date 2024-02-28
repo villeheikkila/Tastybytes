@@ -1,10 +1,10 @@
 import Foundation
 
-public protocol CompanyLogo {
+public protocol CompanyLogoProtocol {
     var logos: [ImageEntity] { get }
 }
 
-public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogo {
+public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol {
     public let id: Int
     public let name: String
     public let isVerified: Bool
@@ -102,7 +102,7 @@ public extension Company {
         }
     }
 
-    struct Joined: Identifiable, Hashable, Codable, Sendable {
+    struct Joined: Identifiable, Hashable, Codable, Sendable, CompanyLogoProtocol {
         public let id: Int
         public let name: String
         public let subsidiaries: [Company]
@@ -118,10 +118,42 @@ public extension Company {
             case brands
             case logos = "company_logos"
         }
+
+        public var saved: Company {
+            .init(id: id, name: name, logos: logos, isVerified: isVerified)
+        }
+
+        public func copyWith(
+            name: String? = nil,
+            subsidiaries: [Company]? = nil,
+            brands: [Brand.JoinedSubBrandsProducts]? = nil,
+            logos: [ImageEntity]? = nil,
+            isVerified: Bool? = nil
+        ) -> Self {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                subsidiaries: subsidiaries ?? self.subsidiaries,
+                brands: brands ?? self.brands,
+                logos: logos ?? self.logos,
+                isVerified: isVerified ?? self.isVerified
+            )
+        }
     }
 }
 
-public extension CompanyLogo {
+public extension Company.Joined {
+    init(company: Company) {
+        id = company.id
+        name = company.name
+        isVerified = company.isVerified
+        logos = company.logos
+        subsidiaries = []
+        brands = []
+    }
+}
+
+public extension CompanyLogoProtocol {
     func getLogoUrl(baseUrl: URL) -> URL? {
         guard let logo = logos.first else { return nil }
         return logo.getLogoUrl(baseUrl: baseUrl)

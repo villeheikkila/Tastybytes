@@ -14,8 +14,7 @@ struct CompanyScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var company: Company
-    @State private var companyJoined: Company.Joined?
+    @State private var company: Company.Joined
     @State private var summary: Summary?
     @State private var showUnverifyCompanyConfirmation = false
     @State private var showDeleteCompanyConfirmationDialog = false
@@ -23,14 +22,11 @@ struct CompanyScreen: View {
     @State private var sheet: Sheet?
 
     init(company: Company) {
-        _company = State(wrappedValue: company)
+        _company = State(wrappedValue: .init(company: company))
     }
 
     var sortedBrands: [Brand.JoinedSubBrandsProducts] {
-        if let companyJoined {
-            return companyJoined.brands.sorted { lhs, rhs in lhs.productCount > rhs.productCount }
-        }
-        return []
+        company.brands.sorted { lhs, rhs in lhs.productCount > rhs.productCount }
     }
 
     var body: some View {
@@ -45,7 +41,7 @@ struct CompanyScreen: View {
             Section("brand.title") {
                 ForEach(sortedBrands) { brand in
                     RouterLink(
-                        screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company, brand: brand))
+                        screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
                     ) {
                         CompanyBrandRow(brand: brand)
                     }
@@ -80,7 +76,7 @@ struct CompanyScreen: View {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            CompanyShareLinkView(company: company)
+            CompanyShareLinkView(company: company.saved)
             navigationBarMenu
         }
     }
@@ -92,11 +88,11 @@ struct CompanyScreen: View {
                     Button(
                         "brand.title",
                         systemImage: "plus",
-                        action: { sheet = .addBrand(brandOwner: company, mode: .new) }
+                        action: { sheet = .addBrand(brandOwner: company.saved, mode: .new) }
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: { sheet = .editCompany(company: company, onSuccess: {
+                    Button("labels.edit", systemImage: "pencil", action: { sheet = .editCompany(company: company.saved, onSuccess: {
                         await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("company.update.success.toast"))
                     }) })
@@ -104,7 +100,7 @@ struct CompanyScreen: View {
                     Button(
                         "company.editSuggestion.title",
                         systemImage: "pencil",
-                        action: { sheet = .companyEditSuggestion(company: company, onSuccess: {
+                        action: { sheet = .companyEditSuggestion(company: company.saved, onSuccess: {
                             feedbackEnvironmentModel.toggle(.success("company.editSuggestion.success.toast"))
                         }) }
                     )
@@ -116,7 +112,7 @@ struct CompanyScreen: View {
                 showUnverifyCompanyConfirmation = true
             })
             Divider()
-            ReportButton(sheet: $sheet, entity: .company(company))
+            ReportButton(sheet: $sheet, entity: .company(company.saved))
             if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
                 Button(
                     "labels.delete",
@@ -163,7 +159,7 @@ struct CompanyScreen: View {
         }
         switch companyResult {
         case let .success(company):
-            companyJoined = company
+            self.company = company
             if withHaptics {
                 feedbackEnvironmentModel.trigger(.impact(intensity: .high))
             }
@@ -183,7 +179,7 @@ struct CompanyScreen: View {
         }
     }
 
-    func deleteCompany(_ company: Company) async {
+    func deleteCompany(_ company: Company.Joined) async {
         switch await repository.company.delete(id: company.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
