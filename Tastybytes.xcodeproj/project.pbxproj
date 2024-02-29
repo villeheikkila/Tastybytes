@@ -146,7 +146,7 @@
 		5C9058392B2894BE00EC157B /* LocationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057AE2B2894BE00EC157B /* LocationScreen.swift */; };
 		5C90583A2B2894BE00EC157B /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B02B2894BE00EC157B /* ProductFeedScreen.swift */; };
 		5C90583B2B2894BE00EC157B /* FriendsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B22B2894BE00EC157B /* FriendsScreen.swift */; };
-		5C90583C2B2894BE00EC157B /* CurrentUserFriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B32B2894BE00EC157B /* CurrentUserFriendsScreenView.swift */; };
+		5C90583C2B2894BE00EC157B /* CurrentUserFriendsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B32B2894BE00EC157B /* CurrentUserFriendsScreen.swift */; };
 		5C90583D2B2894BE00EC157B /* NameTagTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B42B2894BE00EC157B /* NameTagTip.swift */; };
 		5C90583E2B2894BE00EC157B /* FriendListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B52B2894BE00EC157B /* FriendListItemView.swift */; };
 		5C90583F2B2894BE00EC157B /* CheckInCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B72B2894BE00EC157B /* CheckInCommentView.swift */; };
@@ -391,7 +391,7 @@
 		5C9057AE2B2894BE00EC157B /* LocationScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationScreen.swift; sourceTree = "<group>"; };
 		5C9057B02B2894BE00EC157B /* ProductFeedScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
 		5C9057B22B2894BE00EC157B /* FriendsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsScreen.swift; sourceTree = "<group>"; };
-		5C9057B32B2894BE00EC157B /* CurrentUserFriendsScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserFriendsScreenView.swift; sourceTree = "<group>"; };
+		5C9057B32B2894BE00EC157B /* CurrentUserFriendsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserFriendsScreen.swift; sourceTree = "<group>"; };
 		5C9057B42B2894BE00EC157B /* NameTagTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameTagTip.swift; sourceTree = "<group>"; };
 		5C9057B52B2894BE00EC157B /* FriendListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendListItemView.swift; sourceTree = "<group>"; };
 		5C9057B72B2894BE00EC157B /* CheckInCommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInCommentView.swift; sourceTree = "<group>"; };
@@ -589,7 +589,7 @@
 			isa = PBXGroup;
 			children = (
 				5C9057B22B2894BE00EC157B /* FriendsScreen.swift */,
-				5C9057B32B2894BE00EC157B /* CurrentUserFriendsScreenView.swift */,
+				5C9057B32B2894BE00EC157B /* CurrentUserFriendsScreen.swift */,
 				5C9057B42B2894BE00EC157B /* NameTagTip.swift */,
 				5C9057B52B2894BE00EC157B /* FriendListItemView.swift */,
 			);
@@ -1687,7 +1687,7 @@
 				5CCEE2892B2D0C0100F276DF /* CheckInListCard.swift in Sources */,
 				5C90584B2B2894BE00EC157B /* ReactionsView.swift in Sources */,
 				5C9058612B2894BE00EC157B /* AppDelegate.swift in Sources */,
-				5C90583C2B2894BE00EC157B /* CurrentUserFriendsScreenView.swift in Sources */,
+				5C90583C2B2894BE00EC157B /* CurrentUserFriendsScreen.swift in Sources */,
 				5C82E89E2B2F7AC700F2B369 /* ProfileSummarySection.swift in Sources */,
 				5C9057EA2B2894BE00EC157B /* DiscoverTab.swift in Sources */,
 				5C9057FB2B2894BE00EC157B /* MergeLocationSheet.swift in Sources */,
