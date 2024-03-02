@@ -48,21 +48,22 @@ struct NotificationScreen: View {
                 } })
             }
             .listStyle(.plain)
-            .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
-                oldValue && !newValue
-            }
-            .overlay {
-                ContentUnavailableView {
-                    Label(
-                        filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
-                        systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
-                    )
-                } description: {
-                    if let description = filter?.contentUnavailableViewProps.description {
-                        Text(description)
+            .background {
+                if showContentUnavailableView {
+                    ContentUnavailableView {
+                        Label(
+                            filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
+                            systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
+                        )
+                    } description: {
+                        if let description = filter?.contentUnavailableViewProps.description {
+                            Text(description)
+                        }
                     }
                 }
-                .opacity(showContentUnavailableView ? 1 : 0)
+            }
+            .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
+                oldValue && !newValue
             }
             .refreshable {
                 notificationEnvironmentModel.refresh(reset: true, withHaptics: true)

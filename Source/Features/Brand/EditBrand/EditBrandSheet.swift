@@ -102,7 +102,7 @@ struct EditBrandSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Failed to edit brand'. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to edit brand. Error: \(error) (\(#file):\(#line))")
         }
     }
 

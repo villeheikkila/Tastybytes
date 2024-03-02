@@ -17,8 +17,6 @@ struct FriendsScreen: View {
     @State private var searchTerm = ""
     @State private var alertError: AlertError?
     @State private var isRefreshing = false
-    @State private var refreshId = 0
-    @State private var resultId: Int?
 
     let profile: Profile
 
@@ -40,6 +38,12 @@ struct FriendsScreen: View {
             FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
         }
         .listStyle(.insetGrouped)
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .refreshable {
+            isRefreshing = true
+            await loadFriends()
+            isRefreshing = false
+        }
         .navigationTitle("friends.title \(friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
@@ -47,23 +51,17 @@ struct FriendsScreen: View {
                 ContentUnavailableView.search(text: searchTerm)
             }
         }
+        .toolbar {
+            toolbarContent
+        }
+        .alertError($alertError)
         .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
             oldValue && !newValue
         }
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends) { oldValue, newValue in
             newValue.count > oldValue.count
         }
-        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
-        .task(id: refreshId) { [refreshId] in
-            guard resultId != refreshId else { return }
-            await loadFriends()
-            resultId = refreshId
-        }
-        .toolbar {
-            toolbarContent
-        }
-        .alertError($alertError)
-        .refreshable {
+        .initialTask {
             await loadFriends()
         }
     }
@@ -82,19 +80,12 @@ struct FriendsScreen: View {
         }
     }
 
-    func refresh() async {
-        isRefreshing = true
-        await loadFriends()
-        isRefreshing = false
-    }
-
     func loadFriends() async {
-        switch await repository.friend.getByUserId(
-            userId: profile.id,
-            status: Friend.Status.accepted
-        ) {
+        switch await repository.friend.getByUserId(userId: profile.id, status: .accepted) {
         case let .success(friends):
-            self.friends = friends
+            withAnimation {
+                self.friends = friends
+            }
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
