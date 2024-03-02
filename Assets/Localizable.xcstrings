@@ -1331,6 +1331,7 @@
 
     },
     "checkInList.error.failedToLoad.description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -14,15 +14,12 @@ final class CheckInListLoader {
 
     var loadingCheckInsOnAppear: Task<Void, Error>?
     // Feed state
-    var refreshId = 0
-    var resultId: Int?
     var isRefreshing = false
     var isLoading = false
     var page = 0
     // Check-ins
     var checkIns = [CheckIn]()
     var showCheckInsFrom: CheckInSegment = .everyone
-    var currentShowCheckInsFrom: CheckInSegment = .everyone
     // Dialogs
     var alertError: AlertError?
     var errorContentUnavailable: AlertError?
@@ -44,7 +41,7 @@ final class CheckInListLoader {
             await fetchFeedItems(
                 reset: true,
                 onComplete: { _ in
-                    self.logger.info("Refreshing check-ins completed for \(self.id) with id: \(self.refreshId)")
+                    self.logger.info("Refreshing check-ins completed for \(self.id)")
                 }
             )
             isRefreshing = false
@@ -52,7 +49,7 @@ final class CheckInListLoader {
         }
         await fetchFeedItems(
             onComplete: { _ in
-                self.logger.info("Refreshing check-ins completed for \(self.id) with id: \(self.refreshId)")
+                self.logger.info("Refreshing check-ins completed for \(self.id)")
             }
         )
     }

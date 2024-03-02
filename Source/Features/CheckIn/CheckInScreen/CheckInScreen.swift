@@ -20,11 +20,7 @@ struct CheckInScreen: View {
     @State private var checkInComments = [CheckInComment]()
     @State private var showDeleteConfirmation = false
     @State private var toDeleteCheckInAsModerator: CheckIn?
-
     @State private var alertError: AlertError?
-    // Refresh status
-    @State private var refreshId = 0
-    @State private var resultId: Int?
 
     init(checkIn: CheckIn) {
         _checkIn = State(wrappedValue: checkIn)
@@ -58,11 +54,8 @@ struct CheckInScreen: View {
         .toolbar {
             toolbarContent
         }
-        .task(id: refreshId) { [refreshId] in
-            guard refreshId != resultId else { return }
-            logger.info("Refreshing check-in screen with id: \(refreshId)")
+        .initialTask {
             await loadCheckInData()
-            resultId = refreshId
         }
         .alertError($alertError)
     }

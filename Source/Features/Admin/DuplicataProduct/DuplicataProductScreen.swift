@@ -52,6 +52,9 @@ struct DuplicateProductScreen: View {
             }
         }
         .listStyle(.plain)
+        .refreshable {
+            await loadProducts(withHaptics: true)
+        }
         .alertError($alertError)
         .confirmationDialog("product.delete.confirmation.description",
                             isPresented: $deleteProduct.isNotNull(),
@@ -65,9 +68,6 @@ struct DuplicateProductScreen: View {
             )
         }
         .navigationBarTitle("duplicateProducts.screen.title")
-        .refreshable {
-            await loadProducts(withHaptics: true)
-        }
         .task {
             await loadProducts()
         }

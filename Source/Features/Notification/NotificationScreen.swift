@@ -48,6 +48,9 @@ struct NotificationScreen: View {
                 } })
             }
             .listStyle(.plain)
+            .refreshable {
+                notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
+            }
             .background {
                 if showContentUnavailableView {
                     ContentUnavailableView {
@@ -64,9 +67,6 @@ struct NotificationScreen: View {
             }
             .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
-            }
-            .refreshable {
-                notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
             }
             .onChange(of: scrollToTop) {
                 withAnimation {

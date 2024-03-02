@@ -20,6 +20,9 @@ struct BlockedUsersScreen: View {
             )
         }
         .listStyle(.insetGrouped)
+        .refreshable {
+            await friendEnvironmentModel.refresh()
+        }
         .overlay {
             ContentUnavailableView {
                 Label("blockedUsers.empty.title", systemImage: "person.fill.xmark")
@@ -37,9 +40,6 @@ struct BlockedUsersScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
-        }
-        .refreshable {
-            await friendEnvironmentModel.refresh()
         }
         .sheets(item: $sheet)
     }

@@ -21,10 +21,10 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
             ProfileStatisticsUniqueByCategoryRow(profile: profile, category: category)
         }
         .listStyle(.plain)
-        .navigationTitle("profileStatistics.uniqueByCategory.navigationTitle")
         .refreshable {
             await loadStatistics()
         }
+        .navigationTitle("profileStatistics.uniqueByCategory.navigationTitle")
         .alertError($alertError)
         .task {
             await loadStatistics()

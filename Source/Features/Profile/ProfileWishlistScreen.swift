@@ -44,6 +44,9 @@ struct ProfileWishlistScreen: View {
         }
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .refreshable {
+            await loadProducts()
+        }
         .background {
             if isEmpty {
                 ContentUnavailableView {
@@ -52,9 +55,6 @@ struct ProfileWishlistScreen: View {
             }
         }
         .navigationTitle("wishlist.navigationTitle")
-        .refreshable {
-            await loadProducts()
-        }
         .alertError($alertError)
         .task {
             if !initialDataLoaded {

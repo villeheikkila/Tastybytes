@@ -18,12 +18,12 @@ struct FlavorManagementScreen: View {
                 }
         }
         .listStyle(.insetGrouped)
+        .refreshable {
+            await appEnvironmentModel.refreshFlavors()
+        }
         .navigationBarTitle("flavor.navigationTitle")
         .toolbar {
             toolbarContent
-        }
-        .refreshable {
-            await appEnvironmentModel.refreshFlavors()
         }
         .sheets(item: $sheet)
     }

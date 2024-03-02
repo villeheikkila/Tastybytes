@@ -27,6 +27,10 @@ struct CurrentUserFriendsScreen: View {
             CurrentUserFriendListRow(friend: friend)
         }
         .listStyle(.insetGrouped)
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .refreshable {
+            await friendEnvironmentModel.refresh(withHaptics: true)
+        }
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.isRefreshing) { oldValue, newValue in
             oldValue && !newValue
         }
@@ -41,10 +45,6 @@ struct CurrentUserFriendsScreen: View {
         }
         .navigationTitle("friends.title \(friendEnvironmentModel.friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
-        .refreshable {
-            await friendEnvironmentModel.refresh(withHaptics: true)
-        }
         .initialTask {
             await friendEnvironmentModel.refresh()
         }

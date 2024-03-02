@@ -52,12 +52,12 @@ struct CategoryManagementScreen: View {
             .headerProminence(.increased)
         }
         .listStyle(.insetGrouped)
+        .refreshable {
+            await appEnvironmentModel.initialize(reset: true)
+        }
         .navigationBarTitle("category.title")
         .toolbar {
             toolbarContent
-        }
-        .refreshable {
-            await appEnvironmentModel.initialize(reset: true)
         }
         .confirmationDialog("subcategory.delete.confirmation.description",
                             isPresented: $deleteSubcategory.isNotNull(),

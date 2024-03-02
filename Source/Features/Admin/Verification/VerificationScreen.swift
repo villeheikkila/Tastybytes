@@ -53,6 +53,9 @@ struct VerificationScreen: View {
             }
         }
         .listStyle(.plain)
+        .refreshable {
+            await loadData(refresh: true)
+        }
         .confirmationDialog("product.delete.confirmation.title",
                             isPresented: $deleteProduct.isNotNull(),
                             titleVisibility: .visible,
@@ -70,9 +73,6 @@ struct VerificationScreen: View {
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             toolbarContent
-        }
-        .refreshable {
-            await loadData(refresh: true)
         }
         .task(id: verificationType) {
             await loadData()
