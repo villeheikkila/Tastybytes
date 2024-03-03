@@ -9,6 +9,7 @@ struct AdminScreen: View {
             RouterLink("flavor.navigationTitle", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .flavorManagement)
             RouterLink("admin.verification.title", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .verification)
             RouterLink("admin.duplicates.title", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .duplicateProducts)
+            RouterLink("report.admin.navigationTitle", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .reports)
         }
         .listStyle(.insetGrouped)
         .navigationBarTitle("admin.navigationTitle")

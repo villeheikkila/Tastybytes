@@ -5,6 +5,21 @@ import Supabase
 struct SupabaseReportRepository: ReportRepository {
     let client: SupabaseClient
 
+    func getAll() async -> Result<[Report], Error> {
+        do {
+            let response: [Report] = try await client
+                .database
+                .from(.reports)
+                .select(Report.getQuery(.saved(false)))
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func insert(report: Report.NewRequest) async -> Result<Void, Error> {
         do {
             try await client

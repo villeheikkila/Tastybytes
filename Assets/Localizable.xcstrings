@@ -3744,6 +3744,9 @@
     "ratingChart.value.label" : {
 
     },
+    "report.admin.navigationTitle" : {
+
+    },
     "report.navigationTitle.brand" : {
       "localizations" : {
         "en" : {

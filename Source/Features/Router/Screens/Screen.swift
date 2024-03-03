@@ -36,6 +36,7 @@ enum Screen: Hashable, Codable, Sendable {
     case blockedUsers
     case contributions
     case about
+    case reports
     case error(reason: String)
 
     @ViewBuilder var view: some View {
@@ -106,6 +107,8 @@ enum Screen: Hashable, Codable, Sendable {
             ContributionsScreen()
         case .about:
             AboutScreen()
+        case .reports:
+            ReportScreen()
         case let .error(reason):
             ErrorScreen(reason: reason)
         }

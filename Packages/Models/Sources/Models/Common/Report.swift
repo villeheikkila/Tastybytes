@@ -1,4 +1,4 @@
-public struct Report: Codable, Identifiable {
+public struct Report: Codable, Identifiable, Sendable {
     public let id: Int
     public let message: String
 

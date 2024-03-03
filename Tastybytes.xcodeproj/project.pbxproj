@@ -20,6 +20,7 @@
 		5C07F27C2B51EBB800D8740B /* ProductShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F2722B51EBB700D8740B /* ProductShareLinkView.swift */; };
 		5C07F27D2B51EBB800D8740B /* CheckInShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F2732B51EBB700D8740B /* CheckInShareLinkView.swift */; };
 		5C07F27F2B51F00600D8740B /* PhaseObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F27E2B51F00600D8740B /* PhaseObserver.swift */; };
+		5C0F3D8A2B9511D100307648 /* ReportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0F3D892B9511D100307648 /* ReportScreen.swift */; };
 		5C187E4D2B8B33FD0007AD17 /* CheckInListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C187E4C2B8B33FD0007AD17 /* CheckInListLoader.swift */; };
 		5C24E1C62B5D1F83003AB7C8 /* CheckInLeaveComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1C52B5D1F83003AB7C8 /* CheckInLeaveComment.swift */; };
 		5C24E1CA2B5D34CE003AB7C8 /* CheckInCommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1C92B5D34CE003AB7C8 /* CheckInCommentRow.swift */; };
@@ -262,6 +263,7 @@
 		5C07F2762B51EBB700D8740B /* ProfileShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileShareLinkView.swift; sourceTree = "<group>"; };
 		5C07F2772B51EBB800D8740B /* CompanyShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyShareLinkView.swift; sourceTree = "<group>"; };
 		5C07F27E2B51F00600D8740B /* PhaseObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseObserver.swift; sourceTree = "<group>"; };
+		5C0F3D892B9511D100307648 /* ReportScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportScreen.swift; sourceTree = "<group>"; };
 		5C187E4C2B8B33FD0007AD17 /* CheckInListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListLoader.swift; sourceTree = "<group>"; };
 		5C24E1C52B5D1F83003AB7C8 /* CheckInLeaveComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInLeaveComment.swift; sourceTree = "<group>"; };
 		5C24E1C92B5D34CE003AB7C8 /* CheckInCommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentRow.swift; sourceTree = "<group>"; };
@@ -910,6 +912,7 @@
 			children = (
 				5C9057702B2894BE00EC157B /* ReportButtonView.swift */,
 				5C9057712B2894BE00EC157B /* ReportSheet.swift */,
+				5C0F3D892B9511D100307648 /* ReportScreen.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -1657,6 +1660,7 @@
 				5C9058052B2894BE00EC157B /* DuplicateProductSheet.swift in Sources */,
 				5CAADF0B2B5C566F00D956C1 /* ProductLogo.swift in Sources */,
 				5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */,
+				5C0F3D8A2B9511D100307648 /* ReportScreen.swift in Sources */,
 				5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */,
 				5C9057F82B2894BE00EC157B /* EditCompanySheet.swift in Sources */,
 				5C82E8AE2B2F97E400F2B369 /* ProductScreenActionSection.swift in Sources */,
