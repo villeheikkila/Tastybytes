@@ -12,8 +12,8 @@ struct ProductScreenHeader: View {
     let summary: Summary?
     let checkInImages: [ImageEntity.JoinedCheckIn]
     let isLoadingCheckInImages = false
-    let loadMoreImages: () -> Void
-    let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
+    let loadMoreImages: @MainActor () -> Void
+    let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) async -> Void
     @Binding var isOnWishlist: Bool
 
     var productItemViewExtras: Set<ProductItemView.Extra> {

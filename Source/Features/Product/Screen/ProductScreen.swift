@@ -68,13 +68,8 @@ struct ProductInnerScreen: View {
                 product: product,
                 summary: summary,
                 checkInImages: checkInImages,
-                loadMoreImages: {
-                    checkInImageTask = Task {
-                        defer { checkInImageTask = nil }
-                        await fetchImages(reset: false)
-                    }
-                },
-                onCreateCheckIn: checkInLoader.onCreateCheckIn,
+                loadMoreImages: loadMoreImages,
+                onCreateCheckIn: onCreateCheckIn,
                 isOnWishlist: $isOnWishlist
             )
             .listRowSeparator(.hidden)
@@ -222,6 +217,25 @@ struct ProductInnerScreen: View {
                     action: { await deleteProduct(presenting) }
                 )
             }
+        }
+    }
+
+    func loadMoreImages() {
+        checkInImageTask = Task {
+            defer { checkInImageTask = nil }
+            await fetchImages(reset: false)
+        }
+    }
+
+    func onCreateCheckIn(checkIn: CheckIn) async {
+        checkInLoader.onCreateCheckIn(checkIn)
+        switch await repository.product.getSummaryById(id: product.id) {
+        case let .success(summary):
+            self.summary = summary
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
     }
 
