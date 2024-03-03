@@ -18,59 +18,17 @@ struct DuplicateProductScreen: View {
 
     var body: some View {
         List(products) { product in
-            VStack {
-                if let createdBy = product.createdBy {
-                    HStack {
-                        Avatar(profile: createdBy)
-                            .avatarSize(.small)
-                        Text(createdBy.preferredName).font(.caption).bold()
-                        Spacer()
-                        if let createdAt = product.createdAt {
-                            Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
-                        }
-                    }
-                }
-                ProductItemView(product: product)
-                    .contentShape(Rectangle())
-                    .accessibilityAddTraits(.isLink)
-                    .onTapGesture {
-                        router.navigate(screen: .product(product))
-                    }
-                    .swipeActions {
-                        ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifyProduct(product) })
-                            .tint(.green)
-                        RouterLink("labels.edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: { _ in
-                            await loadProducts()
-                        })).tint(.yellow)
-                        Button(
-                            "labels.delete",
-                            systemImage: "trash",
-                            role: .destructive,
-                            action: { deleteProduct = product }
-                        )
-                    }
-            }
+            DuplicateProductScreeRow(product: product, onVerifyProduct: verifyProduct, onDeleteProduct: deleteProduct, onEditProduct: onEditProduct)
         }
         .listStyle(.plain)
         .refreshable {
             await loadProducts(withHaptics: true)
         }
-        .alertError($alertError)
-        .confirmationDialog("product.delete.confirmation.description",
-                            isPresented: $deleteProduct.isNotNull(),
-                            titleVisibility: .visible,
-                            presenting: deleteProduct)
-        { presenting in
-            ProgressButton(
-                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
-                role: .destructive,
-                action: { await deleteProduct(presenting) }
-            )
-        }
         .navigationBarTitle("duplicateProducts.screen.title")
         .task {
             await loadProducts()
         }
+        .alertError($alertError)
     }
 
     func verifyProduct(_ product: Product.Joined) async {
@@ -98,6 +56,10 @@ struct DuplicateProductScreen: View {
         }
     }
 
+    func onEditProduct(_ product: Product.Joined, _ updatedProduct: Product.Joined) {
+        products = products.replacing(product, with: updatedProduct)
+    }
+
     func loadProducts(withHaptics: Bool = false) async {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
@@ -115,6 +77,62 @@ struct DuplicateProductScreen: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Fetching flavors failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct DuplicateProductScreeRow: View {
+    @Environment(Router.self) private var router
+    @State private var showDeleteProductConfirmation = false
+    let product: Product.Joined
+
+    let onVerifyProduct: (_: Product.Joined) async -> Void
+    let onDeleteProduct: (_: Product.Joined) async -> Void
+    let onEditProduct: (_ initialProduct: Product.Joined, _ updatedProduct: Product.Joined) async -> Void
+
+    var body: some View {
+        VStack {
+            if let createdBy = product.createdBy {
+                HStack {
+                    Avatar(profile: createdBy)
+                        .avatarSize(.small)
+                    Text(createdBy.preferredName).font(.caption).bold()
+                    Spacer()
+                    if let createdAt = product.createdAt {
+                        Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
+                    }
+                }
+            }
+            ProductItemView(product: product)
+                .contentShape(Rectangle())
+                .accessibilityAddTraits(.isLink)
+                .onTapGesture {
+                    router.navigate(screen: .product(product))
+                }
+                .swipeActions {
+                    ProgressButton("labels.verify", systemImage: "checkmark", action: { await onVerifyProduct(product) })
+                        .tint(.green)
+                    RouterLink("labels.edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: { updatedProduct in
+                        await onEditProduct(product, updatedProduct)
+                    })).tint(.yellow)
+                    Button(
+                        "labels.delete",
+                        systemImage: "trash",
+                        role: .destructive,
+                        action: { showDeleteProductConfirmation = true }
+                    )
+                }
+        }
+        .confirmationDialog("product.delete.confirmation.description",
+                            isPresented: $showDeleteProductConfirmation,
+                            titleVisibility: .visible,
+                            presenting: product)
+        { presenting in
+            ProgressButton(
+                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
+                role: .destructive,
+                action: { await onDeleteProduct(presenting) }
+            )
         }
     }
 }

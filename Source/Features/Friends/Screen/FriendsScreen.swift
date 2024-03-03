@@ -37,7 +37,7 @@ struct FriendsScreen: View {
         List(filteredFriends) { friend in
             FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .refreshable {
             isRefreshing = true

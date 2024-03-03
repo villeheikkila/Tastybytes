@@ -217,7 +217,7 @@ public extension NotificationType {
     }
 }
 
-struct DefaultScrollContentBackground: ViewModifier {
+struct CustomPlainListStyle: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
 
     func body(content: Content) -> some View {
@@ -231,6 +231,6 @@ struct DefaultScrollContentBackground: ViewModifier {
 
 extension View {
     func defaultScrollContentBackground() -> some View {
-        modifier(DefaultScrollContentBackground())
+        modifier(CustomPlainListStyle())
     }
 }

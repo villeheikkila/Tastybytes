@@ -34,5 +34,8 @@ struct FriendListItemView<RootView: View>: View {
             }
         }
         .padding(.vertical, 3)
+        .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+            -viewDimensions.width
+        }
     }
 }

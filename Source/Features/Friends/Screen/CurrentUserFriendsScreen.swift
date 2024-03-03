@@ -26,7 +26,7 @@ struct CurrentUserFriendsScreen: View {
         List(filteredFriends) { friend in
             CurrentUserFriendListRow(friend: friend)
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .refreshable {
             await friendEnvironmentModel.refresh(withHaptics: true)
@@ -45,16 +45,16 @@ struct CurrentUserFriendsScreen: View {
         }
         .navigationTitle("friends.title \(friendEnvironmentModel.friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            toolbarContent
+        }
+        .sheets(item: $sheet)
         .initialTask {
             await friendEnvironmentModel.refresh()
         }
         .task {
             await notificationEnvironmentModel.markAllFriendRequestsAsRead()
         }
-        .toolbar {
-            toolbarContent
-        }
-        .sheets(item: $sheet)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
