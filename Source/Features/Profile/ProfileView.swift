@@ -25,6 +25,7 @@ struct ProfileInnerView: View {
     private let logger = Logger(category: "ProfileView")
     @Environment(Repository.self) private var repository
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @State private var checkInLoader: CheckInListLoader
     @State private var alertError: AlertError?
     @State private var profile: Profile
     @State private var profileSummary: ProfileSummary?
@@ -48,8 +49,6 @@ struct ProfileInnerView: View {
         }, id: "ProfileView"))
         isShownInFull = isCurrentUser || !profile.isPrivate
     }
-
-    @State private var checkInLoader: CheckInListLoader
 
     var showInFull: Bool {
         isShownInFull || friendEnvironmentModel.isFriend(profile)

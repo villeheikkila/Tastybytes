@@ -94,7 +94,7 @@ struct CurrentUserFriendListRow: View {
     @State private var showFriendDeleteConfirmation = false
 
     let friend: Friend
-    
+
     var body: some View {
         FriendListItemView(profile: friend.getFriend(userId: profileEnvironmentModel.profile.id)) {
             HStack {
@@ -166,7 +166,7 @@ struct CurrentUserFriendListRow: View {
             )
         }
     }
-    
+
     var deleteFriendButton: some View {
         Button(
             "labels.delete",
@@ -175,7 +175,7 @@ struct CurrentUserFriendListRow: View {
             action: { showFriendDeleteConfirmation = true }
         )
     }
-    
+
     var blockFriendButton: some View {
         ProgressButton(
             "friends.block.label",

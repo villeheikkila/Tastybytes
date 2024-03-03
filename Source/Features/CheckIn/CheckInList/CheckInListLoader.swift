@@ -12,14 +12,20 @@ final class CheckInListLoader {
     typealias Fetcher = (_ from: Int, _ to: Int, _ segment: CheckInSegment) async -> Result<[CheckIn], Error>
     private let logger = Logger(category: "CheckInLoader")
 
-    var loadingCheckInsOnAppear: Task<Void, Error>?
+    var loadingCheckInsOnAppearTask: Task<Void, Error>?
+    var onSegmentChangeTask: Task<Void, Error>?
     // Feed state
     var isRefreshing = false
     var isLoading = false
     var page = 0
     // Check-ins
     var checkIns = [CheckIn]()
-    var showCheckInsFrom: CheckInSegment = .everyone
+    var showCheckInsFrom: CheckInSegment = .everyone {
+        didSet {
+            onSegmentChange()
+        }
+    }
+
     // Dialogs
     var alertError: AlertError?
     var errorContentUnavailable: AlertError?
@@ -78,11 +84,19 @@ final class CheckInListLoader {
     }
 
     func onLoadMore() {
-        guard loadingCheckInsOnAppear == nil else { return }
-        loadingCheckInsOnAppear = Task {
-            defer { loadingCheckInsOnAppear = nil }
+        guard loadingCheckInsOnAppearTask == nil else { return }
+        loadingCheckInsOnAppearTask = Task {
+            defer { loadingCheckInsOnAppearTask = nil }
             logger.info("Loading more items invoked")
             await fetchFeedItems()
+        }
+    }
+
+    func onSegmentChange() {
+        onSegmentChangeTask?.cancel()
+        loadingCheckInsOnAppearTask?.cancel()
+        onSegmentChangeTask = Task {
+            await loadData(isRefresh: true)
         }
     }
 
