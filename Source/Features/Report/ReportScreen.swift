@@ -46,6 +46,10 @@ struct ReportScreenRow: View {
     let report: Report
 
     var body: some View {
-        Text(report.message)
+        HStack {
+            if let message = report.message {
+                Text(message)
+            }
+        }
     }
 }

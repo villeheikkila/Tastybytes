@@ -427,7 +427,7 @@ struct SubBrandSectionHeader: View {
                         ) }
                     )
                 }
-                ReportButton(sheet: $sheet, entity: .subBrand(brand, subBrand))
+                ReportButton(sheet: $sheet, entity: .subBrand(.init(brand: brand, subBrand: subBrand)))
                 if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
                     Button(
                         "labels.delete",

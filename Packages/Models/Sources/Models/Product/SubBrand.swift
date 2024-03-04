@@ -44,6 +44,13 @@ public extension SubBrand {
             self.isVerified = isVerified
         }
 
+        public init(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct) {
+            id = subBrand.id
+            name = subBrand.name
+            isVerified = subBrand.isVerified
+            self.brand = .init(brand: brand)
+        }
+
         enum CodingKeys: String, CodingKey {
             case id
             case name

@@ -10,7 +10,7 @@ struct SupabaseReportRepository: ReportRepository {
             let response: [Report] = try await client
                 .database
                 .from(.reports)
-                .select(Report.getQuery(.saved(false)))
+                .select(Report.getQuery(.joined(false)))
                 .execute()
                 .value
 

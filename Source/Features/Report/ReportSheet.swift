@@ -55,9 +55,9 @@ struct ReportSheet: View {
             HStack {
                 Text(brand.name)
             }
-        case let .subBrand(brand, subBrand):
+        case let .subBrand(subBrand):
             HStack {
-                Text("report.subBrand \(subBrand.name ?? "Default") from \(brand.name)")
+                Text("report.subBrand \(subBrand.name ?? "Default") from \(subBrand.brand.name)")
             }
         case let .comment(comment):
             CheckInCommentView(comment: comment)

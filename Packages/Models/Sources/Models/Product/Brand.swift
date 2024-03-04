@@ -53,6 +53,14 @@ public extension Brand {
             self.logos = logos
         }
 
+        init(brand: Brand.JoinedSubBrandsProductsCompany) {
+            id = brand.id
+            name = brand.name
+            isVerified = brand.isVerified
+            brandOwner = brand.brandOwner
+            logos = brand.logos
+        }
+
         public let id: Int
         public let name: String
         public let isVerified: Bool
