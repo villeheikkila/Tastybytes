@@ -1,15 +1,15 @@
 import Components
+import EnvironmentModels
 import Models
 import SwiftUI
 
 @MainActor
 public struct CheckInEntityView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let checkIn: CheckIn
-    let baseUrl: URL
 
-    public init(checkIn: CheckIn, baseUrl: URL) {
-        self.checkIn = checkIn
-        self.baseUrl = baseUrl
+    var baseUrl: URL {
+        appEnvironmentModel.infoPlist.supabaseUrl
     }
 
     public var body: some View {

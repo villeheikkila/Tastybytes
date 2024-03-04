@@ -21,7 +21,7 @@ struct ReportSheet: View {
     var body: some View {
         Form {
             Section("report.section.content.title") {
-                reportedEntityView
+                entity.view
             }
             Section("report.section.report.title") {
                 TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)
@@ -43,29 +43,6 @@ struct ReportSheet: View {
         ToolbarDismissAction()
     }
 
-    @ViewBuilder private var reportedEntityView: some View {
-        switch entity {
-        case let .product(product):
-            ProductItemView(product: product, extras: [.companyLink, .logoOnLeft])
-        case let .company(company):
-            HStack {
-                Text(company.name)
-            }
-        case let .brand(brand):
-            HStack {
-                Text(brand.name)
-            }
-        case let .subBrand(subBrand):
-            HStack {
-                Text("report.subBrand \(subBrand.name ?? "Default") from \(subBrand.brand.name)")
-            }
-        case let .comment(comment):
-            CheckInCommentView(comment: comment)
-        case let .checkIn(checkIn):
-            CheckInEntityView(checkIn: checkIn, baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
-        }
-    }
-
     func submitReport() async {
         switch await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
         case .success:
@@ -75,25 +52,6 @@ struct ReportSheet: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Submitting report failed. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-}
-
-public extension Report.Entity {
-    var navigationTitle: LocalizedStringKey {
-        switch self {
-        case .product:
-            "report.navigationTitle.product"
-        case .company:
-            "report.navigationTitle.company"
-        case .brand:
-            "report.navigationTitle.brand"
-        case .subBrand:
-            "report.navigationTitle.subBrand"
-        case .checkIn:
-            "report.navigationTitle.checkIn"
-        case .comment:
-            "report.navigationTitle.comment"
         }
     }
 }

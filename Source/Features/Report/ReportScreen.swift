@@ -42,13 +42,25 @@ struct ReportScreen: View {
     }
 }
 
+@MainActor
 struct ReportScreenRow: View {
     let report: Report
 
     var body: some View {
-        HStack {
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(alignment: .center) {
+                Avatar(profile: report.createdBy)
+                    .avatarSize(.medium)
+                Text(report.createdBy.preferredName)
+                Spacer()
+                Text(report.createdAt.formatted(.customRelativetime))
+            }
+
+            if let entity = report.entity {
+                entity.view
+            }
             if let message = report.message {
-                Text(message)
+                Text(message).font(.callout)
             }
         }
     }

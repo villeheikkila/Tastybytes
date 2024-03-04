@@ -57,18 +57,18 @@ extension Notification: Codable {
         let checkInReaction = try values.decodeIfPresent(CheckInReaction.JoinedCheckIn.self, forKey: .checkInReaction)
         let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComments)
 
-        if let message {
-            content = Notification.Content.message(message)
+        content = if let message {
+            .message(message)
         } else if let friendRequest {
-            content = Notification.Content.friendRequest(friendRequest)
+            .friendRequest(friendRequest)
         } else if let checkIn = taggedCheckIn?.checkIn {
-            content = Notification.Content.taggedCheckIn(checkIn)
+            .taggedCheckIn(checkIn)
         } else if let checkInReaction {
-            content = Notification.Content.checkInReaction(checkInReaction)
+            .checkInReaction(checkInReaction)
         } else if let checkInComment {
-            content = Notification.Content.checkInComment(checkInComment)
+            .checkInComment(checkInComment)
         } else {
-            content = Notification.Content.message("No content")
+            .message("No content")
         }
     }
 

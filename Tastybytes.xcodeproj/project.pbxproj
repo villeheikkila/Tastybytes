@@ -38,6 +38,7 @@
 		5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E892B504DD80048605B /* ProfileStateObserver.swift */; };
 		5C672E972B51DE2A0048605B /* VerificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E962B51DE2A0048605B /* VerificationButton.swift */; };
 		5C672E9B2B51DE4F0048605B /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E9A2B51DE4F0048605B /* Avatar.swift */; };
+		5C68D76B2B965FBE00D88229 /* ReportEntity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */; };
 		5C8036422B814D2300DE9EF3 /* EmptyActivityFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D02B814ACD0049E563 /* EmptyActivityFeedView.swift */; };
 		5C8036442B814F9800DE9EF3 /* ScanTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */; };
 		5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8822B2DCFD600F2B369 /* TabManager.swift */; };
@@ -283,6 +284,7 @@
 		5C672E892B504DD80048605B /* ProfileStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStateObserver.swift; sourceTree = "<group>"; };
 		5C672E962B51DE2A0048605B /* VerificationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationButton.swift; sourceTree = "<group>"; };
 		5C672E9A2B51DE4F0048605B /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
+		5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReportEntity+Extension.swift"; sourceTree = "<group>"; };
 		5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Staging.xcconfig"; sourceTree = "<group>"; };
 		5C72E9B22B49D0DD00A963D3 /* Project-Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Production.xcconfig"; sourceTree = "<group>"; };
 		5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextButton.swift; sourceTree = "<group>"; };
@@ -913,6 +915,7 @@
 				5C9057702B2894BE00EC157B /* ReportButtonView.swift */,
 				5C9057712B2894BE00EC157B /* ReportSheet.swift */,
 				5C0F3D892B9511D100307648 /* ReportScreen.swift */,
+				5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -1630,6 +1633,7 @@
 				5C02A73B2B4F28B700B497FA /* AppUnexpectedErrorState.swift in Sources */,
 				5C82E8A62B2F7FE000F2B369 /* CheckInImagesSection.swift in Sources */,
 				5C90583A2B2894BE00EC157B /* ProductFeedScreen.swift in Sources */,
+				5C68D76B2B965FBE00D88229 /* ReportEntity+Extension.swift in Sources */,
 				5C24E1C62B5D1F83003AB7C8 /* CheckInLeaveComment.swift in Sources */,
 				5CAADF052B5C534000D956C1 /* DIscoverScreen+Extension.swift in Sources */,
 				5C9058182B2894BE00EC157B /* AppIconScreen.swift in Sources */,
