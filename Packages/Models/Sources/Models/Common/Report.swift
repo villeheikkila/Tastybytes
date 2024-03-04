@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Report: Decodable, Identifiable, Sendable {
+public struct Report: Decodable, Identifiable, Sendable, Hashable {
     public let id: Int
     public let message: String?
     public let createdAt: Date

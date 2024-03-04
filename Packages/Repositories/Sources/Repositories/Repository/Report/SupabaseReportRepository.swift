@@ -33,4 +33,19 @@ struct SupabaseReportRepository: ReportRepository {
             return .failure(error)
         }
     }
+
+    func delete(id: Int) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(.reports)
+                .delete()
+                .eq("id", value: id)
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
 }

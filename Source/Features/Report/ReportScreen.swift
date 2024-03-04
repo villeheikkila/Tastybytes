@@ -40,6 +40,19 @@ struct ReportScreen: View {
             logger.error("Loading reports failed. Error: \(error) (\(#file):\(#line))")
         }
     }
+
+    public func deleteReport(_ report: Report) async {
+        switch await repository.subcategory.delete(id: report.id) {
+        case .success:
+            withAnimation {
+                reports = reports.removing(report)
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
 }
 
 @MainActor
