@@ -6,6 +6,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
     public let createdAt: Date
     public let createdBy: Profile
     public let entity: Entity?
+    public let resolvedAt: Date?
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -13,12 +14,13 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         message = try values.decodeIfPresent(String.self, forKey: .message)
         createdAt = try values.decode(Date.self, forKey: .createdAt)
         createdBy = try values.decode(Profile.self, forKey: .createdBy)
+        resolvedAt = try values.decodeIfPresent(Date.self, forKey: .createdAt)
 
         let product = try values.decodeIfPresent(Product.Joined.self, forKey: .products)
         let company = try values.decodeIfPresent(Company.self, forKey: .companies)
         let brand = try values.decodeIfPresent(Brand.JoinedSubBrandsProductsCompany.self, forKey: .brands)
         let subBrand = try values.decodeIfPresent(SubBrand.JoinedBrand.self, forKey: .subBrands)
-        let checkInComment = try values.decodeIfPresent(CheckInComment.self, forKey: .checkInComments)
+        let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComments)
         let checkIn = try values.decodeIfPresent(CheckIn.self, forKey: .checkIn)
 
         entity = if let checkIn {
@@ -49,9 +51,21 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         case brands
         case checkIn = "check_in"
         case subBrands = "sub_brands"
+        case resolvedAt = "resolved_at"
     }
 
-    public struct NewRequest: Codable, Sendable {
+    public enum Entity: Hashable, Sendable {
+        case product(Product.Joined)
+        case company(Company)
+        case brand(Brand.JoinedSubBrandsProductsCompany)
+        case subBrand(SubBrand.JoinedBrand)
+        case checkIn(CheckIn)
+        case comment(CheckInComment.Joined)
+    }
+}
+
+public extension Report {
+    struct NewRequest: Codable, Sendable {
         public let message: String
         public let checkInId: Int?
         public let productId: Int?
@@ -120,12 +134,15 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         }
     }
 
-    public enum Entity: Hashable, Sendable {
-        case product(Product.Joined)
-        case company(Company)
-        case brand(Brand.JoinedSubBrandsProductsCompany)
-        case subBrand(SubBrand.JoinedBrand)
-        case checkIn(CheckIn)
-        case comment(CheckInComment)
+    struct ResolveRequest: Codable, Sendable {
+        let resolvedAt: Date
+
+        public init(resolvedAt: Date) {
+            self.resolvedAt = resolvedAt
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case resolvedAt = "resolved_at"
+        }
     }
 }

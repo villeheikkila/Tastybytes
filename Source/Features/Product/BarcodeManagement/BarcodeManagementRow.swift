@@ -15,7 +15,8 @@ struct BarcodeManagementRow: View {
                     Spacer()
                     Text(barcode.createdAt.formatted(.customRelativetime)).font(.caption2)
                 }
-                Text(barcode.barcode).font(.callout)
+                Text(barcode.barcode)
+                    .font(.callout)
             }
             Spacer()
         }

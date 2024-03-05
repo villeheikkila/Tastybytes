@@ -8,7 +8,7 @@ import SwiftUI
 
 @MainActor
 struct CheckInCommentView: View {
-    let comment: CheckInComment
+    let comment: CheckInCommentProtocol
 
     var body: some View {
         HStack {

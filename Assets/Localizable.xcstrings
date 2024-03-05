@@ -2329,6 +2329,16 @@
         }
       }
     },
+    "labels.copyToClipboard" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy"
+          }
+        }
+      }
+    },
     "labels.create" : {
       "localizations" : {
         "en" : {
@@ -3747,6 +3757,9 @@
     "report.admin.navigationTitle" : {
 
     },
+    "report.admin.resolve.label" : {
+
+    },
     "report.navigationTitle.brand" : {
       "localizations" : {
         "en" : {
@@ -3876,6 +3889,9 @@
           }
         }
       }
+    },
+    "Search Google" : {
+
     },
     "servingStyle.create.label" : {
 

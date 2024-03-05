@@ -14,6 +14,7 @@ struct CheckInCommentRow: View {
     @State private var sheet: Sheet?
     @State private var showDeleteAsModeratorConfirmationDialog = false
 
+    let checkIn: CheckIn
     let comment: CheckInComment
     @Binding var checkInComments: [CheckInComment]
 
@@ -41,7 +42,7 @@ struct CheckInCommentRow: View {
                         await deleteComment(comment)
                     }
                 } else {
-                    ReportButton(sheet: $sheet, entity: .comment(comment))
+                    ReportButton(sheet: $sheet, entity: .comment(.init(comment: comment, checkIn: checkIn)))
                 }
                 Divider()
                 if profileEnvironmentModel.hasRole(.moderator) {

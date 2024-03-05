@@ -39,6 +39,8 @@
 		5C672E972B51DE2A0048605B /* VerificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E962B51DE2A0048605B /* VerificationButton.swift */; };
 		5C672E9B2B51DE4F0048605B /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E9A2B51DE4F0048605B /* Avatar.swift */; };
 		5C68D76B2B965FBE00D88229 /* ReportEntity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */; };
+		5C68D76D2B978EF700D88229 /* CopyToClipboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */; };
+		5C68D76F2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */; };
 		5C8036422B814D2300DE9EF3 /* EmptyActivityFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D02B814ACD0049E563 /* EmptyActivityFeedView.swift */; };
 		5C8036442B814F9800DE9EF3 /* ScanTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */; };
 		5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8822B2DCFD600F2B369 /* TabManager.swift */; };
@@ -285,6 +287,8 @@
 		5C672E962B51DE2A0048605B /* VerificationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationButton.swift; sourceTree = "<group>"; };
 		5C672E9A2B51DE4F0048605B /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReportEntity+Extension.swift"; sourceTree = "<group>"; };
+		5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyToClipboardButton.swift; sourceTree = "<group>"; };
+		5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGoogleBySearchTermButton.swift; sourceTree = "<group>"; };
 		5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Staging.xcconfig"; sourceTree = "<group>"; };
 		5C72E9B22B49D0DD00A963D3 /* Project-Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Production.xcconfig"; sourceTree = "<group>"; };
 		5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextButton.swift; sourceTree = "<group>"; };
@@ -1171,6 +1175,8 @@
 				5C9057C42B2894BE00EC157B /* AppLogoView.swift */,
 				5C672E962B51DE2A0048605B /* VerificationButton.swift */,
 				5C672E9A2B51DE4F0048605B /* Avatar.swift */,
+				5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */,
+				5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1608,6 +1614,7 @@
 				5C9057FA2B2894BE00EC157B /* AddSubcategorySheet.swift in Sources */,
 				5C9058102B2894BE00EC157B /* FlavorSheet.swift in Sources */,
 				5C9058572B2894BE00EC157B /* RouterLink.swift in Sources */,
+				5C68D76D2B978EF700D88229 /* CopyToClipboardButton.swift in Sources */,
 				5C9058062B2894BE00EC157B /* ServingStyleManagementSheet.swift in Sources */,
 				5CA4AC492B586DF800E17629 /* DuplicateProductContentUnavailableView.swift in Sources */,
 				5C9058472B2894BE00EC157B /* AppLogoView.swift in Sources */,
@@ -1662,6 +1669,7 @@
 				5C9058042B2894BE00EC157B /* AddCategorySheet.swift in Sources */,
 				5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */,
 				5C9058052B2894BE00EC157B /* DuplicateProductSheet.swift in Sources */,
+				5C68D76F2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift in Sources */,
 				5CAADF0B2B5C566F00D956C1 /* ProductLogo.swift in Sources */,
 				5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */,
 				5C0F3D8A2B9511D100307648 /* ReportScreen.swift in Sources */,

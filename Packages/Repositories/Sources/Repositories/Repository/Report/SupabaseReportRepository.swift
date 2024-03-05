@@ -11,6 +11,8 @@ struct SupabaseReportRepository: ReportRepository {
                 .database
                 .from(.reports)
                 .select(Report.getQuery(.joined(false)))
+                .is("resolved_at", value: "null")
+                .order("created_at", ascending: false)
                 .execute()
                 .value
 
@@ -44,6 +46,24 @@ struct SupabaseReportRepository: ReportRepository {
                 .execute()
 
             return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func resolve(id: Int) async -> Result<Report, Error> {
+        do {
+            let response: Report = try await client
+                .database
+                .from(.reports)
+                .update(Report.ResolveRequest(resolvedAt: Date.now))
+                .eq("id", value: id)
+                .select(Report.getQuery(.joined(false)))
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
         } catch {
             return .failure(error)
         }

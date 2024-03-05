@@ -1,6 +1,13 @@
 import Foundation
 
-public struct CheckInComment: Identifiable, Hashable, Codable, Sendable {
+public protocol CheckInCommentProtocol {
+    var id: Int { get }
+    var content: String { get }
+    var createdAt: Date { get }
+    var profile: Profile { get }
+}
+
+public struct CheckInComment: Identifiable, Hashable, Codable, Sendable, CheckInCommentProtocol {
     public let id: Int
     public let content: String
     public let createdAt: Date
@@ -15,12 +22,20 @@ public struct CheckInComment: Identifiable, Hashable, Codable, Sendable {
 }
 
 public extension CheckInComment {
-    struct Joined: Identifiable, Hashable, Codable, Sendable {
+    struct Joined: Identifiable, Hashable, Codable, Sendable, CheckInCommentProtocol {
         public let id: Int
         public let content: String
         public let createdAt: Date
         public let profile: Profile
         public let checkIn: CheckIn
+
+        public init(comment: CheckInComment, checkIn: CheckIn) {
+            id = comment.id
+            content = comment.content
+            profile = comment.profile
+            createdAt = comment.createdAt
+            self.checkIn = checkIn
+        }
 
         enum CodingKeys: String, CodingKey {
             case id

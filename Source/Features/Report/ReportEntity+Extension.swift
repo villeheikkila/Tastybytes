@@ -25,7 +25,7 @@ extension Report.Entity {
     @ViewBuilder var view: some View {
         switch self {
         case let .product(product):
-            ProductItemView(product: product, extras: [.companyLink, .logoOnLeft])
+            ProductItemView(product: product, extras: [.companyLink, .logoOnRight])
         case let .company(company):
             HStack {
                 Text(company.name)

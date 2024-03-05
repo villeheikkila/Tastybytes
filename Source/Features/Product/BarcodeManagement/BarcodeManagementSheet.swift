@@ -24,14 +24,14 @@ struct BarcodeManagementSheet: View {
                 .swipeActions {
                     ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive, action: {
                         await deleteBarcode(barcode)
-                        feedbackEnvironmentModel.trigger(.notification(.success))
                     })
                 }
                 .contextMenu {
                     ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive, action: {
                         await deleteBarcode(barcode)
-                        feedbackEnvironmentModel.trigger(.notification(.success))
                     })
+                    CopyToClipboardButton(content: barcode.barcode)
+                    SearchGoogleLink(searchTerm: barcode.barcode)
                 }
         }
         .listStyle(.plain)
@@ -60,6 +60,7 @@ struct BarcodeManagementSheet: View {
             withAnimation {
                 barcodes.remove(object: barcode)
             }
+            feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

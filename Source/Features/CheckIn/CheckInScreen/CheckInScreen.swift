@@ -38,7 +38,7 @@ struct CheckInScreen: View {
                     focusedField = nil
                 }
             ForEach(checkInComments) { comment in
-                CheckInCommentRow(comment: comment, checkInComments: $checkInComments)
+                CheckInCommentRow(checkIn: checkIn, comment: comment, checkInComments: $checkInComments)
                     .listRowSeparator(.hidden)
             }
         }
