@@ -12,62 +12,33 @@ struct DuplicateProductScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var products = [Product.Joined]()
+    @State private var duplicateProductSuggestions = [ProductDuplicateSuggestion]()
     @State private var alertError: AlertError?
     @State private var deleteProduct: Product.Joined?
 
     var body: some View {
-        List(products) { product in
-            DuplicateProductScreeRow(product: product, onVerifyProduct: verifyProduct, onDeleteProduct: deleteProduct, onEditProduct: onEditProduct)
+        List(duplicateProductSuggestions) { duplicateProductSuggestion in
+            DuplicateProductScreeRow(duplicateProductSuggestion: duplicateProductSuggestion)
         }
         .listStyle(.plain)
         .refreshable {
-            await loadProducts(withHaptics: true)
+            await loadDuplicateProducts(withHaptics: true)
         }
-        .navigationBarTitle("duplicateProducts.screen.title")
+        .navigationBarTitle("admin.duplicates.title")
         .task {
-            await loadProducts()
+            await loadDuplicateProducts()
         }
         .alertError($alertError)
     }
 
-    func verifyProduct(_ product: Product.Joined) async {
-        switch await repository.product.verification(id: product.id, isVerified: true) {
-        case .success:
-            withAnimation {
-                products.remove(object: product)
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to verify product \(product.id). Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func deleteProduct(_ product: Product.Joined) async {
-        switch await repository.product.delete(id: product.id) {
-        case .success:
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            router.removeLast()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func onEditProduct(_ product: Product.Joined, _ updatedProduct: Product.Joined) {
-        products = products.replacing(product, with: updatedProduct)
-    }
-
-    func loadProducts(withHaptics: Bool = false) async {
+    func loadDuplicateProducts(withHaptics: Bool = false) async {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
-        switch await repository.product.getUnverified() {
-        case let .success(products):
+        switch await repository.product.getMarkedAsDuplicateProducts() {
+        case let .success(duplicateProductSuggestions):
             withAnimation {
-                self.products = products
+                self.duplicateProductSuggestions = duplicateProductSuggestions
             }
             if withHaptics {
                 feedbackEnvironmentModel.trigger(.notification(.success))
@@ -76,7 +47,7 @@ struct DuplicateProductScreen: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()
-            logger.error("Fetching flavors failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Fetching duplicate products failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }
@@ -84,55 +55,29 @@ struct DuplicateProductScreen: View {
 struct DuplicateProductScreeRow: View {
     @Environment(Router.self) private var router
     @State private var showDeleteProductConfirmation = false
-    let product: Product.Joined
-
-    let onVerifyProduct: (_: Product.Joined) async -> Void
-    let onDeleteProduct: (_: Product.Joined) async -> Void
-    let onEditProduct: (_ initialProduct: Product.Joined, _ updatedProduct: Product.Joined) async -> Void
+    let duplicateProductSuggestion: ProductDuplicateSuggestion
 
     var body: some View {
         VStack {
-            if let createdBy = product.createdBy {
-                HStack {
-                    Avatar(profile: createdBy)
-                        .avatarSize(.small)
-                    Text(createdBy.preferredName).font(.caption).bold()
-                    Spacer()
-                    if let createdAt = product.createdAt {
-                        Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
-                    }
-                }
+            HStack {
+                Avatar(profile: duplicateProductSuggestion.createdBy)
+                    .avatarSize(.small)
+                Text(duplicateProductSuggestion.createdBy.preferredName).font(.caption).bold()
+                Spacer()
+                Text(duplicateProductSuggestion.createdAt.formatted(.customRelativetime)).font(.caption).bold()
             }
-            ProductItemView(product: product)
+            ProductItemView(product: duplicateProductSuggestion.product)
                 .contentShape(Rectangle())
                 .accessibilityAddTraits(.isLink)
                 .onTapGesture {
-                    router.navigate(screen: .product(product))
+                    router.navigate(screen: .product(duplicateProductSuggestion.product))
                 }
-                .swipeActions {
-                    ProgressButton("labels.verify", systemImage: "checkmark", action: { await onVerifyProduct(product) })
-                        .tint(.green)
-                    RouterLink("labels.edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: { updatedProduct in
-                        await onEditProduct(product, updatedProduct)
-                    })).tint(.yellow)
-                    Button(
-                        "labels.delete",
-                        systemImage: "trash",
-                        role: .destructive,
-                        action: { showDeleteProductConfirmation = true }
-                    )
+            ProductItemView(product: duplicateProductSuggestion.duplicate)
+                .contentShape(Rectangle())
+                .accessibilityAddTraits(.isLink)
+                .onTapGesture {
+                    router.navigate(screen: .product(duplicateProductSuggestion.duplicate))
                 }
-        }
-        .confirmationDialog("product.delete.confirmation.description",
-                            isPresented: $showDeleteProductConfirmation,
-                            titleVisibility: .visible,
-                            presenting: product)
-        { presenting in
-            ProgressButton(
-                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
-                role: .destructive,
-                action: { await onDeleteProduct(presenting) }
-            )
         }
     }
 }

@@ -59,6 +59,17 @@ extension Product: Queryable {
                 ],
                 withTableName
             )
+        case let .productDuplicateSuggestion(withTableName):
+            return buildQuery(
+                .productDuplicateSuggestions,
+                [
+                    "created_at",
+                    Profile.getQuery(.minimal(true)),
+                    buildQuery(name: "product", foreignKey: "product_id", [Product.getQuery(.joinedBrandSubcategoriesCreator(false))]),
+                    buildQuery(name: "duplicate", foreignKey: "duplicate_of_product_id", [Product.getQuery(.joinedBrandSubcategoriesCreator(false))]),
+                ],
+                withTableName
+            )
         }
     }
 
@@ -68,6 +79,7 @@ extension Product: Queryable {
         case joinedBrandSubcategoriesCreator(_ withTableName: Bool)
         case joinedBrandSubcategoriesRatings(_ withTableName: Bool)
         case joinedBrandSubcategoriesProfileRatings(_ withTableName: Bool)
+        case productDuplicateSuggestion(_ withTableName: Bool)
     }
 }
 

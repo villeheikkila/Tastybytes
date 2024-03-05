@@ -18,9 +18,22 @@ public struct Product: Identifiable, Codable, Hashable, Sendable {
     }
 }
 
-public struct ProductDuplicateSuggestion {
-    let product: Product.Joined
-    let duplicateOf: Product.Joined
+public struct ProductDuplicateSuggestion: Codable, Hashable, Sendable, Identifiable {
+    public var id: Int {
+        product.hashValue + duplicate.hashValue
+    }
+
+    public let createdAt: Date
+    public let createdBy: Profile
+    public let product: Product.Joined
+    public let duplicate: Product.Joined
+
+    enum CodingKeys: String, CodingKey {
+        case createdAt = "created_at"
+        case createdBy = "profiles"
+        case product
+        case duplicate
+    }
 }
 
 public extension Product {

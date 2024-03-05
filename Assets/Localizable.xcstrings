@@ -2041,6 +2041,7 @@
       }
     },
     "duplicateProducts.screen.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

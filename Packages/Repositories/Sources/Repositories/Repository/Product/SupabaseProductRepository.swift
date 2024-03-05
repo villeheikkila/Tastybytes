@@ -312,6 +312,22 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
+    func getMarkedAsDuplicateProducts() async -> Result<[ProductDuplicateSuggestion], Error> {
+        do {
+            let response: [ProductDuplicateSuggestion] = try await client
+                .database
+                .from(.productDuplicateSuggestions)
+                .select(Product.getQuery(.productDuplicateSuggestion(false)))
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func createUpdateSuggestion(productEditSuggestionParams: Product
         .EditSuggestionRequest) async -> Result<Void, Error>
     {

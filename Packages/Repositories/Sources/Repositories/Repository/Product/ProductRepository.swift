@@ -17,6 +17,7 @@ public protocol ProductRepository: Sendable {
     func addToWishlist(productId: Int) async -> Result<Void, Error>
     func uploadLogo(productId: Int, data: Data) async -> Result<ImageEntity, Error>
     func getSummaryById(id: Int) async -> Result<Summary, Error>
+    func getMarkedAsDuplicateProducts() async -> Result<[ProductDuplicateSuggestion], Error>
     func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error>
     func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
     func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async -> Result<Void, Error>
