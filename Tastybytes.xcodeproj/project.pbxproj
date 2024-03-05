@@ -41,6 +41,7 @@
 		5C68D76B2B965FBE00D88229 /* ReportEntity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */; };
 		5C68D76D2B978EF700D88229 /* CopyToClipboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */; };
 		5C68D76F2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */; };
+		5C68D7712B9794F600D88229 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D7702B9794F600D88229 /* DeleteButton.swift */; };
 		5C8036422B814D2300DE9EF3 /* EmptyActivityFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D02B814ACD0049E563 /* EmptyActivityFeedView.swift */; };
 		5C8036442B814F9800DE9EF3 /* ScanTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */; };
 		5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8822B2DCFD600F2B369 /* TabManager.swift */; };
@@ -289,6 +290,7 @@
 		5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReportEntity+Extension.swift"; sourceTree = "<group>"; };
 		5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyToClipboardButton.swift; sourceTree = "<group>"; };
 		5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGoogleBySearchTermButton.swift; sourceTree = "<group>"; };
+		5C68D7702B9794F600D88229 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
 		5C72E9B12B49D0C300A963D3 /* Project-Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Staging.xcconfig"; sourceTree = "<group>"; };
 		5C72E9B22B49D0DD00A963D3 /* Project-Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Production.xcconfig"; sourceTree = "<group>"; };
 		5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextButton.swift; sourceTree = "<group>"; };
@@ -1177,6 +1179,7 @@
 				5C672E9A2B51DE4F0048605B /* Avatar.swift */,
 				5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */,
 				5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */,
+				5C68D7702B9794F600D88229 /* DeleteButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1756,6 +1759,7 @@
 				5CAADEFC2B5C485300D956C1 /* DiscoverLocationResults.swift in Sources */,
 				5C07F27B2B51EBB800D8740B /* LocationShareLinkView.swift in Sources */,
 				5C9058132B2894BE00EC157B /* SideBarView.swift in Sources */,
+				5C68D7712B9794F600D88229 /* DeleteButton.swift in Sources */,
 				5C9057EB2B2894BE00EC157B /* Tab.swift in Sources */,
 				5CD3C0E02B814BF90049E563 /* ToolbarDismissAction.swift in Sources */,
 				5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */,

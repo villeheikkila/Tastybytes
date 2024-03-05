@@ -22,12 +22,12 @@ struct BarcodeManagementSheet: View {
         List(barcodes) { barcode in
             BarcodeManagementRow(barcode: barcode)
                 .swipeActions {
-                    ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive, action: {
+                    DeleteButton(action: {
                         await deleteBarcode(barcode)
                     })
                 }
                 .contextMenu {
-                    ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive, action: {
+                    DeleteButton(action: {
                         await deleteBarcode(barcode)
                     })
                     CopyToClipboardButton(content: barcode.barcode)
