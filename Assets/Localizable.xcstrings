@@ -177,7 +177,14 @@
       }
     },
     "account.feedback.sent.toast" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank you!"
+          }
+        }
+      }
     },
     "account.navigationTitle" : {
       "localizations" : {
@@ -470,7 +477,14 @@
       }
     },
     "blockedUsers.empty.block.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Block"
+          }
+        }
+      }
     },
     "blockedUsers.empty.description" : {
 
@@ -3759,7 +3773,14 @@
 
     },
     "report.admin.resolve.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as resolved"
+          }
+        }
+      }
     },
     "report.navigationTitle.brand" : {
       "localizations" : {

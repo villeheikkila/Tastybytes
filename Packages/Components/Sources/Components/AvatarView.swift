@@ -43,7 +43,7 @@ public struct AvatarView: View {
     }
 }
 
-public enum AvatarSize {
+public enum AvatarSize: Sendable {
     case small
     case medium
     case large

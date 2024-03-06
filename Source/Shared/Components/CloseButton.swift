@@ -1,9 +1,8 @@
 import SwiftUI
 
-@MainActor
 public struct CloseButton: View {
     @State private var isPressed = false
-    let action: @MainActor () -> Void
+    let action: () -> Void
 
     public var body: some View {
         Button(action: {

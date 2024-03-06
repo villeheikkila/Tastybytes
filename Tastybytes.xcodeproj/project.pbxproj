@@ -1860,7 +1860,9 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				SDKROOT = auto;
+				TVOS_DEPLOYMENT_TARGET = 17.4;
 			};
 			name = Staging;
 		};
@@ -1984,8 +1986,10 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				SDKROOT = auto;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 17.4;
 			};
 			name = Debug;
 		};
@@ -2010,7 +2014,9 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				SDKROOT = auto;
+				TVOS_DEPLOYMENT_TARGET = 17.4;
 			};
 			name = Release;
 		};

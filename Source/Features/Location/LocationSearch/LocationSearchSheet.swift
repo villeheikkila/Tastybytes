@@ -222,6 +222,7 @@ struct LocationRow: View {
                 }
             }
             .contentShape(Rectangle())
+            .accessibilityAddTraits(.isButton)
             .onTapGesture {
                 onSelect(location)
             }
