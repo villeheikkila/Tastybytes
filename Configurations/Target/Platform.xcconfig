@@ -11,8 +11,10 @@ SUPPORTED_PLATFORMS = iphonesimulator iphoneos appletvsimulator appletvos xrsimu
 TARGETED_DEVICE_FAMILY = 1,2,3,4,6,7
 
 //-- Special Destinations
-SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES
+SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO
 SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES
+
+SUPPORTS_MACCATALYST = YES;
 
 //-- Interface Orientations
 INFOPLIST_KEY_UISupportedInterfaceOrientations[sdk=watch*] = UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown
@@ -21,7 +23,7 @@ INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone[sdk=iphone*] = UIInterface
 
 //-- Deployment Targets
 MACOSX_DEPLOYMENT_TARGET = 14.3
-IPHONEOS_DEPLOYMENT_TARGET = 17.2
-TVOS_DEPLOYMENT_TARGET = 17.2
+IPHONEOS_DEPLOYMENT_TARGET = 17.3
+TVOS_DEPLOYMENT_TARGET = 17.3
 WATCHOS_DEPLOYMENT_TARGET = 10.0
 VISIONOS_DEPLOYMENT_TARGET = 1.0
