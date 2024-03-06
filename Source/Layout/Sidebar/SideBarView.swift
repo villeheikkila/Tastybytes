@@ -38,15 +38,7 @@ struct SideBarView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.isPortrait) private var isPortrait
-    @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
-    @State private var selection: SiderBarTab? = SiderBarTab.activity {
-        didSet {
-            if let selection {
-                storedSelection = selection
-            }
-        }
-    }
-
+    @State private var selection: SiderBarTab? = SiderBarTab.activity
     @State private var scrollToTop: Int = 0
     @State private var router = Router()
 
@@ -59,64 +51,51 @@ struct SideBarView: View {
     }
 
     private var columnVisibility: NavigationSplitViewVisibility {
-        isPortrait ? .automatic : .all
+        isPortrait ? .doubleColumn : .all
     }
 
     var body: some View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
-        NavigationSplitView(columnVisibility: .constant(columnVisibility)) {
+        NavigationSplitView(columnVisibility: .constant(columnVisibility), sidebar: {
             List(shownTabs, selection: $selection) { newTab in
-                Button(action: {
-                    if newTab == selection {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                            scrollToTop += 1
-                            router.reset()
-                        }
-                    } else {
-                        selection = newTab
-                    }
-                }, label: {
+                NavigationLink(value: newTab) {
                     newTab.label
-                        .imageScale(.large)
-                })
+                }
                 .tag(newTab.id)
             }
             .listStyle(.sidebar)
-            .navigationSplitViewColumnWidth(220)
-        } detail: {
-            @Bindable var router = router
+        }, content: {
+            switch selection {
+            case .activity:
+                ActivityScreen(repository: repository, scrollToTop: $scrollToTop)
+            case .discover:
+                DiscoverScreen(scrollToTop: $scrollToTop)
+            case .notifications:
+                NotificationScreen(scrollToTop: $scrollToTop)
+            case .admin:
+                AdminScreen()
+            case .profile:
+                CurrentProfileScreen(scrollToTop: $scrollToTop)
+            case .friends:
+                CurrentUserFriendsScreen()
+            case .settings:
+                SettingsScreen()
+            case nil:
+                EmptyView()
+            }
+        }, detail: {
             NavigationStack(path: $router.path) {
-                switch selection {
-                case .activity:
-                    ActivityScreen(repository: repository, scrollToTop: $scrollToTop)
-                case .discover:
-                    DiscoverScreen(scrollToTop: $scrollToTop)
-                case .notifications:
-                    NotificationScreen(scrollToTop: $scrollToTop)
-                case .admin:
-                    AdminScreen()
-                case .profile:
-                    CurrentProfileScreen(scrollToTop: $scrollToTop)
-                case .friends:
-                    CurrentUserFriendsScreen()
-                case .settings:
-                    SettingsScreen()
-                case nil:
-                    EmptyView()
-                }
+                EmptyView()
             }
             .navigationDestination(for: Screen.self) { screen in
                 screen.view
             }
-        }
+        })
         .navigationSplitViewStyle(.balanced)
         .onOpenURL { url in
             if let tab = TabUrlHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).sidebarTab {
                 selection = tab
             }
-        }
-        .onAppear {
-            selection = storedSelection
         }
         .sensoryFeedback(.selection, trigger: selection)
         .environment(router)

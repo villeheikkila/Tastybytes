@@ -19,8 +19,8 @@ public struct Product: Identifiable, Codable, Hashable, Sendable {
 }
 
 public struct ProductDuplicateSuggestion: Codable, Hashable, Sendable, Identifiable {
-    public var id: Int {
-        product.hashValue + duplicate.hashValue
+    public var id: String {
+        String(product.hashValue) + String(duplicate.hashValue)
     }
 
     public let createdAt: Date

@@ -125,30 +125,30 @@ public extension Task {
     }
 }
 
-public extension View {
-    func detectOrientation(_ isPortrait: Binding<Bool>) -> some View {
-        modifier(DetectOrientation(isPortrait: isPortrait))
+struct DetectOrientation: ViewModifier {
+    @Binding var isPortrait: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear()
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                isPortrait = isPortrait(orientation: UIDevice.current.orientation)
+            }
+    }
+
+    func isPortrait(orientation: UIDeviceOrientation) -> Bool {
+        switch orientation {
+        case .portrait, .portraitUpsideDown:
+            true
+        default:
+            false
+        }
     }
 }
 
-public struct DetectOrientation: ViewModifier {
-    @Binding var isPortrait: Bool
-
-    public func body(content: Content) -> some View {
-        content.onAppear {
-            #if os(iOS)
-                _ = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
-                    .sink { _ in
-                        let isCurrentlyPortrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
-                        isPortrait = UIDevice.current
-                            .orientation == .unknown ? isCurrentlyPortrait :
-                            (UIDevice.current.orientation == .portrait || UIDevice.current
-                                .orientation == .portraitUpsideDown)
-                    }
-            #elseif os(watchOS) || os(tvOS)
-                isPortrait = false
-            #endif
-        }
+public extension View {
+    func detectOrientation(_ isPortrait: Binding<Bool>) -> some View {
+        modifier(DetectOrientation(isPortrait: isPortrait))
     }
 }
 
