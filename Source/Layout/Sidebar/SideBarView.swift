@@ -65,28 +65,21 @@ struct SideBarView: View {
     var body: some View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
         NavigationSplitView(columnVisibility: .constant(columnVisibility)) {
-            List(selection: $selection) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text(appEnvironmentModel.infoPlist.appName)
-                        .font(.custom("Comfortaa-Bold", size: 24)).bold()
-                    Spacer()
-                }
-                Color.clear.frame(width: 0, height: 12)
-                ForEach(shownTabs) { newTab in
-                    Button(action: {
-                        if newTab == selection {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                scrollToTop += 1
-                                router.reset()
-                            }
-                        } else {
-                            selection = newTab
+            List(shownTabs, selection: $selection) { newTab in
+                Button(action: {
+                    if newTab == selection {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                            scrollToTop += 1
+                            router.reset()
                         }
-                    }, label: {
-                        newTab.label
-                    })
-                    .tag(newTab.id)
-                }
+                    } else {
+                        selection = newTab
+                    }
+                }, label: {
+                    newTab.label
+                        .imageScale(.large)
+                })
+                .tag(newTab.id)
             }
             .listStyle(.sidebar)
             .navigationSplitViewColumnWidth(220)
