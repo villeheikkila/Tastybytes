@@ -2274,6 +2274,9 @@
         }
       }
     },
+    "img" : {
+
+    },
     "labels.add" : {
       "localizations" : {
         "en" : {
