@@ -50,58 +50,68 @@ struct SideBarView: View {
         }
     }
 
-    private var columnVisibility: NavigationSplitViewVisibility {
-        isPortrait ? .doubleColumn : .all
-    }
-
     var body: some View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
-        NavigationSplitView(columnVisibility: .constant(columnVisibility), sidebar: {
-            List(shownTabs, selection: $selection) { newTab in
-                NavigationLink(value: newTab) {
-                    newTab.label
+        GeometryReader { geometry in
+            NavigationSplitView(columnVisibility: .init(get: {
+                isPortrait ? .doubleColumn : geometry.size.width < 1100 ? .automatic : .all
+            }, set: { _ in
+            }), sidebar: {
+                List(shownTabs, selection: $selection) { newTab in
+                    NavigationLink(value: newTab) {
+                        newTab.label
+                    }
+                    .tag(newTab.id)
                 }
-                .tag(newTab.id)
+                .listStyle(.sidebar)
+            }, content: {
+                switch selection {
+                case .activity:
+                    ActivityScreen(repository: repository, scrollToTop: $scrollToTop)
+                        .navigationTitle("activity.navigationTitle")
+                        .navigationBarTitleDisplayMode(.inline)
+                case .discover:
+                    DiscoverScreen(scrollToTop: $scrollToTop)
+                        .navigationBarTitleDisplayMode(.inline)
+                case .notifications:
+                    NotificationScreen(scrollToTop: $scrollToTop)
+                case .admin:
+                    AdminScreen()
+                        .navigationBarTitleDisplayMode(.inline)
+                case .profile:
+                    ProfileView(profile: profileEnvironmentModel.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
+                        .navigationTitle(profileEnvironmentModel.profile.preferredName)
+                        .navigationBarTitleDisplayMode(.inline)
+                case .friends:
+                    CurrentUserFriendsScreen(showToolbar: false)
+                        .navigationBarTitleDisplayMode(.inline)
+                case .settings:
+                    SettingsScreen()
+                        .navigationBarTitleDisplayMode(.inline)
+                case nil:
+                    EmptyView()
+                }
+            }, detail: {
+                NavigationStack(path: $router.path) {
+                    EmptyView()
+                }
+                .navigationDestination(for: Screen.self) { screen in
+                    screen.view
+                }
+            })
+            .navigationSplitViewStyle(.balanced)
+            .navigationBarTitleDisplayMode(.inline)
+            .onOpenURL { url in
+                if let tab = TabUrlHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).sidebarTab {
+                    selection = tab
+                }
             }
-            .listStyle(.sidebar)
-        }, content: {
-            switch selection {
-            case .activity:
-                ActivityScreen(repository: repository, scrollToTop: $scrollToTop)
-            case .discover:
-                DiscoverScreen(scrollToTop: $scrollToTop)
-            case .notifications:
-                NotificationScreen(scrollToTop: $scrollToTop)
-            case .admin:
-                AdminScreen()
-            case .profile:
-                CurrentProfileScreen(scrollToTop: $scrollToTop)
-            case .friends:
-                CurrentUserFriendsScreen()
-            case .settings:
-                SettingsScreen()
-            case nil:
-                EmptyView()
+            .sensoryFeedback(.selection, trigger: selection)
+            .environment(router)
+            .environment(appEnvironmentModel)
+            .toast(isPresenting: $feedbackEnvironmentModel.show) {
+                feedbackEnvironmentModel.toast
             }
-        }, detail: {
-            NavigationStack(path: $router.path) {
-                EmptyView()
-            }
-            .navigationDestination(for: Screen.self) { screen in
-                screen.view
-            }
-        })
-        .navigationSplitViewStyle(.balanced)
-        .onOpenURL { url in
-            if let tab = TabUrlHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).sidebarTab {
-                selection = tab
-            }
-        }
-        .sensoryFeedback(.selection, trigger: selection)
-        .environment(router)
-        .environment(appEnvironmentModel)
-        .toast(isPresenting: $feedbackEnvironmentModel.show) {
-            feedbackEnvironmentModel.toast
         }
     }
 

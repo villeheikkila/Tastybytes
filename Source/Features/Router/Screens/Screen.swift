@@ -50,7 +50,7 @@ enum Screen: Hashable, Codable, Sendable {
         case let .fetchBrand(brand):
             BrandScreen(brand: .init(brand: brand))
         case .currentUserFriends:
-            CurrentUserFriendsScreen()
+            CurrentUserFriendsScreen(showToolbar: true)
         case .settings:
             SettingsScreen()
         case let .location(location):

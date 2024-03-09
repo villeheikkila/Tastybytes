@@ -14,6 +14,8 @@ struct CurrentUserFriendsScreen: View {
     @State private var searchTerm = ""
     @State private var sheet: Sheet?
 
+    let showToolbar: Bool
+
     var filteredFriends: [Friend] {
         friendEnvironmentModel.acceptedOrPendingFriends.filter { friend in
             searchTerm.isEmpty
@@ -46,7 +48,9 @@ struct CurrentUserFriendsScreen: View {
         .navigationTitle("friends.title \(friendEnvironmentModel.friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            toolbarContent
+            if showToolbar {
+                toolbarContent
+            }
         }
         .sheets(item: $sheet)
         .initialTask {
