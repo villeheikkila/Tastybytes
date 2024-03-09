@@ -52,5 +52,6 @@ struct MainApp: App {
                 }
             }
         }
+        .environment(repository)
     }
 }

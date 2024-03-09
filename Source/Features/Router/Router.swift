@@ -9,7 +9,9 @@ final class Router {
     private let logger = Logger(category: "Router")
     var path = [Screen]()
 
-    init() {}
+    init(path: [Screen] = []) {
+        self.path = path
+    }
 
     func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
         if resetStack {

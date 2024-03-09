@@ -22,11 +22,6 @@ struct AuthStateObserver<Authenticated: View>: View {
                 EmptyView()
             }
         }
-        .onOpenURL { url in
-            loadSessionFromUrlTask = Task {
-                await profileEnvironmentModel.loadSessionFromURL(url: url)
-            }
-        }
         .onDisappear {
             loadSessionFromUrlTask?.cancel()
         }

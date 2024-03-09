@@ -37,7 +37,6 @@ struct EnvironmentProvider<Content: View>: View {
 
     var body: some View {
         content()
-            .environment(repository)
             .environment(notificationEnvironmentModel)
             .environment(profileEnvironmentModel)
             .environment(feedbackEnvironmentModel)
