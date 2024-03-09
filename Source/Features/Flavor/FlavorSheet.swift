@@ -50,7 +50,7 @@ struct FlavorSheet: View {
         }
         .environment(\.defaultMinListRowHeight, 48)
         .environment(\.editMode, .constant(.active))
-        .searchable(text: $searchTerm)
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .navigationTitle("flavor.navigationTitle")
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
