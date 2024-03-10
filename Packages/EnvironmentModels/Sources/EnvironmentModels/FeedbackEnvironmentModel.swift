@@ -334,47 +334,12 @@ public extension Toast {
         case regular
     }
 
-    enum AlertStyle: Equatable {
-        case style(backgroundColor: Color? = nil,
-                   titleColor: Color? = nil,
-                   subTitleColor: Color? = nil,
-                   titleFont: Font? = nil,
-                   subTitleFont: Font? = nil)
-
-        var backgroundColor: Color? {
-            switch self {
-            case let .style(backgroundColor: color, _, _, _, _):
-                color
-            }
-        }
-
-        var titleColor: Color? {
-            switch self {
-            case let .style(_, color, _, _, _):
-                color
-            }
-        }
-
-        var subtitleColor: Color? {
-            switch self {
-            case let .style(_, _, color, _, _):
-                color
-            }
-        }
-
-        var titleFont: Font? {
-            switch self {
-            case let .style(_, _, _, titleFont: font, _):
-                font
-            }
-        }
-
-        var subTitleFont: Font? {
-            switch self {
-            case let .style(_, _, _, _, subTitleFont: font):
-                font
-            }
-        }
+    struct AlertStyle: Equatable {
+        let backgroundColor: Color? = nil
+        let titleColor: Color? = nil
+        let subtitleColor: Color? = nil
+        let titleFont: Font? = nil
+        let subTitleFont: Font? = nil
     }
 }
 
