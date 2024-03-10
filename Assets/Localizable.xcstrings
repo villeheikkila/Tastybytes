@@ -2083,7 +2083,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can only add %lld flavors"
+            "value" : "Max %lld flavors"
           }
         }
       }
