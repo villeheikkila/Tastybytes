@@ -241,7 +241,7 @@ public extension Product {
             categoryId: Int,
             brandId: Int,
             subBrandId: Int?,
-            subCategoryIds: [Int],
+            subcategories: [Subcategory],
             isDiscontinued: Bool,
             barcode: Barcode?
         ) {
@@ -249,7 +249,7 @@ public extension Product {
             self.description = description
             self.categoryId = categoryId
             self.subBrandId = subBrandId
-            self.subCategoryIds = subCategoryIds
+            subCategoryIds = subcategories.map(\.id)
             self.brandId = brandId
             self.isDiscontinued = isDiscontinued
 

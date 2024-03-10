@@ -1,5 +1,6 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -12,7 +13,7 @@ struct SubcategorySheet: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @Binding var subcategories: Set<Int>
+    @Binding var subcategories: [Subcategory]
     @State private var showAddSubcategory = false
     @State private var newSubcategoryName = ""
     @State private var searchTerm = ""
@@ -24,7 +25,7 @@ struct SubcategorySheet: View {
     }
 
     private var sortedSubcategories: [Subcategory] {
-        shownSubcategories.sorted { subcategories.contains($0.id) && !subcategories.contains($1.id) }
+            shownSubcategories.sorted { subcategories.contains($0) && !subcategories.contains($1) }
     }
 
     private var showContentUnavailableView: Bool {
@@ -32,7 +33,11 @@ struct SubcategorySheet: View {
     }
 
     var body: some View {
-        List(sortedSubcategories, selection: $subcategories) { subcategory in
+        List(sortedSubcategories, selection: $subcategories.map(getter: { subcategories in
+            Set(subcategories.map(\.id))
+        }, setter: { ids in
+            ids.compactMap { id in category.subcategories.first(where: { $0.id == id }) }
+        })) { subcategory in
             Text(subcategory.name)
         }
         .environment(\.defaultMinListRowHeight, 50)

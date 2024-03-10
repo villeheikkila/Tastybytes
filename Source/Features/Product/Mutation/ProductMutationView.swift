@@ -23,7 +23,7 @@ struct ProductMutationView: View {
     @State private var status: Status = .initial
     @State private var alertError: AlertError?
     // Product details
-    @State private var subcategories: Set<Int> = Set()
+    @State private var subcategories = [Subcategory]()
     @State private var category: Int? {
         didSet {
             subcategories = []
@@ -83,10 +83,6 @@ struct ProductMutationView: View {
 
     private var selectedCategory: Models.Category.JoinedSubcategoriesServingStyles? {
         appEnvironmentModel.categories.first(where: { $0.id == category })
-    }
-
-    private var selectedSubcategories: [Subcategory] {
-        selectedCategory?.subcategories.filter { subcategories.contains($0.id) } ?? []
     }
 
     private var isValid: Bool {
@@ -156,7 +152,7 @@ struct ProductMutationView: View {
                         Text("subcategory.title")
                     } else {
                         HStack(spacing: 4) {
-                            ForEach(selectedSubcategories) { subcategory in
+                            ForEach(subcategories) { subcategory in
                                 SubcategoryLabelView(subcategory: subcategory)
                             }
                         }
@@ -272,7 +268,7 @@ struct ProductMutationView: View {
             switch await repository.brand.getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id) {
             case let .success(brandsWithSubBrands):
                 category = initialProduct.category.id
-                subcategories = Set(initialProduct.subcategories.map(\.id))
+                subcategories = initialProduct.subcategories.map { .init(subcategory: $0) }
                 brandOwner = initialProduct.subBrand.brand.brandOwner
                 brand = brandsWithSubBrands.first(where: { $0.id == initialProduct.subBrand.brand.id })
                 if initialProduct.subBrand.name != nil {
@@ -314,7 +310,7 @@ struct ProductMutationView: View {
             categoryId: category,
             brandId: brandId,
             subBrandId: subBrand?.id,
-            subCategoryIds: Array(subcategories),
+            subcategories: Array(subcategories),
             isDiscontinued: isDiscontinued,
             barcode: barcode
         )
@@ -374,7 +370,7 @@ struct ProductMutationView: View {
             description: description,
             categoryId: category,
             subBrandId: subBrandWithNil.id,
-            subcategories: selectedSubcategories,
+            subcategories: Array(subcategories),
             isDiscontinued: isDiscontinued
         )
 

@@ -13,6 +13,12 @@ public struct Subcategory: Identifiable, Codable, Hashable, Sendable, Subcategor
         self.isVerified = isVerified
     }
 
+    public init(subcategory: Subcategory.JoinedCategory) {
+        id = subcategory.id
+        name = subcategory.name
+        isVerified = subcategory.isVerified
+    }
+
     public let id: Int
     public let name: String
     public let isVerified: Bool
