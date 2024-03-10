@@ -111,9 +111,7 @@ struct SideBarView: View {
                 newValue?.sensoryFeedback
             }
             .environment(router)
-            .toast(isPresenting: $feedbackEnvironmentModel.show) {
-                feedbackEnvironmentModel.toast
-            }
+            .toasts(presenting: $feedbackEnvironmentModel.toast)
         }
     }
 

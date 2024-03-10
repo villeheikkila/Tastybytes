@@ -1,43 +1,20 @@
+import EnvironmentModels
 import SwiftUI
-
-public extension Toast {
-    enum BannerAnimation {
-        case slide, pop
-    }
-
-    enum DisplayMode: Equatable {
-        case alert
-        case hud
-        case banner(_ transition: BannerAnimation)
-    }
-
-    enum AlertType: Equatable {
-        case complete(_ color: Color)
-        case error(_ color: Color)
-        case systemImage(_ name: String, _ color: Color)
-        case image(_ name: String, _ color: Color)
-    }
-}
 
 @MainActor
 public struct Toast: View {
-    let displayMode: DisplayMode
-    let type: AlertType
+    let displayMode: ToastEvent.ToastMode
+    let type: ToastEvent.ToastType
     let title: LocalizedStringKey?
     let subTitle: LocalizedStringKey?
     let onTap: (() -> Void)?
 
-    public init(displayMode: DisplayMode = .alert,
-                type: AlertType,
-                title: LocalizedStringKey? = nil,
-                subTitle: LocalizedStringKey? = nil,
-                onTap: (() -> Void)? = nil)
-    {
-        self.displayMode = displayMode
-        self.type = type
-        self.title = title
-        self.subTitle = subTitle
-        self.onTap = onTap
+    public init(type: ToastEvent) {
+        displayMode = type.displayMode
+        self.type = type.type
+        title = type.title
+        subTitle = type.subTitle
+        onTap = type.onTap
     }
 
     public var body: some View {

@@ -39,9 +39,7 @@ struct FlavorSheet: View {
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .navigationTitle("flavor.navigationTitle")
-        .toast(isPresenting: $feedbackEnvironmentModel.show) {
-            feedbackEnvironmentModel.toast
-        }
+        .toasts(presenting: $feedbackEnvironmentModel.toast)
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)

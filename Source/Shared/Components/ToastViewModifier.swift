@@ -1,23 +1,17 @@
+import EnvironmentModels
+
 // Vendored from https://github.com/elai950/AlertToast with modifications
 import SwiftUI
 
 @MainActor
 public extension View {
-    func toast(
-        isPresenting: Binding<Bool>,
-        duration: Double = 2,
-        tapToDismiss: Bool = true,
-        offsetY: CGFloat = 0,
-        alert: @escaping () -> Toast,
+    func toasts(
+        presenting: Binding<ToastEvent?>,
         onTap: (() -> Void)? = nil,
         completion: (() -> Void)? = nil
     ) -> some View {
-        modifier(ToastModifier(
-            isPresenting: isPresenting,
-            duration: duration,
-            tapToDismiss: tapToDismiss,
-            offsetY: offsetY,
-            alert: alert,
+        modifier(ToastViewModifier(
+            presenting: presenting,
             onTap: onTap,
             completion: completion
         ))
@@ -25,8 +19,8 @@ public extension View {
 }
 
 @MainActor
-public struct ToastModifier: ViewModifier {
-    @Binding private var isPresenting: Bool
+public struct ToastViewModifier: ViewModifier {
+    @Binding private var presenting: ToastEvent?
     @State private var duration: Double
     @State private var tapToDismiss = true
     @State private var workItem: DispatchWorkItem?
@@ -34,24 +28,18 @@ public struct ToastModifier: ViewModifier {
     @State private var alertRect: CGRect = .zero
 
     let offsetY: CGFloat
-    let alert: () -> Toast
     let onTap: (() -> Void)?
     let completion: (() -> Void)?
 
     public init(
-        isPresenting: Binding<Bool>,
-        duration: Double = 2,
-        tapToDismiss: Bool = true,
-        offsetY: CGFloat = 0,
-        alert: @escaping () -> Toast,
+        presenting: Binding<ToastEvent?>,
         onTap: (() -> Void)? = nil,
         completion: (() -> Void)? = nil
     ) {
-        _isPresenting = isPresenting
-        _duration = State(initialValue: duration)
-        _tapToDismiss = State(initialValue: tapToDismiss)
-        self.offsetY = offsetY
-        self.alert = alert
+        _presenting = presenting
+        _duration = State(initialValue: presenting.wrappedValue?.duration ?? 2)
+        _tapToDismiss = State(initialValue: presenting.wrappedValue?.tapToDismiss ?? true)
+        offsetY = presenting.wrappedValue?.offsetY ?? 0
         self.onTap = onTap
         self.completion = completion
     }
@@ -64,18 +52,22 @@ public struct ToastModifier: ViewModifier {
         -hostRect.midY + alertRect.height
     }
 
+    private var isPresenting: Bool {
+        presenting != nil
+    }
+
     @ViewBuilder
     public func main() -> some View {
-        if isPresenting {
-            switch alert().displayMode {
+        if let presenting {
+            switch presenting.displayMode {
             case .alert:
-                alert()
+                Toast(type: presenting)
                     .onTapGesture {
                         onTap?()
                         if tapToDismiss {
                             withAnimation(.spring) {
                                 workItem?.cancel()
-                                isPresenting = false
+                                self.presenting = nil
                                 workItem = nil
                             }
                         }
@@ -85,7 +77,7 @@ public struct ToastModifier: ViewModifier {
                     })
                     .transition(AnyTransition.scale(scale: 0.8).combined(with: .opacity))
             case .hud:
-                alert()
+                Toast(type: presenting)
                     .overlay(
                         GeometryReader { geo -> AnyView in
                             let rect = geo.frame(in: .global)
@@ -103,7 +95,7 @@ public struct ToastModifier: ViewModifier {
                         if tapToDismiss {
                             withAnimation(.spring) {
                                 workItem?.cancel()
-                                isPresenting = false
+                                self.presenting = nil
                                 workItem = nil
                             }
                         }
@@ -113,13 +105,13 @@ public struct ToastModifier: ViewModifier {
                     })
                     .transition(.move(edge: .top).combined(with: .opacity))
             case .banner:
-                alert()
+                Toast(type: presenting)
                     .onTapGesture {
                         onTap?()
                         if tapToDismiss {
                             withAnimation(.spring) {
                                 workItem?.cancel()
-                                isPresenting = false
+                                self.presenting = nil
                                 workItem = nil
                             }
                         }
@@ -127,7 +119,7 @@ public struct ToastModifier: ViewModifier {
                     .onDisappear(perform: {
                         completion?()
                     })
-                    .transition(alert().displayMode == .banner(.slide) ? .slide
+                    .transition(presenting.displayMode == .banner(.slide) ? .slide
                         .combined(with: .opacity) : .move(edge: .bottom))
             }
         }
@@ -135,14 +127,14 @@ public struct ToastModifier: ViewModifier {
 
     @ViewBuilder
     public func body(content: Content) -> some View {
-        switch alert().displayMode {
+        switch presenting?.displayMode ?? .hud {
         case .banner:
             content
                 .overlay(ZStack {
                     main()
                         .offset(y: offsetY)
                 }
-                .animation(.spring, value: isPresenting))
+                .animation(.spring, value: presenting != nil))
                 .onChange(of: isPresenting) { _, presented in
                     if presented { onAppearAction() }
                 }
@@ -196,7 +188,7 @@ public struct ToastModifier: ViewModifier {
 
             let task = DispatchWorkItem {
                 withAnimation(.spring) {
-                    isPresenting = false
+                    presenting = nil
                     workItem = nil
                 }
             }

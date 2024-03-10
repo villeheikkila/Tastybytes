@@ -27,9 +27,7 @@ struct RouterProvider<Content: View>: View {
                 router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
             }
         }
-        .toast(isPresenting: $feedbackEnvironmentModel.show) {
-            feedbackEnvironmentModel.toast
-        }
+        .toasts(presenting: $feedbackEnvironmentModel.toast)
         .environment(router)
         .sensoryFeedback(trigger: feedbackEnvironmentModel.sensoryFeedback) { _, newValue in
             newValue?.sensoryFeedback
