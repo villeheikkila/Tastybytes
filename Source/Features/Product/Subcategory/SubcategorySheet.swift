@@ -25,7 +25,7 @@ struct SubcategorySheet: View {
     }
 
     private var sortedSubcategories: [Subcategory] {
-            shownSubcategories.sorted { subcategories.contains($0) && !subcategories.contains($1) }
+        shownSubcategories.sorted { subcategories.contains($0) && !subcategories.contains($1) }
     }
 
     private var showContentUnavailableView: Bool {

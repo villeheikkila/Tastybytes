@@ -18,6 +18,18 @@ public extension Array where Element: Equatable {
 }
 
 public extension Array where Element: Equatable {
+    func removing(_ items: [Element]) -> [Element] {
+        var result = self
+        for item in items {
+            while let index = result.firstIndex(of: item) {
+                result.remove(at: index)
+            }
+        }
+        return result
+    }
+}
+
+public extension Array where Element: Equatable {
     mutating func replace(_ element: Element, with new: Element) {
         if let toReplace = firstIndex(where: { $0 == element }) {
             self[toReplace] = new

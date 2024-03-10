@@ -1,9 +1,7 @@
 import Foundation
 
-public extension Set {
-    func addedValueTo(_ to: Set<Element>) -> Element? {
-        guard count > to.count else { return nil }
-        let addedFlavor = subtracting(to)
-        return Array(addedFlavor).first
+public extension Array where Element: Hashable {
+    func addedValues(_ to: [Element]) -> [Element] {
+        Array(Set(self).subtracting(Set(to)))
     }
 }

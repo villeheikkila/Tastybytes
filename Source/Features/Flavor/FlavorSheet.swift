@@ -44,9 +44,8 @@ struct FlavorSheet: View {
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
         .onChange(of: pickedFlavors) { oldValue, newValue in
-            let added = Set(newValue).addedValueTo(Set(oldValue))
-            if let added, newValue.count > maxFlavors {
-                pickedFlavors = pickedFlavors.removing(added)
+            if newValue.count > maxFlavors {
+                pickedFlavors = pickedFlavors.removing(newValue.addedValues(oldValue))
                 feedbackEnvironmentModel.toggle(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)"))
                 return
             }
