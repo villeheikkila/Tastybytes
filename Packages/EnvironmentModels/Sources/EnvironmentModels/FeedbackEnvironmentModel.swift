@@ -4,7 +4,7 @@ import SwiftUI
 @Observable
 public final class FeedbackEnvironmentModel {
     public var show = false
-    public var toast = Toast(type: .regular)
+    public var toast = Toast(type: .complete(.black))
     public var sensoryFeedback: SensoryFeedbackEvent?
 
     public init() {}
@@ -114,22 +114,30 @@ public struct Toast: View {
     let type: AlertType
     let title: LocalizedStringKey?
     let subTitle: LocalizedStringKey?
-    let style: AlertStyle?
     let onTap: (() -> Void)?
 
     public init(displayMode: DisplayMode = .alert,
                 type: AlertType,
                 title: LocalizedStringKey? = nil,
                 subTitle: LocalizedStringKey? = nil,
-                style: AlertStyle? = nil,
                 onTap: (() -> Void)? = nil)
     {
         self.displayMode = displayMode
         self.type = type
         self.title = title
         self.subTitle = subTitle
-        self.style = style
         self.onTap = onTap
+    }
+    
+    public var body: some View {
+        switch displayMode {
+        case .alert:
+            alert
+        case .hud:
+            hud
+        case .banner:
+            banner
+        }
     }
 
     public var banner: some View {
@@ -154,27 +162,24 @@ public struct Toast: View {
                         Image(name)
                             .foregroundColor(color)
                             .accessibilityHidden(true)
-                    case .regular:
-                        EmptyView()
                     }
 
                     if let title {
                         Text(title)
-                            .font(style?.titleFont ?? .headline.bold())
+                            .font(.headline.bold())
                     }
                 }
 
                 if let subTitle {
                     Text(subTitle)
-                        .font(style?.subTitleFont ?? .subheadline)
+                        .font(.subheadline)
                 }
             }
             .fixedSize(horizontal: true, vertical: false)
             .multilineTextAlignment(.leading)
-            .textColor(style?.titleColor)
             .padding()
             .frame(maxWidth: 400, alignment: .leading)
-            .alertBackground(style?.backgroundColor)
+            .background(.thinMaterial)
             .cornerRadius(10)
             .padding([.horizontal, .bottom])
         }
@@ -209,8 +214,6 @@ public struct Toast: View {
                         .hudModifier()
                         .foregroundColor(color)
                         .accessibilityHidden(true)
-                case .regular:
-                    EmptyView()
                 }
 
                 if title != nil || subTitle != nil {
@@ -219,14 +222,12 @@ public struct Toast: View {
                             Text(title)
                                 .font(.system(size: 14, weight: .medium, design: .rounded))
                                 .multilineTextAlignment(.center)
-                                .textColor(style?.titleColor)
                         }
                         if let subTitle {
                             Text(subTitle)
                                 .font(.system(size: 11.5, weight: .medium, design: .rounded))
                                 .opacity(0.7)
                                 .multilineTextAlignment(.center)
-                                .textColor(style?.subtitleColor)
                         }
                     }
                     .padding(.trailing, 15)
@@ -235,7 +236,7 @@ public struct Toast: View {
             .fixedSize(horizontal: true, vertical: false)
             .padding(7)
             .frame(height: 45)
-            .alertBackground(style?.backgroundColor)
+            .background(.thinMaterial)
             .clipShape(Capsule())
             .overlay(Capsule().stroke(Color.gray.opacity(0.06), lineWidth: 1))
             .shadow(color: .black.opacity(0.1), radius: 5)
@@ -276,42 +277,27 @@ public struct Toast: View {
                     .foregroundColor(color)
                     .padding(.bottom)
                 Spacer()
-            case .regular:
-                EmptyView()
             }
 
-            VStack(spacing: type == .regular ? 8 : 2) {
+            VStack(spacing: 2) {
                 if let title {
                     Text(title)
-                        .font(style?.titleFont ?? .body.bold())
+                        .font(.body.bold())
                         .multilineTextAlignment(.center)
-                        .textColor(style?.titleColor)
                 }
                 if let subTitle {
                     Text(subTitle)
-                        .font(style?.subTitleFont ?? .footnote)
+                        .font( .footnote)
                         .opacity(0.7)
                         .multilineTextAlignment(.center)
-                        .textColor(style?.subtitleColor)
                 }
             }
         }
         .fixedSize(horizontal: true, vertical: false)
         .padding()
-        .withFrame(type != .regular)
-        .alertBackground(style?.backgroundColor)
+        .frame(maxWidth: 175, maxHeight: 175, alignment: .center)
+        .background(.thinMaterial)
         .cornerRadius(10)
-    }
-
-    public var body: some View {
-        switch displayMode {
-        case .alert:
-            alert
-        case .hud:
-            hud
-        case .banner:
-            banner
-        }
     }
 }
 
@@ -331,15 +317,6 @@ public extension Toast {
         case error(_ color: Color)
         case systemImage(_ name: String, _ color: Color)
         case image(_ name: String, _ color: Color)
-        case regular
-    }
-
-    struct AlertStyle: Equatable {
-        let backgroundColor: Color? = nil
-        let titleColor: Color? = nil
-        let subtitleColor: Color? = nil
-        let titleFont: Font? = nil
-        let subTitleFont: Font? = nil
     }
 }
 
@@ -525,6 +502,15 @@ public struct ToastModifier: ViewModifier {
     }
 }
 
+private extension Image {
+    func hudModifier() -> some View {
+        renderingMode(.template)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(maxWidth: 23, maxHeight: 23, alignment: .center)
+    }
+}
+
 @MainActor
 private struct AnimatedCheckmark: View {
     @State private var percentage: CGFloat = .zero
@@ -597,74 +583,5 @@ private struct AnimatedXmark: View {
             percentage = 1.0
         }
         .frame(width: width, height: height, alignment: .center)
-    }
-}
-
-private struct BackgroundModifier: ViewModifier {
-    var color: Color?
-
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if color != nil {
-            content
-                .background(color)
-        } else {
-            content
-                .background(.thinMaterial)
-        }
-    }
-}
-
-private struct TextForegroundModifier: ViewModifier {
-    var color: Color?
-
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if color != nil {
-            content
-                .foregroundColor(color)
-        } else {
-            content
-        }
-    }
-}
-
-private extension Image {
-    func hudModifier() -> some View {
-        renderingMode(.template)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxWidth: 23, maxHeight: 23, alignment: .center)
-    }
-}
-
-private extension View {
-    func alertBackground(_ color: Color? = nil) -> some View {
-        modifier(BackgroundModifier(color: color))
-    }
-
-    func textColor(_ color: Color? = nil) -> some View {
-        modifier(TextForegroundModifier(color: color))
-    }
-
-    func withFrame(_ withFrame: Bool) -> some View {
-        modifier(WithFrameModifier(withFrame: withFrame))
-    }
-}
-
-private struct WithFrameModifier: ViewModifier {
-    var withFrame: Bool
-
-    var maxWidth: CGFloat = 175
-    var maxHeight: CGFloat = 175
-
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if withFrame {
-            content
-                .frame(maxWidth: maxWidth, maxHeight: maxHeight, alignment: .center)
-        } else {
-            content
-        }
     }
 }
