@@ -3,137 +3,17 @@ import SwiftUI
 
 @MainActor
 public struct Toast: View {
-    let displayMode: ToastEvent.ToastMode
     let type: ToastEvent.ToastType
     let title: LocalizedStringKey?
     let subTitle: LocalizedStringKey?
-    let onTap: (() -> Void)?
 
     public init(type: ToastEvent) {
-        displayMode = type.displayMode
         self.type = type.type
         title = type.title
         subTitle = type.subTitle
-        onTap = type.onTap
     }
 
     public var body: some View {
-        switch displayMode {
-        case .alert:
-            alert
-        case .hud:
-            hud
-        case .banner:
-            banner
-        }
-    }
-
-    public var banner: some View {
-        VStack {
-            Spacer()
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    switch type {
-                    case let .complete(color):
-                        Image(systemName: "checkmark")
-                            .foregroundColor(color)
-                            .accessibilityHidden(true)
-                    case let .error(color):
-                        Image(systemName: "xmark")
-                            .foregroundColor(color)
-                            .accessibilityHidden(true)
-                    case let .systemImage(name, color):
-                        Image(systemName: name)
-                            .foregroundColor(color)
-                            .accessibilityHidden(true)
-                    case let .image(name, color):
-                        Image(name)
-                            .foregroundColor(color)
-                            .accessibilityHidden(true)
-                    }
-
-                    if let title {
-                        Text(title)
-                            .font(.headline.bold())
-                    }
-                }
-
-                if let subTitle {
-                    Text(subTitle)
-                        .font(.subheadline)
-                }
-            }
-            .fixedSize(horizontal: true, vertical: false)
-            .multilineTextAlignment(.leading)
-            .padding()
-            .frame(maxWidth: 400, alignment: .leading)
-            .background(.thinMaterial)
-            .cornerRadius(10)
-            .padding([.horizontal, .bottom])
-        }
-    }
-
-    public var hud: some View {
-        Group {
-            HStack(spacing: 16) {
-                switch type {
-                case let .complete(color):
-                    Image(systemName: "checkmark")
-                        .hudModifier()
-                        .foregroundColor(color)
-                        .accessibilityHidden(true)
-                case let .error(color):
-                    Image(systemName: "xmark")
-                        .hudModifier()
-                        .foregroundColor(color)
-                        .accessibilityHidden(true)
-                case let .systemImage(name, color):
-                    Image(systemName: name)
-                        .foregroundColor(color)
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .frame(width: 31, height: 31, alignment: .center)
-                        .background(color.opacity(0.23), in: Circle())
-                        .accessibilityHidden(true)
-                        .onTapGesture {
-                            onTap?()
-                        }
-                case let .image(name, color):
-                    Image(name)
-                        .hudModifier()
-                        .foregroundColor(color)
-                        .accessibilityHidden(true)
-                }
-
-                if title != nil || subTitle != nil {
-                    VStack(alignment: .center, spacing: 1) {
-                        if let title {
-                            Text(title)
-                                .font(.system(size: 14, weight: .medium, design: .rounded))
-                                .multilineTextAlignment(.center)
-                        }
-                        if let subTitle {
-                            Text(subTitle)
-                                .font(.system(size: 11.5, weight: .medium, design: .rounded))
-                                .opacity(0.7)
-                                .multilineTextAlignment(.center)
-                        }
-                    }
-                    .padding(.trailing, 15)
-                }
-            }
-            .fixedSize(horizontal: true, vertical: false)
-            .padding(7)
-            .frame(height: 45)
-            .background(.thinMaterial)
-            .clipShape(Capsule())
-            .overlay(Capsule().stroke(Color.gray.opacity(0.06), lineWidth: 1))
-            .shadow(color: .black.opacity(0.1), radius: 5)
-            .compositingGroup()
-        }
-        .padding(.top)
-    }
-
-    public var alert: some View {
         VStack {
             switch type {
             case let .complete(color):

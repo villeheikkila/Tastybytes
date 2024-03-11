@@ -11,12 +11,12 @@ public final class FeedbackEnvironmentModel {
     public func toggle(_ type: ToastType, disableHaptics: Bool = false) {
         switch type {
         case let .success(title):
-            toast = .init(displayMode: .alert, type: .complete(.green), title: title)
+            toast = .init(type: .complete(.green), title: title)
             if !disableHaptics {
                 trigger(.notification(.success))
             }
         case let .warning(title):
-            toast = .init(displayMode: .alert, type: .error(.red), title: title)
+            toast = .init(type: .error(.red), title: title)
         }
     }
 
@@ -81,36 +81,22 @@ public extension FeedbackEnvironmentModel {
     }
 }
 
-public struct ToastEvent {
-    public init(displayMode: ToastMode, type: ToastType, title: LocalizedStringKey? = nil, subTitle: LocalizedStringKey? = nil, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, onTap: (() -> Void)? = nil) {
-        self.displayMode = displayMode
+public struct ToastEvent: Equatable {
+    public init(type: ToastType, title: LocalizedStringKey? = nil, subTitle: LocalizedStringKey? = nil, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, onTap _: (() -> Void)? = nil) {
         self.type = type
         self.title = title
         self.subTitle = subTitle
         self.duration = duration
         self.tapToDismiss = tapToDismiss
         self.offsetY = offsetY
-        self.onTap = onTap
     }
 
-    public let displayMode: ToastMode
     public let type: ToastType
     public let title: LocalizedStringKey?
     public let subTitle: LocalizedStringKey?
     public let duration: Double
     public let tapToDismiss: Bool
     public let offsetY: CGFloat
-    public let onTap: (() -> Void)?
-
-    public enum BannerAnimation {
-        case slide, pop
-    }
-
-    public enum ToastMode: Equatable {
-        case alert
-        case hud
-        case banner(_ transition: BannerAnimation)
-    }
 
     public enum ToastType: Equatable {
         case complete(_ color: Color)
