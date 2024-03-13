@@ -24,7 +24,6 @@ struct DiscoverScreen: View {
     @State private var productFilter: Product.Filter?
     // Search Result
     @State private var searchResultKey: SearchKey?
-    @State private var scrollProxy: ScrollViewProxy?
     @State private var products = [Product.Joined]()
     @State private var profiles = [Profile]()
     @State private var companies = [Company]()
@@ -56,91 +55,92 @@ struct DiscoverScreen: View {
     }
 
     var body: some View {
-        List {
-            switch searchScope {
-            case .products:
-                DiscoverProductResults(
-                    products: products,
-                    barcode: $barcode,
-                    showContentUnavailableView: showContentUnavailableView,
-                    searchKey: searchKey,
-                    searchResultKey: searchResultKey
-                )
-            case .companies:
-                DiscoverCompanyResults(companies: companies)
-            case .users:
-                DiscoverProfileResults(profiles: profiles)
-            case .locations:
-                DiscoverLocationResults(locations: locations)
-            }
-        }
-        .listStyle(.plain)
-        .defaultScrollContentBackground()
-        .sheets(item: $sheet)
-        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
-                    prompt: searchScope.prompt)
-        .searchScopes($searchScope, activation: .onSearchPresentation) {
-            ForEach(SearchScope.allCases) { scope in
-                Text(scope.label).tag(scope)
-            }
-        }
-        .disableAutocorrection(true)
-        .onSubmit(of: .search) {
-            if searchTerm.isEmpty {
-                searchKey = nil
-            } else {
-                searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
-            }
-        }
-        .navigationTitle("discover.title")
-        .toolbar {
-            toolbarContent
-        }
-        .overlay {
-            contentUnavailableView.opacity(showContentUnavailableView ? 1 : 0)
-        }
-        .overlay {
-            if searchScope == .products, let productFilter {
-                ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
-            }
-        }
-        .alertError($alertError)
-        .task(id: searchKey, milliseconds: 200) { @MainActor [searchKey] in
-            await loadData(searchKey: searchKey)
-        }
-        .onChange(of: searchScope) {
-            searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
-            barcode = nil
-            searchResultKey = nil
-        }
-        .onChange(of: productFilter) {
-            searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
-        }
-        .onChange(of: searchTerm) { _, searchTerm in
-            if searchTerm.isEmpty {
-                searchKey = nil
-            } else {
-                searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
-            }
-        }
-        .onChange(of: scrollToTop) {
-            withAnimation {
+        ScrollViewReader { scrollProxy in
+            List {
                 switch searchScope {
                 case .products:
-                    if let id = products.first?.id {
-                        scrollProxy?.scrollTo(id, anchor: .top)
-                    }
+                    DiscoverProductResults(
+                        products: products,
+                        barcode: $barcode,
+                        showContentUnavailableView: showContentUnavailableView,
+                        searchKey: searchKey,
+                        searchResultKey: searchResultKey
+                    )
                 case .companies:
-                    if let id = companies.first?.id {
-                        scrollProxy?.scrollTo(id, anchor: .top)
-                    }
+                    DiscoverCompanyResults(companies: companies)
                 case .users:
-                    if let id = profiles.first?.id {
-                        scrollProxy?.scrollTo(id, anchor: .top)
-                    }
+                    DiscoverProfileResults(profiles: profiles)
                 case .locations:
-                    if let id = locations.first?.id {
-                        scrollProxy?.scrollTo(id, anchor: .top)
+                    DiscoverLocationResults(locations: locations)
+                }
+            }
+            .listStyle(.plain)
+            .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
+                        prompt: searchScope.prompt)
+            .searchScopes($searchScope, activation: .onSearchPresentation) {
+                ForEach(SearchScope.allCases) { scope in
+                    Text(scope.label).tag(scope)
+                }
+            }
+            .disableAutocorrection(true)
+            .onSubmit(of: .search) {
+                if searchTerm.isEmpty {
+                    searchKey = nil
+                } else {
+                    searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
+                }
+            }
+            .sheets(item: $sheet)
+            .navigationTitle("discover.title")
+            .toolbar {
+                toolbarContent
+            }
+            .overlay {
+                contentUnavailableView.opacity(showContentUnavailableView ? 1 : 0)
+            }
+            .overlay {
+                if searchScope == .products, let productFilter {
+                    ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
+                }
+            }
+            .alertError($alertError)
+            .task(id: searchKey, milliseconds: 200) { @MainActor [searchKey] in
+                await loadData(searchKey: searchKey)
+            }
+            .onChange(of: searchScope) {
+                searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
+                barcode = nil
+                searchResultKey = nil
+            }
+            .onChange(of: productFilter) {
+                searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
+            }
+            .onChange(of: searchTerm) { _, searchTerm in
+                if searchTerm.isEmpty {
+                    searchKey = nil
+                } else {
+                    searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
+                }
+            }
+            .onChange(of: scrollToTop) {
+                withAnimation {
+                    switch searchScope {
+                    case .products:
+                        if let id = products.first?.id {
+                            scrollProxy.scrollTo(id, anchor: .top)
+                        }
+                    case .companies:
+                        if let id = companies.first?.id {
+                            scrollProxy.scrollTo(id, anchor: .top)
+                        }
+                    case .users:
+                        if let id = profiles.first?.id {
+                            scrollProxy.scrollTo(id, anchor: .top)
+                        }
+                    case .locations:
+                        if let id = locations.first?.id {
+                            scrollProxy.scrollTo(id, anchor: .top)
+                        }
                     }
                 }
             }
