@@ -96,7 +96,9 @@ struct DiscoverScreen: View {
                 toolbarContent
             }
             .overlay {
-                contentUnavailableView.opacity(showContentUnavailableView ? 1 : 0)
+                if showContentUnavailableView {
+                    contentUnavailableView
+                }
             }
             .overlay {
                 if searchScope == .products, let productFilter {

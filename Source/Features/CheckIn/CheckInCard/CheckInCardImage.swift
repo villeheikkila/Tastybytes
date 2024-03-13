@@ -25,9 +25,10 @@ struct CheckInCardImage: View {
                             showFullPicture = true
                         }
                         .accessibility(addTraits: .isButton)
-                        .popover(isPresented: $showFullPicture) {
+                        .sheet(isPresented: $showFullPicture) {
                             CheckInCardImagePopover(checkIn: checkIn, imageUrl: imageUrl)
                         }
+                        .presentationBackground(.thinMaterial)
                 } else {
                     BlurHashPlaceholder(blurHash: checkIn.images.first?.blurHash, height: 200)
                 }
@@ -44,57 +45,55 @@ struct CheckInCardImagePopover: View {
     let imageUrl: URL
 
     var body: some View {
-        RemoteImage(url: imageUrl) { state in
-            if let image = state.image {
-                image
-                    .resizable()
-                    .scaledToFill()
-            } else {
-                ProgressView()
+        NavigationStack {
+            RemoteImage(url: imageUrl) { state in
+                if let image = state.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    ProgressView()
+                }
             }
-        }
-        .ignoresSafeArea(.all)
-        .safeAreaInset(edge: .bottom, content: {
-            HStack(alignment: .top) {
-                HStack(alignment: .center) {
-                    Avatar(profile: checkIn.profile)
-                        .avatarSize(.large)
-                    VStack(alignment: .leading) {
-                        Text(checkIn.profile.preferredName)
-                            .font(.caption).bold()
-                            .foregroundColor(.primary)
-                        if let location = checkIn.location {
-                            Text(location.formatted(.withEmoji))
+            .ignoresSafeArea(.all)
+            .safeAreaInset(edge: .bottom, content: {
+                HStack(alignment: .top) {
+                    HStack(alignment: .center) {
+                        Avatar(profile: checkIn.profile)
+                            .avatarSize(.large)
+                        VStack(alignment: .leading) {
+                            Text(checkIn.profile.preferredName)
                                 .font(.caption).bold()
                                 .foregroundColor(.primary)
-                                .contentShape(Rectangle())
+                            if let location = checkIn.location {
+                                Text(location.formatted(.withEmoji))
+                                    .font(.caption).bold()
+                                    .foregroundColor(.primary)
+                                    .contentShape(Rectangle())
+                            }
+                        }
+                        Spacer()
+                        if let checkInAt = checkIn.checkInAt {
+                            Text(checkInAt.formatted(.customRelativetime))
+                                .font(.caption)
+                                .bold()
+                        } else {
+                            Text("checkIn.legacy.label")
+                                .font(.caption)
+                                .bold()
                         }
                     }
-                    Spacer()
-                    if let checkInAt = checkIn.checkInAt {
-                        Text(checkInAt.formatted(.customRelativetime))
-                            .font(.caption)
-                            .bold()
-                    } else {
-                        Text("checkIn.legacy.label")
-                            .font(.caption)
-                            .bold()
-                    }
+                }
+                .padding()
+                .background(.ultraThinMaterial)
+            })
+            .toolbar {
+                ToolbarDismissAction()
+                ToolbarItemGroup(placement: .primaryAction) {
+                        ImageShareLink(url: imageUrl)
                 }
             }
-            .padding()
-            .background(.ultraThinMaterial)
-        })
-        .safeAreaInset(edge: .top, content: {
-            HStack(alignment: .center) {
-                Spacer()
-                CloseButton {
-                    dismiss()
-                }
-            }
-            .padding()
-            .background(.ultraThinMaterial)
-        })
+        }
     }
 }
 

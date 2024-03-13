@@ -8,7 +8,6 @@ import SwiftUI
 
 @MainActor
 struct CheckInListCard: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Router.self) private var router
     @State private var showDeleteConfirmation = false
@@ -54,9 +53,6 @@ struct CheckInListCard: View {
                         )
                         ReportButton(sheet: $sheet, entity: .checkIn(checkIn))
                     }
-                }
-                if let firstImage = checkIn.images.first, let imageUrl = firstImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                    ImageShareLink(url: imageUrl)
                 }
                 Divider()
                 RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
