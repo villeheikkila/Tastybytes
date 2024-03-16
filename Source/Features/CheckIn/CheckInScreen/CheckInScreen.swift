@@ -92,7 +92,7 @@ struct CheckInScreen: View {
                             })
                             }
                         )
-                        ReportButton(sheet: $sheet, entity: .checkIn(checkIn))
+                        ReportButton(entity: .checkIn(checkIn))
                     }
                 }
                 Divider()
@@ -172,7 +172,7 @@ struct CheckInScreen: View {
                 )
                 Divider()
                 if profileEnvironmentModel.id != checkIn.profile.id {
-                    ReportButton(sheet: $sheet, entity: .checkIn(checkIn))
+                    ReportButton(entity: .checkIn(checkIn))
                 }
                 if profileEnvironmentModel.hasRole(.moderator) {
                     Menu {

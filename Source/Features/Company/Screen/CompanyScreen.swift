@@ -112,7 +112,7 @@ struct CompanyScreen: View {
                 showUnverifyCompanyConfirmation = true
             })
             Divider()
-            ReportButton(sheet: $sheet, entity: .company(company.saved))
+            ReportButton(entity: .company(company.saved))
             if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
                 Button(
                     "labels.delete",

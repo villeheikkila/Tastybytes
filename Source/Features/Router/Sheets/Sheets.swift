@@ -19,7 +19,7 @@ struct SheetsModifier: ViewModifier {
                 .presentationBackground(colorScheme == .dark ? item.backgroundDark : item.backgroundLight)
                 .presentationDetents(item.detents)
                 .presentationCornerRadius(item.cornerRadius)
-                .presentationDragIndicator(.visible)
+                .presentationDragIndicator(.hidden)
             }
     }
 }

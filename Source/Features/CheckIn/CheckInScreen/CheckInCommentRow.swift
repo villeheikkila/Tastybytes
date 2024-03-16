@@ -42,7 +42,7 @@ struct CheckInCommentRow: View {
                         await deleteComment(comment)
                     }
                 } else {
-                    ReportButton(sheet: $sheet, entity: .comment(.init(comment: comment, checkIn: checkIn)))
+                    ReportButton(entity: .comment(.init(comment: comment, checkIn: checkIn)))
                 }
                 Divider()
                 if profileEnvironmentModel.hasRole(.moderator) {

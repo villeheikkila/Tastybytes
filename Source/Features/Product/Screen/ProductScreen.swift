@@ -193,7 +193,7 @@ struct ProductInnerScreen: View {
                         .labelStyle(.iconOnly)
                 }
 
-                ReportButton(sheet: $sheet, entity: .product(product))
+                ReportButton(entity: .product(product))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)

@@ -63,6 +63,7 @@ enum Sheet: Identifiable, Equatable {
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
+    case checkInImage(checkIn: CheckIn, imageUrl: URL)
 
     @ViewBuilder var view: some View {
         switch self {
@@ -144,6 +145,8 @@ enum Sheet: Identifiable, Equatable {
                 .ignoresSafeArea(edges: .bottom)
         case let .editComment(checkInComment, checkInComments):
             CheckInCommentEditSheet(checkInComment: checkInComment, checkInComments: checkInComments)
+        case let .checkInImage(checkIn, imageUrl):
+            CheckInImageSheet(checkIn: checkIn, imageUrl: imageUrl)
         }
     }
 
@@ -257,10 +260,32 @@ enum Sheet: Identifiable, Equatable {
             "send_email"
         case let .editComment(checkInComment, _):
             "edit_comment_\(checkInComment.hashValue)"
+        case let .checkInImage(checkIn, imageUrl):
+            "check_in_image_\(checkIn.hashValue)_\(imageUrl)"
         }
     }
 
     nonisolated static func == (lhs: Sheet, rhs: Sheet) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+struct OpenSheetOnTapModifier: ViewModifier {
+    @Environment(Router.self) private var router
+
+    let sheet: Sheet
+
+    func body(content: Content) -> some View {
+        content
+            .onTapGesture {
+                router.openRootSheet(sheet)
+            }
+            .accessibility(addTraits: .isButton)
+    }
+}
+
+extension View {
+    func openSheetOnTap(_ sheet: Sheet) -> some View {
+        modifier(OpenSheetOnTapModifier(sheet: sheet))
     }
 }

@@ -9,7 +9,6 @@ import SwiftUI
 @MainActor
 struct CheckInListContent: View {
     private let logger = Logger(category: "CheckInList")
-    @State private var sheet: Sheet?
     @Environment(Repository.self) private var repository
     @Binding var checkIns: [CheckIn]
     @Binding var alertError: AlertError?
@@ -25,8 +24,7 @@ struct CheckInListContent: View {
                 loadedFrom: loadedFrom,
                 onUpdate: onCheckInUpdate,
                 onDelete: deleteCheckIn,
-                onCreate: onCreateCheckIn,
-                sheet: $sheet
+                onCreate: onCreateCheckIn
             )
             .listRowSeparator(.visible, edges: .bottom)
             .alignmentGuide(.listRowSeparatorLeading) { _ in
@@ -40,7 +38,6 @@ struct CheckInListContent: View {
                 }
             }
         }
-        .sheets(item: $sheet)
     }
 
     func deleteCheckIn(_ checkIn: CheckIn) async {

@@ -18,8 +18,6 @@ struct CheckInListCard: View {
     let onDelete: @MainActor (_ checkIn: CheckIn) async -> Void
     let onCreate: @MainActor (_ checkIn: CheckIn) -> Void
 
-    @Binding var sheet: Sheet?
-
     var body: some View {
         CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom)
             .contextMenu {
@@ -30,7 +28,7 @@ struct CheckInListCard: View {
                             "labels.edit",
                             systemImage: "pencil",
                             action: {
-                                sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                                router.sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
                                     onUpdate(updatedCheckIn)
                                 })
                             }
@@ -48,10 +46,10 @@ struct CheckInListCard: View {
                             "checkIn.title",
                             systemImage: "pencil",
                             action: {
-                                sheet = .newCheckIn(checkIn.product, onCreation: onCreate)
+                                router.sheet = .newCheckIn(checkIn.product, onCreation: onCreate)
                             }
                         )
-                        ReportButton(sheet: $sheet, entity: .checkIn(checkIn))
+                        ReportButton(entity: .checkIn(checkIn))
                     }
                 }
                 Divider()

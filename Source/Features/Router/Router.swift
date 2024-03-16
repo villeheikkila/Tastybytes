@@ -8,9 +8,11 @@ import SwiftUI
 final class Router {
     private let logger = Logger(category: "Router")
     var path = [Screen]()
+    var sheet: Sheet?
 
-    init(path: [Screen] = []) {
+    init(path: [Screen] = [], sheet: Sheet? = nil) {
         self.path = path
+        self.sheet = sheet
     }
 
     func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
@@ -22,6 +24,10 @@ final class Router {
             guard path.count >= 2 else { return }
             path.remove(at: path.count - 2)
         }
+    }
+
+    func openRootSheet(_ sheet: Sheet) {
+        self.sheet = sheet
     }
 
     func reset() {
