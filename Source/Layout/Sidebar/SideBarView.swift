@@ -85,6 +85,7 @@ struct SideBarView: View {
 
     var body: some View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
+        @Bindable var router = router
         GeometryReader { geometry in
             NavigationSplitView(columnVisibility: .init(get: {
                 isPortrait ? .doubleColumn : geometry.size.width < 1100 ? .automatic : .all
@@ -98,6 +99,7 @@ struct SideBarView: View {
             })
             .navigationSplitViewStyle(.balanced)
             .navigationBarTitleDisplayMode(.inline)
+            .sheets(item: $router.sheet)
             .onOpenURL { url in
                 if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
                     router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
