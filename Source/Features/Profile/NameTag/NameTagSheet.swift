@@ -24,6 +24,7 @@ struct NameTagSheet: View {
                     }
                 })
             } else {
+                #if !targetEnvironment(macCatalyst)
                 DataScannerViewRepresentable(recognizedDataTypes: [.barcode(symbologies: [.qr])]) { data in
                     if case let .barcode(foundBarcode) = data, let qrCode = foundBarcode.payloadStringValue {
                         let string = qrCode.components(separatedBy: "/").last
@@ -33,6 +34,7 @@ struct NameTagSheet: View {
                         }
                     }
                 }
+                #endif
                 Button(action: { showNameTagScanner.toggle() }, label: {
                     HStack {
                         Spacer()

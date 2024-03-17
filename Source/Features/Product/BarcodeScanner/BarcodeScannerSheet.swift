@@ -26,6 +26,7 @@ struct BarcodeScannerSheet: View {
                 }
                 .safeAreaPadding(.vertical)
             } else {
+#if !targetEnvironment(macCatalyst)
                 DataScannerViewRepresentable(recognizedDataTypes: [.barcode(symbologies: [.codabar, .code39, .ean8, .ean13])], onDataFound: { data in
                     if case let .barcode(foundBarcode) = data {
                         guard let payloadStringValue = foundBarcode.payloadStringValue else { return }
@@ -33,6 +34,7 @@ struct BarcodeScannerSheet: View {
                         dismiss()
                     }
                 })
+                #endif
             }
         }
         .ignoresSafeArea()

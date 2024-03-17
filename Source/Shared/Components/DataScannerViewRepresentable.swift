@@ -1,6 +1,7 @@
 import SwiftUI
 import VisionKit
 
+#if !targetEnvironment(macCatalyst)
 struct DataScannerViewRepresentable: UIViewControllerRepresentable {
     typealias DataFoundCallback = (RecognizedItem) -> Void
     let recognizedDataTypes: Set<DataScannerViewController.RecognizedDataType>
@@ -51,3 +52,4 @@ class Coordinator: NSObject, DataScannerViewControllerDelegate {
 
     func dataScanner(_: DataScannerViewController, becameUnavailableWithError _: DataScannerViewController.ScanningUnavailable) {}
 }
+#endif
