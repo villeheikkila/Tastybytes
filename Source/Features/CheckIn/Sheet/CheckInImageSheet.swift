@@ -26,7 +26,6 @@ struct CheckInImageSheet: View {
         .safeAreaInset(edge: .bottom, content: {
             CheckInImageCheckInSection(checkIn: checkIn)
         })
-        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             toolbarContent
         }
