@@ -34,6 +34,7 @@
 		5C3B6E8E2B81502C005C2F62 /* ScanTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */; };
 		5C4FC6342BA5F8910025DB83 /* CheckInImageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6332BA5F8910025DB83 /* CheckInImageSheet.swift */; };
 		5C4FC6362BA5FC630025DB83 /* ImageShareLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6352BA5FC630025DB83 /* ImageShareLink.swift */; };
+		5C4FC6382BA68A130025DB83 /* DataScannerViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */; };
 		5C5270572B821D6C0062AB18 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */; };
 		5C64E7E72B70122F006FC2C3 /* Product+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */; };
 		5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */; };
@@ -287,6 +288,7 @@
 		5C45C8552B5307A100A6EEF1 /* StoreKit.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKit.storekit; sourceTree = "<group>"; };
 		5C4FC6332BA5F8910025DB83 /* CheckInImageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageSheet.swift; sourceTree = "<group>"; };
 		5C4FC6352BA5FC630025DB83 /* ImageShareLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageShareLink.swift; sourceTree = "<group>"; };
+		5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScannerViewRepresentable.swift; sourceTree = "<group>"; };
 		5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+Extension.swift"; sourceTree = "<group>"; };
 		5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
@@ -1184,6 +1186,7 @@
 				5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */,
 				5C68D7702B9794F600D88229 /* DeleteButton.swift */,
 				5C4FC6352BA5FC630025DB83 /* ImageShareLink.swift */,
+				5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1609,6 +1612,7 @@
 				5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */,
 				5C24E1D52B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift in Sources */,
 				5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */,
+				5C4FC6382BA68A130025DB83 /* DataScannerViewRepresentable.swift in Sources */,
 				5C9057F12B2894BE00EC157B /* CategoryPickerSheet.swift in Sources */,
 				5C9057E52B2894BE00EC157B /* UserDefaults.swift in Sources */,
 				5C9058092B2894BE00EC157B /* SubcategorySheet.swift in Sources */,

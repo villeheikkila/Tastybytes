@@ -25,9 +25,9 @@ struct NameTagSheet: View {
                     }
                 })
             } else {
-                ScannerView(scanTypes: [.qr]) { response in
-                    if case let .success(result) = response {
-                        let string = result.barcode.components(separatedBy: "/").last
+                DataScannerViewRepresentable(recognizedDataTypes: [.barcode(symbologies: [.qr])]) { data in
+                    if case let .barcode(foundBarcode) = data, let qrCode = foundBarcode.payloadStringValue {
+                        let string = qrCode.components(separatedBy: "/").last
                         if let string, let profileId = UUID(uuidString: string) {
                             dismiss()
                             onSuccess(profileId)

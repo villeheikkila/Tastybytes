@@ -417,6 +417,7 @@
 
     },
     "barcode.scanner.navigationTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
