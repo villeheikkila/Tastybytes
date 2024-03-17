@@ -9,6 +9,7 @@ import SwiftUI
 struct CheckInCard: View {
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
+    let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
 
     var body: some View {
         CheckInCardContainer(checkIn: checkIn, loadedFrom: loadedFrom) {
@@ -25,7 +26,7 @@ struct CheckInCard: View {
                     servingStyle: checkIn.servingStyle
                 )
             }.padding(.horizontal, 8)
-            CheckInCardImage(checkIn: checkIn)
+            CheckInCardImage(checkIn: checkIn, onDeleteImage: onDeleteImage)
             Group {
                 CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
                 CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)

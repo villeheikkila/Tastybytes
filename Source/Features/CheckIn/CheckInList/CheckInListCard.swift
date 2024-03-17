@@ -19,7 +19,9 @@ struct CheckInListCard: View {
     let onCreate: @MainActor (_ checkIn: CheckIn) -> Void
 
     var body: some View {
-        CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom)
+        CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom, onDeleteImage: { deletedImageEntity in
+            onUpdate(checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity)))
+        })
             .contextMenu {
                 ControlGroup {
                     CheckInShareLinkView(checkIn: checkIn)

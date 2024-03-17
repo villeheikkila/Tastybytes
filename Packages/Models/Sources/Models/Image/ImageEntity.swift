@@ -26,6 +26,14 @@ public extension ImageEntity {
         public let blurHash: BlurHash?
         public let checkIn: CheckIn.Minimal
 
+        public init(checkIn: CheckIn, imageEntity: ImageEntity) {
+            id = imageEntity.id
+            file = imageEntity.file
+            bucket = imageEntity.bucket
+            blurHash = imageEntity.blurHash
+            self.checkIn = .init(id: checkIn.id, createdBy: checkIn.profile.id)
+        }
+
         enum CodingKeys: String, CodingKey {
             case id
             case file

@@ -7,11 +7,13 @@ public struct BlurHashPlaceholder: View {
     @State private var image: UIImage?
 
     let blurHash: BlurHash?
-    let height: Double
+    let height: CGFloat
+    let width: CGFloat?
 
-    public init(blurHash: BlurHash? = nil, height: Double) {
+    public init(blurHash: BlurHash? = nil, height: CGFloat, width: CGFloat? = nil) {
         self.blurHash = blurHash
         self.height = height
+        self.width = width
     }
 
     nonisolated func getBlurHashImage(blurHash: BlurHash) async -> UIImage? {
@@ -31,7 +33,7 @@ public struct BlurHashPlaceholder: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
-                    .frame(height: height)
+                    .frame(width: width, height: height)
                     .clipped()
                     .accessibility(hidden: true)
             } else {

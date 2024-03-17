@@ -11,23 +11,22 @@ struct CheckInCardImage: View {
     @State private var blurHashPlaceHolder: UIImage?
 
     let checkIn: CheckIn
+    let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
+    
+    private let imageHeight: Double = 200
 
     var body: some View {
         if let imageUrl = checkIn.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-            RemoteImage(url: imageUrl) { state in
-                if let image = state.image {
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 200)
-                        .clipped()
-                        .contentShape(Rectangle())
-                        .openSheetOnTap(.checkInImage(checkIn: checkIn, imageUrl: imageUrl))
-                } else {
-                    BlurHashPlaceholder(blurHash: checkIn.images.first?.blurHash, height: 200)
-                }
+            RemoteImageBlurHash(url: imageUrl, blurHash: checkIn.images.first?.blurHash, height: 200) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: imageHeight)
+                    .clipped()
+                    .contentShape(Rectangle())
+                    .openSheetOnTap(.checkInImage(checkIn: checkIn, imageUrl: imageUrl, onDeleteImage: onDeleteImage))
             }
-            .frame(height: 200)
+            .frame(height: imageHeight)
             .padding(.vertical, 4)
         }
     }

@@ -61,7 +61,9 @@ struct CheckInScreen: View {
     }
 
     private var header: some View {
-        CheckInCard(checkIn: checkIn, loadedFrom: .checkIn)
+        CheckInCard(checkIn: checkIn, loadedFrom: .checkIn, onDeleteImage: { deletedImageEntity in
+            checkIn = checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity))
+        })
             .sheets(item: $sheet)
             .contextMenu {
                 ControlGroup {

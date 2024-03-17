@@ -247,6 +247,9 @@
         }
       }
     },
+    "Add to photo gallery" : {
+
+    },
     "admin.category.title" : {
       "localizations" : {
         "en" : {
@@ -1038,6 +1041,9 @@
         }
       }
     },
+    "checkIn.image.deleteConfirmation.label" : {
+
+    },
     "checkIn.image.label" : {
       "localizations" : {
         "en" : {
@@ -1340,6 +1346,9 @@
           }
         }
       }
+    },
+    "checkInImage.deleteConfirmation.title" : {
+
     },
     "checkInList.error.failedToLoad.alert" : {
 
@@ -1727,6 +1736,9 @@
           }
         }
       }
+    },
+    "Delete" : {
+
     },
     "deleteAccount.success.done.label" : {
       "localizations" : {
@@ -3801,6 +3813,9 @@
           }
         }
       }
+    },
+    "report.navigationTitle.checkInImage" : {
+
     },
     "report.navigationTitle.comment" : {
       "localizations" : {

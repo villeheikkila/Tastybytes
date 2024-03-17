@@ -93,13 +93,13 @@ struct ReportScreenRow: View {
             router.navigate(screen: .checkIn(checkIn))
         case let .comment(comment):
             router.fetchAndNavigateTo(repository, .company(id: comment.id))
+        case let .checkInImage(imageEntity):
+            router.fetchAndNavigateTo(repository, .checkIn(id: imageEntity.checkIn.id))
         }
     }
 
     var body: some View {
-        Button(action: {
-            action()
-        }, label: {
+        Button(action: action) {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .center) {
                     Avatar(profile: report.createdBy)
@@ -124,7 +124,7 @@ struct ReportScreenRow: View {
                     }
                 }
             }
-        })
+        }
         .swipeActions {
             ProgressButton("report.admin.resolve.label", systemImage: "checkmark", action: {
                 await resolveReport(report)

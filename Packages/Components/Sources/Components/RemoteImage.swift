@@ -1,3 +1,4 @@
+import Models
 import NukeUI
 import SwiftUI
 
@@ -13,5 +14,31 @@ public struct RemoteImage<Content: View>: View {
 
     public var body: some View {
         LazyImage(url: url, content: content)
+    }
+}
+
+@MainActor
+public struct RemoteImageBlurHash<Content: View>: View {
+    public typealias ImageBuilder = (Image) -> Content
+    let url: URL?
+    let blurHash: BlurHash?
+    let height: Double
+    let content: ImageBuilder
+
+    public init(url: URL?, blurHash: BlurHash?, height: Double, @ViewBuilder content: @escaping ImageBuilder) {
+        self.url = url
+        self.blurHash = blurHash
+        self.content = content
+        self.height = height
+    }
+
+    public var body: some View {
+        LazyImage(url: url) { state in
+            if let image = state.image {
+                content(image)
+            } else {
+                BlurHashPlaceholder(blurHash: blurHash, height: height)
+            }
+        }
     }
 }

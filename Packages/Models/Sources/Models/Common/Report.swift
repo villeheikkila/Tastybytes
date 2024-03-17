@@ -22,6 +22,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         let subBrand = try values.decodeIfPresent(SubBrand.JoinedBrand.self, forKey: .subBrands)
         let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComments)
         let checkIn = try values.decodeIfPresent(CheckIn.self, forKey: .checkIn)
+        let checkInImageEntity = try values.decodeIfPresent(ImageEntity.JoinedCheckIn.self, forKey: .checkIn)
 
         entity = if let checkIn {
             .checkIn(checkIn)
@@ -35,6 +36,8 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
             .product(product)
         } else if let subBrand {
             .subBrand(subBrand)
+        } else if let checkInImageEntity {
+            .checkInImage(checkInImageEntity)
         } else {
             nil
         }
@@ -61,6 +64,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         case subBrand(SubBrand.JoinedBrand)
         case checkIn(CheckIn)
         case comment(CheckInComment.Joined)
+        case checkInImage(ImageEntity.JoinedCheckIn)
     }
 }
 
@@ -73,6 +77,7 @@ public extension Report {
         public let checkInCommentId: Int?
         public let brandId: Int?
         public let subBrandId: Int?
+        public let checkInImageId: Int?
 
         public init(message: String, entity: Entity) {
             self.message = message
@@ -85,6 +90,7 @@ public extension Report {
                 checkInCommentId = nil
                 brandId = nil
                 subBrandId = nil
+                checkInImageId = nil
             case let .company(company):
                 companyId = company.id
                 checkInId = nil
@@ -92,6 +98,7 @@ public extension Report {
                 checkInCommentId = nil
                 brandId = nil
                 subBrandId = nil
+                checkInImageId = nil
             case let .brand(brand):
                 brandId = brand.id
                 checkInId = nil
@@ -99,6 +106,7 @@ public extension Report {
                 companyId = nil
                 checkInCommentId = nil
                 subBrandId = nil
+                checkInImageId = nil
             case let .subBrand(subBrand):
                 subBrandId = subBrand.id
                 checkInId = nil
@@ -106,6 +114,7 @@ public extension Report {
                 companyId = nil
                 checkInCommentId = nil
                 brandId = nil
+                checkInImageId = nil
             case let .comment(comment):
                 checkInCommentId = comment.id
                 checkInId = nil
@@ -113,6 +122,7 @@ public extension Report {
                 companyId = nil
                 brandId = nil
                 subBrandId = nil
+                checkInImageId = nil
             case let .checkIn(checkIn):
                 checkInId = checkIn.id
                 productId = nil
@@ -120,6 +130,15 @@ public extension Report {
                 checkInCommentId = nil
                 brandId = nil
                 subBrandId = nil
+                checkInImageId = nil
+            case let .checkInImage(imageEntity):
+                checkInId = nil
+                productId = nil
+                companyId = nil
+                checkInCommentId = nil
+                brandId = nil
+                subBrandId = nil
+                checkInImageId = imageEntity.id
             }
         }
 
@@ -131,6 +150,7 @@ public extension Report {
             case checkInCommentId = "check_in_comment_id"
             case brandId = "brand_id"
             case subBrandId = "sub_brand_id"
+            case checkInImageId = "check_in_image_id"
         }
     }
 
