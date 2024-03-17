@@ -100,7 +100,7 @@ struct SupabaseProductRepository: ProductRepository {
                 .from(.productBarcodes)
                 .select(ProductBarcode.getQuery(.joined(false)))
                 .eq("barcode", value: barcode.barcode)
-                .eq("type", value: barcode.type)
+                // .eq("type", value: barcode.type)
                 .execute()
                 .value
 
