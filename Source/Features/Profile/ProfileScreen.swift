@@ -26,27 +26,26 @@ struct ProfileScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ProfileShareLinkView(profile: profile)
-            if !friendEnvironmentModel.isFriend(profile) {
-                Menu {
-                    if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
-                        ProgressButton(
-                            "friend.friendRequest.send.label",
-                            action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
-                        )
-                    } else if let friend = friendEnvironmentModel.isPendingUserApproval(profile) {
-                        ProgressButton(
-                            "friend.friendRequest.accept.label",
+            Menu {
+                ProfileShareLinkView(profile: profile)
+                ReportButton(entity: .profile(profile))
+                if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
+                    ProgressButton(
+                        "friend.friendRequest.send.label",
+                        action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
+                    )
+                } else if let friend = friendEnvironmentModel.isPendingUserApproval(profile) {
+                    ProgressButton(
+                        "friend.friendRequest.accept.label",
 
-                            action: {
-                                await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
-                            }
-                        )
-                    }
-                } label: {
-                    Label("labels.menu", systemImage: "ellipsis")
-                        .labelStyle(.iconOnly)
+                        action: {
+                            await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                        }
+                    )
                 }
+            } label: {
+                Label("labels.menu", systemImage: "ellipsis")
+                    .labelStyle(.iconOnly)
             }
         }
     }

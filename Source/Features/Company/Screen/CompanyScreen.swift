@@ -76,7 +76,6 @@ struct CompanyScreen: View {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            CompanyShareLinkView(company: company.saved)
             navigationBarMenu
         }
     }
@@ -84,6 +83,7 @@ struct CompanyScreen: View {
     private var navigationBarMenu: some View {
         Menu {
             ControlGroup {
+                CompanyShareLinkView(company: company.saved)
                 if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                     Button(
                         "brand.title",

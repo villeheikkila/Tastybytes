@@ -113,12 +113,11 @@ struct ProductInnerScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ProductShareLinkView(product: product)
             Menu {
                 ControlGroup {
+                    ProductShareLinkView(product: product)
                     Button("checkIn.create.label", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: checkInLoader.onCreateCheckIn) })
                         .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
-                    ProductShareLinkView(product: product)
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                         Button(
                             "labels.add",

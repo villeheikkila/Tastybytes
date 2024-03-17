@@ -134,7 +134,6 @@ struct CheckInScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            CheckInShareLinkView(checkIn: checkIn)
             Menu {
                 if checkIn.profile.id == profileEnvironmentModel.id {
                     ControlGroup {

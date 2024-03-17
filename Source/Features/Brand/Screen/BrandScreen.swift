@@ -138,7 +138,6 @@ struct BrandScreen: View {
                 }
             )
             .symbolVariant(isLikedByCurrentUser ? .fill : .none)
-            BrandShareLinkView(brand: brand)
             Menu {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
