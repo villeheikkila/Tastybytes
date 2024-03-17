@@ -95,6 +95,8 @@ struct ReportScreenRow: View {
             router.fetchAndNavigateTo(repository, .company(id: comment.id))
         case let .checkInImage(imageEntity):
             router.fetchAndNavigateTo(repository, .checkIn(id: imageEntity.checkIn.id))
+        case let .profile(profile):
+            router.navigate(screen: .profile(profile))
         }
     }
 

@@ -23,6 +23,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComments)
         let checkIn = try values.decodeIfPresent(CheckIn.self, forKey: .checkIn)
         let checkInImageEntity = try values.decodeIfPresent(ImageEntity.JoinedCheckIn.self, forKey: .checkIn)
+        let profile = try values.decodeIfPresent(Profile.self, forKey: .checkIn)
 
         entity = if let checkIn {
             .checkIn(checkIn)
@@ -38,6 +39,8 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
             .subBrand(subBrand)
         } else if let checkInImageEntity {
             .checkInImage(checkInImageEntity)
+        } else if let profile {
+            .profile(profile)
         } else {
             nil
         }
@@ -47,12 +50,14 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         case id
         case message
         case createdAt = "created_at"
-        case createdBy = "profiles"
+        case createdBy = "created_by"
         case products
         case companies
         case checkInComments = "check_in_comments"
         case brands
+        case checkInImages = "check_in_images"
         case checkIn = "check_in"
+        case profile = "profiles"
         case subBrands = "sub_brands"
         case resolvedAt = "resolved_at"
     }
@@ -65,6 +70,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         case checkIn(CheckIn)
         case comment(CheckInComment.Joined)
         case checkInImage(ImageEntity.JoinedCheckIn)
+        case profile(Profile)
     }
 }
 
@@ -78,6 +84,7 @@ public extension Report {
         public let brandId: Int?
         public let subBrandId: Int?
         public let checkInImageId: Int?
+        public let profileId: UUID?
 
         public init(message: String, entity: Entity) {
             self.message = message
@@ -91,6 +98,7 @@ public extension Report {
                 brandId = nil
                 subBrandId = nil
                 checkInImageId = nil
+                profileId = nil
             case let .company(company):
                 companyId = company.id
                 checkInId = nil
@@ -99,6 +107,7 @@ public extension Report {
                 brandId = nil
                 subBrandId = nil
                 checkInImageId = nil
+                profileId = nil
             case let .brand(brand):
                 brandId = brand.id
                 checkInId = nil
@@ -107,6 +116,7 @@ public extension Report {
                 checkInCommentId = nil
                 subBrandId = nil
                 checkInImageId = nil
+                profileId = nil
             case let .subBrand(subBrand):
                 subBrandId = subBrand.id
                 checkInId = nil
@@ -115,6 +125,7 @@ public extension Report {
                 checkInCommentId = nil
                 brandId = nil
                 checkInImageId = nil
+                profileId = nil
             case let .comment(comment):
                 checkInCommentId = comment.id
                 checkInId = nil
@@ -123,6 +134,7 @@ public extension Report {
                 brandId = nil
                 subBrandId = nil
                 checkInImageId = nil
+                profileId = nil
             case let .checkIn(checkIn):
                 checkInId = checkIn.id
                 productId = nil
@@ -131,6 +143,7 @@ public extension Report {
                 brandId = nil
                 subBrandId = nil
                 checkInImageId = nil
+                profileId = nil
             case let .checkInImage(imageEntity):
                 checkInId = nil
                 productId = nil
@@ -139,6 +152,16 @@ public extension Report {
                 brandId = nil
                 subBrandId = nil
                 checkInImageId = imageEntity.id
+                profileId = nil
+            case let .profile(profile):
+                checkInId = nil
+                productId = nil
+                companyId = nil
+                checkInCommentId = nil
+                brandId = nil
+                subBrandId = nil
+                checkInImageId = nil
+                profileId = profile.id
             }
         }
 
@@ -151,6 +174,7 @@ public extension Report {
             case brandId = "brand_id"
             case subBrandId = "sub_brand_id"
             case checkInImageId = "check_in_image_id"
+            case profileId = "profile_id"
         }
     }
 

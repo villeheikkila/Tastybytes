@@ -114,7 +114,6 @@ struct CheckInImageCheckInSection: View {
                 productVariant: checkIn.variant,
                 servingStyle: checkIn.servingStyle
             )
-            CheckInCardCheckIn(checkIn: checkIn, loadedFrom: .checkIn)
         }
         .allowsHitTesting(false)
         .padding()

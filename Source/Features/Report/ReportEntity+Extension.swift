@@ -20,6 +20,8 @@ public extension Report.Entity {
             "report.navigationTitle.comment"
         case .checkInImage:
             "report.navigationTitle.checkInImage"
+        case .profile:
+            "report.navigationTitle.profile"
         }
     }
 }
@@ -48,6 +50,11 @@ extension Report.Entity {
             CheckInEntityView(checkIn: checkIn)
         case let .checkInImage(imageEntity):
             ReportCheckInImageEntityView(imageEntity: imageEntity)
+        case let .profile(profile):
+            HStack {
+                Text(profile.preferredName)
+                Spacer()
+            }
         }
     }
 }
