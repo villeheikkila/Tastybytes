@@ -1,6 +1,5 @@
 import Components
 import CoreLocation
-import LegacyUIKit
 import Models
 import SwiftUI
 

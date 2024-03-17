@@ -1,7 +1,6 @@
 import Components
 import EnvironmentModels
 import Extensions
-import LegacyUIKit
 import MessageUI
 import Models
 import OSLog
