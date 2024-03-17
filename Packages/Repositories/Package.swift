@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "Repositories",
     platforms: [
-        .iOS(.v17), .watchOS(.v10), .tvOS(.v14), .visionOS(.v1)
+        .iOS(.v17), .watchOS(.v10), .tvOS(.v14), .visionOS(.v1),
     ],
     products: [
         .library(

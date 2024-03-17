@@ -15,10 +15,14 @@ public extension PhotosPickerItem {
 
 public extension PhotosPickerItem {
     var imageMetadata: ImageMetadata {
-        guard let assetId = itemIdentifier else { return .init() }
-        let assetResults = PHAsset.fetchAssets(withLocalIdentifiers: [assetId], options: nil)
-        guard let firstObject = assetResults.firstObject else { return .init() }
-        return .init(location: firstObject.location?.coordinate, date: firstObject.creationDate)
+        #if !os(watchOS)
+            guard let assetId = itemIdentifier else { return .init() }
+            let assetResults = PHAsset.fetchAssets(withLocalIdentifiers: [assetId], options: nil)
+            guard let firstObject = assetResults.firstObject else { return .init() }
+            return .init(location: firstObject.location?.coordinate, date: firstObject.creationDate)
+        #else
+            .init()
+        #endif
     }
 }
 

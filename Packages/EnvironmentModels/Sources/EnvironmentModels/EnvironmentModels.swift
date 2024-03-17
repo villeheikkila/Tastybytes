@@ -76,9 +76,10 @@ public func clearTemporaryData() {
 
 @MainActor
 public func getCurrentAppIcon() -> AppIcon {
+    #if !os(watchOS)
     if let alternateAppIcon = UIApplication.shared.alternateIconName {
-        AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
-    } else {
-        AppIcon.ramune
+        return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
     }
+    #endif
+    return AppIcon.ramune
 }

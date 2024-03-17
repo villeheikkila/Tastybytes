@@ -2,6 +2,7 @@ import AVFoundation
 import OSLog
 import SwiftUI
 
+#if !os(watchOS)
 @MainActor
 @Observable
 public final class PermissionEnvironmentModel {
@@ -34,3 +35,4 @@ public final class PermissionEnvironmentModel {
         getCurrentPushNotificationPermissionAuthorization()
     }
 }
+#endif

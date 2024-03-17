@@ -125,32 +125,34 @@ public extension Task {
     }
 }
 
-struct DetectOrientation: ViewModifier {
-    @Binding var isPortrait: Bool
+#if !os(watchOS)
+    struct DetectOrientation: ViewModifier {
+        @Binding var isPortrait: Bool
 
-    func body(content: Content) -> some View {
-        content
-            .onAppear()
-            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                isPortrait = isPortrait(orientation: UIDevice.current.orientation)
+        func body(content: Content) -> some View {
+            content
+                .onAppear()
+                .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                    isPortrait = isPortrait(orientation: UIDevice.current.orientation)
+                }
+        }
+
+        func isPortrait(orientation: UIDeviceOrientation) -> Bool {
+            switch orientation {
+            case .portrait, .portraitUpsideDown:
+                true
+            default:
+                false
             }
-    }
-
-    func isPortrait(orientation: UIDeviceOrientation) -> Bool {
-        switch orientation {
-        case .portrait, .portraitUpsideDown:
-            true
-        default:
-            false
         }
     }
-}
 
-public extension View {
-    func detectOrientation(_ isPortrait: Binding<Bool>) -> some View {
-        modifier(DetectOrientation(isPortrait: isPortrait))
+    public extension View {
+        func detectOrientation(_ isPortrait: Binding<Bool>) -> some View {
+            modifier(DetectOrientation(isPortrait: isPortrait))
+        }
     }
-}
+#endif
 
 public struct AlertError: Identifiable, Equatable {
     public let id: UUID
