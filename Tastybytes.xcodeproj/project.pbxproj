@@ -35,6 +35,8 @@
 		5C4FC6342BA5F8910025DB83 /* CheckInImageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6332BA5F8910025DB83 /* CheckInImageSheet.swift */; };
 		5C4FC6362BA5FC630025DB83 /* ImageShareLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6352BA5FC630025DB83 /* ImageShareLink.swift */; };
 		5C4FC6382BA68A130025DB83 /* DataScannerViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */; };
+		5C4FC63A2BA6EBD20025DB83 /* SaveToPhotoGalleryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6392BA6EBD20025DB83 /* SaveToPhotoGalleryButton.swift */; };
+		5C4FC63C2BA6EC030025DB83 /* ZoomableRemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC63B2BA6EC030025DB83 /* ZoomableRemoteImage.swift */; };
 		5C5270572B821D6C0062AB18 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */; };
 		5C64E7E72B70122F006FC2C3 /* Product+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */; };
 		5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */; };
@@ -289,6 +291,8 @@
 		5C4FC6332BA5F8910025DB83 /* CheckInImageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageSheet.swift; sourceTree = "<group>"; };
 		5C4FC6352BA5FC630025DB83 /* ImageShareLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageShareLink.swift; sourceTree = "<group>"; };
 		5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScannerViewRepresentable.swift; sourceTree = "<group>"; };
+		5C4FC6392BA6EBD20025DB83 /* SaveToPhotoGalleryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveToPhotoGalleryButton.swift; sourceTree = "<group>"; };
+		5C4FC63B2BA6EC030025DB83 /* ZoomableRemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableRemoteImage.swift; sourceTree = "<group>"; };
 		5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+Extension.swift"; sourceTree = "<group>"; };
 		5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
@@ -1187,6 +1191,8 @@
 				5C68D7702B9794F600D88229 /* DeleteButton.swift */,
 				5C4FC6352BA5FC630025DB83 /* ImageShareLink.swift */,
 				5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */,
+				5C4FC6392BA6EBD20025DB83 /* SaveToPhotoGalleryButton.swift */,
+				5C4FC63B2BA6EC030025DB83 /* ZoomableRemoteImage.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1685,6 +1691,7 @@
 				5CAADF0B2B5C566F00D956C1 /* ProductLogo.swift in Sources */,
 				5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */,
 				5C0F3D8A2B9511D100307648 /* ReportScreen.swift in Sources */,
+				5C4FC63A2BA6EBD20025DB83 /* SaveToPhotoGalleryButton.swift in Sources */,
 				5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */,
 				5C9057F82B2894BE00EC157B /* EditCompanySheet.swift in Sources */,
 				5C82E8AE2B2F97E400F2B369 /* ProductScreenActionSection.swift in Sources */,
@@ -1729,6 +1736,7 @@
 				5CAADF092B5C548700D956C1 /* DiscoverProductAssignBarcode.swift in Sources */,
 				5C07F2792B51EBB800D8740B /* BrandShareLinkView.swift in Sources */,
 				5C9058022B2894BE00EC157B /* SubscriptionStoreContent.swift in Sources */,
+				5C4FC63C2BA6EC030025DB83 /* ZoomableRemoteImage.swift in Sources */,
 				5C64E7E72B70122F006FC2C3 /* Product+Extension.swift in Sources */,
 				5C82E8A02B2F7B7800F2B369 /* ProfileLinksSection.swift in Sources */,
 				5C9058432B2894BE00EC157B /* DiscoverScreen.swift in Sources */,

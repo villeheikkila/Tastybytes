@@ -46,7 +46,6 @@ enum Sheet: Identifiable, Equatable {
         initialLocation: CLLocationCoordinate2D?,
         onSelect: (_ location: Location) -> Void
     )
-    case legacyPhotoPicker(onSelection: @Sendable (_ image: UIImage, _ metadata: ImageMetadata) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
                                 onSelect: (_ servingStyle: ServingStyle) async -> Void)
@@ -111,9 +110,6 @@ enum Sheet: Identifiable, Equatable {
             FlavorSheet(pickedFlavors: pickedFlavors)
         case let .locationSearch(category: category, title: title, initialLocation, onSelect: onSelect):
             LocationSearchSheet(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect)
-        case let .legacyPhotoPicker(onSelection: onSelection):
-            LegacyPhotoPicker(onSelection: onSelection)
-                .ignoresSafeArea(edges: .bottom)
         case let .newFlavor(onSubmit: onSubmit):
             NewFlavorSheet(onSubmit: onSubmit)
         case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):
@@ -228,8 +224,6 @@ enum Sheet: Identifiable, Equatable {
             "flavors"
         case .locationSearch:
             "location_search"
-        case .legacyPhotoPicker:
-            "legacy_photo_picker"
         case .newFlavor:
             "new_flavor"
         case .servingStyleManagement:

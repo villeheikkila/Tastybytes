@@ -21,7 +21,7 @@ struct CheckInImageSheet: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            ControllableImage(imageUrl: imageUrl, blurHash: checkIn.images.first?.blurHash)
+            ZoomableRemoteImage(imageUrl: imageUrl, blurHash: checkIn.images.first?.blurHash)
         }
         .safeAreaInset(edge: .bottom, content: {
             CheckInImageCheckInSection(checkIn: checkIn)
@@ -79,25 +79,6 @@ struct CheckInImageSheet: View {
 }
 
 @MainActor
-struct SaveToPhotoGalleryButton: View {
-    let imageUrl: URL
-
-    var body: some View {
-        ProgressButton("Add to photo gallery", systemImage: "arrow.down.circle", action: downloadImage)
-    }
-
-    func downloadImage() async {
-        do {
-            let (data, _) = try await URLSession.shared.data(from: imageUrl)
-            guard let image = UIImage(data: data) else { return }
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        } catch {
-            return
-        }
-    }
-}
-
-@MainActor
 struct CheckInImageCheckInSection: View {
     let checkIn: CheckIn
 
@@ -118,61 +99,5 @@ struct CheckInImageCheckInSection: View {
         .allowsHitTesting(false)
         .padding()
         .background(.ultraThinMaterial)
-    }
-}
-
-@MainActor
-struct ControllableImage: View {
-    @State private var scale: CGFloat = 1.0
-    @State private var location: CGPoint?
-    let imageUrl: URL
-    let blurHash: BlurHash?
-
-    private let minScaleFactor = 0.8
-
-    var dragGesture: some Gesture {
-        DragGesture()
-            .onChanged { value in
-                guard scale != 1.0 else { return }
-                withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
-                    location = value.location
-                }
-            }
-    }
-
-    var zoomGesture: some Gesture {
-        MagnificationGesture()
-            .onChanged { scaleFactor in
-                guard scaleFactor > minScaleFactor else { return }
-                scale = scaleFactor.magnitude
-            }
-    }
-
-    var body: some View {
-        GeometryReader { geometry in
-            RemoteImage(url: imageUrl) { state in
-                let height = geometry.size.height * 0.8
-                let width = geometry.size.width * 0.8
-                if let image = state.image {
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .cornerRadius(8)
-                        .scaleEffect(scale)
-                        .position(location ?? .init(x: geometry.size.width / 2, y: geometry.size.height / 2))
-                        .simultaneousGesture(zoomGesture)
-                        .simultaneousGesture(dragGesture)
-                        .frame(width: width, height: height)
-                        .onTapGesture(count: 2) {
-                            scale = 1
-                            location = .init(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                        }
-                } else if let blurHash {
-                    BlurHashPlaceholder(blurHash: blurHash, height: height, width: width)
-                } else {
-                    ProgressView()
-                }
-            }
-        }
     }
 }

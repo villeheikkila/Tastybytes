@@ -12,3 +12,27 @@ public extension PhotosPickerItem {
         }
     }
 }
+
+public extension PhotosPickerItem {
+    var imageMetadata: ImageMetadata {
+        guard let assetId = itemIdentifier else { return .init() }
+        let assetResults = PHAsset.fetchAssets(withLocalIdentifiers: [assetId], options: nil)
+        guard let firstObject = assetResults.firstObject else { return .init() }
+        return .init(location: firstObject.location?.coordinate, date: firstObject.creationDate)
+    }
+}
+
+public struct ImageMetadata: Sendable {
+    public let location: CLLocationCoordinate2D?
+    public let date: Date?
+
+    public init(location: CLLocationCoordinate2D?, date: Date?) {
+        self.location = location
+        self.date = date
+    }
+
+    public init() {
+        location = nil
+        date = nil
+    }
+}

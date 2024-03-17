@@ -35,18 +35,8 @@ struct CheckInSheet: View {
     @State private var blurHash: String?
     @State private var alertError: AlertError?
     @State private var image: UIImage?
-    @State private var imageMetadata: ImageMetadata? {
-        didSet {
-            if let imageTakenAt = imageMetadata?.date {
-                checkInAt = imageTakenAt
-            }
-            if let imageTakenLocation = imageMetadata?.location {
-                Task {
-                    await getLocationFromCoordinate(coordinate: imageTakenLocation)
-                }
-            }
-        }
-    }
+    @State private var showPhotoPicker = false
+    @State private var photoSelection: PhotosPickerItem?
 
     @State private var finalImage: UIImage?
     @State private var showImageCropper = false
@@ -113,13 +103,8 @@ struct CheckInSheet: View {
             Button("checkIn.photo.picker.camera", action: { showCamera.toggle() })
             Button(
                 "checkIn.photo.picker.photoGallery",
-                action: { sheet = .legacyPhotoPicker(onSelection: { image, metadata in
-                    DispatchQueue.main.async {
-                        imageMetadata = metadata
-                        self.image = image
-                        showImageCropper = true
-                    }
-                })
+                action: {
+                    showPhotoPicker = true
                 }
             )
         } message: {
@@ -147,9 +132,23 @@ struct CheckInSheet: View {
         .toolbar {
             toolbarContent
         }
+        .photosPicker(isPresented: $showPhotoPicker, selection: $photoSelection, matching: .images, photoLibrary: .shared())
         .task(id: finalImage, priority: .background) {
             if let finalImage, let hash = finalImage.resize(to: 100)?.blurHash(numberOfComponents: (5, 5)) {
                 blurHash = BlurHash(hash: hash, height: finalImage.size.height, width: finalImage.size.width).encoded
+            }
+        }
+        .onChange(of: photoSelection) {
+            Task {
+                guard let photoSelection, let data = try? await photoSelection.loadTransferable(type: Data.self) else { return }
+                if let imageTakenAt = photoSelection.imageMetadata.date {
+                    checkInAt = imageTakenAt
+                }
+                if let imageTakenLocation = photoSelection.imageMetadata.location {
+                    await getLocationFromCoordinate(coordinate: imageTakenLocation)
+                }
+                image = UIImage(data: data)
+                showImageCropper = true
             }
         }
         .onAppear {
