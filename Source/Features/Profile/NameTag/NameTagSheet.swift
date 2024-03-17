@@ -25,15 +25,15 @@ struct NameTagSheet: View {
                 })
             } else {
                 #if !targetEnvironment(macCatalyst)
-                DataScannerViewRepresentable(recognizedDataTypes: [.barcode(symbologies: [.qr])]) { data in
-                    if case let .barcode(foundBarcode) = data, let qrCode = foundBarcode.payloadStringValue {
-                        let string = qrCode.components(separatedBy: "/").last
-                        if let string, let profileId = UUID(uuidString: string) {
-                            dismiss()
-                            onSuccess(profileId)
+                    DataScannerViewRepresentable(recognizedDataTypes: [.barcode(symbologies: [.qr])]) { data in
+                        if case let .barcode(foundBarcode) = data, let qrCode = foundBarcode.payloadStringValue {
+                            let string = qrCode.components(separatedBy: "/").last
+                            if let string, let profileId = UUID(uuidString: string) {
+                                dismiss()
+                                onSuccess(profileId)
+                            }
                         }
                     }
-                }
                 #endif
                 Button(action: { showNameTagScanner.toggle() }, label: {
                     HStack {
