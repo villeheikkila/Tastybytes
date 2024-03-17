@@ -10,8 +10,10 @@ struct DeviceInfoProvider<Content: View>: View {
     var body: some View {
         content()
             .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
+        #if !os(watchOS)
             .detectOrientation($isPortrait)
             .environment(\.isPortrait, isPortrait)
+        #endif
             .task {
                 try? Tips.configure([.displayFrequency(.daily)])
             }

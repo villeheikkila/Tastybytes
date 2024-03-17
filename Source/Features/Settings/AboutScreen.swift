@@ -40,7 +40,8 @@ struct AboutScreen: View {
             HStack {
                 Spacer()
                 VStack(spacing: 12) {
-                    AppLogoView(size: 80)
+                    AppLogoView()
+                        .frame(width: 80, height: 80)
                     AppNameView()
                 }
                 Spacer()

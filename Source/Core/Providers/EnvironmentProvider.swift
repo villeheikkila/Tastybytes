@@ -7,7 +7,9 @@ import SwiftUI
 
 @MainActor
 struct EnvironmentProvider<Content: View>: View {
-    @State private var permissionEnvironmentModel: PermissionEnvironmentModel
+    #if !os(watchOS)
+        @State private var permissionEnvironmentModel: PermissionEnvironmentModel
+    #endif
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
     @State private var notificationEnvironmentModel: NotificationEnvironmentModel
     @State private var appEnvironmentModel: AppEnvironmentModel
@@ -20,7 +22,9 @@ struct EnvironmentProvider<Content: View>: View {
     let repository: Repository
 
     init(repository: Repository, infoPlist: InfoPlist, content: @escaping () -> Content) {
-        permissionEnvironmentModel = PermissionEnvironmentModel()
+        #if !os(watchOS)
+            permissionEnvironmentModel = PermissionEnvironmentModel()
+        #endif
         profileEnvironmentModel = ProfileEnvironmentModel(repository: repository)
         notificationEnvironmentModel = NotificationEnvironmentModel(repository: repository)
         appEnvironmentModel = AppEnvironmentModel(repository: repository, infoPlist: infoPlist)
@@ -42,7 +46,6 @@ struct EnvironmentProvider<Content: View>: View {
             .environment(feedbackEnvironmentModel)
             .environment(appEnvironmentModel)
             .environment(friendEnvironmentModel)
-            .environment(permissionEnvironmentModel)
             .environment(imageUploadEnvironmentModel)
             .environment(locationEnvironmentModel)
             .environment(subscriptionEnvironmentModel)
@@ -51,9 +54,12 @@ struct EnvironmentProvider<Content: View>: View {
             .alertError($profileEnvironmentModel.alertError)
             .alertError($appEnvironmentModel.alertError)
             .alertError($friendEnvironmentModel.alertError)
+        #if !os(watchOS)
+            .environment(permissionEnvironmentModel)
             .task {
                 permissionEnvironmentModel.initialize()
             }
+        #endif
             .task {
                 await appEnvironmentModel.initialize()
             }

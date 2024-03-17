@@ -34,12 +34,6 @@ struct CSVFile: FileDocument {
     UIDevice.current.userInterfaceIdiom == .mac
 }
 
-func getPagination(page: Int, size: Int) -> (Int, Int) {
-    let limit = size + 1
-    let from = page * limit
-    let to = from + size
-    return (from, to)
-}
 
 struct IsPortrait: EnvironmentKey {
     static let defaultValue = false

@@ -39,3 +39,13 @@ struct NotificationObserver<Content: View>: View {
             }
     }
 }
+
+actor DeviceTokenActor {
+    var deviceTokenForPusNotifications: String?
+
+    func setDeviceTokenForPusNotifications(_ newValue: String?) async {
+        deviceTokenForPusNotifications = newValue
+    }
+}
+
+let deviceTokenActor = DeviceTokenActor()

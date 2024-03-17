@@ -12,6 +12,7 @@ struct PhaseObserver<Content: View>: View {
 
     var body: some View {
         content()
+        #if !os(watchOS)
             .onChange(of: phase) { _, newPhase in
                 switch newPhase {
                 case .active:
@@ -34,5 +35,6 @@ struct PhaseObserver<Content: View>: View {
                     logger.info("Scene phase is unknown.")
                 }
             }
+        #endif
     }
 }

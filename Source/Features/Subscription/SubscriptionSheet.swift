@@ -13,18 +13,20 @@ struct SubscriptionSheet: View {
                 SubscriptionStoreContentView(subscriptionGroupName: subscriptionGroup.name)
             }
             .backgroundStyle(.clear)
-            .storeButton(.visible, for: .restorePurchases, .redeemCode)
-            .subscriptionStorePolicyDestination(for: .privacyPolicy) {
-                EmptyView()
-            }
-            .subscriptionStorePolicyDestination(for: .termsOfService) {
-                EmptyView()
-            }
-            .subscriptionStoreButtonLabel(.multiline)
-            .subscriptionStoreControlStyle(.prominentPicker)
-            .subscriptionStorePickerItemBackground(.thinMaterial)
-            .storeButton(.visible, for: .restorePurchases)
-            .onInAppPurchaseCompletion(perform: subscriptionEnvironmentModel.onInAppPurchaseCompletion)
+            #if !os(watchOS)
+                .storeButton(.visible, for: .restorePurchases, .redeemCode)
+                .subscriptionStoreButtonLabel(.multiline)
+                .subscriptionStoreControlStyle(.prominentPicker)
+            #endif
+                .subscriptionStorePolicyDestination(for: .privacyPolicy) {
+                    EmptyView()
+                }
+                .subscriptionStorePolicyDestination(for: .termsOfService) {
+                    EmptyView()
+                }
+                .subscriptionStorePickerItemBackground(.thinMaterial)
+                .storeButton(.visible, for: .restorePurchases)
+                .onInAppPurchaseCompletion(perform: subscriptionEnvironmentModel.onInAppPurchaseCompletion)
         }
     }
 }
