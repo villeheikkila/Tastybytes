@@ -64,72 +64,72 @@ struct CheckInScreen: View {
         CheckInCard(checkIn: checkIn, loadedFrom: .checkIn, onDeleteImage: { deletedImageEntity in
             checkIn = checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity))
         })
-            .sheets(item: $sheet)
-            .contextMenu {
-                ControlGroup {
-                    CheckInShareLinkView(checkIn: checkIn)
-                    if checkIn.profile.id == profileEnvironmentModel.id {
-                        Button(
-                            "labels.edit",
-                            systemImage: "pencil",
-                            action: { sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
-                                checkIn = updatedCheckIn
-                            })
-                            }
-                        )
-                        Button(
-                            "labels.delete",
-                            systemImage: "trash.fill",
-                            role: .destructive,
-                            action: {
-                                showDeleteConfirmation = true
-                            }
-                        )
-                    } else {
-                        Button(
-                            "checkIn.add.label",
-                            systemImage: "pencil",
-                            action: { sheet = .newCheckIn(checkIn.product, onCreation: { checkIn in
-                                router.navigate(screen: .checkIn(checkIn))
-                            })
-                            }
-                        )
-                        ReportButton(entity: .checkIn(checkIn))
-                    }
-                }
-                Divider()
-                RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
-                RouterLink(
-                    "company.screen.open",
-                    systemImage: "network",
-                    screen: .company(checkIn.product.subBrand.brand.brandOwner)
-                )
-                RouterLink(
-                    "brand.screen.open",
-                    systemImage: "cart",
-                    screen: .fetchBrand(checkIn.product.subBrand.brand)
-                )
-                RouterLink(
-                    "subBrand.screen.open",
-                    systemImage: "cart",
-                    screen: .fetchSubBrand(checkIn.product.subBrand)
-                )
-                if let location = checkIn.location {
-                    RouterLink(
-                        "location.open",
-                        systemImage: "network",
-                        screen: .location(location)
+        .sheets(item: $sheet)
+        .contextMenu {
+            ControlGroup {
+                CheckInShareLinkView(checkIn: checkIn)
+                if checkIn.profile.id == profileEnvironmentModel.id {
+                    Button(
+                        "labels.edit",
+                        systemImage: "pencil",
+                        action: { sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                            checkIn = updatedCheckIn
+                        })
+                        }
                     )
-                }
-                if let purchaseLocation = checkIn.purchaseLocation {
-                    RouterLink(
-                        "location.open.purchaseLocation",
-                        systemImage: "network",
-                        screen: .location(purchaseLocation)
+                    Button(
+                        "labels.delete",
+                        systemImage: "trash.fill",
+                        role: .destructive,
+                        action: {
+                            showDeleteConfirmation = true
+                        }
                     )
+                } else {
+                    Button(
+                        "checkIn.add.label",
+                        systemImage: "pencil",
+                        action: { sheet = .newCheckIn(checkIn.product, onCreation: { checkIn in
+                            router.navigate(screen: .checkIn(checkIn))
+                        })
+                        }
+                    )
+                    ReportButton(entity: .checkIn(checkIn))
                 }
-                Divider()
             }
+            Divider()
+            RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
+            RouterLink(
+                "company.screen.open",
+                systemImage: "network",
+                screen: .company(checkIn.product.subBrand.brand.brandOwner)
+            )
+            RouterLink(
+                "brand.screen.open",
+                systemImage: "cart",
+                screen: .fetchBrand(checkIn.product.subBrand.brand)
+            )
+            RouterLink(
+                "subBrand.screen.open",
+                systemImage: "cart",
+                screen: .fetchSubBrand(checkIn.product.subBrand)
+            )
+            if let location = checkIn.location {
+                RouterLink(
+                    "location.open",
+                    systemImage: "network",
+                    screen: .location(location)
+                )
+            }
+            if let purchaseLocation = checkIn.purchaseLocation {
+                RouterLink(
+                    "location.open.purchaseLocation",
+                    systemImage: "network",
+                    screen: .location(purchaseLocation)
+                )
+            }
+            Divider()
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

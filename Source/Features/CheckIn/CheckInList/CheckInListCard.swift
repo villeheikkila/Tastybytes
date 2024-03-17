@@ -22,82 +22,82 @@ struct CheckInListCard: View {
         CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom, onDeleteImage: { deletedImageEntity in
             onUpdate(checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity)))
         })
-            .contextMenu {
-                ControlGroup {
-                    CheckInShareLinkView(checkIn: checkIn)
-                    if checkIn.profile.id == profileEnvironmentModel.id {
-                        Button(
-                            "labels.edit",
-                            systemImage: "pencil",
-                            action: {
-                                router.sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
-                                    onUpdate(updatedCheckIn)
-                                })
-                            }
-                        )
-                        Button(
-                            "labels.delete",
-                            systemImage: "trash.fill",
-                            role: .destructive,
-                            action: {
-                                showDeleteConfirmation = true
-                            }
-                        )
-                    } else {
-                        Button(
-                            "checkIn.title",
-                            systemImage: "pencil",
-                            action: {
-                                router.sheet = .newCheckIn(checkIn.product, onCreation: onCreate)
-                            }
-                        )
-                        ReportButton(entity: .checkIn(checkIn))
-                    }
+        .contextMenu {
+            ControlGroup {
+                CheckInShareLinkView(checkIn: checkIn)
+                if checkIn.profile.id == profileEnvironmentModel.id {
+                    Button(
+                        "labels.edit",
+                        systemImage: "pencil",
+                        action: {
+                            router.sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                                onUpdate(updatedCheckIn)
+                            })
+                        }
+                    )
+                    Button(
+                        "labels.delete",
+                        systemImage: "trash.fill",
+                        role: .destructive,
+                        action: {
+                            showDeleteConfirmation = true
+                        }
+                    )
+                } else {
+                    Button(
+                        "checkIn.title",
+                        systemImage: "pencil",
+                        action: {
+                            router.sheet = .newCheckIn(checkIn.product, onCreation: onCreate)
+                        }
+                    )
+                    ReportButton(entity: .checkIn(checkIn))
                 }
-                Divider()
-                RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
+            }
+            Divider()
+            RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
+            RouterLink(
+                "company.screen.open",
+                systemImage: "network",
+                screen: .company(checkIn.product.subBrand.brand.brandOwner)
+            )
+            RouterLink(
+                "brand.screen.open",
+                systemImage: "cart",
+                screen: .fetchBrand(checkIn.product.subBrand.brand)
+            )
+            RouterLink(
+                "subBrand.screen.open",
+                systemImage: "cart",
+                screen: .fetchSubBrand(checkIn.product.subBrand)
+            )
+            if let location = checkIn.location {
                 RouterLink(
-                    "company.screen.open",
+                    "location.open",
                     systemImage: "network",
-                    screen: .company(checkIn.product.subBrand.brand.brandOwner)
-                )
-                RouterLink(
-                    "brand.screen.open",
-                    systemImage: "cart",
-                    screen: .fetchBrand(checkIn.product.subBrand.brand)
-                )
-                RouterLink(
-                    "subBrand.screen.open",
-                    systemImage: "cart",
-                    screen: .fetchSubBrand(checkIn.product.subBrand)
-                )
-                if let location = checkIn.location {
-                    RouterLink(
-                        "location.open",
-                        systemImage: "network",
-                        screen: .location(location)
-                    )
-                }
-                if let purchaseLocation = checkIn.purchaseLocation {
-                    RouterLink(
-                        "location.open.purchaseLocation",
-                        systemImage: "network",
-                        screen: .location(purchaseLocation)
-                    )
-                }
-                Divider()
-            }
-            .confirmationDialog(
-                "checkIn.delete.confirmation.title",
-                isPresented: $showDeleteConfirmation,
-                titleVisibility: .visible,
-                presenting: checkIn
-            ) { presenting in
-                ProgressButton(
-                    "checkIn.delete.confirmation.label \(presenting.product.formatted(.fullName))",
-                    role: .destructive,
-                    action: { await onDelete(checkIn) }
+                    screen: .location(location)
                 )
             }
+            if let purchaseLocation = checkIn.purchaseLocation {
+                RouterLink(
+                    "location.open.purchaseLocation",
+                    systemImage: "network",
+                    screen: .location(purchaseLocation)
+                )
+            }
+            Divider()
+        }
+        .confirmationDialog(
+            "checkIn.delete.confirmation.title",
+            isPresented: $showDeleteConfirmation,
+            titleVisibility: .visible,
+            presenting: checkIn
+        ) { presenting in
+            ProgressButton(
+                "checkIn.delete.confirmation.label \(presenting.product.formatted(.fullName))",
+                role: .destructive,
+                action: { await onDelete(checkIn) }
+            )
+        }
     }
 }

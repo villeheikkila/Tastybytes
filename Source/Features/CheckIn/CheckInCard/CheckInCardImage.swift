@@ -12,7 +12,7 @@ struct CheckInCardImage: View {
 
     let checkIn: CheckIn
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
-    
+
     private let imageHeight: Double = 200
 
     var body: some View {

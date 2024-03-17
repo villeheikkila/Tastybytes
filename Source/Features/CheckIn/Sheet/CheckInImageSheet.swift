@@ -8,7 +8,7 @@ import SwiftUI
 @MainActor
 struct CheckInImageSheet: View {
     typealias OnDeleteImageCallback = (_ imageEntity: ImageEntity) -> Void
-    
+
     private let logger = Logger(category: "CheckInImageSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -26,6 +26,7 @@ struct CheckInImageSheet: View {
         .safeAreaInset(edge: .bottom, content: {
             CheckInImageCheckInSection(checkIn: checkIn)
         })
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             toolbarContent
         }
