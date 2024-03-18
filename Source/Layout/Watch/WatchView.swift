@@ -31,13 +31,15 @@ public enum WatchTab: Int, Identifiable, Hashable, CaseIterable, Codable, Sendab
     @MainActor
     @ViewBuilder
     var view: some View {
-        switch self {
-        case .activity:
-            ActivityWatchTab()
-        case .notifications:
-            Text("not")
-        case .profile:
-            Text("prof")
+        NavigationStack {
+            switch self {
+            case .activity:
+                ActivityWatchTab()
+            case .notifications:
+                Text("not")
+            case .profile:
+                Text("prof")
+            }
         }
     }
 

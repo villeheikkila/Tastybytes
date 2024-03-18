@@ -10,7 +10,9 @@ public struct ChipView: View {
         }
         .padding(2)
         .foregroundColor(.white)
-        .background(Color(.systemBlue))
-        .cornerRadius(5)
+        #if !os(watchOS)
+            .background(Color(.systemBlue))
+        #endif
+            .cornerRadius(5)
     }
 }

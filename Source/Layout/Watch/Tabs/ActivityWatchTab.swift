@@ -1,3 +1,4 @@
+import Components
 import EnvironmentModels
 import Extensions
 import Models
@@ -35,37 +36,106 @@ struct ActivityWatchTabContent: View {
 
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
-        ScrollViewReader { proxy in
-            List {
-                ForEach(checkInLoader.checkIns) { checkIn in
-                    Text(checkIn.product.name)
-                        .onAppear {
-                            if checkIn == checkInLoader.checkIns.last {
-                                checkInLoader.onLoadMore()
-                            }
+        List {
+            ForEach(checkInLoader.checkIns) { checkIn in
+                CheckInWatchListItem(checkIn: checkIn)
+                    .onAppear {
+                        if checkIn == checkInLoader.checkIns.last {
+                            checkInLoader.onLoadMore()
                         }
-                }
-                CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
-            }
-            .listStyle(.plain)
-            .refreshable {
-                await checkInLoader.fetchFeedItems(reset: true)
-            }
-            .overlay {
-                if checkInLoader.errorContentUnavailable != nil {
-                    ContentUnavailableView {
-                        Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
                     }
-                } else if screenState == .initialized, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
-                    EmptyActivityFeedView()
+            }
+            CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+        }
+        .listStyle(.plain)
+        .refreshable {
+            await checkInLoader.fetchFeedItems(reset: true)
+        }
+        .overlay {
+            if checkInLoader.errorContentUnavailable != nil {
+                ContentUnavailableView {
+                    Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
+                }
+            } else if screenState == .initialized, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
+                EmptyActivityFeedView()
+            }
+        }
+        .task {
+            if screenState == .initial {
+                await checkInLoader.loadData()
+                screenState = .initialized
+            }
+        }
+    }
+}
+
+struct CheckInWatchListItem: View {
+    let checkIn: CheckIn
+
+    var fullProductName: String {
+        let productName = checkIn.product.formatted(.fullName)
+        if let description = checkIn.product.description {
+            return "\(productName) \(description)"
+        }
+        return productName
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(alignment: .center) {
+                Avatar(profile: checkIn.profile)
+                    .avatarSize(.medium)
+                    .fixedSize()
+                Text(checkIn.profile.preferredName)
+                    .font(.caption)
+                    .foregroundColor(.primary)
+                Spacer()
+                if let location = checkIn.location {
+                    Text(location.formatted(.withEmoji))
+                        .font(.caption)
+                        .foregroundColor(.primary)
                 }
             }
-            .task {
-                if screenState == .initial {
-                    await checkInLoader.loadData()
-                    screenState = .initialized
+
+            Text(fullProductName)
+                .font(.headline)
+                .foregroundColor(.primary)
+
+            CheckInCardImage(checkIn: checkIn)
+
+            if let rating = checkIn.rating {
+                RatingView(rating: rating)
+                    .ratingColor(checkIn.isNostalgic ? .purple : .yellow)
+            }
+
+            CheckInDateView(checkInAt: checkIn.checkInAt)
+        }
+    }
+}
+
+@MainActor
+struct CheckInCardImage: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+
+    let checkIn: CheckIn
+
+    private let imageHeight: Double = 100
+
+    var body: some View {
+        if let imageUrl = checkIn.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+            RemoteImage(url: imageUrl) { state in
+                if let image = state.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: imageHeight)
+                        .clipped()
+                        .cornerRadius(8)
+                } else {
+                    ProgressView()
                 }
             }
+            .frame(height: imageHeight)
         }
     }
 }

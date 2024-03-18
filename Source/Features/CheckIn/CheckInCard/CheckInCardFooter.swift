@@ -12,15 +12,7 @@ struct CheckInCardFooter: View {
     var body: some View {
         HStack {
             HStack {
-                if let checkInAt = checkIn.checkInAt {
-                    Text(checkInAt.formatted(.customRelativetime))
-                        .font(.caption)
-                        .bold()
-                } else {
-                    Text("checkIn.legacy.label")
-                        .font(.caption)
-                        .bold()
-                }
+                CheckInDateView(checkInAt: checkIn.checkInAt)
                 Spacer()
             }
             .allowsHitTesting(loadedFrom != .checkIn)

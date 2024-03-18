@@ -12,7 +12,9 @@ public struct ServingStyleLabelView: View {
                 .fontWeight(.bold)
                 .padding(4)
                 .foregroundColor(.white)
+            #if !os(watchOS)
                 .background(Color(.systemGray))
+            #endif
                 .cornerRadius(6)
         }
     }

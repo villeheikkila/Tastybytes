@@ -34,7 +34,6 @@ struct CSVFile: FileDocument {
     UIDevice.current.userInterfaceIdiom == .mac
 }
 
-
 struct IsPortrait: EnvironmentKey {
     static let defaultValue = false
 }

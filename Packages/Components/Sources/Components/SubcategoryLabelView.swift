@@ -15,7 +15,9 @@ public struct SubcategoryLabelView: View {
             .fontWeight(.bold)
             .padding(4)
             .foregroundColor(.white)
+        #if !os(watchOS)
             .background(Color(.systemBlue))
+        #endif
             .cornerRadius(6)
     }
 }

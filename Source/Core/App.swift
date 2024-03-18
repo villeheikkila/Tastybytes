@@ -14,6 +14,9 @@ struct MainApp: App {
     private let repository: Repository
 
     init() {
+        URLCache.shared.memoryCapacity = 50_000_000 // 50M
+        URLCache.shared.diskCapacity = 200_000_000 // 200MB
+
         guard let infoDictionary = Bundle.main.infoDictionary,
               let bundleIdentifier = Bundle.main.bundleIdentifier,
               let jsonData = try? JSONSerialization.data(withJSONObject: infoDictionary, options: .prettyPrinted),

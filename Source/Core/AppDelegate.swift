@@ -17,9 +17,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
-
-        URLCache.shared.memoryCapacity = 50_000_000 // 50M
-        URLCache.shared.diskCapacity = 200_000_000 // 200MB
         return true
     }
 
