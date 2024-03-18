@@ -101,7 +101,7 @@ struct CheckInWatchListItem: View {
                 .font(.headline)
                 .foregroundColor(.primary)
 
-            CheckInCardImage(checkIn: checkIn)
+            CheckInCardWatchImage(checkIn: checkIn)
 
             if let rating = checkIn.rating {
                 RatingView(rating: rating)
@@ -114,7 +114,7 @@ struct CheckInWatchListItem: View {
 }
 
 @MainActor
-struct CheckInCardImage: View {
+struct CheckInCardWatchImage: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 
     let checkIn: CheckIn

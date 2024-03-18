@@ -33,6 +33,7 @@ struct SplashScreen: View {
             #endif
             VStack(spacing: 24) {
                 AppLogoView()
+                    .frame(width: 120, height: 120)
                     .scaleEffect(size)
                     .opacity(opacity)
                 AppNameView()
