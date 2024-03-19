@@ -19,7 +19,6 @@ struct AppUnsupportedVersionState: View {
                     .font(.headline)
                     .background(Color.accentColor)
                     .cornerRadius(15)
-                    .disabled(appEnvironmentModel.isInitializing)
                     .padding()
                     .padding()
                 }

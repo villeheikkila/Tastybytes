@@ -79,7 +79,9 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     // App icon
     public func setAppIcon(_ appIcon: AppIcon) {
-        UIApplication.shared.setAlternateIconName(appIcon == AppIcon.ramune ? nil : appIcon.rawValue)
+        #if !os(watchOS)
+            UIApplication.shared.setAlternateIconName(appIcon == AppIcon.ramune ? nil : appIcon.rawValue)
+        #endif
         self.appIcon = appIcon
     }
 

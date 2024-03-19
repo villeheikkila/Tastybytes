@@ -10,7 +10,7 @@ struct AppNetworkUnavailableState: View {
             .overlay(alignment: .bottom) {
                 Button(action: {
                     Task {
-                        await appEnvironmentModel.initialize()
+                        await appEnvironmentModel.initialize(reset: true)
                     }
                 }, label: {
                     Text("labels.tryAgain")

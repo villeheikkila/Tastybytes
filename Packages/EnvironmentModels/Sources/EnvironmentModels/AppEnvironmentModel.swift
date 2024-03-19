@@ -170,7 +170,7 @@ public final class AppEnvironmentModel {
         let isPreviouslyInitialied = aboutPage != nil && subscriptionGroup != nil && appConfig != nil && !countries.isEmpty && !flavors.isEmpty && !categories.isEmpty
 
         logger.notice("\(reset || isPreviouslyInitialied ? "Refreshing" : "Initializing") app data")
-        if isPreviouslyInitialied {
+        if !reset, isPreviouslyInitialied {
             splashScreenState = .finished
             state = .operational
             logger.info("App optimistically loaded from stored data")
