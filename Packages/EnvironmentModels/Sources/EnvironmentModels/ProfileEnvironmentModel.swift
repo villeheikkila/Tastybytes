@@ -77,6 +77,12 @@ public final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
+    // App icon
+    public func setAppIcon(_ appIcon: AppIcon) {
+        UIApplication.shared.setAlternateIconName(appIcon == AppIcon.ramune ? nil : appIcon.rawValue)
+        self.appIcon = appIcon
+    }
+
     // Getters that are only available after authentication, calling these before authentication causes an app crash
     public var profile: Profile {
         if let extendedProfile {

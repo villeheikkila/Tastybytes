@@ -1,6 +1,10 @@
 import SwiftUI
 
-public enum AppIcon: String {
+public enum AppIcon: String, CaseIterable, Identifiable {
+    public var id: String {
+        rawValue
+    }
+
     case ramune = "AppIcon"
     case cola = "AppIconCola"
     case juice = "AppIconJuice"
