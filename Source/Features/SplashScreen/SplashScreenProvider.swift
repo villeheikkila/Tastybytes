@@ -78,8 +78,12 @@ struct AppLogoView: View {
         self.appIcon = appIcon
     }
 
+    private var icon: AppIcon {
+        appIcon ?? .currentAppIcon
+    }
+
     var body: some View {
-        Image(appIcon?.logo ?? getCurrentAppIcon().logo)
+        Image(icon.logo)
             .resizable()
             .aspectRatio(contentMode: .fill)
             .accessibility(hidden: true)

@@ -154,7 +154,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             friendRequestNotifications = extendedProfile.settings.sendFriendRequestNotifications
             checkInTagNotifications = extendedProfile.settings.sendTaggedCheckInNotifications
             sendCommentNotifications = extendedProfile.settings.sendCommentNotifications
-            appIcon = getCurrentAppIcon()
+            appIcon = .currentAppIcon
             initialValuesLoaded = true
             profileState = .initialized
             logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
@@ -175,7 +175,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
             checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
             sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
-            appIcon = getCurrentAppIcon()
+            appIcon = .currentAppIcon
             initialValuesLoaded = true
             profileState = .initialized
             logger.info("User data initialized in \(startTime.elapsedTime())ms")

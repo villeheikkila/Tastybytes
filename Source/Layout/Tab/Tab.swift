@@ -40,3 +40,9 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
         }
     }
 }
+
+extension AppStorage {
+    init(wrappedValue: Value, _ key: UserDefaultsKey, store: UserDefaults? = nil) where Value == Tab {
+        self.init(wrappedValue: wrappedValue, key.rawValue, store: store)
+    }
+}

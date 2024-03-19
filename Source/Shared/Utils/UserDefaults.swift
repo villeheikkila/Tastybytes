@@ -49,16 +49,6 @@ extension UserDefaults {
 }
 
 extension AppStorage {
-    #if !os(watchOS)
-        init(wrappedValue: Value, _ key: UserDefaultsKey, store: UserDefaults? = nil) where Value == SiderBarTab {
-            self.init(wrappedValue: wrappedValue, key.rawValue, store: store)
-        }
-
-        init(wrappedValue: Value, _ key: UserDefaultsKey, store: UserDefaults? = nil) where Value == Tab {
-            self.init(wrappedValue: wrappedValue, key.rawValue, store: store)
-        }
-    #endif
-
     init(wrappedValue: Value, _ key: UserDefaultsKey, store: UserDefaults? = nil) where Value == Bool {
         self.init(wrappedValue: wrappedValue, key.rawValue, store: store)
     }

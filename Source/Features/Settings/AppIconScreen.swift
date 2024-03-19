@@ -32,13 +32,13 @@ struct AppIconScreen: View {
         .navigationBarTitle("settings.appIcon.title")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: selection) { _, icon in
-            if let icon, selection != getCurrentAppIcon() {
+            if let icon, selection != AppIcon.currentAppIcon {
                 UIApplication.shared.setAlternateIconName(icon == AppIcon.ramune ? nil : icon.rawValue)
                 profileEnvironmentModel.appIcon = icon
             }
         }
         .onAppear {
-            selection = getCurrentAppIcon()
+            selection = AppIcon.currentAppIcon
         }
     }
 }

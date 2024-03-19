@@ -73,13 +73,3 @@ public func clearTemporaryData() {
         logger.error("Failed to delete navigation stack state restoration files. Error: \(error) (\(#file):\(#line))")
     }
 }
-
-@MainActor
-public func getCurrentAppIcon() -> AppIcon {
-    #if !os(watchOS)
-        if let alternateAppIcon = UIApplication.shared.alternateIconName {
-            return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
-        }
-    #endif
-    return AppIcon.ramune
-}

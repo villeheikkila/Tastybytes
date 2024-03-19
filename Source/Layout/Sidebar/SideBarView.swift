@@ -30,6 +30,12 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
     }
 }
 
+extension AppStorage {
+    init(wrappedValue: Value, _ key: UserDefaultsKey, store: UserDefaults? = nil) where Value == SiderBarTab {
+        self.init(wrappedValue: wrappedValue, key.rawValue, store: store)
+    }
+}
+
 @MainActor
 @Observable
 final class SidebarRouterPath {
