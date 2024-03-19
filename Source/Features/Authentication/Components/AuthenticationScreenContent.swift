@@ -19,13 +19,12 @@ struct AuthenticationScreenContent: View {
             HStack {
                 Spacer()
                 AppLogoView(appIcon: .ramune)
+                    .frame(width: 120, height: 120)
                 Spacer()
             }
-            #if !os(watchOS)
             .background(
                 SparklesView()
             )
-            #endif
             AppNameView(size: 38)
         }
     }
