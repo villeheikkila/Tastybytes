@@ -8,6 +8,7 @@ import SwiftUI
 @MainActor
 @Observable
 final class CheckInListLoader {
+    typealias OnLoadComplete = @MainActor @Sendable (_ checkIns: [CheckIn]) async -> Void
     typealias Fetcher = (_ from: Int, _ to: Int, _ segment: CheckInSegment) async -> Result<[CheckIn], Error>
     private let logger = Logger(category: "CheckInLoader")
 
@@ -39,15 +40,13 @@ final class CheckInListLoader {
         self.pageSize = pageSize
     }
 
-    func loadData(isRefresh: Bool = false) async {
+    func loadData(isRefresh: Bool = false, onComplete: OnLoadComplete? = nil) async {
         if isRefresh {
             logger.info("Refreshing check-in feed data")
             isRefreshing = true
             await fetchFeedItems(
                 reset: true,
-                onComplete: { _ in
-                    self.logger.info("Refreshing check-ins completed for \(self.id)")
-                }
+                onComplete: onComplete
             )
             isRefreshing = false
             return
@@ -101,7 +100,7 @@ final class CheckInListLoader {
 
     func fetchFeedItems(
         reset: Bool = false,
-        onComplete: (@MainActor @Sendable (_ checkIns: [CheckIn]) async -> Void)? = nil
+        onComplete: OnLoadComplete? = nil
     ) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
@@ -121,13 +120,13 @@ final class CheckInListLoader {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
+            logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
             let e = AlertError(title: "checkInList.error.failedToLoad.alert")
             if checkIns.isEmpty {
                 errorContentUnavailable = e
-            } else {
-                alertError = e
             }
-            logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
+            guard !error.isNetworkUnavailable else { return }
+            alertError = e
         }
         isLoading = false
     }
