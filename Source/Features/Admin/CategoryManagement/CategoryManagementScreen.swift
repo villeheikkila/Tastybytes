@@ -9,8 +9,8 @@ struct CategoryManagementScreen: View {
     private let logger = Logger(category: "CategoryManagementScreen")
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(Router.self) private var router
     @State private var verifySubcategory: Subcategory?
-    @State private var sheet: Sheet?
     @State private var deleteSubcategory: Subcategory?
 
     var body: some View {
@@ -29,24 +29,23 @@ struct CategoryManagementScreen: View {
                         Button(
                             "servingStyle.edit.menu.label",
                             systemImage: "pencil",
-                            action: { sheet = .categoryServingStyle(category: category) }
+                            action: { router.openRootSheet(.categoryServingStyle(category: category)) }
                         )
                         Button(
                             "subcategory.add",
                             systemImage: "plus",
-                            action: { sheet = .addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                            action: { router.openRootSheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
                                 await appEnvironmentModel.addSubcategory(
                                     category: category,
                                     name: newSubcategoryName
                                 )
-                            }) }
+                            })) }
                         )
                     } label: {
                         Label("labels.menu", systemImage: "ellipsis")
                             .labelStyle(.iconOnly)
                             .frame(width: 24, height: 24)
                     }
-                    .sheets(item: $sheet)
                 }
             }
             .headerProminence(.increased)
@@ -77,9 +76,9 @@ struct CategoryManagementScreen: View {
             Button(
                 "category.add.label",
                 systemImage: "plus",
-                action: { sheet = .addCategory(onSubmit: { _ in
+                action: {  router.openRootSheet(.addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("category.add.success.toast"))
-                }) }
+                })) }
             )
             .labelStyle(.iconOnly)
             .bold()

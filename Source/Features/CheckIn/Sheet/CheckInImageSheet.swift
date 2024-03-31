@@ -39,7 +39,7 @@ struct CheckInImageSheet: View {
                 if let imageEntity = checkIn.images.first {
                     ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: imageEntity)))
                     if profileEnvironmentModel.profile.id == checkIn.profile.id {
-                        Button("Delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = imageEntity })
+                        Button("labels.delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = imageEntity })
                     }
                 }
 

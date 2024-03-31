@@ -403,7 +403,14 @@
       }
     },
     "barcode.management.open" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barcode Management"
+          }
+        }
+      }
     },
     "barcode.scanner.showScanner.label" : {
       "localizations" : {
@@ -469,7 +476,14 @@
       }
     },
     "blockedUsers.empty.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocked users can't see your check-ins or profile"
+          }
+        }
+      }
     },
     "blockedUsers.empty.title" : {
       "localizations" : {
@@ -775,7 +789,14 @@
       }
     },
     "category.picker.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
     },
     "category.title" : {
       "localizations" : {
@@ -1705,9 +1726,6 @@
         }
       }
     },
-    "Delete" : {
-
-    },
     "deleteAccount.success.done.label" : {
       "localizations" : {
         "en" : {
@@ -2035,7 +2053,14 @@
       }
     },
     "error.screen.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unexpected Error"
+          }
+        }
+      }
     },
     "flavor.add.labels" : {
       "localizations" : {
@@ -2118,7 +2143,14 @@
       }
     },
     "friend.friendRequest.accept.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept"
+          }
+        }
+      }
     },
     "friend.friendRequest.send.label" : {
 
@@ -2796,9 +2828,6 @@
         }
       }
     },
-    "not" : {
-
-    },
     "notification.checkInComment.label" : {
       "localizations" : {
         "en" : {
@@ -3000,28 +3029,84 @@
       }
     },
     "notifications.settings.checkIns.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-ins"
+          }
+        }
+      }
     },
     "notifications.settings.checkIns.subtitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show notification when someone tags you in their check-in"
+          }
+        }
+      }
     },
     "notifications.settings.comments.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comments"
+          }
+        }
+      }
     },
     "notifications.settings.comments.subtitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show notification when someone comments on your check-in"
+          }
+        }
+      }
     },
     "notifications.settings.friendRequest.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show notification when someone sends you a friend requests"
+          }
+        }
+      }
     },
     "notifications.settings.friendRequest.subtitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Friend Requests"
+          }
+        }
+      }
     },
     "notifications.settings.reactions.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reactions"
+          }
+        }
+      }
     },
     "notifications.settings.reactions.subtitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show notification when someone reacts to your check-in"
+          }
+        }
+      }
     },
     "notifications.title" : {
       "localizations" : {
@@ -3250,10 +3335,24 @@
       }
     },
     "product.filter.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product Filter"
+          }
+        }
+      }
     },
     "product.filter.overlay.showingOnlyNotHad" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Showing only things you haven't had"
+          }
+        }
+      }
     },
     "product.filter.reset" : {
       "localizations" : {
@@ -3428,7 +3527,14 @@
       }
     },
     "product.unverify.confirmation.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverify %@ product"
+          }
+        }
+      }
     },
     "products.title" : {
       "localizations" : {
@@ -3439,9 +3545,6 @@
           }
         }
       }
-    },
-    "prof" : {
-
     },
     "profile.avatar.delete.label" : {
       "localizations" : {
@@ -3745,7 +3848,14 @@
 
     },
     "report.admin.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reports"
+          }
+        }
+      }
     },
     "report.admin.resolve.label" : {
       "localizations" : {
@@ -3772,13 +3882,20 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Check-in"
+            "value" : "Report Check-in"
           }
         }
       }
     },
     "report.navigationTitle.checkInImage" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report Check-in Image"
+          }
+        }
+      }
     },
     "report.navigationTitle.comment" : {
       "localizations" : {
@@ -3795,7 +3912,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Company"
+            "value" : "Report Company"
           }
         }
       }
@@ -3805,13 +3922,20 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Product"
+            "value" : "Report Product"
           }
         }
       }
     },
     "report.navigationTitle.profile" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report Profile"
+          }
+        }
+      }
     },
     "report.navigationTitle.subBrand" : {
       "localizations" : {
@@ -3867,8 +3991,8 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "report.subBrand %1$@ from %2$@"
+            "state" : "translated",
+            "value" : "Report %1$@ from %2$@"
           }
         }
       }
@@ -3893,8 +4017,15 @@
         }
       }
     },
-    "Search Google" : {
-
+    "searchGoogleLink.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search Google"
+          }
+        }
+      }
     },
     "servingStyle.create.label" : {
 
@@ -3939,7 +4070,14 @@
       }
     },
     "servingStyle.name.edit.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "servingStyle.name.placeholder" : {
 
@@ -4070,7 +4208,14 @@
       }
     },
     "settings.privacy.privateProfile.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private profile hides check-ins and profile page from everyone else but your friends."
+          }
+        }
+      }
     },
     "settings.privacy.privateProfile.label" : {
       "localizations" : {
@@ -4113,7 +4258,14 @@
       }
     },
     "settings.profile.section.identity.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These values are used in your personal page and can be seen by other users."
+          }
+        }
+      }
     },
     "settings.profile.section.identity.title" : {
       "localizations" : {
@@ -4432,7 +4584,14 @@
       }
     },
     "subcategory.picker.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subcategory"
+          }
+        }
+      }
     },
     "subcategory.title" : {
       "localizations" : {

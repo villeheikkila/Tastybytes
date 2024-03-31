@@ -12,7 +12,7 @@ struct SearchGoogleLink: View {
 
     var body: some View {
         if let url {
-            Link("Search Google", destination: url)
+            Link("searchGoogleLink.label", destination: url)
         }
     }
 }

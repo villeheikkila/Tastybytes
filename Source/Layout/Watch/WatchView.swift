@@ -36,9 +36,9 @@ public enum WatchTab: Int, Identifiable, Hashable, CaseIterable, Codable, Sendab
             case .activity:
                 ActivityWatchTab()
             case .notifications:
-                Text("not")
+                Text("tab.notifications")
             case .profile:
-                Text("prof")
+                Text("tab.profile")
             }
         }
     }
