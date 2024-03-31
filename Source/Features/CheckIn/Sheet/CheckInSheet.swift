@@ -27,6 +27,7 @@ struct CheckInSheet: View {
     @State private var servingStyle: ServingStyle?
     @State private var taggedFriends = [Profile]()
     @State private var location: Location?
+    @State private var locationFromImage: Location?
     @State private var purchaseLocation: Location?
     @State private var checkInAt: Date = .now
     @State private var isLegacyCheckIn: Bool
@@ -259,14 +260,14 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("checkIn.section.locationsFriends.title") {
-            LocationInputButton(category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: location?.location?.coordinate, onSelect: { location in
+            LocationInputButton(category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: $locationFromImage, onSelect: { location in
                 self.location = location
             })
 
             LocationInputButton(
                 category: .purchase, title: "checkIn.purchaseLocation.add.label",
                 selection: $purchaseLocation,
-                initialLocation: location?.location?.coordinate,
+                initialLocation: $locationFromImage,
                 onSelect: { location in
                     purchaseLocation = location
                 }
@@ -363,7 +364,7 @@ struct CheckInSheet: View {
     func getLocationFromCoordinate(coordinate: CLLocationCoordinate2D) async {
         let countryCode = try? await coordinate.getISOCountryCode()
         let country = appEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
-        location = Location(coordinate: coordinate, countryCode: countryCode, country: country)
+        locationFromImage = Location(coordinate: coordinate, countryCode: countryCode, country: country)
     }
 
     func storeLocation(_ location: Location) async {
@@ -435,12 +436,12 @@ struct LocationInputButton: View {
     let category: Location.RecentLocation
     let title: LocalizedStringKey
     @Binding var selection: Location?
-    let initialLocation: CLLocationCoordinate2D?
+    @Binding var initialLocation: Location?
     let onSelect: (_ location: Location) -> Void
 
     var body: some View {
         RouterLink(
-            sheet: .locationSearch(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect),
+            sheet: .locationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect),
             label: {
                 HStack {
                     if let location = selection, let coordinate = selection?.location?.coordinate {

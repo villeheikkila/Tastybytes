@@ -42,7 +42,7 @@ enum Sheet: Identifiable, Equatable {
     case locationSearch(
         category: Location.RecentLocation,
         title: LocalizedStringKey,
-        initialLocation: CLLocationCoordinate2D?,
+        initialLocation: Binding<Location?>,
         onSelect: (_ location: Location) -> Void
     )
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)

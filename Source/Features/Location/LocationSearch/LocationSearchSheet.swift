@@ -25,17 +25,17 @@ struct LocationSearchSheet: View {
     @State private var nearbyLocations = [Location]()
     @State private var searchText = ""
     @State private var alertError: AlertError?
-    @State private var initialLocation: CLLocationCoordinate2D?
+    @Binding private var initialLocation: Location?
 
     let category: Location.RecentLocation
     let title: LocalizedStringKey
     let onSelect: (_ location: Location) -> Void
 
-    init(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: CLLocationCoordinate2D?, onSelect: @escaping (_ location: Location) -> Void) {
+    init(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: Binding<Location?>, onSelect: @escaping (_ location: Location) -> Void) {
         self.title = title
         self.onSelect = onSelect
         self.category = category
-        _initialLocation = State(initialValue: initialLocation)
+        _initialLocation = initialLocation
     }
 
     var hasSearched: Bool {
@@ -43,7 +43,7 @@ struct LocationSearchSheet: View {
     }
 
     private var centerCoordinate: CLLocationCoordinate2D {
-        initialLocation ?? locationEnvironmentModel.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
+        initialLocation?.location?.coordinate ?? locationEnvironmentModel.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
     }
 
     private let radius: CLLocationDistance = 2000
@@ -114,8 +114,8 @@ struct LocationSearchSheet: View {
             } catch {
                 logger.error("Error occured while looking up locations: \(error)")
             }
-        } else if let initialLocation {
-            let request = MKLocalPointsOfInterestRequest(center: initialLocation, radius: radius)
+        } else if let initialCoordinate = initialLocation?.location?.coordinate {
+            let request = MKLocalPointsOfInterestRequest(center: initialCoordinate, radius: radius)
             let search = MKLocalSearch(request: request)
             do {
                 let response = try await search.start()
@@ -233,10 +233,10 @@ struct LocationRow: View {
 
 @MainActor
 struct InitialLocationOverlay: View {
-    @Binding var initialLocation: CLLocationCoordinate2D?
+    @Binding var initialLocation: Location?
 
     var body: some View {
-        if let coordinate = initialLocation {
+        if let coordinate = initialLocation?.location?.coordinate {
             HStack {
                 Text("location.initialLocationOverlay.description \(coordinate.latitude.formatted(.number.precision(.fractionLength(2)))) \(coordinate.longitude.formatted(.number.precision(.fractionLength(2))))")
                 Spacer()
