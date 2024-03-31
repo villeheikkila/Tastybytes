@@ -206,17 +206,6 @@
         }
       }
     },
-    "activity.error.failedToLoadMoreItems" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error occured while trying to load check-ins"
-          }
-        }
-      }
-    },
     "activity.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -415,17 +404,6 @@
     },
     "barcode.management.open" : {
 
-    },
-    "barcode.scanner.navigationTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Barcode Scanner"
-          }
-        }
-      }
     },
     "barcode.scanner.showScanner.label" : {
       "localizations" : {
@@ -1354,17 +1332,6 @@
     "checkInList.error.failedToLoad.alert" : {
 
     },
-    "checkInList.error.failedToLoad.description" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Feed couldn't be loaded"
-          }
-        }
-      }
-    },
     "comment.deleteAsModerator.confirmation.description" : {
       "localizations" : {
         "en" : {
@@ -2063,17 +2030,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search for a duplicate product"
-          }
-        }
-      }
-    },
-    "duplicateProducts.screen.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverified Products"
           }
         }
       }
