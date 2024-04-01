@@ -15,6 +15,13 @@ public struct ServingStyle: Identifiable, Hashable, Codable, Sendable {
         case id
         case name
     }
+
+    public func copyWith(name: String? = nil) -> Self {
+        .init(
+            id: id,
+            name: name ?? self.name
+        )
+    }
 }
 
 public extension ServingStyle {

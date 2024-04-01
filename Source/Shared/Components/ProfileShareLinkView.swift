@@ -21,6 +21,6 @@ public struct ProfileShareLinkView: View {
     }
 
     public var body: some View {
-        ShareLink(item: link, subject: Text("profile.shareLink.subject"), message: Text(title))
+        ShareLink(item: link, subject: Text("profile.shareLink.subject \(profile.preferredName)"), message: Text(title))
     }
 }

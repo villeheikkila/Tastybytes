@@ -121,7 +121,14 @@
       }
     },
     "account.email.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your email address"
+          }
+        }
+      }
     },
     "account.email.section.footer" : {
       "localizations" : {
@@ -989,7 +996,14 @@
       }
     },
     "checkIn.delete.failure.alert" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unexpected error occurred while trying to delete the check-in"
+          }
+        }
+      }
     },
     "checkIn.filter.onlyNotHad" : {
       "localizations" : {
@@ -1042,7 +1056,14 @@
       }
     },
     "checkIn.image.deleteConfirmation.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "checkIn.image.label" : {
       "localizations" : {
@@ -1747,10 +1768,24 @@
       }
     },
     "deleteAccount.success.welcomeBack" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorry to see you go but you're always welcome back!"
+          }
+        }
+      }
     },
     "discover.barcode.dismiss.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss barcode"
+          }
+        }
+      }
     },
     "discover.barcode.noResults.description" : {
       "localizations" : {
@@ -3395,10 +3430,24 @@
       }
     },
     "product.loadedFromBarcode.backToSearch" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back to search"
+          }
+        }
+      }
     },
     "product.loadedFromBarcode.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not the product you were looking for?"
+          }
+        }
+      }
     },
     "product.logo.navigationTitle" : {
       "localizations" : {
@@ -3659,8 +3708,15 @@
     "profile.private.title" : {
 
     },
-    "profile.shareLink.subject" : {
-
+    "profile.shareLink.subject %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile of %@"
+          }
+        }
+      }
     },
     "profile.summary.average" : {
       "localizations" : {
@@ -4770,7 +4826,14 @@
 
     },
     "user.addFriend.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send friend request"
+          }
+        }
+      }
     },
     "user.block.label" : {
       "localizations" : {

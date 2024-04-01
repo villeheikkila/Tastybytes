@@ -36,4 +36,3 @@ struct AppUnexpectedErrorState: View {
 #Preview {
     AppNetworkUnavailableState()
 }
-

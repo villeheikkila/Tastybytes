@@ -14,9 +14,7 @@ struct CategoryServingStyleSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var sheet: Sheet?
     @State private var servingStyles: [ServingStyle]
-    @State private var showDeleteServingStyleConfirmation = false
     @State private var alertError: AlertError?
-    @State private var toDeleteServingStyle: ServingStyle?
 
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
@@ -27,17 +25,7 @@ struct CategoryServingStyleSheet: View {
 
     var body: some View {
         List(servingStyles) { servingStyle in
-            HStack {
-                Text(servingStyle.label)
-            }
-            .swipeActions {
-                Button(
-                    "labels.delete",
-                    systemImage: "trash",
-                    role: .destructive,
-                    action: { toDeleteServingStyle = servingStyle }
-                )
-            }
+            CategoryServingStyleRow(category: category, servingStyle: servingStyle, deleteServingStyle: deleteServingStyle)
         }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
@@ -46,20 +34,6 @@ struct CategoryServingStyleSheet: View {
             toolbarContent
         }
         .alertError($alertError)
-        .confirmationDialog(
-            "servingStyle.deleteWarning.title",
-            isPresented: $toDeleteServingStyle.isNotNull(),
-            titleVisibility: .visible,
-            presenting: toDeleteServingStyle
-        ) { presenting in
-            ProgressButton(
-                "servingStyle.deleteWarning.label \(presenting.name) from \(category.name)",
-                role: .destructive,
-                action: {
-                    await deleteServingStyle(presenting)
-                }
-            )
-        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -109,6 +83,43 @@ struct CategoryServingStyleSheet: View {
             alertError = .init()
             logger.error(
                 "Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+@MainActor
+struct CategoryServingStyleRow: View {
+    @State private var showDeleteServingStyleConfirmation = false
+
+    let category: Models.Category.JoinedSubcategoriesServingStyles
+    let servingStyle: ServingStyle
+    let deleteServingStyle: (_ servingStyle: ServingStyle) async -> Void
+
+    var body: some View {
+        HStack {
+            Text(servingStyle.label)
+        }
+        .swipeActions {
+            Button(
+                "labels.delete",
+                systemImage: "trash",
+                role: .destructive,
+                action: { showDeleteServingStyleConfirmation = true }
+            )
+        }
+        .confirmationDialog(
+            "servingStyle.deleteWarning.title",
+            isPresented: $showDeleteServingStyleConfirmation,
+            titleVisibility: .visible,
+            presenting: servingStyle
+        ) { presenting in
+            ProgressButton(
+                "servingStyle.deleteWarning.label \(presenting.name) from \(category.name)",
+                role: .destructive,
+                action: {
+                    await deleteServingStyle(presenting)
+                }
+            )
         }
     }
 }

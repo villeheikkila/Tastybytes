@@ -10,45 +10,10 @@ struct CategoryManagementScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var verifySubcategory: Subcategory?
-    @State private var deleteSubcategory: Subcategory?
 
     var body: some View {
         List(appEnvironmentModel.categories) { category in
-            Section {
-                ForEach(category.subcategories) { subcategory in
-                    HStack {
-                        Text(subcategory.name)
-                    }
-                }
-            } header: {
-                HStack {
-                    Text(category.name)
-                    Spacer()
-                    Menu {
-                        Button(
-                            "servingStyle.edit.menu.label",
-                            systemImage: "pencil",
-                            action: { router.openRootSheet(.categoryServingStyle(category: category)) }
-                        )
-                        Button(
-                            "subcategory.add",
-                            systemImage: "plus",
-                            action: { router.openRootSheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                                await appEnvironmentModel.addSubcategory(
-                                    category: category,
-                                    name: newSubcategoryName
-                                )
-                            })) }
-                        )
-                    } label: {
-                        Label("labels.menu", systemImage: "ellipsis")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 24, height: 24)
-                    }
-                }
-            }
-            .headerProminence(.increased)
+            CategoryManagementRow(category: category)
         }
         .listStyle(.insetGrouped)
         .refreshable {
@@ -58,17 +23,6 @@ struct CategoryManagementScreen: View {
         .toolbar {
             toolbarContent
         }
-        .confirmationDialog("subcategory.delete.confirmation.description",
-                            isPresented: $deleteSubcategory.isNotNull(),
-                            titleVisibility: .visible,
-                            presenting: deleteSubcategory)
-        { presenting in
-            ProgressButton(
-                "subcategory.delete.confirmation.label \(presenting.name)",
-                role: .destructive,
-                action: { await appEnvironmentModel.deleteSubcategory(presenting) }
-            )
-        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -76,12 +30,86 @@ struct CategoryManagementScreen: View {
             Button(
                 "category.add.label",
                 systemImage: "plus",
-                action: {  router.openRootSheet(.addCategory(onSubmit: { _ in
+                action: { router.openRootSheet(.addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("category.add.success.toast"))
                 })) }
             )
             .labelStyle(.iconOnly)
             .bold()
+        }
+    }
+}
+
+@MainActor
+struct CategoryManagementRow: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(Router.self) private var router
+
+    let category: Models.Category.JoinedSubcategoriesServingStyles
+
+    var body: some View {
+        Section {
+            ForEach(category.subcategories) { subcategory in
+                CategoryManagementSubcategoryRow(subcategory: subcategory)
+            }
+        } header: {
+            HStack {
+                Text(category.name)
+                Spacer()
+                Menu {
+                    Button(
+                        "servingStyle.edit.menu.label",
+                        systemImage: "pencil",
+                        action: { router.openRootSheet(.categoryServingStyle(category: category)) }
+                    )
+                    Button(
+                        "subcategory.add",
+                        systemImage: "plus",
+                        action: { router.openRootSheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                            await appEnvironmentModel.addSubcategory(
+                                category: category,
+                                name: newSubcategoryName
+                            )
+                        })) }
+                    )
+                } label: {
+                    Label("labels.menu", systemImage: "ellipsis")
+                        .labelStyle(.iconOnly)
+                        .frame(width: 24, height: 24)
+                }
+            }
+        }
+        .headerProminence(.increased)
+    }
+}
+
+@MainActor
+struct CategoryManagementSubcategoryRow: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @State private var showDeleteConfirmationDialog = false
+
+    let subcategory: Subcategory
+
+    var body: some View {
+        Text(subcategory.name)
+            .contextMenu {
+                Button(
+                    "labels.delete",
+                    systemImage: "trash",
+                    role: .destructive,
+                    action: { showDeleteConfirmationDialog = true }
+                )
+            }
+            .confirmationDialog("subcategory.delete.confirmation.description",
+                                isPresented: $showDeleteConfirmationDialog,
+                                titleVisibility: .visible,
+                                presenting: subcategory)
+        { presenting in
+            ProgressButton(
+                "subcategory.delete.confirmation.label \(presenting.name)",
+                role: .destructive,
+                action: { await appEnvironmentModel.deleteSubcategory(presenting) }
+            )
         }
     }
 }
