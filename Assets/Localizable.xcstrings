@@ -243,9 +243,6 @@
         }
       }
     },
-    "Add to photo gallery" : {
-
-    },
     "admin.category.title" : {
       "localizations" : {
         "en" : {
@@ -4063,6 +4060,9 @@
         }
       }
     },
+    "saveToPhotoGalleryButton.label" : {
+
+    },
     "scanTextButton.label" : {
       "localizations" : {
         "en" : {
@@ -4084,7 +4084,14 @@
       }
     },
     "servingStyle.create.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "servingStyle.deleteConfirmation.label %@" : {
 
@@ -4136,7 +4143,14 @@
       }
     },
     "servingStyle.name.placeholder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "servingStyle.picker.navigationTitle" : {
       "localizations" : {

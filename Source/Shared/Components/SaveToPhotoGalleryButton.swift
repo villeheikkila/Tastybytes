@@ -6,7 +6,7 @@ struct SaveToPhotoGalleryButton: View {
     let imageUrl: URL
 
     var body: some View {
-        ProgressButton("Add to photo gallery", systemImage: "arrow.down.circle", action: downloadImage)
+        ProgressButton("saveToPhotoGalleryButton.label", systemImage: "arrow.down.circle", action: downloadImage)
     }
 
     func downloadImage() async {
