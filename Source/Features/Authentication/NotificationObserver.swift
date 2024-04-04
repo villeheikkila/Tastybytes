@@ -34,8 +34,8 @@ struct NotificationObserver<Content: View>: View {
                     await notificationEnvironmentModel.refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
                 }
             }
-            .task {
-                await notificationEnvironmentModel.getUnreadCount()
+            .onAppear {
+                notificationEnvironmentModel.refresh()
             }
     }
 }

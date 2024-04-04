@@ -40,12 +40,15 @@ struct NotificationScreen: View {
         ScrollViewReader { scrollProxy in
             List {
                 ForEach(filteredNotifications) { notification in
-                    notification.notificationView
-                        .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
+                    HStack {
+                        notification.view
+                    }.listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
                 }
-                .onDelete(perform: { index in Task {
-                    await notificationEnvironmentModel.deleteFromIndex(at: index)
-                } })
+                .onDelete { index in
+                    Task {
+                        await notificationEnvironmentModel.deleteFromIndex(at: index)
+                    }
+                }
             }
             .listStyle(.plain)
             .refreshable {
@@ -126,7 +129,7 @@ struct NotificationScreen: View {
 
 extension Models.Notification {
     @ViewBuilder
-    var notificationView: some View {
+    var view: some View {
         switch content {
         case let .message(message):
             MessageNotificationView(message: message)
