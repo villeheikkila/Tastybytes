@@ -23,7 +23,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
 
     func update(updateRequest: SubBrand.Update) async -> Result<SubBrand, Error> {
         do {
-            let baseQuery = await client
+            let baseQuery = client
                 .database
                 .from(.subBrands)
 

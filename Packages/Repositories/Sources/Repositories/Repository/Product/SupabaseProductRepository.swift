@@ -8,7 +8,7 @@ struct SupabaseProductRepository: ProductRepository {
 
     func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error> {
         do {
-            let queryBuilder = try await client
+            let queryBuilder = try client
                 .database
                 .rpc(
                     fn: .searchProducts,
@@ -38,7 +38,7 @@ struct SupabaseProductRepository: ProductRepository {
     func getFeed(_ type: Product.FeedType, from: Int, to: Int,
                  categoryFilterId: Int?) async -> Result<[Product.Joined], Error>
     {
-        var queryBuilder = await client
+        var queryBuilder = client
             .database
             .from(.viewProductRatings)
             .select(Product.getQuery(.joinedBrandSubcategoriesRatings(false)))

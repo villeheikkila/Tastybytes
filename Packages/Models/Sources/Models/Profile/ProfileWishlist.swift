@@ -11,7 +11,7 @@ public enum ProfileWishlist {
         }
     }
 
-    public struct New: Codable {
+    public struct New: Codable, Sendable {
         public init(productId: Int) {
             self.productId = productId
         }

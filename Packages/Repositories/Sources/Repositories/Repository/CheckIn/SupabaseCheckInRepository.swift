@@ -23,7 +23,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error> {
         do {
-            let queryBuilder = await client
+            let queryBuilder = client
                 .database
                 .from(.checkIns)
                 .select(CheckIn.getQuery(.joined(false)))

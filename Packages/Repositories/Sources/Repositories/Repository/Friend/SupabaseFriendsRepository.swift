@@ -7,7 +7,7 @@ struct SupabaseFriendsRepository: FriendRepository {
 
     func getByUserId(userId: UUID, status: Friend.Status?) async -> Result<[Friend], Error> {
         do {
-            var queryBuilder = await client
+            var queryBuilder = client
                 .database
                 .from(.friends)
                 .select(Friend.getQuery(.joined(false)))

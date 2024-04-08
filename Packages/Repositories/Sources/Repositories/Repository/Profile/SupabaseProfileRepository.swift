@@ -164,7 +164,7 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func search(searchTerm: String, currentUserId: UUID? = nil) async -> Result<[Profile], Error> {
         do {
-            let query = await client
+            let query = client
                 .database
                 .from(.profiles)
                 .select(Profile.getQuery(.minimal(false)))
