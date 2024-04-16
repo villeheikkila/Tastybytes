@@ -9,7 +9,6 @@ struct SupabaseCategoryRepository: CategoryRepository {
     {
         do {
             let response: [Models.Category.JoinedSubcategoriesServingStyles] = try await client
-                .database
                 .from(.categories)
                 .select(Models.Category.getQuery(.joinedSubcaategoriesServingStyles(false)))
                 .order("name")
@@ -25,7 +24,6 @@ struct SupabaseCategoryRepository: CategoryRepository {
     func insert(newCategory: Category.NewRequest) async -> Result<Models.Category.JoinedSubcategoriesServingStyles, Error> {
         do {
             let result: Models.Category.JoinedSubcategoriesServingStyles = try await client
-                .database
                 .from(.categories)
                 .insert(newCategory, returning: .representation)
                 .select(Models.Category.getQuery(.joinedSubcaategoriesServingStyles(false)))
@@ -42,7 +40,6 @@ struct SupabaseCategoryRepository: CategoryRepository {
     func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.servingStyles)
                 .insert(Category.NewServingStyleRequest(categoryId: categoryId, servingStyleId: servingStyleId))
                 .execute()
@@ -56,7 +53,6 @@ struct SupabaseCategoryRepository: CategoryRepository {
     func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.servingStyles)
                 .delete()
                 .eq("category_id", value: categoryId)

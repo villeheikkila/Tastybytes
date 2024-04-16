@@ -2,14 +2,14 @@ import Foundation
 import Models
 import Supabase
 
-extension PostgrestClient {
+extension SupabaseClient {
     func from(_ table: Database.Table) -> PostgrestQueryBuilder {
         from(table.rawValue)
     }
 
     func rpc(
         fn: Database.Function,
-        params: some Encodable,
+        params: some Encodable & Sendable,
         count: CountOption? = nil
     ) throws -> PostgrestTransformBuilder {
         try rpc(fn.rawValue, params: params, count: count)

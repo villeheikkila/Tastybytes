@@ -7,7 +7,6 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     func insert(newCheckInReaction: CheckInReaction.NewRequest) async -> Result<CheckInReaction, Error> {
         do {
             let response: CheckInReaction = try await client
-                .database
                 .rpc(fn: .createCheckInReaction, params: newCheckInReaction)
                 .select(CheckInReaction.getQuery(.joinedProfile(false)))
                 .limit(1)
@@ -24,7 +23,6 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(fn: .softDeleteCheckInReaction, params: CheckInReaction.DeleteRequest(id: id))
                 .execute()
 

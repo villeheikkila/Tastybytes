@@ -7,7 +7,6 @@ struct SupabaseFlavorRepository: FlavorRepository {
     func getAll() async -> Result<[Flavor], Error> {
         do {
             let response: [Flavor] = try await client
-                .database
                 .from(.flavors)
                 .select(Flavor.getQuery(.saved(false)))
                 .order("name")
@@ -23,7 +22,6 @@ struct SupabaseFlavorRepository: FlavorRepository {
     func insert(newFlavor: Flavor.NewRequest) async -> Result<Flavor, Error> {
         do {
             let response: Flavor = try await client
-                .database
                 .from(.flavors)
                 .insert(newFlavor, returning: .representation)
                 .select(Flavor.getQuery(.saved(false)))
@@ -40,7 +38,6 @@ struct SupabaseFlavorRepository: FlavorRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.flavors)
                 .delete()
                 .eq("id", value: id)

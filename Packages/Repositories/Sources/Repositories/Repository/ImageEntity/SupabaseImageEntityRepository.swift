@@ -7,7 +7,6 @@ struct SupabaseImageEntityRepository: ImageEntityRepository {
     func getByFileName(from: ImageCategory, fileName: String) async -> Result<ImageEntity, Error> {
         do {
             let response: ImageEntity = try await client
-                .database
                 .from(from.table)
                 .select(ImageEntity.getQuery(.saved(nil)))
                 .eq("file", value: fileName)
@@ -25,7 +24,6 @@ struct SupabaseImageEntityRepository: ImageEntityRepository {
     func delete(from: ImageCategory, entity: ImageEntity) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(from.table)
                 .delete()
                 .eq("id", value: entity.id)

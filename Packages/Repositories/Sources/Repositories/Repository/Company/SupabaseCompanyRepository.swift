@@ -9,7 +9,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func getById(id: Int) async -> Result<Company, Error> {
         do {
             let response: Company = try await client
-                .database
                 .from(.companies)
                 .select(Company.getQuery(.saved(false)))
                 .eq("id", value: id)
@@ -27,7 +26,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func getJoinedById(id: Int) async -> Result<Company.Joined, Error> {
         do {
             let response: Company.Joined = try await client
-                .database
                 .from(.companies)
                 .select(Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
                 .eq("id", value: id)
@@ -45,7 +43,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func insert(newCompany: Company.NewRequest) async -> Result<Company, Error> {
         do {
             let response: Company = try await client
-                .database
                 .from(.companies)
                 .insert(newCompany, returning: .representation)
                 .select(Company.getQuery(.saved(false)))
@@ -78,7 +75,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func getUnverified() async -> Result<[Company], Error> {
         do {
             let response: [Company] = try await client
-                .database
                 .from(.companies)
                 .select(Company.getQuery(.saved(false)))
                 .eq("is_verified", value: false)
@@ -95,7 +91,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error> {
         do {
             let response: Company.Joined = try await client
-                .database
                 .from(.companies)
                 .update(updateRequest)
                 .eq("id", value: updateRequest.id)
@@ -113,7 +108,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.companyEditSuggestions)
                 .insert(updateRequest)
                 .execute()
@@ -127,7 +121,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.companies)
                 .delete()
                 .eq("id", value: id)
@@ -142,7 +135,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(fn: .verifyCompany, params: Company.VerifyRequest(id: id, isVerified: isVerified))
                 .single()
                 .execute()
@@ -161,7 +153,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .joined(separator: " & ")
 
             let response: [Company] = try await client
-                .database
                 .from(.companies)
                 .select(Company.getQuery(.saved(false)))
                 .textSearch("name", query: searchString)
@@ -177,7 +168,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func getSummaryById(id: Int) async -> Result<Summary, Error> {
         do {
             let response: Summary = try await client
-                .database
                 .rpc(fn: .getCompanySummary, params: Company.SummaryRequest(id: id))
                 .select()
                 .limit(1)

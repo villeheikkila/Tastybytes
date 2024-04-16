@@ -7,7 +7,6 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
     func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error> {
         do {
             let response: SubBrand = try await client
-                .database
                 .from(.subBrands)
                 .insert(newSubBrand, returning: .representation)
                 .select(SubBrand.getQuery(.saved(false)))
@@ -24,7 +23,6 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
     func update(updateRequest: SubBrand.Update) async -> Result<SubBrand, Error> {
         do {
             let baseQuery = client
-                .database
                 .from(.subBrands)
 
             switch updateRequest {
@@ -56,7 +54,6 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.subBrands)
                 .delete()
                 .eq("id", value: id)
@@ -71,7 +68,6 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(fn: .verifySubBrand, params: SubBrand.VerifyRequest(id: id, isVerified: isVerified))
                 .single()
                 .execute()
@@ -85,7 +81,6 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
     func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error> {
         do {
             let response: [SubBrand.JoinedBrand] = try await client
-                .database
                 .from(.subBrands)
                 .select(SubBrand.getQuery(.joinedBrand(false)))
                 .eq("is_verified", value: false)

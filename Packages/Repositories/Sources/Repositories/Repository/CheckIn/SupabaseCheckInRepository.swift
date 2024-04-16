@@ -9,7 +9,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
-                .database
                 .rpc(fn: .getActivityFeed)
                 .select(CheckIn.getQuery(.joined(false)))
                 .range(from: from, to: to)
@@ -24,7 +23,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error> {
         do {
             let queryBuilder = client
-                .database
                 .from(.checkIns)
                 .select(CheckIn.getQuery(.joined(false)))
                 .eq("created_by", value: id.uuidString.lowercased())
@@ -51,7 +49,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getByProductId(id: Int, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
-                .database
                 .from(segment.table)
                 .select(CheckIn.getQuery(.joined(false)))
                 .eq("product_id", value: id)
@@ -69,7 +66,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[ImageEntity.JoinedCheckIn], Error> {
         do {
             let response: [ImageEntity.JoinedCheckIn] = try await client
-                .database
                 .from(.checkInImages)
                 .select(CheckIn.getQuery(.image(false)))
                 .eq("created_by", value: id)
@@ -87,7 +83,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async -> Result<[ImageEntity.JoinedCheckIn], Error> {
         do {
             let response: [ImageEntity.JoinedCheckIn] = try await client
-                .database
                 .from(.checkInImages)
                 .select(CheckIn.getQuery(.image(false)))
                 .eq(by.column, value: by.id)
@@ -105,7 +100,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getByLocation(locationId: UUID, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
-                .database
                 .from(segment.table)
                 .select(CheckIn.getQuery(.joined(false)))
                 .eq("location_id", value: locationId.uuidString)
@@ -123,7 +117,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getById(id: Int) async -> Result<CheckIn, Error> {
         do {
             let response: CheckIn = try await client
-                .database
                 .from(.checkIns)
                 .select(CheckIn.getQuery(.joined(false)))
                 .eq("id", value: id)
@@ -141,7 +134,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error> {
         do {
             let createdCheckIn: IntId = try await client
-                .database
                 .rpc(fn: .createCheckIn, params: newCheckInParams)
                 .select("id")
                 .limit(1)
@@ -158,7 +150,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error> {
         do {
             let response: CheckIn = try await client
-                .database
                 .rpc(fn: .updateCheckIn, params: updateCheckInParams)
                 .select(CheckIn.getQuery(.joined(false)))
                 .limit(1)
@@ -175,7 +166,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.checkIns)
                 .delete()
                 .eq("id", value: id)
@@ -190,7 +180,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func deleteAsModerator(checkIn: CheckIn) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(fn: .deleteCheckInAsModerator, params: CheckIn.DeleteAsAdminRequest(checkIn: checkIn))
                 .execute()
 
@@ -203,7 +192,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error> {
         do {
             let response: ProfileSummary = try await client
-                .database
                 .rpc(fn: .getProfileSummary, params: ProfileSummary.GetRequest(profileId: id))
                 .select()
                 .limit(1)
@@ -241,7 +229,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func updateImageBlurHash(file: String, blurHash: String) async -> Result<ImageEntity, Error> {
         do {
             let response: ImageEntity = try await client
-                .database
                 .rpc(fn: .updateCheckInImageBlurHash, params: UpdateCheckInImageBlurHashParams(file: file, blurHash: blurHash))
                 .select(ImageEntity.getQuery(.saved(nil)))
                 .single()

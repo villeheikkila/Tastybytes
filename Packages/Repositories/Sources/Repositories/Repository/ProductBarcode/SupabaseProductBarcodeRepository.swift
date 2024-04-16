@@ -7,7 +7,6 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
     func getByProductId(id: Int) async -> Result<[ProductBarcode.JoinedWithCreator], Error> {
         do {
             let response: [ProductBarcode.JoinedWithCreator] = try await client
-                .database
                 .from(.productBarcodes)
                 .select(ProductBarcode.getQuery(.joinedCreator(false)))
                 .eq("product_id", value: id)
@@ -23,7 +22,6 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
     func addToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error> {
         do {
             try await client
-                .database
                 .from(.productBarcodes)
                 .insert(ProductBarcode.NewRequest(product: product, barcode: barcode),
                         returning: .representation)
@@ -38,7 +36,6 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.productBarcodes)
                 .delete()
                 .eq("id", value: id)

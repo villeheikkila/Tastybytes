@@ -7,7 +7,6 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
     func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
         do {
             let response: Subcategory = try await client
-                .database
                 .from(.subcategories)
                 .insert(newSubcategory, returning: .representation)
                 .select(Subcategory.getQuery(.saved(false)))
@@ -24,7 +23,6 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.subcategories)
                 .delete()
                 .eq("id", value: id)
@@ -39,7 +37,6 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
     func update(updateRequest: Subcategory.UpdateRequest) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.subcategories)
                 .update(updateRequest)
                 .eq("id", value: updateRequest.id)
@@ -54,7 +51,6 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(fn: .verifySubcategory, params: Subcategory.VerifyRequest(id: id, isVerified: isVerified))
                 .single()
                 .execute()

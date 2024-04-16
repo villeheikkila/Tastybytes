@@ -7,7 +7,6 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
         do {
             let result: CheckInComment = try await client
-                .database
                 .from(.checkInComments)
                 .insert(newCheckInComment, returning: .representation)
                 .select(CheckInComment.getQuery(.joinedProfile(false)))
@@ -25,7 +24,6 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
         do {
             let response: CheckInComment = try await client
-                .database
                 .from(.checkInComments)
                 .update(updateCheckInComment, returning: .representation)
                 .eq("id", value: updateCheckInComment.id)
@@ -43,7 +41,6 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error> {
         do {
             let response: [CheckInComment] = try await client
-                .database
                 .from(.checkInComments)
                 .select(CheckInComment.getQuery(.joinedProfile(false)))
                 .eq("check_in_id", value: id)
@@ -60,7 +57,6 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     func deleteById(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.checkInComments)
                 .delete()
                 .eq("id", value: id)
@@ -75,7 +71,6 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(
                     fn: .deleteCheckInCommentAsModerator,
                     params: CheckInComment.DeleteAsAdminRequest(comment: comment)

@@ -9,7 +9,6 @@ struct SupabaseProductRepository: ProductRepository {
     func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error> {
         do {
             let queryBuilder = try client
-                .database
                 .rpc(
                     fn: .searchProducts,
                     params: Product.SearchParams(searchTerm: searchTerm, filter: filter)
@@ -39,7 +38,6 @@ struct SupabaseProductRepository: ProductRepository {
                  categoryFilterId: Int?) async -> Result<[Product.Joined], Error>
     {
         var queryBuilder = client
-            .database
             .from(.viewProductRatings)
             .select(Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
 
@@ -79,7 +77,6 @@ struct SupabaseProductRepository: ProductRepository {
     func getUnverified() async -> Result<[Product.Joined], Error> {
         do {
             let response: [Product.Joined] = try await client
-                .database
                 .from(.products)
                 .select(Product.getQuery(.joinedBrandSubcategoriesCreator(false)))
                 .eq("is_verified", value: false)
@@ -96,7 +93,6 @@ struct SupabaseProductRepository: ProductRepository {
     func search(barcode: Barcode) async -> Result<[Product.Joined], Error> {
         do {
             let response: [ProductBarcode.Joined] = try await client
-                .database
                 .from(.productBarcodes)
                 .select(ProductBarcode.getQuery(.joined(false)))
                 .eq("barcode", value: barcode.barcode)
@@ -113,7 +109,6 @@ struct SupabaseProductRepository: ProductRepository {
     func getById(id: Int) async -> Result<Product.Joined, Error> {
         do {
             let response: Product.Joined = try await client
-                .database
                 .from(.products)
                 .select(Product.getQuery(.joinedBrandSubcategories(false)))
                 .eq("id", value: id)
@@ -131,7 +126,6 @@ struct SupabaseProductRepository: ProductRepository {
     func checkIfOnWishlist(id: Int) async -> Result<Bool, Error> {
         do {
             let response: Bool = try await client
-                .database
                 .rpc(
                     fn: .isOnCurrentUserWishlist,
                     params: ProfileWishlist.CheckIfOnWishlist(id: id)
@@ -149,7 +143,6 @@ struct SupabaseProductRepository: ProductRepository {
     func addToWishlist(productId: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.profileWishlistItems)
                 .insert(ProfileWishlist.New(productId: productId))
                 .single()
@@ -164,7 +157,6 @@ struct SupabaseProductRepository: ProductRepository {
     func removeFromWishlist(productId: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.profileWishlistItems)
                 .delete()
                 .eq("product_id", value: productId)
@@ -179,7 +171,6 @@ struct SupabaseProductRepository: ProductRepository {
     func getWishlistItems(profileId: UUID) async -> Result<[ProfileWishlist.Joined], Error> {
         do {
             let reponse: [ProfileWishlist.Joined] = try await client
-                .database
                 .from(.profileWishlistItems)
                 .select(ProfileWishlist.getQuery(.joined(false)))
                 .eq("created_by", value: profileId.uuidString)
@@ -195,7 +186,6 @@ struct SupabaseProductRepository: ProductRepository {
     func getByProfile(id: UUID) async -> Result<[Product.Joined], Error> {
         do {
             let response: [Product.Joined] = try await client
-                .database
                 .from(.viewProfileProductRatings)
                 .select(Product.getQuery(.joinedBrandSubcategoriesProfileRatings(false)))
                 .eq("check_in_created_by", value: id.uuidString)
@@ -211,7 +201,6 @@ struct SupabaseProductRepository: ProductRepository {
     func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error> {
         do {
             let response: [Product.Joined] = try await client
-                .database
                 .from(.products)
                 .select(Product.getQuery(.joinedBrandSubcategories(false)))
                 .eq("created_by", value: id.uuidString)
@@ -243,7 +232,6 @@ struct SupabaseProductRepository: ProductRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.products)
                 .delete()
                 .eq("id", value: id)
@@ -258,7 +246,6 @@ struct SupabaseProductRepository: ProductRepository {
     func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error> {
         do {
             let product: IntId = try await client
-                .database
                 .rpc(fn: .createProduct, params: newProductParams)
                 .select("id")
                 .limit(1)
@@ -283,7 +270,6 @@ struct SupabaseProductRepository: ProductRepository {
     func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(
                     fn: .mergeProducts,
                     params: Product.MergeProductsParams(productId: productId, toProductId: toProductId)
@@ -299,7 +285,6 @@ struct SupabaseProductRepository: ProductRepository {
     func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.productDuplicateSuggestions)
                 .insert(Product.DuplicateRequest(productId: productId, duplicateOfProductId: duplicateOfProductId),
                         returning: .none)
@@ -315,7 +300,6 @@ struct SupabaseProductRepository: ProductRepository {
     func getMarkedAsDuplicateProducts() async -> Result<[ProductDuplicateSuggestion], Error> {
         do {
             let response: [ProductDuplicateSuggestion] = try await client
-                .database
                 .from(.productDuplicateSuggestions)
                 .select(Product.getQuery(.productDuplicateSuggestion(false)))
                 .order("created_at", ascending: false)
@@ -333,7 +317,6 @@ struct SupabaseProductRepository: ProductRepository {
     {
         do {
             try await client
-                .database
                 .from(.productEditSuggestions)
                 .insert(productEditSuggestionParams,
                         returning: .none)
@@ -349,7 +332,6 @@ struct SupabaseProductRepository: ProductRepository {
     func editProduct(productEditParams: Product.EditRequest) async -> Result<Product.Joined, Error> {
         do {
             let updateResult: Product.Joined = try await client
-                .database
                 .rpc(fn: .editProduct, params: productEditParams)
                 .select(Product.getQuery(.joinedBrandSubcategories(false)))
                 .limit(1)
@@ -372,7 +354,6 @@ struct SupabaseProductRepository: ProductRepository {
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(fn: .verifyProduct, params: Product.VerifyRequest(id: id, isVerified: isVerified))
                 .single()
                 .execute()
@@ -386,7 +367,6 @@ struct SupabaseProductRepository: ProductRepository {
     func getSummaryById(id: Int) async -> Result<Summary, Error> {
         do {
             let response: Summary = try await client
-                .database
                 .rpc(fn: .getProductSummary, params: Product.SummaryRequest(id: id))
                 .select()
                 .limit(1)

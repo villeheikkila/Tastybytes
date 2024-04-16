@@ -8,7 +8,6 @@ struct SupabaseReportRepository: ReportRepository {
     func getAll() async -> Result<[Report], Error> {
         do {
             let response: [Report] = try await client
-                .database
                 .from(.reports)
                 .select(Report.getQuery(.joined(false)))
                 .is("resolved_at", value: "null")
@@ -25,7 +24,6 @@ struct SupabaseReportRepository: ReportRepository {
     func insert(report: Report.NewRequest) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.reports)
                 .insert(report, returning: .none)
                 .execute()
@@ -39,7 +37,6 @@ struct SupabaseReportRepository: ReportRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.reports)
                 .delete()
                 .eq("id", value: id)
@@ -54,7 +51,6 @@ struct SupabaseReportRepository: ReportRepository {
     func resolve(id: Int) async -> Result<Report, Error> {
         do {
             let response: Report = try await client
-                .database
                 .from(.reports)
                 .update(Report.ResolveRequest(resolvedAt: Date.now))
                 .eq("id", value: id)

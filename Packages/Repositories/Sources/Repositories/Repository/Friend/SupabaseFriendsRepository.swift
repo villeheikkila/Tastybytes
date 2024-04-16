@@ -8,7 +8,6 @@ struct SupabaseFriendsRepository: FriendRepository {
     func getByUserId(userId: UUID, status: Friend.Status?) async -> Result<[Friend], Error> {
         do {
             var queryBuilder = client
-                .database
                 .from(.friends)
                 .select(Friend.getQuery(.joined(false)))
                 .or("user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
@@ -38,7 +37,6 @@ struct SupabaseFriendsRepository: FriendRepository {
     func insert(newFriend: Friend.NewRequest) async -> Result<Friend, Error> {
         do {
             let response: Friend = try await client
-                .database
                 .from(.friends)
                 .insert(newFriend, returning: .representation)
                 .select(Friend.getQuery(.joined(false)))
@@ -55,7 +53,6 @@ struct SupabaseFriendsRepository: FriendRepository {
     func update(id: Int, friendUpdate: Friend.UpdateRequest) async -> Result<Friend, Error> {
         do {
             let response: Friend = try await client
-                .database
                 .from(.friends)
                 .update(friendUpdate, returning: .representation)
                 .eq("id", value: id)
@@ -73,7 +70,6 @@ struct SupabaseFriendsRepository: FriendRepository {
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.friends)
                 .delete()
                 .eq("id", value: id)

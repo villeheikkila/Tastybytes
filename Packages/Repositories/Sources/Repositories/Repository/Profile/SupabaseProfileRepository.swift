@@ -9,7 +9,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func getById(id: UUID) async -> Result<Profile, Error> {
         do {
             let response: Profile = try await client
-                .database
                 .from(.profiles)
                 .select(Profile.getQuery(.minimal(false)))
                 .eq("id", value: id.uuidString.lowercased())
@@ -27,7 +26,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func getCurrentUser() async -> Result<Profile.Extended, Error> {
         do {
             let response: Profile.Extended = try await client
-                .database
                 .rpc(fn: .getCurrentProfile)
                 .select(Profile.getQuery(.extended(false)))
                 .limit(1)
@@ -44,7 +42,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func update(update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error> {
         do {
             let response: Profile.Extended = try await client
-                .database
                 .from(.profiles)
                 .update(update, returning: .representation)
                 /*
@@ -67,7 +64,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error> {
         do {
             let response: ProfileSettings = try await client
-                .database
                 .from(.profileSettings)
                 .update(update,
                         returning: .representation)
@@ -91,7 +87,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func getContributions(userId: UUID) async -> Result<Contributions, Error> {
         do {
             let response: Contributions = try await client
-                .database
                 .rpc(fn: .getContributionsByUser, params: Contributions.ContributionsParams(id: userId))
                 .select(Contributions.getQuery(.value))
                 .limit(1)
@@ -108,7 +103,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error> {
         do {
             let response: [CategoryStatistics] = try await client
-                .database
                 .rpc(
                     fn: .getCategoryStats,
                     params: CategoryStatistics.CategoryStatisticsParams(id: userId)
@@ -128,7 +122,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     {
         do {
             let response: [SubcategoryStatistics] = try await client
-                .database
                 .rpc(
                     fn: .getSubcategoryStats,
                     params: SubcategoryStatistics.SubcategoryStatisticsParams(userId: userId, categoryId: categoryId)
@@ -146,7 +139,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func currentUserExport() async -> Result<String, Error> {
         do {
             let csv = try await client
-                .database
                 .rpc(fn: .exportData)
                 .csv()
                 .execute()
@@ -165,10 +157,9 @@ struct SupabaseProfileRepository: ProfileRepository {
     func search(searchTerm: String, currentUserId: UUID? = nil) async -> Result<[Profile], Error> {
         do {
             let query = client
-                .database
                 .from(.profiles)
                 .select(Profile.getQuery(.minimal(false)))
-                .ilike("search", value: "%\(searchTerm)%")
+                .ilike("search", pattern: "%\(searchTerm)%")
 
             if let currentUserId {
                 let response: [Profile] = try await query
@@ -204,7 +195,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func deleteCurrentAccount() async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(fn: .deleteCurrentUser)
                 .execute()
 
@@ -217,7 +207,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error> {
         do {
             let result: Bool = try await client
-                .database
                 .rpc(
                     fn: .checkIfUsernameIsAvailable,
                     params: Profile.UsernameCheckRequest(username: username)
@@ -236,7 +225,6 @@ struct SupabaseProfileRepository: ProfileRepository {
     {
         do {
             let result: TimePeriodStatistic = try await client
-                .database
                 .rpc(
                     fn: .getTimePeriodStatistics,
                     params: TimePeriodStatistic.RequestParams(userId: userId, timePeriod: timePeriod)

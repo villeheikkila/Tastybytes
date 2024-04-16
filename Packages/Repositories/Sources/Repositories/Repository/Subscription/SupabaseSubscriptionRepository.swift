@@ -8,7 +8,6 @@ struct SupabaseSubscriptionRepository: SubscriptionRepository {
     func getActiveGroup() async -> Result<SubscriptionGroup.Joined, Error> {
         do {
             let response: SubscriptionGroup.Joined = try await client
-                .database
                 .from(.subscriptionGroups)
                 .select(SubscriptionGroup.getQuery(.joined(false)))
                 .eq("is_active", value: true)
@@ -26,7 +25,6 @@ struct SupabaseSubscriptionRepository: SubscriptionRepository {
     func syncSubscriptionTransaction(transactionInfo: SubscriptionTransaction) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.subscriptionTransactions)
                 .upsert(transactionInfo, onConflict: "id")
                 .execute()

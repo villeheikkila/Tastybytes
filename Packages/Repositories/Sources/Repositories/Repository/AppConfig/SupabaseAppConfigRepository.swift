@@ -8,7 +8,6 @@ struct SupabaseAppConfigRepository: AppConfigRepository {
     func get() async -> Result<AppConfig, Error> {
         do {
             let response: AppConfig = try await client
-                .database
                 .from(.appConfigs)
                 .select(AppConfig.getQuery(.saved(false)))
                 .limit(1)

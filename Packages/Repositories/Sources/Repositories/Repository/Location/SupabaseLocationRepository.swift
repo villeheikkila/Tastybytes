@@ -8,7 +8,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func insert(location: Location) async -> Result<Location, Error> {
         do {
             let result: Location = try await client
-                .database
                 .rpc(fn: .getLocationInsertIfNotExist, params: location.newLocationRequest)
                 .select(Location.getQuery(.joined(false)))
                 .single()
@@ -24,7 +23,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func getById(id: UUID) async -> Result<Location, Error> {
         do {
             let response: Location = try await client
-                .database
                 .from(.locations)
                 .select(Location.getQuery(.joined(false)))
                 .eq("id", value: id)
@@ -42,7 +40,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func getCheckInLocations(userId _: UUID) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
-                .database
                 .from(.viewRecentLocationsFromCurrentUser)
                 .select(Location.getQuery(.joined(false)))
                 .order("created_at", ascending: false)
@@ -58,7 +55,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func getRecentLocations(category: Location.RecentLocation) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
-                .database
                 .from(category.view)
                 .select(Location.getQuery(.joined(false)))
                 .limit(5)
@@ -75,7 +71,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
-                .database
                 .rpc(fn: .getLocationSuggestions, params: location)
                 .select(Location.getQuery(.joined(false)))
                 .limit(10)
@@ -91,7 +86,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func getAllCountries() async -> Result<[Country], Error> {
         do {
             let response: [Country] = try await client
-                .database
                 .from(.countries)
                 .select(Country.getQuery(.saved(false)))
                 .execute()
@@ -106,7 +100,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func delete(id: UUID) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .from(.locations)
                 .delete()
                 .eq("id", value: id)
@@ -121,7 +114,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func search(searchTerm: String) async -> Result<[Location], Error> {
         do {
             let response: [Location] = try await client
-                .database
                 .from(.locations)
                 .select(Location.getQuery(.joined(false)))
                 .textSearch("name", query: searchTerm + ":*")
@@ -137,7 +129,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func getSummaryById(id: UUID) async -> Result<Summary, Error> {
         do {
             let response: Summary = try await client
-                .database
                 .rpc(fn: .getLocationSummary, params: Location.SummaryRequest(id: id))
                 .select()
                 .limit(1)
@@ -154,7 +145,6 @@ struct SupabaseLocationRepository: LocationRepository {
     func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error> {
         do {
             try await client
-                .database
                 .rpc(
                     fn: .mergeLocations,
                     params: Location.MergeLocationParams(locationId: locationId, toLocationId: toLocationId)
