@@ -9,9 +9,10 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
-                .rpc(fn: .getActivityFeed)
+                .from(.viewActivityFeed)
                 .select(CheckIn.getQuery(.joined(false)))
                 .range(from: from, to: to)
+                .order("created_at", ascending: false)
                 .execute()
                 .value
             return .success(response)
@@ -26,7 +27,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .from(.checkIns)
                 .select(CheckIn.getQuery(.joined(false)))
                 .eq("created_by", value: id.uuidString.lowercased())
-                .order("id", ascending: false)
+                .order("created_at", ascending: false)
 
             switch queryType {
             case .all:

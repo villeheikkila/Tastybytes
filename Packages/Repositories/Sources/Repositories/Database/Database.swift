@@ -51,6 +51,7 @@ enum Database {
         case subscriptionProducts = "subscription_products"
         case subscriptionTransactions = "subscription_transactions"
         // views
+        case viewActivityFeed = "view__activity_feed"
         case viewCheckInsFromFriends = "view__check_ins_from_friends"
         case viewCheckInsFromCurrentUser = "view__check_ins_from_current_user"
         case viewSearchProductRatings = "view__search_product_ratings"
@@ -76,7 +77,6 @@ enum Database {
         case deleteCurrentUser = "fnc__delete_current_user"
         case editProduct = "fnc__edit_product"
         case exportData = "fnc__export_data"
-        case getActivityFeed = "fnc__get_activity_feed"
         case getCategoryStats = "fnc__get_category_stats"
         case getCompanySummary = "fnc__get_company_summary"
         case getContributionsByUser = "fnc__get_contributions_by_user"
