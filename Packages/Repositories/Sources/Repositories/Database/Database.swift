@@ -42,7 +42,6 @@ enum Database {
         case reports
         case roles
         case rolesPermissions = "roles_permissions"
-        case secrets
         case servingStyles = "serving_styles"
         case subBrandEditSuggestion = "sub_brand_edit_suggestion"
         case subBrands = "sub_brands"
