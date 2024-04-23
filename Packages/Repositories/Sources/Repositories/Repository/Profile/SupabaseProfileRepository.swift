@@ -239,4 +239,17 @@ struct SupabaseProfileRepository: ProfileRepository {
             return .failure(error)
         }
     }
+
+    func getCheckInsPerDayForYear(_ request: CheckInsPerYearRequest) async -> Result<[CheckInsPerDay], Error> {
+        do {
+            let response: [CheckInsPerDay] = try await client
+                .rpc(fn: .getCheckInsByYear, params: request)
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
 }

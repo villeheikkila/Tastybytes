@@ -374,3 +374,33 @@ public extension AvatarURL {
         return imageEntity.getLogoUrl(baseUrl: baseUrl)
     }
 }
+
+public struct CheckInsPerYearRequest: Sendable, Encodable {
+    public let profileId: UUID
+    public let year: Int
+
+    public init(profileId: UUID, year: Int) {
+        self.profileId = profileId
+        self.year = year
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case profileId = "p_profile_id"
+        case year = "p_input_year"
+    }
+}
+
+public struct CheckInsPerDay: Sendable, Codable {
+    public let checkInDate: Date
+    public let numberOfCheckIns: Int
+
+    public init(checkInDate: Date, numberOfCheckIns: Int) {
+        self.checkInDate = checkInDate
+        self.numberOfCheckIns = numberOfCheckIns
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case checkInDate = "check_in_date"
+        case numberOfCheckIns = "number_of_check_ins"
+    }
+}
