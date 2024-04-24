@@ -1,3 +1,4 @@
+import Charts
 import Components
 import EnvironmentModels
 import Extensions
@@ -5,7 +6,6 @@ import Models
 import OSLog
 import Repositories
 import SwiftUI
-import Charts
 
 @MainActor
 struct CheckInsByDayChart: View {
@@ -13,30 +13,51 @@ struct CheckInsByDayChart: View {
         case week, month, year
     }
 
-    
     private let logger = Logger(category: "TimePeriodStatisticView")
     @Environment(Repository.self) private var repository
     @State private var timePeriod: TimePeriodStatistic.TimePeriod = .week
     @State private var isLoading = false
     @State private var timePeriodStatistics = [CheckInsPerDay]()
-    @State private var startDate: Date
-    @State private var endDate: Date
-
-    init(profile: Profile) {
-        self.profile = profile
-        self.startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date.now) ?? Date.now
-        self.endDate = Date.now
-        print("start date: \(startDate)")
-        print("end date: \(endDate)")
-
-    }
+    @State private var shiftBy = 0
+    @State private var dateRange: ClosedRange<Date> = {
+        let endDate = Date.now
+        let startDate = Calendar.current.date(byAdding: .day, value: -7, to: endDate) ?? endDate
+        return startDate ... endDate
+    }()
 
     let profile: Profile
-    
+
     var checkInsInRange: [CheckInsPerDay] {
         timePeriodStatistics.filter { checkIn in
-            (checkIn.checkInDate >= startDate) && (checkIn.checkInDate <= endDate)
+            dateRange.contains(checkIn.checkInDate)
         }
+    }
+
+    private func shiftDateRange(byWeeks weeks: Int) {
+        guard let newStartDate = Calendar.current.date(byAdding: .weekOfYear, value: weeks, to: dateRange.lowerBound),
+              let newEndDate = Calendar.current.date(byAdding: .weekOfYear, value: weeks, to: dateRange.upperBound)
+        else {
+            return
+        }
+        dateRange = newStartDate ... newEndDate
+    }
+
+    private func shiftDateRange(byMonths months: Int) {
+        guard let newStartDate = Calendar.current.date(byAdding: .month, value: months, to: dateRange.lowerBound),
+              let newEndDate = Calendar.current.date(byAdding: .month, value: months, to: dateRange.upperBound)
+        else {
+            return
+        }
+        dateRange = newStartDate ... newEndDate
+    }
+
+    private func shiftDateRange(byYears year: Int) {
+        guard let newStartDate = Calendar.current.date(byAdding: .year, value: year, to: dateRange.lowerBound),
+              let newEndDate = Calendar.current.date(byAdding: .year, value: year, to: dateRange.upperBound)
+        else {
+            return
+        }
+        dateRange = newStartDate ... newEndDate
     }
 
     var body: some View {
@@ -49,7 +70,8 @@ struct CheckInsByDayChart: View {
             .pickerStyle(.segmented)
             .padding(.horizontal, -8)
             Text("Average")
-            Text(startDate...endDate)
+            Text(dateRange)
+            Stepper("Adjust Value", value: $shiftBy, in: 0 ... 100)
             Chart {
                 ForEach(checkInsInRange) { row in
                     BarMark(
@@ -64,25 +86,24 @@ struct CheckInsByDayChart: View {
         .task {
             await loadStatisticsForTimePeriod()
         }
-        .onChange(of: timePeriod) { _, newValue in
+        .onChange(of: shiftBy) { _, _ in
             switch timePeriod {
             case .week:
-                self.startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date.now) ?? Date.now
+                shiftDateRange(byWeeks: -shiftBy)
             case .month:
-                self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date.now) ?? Date.now
+                shiftDateRange(byMonths: -shiftBy)
             case .year:
-                self.startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date.now) ?? Date.now
+                shiftDateRange(byYears: -shiftBy)
             case .all:
-                self.startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date.now) ?? Date.now
+                shiftDateRange(byWeeks: -shiftBy)
             }
-            self.endDate = Date.now
         }
     }
 
     func loadStatisticsForTimePeriod() async {
         guard isLoading == false else { return }
         isLoading = true
-        switch await repository.profile.getCheckInsPerDayForYear(.init(profileId: profile.id, year: 2024)) {
+        switch await repository.profile.getNumberOfCheckInsByDay(.init(profileId: profile.id)) {
         case let .success(timePeriodStatistics):
             self.timePeriodStatistics = timePeriodStatistics
         case let .failure(error):
@@ -92,4 +113,3 @@ struct CheckInsByDayChart: View {
         isLoading = false
     }
 }
-

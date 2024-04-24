@@ -240,10 +240,10 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func getCheckInsPerDayForYear(_ request: CheckInsPerYearRequest) async -> Result<[CheckInsPerDay], Error> {
+    func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async -> Result<[CheckInsPerDay], Error> {
         do {
             let response: [CheckInsPerDay] = try await client
-                .rpc(fn: .getCheckInsByYear, params: request)
+                .rpc(fn: .getNumberOfCheckInsByDay, params: request)
                 .execute()
                 .value
 

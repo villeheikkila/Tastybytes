@@ -16,5 +16,5 @@ public protocol ProfileRepository: Sendable {
     func getTimePeriodStatistics(userId: UUID, timePeriod: TimePeriodStatistic.TimePeriod) async
         -> Result<TimePeriodStatistic, Error>
     func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error>
-    func getCheckInsPerDayForYear(_ request: CheckInsPerYearRequest) async -> Result<[CheckInsPerDay], Error>
+    func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async -> Result<[CheckInsPerDay], Error>
 }

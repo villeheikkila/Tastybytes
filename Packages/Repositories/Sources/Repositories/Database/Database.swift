@@ -108,7 +108,7 @@ enum Database {
         case verifySubBrand = "fnc__verify_sub_brand"
         case verifySubcategory = "fnc__verify_subcategory"
         case updateCheckInImageBlurHash = "fnc__update_check_in_image_blur_hash"
-        case getCheckInsByYear = "fnc__get_check_ins_by_year"
+        case getNumberOfCheckInsByDay = "fnc__get_check_ins_by_time_range"
     }
 }
 

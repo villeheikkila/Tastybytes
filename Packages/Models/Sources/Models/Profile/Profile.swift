@@ -375,18 +375,15 @@ public extension AvatarURL {
     }
 }
 
-public struct CheckInsPerYearRequest: Sendable, Encodable {
+public struct NumberOfCheckInsByDayRequest: Sendable, Encodable {
     public let profileId: UUID
-    public let year: Int
 
-    public init(profileId: UUID, year: Int) {
+    public init(profileId: UUID) {
         self.profileId = profileId
-        self.year = year
     }
 
     enum CodingKeys: String, CodingKey {
         case profileId = "p_profile_id"
-        case year = "p_input_year"
     }
 }
 
