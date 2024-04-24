@@ -396,6 +396,9 @@
         }
       }
     },
+    "Average" : {
+
+    },
     "barcode.management.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -811,6 +814,9 @@
           }
         }
       }
+    },
+    "Check-ins" : {
+
     },
     "checkIn.action.createNew" : {
       "localizations" : {
@@ -1743,6 +1749,9 @@
           }
         }
       }
+    },
+    "Date" : {
+
     },
     "deleteAccount.success.done.label" : {
       "localizations" : {

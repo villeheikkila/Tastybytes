@@ -390,7 +390,8 @@ public struct CheckInsPerYearRequest: Sendable, Encodable {
     }
 }
 
-public struct CheckInsPerDay: Sendable, Codable {
+public struct CheckInsPerDay: Sendable, Codable, Identifiable {
+    public var id: Double { checkInDate.timeIntervalSince1970 }
     public let checkInDate: Date
     public let numberOfCheckIns: Int
 
