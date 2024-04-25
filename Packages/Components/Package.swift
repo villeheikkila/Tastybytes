@@ -22,7 +22,8 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Components", dependencies: [
+            name: "Components",
+            dependencies: [
                 .product(name: "Models", package: "Models"),
                 .product(name: "Extensions", package: "Extensions"),
                 .product(name: "Nuke", package: "Nuke"),

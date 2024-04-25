@@ -1,4 +1,3 @@
-import Charts
 import Foundation
 
 public struct ProfileSummary: Codable, Sendable {

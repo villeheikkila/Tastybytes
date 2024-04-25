@@ -246,7 +246,7 @@
 		5CD3C0E02B814BF90049E563 /* ToolbarDismissAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D52B814AE90049E563 /* ToolbarDismissAction.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0E12B814BFB0049E563 /* ToolbarDoneActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D42B814AE90049E563 /* ToolbarDoneActionView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0E22B814C680049E563 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D22B814ACD0049E563 /* CloseButton.swift */; };
-		5CE8A3AA2BD8381B0048BC58 /* CheckInsByDayChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByDayChart.swift */; };
+		5CE8A3AA2BD8381B0048BC58 /* CheckInsByDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -533,7 +533,7 @@
 		5CD3C0DE2B814B9A0049E563 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		5CE030DF2B9E4E9200E119E4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
-		5CE8A3A92BD8381B0048BC58 /* CheckInsByDayChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByDayChart.swift; sourceTree = "<group>"; };
+		5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByDayView.swift; sourceTree = "<group>"; };
 		5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsUniqueByCategoryScreen.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
@@ -1158,7 +1158,7 @@
 				5C90574D2B2894BE00EC157B /* NameTag */,
 				5C82E8942B2F749700F2B369 /* Components */,
 				5C9057A22B2894BE00EC157B /* TimePeriodStatisticView.swift */,
-				5CE8A3A92BD8381B0048BC58 /* CheckInsByDayChart.swift */,
+				5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */,
 				5C9057A32B2894BE00EC157B /* ProfileScreen.swift */,
 				5C9057A42B2894BE00EC157B /* ProfileView.swift */,
 				5C9057A52B2894BE00EC157B /* CheckInImagesView.swift */,
@@ -1815,7 +1815,7 @@
 				5C511D832BA791D400F95290 /* ActivityWatchTab.swift in Sources */,
 				5C82E89E2B2F7AC700F2B369 /* ProfileSummarySection.swift in Sources */,
 				5C9057EA2B2894BE00EC157B /* DiscoverTab.swift in Sources */,
-				5CE8A3AA2BD8381B0048BC58 /* CheckInsByDayChart.swift in Sources */,
+				5CE8A3AA2BD8381B0048BC58 /* CheckInsByDayView.swift in Sources */,
 				5C9057FB2B2894BE00EC157B /* MergeLocationSheet.swift in Sources */,
 				5CB33AD22B8A56DF00CDC09F /* MapThumbnail.swift in Sources */,
 				5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailableState.swift in Sources */,

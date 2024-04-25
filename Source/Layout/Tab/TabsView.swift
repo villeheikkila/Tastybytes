@@ -22,7 +22,7 @@ struct TabsView: View {
             tabs
         }
         .sensoryFeedback(.selection, trigger: tabManager.selection)
-        .simultaneousGesture(switchTabGesture)
+        // .simultaneousGesture(switchTabGesture)
         .environment(tabManager)
         .onOpenURL { url in
             if let tab = TabUrlHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).tab {

@@ -243,9 +243,6 @@
         }
       }
     },
-    "Adjust Value" : {
-
-    },
     "admin.category.title" : {
       "localizations" : {
         "en" : {
@@ -398,9 +395,6 @@
           }
         }
       }
-    },
-    "Average" : {
-
     },
     "barcode.management.navigationTitle" : {
       "localizations" : {
@@ -817,9 +811,6 @@
           }
         }
       }
-    },
-    "Check-ins" : {
-
     },
     "checkIn.action.createNew" : {
       "localizations" : {
@@ -1380,6 +1371,12 @@
     "checkInList.error.failedToLoad.alert" : {
 
     },
+    "checkInsByDayChart.axisLabel.checkIns" : {
+
+    },
+    "checkInsByDayChart.axisLabel.date" : {
+
+    },
     "comment.deleteAsModerator.confirmation.description" : {
       "localizations" : {
         "en" : {
@@ -1752,9 +1749,6 @@
           }
         }
       }
-    },
-    "Date" : {
-
     },
     "deleteAccount.success.done.label" : {
       "localizations" : {
@@ -4788,6 +4782,46 @@
         }
       }
     },
+    "timePeriod.abbreviated.month" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M"
+          }
+        }
+      }
+    },
+    "timePeriod.abbreviated.sixMonths" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6M"
+          }
+        }
+      }
+    },
+    "timePeriod.abbreviated.week" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "W"
+          }
+        }
+      }
+    },
+    "timePeriod.abbreviated.year" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Y"
+          }
+        }
+      }
+    },
     "timePeriod.all" : {
       "localizations" : {
         "en" : {
@@ -4807,6 +4841,12 @@
           }
         }
       }
+    },
+    "timePeriod.next" : {
+
+    },
+    "timePeriod.previous" : {
+
     },
     "timePeriod.week" : {
       "localizations" : {
