@@ -220,7 +220,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func getTimePeriodStatistics(userId: UUID, timePeriod: TimePeriodStatistic.TimePeriod) async
+    func getTimePeriodStatistics(userId: UUID, timePeriod: StatisticsTimePeriod) async
         -> Result<TimePeriodStatistic, Error>
     {
         do {

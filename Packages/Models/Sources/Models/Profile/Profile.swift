@@ -301,7 +301,7 @@ public struct TimePeriodStatistic: Codable, Sendable {
     }
 
     public struct RequestParams: Codable, Sendable {
-        public init(userId: UUID, timePeriod: TimePeriod) {
+        public init(userId: UUID, timePeriod: StatisticsTimePeriod) {
             self.userId = userId
             self.timePeriod = timePeriod.rawValue
         }
@@ -387,18 +387,19 @@ public struct NumberOfCheckInsByDayRequest: Sendable, Encodable {
     }
 }
 
+public enum StatisticsTimePeriod: String, CaseIterable, Sendable {
+    case week, month, sixMonths = "six_months", year
+}
+
 public struct CheckInsPerDay: Sendable, Codable, Identifiable {
     public var id: Double { checkInDate.timeIntervalSince1970 }
     public let checkInDate: Date
     public let numberOfCheckIns: Int
-
-    public init(checkInDate: Date, numberOfCheckIns: Int) {
-        self.checkInDate = checkInDate
-        self.numberOfCheckIns = numberOfCheckIns
-    }
+    public let uniqueProductCount: Int
 
     enum CodingKeys: String, CodingKey {
         case checkInDate = "check_in_date"
         case numberOfCheckIns = "number_of_check_ins"
+        case uniqueProductCount = "unique_product_count"
     }
 }

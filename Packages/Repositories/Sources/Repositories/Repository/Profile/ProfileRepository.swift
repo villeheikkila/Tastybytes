@@ -13,7 +13,7 @@ public protocol ProfileRepository: Sendable {
     func getContributions(userId: UUID) async -> Result<Contributions, Error>
     func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error>
     func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
-    func getTimePeriodStatistics(userId: UUID, timePeriod: TimePeriodStatistic.TimePeriod) async
+    func getTimePeriodStatistics(userId: UUID, timePeriod: StatisticsTimePeriod) async
         -> Result<TimePeriodStatistic, Error>
     func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error>
     func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async -> Result<[CheckInsPerDay], Error>

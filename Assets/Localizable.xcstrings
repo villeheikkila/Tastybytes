@@ -4823,6 +4823,7 @@
       }
     },
     "timePeriod.all" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4833,6 +4834,7 @@
       }
     },
     "timePeriod.month" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4849,6 +4851,7 @@
 
     },
     "timePeriod.week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4859,6 +4862,7 @@
       }
     },
     "timePeriod.year" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
