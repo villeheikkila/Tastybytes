@@ -48,13 +48,12 @@ extension StatisticsTimePeriod {
             let now = Date()
             if let shiftedStartDate = calendar.date(byAdding: .weekOfYear, value: page, to: now),
                let weekStart = calendar.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: shiftedStartDate)),
-               let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart),
-               let currentWeekStart = calendar.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))
+               let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart)
             {
                 return weekStart ... weekEnd
             }
         case .month:
-            if let startOfMonth = calendar.date(from: Calendar.current.dateComponents([.year, .month], from: now)),
+            if let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: now)),
                let shiftedStartOfMonth = calendar.date(byAdding: .month, value: page, to: startOfMonth),
                let endOfMonth = calendar.date(byAdding: .month, value: 1, to: shiftedStartOfMonth, wrappingComponents: false),
                let lastDayOfMonth = calendar.date(byAdding: .day, value: -1, to: endOfMonth)

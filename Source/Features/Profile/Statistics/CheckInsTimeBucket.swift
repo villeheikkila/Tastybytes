@@ -11,28 +11,20 @@ struct CheckInsTimeBucket: Identifiable {
                            dateRange: ClosedRange<Date>) -> [Self]
     {
         let calendar = Calendar.current
-        var results = [Date: Int]()
 
-        var currentDate = dateRange.lowerBound
-        while currentDate <= dateRange.upperBound {
-            let numberOfCheckIns = switch timePeriod {
-            case .year, .sixMonths:
-                checkInsPerDay.filter { checkIn in
-                    calendar.isDate(checkIn.checkInDate, equalTo: currentDate, toGranularity: .month)
-                }.reduce(0) { partialResult, checkInsPerDay in
-                    partialResult + checkInsPerDay.numberOfCheckIns
+        return dateRange.dates(byAdding: timePeriod.groupingInterval, using: calendar)
+            .map { currentDate -> Self in
+                let numberOfCheckIns: Int = switch timePeriod {
+                case .year, .sixMonths:
+                    checkInsPerDay.filter { checkIn in
+                        calendar.isDate(checkIn.checkInDate, equalTo: currentDate, toGranularity: .month)
+                    }.reduce(0) { $0 + $1.numberOfCheckIns }
+                case .week, .month:
+                    checkInsPerDay.first(where: { checkIn in
+                        calendar.isDate(checkIn.checkInDate, inSameDayAs: currentDate)
+                    })?.numberOfCheckIns ?? 0
                 }
-            case .week, .month:
-                checkInsPerDay.first(where: { checkIn in
-                    calendar.isDate(checkIn.checkInDate, inSameDayAs: currentDate)
-                })?.numberOfCheckIns ?? 0
+                return .init(date: currentDate, checkIns: numberOfCheckIns)
             }
-
-            results[currentDate, default: 0] = numberOfCheckIns
-            if let nextDate = calendar.date(byAdding: timePeriod.groupingInterval, value: 1, to: currentDate) {
-                currentDate = nextDate
-            }
-        }
-        return results.sorted(by: { $0.key < $1.key }).map { key, value in .init(date: key, checkIns: value) }
     }
 }

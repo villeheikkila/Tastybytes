@@ -20,3 +20,19 @@ public struct CustomRelativeTimeFormat: FormatStyle {
 public extension FormatStyle where Self == CustomRelativeTimeFormat {
     static var customRelativetime: CustomRelativeTimeFormat { .init() }
 }
+
+public extension ClosedRange where Bound == Date {
+    func dates(byAdding component: Calendar.Component, using calendar: Calendar = .current) -> [Date] {
+        var dates: [Date] = []
+        var date = lowerBound
+        while date <= upperBound {
+            dates.append(date)
+            if let nextDate = calendar.date(byAdding: component, value: 1, to: date) {
+                date = nextDate
+            } else {
+                break
+            }
+        }
+        return dates
+    }
+}
