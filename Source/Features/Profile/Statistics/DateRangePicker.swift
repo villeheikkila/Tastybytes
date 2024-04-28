@@ -22,14 +22,18 @@ struct DateRangePicker: View {
             PageButton(direction: .increment, page: $page)
         }
         .onChange(of: timePeriod) { _, newTimePeriod in
-            page = 0
-            if let dateRange = newTimePeriod.getTimeRange(page: page) {
-                self.dateRange = dateRange
+            withAnimation {
+                page = 0
+                if let dateRange = newTimePeriod.getTimeRange(page: page) {
+                    self.dateRange = dateRange
+                }
             }
         }
         .onChange(of: page, initial: true) { _, newPage in
             if let dateRange = timePeriod.getTimeRange(page: newPage) {
-                self.dateRange = dateRange
+                withAnimation {
+                    self.dateRange = dateRange
+                }
             }
         }
     }

@@ -5,19 +5,12 @@ import SwiftUI
 @MainActor
 struct CheckInsByTimeRangeChart: View {
     @Environment(Router.self) private var router
-    @State private var selection: String?
     let profile: Profile
-    let checkInsPerDay: [CheckInsPerDay]
-    let timePeriod: StatisticsTimePeriod
-    let dateRange: ClosedRange<Date>
-
-    var groupedCheckIns: [CheckInsTimeBucket] {
-        CheckInsTimeBucket.getBuckets(checkInsPerDay: checkInsPerDay, timePeriod: timePeriod, dateRange: dateRange)
-    }
+    let checkInsTimeBuckets: [CheckInsTimeBucket]
 
     var body: some View {
         Chart {
-            ForEach(groupedCheckIns) { row in
+            ForEach(checkInsTimeBuckets) { row in
                 row.barMark
             }
         }
@@ -26,7 +19,6 @@ struct CheckInsByTimeRangeChart: View {
                 AxisValueLabel()
             }
         }
-        .chartXSelection(value: $selection)
         .chartOverlay { proxy in
             GeometryReader { geometry in
                 Rectangle().fill(.clear).contentShape(Rectangle())
@@ -47,7 +39,7 @@ struct CheckInsByTimeRangeChart: View {
             return
         }
 
-        if let timeBucket = groupedCheckIns.first(where: { checkIn in checkIn.label == value }) {
+        if let timeBucket = checkInsTimeBuckets.first(where: { checkIn in checkIn.label == value }) {
             router.navigate(screen: .profileCheckIns(profile, timeBucket.dateRange))
         }
     }

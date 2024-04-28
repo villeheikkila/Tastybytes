@@ -26,10 +26,14 @@ struct CheckInsByDayView: View {
         }
     }
 
+    var checkInsTimeBuckets: [CheckInsTimeBucket] {
+        CheckInsTimeBucket.getBuckets(checkInsPerDay: checkInsPerDay, timePeriod: timePeriod, dateRange: dateRange)
+    }
+
     var body: some View {
         Section {
             DateRangePicker(timePeriod: $timePeriod, dateRange: $dateRange)
-            CheckInsByTimeRangeChart(profile: profile, checkInsPerDay: checkInsInRange, timePeriod: timePeriod, dateRange: dateRange)
+            CheckInsByTimeRangeChart(profile: profile, checkInsTimeBuckets: checkInsTimeBuckets)
             TimePeriodStatisticSegmentView(checkInsPerDay: checkInsInRange)
         }
         .listRowSeparator(.hidden)
