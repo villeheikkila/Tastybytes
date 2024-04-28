@@ -251,7 +251,7 @@
 		5CD9B1862BDEA9C600A86387 /* DateRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1852BDEA9C600A86387 /* DateRangePicker.swift */; };
 		5CD9B1882BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */; };
 		5CD9B18A2BDEB2BF00A86387 /* ProfileCheckInsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1892BDEB2BF00A86387 /* ProfileCheckInsList.swift */; };
-		5CE8A3AA2BD8381B0048BC58 /* CheckInsByDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */; };
+		5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -543,7 +543,7 @@
 		5CD9B1892BDEB2BF00A86387 /* ProfileCheckInsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCheckInsList.swift; sourceTree = "<group>"; };
 		5CE030DF2B9E4E9200E119E4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
-		5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByDayView.swift; sourceTree = "<group>"; };
+		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
 		5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsUniqueByCategoryScreen.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
@@ -1495,7 +1495,7 @@
 			isa = PBXGroup;
 			children = (
 				5C9057AB2B2894BE00EC157B /* ProfileStatisticsScreen.swift */,
-				5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */,
+				5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */,
 				5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */,
 				5C9057A22B2894BE00EC157B /* TimePeriodStatisticView.swift */,
 				5CD9B1812BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift */,
@@ -1831,7 +1831,7 @@
 				5C511D832BA791D400F95290 /* ActivityWatchTab.swift in Sources */,
 				5C82E89E2B2F7AC700F2B369 /* ProfileSummarySection.swift in Sources */,
 				5C9057EA2B2894BE00EC157B /* DiscoverTab.swift in Sources */,
-				5CE8A3AA2BD8381B0048BC58 /* CheckInsByDayView.swift in Sources */,
+				5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */,
 				5C9057FB2B2894BE00EC157B /* MergeLocationSheet.swift in Sources */,
 				5CB33AD22B8A56DF00CDC09F /* MapThumbnail.swift in Sources */,
 				5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailableState.swift in Sources */,

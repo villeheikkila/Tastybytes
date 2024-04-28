@@ -23,23 +23,20 @@ struct CheckInsByTimeRangeChart: View {
             GeometryReader { geometry in
                 Rectangle().fill(.clear).contentShape(Rectangle())
                     .onTapGesture { location in
-                        updateSelectedRating(at: location,
-                                             proxy: proxy,
-                                             geometry: geometry)
+                        onBarChartClick(at: location, proxy: proxy,geometry: geometry)
                     }
             }
         }
         .frame(height: 100)
     }
 
-    private func updateSelectedRating(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
+    private func onBarChartClick(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
         guard let plotFrame = proxy.plotFrame else { return }
         let xPosition = location.x - geometry[plotFrame].origin.x
         guard let value: String = proxy.value(atX: xPosition) else {
             return
         }
-
-        if let timeBucket = checkInsTimeBuckets.first(where: { checkIn in checkIn.label == value }) {
+        if let timeBucket = checkInsTimeBuckets.first(where: { bucket in bucket.label == value }) {
             router.navigate(screen: .profileCheckIns(profile, timeBucket.dateRange))
         }
     }

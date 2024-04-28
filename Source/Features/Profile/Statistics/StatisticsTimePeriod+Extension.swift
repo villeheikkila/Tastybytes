@@ -66,7 +66,6 @@ extension StatisticsTimePeriod {
         let calendar = Calendar.current
         switch self {
         case .week:
-            let now = Date()
             if let shiftedStartDate = calendar.date(byAdding: .weekOfYear, value: page, to: now),
                let weekStart = calendar.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: shiftedStartDate)),
                let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart)

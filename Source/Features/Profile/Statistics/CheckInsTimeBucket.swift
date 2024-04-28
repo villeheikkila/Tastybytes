@@ -20,7 +20,6 @@ struct CheckInsTimeBucket: Identifiable {
                            dateRange: ClosedRange<Date>) -> [Self]
     {
         let calendar = Calendar.current
-
         return dateRange.dates(byAdding: timePeriod.groupingInterval, using: calendar)
             .map { currentDate -> Self in
                 let numberOfCheckIns: Int = switch timePeriod {

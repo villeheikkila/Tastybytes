@@ -8,8 +8,8 @@ import Repositories
 import SwiftUI
 
 @MainActor
-struct CheckInsByDayView: View {
-    private let logger = Logger(category: "CheckInsByDayView")
+struct CheckInsByTimeBucketView: View {
+    private let logger = Logger(category: "CheckInsByTimeBucketView")
     @Environment(Repository.self) private var repository
     @State private var isLoading = false
     @State private var checkInsPerDay = [CheckInsPerDay]()
