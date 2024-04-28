@@ -246,6 +246,10 @@
 		5CD3C0E02B814BF90049E563 /* ToolbarDismissAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D52B814AE90049E563 /* ToolbarDismissAction.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0E12B814BFB0049E563 /* ToolbarDoneActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D42B814AE90049E563 /* ToolbarDoneActionView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0E22B814C680049E563 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D22B814ACD0049E563 /* CloseButton.swift */; };
+		5CD9B1822BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1812BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift */; };
+		5CD9B1842BDEA98E00A86387 /* CheckInsTimeBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1832BDEA98E00A86387 /* CheckInsTimeBucket.swift */; };
+		5CD9B1862BDEA9C600A86387 /* DateRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1852BDEA9C600A86387 /* DateRangePicker.swift */; };
+		5CD9B1882BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */; };
 		5CE8A3AA2BD8381B0048BC58 /* CheckInsByDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
@@ -531,6 +535,10 @@
 		5CD3C0DA2B814B790049E563 /* RatingPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPickerView.swift; sourceTree = "<group>"; };
 		5CD3C0DC2B814B910049E563 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		5CD3C0DE2B814B9A0049E563 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		5CD9B1812BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatisticsTimePeriod+Extension.swift"; sourceTree = "<group>"; };
+		5CD9B1832BDEA98E00A86387 /* CheckInsTimeBucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsTimeBucket.swift; sourceTree = "<group>"; };
+		5CD9B1852BDEA9C600A86387 /* DateRangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangePicker.swift; sourceTree = "<group>"; };
+		5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeRangeChart.swift; sourceTree = "<group>"; };
 		5CE030DF2B9E4E9200E119E4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByDayView.swift; sourceTree = "<group>"; };
@@ -1157,8 +1165,6 @@
 				5CEC64062B854B20008050B4 /* Statistics */,
 				5C90574D2B2894BE00EC157B /* NameTag */,
 				5C82E8942B2F749700F2B369 /* Components */,
-				5C9057A22B2894BE00EC157B /* TimePeriodStatisticView.swift */,
-				5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */,
 				5C9057A32B2894BE00EC157B /* ProfileScreen.swift */,
 				5C9057A42B2894BE00EC157B /* ProfileView.swift */,
 				5C9057A52B2894BE00EC157B /* CheckInImagesView.swift */,
@@ -1486,7 +1492,13 @@
 			isa = PBXGroup;
 			children = (
 				5C9057AB2B2894BE00EC157B /* ProfileStatisticsScreen.swift */,
+				5CE8A3A92BD8381B0048BC58 /* CheckInsByDayView.swift */,
 				5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */,
+				5C9057A22B2894BE00EC157B /* TimePeriodStatisticView.swift */,
+				5CD9B1812BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift */,
+				5CD9B1832BDEA98E00A86387 /* CheckInsTimeBucket.swift */,
+				5CD9B1852BDEA9C600A86387 /* DateRangePicker.swift */,
+				5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -1704,6 +1716,7 @@
 				5C9057E52B2894BE00EC157B /* UserDefaults.swift in Sources */,
 				5C9058092B2894BE00EC157B /* SubcategorySheet.swift in Sources */,
 				5C9058302B2894BE00EC157B /* ProfileView.swift in Sources */,
+				5CD9B1822BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift in Sources */,
 				5C511D762BA77EF300F95290 /* SparklesView.swift in Sources */,
 				5C9058412B2894BE00EC157B /* DuplicataProductScreen.swift in Sources */,
 				5C90581D2B2894BE00EC157B /* BlockedUsersScreen.swift in Sources */,
@@ -1862,6 +1875,7 @@
 				5C9057E92B2894BE00EC157B /* AdminTab.swift in Sources */,
 				5CA4AC512B58F5D300E17629 /* PickerLinkRow.swift in Sources */,
 				5C9058212B2894BE00EC157B /* FriendRequestNotificationView.swift in Sources */,
+				5CD9B1842BDEA98E00A86387 /* CheckInsTimeBucket.swift in Sources */,
 				5C90581A2B2894BE00EC157B /* AccountSettingsScreen.swift in Sources */,
 				5CD1F0B32B9E4FD000C76F0C /* ToastViewModifier.swift in Sources */,
 				5CAADEFA2B5C480100D956C1 /* DiscoverProfileResults.swift in Sources */,
@@ -1873,6 +1887,7 @@
 				5CAB45DC2BA8A8CF0017E71A /* AvatarView.swift in Sources */,
 				5C9058132B2894BE00EC157B /* SideBarView.swift in Sources */,
 				5C68D7712B9794F600D88229 /* DeleteButton.swift in Sources */,
+				5CD9B1882BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift in Sources */,
 				5C9057EB2B2894BE00EC157B /* Tab.swift in Sources */,
 				5CD3C0E02B814BF90049E563 /* ToolbarDismissAction.swift in Sources */,
 				5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */,
@@ -1887,6 +1902,7 @@
 				5C82E8A42B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift in Sources */,
 				5C9057F22B2894BE00EC157B /* CompanySearchSheet.swift in Sources */,
 				5C9058382B2894BE00EC157B /* ActivityScreen.swift in Sources */,
+				5CD9B1862BDEA9C600A86387 /* DateRangePicker.swift in Sources */,
 				5C9058312B2894BE00EC157B /* CheckInImagesView.swift in Sources */,
 				5C90580E2B2894BE00EC157B /* SubBrandSheet.swift in Sources */,
 				5C9057F32B2894BE00EC157B /* NewFlavorSheet.swift in Sources */,
