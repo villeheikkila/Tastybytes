@@ -3,6 +3,7 @@ import Models
 
 public enum CheckInQueryType: Sendable {
     case paginated(Int, Int)
+    case dateRange(ClosedRange<Date>)
     case all
 }
 

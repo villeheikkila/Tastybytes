@@ -18,6 +18,7 @@ enum Screen: Hashable, Codable, Sendable {
     case profileStatistics(Profile)
     case profileStatisticsUniqueProducts(Profile)
     case profileLocations(Profile)
+    case profileCheckIns(Profile, ClosedRange<Date>)
     case settings
     case currentUserFriends
     case friends(Profile)
@@ -65,6 +66,8 @@ enum Screen: Hashable, Codable, Sendable {
             ProfileWishlistScreen(profile: profile)
         case let .profileLocations(profile):
             ProfileLocationsScreen(profile: profile)
+        case let .profileCheckIns(profile, dateRange):
+            ProfileCheckInsList(profile: profile, dateRange: dateRange)
         case let .addProduct(initialBarcode):
             ProductMutationView(mode: .new, isSheet: false, initialBarcode: initialBarcode)
         case let .checkIn(checkIn):

@@ -26,22 +26,29 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let queryBuilder = client
                 .from(.checkIns)
                 .select(CheckIn.getQuery(.joined(false)))
-                .eq("created_by", value: id.uuidString.lowercased())
-                .order("created_at", ascending: false)
 
-            switch queryType {
-            case .all:
-                let response: [CheckIn] = try await queryBuilder
-                    .execute()
-                    .value
-                return .success(response)
-            case let .paginated(from, to):
-                let response: [CheckIn] = try await queryBuilder
-                    .range(from: from, to: to)
-                    .execute()
-                    .value
-                return .success(response)
+            let filter = queryBuilder
+                .eq("created_by", value: id.uuidString.lowercased())
+
+            let conditionalFilters = if case let .dateRange(dateRange) = queryType {
+                filter.gte("check_in_at", value: dateRange.lowerBound.formatted(.iso8601))
+                    .lte("check_in_at", value: dateRange.upperBound.formatted(.iso8601))
+            } else {
+                filter
             }
+
+            let ordered = conditionalFilters.order("created_at", ascending: false)
+
+            let query = if case let .paginated(from, to) = queryType {
+                ordered.range(from: from, to: to)
+            } else {
+                ordered
+            }
+
+            let response: [CheckIn] = try await query
+                .execute()
+                .value
+            return .success(response)
         } catch {
             return .failure(error)
         }

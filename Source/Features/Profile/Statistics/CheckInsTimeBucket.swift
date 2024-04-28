@@ -1,10 +1,19 @@
+import Charts
 import Foundation
 import Models
 
 struct CheckInsTimeBucket: Identifiable {
-    var id: Double { date.timeIntervalSince1970 }
-    let date: Date
+    var id: String { "\(dateRange.lowerBound.timeIntervalSince1970)-\(dateRange.upperBound.timeIntervalSince1970)" }
+    let dateRange: ClosedRange<Date>
+    let label: String
     let checkIns: Int
+
+    var barMark: BarMark {
+        BarMark(
+            x: .value("checkInsByDayChart.axisLabel.date", label),
+            y: .value("checkInsByDayChart.axisLabel.checkIns", checkIns)
+        )
+    }
 
     static func getBuckets(checkInsPerDay: [CheckInsPerDay],
                            timePeriod: StatisticsTimePeriod,
@@ -24,7 +33,10 @@ struct CheckInsTimeBucket: Identifiable {
                         calendar.isDate(checkIn.checkInDate, inSameDayAs: currentDate)
                     })?.numberOfCheckIns ?? 0
                 }
-                return .init(date: currentDate, checkIns: numberOfCheckIns)
+                let label = timePeriod.xAxisLabel(currentDate)
+
+                let dateRange = timePeriod.getBucketRange(date: currentDate) ?? dateRange
+                return .init(dateRange: dateRange, label: label, checkIns: numberOfCheckIns)
             }
     }
 }

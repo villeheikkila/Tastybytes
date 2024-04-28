@@ -27,6 +27,27 @@ extension StatisticsTimePeriod {
         }
     }
 
+    func getBucketRange(date: Date) -> ClosedRange<Date>? {
+        switch self {
+        case .year, .sixMonths:
+            let calendar = Calendar.current
+            guard let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date)) else { return nil }
+            var components = DateComponents()
+            components.month = 1
+            components.second = -1
+            guard let endOfMonth = calendar.date(byAdding: components, to: startOfMonth) else { return nil }
+            return startOfMonth ... endOfMonth
+        case .week, .month:
+            let calendar = Calendar.current
+            let startOfDay = calendar.startOfDay(for: date)
+            var components = DateComponents()
+            components.day = 1
+            components.second = -1
+            guard let endOfDay = calendar.date(byAdding: components, to: startOfDay) else { return nil }
+            return startOfDay ... endOfDay
+        }
+    }
+
     var groupingInterval: Calendar.Component {
         switch self {
         case .week, .month:

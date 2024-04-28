@@ -29,7 +29,7 @@ struct CheckInsByDayView: View {
     var body: some View {
         Section {
             DateRangePicker(timePeriod: $timePeriod, dateRange: $dateRange)
-            CheckInsByTimeRangeChart(checkInsPerDay: checkInsInRange, timePeriod: timePeriod, dateRange: dateRange)
+            CheckInsByTimeRangeChart(profile: profile, checkInsPerDay: checkInsInRange, timePeriod: timePeriod, dateRange: dateRange)
             TimePeriodStatisticSegmentView(checkInsPerDay: checkInsInRange)
         }
         .listRowSeparator(.hidden)

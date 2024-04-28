@@ -36,3 +36,13 @@ public extension ClosedRange where Bound == Date {
         return dates
     }
 }
+
+extension ClosedRange where Bound == Date {
+    var title: String {
+        let isSameDay = Calendar.current.isDate(self.lowerBound, inSameDayAs: self.upperBound)
+        if isSameDay {
+            return self.lowerBound.formatted(.dateTime.day().month().year())
+        }
+       return "\(self.lowerBound.formatted(.dateTime.day().month().year())) - \(self.upperBound.formatted(.dateTime.day().month().year()))"
+   }
+}

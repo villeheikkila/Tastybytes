@@ -6,10 +6,6 @@ struct DateRangePicker: View {
     @Binding var timePeriod: StatisticsTimePeriod
     @Binding var dateRange: ClosedRange<Date>
 
-    private var dateRangeString: String {
-        "\(dateRange.lowerBound.formatted(.dateTime.day().month().year(.twoDigits))) - \(dateRange.upperBound.formatted(.dateTime.day().month().year(.twoDigits)))"
-    }
-
     var body: some View {
         Picker("checkIn.statistics.timePeriod.segment.picker", selection: $timePeriod) {
             ForEach(StatisticsTimePeriod.allCases, id: \.self) { segment in
@@ -21,7 +17,7 @@ struct DateRangePicker: View {
         HStack {
             PageButton(direction: .decrement, page: $page)
             Spacer()
-            Text(dateRangeString)
+            Text(dateRange.title)
             Spacer()
             PageButton(direction: .increment, page: $page)
         }
