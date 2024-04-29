@@ -16,7 +16,9 @@ struct ProfileTopLocationsScreen: View {
     var body: some View {
         List(locations) { location in
             TopLocationRow(location: location)
-        }.initialTask {
+        }
+        .listStyle(.plain)
+        .initialTask {
             await loadData()
         }
     }
