@@ -11,6 +11,7 @@ struct ProfileStatisticsScreen: View {
             Section("profileStatistics.links.title") {
                 RouterLink("profileStatistics.uniqueByCategory.label", screen: .profileStatisticsUniqueProducts(profile))
                 RouterLink("profileStatistics.topLocations.label", screen: .profileStatisticsTopLocations(profile))
+                RouterLink("profileStatistics.topProducts.label", screen: .profileProductsByFilter(profile, .init(sortBy: .highestRated)))
             }.headerProminence(.increased)
         }
         .listStyle(.insetGrouped)

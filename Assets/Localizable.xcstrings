@@ -3844,6 +3844,16 @@
         }
       }
     },
+    "profileStatistics.topProducts.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top Products"
+          }
+        }
+      }
+    },
     "profileStatistics.uniqueByCategory.label" : {
       "localizations" : {
         "en" : {
