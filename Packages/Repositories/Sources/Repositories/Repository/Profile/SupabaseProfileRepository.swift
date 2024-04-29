@@ -252,4 +252,27 @@ struct SupabaseProfileRepository: ProfileRepository {
             return .failure(error)
         }
     }
+
+    func getNumberOfCheckInsByLocation(userId: UUID) async -> Result<[ProfileTopLocations], Error> {
+        do {
+            struct Request: Encodable {
+                let profileId: UUID
+
+                enum CodingKeys: String, CodingKey {
+                    case profileId = "p_profile_id"
+                }
+            }
+            let response: [ProfileTopLocations] = try await client
+                .rpc(fn: .getNumberOfCheckInsByLocation, params: Request(profileId: userId))
+                .select(Location.getQuery(.topLocations))
+                .limit(20)
+                .order("check_ins_count", ascending: false)
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
 }

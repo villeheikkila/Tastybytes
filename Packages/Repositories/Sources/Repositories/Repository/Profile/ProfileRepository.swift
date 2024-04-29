@@ -17,4 +17,5 @@ public protocol ProfileRepository: Sendable {
         -> Result<TimePeriodStatistic, Error>
     func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error>
     func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async -> Result<[CheckInsPerDay], Error>
+    func getNumberOfCheckInsByLocation(userId: UUID) async -> Result<[ProfileTopLocations], Error>
 }

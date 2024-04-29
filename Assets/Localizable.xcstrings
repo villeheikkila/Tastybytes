@@ -3834,6 +3834,16 @@
         }
       }
     },
+    "profileStatistics.topLocations.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top Locations"
+          }
+        }
+      }
+    },
     "profileStatistics.uniqueByCategory.label" : {
       "localizations" : {
         "en" : {

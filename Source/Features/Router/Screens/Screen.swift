@@ -17,6 +17,7 @@ enum Screen: Hashable, Codable, Sendable {
     case profileProductsByFilter(Profile, Product.Filter)
     case profileStatistics(Profile)
     case profileStatisticsUniqueProducts(Profile)
+    case profileStatisticsTopLocations(Profile)
     case profileLocations(Profile)
     case profileCheckIns(Profile, ClosedRange<Date>)
     case settings
@@ -68,6 +69,8 @@ enum Screen: Hashable, Codable, Sendable {
             ProfileLocationsScreen(profile: profile)
         case let .profileCheckIns(profile, dateRange):
             ProfileCheckInsList(profile: profile, dateRange: dateRange)
+        case let .profileStatisticsTopLocations(profile):
+            ProfileTopLocationsScreen(profile: profile)
         case let .addProduct(initialBarcode):
             ProductMutationView(mode: .new, isSheet: false, initialBarcode: initialBarcode)
         case let .checkIn(checkIn):

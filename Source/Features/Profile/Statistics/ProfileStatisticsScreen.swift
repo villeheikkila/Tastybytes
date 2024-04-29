@@ -9,7 +9,8 @@ struct ProfileStatisticsScreen: View {
         List {
             CheckInsByTimeBucketView(profile: profile)
             Section("profileStatistics.links.title") {
-                RouterLink("profileStatistics.uniqueByCategory.label", systemImage: "1.circle", screen: .profileStatisticsUniqueProducts(profile))
+                RouterLink("profileStatistics.uniqueByCategory.label", screen: .profileStatisticsUniqueProducts(profile))
+                RouterLink("profileStatistics.topLocations.label", screen: .profileStatisticsTopLocations(profile))
             }.headerProminence(.increased)
         }
         .listStyle(.insetGrouped)

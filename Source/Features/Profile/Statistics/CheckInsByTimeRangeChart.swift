@@ -23,7 +23,7 @@ struct CheckInsByTimeRangeChart: View {
             GeometryReader { geometry in
                 Rectangle().fill(.clear).contentShape(Rectangle())
                     .onTapGesture { location in
-                        onBarChartClick(at: location, proxy: proxy,geometry: geometry)
+                        onBarChartClick(at: location, proxy: proxy, geometry: geometry)
                     }
             }
         }

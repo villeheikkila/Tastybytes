@@ -251,6 +251,7 @@
 		5CD9B1862BDEA9C600A86387 /* DateRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1852BDEA9C600A86387 /* DateRangePicker.swift */; };
 		5CD9B1882BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */; };
 		5CD9B18A2BDEB2BF00A86387 /* ProfileCheckInsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1892BDEB2BF00A86387 /* ProfileCheckInsList.swift */; };
+		5CD9B18C2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */; };
 		5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
@@ -541,6 +542,7 @@
 		5CD9B1852BDEA9C600A86387 /* DateRangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangePicker.swift; sourceTree = "<group>"; };
 		5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeRangeChart.swift; sourceTree = "<group>"; };
 		5CD9B1892BDEB2BF00A86387 /* ProfileCheckInsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCheckInsList.swift; sourceTree = "<group>"; };
+		5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTopLocationsScreen.swift; sourceTree = "<group>"; };
 		5CE030DF2B9E4E9200E119E4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
@@ -1502,6 +1504,7 @@
 				5CD9B1832BDEA98E00A86387 /* CheckInsTimeBucket.swift */,
 				5CD9B1852BDEA9C600A86387 /* DateRangePicker.swift */,
 				5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */,
+				5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -1726,6 +1729,7 @@
 				5C02A73F2B4F316800B497FA /* AppStateObserver.swift in Sources */,
 				5C82E89C2B2F79EB00F2B369 /* ProfileFriendActionSection.swift in Sources */,
 				5C82E8832B2DCFD600F2B369 /* TabManager.swift in Sources */,
+				5CD9B18C2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift in Sources */,
 				5C9057E82B2894BE00EC157B /* NotificationTab.swift in Sources */,
 				5C9057FA2B2894BE00EC157B /* AddSubcategorySheet.swift in Sources */,
 				5C9058102B2894BE00EC157B /* FlavorSheet.swift in Sources */,

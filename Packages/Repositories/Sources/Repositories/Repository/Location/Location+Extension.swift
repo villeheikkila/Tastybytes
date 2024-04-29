@@ -8,11 +8,14 @@ extension Location: Queryable {
         switch queryType {
         case let .joined(withTableName):
             return buildQuery(.locations, [saved, Country.getQuery(.saved(true))], withTableName)
+        case .topLocations:
+            return "check_ins_count, \(buildQuery(.locations, [saved], false))"
         }
     }
 
     enum QueryType {
         case joined(_ withTableName: Bool)
+        case topLocations
     }
 }
 
