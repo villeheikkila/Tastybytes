@@ -2,11 +2,11 @@ import Models
 import OSLog
 import Repositories
 import SwiftUI
+import EnvironmentModels
 
 @MainActor
 struct ProfileTopLocationsScreen: View {
     private let logger = Logger(category: "ProfileTopLocationsScreen")
-    @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @State private var locations = [ProfileTopLocations]()
     @State private var isLoading = false
@@ -15,9 +15,7 @@ struct ProfileTopLocationsScreen: View {
 
     var body: some View {
         List(locations) { location in
-            LocationRow(location: location.loc) { location in
-                router.navigate(screen: .location(location))
-            }
+            TopLocationRow(location: location)
         }.initialTask {
             await loadData()
         }
@@ -36,5 +34,38 @@ struct ProfileTopLocationsScreen: View {
             logger.error("Failed loading top location statistics. Error: \(error) (\(#file):\(#line))")
         }
         isLoading = false
+    }
+}
+
+@MainActor
+struct TopLocationRow: View {
+    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
+    @Environment(Router.self) private var router
+
+    let location: ProfileTopLocations
+
+    var body: some View {
+        HStack {
+            if let coordinate = location.location?.coordinate {
+                MapThumbnail(location: location.loc, coordinate: coordinate, distance: nil)
+            }
+            HStack(alignment: .center) {
+                VStack(alignment: .leading) {
+                    Text(location.name)
+                    if let title = location.title {
+                        Text(title)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .contentShape(Rectangle())
+                .accessibilityAddTraits(.isButton)
+                Spacer()
+                Text("(\(location.count.formatted()))")
+            }
+            .onTapGesture {
+                router.navigate(screen: .location(location.loc))
+            }
+        }
+        .listRowBackground(Color.clear)
     }
 }
