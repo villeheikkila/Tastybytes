@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct DateRangePicker: View {
-    @State private var page = 0
+    @Binding var page: Int
     @Binding var timePeriod: StatisticsTimePeriod
     @Binding var dateRange: ClosedRange<Date>
 

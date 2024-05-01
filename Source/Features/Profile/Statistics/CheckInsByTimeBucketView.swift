@@ -32,8 +32,9 @@ struct CheckInsByTimeBucketView: View {
 
     var body: some View {
         Section {
-            DateRangePicker(timePeriod: $timePeriod, dateRange: $dateRange)
+            DateRangePicker(page: $page, timePeriod: $timePeriod, dateRange: $dateRange)
             CheckInsByTimeRangeChart(profile: profile, checkInsTimeBuckets: checkInsTimeBuckets)
+                .simultaneousGesture(switchTabGesture)
             TimePeriodStatisticSegmentView(checkInsPerDay: checkInsInRange)
         }
         .listRowSeparator(.hidden)
@@ -54,5 +55,22 @@ struct CheckInsByTimeBucketView: View {
             logger.error("Failed loading time period statistics. Error: \(error) (\(#file):\(#line))")
         }
         isLoading = false
+    }
+    
+    
+    private let switchPageGestureDistance = 50.0
+    
+    private var switchTabGesture: some Gesture {
+        DragGesture(minimumDistance: switchPageGestureDistance)
+            .onEnded { value in
+                let translationWidth = value.translation.width
+                if translationWidth < -switchPageGestureDistance
+                {
+                    page += 1
+                } else if translationWidth > switchPageGestureDistance
+                {
+                   page -= 1
+                }
+            }
     }
 }

@@ -37,8 +37,8 @@ struct ProfileCheckInsListInnerView: View {
     init(repository: Repository, profile: Profile, dateRange: ClosedRange<Date>) {
         self.profile = profile
         self.dateRange = dateRange
-        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { _, _, _ in
-            await repository.checkIn.getByProfileId(id: profile.id, queryType: .dateRange(dateRange))
+        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in
+            await repository.checkIn.getByProfileId(id: profile.id, queryType: .dateRange(from, to, dateRange))
         }, id: "ProfileCheckIns"))
     }
 

@@ -30,7 +30,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let filter = queryBuilder
                 .eq("created_by", value: id.uuidString.lowercased())
 
-            let conditionalFilters = if case let .dateRange(dateRange) = queryType {
+            let conditionalFilters = if case let .dateRange(_, _, dateRange) = queryType {
                 filter.gte("check_in_at", value: dateRange.lowerBound.formatted(.iso8601))
                     .lte("check_in_at", value: dateRange.upperBound.formatted(.iso8601))
             } else {
@@ -40,6 +40,8 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let ordered = conditionalFilters.order("created_at", ascending: false)
 
             let query = if case let .paginated(from, to) = queryType {
+                ordered.range(from: from, to: to)
+            } else if case let .dateRange(from, to, _) = queryType {
                 ordered.range(from: from, to: to)
             } else {
                 ordered
