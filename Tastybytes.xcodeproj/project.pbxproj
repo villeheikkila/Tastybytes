@@ -203,6 +203,7 @@
 		5C9058612B2894BE00EC157B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E32B2894BE00EC157B /* AppDelegate.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */; };
 		5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* Sheets.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C997C162BE2DCBF00B9504F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5C997C152BE2DCBF00B9504F /* PrivacyInfo.xcprivacy */; };
 		5C9990A52B8A24F5002BD3F7 /* NotificationFromUserWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9990A42B8A24F5002BD3F7 /* NotificationFromUserWrapper.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CA065E42B6C2DAE00588194 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA065E32B6C2DAE00588194 /* Localization.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC442B5707C400E17629 /* CheckInListContent.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -494,6 +495,7 @@
 		5C9057E32B2894BE00EC157B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStateObserver.swift; sourceTree = "<group>"; };
 		5C9583862B41EE0000A2A03B /* Sheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheets.swift; sourceTree = "<group>"; };
+		5C997C152BE2DCBF00B9504F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5C9990A42B8A24F5002BD3F7 /* NotificationFromUserWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFromUserWrapper.swift; sourceTree = "<group>"; };
 		5CA065E32B6C2DAE00588194 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		5CA4AC442B5707C400E17629 /* CheckInListContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListContent.swift; sourceTree = "<group>"; };
@@ -1565,6 +1567,7 @@
 				C94722DE2AD1859D006DE096 /* Required.entitlements */,
 				C94723062AD1AC9E006DE096 /* Info.plist */,
 				5C45C8552B5307A100A6EEF1 /* StoreKit.storekit */,
+				5C997C152BE2DCBF00B9504F /* PrivacyInfo.xcprivacy */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -1649,6 +1652,7 @@
 				C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */,
 				5C9058512B2894BE00EC157B /* Comfortaa-Bold.ttf in Resources */,
 				5C5270572B821D6C0062AB18 /* InfoPlist.xcstrings in Resources */,
+				5C997C162BE2DCBF00B9504F /* PrivacyInfo.xcprivacy in Resources */,
 				5C037BB72B47EDF10075091B /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
