@@ -4,6 +4,7 @@ import Models
 public enum CheckInQueryType: Sendable {
     case paginated(Int, Int)
     case dateRange(Int, Int, ClosedRange<Date>)
+    case location(Int, Int, Location)
     case all
 }
 

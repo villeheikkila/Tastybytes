@@ -19,7 +19,7 @@ enum Screen: Hashable, Codable, Sendable {
     case profileStatisticsUniqueProducts(Profile)
     case profileStatisticsTopLocations(Profile)
     case profileLocations(Profile)
-    case profileCheckIns(Profile, ClosedRange<Date>)
+    case profileCheckIns(Profile, ProfileCheckInListFilter)
     case settings
     case currentUserFriends
     case friends(Profile)
@@ -67,8 +67,8 @@ enum Screen: Hashable, Codable, Sendable {
             ProfileWishlistScreen(profile: profile)
         case let .profileLocations(profile):
             ProfileLocationsScreen(profile: profile)
-        case let .profileCheckIns(profile, dateRange):
-            ProfileCheckInsList(profile: profile, dateRange: dateRange)
+        case let .profileCheckIns(profile, filter):
+            ProfileCheckInsList(profile: profile, filter: filter)
         case let .profileStatisticsTopLocations(profile):
             ProfileTopLocationsScreen(profile: profile)
         case let .addProduct(initialBarcode):

@@ -33,6 +33,8 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let conditionalFilters = if case let .dateRange(_, _, dateRange) = queryType {
                 filter.gte("check_in_at", value: dateRange.lowerBound.formatted(.iso8601))
                     .lte("check_in_at", value: dateRange.upperBound.formatted(.iso8601))
+            } else if case let .location(_, _, location) = queryType {
+                filter.eq("location_id", value: location.id)
             } else {
                 filter
             }
@@ -42,6 +44,8 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let query = if case let .paginated(from, to) = queryType {
                 ordered.range(from: from, to: to)
             } else if case let .dateRange(from, to, _) = queryType {
+                ordered.range(from: from, to: to)
+            } else if case let .location(from, to, _) = queryType {
                 ordered.range(from: from, to: to)
             } else {
                 ordered

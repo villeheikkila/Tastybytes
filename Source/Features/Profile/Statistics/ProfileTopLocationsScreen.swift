@@ -1,8 +1,8 @@
+import EnvironmentModels
 import Models
 import OSLog
 import Repositories
 import SwiftUI
-import EnvironmentModels
 
 @MainActor
 struct ProfileTopLocationsScreen: View {
@@ -15,7 +15,7 @@ struct ProfileTopLocationsScreen: View {
 
     var body: some View {
         List(locations) { location in
-            TopLocationRow(location: location)
+            TopLocationRow(location: location, profile: profile)
         }
         .listStyle(.plain)
         .initialTask {
@@ -45,6 +45,7 @@ struct TopLocationRow: View {
     @Environment(Router.self) private var router
 
     let location: ProfileTopLocations
+    let profile: Profile
 
     var body: some View {
         HStack {
@@ -65,7 +66,7 @@ struct TopLocationRow: View {
                 Text("(\(location.count.formatted()))")
             }
             .onTapGesture {
-                router.navigate(screen: .location(location.loc))
+                router.navigate(screen: .profileCheckIns(profile, .location(location.loc)))
             }
         }
         .listRowBackground(Color.clear)

@@ -56,20 +56,17 @@ struct CheckInsByTimeBucketView: View {
         }
         isLoading = false
     }
-    
-    
+
     private let switchPageGestureDistance = 50.0
-    
+
     private var switchTabGesture: some Gesture {
         DragGesture(minimumDistance: switchPageGestureDistance)
             .onEnded { value in
                 let translationWidth = value.translation.width
-                if translationWidth < -switchPageGestureDistance
-                {
+                if translationWidth < -switchPageGestureDistance {
                     page += 1
-                } else if translationWidth > switchPageGestureDistance
-                {
-                   page -= 1
+                } else if translationWidth > switchPageGestureDistance {
+                    page -= 1
                 }
             }
     }

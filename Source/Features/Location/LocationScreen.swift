@@ -71,16 +71,7 @@ struct LocationInnerScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            VStack {
-                Text(location.name)
-                    .font(.headline)
-                if let title = location.title {
-                    Text(title)
-                        .font(.caption)
-                }
-            }
-        }
+        LocationToolbarItem(location: location)
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 LocationShareLinkView(location: location)
@@ -178,6 +169,45 @@ struct LocationScreenHeader: View {
         }
         Section {
             SummaryView(summary: summary)
+        }
+    }
+}
+
+@MainActor
+struct LocationScreenMap: View {
+    let location: Location
+
+    var body: some View {
+        if let coordinate = location.location?.coordinate {
+            Map(initialPosition: MapCameraPosition
+                .camera(.init(centerCoordinate: coordinate, distance: 200)))
+            {
+                Marker(location.name, coordinate: coordinate)
+                UserAnnotation()
+            }
+            .mapControls {
+                MapUserLocationButton()
+                MapCompass()
+            }
+            .frame(height: 200)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 4, trailing: 0))
+        }
+    }
+}
+
+struct LocationToolbarItem: ToolbarContent {
+    var location: Location
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            VStack {
+                Text(location.name)
+                    .font(.headline)
+                if let title = location.title {
+                    Text(title)
+                        .font(.caption)
+                }
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ final class CheckInListLoader {
     var page = 0
     // Check-ins
     var checkIns = [CheckIn]()
-    var showCheckInsFrom: CheckInSegment = .everyone {
+    var showCheckInsFrom: CheckInSegment {
         didSet {
             onSegmentChange()
         }
@@ -34,10 +34,11 @@ final class CheckInListLoader {
     let id: String
     let pageSize: Int
 
-    init(fetcher: @escaping Fetcher, id: String, pageSize: Int = 10) {
+    init(fetcher: @escaping Fetcher, id: String, pageSize: Int = 10, showCheckInsFrom: CheckInSegment = .everyone) {
         self.fetcher = fetcher
         self.id = id
         self.pageSize = pageSize
+        self.showCheckInsFrom = showCheckInsFrom
     }
 
     func loadData(isRefresh: Bool = false, onComplete: OnLoadComplete? = nil) async {
