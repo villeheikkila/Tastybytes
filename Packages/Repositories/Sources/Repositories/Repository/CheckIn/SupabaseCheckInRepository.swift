@@ -223,12 +223,11 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
             let path = "\(userId.uuidString.lowercased())/\(fileName)"
-            let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
 
             _ = try await client
                 .storage
                 .from(.checkIns)
-                .upload(path: path, file: data, options: fileOptions)
+                .upload(path: path, file: data, options: .init(contentType: "image/jpeg"))
 
             if let blurHash {
                 return await updateImageBlurHash(file: path, blurHash: blurHash)

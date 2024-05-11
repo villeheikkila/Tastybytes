@@ -197,12 +197,11 @@ struct SupabaseBrandRepository: BrandRepository {
     func uploadLogo(brandId: Int, data: Data) async -> Result<ImageEntity, Error> {
         do {
             let fileName = "\(brandId)_\(Date.now.timeIntervalSince1970).jpeg"
-            let fileOptions = FileOptions(cacheControl: "604800", contentType: "image/jpeg")
 
             _ = try await client
                 .storage
                 .from(.brandLogos)
-                .upload(path: fileName, file: data, options: fileOptions)
+                .upload(path: fileName, file: data, options: .init(contentType: "image/jpeg"))
 
             return await imageEntityRepository.getByFileName(from: .brandLogos, fileName: fileName)
         } catch {
