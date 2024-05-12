@@ -10,10 +10,10 @@ public struct SummaryView: View {
     }
 
     public var body: some View {
-            ScrollView(.horizontal) {
-                VStack(alignment: .leading) {
-                    Divider()
-                        .padding(.bottom, 3)
+        ScrollView(.horizontal) {
+            VStack(alignment: .leading) {
+                Divider()
+                    .padding(.bottom, 3)
                 HStack(alignment: .center) {
                     if let totalCheckIns = summary?.totalCheckIns, let rating = summary?.averageRating {
                         RatingSummaryItem(title: "checkIn.segment.everyone", count: totalCheckIns, rating: rating)
@@ -36,16 +36,16 @@ public struct SummaryView: View {
             }
         }
         .contentMargins(.leading, 16)
-        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
     }
 }
 
 @MainActor
 struct SummaryDivider: View {
     var body: some View {
-            Divider()
-                .frame(height: 50)
-                .padding(.horizontal, 8)
+        Divider()
+            .frame(height: 50)
+            .padding(.horizontal, 8)
     }
 }
 

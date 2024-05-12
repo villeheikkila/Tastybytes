@@ -22,12 +22,12 @@ struct ProductScreenHeader: View {
 
     var body: some View {
         ProductItemView(product: product, extras: productItemViewExtras)
-        SummaryView(summary: summary)
         ProductScreenActionSection(
             isOnWishlist: $isOnWishlist,
             product: product,
             onCreateCheckIn: onCreateCheckIn
         )
+        SummaryView(summary: summary)
         if !checkInImages.isEmpty {
             CheckInImagesSection(
                 checkInImages: checkInImages,
