@@ -4733,6 +4733,7 @@
       }
     },
     "summary.checkIns" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4743,6 +4744,7 @@
       }
     },
     "summary.rating" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

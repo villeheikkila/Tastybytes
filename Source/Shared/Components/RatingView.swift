@@ -44,7 +44,7 @@ public enum StarType {
     var size: Double {
         switch self {
         case .small:
-            10
+            12
         case .large:
             24
         }

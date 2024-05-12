@@ -35,22 +35,17 @@ struct ProductInnerScreen: View {
     @State private var summary: Summary?
     @State private var showDeleteProductConfirmationDialog = false
     @State private var showUnverifyProductConfirmation = false
-
     @State private var loadedWithBarcode: Barcode?
     @State private var alertError: AlertError?
-
     // check-in images
     @State private var checkInImageTask: Task<Void, Never>?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoadingCheckInImages = false
     @State private var checkInImagesPage = 0
-
     // state
     @State private var sheet: Sheet?
-
     // wishlist
     @State private var isOnWishlist = false
-
     @State private var checkInLoader: CheckInListLoader
 
     init(repository: Repository, product: Product.Joined, loadedWithBarcode: Barcode? = nil) {

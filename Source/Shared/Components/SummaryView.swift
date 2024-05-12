@@ -10,66 +10,86 @@ public struct SummaryView: View {
     }
 
     public var body: some View {
-        Grid(alignment: .leading) {
-            header
-            Divider().gridCellUnsizedAxes(.horizontal)
-            SummaryRow(title: "checkIn.segment.everyone", count: summary?.totalCheckIns, rating: summary?.averageRating)
-            Divider().gridCellUnsizedAxes(.horizontal)
-            SummaryRow(title: "checkIn.segment.friends", count: summary?.friendsTotalCheckIns, rating: summary?.friendsAverageRating)
-            Divider().gridCellUnsizedAxes(.horizontal)
-            SummaryRow(
-                title: "checkIn.segment.you",
-                count: summary?.currentUserTotalCheckIns,
-                rating: summary?.currentUserAverageRating
-            )
+            ScrollView(.horizontal) {
+                VStack(alignment: .leading) {
+                    Divider()
+                        .padding(.bottom, 3)
+                HStack(alignment: .center) {
+                    if let totalCheckIns = summary?.totalCheckIns, let rating = summary?.averageRating {
+                        RatingSummaryItem(title: "checkIn.segment.everyone", count: totalCheckIns, rating: rating)
+                    }
+                    if let friendsTotalCheckIns = summary?.friendsTotalCheckIns, let friendsAverageRating = summary?.friendsAverageRating {
+                        SummaryDivider()
+                        RatingSummaryItem(title: "checkIn.segment.friends", count: friendsTotalCheckIns, rating: friendsAverageRating)
+                    }
+                    if let currentUserTotalCheckIns = summary?.currentUserTotalCheckIns, let currentUserAverageRating = summary?.currentUserAverageRating {
+                        SummaryDivider()
+                        RatingSummaryItem(
+                            title: "checkIn.segment.you",
+                            count: currentUserTotalCheckIns,
+                            rating: currentUserAverageRating
+                        )
+                    }
+                    Spacer()
+                }
+                .frame(minWidth: UIScreen.main.bounds.width)
+            }
         }
-    }
-
-    private var header: some View {
-        GridRow {
-            Text(verbatim: "")
-            Spacer()
-            Text("summary.checkIns")
-                .font(.caption).bold()
-            Spacer()
-            Text("summary.rating")
-                .font(.caption).bold()
-        }
+        .contentMargins(.leading, 16)
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
     }
 }
 
 @MainActor
-struct SummaryRow: View {
+struct SummaryDivider: View {
+    var body: some View {
+            Divider()
+                .frame(height: 50)
+                .padding(.horizontal, 8)
+    }
+}
+
+@MainActor
+struct RatingSummaryItem: View {
     let title: LocalizedStringKey
     let count: Int?
     let rating: Double?
 
+    var formattedRating: String {
+        rating?.formatted(.number.precision(.fractionLength(1))) ?? "-"
+    }
+
     var body: some View {
-        GridRow {
-            Text(title).font(.caption).bold()
-            Spacer()
-            if let count {
-                Text(count.formatted())
-                    .contentTransition(.numericText())
-                    .font(.caption)
-            } else {
-                Text(verbatim: "")
-            }
-            Spacer()
+        SummaryItem(title: title, content: {
+            Text(formattedRating)
+                .font(.title2)
+                .fontDesign(.rounded)
+                .fontWeight(.bold)
+                .foregroundStyle(.gray)
+        }, subContent: {
             RatingView(rating: rating ?? 0)
                 .ratingSize(.small)
-            Group {
-                if let rating {
-                    Text(rating.formatted(
-                        .number.precision(.fractionLength(2))))
-                        .contentTransition(.numericText()
-                        )
-                } else {
-                    Text(verbatim: "-")
-                }
-            }
-            .font(.caption)
-            .bold()
+                .ratingColor(.gray)
+        })
+    }
+}
+
+@MainActor
+struct SummaryItem<Content: View, SubContent: View>: View {
+    let title: LocalizedStringKey
+    @ViewBuilder var content: () -> Content
+    @ViewBuilder var subContent: () -> SubContent
+
+    var body: some View {
+        VStack(alignment: .center, spacing: 4) {
+            Text(title)
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.gray.secondary)
+                .textCase(.uppercase)
+            Spacer().frame(height: 0)
+            content()
+            subContent()
         }
     }
 }
