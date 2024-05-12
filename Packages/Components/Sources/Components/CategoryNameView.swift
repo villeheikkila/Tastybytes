@@ -25,9 +25,10 @@ public struct CategoryNameView: View {
         }
         .if(withBorder, transform: { view in
             view
-                .padding(4)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 6)
+                    Capsule()
                         .stroke(lineWidth: 1)
                 )
         })

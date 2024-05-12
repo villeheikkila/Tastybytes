@@ -37,6 +37,7 @@ struct ProductInnerScreen: View {
     @State private var showUnverifyProductConfirmation = false
     @State private var loadedWithBarcode: Barcode?
     @State private var alertError: AlertError?
+    @State private var isLogoVisible = true
     // check-in images
     @State private var checkInImageTask: Task<Void, Never>?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
@@ -65,7 +66,8 @@ struct ProductInnerScreen: View {
                 checkInImages: checkInImages,
                 loadMoreImages: loadMoreImages,
                 onCreateCheckIn: onCreateCheckIn,
-                isOnWishlist: $isOnWishlist
+                isOnWishlist: $isOnWishlist,
+                isLogoVisible: $isLogoVisible
             )
             .listRowSeparator(.hidden)
             CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
@@ -79,6 +81,8 @@ struct ProductInnerScreen: View {
         .refreshable {
             await getProductData()
         }
+        .navigationTitle(product.formatted(.fullName))
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
@@ -107,6 +111,7 @@ struct ProductInnerScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ProductToolbarItem(product: product, isLogoVisible: isLogoVisible)
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 ControlGroup {
@@ -338,6 +343,26 @@ struct ProductInnerScreen: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct ProductToolbarItem: ToolbarContent {
+    var product: Product.Joined
+    let isLogoVisible: Bool
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            VStack {
+                Text(product.formatted(.fullName))
+                    .font(.headline)
+                    .textSelection(.enabled)
+                Text(product.formatted(.brandOwner))
+                    .font(.subheadline)
+                    .textSelection(.enabled)
+                    .foregroundColor(.secondary)
+            }
+            .opacity(isLogoVisible ? 0 : 1)
         }
     }
 }

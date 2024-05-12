@@ -8,14 +8,14 @@ public struct ServingStyleLabelView: View {
     public var body: some View {
         HStack {
             Text(servingStyle.label)
-                .font(.caption)
-                .fontWeight(.bold)
-                .padding(4)
+                .font(.caption.weight(.bold))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
                 .foregroundColor(.white)
             #if !os(watchOS)
                 .background(Color(.systemGray))
             #endif
-                .cornerRadius(6)
+                .clipShape(.capsule)
         }
     }
 }

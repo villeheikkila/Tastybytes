@@ -29,6 +29,6 @@ public struct CategoryView: View {
 #Preview {
     CategoryView(
         category: Category(id: 0, name: "beverage", icon: "🥤"),
-        subcategories: [Subcategory(id: 0, name: "BCAA", isVerified: true)]
+        subcategories: [Subcategory(id: 0, name: "BCAA", isVerified: true)], servingStyle: .init(id: 1, name: "Can")
     )
 }

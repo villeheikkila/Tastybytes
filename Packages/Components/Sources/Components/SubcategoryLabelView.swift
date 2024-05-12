@@ -11,14 +11,12 @@ public struct SubcategoryLabelView: View {
 
     public var body: some View {
         Text(subcategory.name)
-            .font(.caption)
-            .fontWeight(.bold)
-            .padding(4)
+            .font(.caption.weight(.bold))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
             .foregroundColor(.white)
-        #if !os(watchOS)
-            .background(Color(.systemBlue))
-        #endif
-            .cornerRadius(6)
+            .background(Color(seed: subcategory.name))
+            .clipShape(.capsule)
     }
 }
 
