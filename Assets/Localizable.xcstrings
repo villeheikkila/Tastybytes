@@ -3545,6 +3545,9 @@
         }
       }
     },
+    "product.screen.failedToLoadErro %@" : {
+
+    },
     "product.screen.open" : {
       "localizations" : {
         "en" : {
@@ -4098,6 +4101,9 @@
           }
         }
       }
+    },
+    "screen.error.unexpectedError" : {
+
     },
     "searchGoogleLink.label" : {
       "localizations" : {

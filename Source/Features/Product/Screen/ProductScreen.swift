@@ -22,6 +22,12 @@ struct ProductScreen: View {
     }
 }
 
+enum ScreenState: Equatable {
+    case loading
+    case populated
+    case error
+}
+
 @MainActor
 struct ProductInnerScreen: View {
     private let logger = Logger(category: "ProductScreen")
@@ -45,6 +51,7 @@ struct ProductInnerScreen: View {
     @State private var checkInImagesPage = 0
     // state
     @State private var sheet: Sheet?
+    @State private var state: ScreenState = .loading
     // wishlist
     @State private var isOnWishlist = false
     @State private var checkInLoader: CheckInListLoader
@@ -60,24 +67,19 @@ struct ProductInnerScreen: View {
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         List {
-            ProductScreenHeader(
-                product: product,
-                summary: summary,
-                checkInImages: checkInImages,
-                loadMoreImages: loadMoreImages,
-                onCreateCheckIn: onCreateCheckIn,
-                isOnWishlist: $isOnWishlist,
-                isLogoVisible: $isLogoVisible
-            )
-            .listRowSeparator(.hidden)
-            CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
-                checkInLoader.onLoadMore()
-            })
-            CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+            if state == .populated {
+                populatedContent
+            }
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)
+        .overlay {
+            if state == .error {
+                ScreenContentUnavailable(description: "product.screen.failedToLoadErro \(product.formatted(.fullName))") {
+                    await getProductData()
+                }
+            }
+        }
         .refreshable {
             await getProductData()
         }
@@ -108,6 +110,25 @@ struct ProductInnerScreen: View {
             }
         }
         .alertError($alertError)
+    }
+
+    @ViewBuilder
+    var populatedContent: some View {
+        ProductScreenHeader(
+            product: product,
+            summary: summary,
+            checkInImages: checkInImages,
+            loadMoreImages: loadMoreImages,
+            onCreateCheckIn: onCreateCheckIn,
+            isOnWishlist: $isOnWishlist,
+            isLogoVisible: $isLogoVisible
+        )
+        .listRowSeparator(.hidden)
+        CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
+        CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+            checkInLoader.onLoadMore()
+        })
+        CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -251,6 +272,7 @@ struct ProductInnerScreen: View {
                                                                           wishlistPromise,
                                                                           fetchImagePromise)
 
+        var errors: [Error] = []
         switch productResult {
         case let .success(refreshedProduct):
             withAnimation {
@@ -258,7 +280,7 @@ struct ProductInnerScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to refresh product by id. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -267,7 +289,7 @@ struct ProductInnerScreen: View {
             self.summary = summary
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -278,10 +300,17 @@ struct ProductInnerScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
-        logger.info("Refreshing product page completed")
+
+        withAnimation(.easeIn) {
+            state = if !errors.isEmpty {
+                .error
+            } else {
+                .populated
+            }
+        }
     }
 
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {
@@ -363,6 +392,33 @@ struct ProductToolbarItem: ToolbarContent {
                     .foregroundColor(.secondary)
             }
             .opacity(isLogoVisible ? 0 : 1)
+        }
+    }
+}
+
+struct ScreenContentUnavailable: View {
+    @State private var isTaskRunning = false
+
+    let description: LocalizedStringKey
+    let action: () async -> Void
+
+    var body: some View {
+        ContentUnavailableView {
+            Label("screen.error.unexpectedError", systemImage: "exclamationmark.triangle")
+        } description: {
+            Text(description)
+        } actions: {
+            Button("labels.tryAgain") {
+                if !isTaskRunning {
+                    isTaskRunning = true
+                    Task {
+                        await action()
+                        isTaskRunning = false
+                    }
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(isTaskRunning)
         }
     }
 }
