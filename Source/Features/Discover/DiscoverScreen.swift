@@ -190,6 +190,7 @@ struct DiscoverScreen: View {
                 Button("checkIn.action.createNew") {
                     router.navigate(screen: .addProduct(barcode))
                 }
+                .buttonStyle(.borderedProminent)
             }
         case let .text(searchTerm, searchScope):
             switch searchScope {
@@ -216,6 +217,7 @@ struct DiscoverScreen: View {
                         barcode = nil
                         router.navigate(screen: .addProduct(barcodeCopy))
                     }
+                    .buttonStyle(.borderedProminent)
                 }
             case .users:
                 ContentUnavailableView {
