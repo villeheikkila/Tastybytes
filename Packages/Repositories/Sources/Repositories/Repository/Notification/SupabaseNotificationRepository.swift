@@ -25,7 +25,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response = try await client
                 .from(.notifications)
                 .select("id", head: true, count: .exact)
-                .is("seen_at", value: "null")
+                .is("seen_at", value: nil)
                 .execute()
                 .count
 
