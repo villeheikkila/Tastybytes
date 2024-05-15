@@ -4090,7 +4090,14 @@
       }
     },
     "saveToPhotoGalleryButton.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save to Photo Gallery"
+          }
+        }
+      }
     },
     "scanTextButton.label" : {
       "localizations" : {
@@ -4241,10 +4248,24 @@
       }
     },
     "settings.appearance.useDarkMode.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use dark color scheme"
+          }
+        }
+      }
     },
     "settings.appearance.useSystemColorScheme.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use system color scheme"
+          }
+        }
+      }
     },
     "settings.appIcon.selected" : {
       "localizations" : {
@@ -4267,7 +4288,14 @@
       }
     },
     "settings.contributions.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All your verified contributions are listed here. It may take some time for admins to confirm that the newly added products are correct."
+          }
+        }
+      }
     },
     "settings.contributions.navigationTitle" : {
       "localizations" : {
