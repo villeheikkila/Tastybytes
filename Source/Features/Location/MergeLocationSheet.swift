@@ -76,10 +76,11 @@ struct MergeLocationSheetRow: View {
     @State private var mergeToLocation: Location?
 
     let location: Location
+    
     let mergeLocation: (_ location: Location) async -> Void
 
     var body: some View {
-        LocationRow(location: location, onSelect: { location in mergeToLocation = location })
+        LocationRow(location: location, currentLocation: nil, onSelect: { location in mergeToLocation = location })
             .confirmationDialog(
                 "location.merge.confirmation.description",
                 isPresented: $mergeToLocation.isNotNull(),

@@ -26,6 +26,7 @@ struct LocationSearchSheet: View {
     @State private var searchText = ""
     @State private var alertError: AlertError?
     @Binding private var initialLocation: Location?
+    @State private var currentLocation: CLLocation?
 
     let category: Location.RecentLocation
     let title: LocalizedStringKey
@@ -43,7 +44,7 @@ struct LocationSearchSheet: View {
     }
 
     private var centerCoordinate: CLLocationCoordinate2D {
-        initialLocation?.location?.coordinate ?? locationEnvironmentModel.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
+        initialLocation?.location?.coordinate ?? currentLocation?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
     }
 
     private let radius: CLLocationDistance = 2000
@@ -52,13 +53,13 @@ struct LocationSearchSheet: View {
         List {
             if hasSearched {
                 ForEach(searchResults) { location in
-                    LocationSheetRow(location: location, onSelect: onSelect)
+                    LocationSheetRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                 }
             } else {
                 if !recentLocations.isEmpty {
                     Section("location.recent") {
                         ForEach(recentLocations) { location in
-                            LocationSheetRow(location: location, onSelect: onSelect)
+                            LocationSheetRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                         }
                     }
                     .headerProminence(.increased)
@@ -66,7 +67,7 @@ struct LocationSearchSheet: View {
                 if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty {
                     Section("location.nearBy") {
                         ForEach(nearbyLocations) { location in
-                            LocationSheetRow(location: location, onSelect: onSelect)
+                            LocationSheetRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                         }
                     }
                     .headerProminence(.increased)
@@ -130,7 +131,8 @@ struct LocationSearchSheet: View {
         if initialLocation != nil {
             await search(for: nil)
         }
-        let coordinate = await locationEnvironmentModel.getCurrentLocation()?.coordinate ?? centerCoordinate
+        currentLocation = await locationEnvironmentModel.getCurrentLocation()
+        let coordinate = currentLocation?.coordinate ?? centerCoordinate
         async let recentLocationsPromise = repository.location.getRecentLocations(category: category)
         async let suggestionsPromise = repository.location.getSuggestions(location: Location.SuggestionParams(coordinate: coordinate))
 
@@ -167,10 +169,11 @@ struct LocationSheetRow: View {
     @State private var alertError: AlertError?
 
     let location: Location
+    let currentLocation: CLLocation?
     let onSelect: (_ location: Location) -> Void
 
     var body: some View {
-        LocationRow(location: location) { location in
+        LocationRow(location: location, currentLocation: currentLocation) { location in
             Task {
                 await storeLocation(location)
             }
@@ -196,6 +199,7 @@ struct LocationRow: View {
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
 
     let location: Location
+    let currentLocation: CLLocation?
     let onSelect: (_ location: Location) -> Void
 
     var distance: Measurement<UnitLength>? {

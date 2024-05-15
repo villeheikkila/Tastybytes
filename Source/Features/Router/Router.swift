@@ -129,3 +129,34 @@ final class Router {
         }
     }
 }
+
+struct NavigateOnTapModifier: ViewModifier {
+    @Environment(Router.self) private var router
+
+    let action: NavigationAction
+
+    func body(content: Content) -> some View {
+        content
+            .onTapGesture {
+                switch action {
+                case let .sheet(sheet):
+                    router.openRootSheet(sheet)
+                case let .screen(screen):
+                    router.navigate(screen: screen)
+                }
+            }
+            .accessibility(addTraits: .isLink)
+    }
+}
+
+enum NavigationAction {
+   case sheet(Sheet)
+   case screen(Screen)
+}
+
+extension View {
+    func navigateOnTap(_ action: NavigationAction) -> some View {
+        modifier(NavigateOnTapModifier(action: action))
+    }
+}
+

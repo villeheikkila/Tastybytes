@@ -41,7 +41,6 @@ struct ProfileTopLocationsScreen: View {
 
 @MainActor
 struct TopLocationRow: View {
-    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @Environment(Router.self) private var router
 
     let location: ProfileTopLocations
@@ -65,9 +64,7 @@ struct TopLocationRow: View {
                 Spacer()
                 Text("(\(location.count.formatted()))")
             }
-            .onTapGesture {
-                router.navigate(screen: .profileCheckIns(profile, .location(location.loc)))
-            }
+            .navigateOnTap(.screen(.profileCheckIns(profile, .location(location.loc))))
         }
         .listRowBackground(Color.clear)
     }
