@@ -76,7 +76,6 @@ struct MergeLocationSheetRow: View {
     @State private var mergeToLocation: Location?
 
     let location: Location
-    
     let mergeLocation: (_ location: Location) async -> Void
 
     var body: some View {

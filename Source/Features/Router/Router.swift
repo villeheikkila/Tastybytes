@@ -150,8 +150,8 @@ struct NavigateOnTapModifier: ViewModifier {
 }
 
 enum NavigationAction {
-   case sheet(Sheet)
-   case screen(Screen)
+    case sheet(Sheet)
+    case screen(Screen)
 }
 
 extension View {
@@ -159,4 +159,3 @@ extension View {
         modifier(NavigateOnTapModifier(action: action))
     }
 }
-
