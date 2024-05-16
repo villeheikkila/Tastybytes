@@ -83,6 +83,8 @@ struct BrandScreen: View {
             .initialTask {
                 await getBrandData()
             }
+            .navigationTitle(brand.name)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 toolbarContent
             }

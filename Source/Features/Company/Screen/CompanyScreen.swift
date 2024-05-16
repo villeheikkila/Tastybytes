@@ -56,6 +56,8 @@ struct CompanyScreen: View {
         .refreshable {
             await getCompanyData(withHaptics: true)
         }
+        .navigationTitle(company.name)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
