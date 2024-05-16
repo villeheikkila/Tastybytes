@@ -6,6 +6,10 @@ public struct Summary: Codable, Hashable, Sendable {
     public let currentUserTotalCheckIns: Int
     public let currentUserAverageRating: Double?
 
+    public var isEmpty: Bool {
+        averageRating == nil && friendsAverageRating == nil && currentUserAverageRating == nil
+    }
+
     enum CodingKeys: String, CodingKey {
         case totalCheckIns = "total_check_ins"
         case averageRating = "average_rating"

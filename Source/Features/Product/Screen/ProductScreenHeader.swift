@@ -29,7 +29,9 @@ struct ProductScreenHeader: View {
             product: product,
             onCreateCheckIn: onCreateCheckIn
         )
-        SummaryView(summary: summary)
+        if let summary, !summary.isEmpty {
+            SummaryView(summary: summary)
+        }
         if !checkInImages.isEmpty {
             CheckInImagesSection(
                 checkInImages: checkInImages,
