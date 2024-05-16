@@ -29,6 +29,7 @@ struct CheckInLeaveComment: View {
                 .padding(2)
             }
             .padding(.vertical, 10)
+            .padding(.horizontal)
             Spacer()
         }
         .background(.ultraThinMaterial)
