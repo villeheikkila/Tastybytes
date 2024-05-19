@@ -14,24 +14,18 @@ struct CheckInLeaveComment: View {
     @FocusState var focusedField: Focusable?
 
     var body: some View {
-        HStack {
-            Spacer()
-            VStack {
-                HStack {
-                    TextField("comment.textField.placeholder", text: $commentText)
-                        .focused($focusedField, equals: .checkInComment)
-                    ProgressButton(
-                        "comment.textField.send.label", systemImage: "paperplane.fill", action: { await sendComment() }
-                    )
-                    .labelStyle(.iconOnly)
-                    .disabled(commentText.isEmpty)
-                }
-                .padding(2)
-            }
-            .padding(.vertical, 10)
-            .padding(.horizontal)
-            Spacer()
+        HStack(alignment: .center) {
+            TextField("comment.textField.placeholder", text: $commentText, axis: .vertical)
+                .focused($focusedField, equals: .checkInComment)
+            ProgressButton(
+                "comment.textField.send.label", systemImage: "paperplane.fill", action: { await sendComment() }
+            )
+            .labelStyle(.iconOnly)
+            .disabled(commentText.isEmpty)
         }
+        .padding(2)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 8)
         .background(.ultraThinMaterial)
     }
 
