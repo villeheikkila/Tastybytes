@@ -51,7 +51,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_: UIApplication) {
-        clearTemporaryData()
+        //clearTemporaryData()
     }
 }
 
