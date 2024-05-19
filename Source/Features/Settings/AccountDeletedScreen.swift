@@ -19,7 +19,7 @@ struct AccountDeletedScreen: View {
                         .font(.title)
 
                     VStack(spacing: 8) {
-                        Text("settings.account.delete.disclaimer")
+                        Text("deleteAccount.disclaimer")
                         Text("deleteAccount.success.welcomeBack")
                     }
                     .multilineTextAlignment(.center)

@@ -44,6 +44,7 @@ struct ProductInnerScreen: View {
     @State private var loadedWithBarcode: Barcode?
     @State private var alertError: AlertError?
     @State private var isLogoVisible = true
+    @State private var showTranslator = false
     // check-in images
     @State private var checkInImageTask: Task<Void, Never>?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
@@ -85,6 +86,7 @@ struct ProductInnerScreen: View {
         }
         .navigationTitle(product.formatted(.fullName))
         .navigationBarTitleDisplayMode(.inline)
+        .translationPresentation(isPresented: $showTranslator, text: product.formatted(.fullName))
         .toolbar {
             toolbarContent
         }
@@ -213,6 +215,9 @@ struct ProductInnerScreen: View {
                         .labelStyle(.iconOnly)
                 }
 
+                Button("labels.translate", systemImage: "bubble.left.and.text.bubble.right") {
+                    showTranslator = true
+                }
                 ReportButton(entity: .product(product))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")

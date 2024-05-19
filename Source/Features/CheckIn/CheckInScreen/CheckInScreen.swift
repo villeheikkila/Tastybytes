@@ -147,7 +147,8 @@ struct CheckInScreen: View {
                                 checkIn,
                                 onUpdate: { updatedCheckIn in
                                     checkIn = updatedCheckIn
-                                })
+                                }
+                            )
                             )
                             }
                         )

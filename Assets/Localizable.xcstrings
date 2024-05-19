@@ -1760,6 +1760,9 @@
         }
       }
     },
+    "deleteAccount.disclaimer" : {
+
+    },
     "deleteAccount.success.done.label" : {
       "localizations" : {
         "en" : {
@@ -2599,6 +2602,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Submit"
+          }
+        }
+      }
+    },
+    "labels.translate" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Translate"
           }
         }
       }
@@ -4120,7 +4133,14 @@
       }
     },
     "screen.error.unexpectedError" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unexpected Error"
+          }
+        }
+      }
     },
     "searchGoogleLink.label" : {
       "localizations" : {
@@ -4233,9 +4253,6 @@
           }
         }
       }
-    },
-    "settings.account.delete.disclaimer" : {
-
     },
     "settings.appearance.navigationTitle" : {
       "localizations" : {
@@ -4776,28 +4793,6 @@
         }
       }
     },
-    "summary.checkIns" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check-ins"
-          }
-        }
-      }
-    },
-    "summary.rating" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rating"
-          }
-        }
-      }
-    },
     "tab.activity" : {
       "localizations" : {
         "en" : {
@@ -4888,55 +4883,11 @@
         }
       }
     },
-    "timePeriod.all" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All"
-          }
-        }
-      }
-    },
-    "timePeriod.month" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Month"
-          }
-        }
-      }
-    },
     "timePeriod.next" : {
 
     },
     "timePeriod.previous" : {
 
-    },
-    "timePeriod.week" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Week"
-          }
-        }
-      }
-    },
-    "timePeriod.year" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Year"
-          }
-        }
-      }
     },
     "torch.off.label" : {
       "localizations" : {

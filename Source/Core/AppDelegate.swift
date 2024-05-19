@@ -7,11 +7,11 @@ extension UNUserNotificationCenter: @unchecked Sendable {}
 extension UNNotification: @unchecked Sendable {}
 extension UIApplicationShortcutItem: @unchecked Sendable {}
 
-@MainActor func applyNavigationBarUITweaks(application: UIApplication) {
+@MainActor func applyNavigationBarUITweaks(application _: UIApplication) {
     UINavigationBar.appearance().shadowImage = .init()
 }
 
-@MainActor func applyTabBarUITweaks(application: UIApplication) {
+@MainActor func applyTabBarUITweaks(application _: UIApplication) {
     UITabBar.appearance().clipsToBounds = true
 }
 
@@ -51,7 +51,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_: UIApplication) {
-        //clearTemporaryData()
+        // clearTemporaryData()
     }
 }
 

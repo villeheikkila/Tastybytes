@@ -5,6 +5,7 @@ import Models
 import OSLog
 import Repositories
 import SwiftUI
+import Translation
 
 @MainActor
 struct CheckInCommentRow: View {
@@ -13,6 +14,7 @@ struct CheckInCommentRow: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var sheet: Sheet?
     @State private var showDeleteAsModeratorConfirmationDialog = false
+    @State private var showTranslator = false
 
     let checkIn: CheckIn
     let comment: CheckInComment
@@ -33,6 +35,7 @@ struct CheckInCommentRow: View {
                     action: { await deleteCommentAsModerator(presenting) }
                 )
             }
+            .translationPresentation(isPresented: $showTranslator, text: comment.content)
             .contextMenu {
                 if comment.profile == profileEnvironmentModel.profile {
                     Button("labels.edit", systemImage: "pencil") {
@@ -43,6 +46,9 @@ struct CheckInCommentRow: View {
                     }
                 } else {
                     ReportButton(entity: .comment(.init(comment: comment, checkIn: checkIn)))
+                }
+                Button("labels.translate", systemImage: "bubble.left.and.text.bubble.right") {
+                    showTranslator = true
                 }
                 Divider()
                 if profileEnvironmentModel.hasRole(.moderator) {

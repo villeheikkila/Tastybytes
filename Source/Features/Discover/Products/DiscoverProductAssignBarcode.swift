@@ -11,7 +11,10 @@ struct DiscoverProductAssignBarcode: View {
             Text(isEmpty ? "discover.barcode.noResults.description" : "discover.barcode.results.description")
             Button("discover.barcode.dismiss.label", action: {
                 barcode = nil
-            }).buttonStyle(.borderedProminent)
+            })
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+            .controlSize(.large)
         }
         .padding()
         .background(.thinMaterial)

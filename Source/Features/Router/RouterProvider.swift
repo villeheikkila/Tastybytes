@@ -3,7 +3,6 @@ import Models
 import Repositories
 import SwiftUI
 
-
 @MainActor
 struct RouterProvider<Content: View>: View {
     @Environment(Repository.self) private var repository
@@ -12,7 +11,6 @@ struct RouterProvider<Content: View>: View {
     @State private var router = Router()
 
     @ViewBuilder let content: () -> Content
-
 
     var body: some View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
