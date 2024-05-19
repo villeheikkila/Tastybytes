@@ -847,7 +847,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "checkIn.addBarcode.label %@"
+            "value" : "Associate the scanned barcode with %@"
           }
         }
       }
@@ -998,6 +998,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unexpected error occurred while trying to delete the check-in"
+          }
+        }
+      }
+    },
+    "checkIn.discardBarcode.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard the scanned barcode"
           }
         }
       }

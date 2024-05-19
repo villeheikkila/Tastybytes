@@ -18,31 +18,11 @@ struct ContributionsScreen: View {
         List {
             if let contributions {
                 Section {
-                    HStack {
-                        Text("products.title")
-                        Spacer()
-                        Text(contributions.products.formatted())
-                    }
-                    HStack {
-                        Text("company.title")
-                        Spacer()
-                        Text(contributions.companies.formatted())
-                    }
-                    HStack {
-                        Text("brand.title")
-                        Spacer()
-                        Text(contributions.brands.formatted())
-                    }
-                    HStack {
-                        Text("subBrand.title")
-                        Spacer()
-                        Text(contributions.subBrands.formatted())
-                    }
-                    HStack {
-                        Text("barcode.title")
-                        Spacer()
-                        Text(contributions.barcodes.formatted())
-                    }
+                    LabeledContent("products.title", value: contributions.products.formatted())
+                    LabeledContent("company.title", value: contributions.companies.formatted())
+                    LabeledContent("brand.title", value: contributions.brands.formatted())
+                    LabeledContent("subBrand.title", value: contributions.subBrands.formatted())
+                    LabeledContent("barcode.title", value: contributions.barcodes.formatted())
                 } footer: {
                     Text("settings.contributions.description")
                 }

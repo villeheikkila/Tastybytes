@@ -95,6 +95,11 @@ struct DiscoverScreen: View {
             .toolbar {
                 toolbarContent
             }
+            .safeAreaInset(edge: .bottom) {
+                if searchScope == .products, barcode != nil, !showContentUnavailableView {
+                    DiscoverProductAssignBarcode(isEmpty: products.isEmpty, barcode: $barcode)
+                }
+            }
             .overlay {
                 if showContentUnavailableView {
                     contentUnavailableView

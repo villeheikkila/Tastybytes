@@ -45,6 +45,13 @@ struct DiscoverProductRow: View {
                         await addBarcodeToProduct(presenting)
                     }
                 )
+                Button(
+                    "checkIn.discardBarcode.label",
+                    role: .destructive,
+                    action: {
+                        barcode = nil
+                    }
+                )
             }
             .sheets(item: $sheet)
     }

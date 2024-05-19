@@ -20,10 +20,6 @@ struct DiscoverProductResults: View {
     }
 
     var body: some View {
-        if barcode != nil, !showContentUnavailableView {
-            DiscoverProductAssignBarcode(isEmpty: products.isEmpty, barcode: $barcode)
-        }
-
         if products.isEmpty, searchKey == nil {
             DiscoverProductLinks()
         } else {

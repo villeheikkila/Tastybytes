@@ -7,11 +7,13 @@ struct DiscoverProductAssignBarcode: View {
     @Binding var barcode: Barcode?
 
     var body: some View {
-        Section {
+        VStack(alignment: .leading, spacing: 6) {
             Text(isEmpty ? "discover.barcode.noResults.description" : "discover.barcode.results.description")
             Button("discover.barcode.dismiss.label", action: {
                 barcode = nil
-            })
+            }).buttonStyle(.borderedProminent)
         }
+        .padding()
+        .background(.thinMaterial)
     }
 }
