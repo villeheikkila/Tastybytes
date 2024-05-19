@@ -9,9 +9,11 @@ struct CheckInLeaveComment: View {
     private let logger = Logger(category: "CheckInLeaveComment")
     @Environment(Repository.self) private var repository
     @State private var commentText: String = ""
+
     let checkIn: CheckIn
     @Binding var checkInComments: [CheckInComment]
     @FocusState var focusedField: Focusable?
+    let onSubmitted: (_ comment: CheckInComment) -> Void
 
     var body: some View {
         HStack(alignment: .center) {
@@ -23,9 +25,7 @@ struct CheckInLeaveComment: View {
             .labelStyle(.iconOnly)
             .disabled(commentText.isEmpty)
         }
-        .padding(2)
-        .padding(.vertical, 12)
-        .padding(.horizontal, 8)
+        .padding()
         .background(.ultraThinMaterial)
     }
 
@@ -38,6 +38,9 @@ struct CheckInLeaveComment: View {
             withAnimation {
                 checkInComments.insert(newCheckInComment, at: 0)
                 commentText = ""
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    onSubmitted(newCheckInComment)
+                }
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

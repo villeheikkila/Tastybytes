@@ -15,7 +15,6 @@ struct CheckInScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState private var focusedField: CheckInLeaveComment.Focusable?
-    @State private var sheet: Sheet?
     @State private var checkIn: CheckIn
     @State private var checkInComments = [CheckInComment]()
     @State private var showDeleteConfirmation = false
@@ -27,44 +26,49 @@ struct CheckInScreen: View {
     }
 
     var body: some View {
-        List {
-            header
-                .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
-                .listRowSeparator(.visible, edges: .bottom)
-                .alignmentGuide(.listRowSeparatorLeading) { _ in
-                    -50
+        ScrollViewReader { scrollProxy in
+            List {
+                header
+                    .id(0)
+                    .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+                    .listRowSeparator(.visible, edges: .bottom)
+                    .alignmentGuide(.listRowSeparatorLeading) { _ in
+                        -50
+                    }
+                    .onTapGesture {
+                        focusedField = nil
+                    }
+                ForEach(checkInComments) { comment in
+                    CheckInCommentRow(checkIn: checkIn, comment: comment, checkInComments: $checkInComments)
+                        .listRowSeparator(.hidden)
+                        .id(comment.id)
                 }
-                .onTapGesture {
-                    focusedField = nil
-                }
-            ForEach(checkInComments) { comment in
-                CheckInCommentRow(checkIn: checkIn, comment: comment, checkInComments: $checkInComments)
-                    .listRowSeparator(.hidden)
             }
+            .listStyle(.plain)
+            .scrollIndicators(.hidden)
+            .contentMargins(.bottom, 100)
+            .refreshable {
+                await loadCheckInData()
+            }
+            .safeAreaInset(edge: .bottom, alignment: .trailing, content: {
+                CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField, onSubmitted: { comment in
+                    scrollProxy.scrollTo(comment.id, anchor: .top)
+                })
+            })
+            .toolbar {
+                toolbarContent
+            }
+            .initialTask {
+                await loadCheckInData()
+            }
+            .alertError($alertError)
         }
-        .listStyle(.plain)
-        .defaultScrollContentBackground()
-        .scrollIndicators(.hidden)
-        .refreshable {
-            await loadCheckInData()
-        }
-        .safeAreaInset(edge: .bottom, alignment: .trailing, content: {
-            CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField)
-        })
-        .toolbar {
-            toolbarContent
-        }
-        .initialTask {
-            await loadCheckInData()
-        }
-        .alertError($alertError)
     }
 
     private var header: some View {
         CheckInCard(checkIn: checkIn, loadedFrom: .checkIn, onDeleteImage: { deletedImageEntity in
             checkIn = checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity))
         })
-        .sheets(item: $sheet)
         .contextMenu {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
@@ -72,9 +76,9 @@ struct CheckInScreen: View {
                     Button(
                         "labels.edit",
                         systemImage: "pencil",
-                        action: { sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                        action: { router.openRootSheet(.checkIn(checkIn, onUpdate: { updatedCheckIn in
                             checkIn = updatedCheckIn
-                        })
+                        }))
                         }
                     )
                     Button(
@@ -89,9 +93,9 @@ struct CheckInScreen: View {
                     Button(
                         "checkIn.add.label",
                         systemImage: "pencil",
-                        action: { sheet = .newCheckIn(checkIn.product, onCreation: { checkIn in
+                        action: { router.openRootSheet(.newCheckIn(checkIn.product, onCreation: { checkIn in
                             router.navigate(screen: .checkIn(checkIn))
-                        })
+                        }))
                         }
                     )
                     ReportButton(entity: .checkIn(checkIn))
@@ -128,7 +132,6 @@ struct CheckInScreen: View {
                     screen: .location(purchaseLocation)
                 )
             }
-            Divider()
         }
     }
 
@@ -140,11 +143,11 @@ struct CheckInScreen: View {
                         CheckInShareLinkView(checkIn: checkIn)
                         Button(
                             "labels.edit", systemImage: "pencil",
-                            action: { sheet = .checkIn(
+                            action: { router.openRootSheet(.checkIn(
                                 checkIn,
                                 onUpdate: { updatedCheckIn in
                                     checkIn = updatedCheckIn
-                                }
+                                })
                             )
                             }
                         )
