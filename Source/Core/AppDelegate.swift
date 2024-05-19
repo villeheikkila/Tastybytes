@@ -7,6 +7,14 @@ extension UNUserNotificationCenter: @unchecked Sendable {}
 extension UNNotification: @unchecked Sendable {}
 extension UIApplicationShortcutItem: @unchecked Sendable {}
 
+@MainActor func applyNavigationBarUITweaks(application: UIApplication) {
+    UINavigationBar.appearance().shadowImage = .init()
+}
+
+@MainActor func applyTabBarUITweaks(application: UIApplication) {
+    UITabBar.appearance().clipsToBounds = true
+}
+
 @MainActor
 final class AppDelegate: NSObject, UIApplicationDelegate {
     private let logger = Logger(category: "AppDelegate")
@@ -17,6 +25,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
+        applyNavigationBarUITweaks(application: application)
+        applyTabBarUITweaks(application: application)
         return true
     }
 

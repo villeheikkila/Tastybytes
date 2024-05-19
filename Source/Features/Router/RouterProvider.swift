@@ -3,6 +3,7 @@ import Models
 import Repositories
 import SwiftUI
 
+
 @MainActor
 struct RouterProvider<Content: View>: View {
     @Environment(Repository.self) private var repository
@@ -12,12 +13,14 @@ struct RouterProvider<Content: View>: View {
 
     @ViewBuilder let content: () -> Content
 
+
     var body: some View {
         @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
         NavigationStack(path: $router.path) {
             content()
-                .toolbarBackground(Material.thin, for: .navigationBar)
-                .toolbarBackground(Material.thin, for: .tabBar)
+                .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+                .toolbarBackground(.visible, for: .tabBar)
+                .toolbarBackground(.ultraThinMaterial, for: .tabBar)
                 .navigationDestination(for: Screen.self) { screen in
                     screen.view
                 }
