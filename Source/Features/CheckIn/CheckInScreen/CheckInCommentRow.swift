@@ -5,7 +5,6 @@ import Models
 import OSLog
 import Repositories
 import SwiftUI
-import Translation
 
 @MainActor
 struct CheckInCommentRow: View {
@@ -35,7 +34,7 @@ struct CheckInCommentRow: View {
                     action: { await deleteCommentAsModerator(presenting) }
                 )
             }
-            .translationPresentation(isPresented: $showTranslator, text: comment.content)
+            .translateText(isPresented: $showTranslator, text: comment.content)
             .contextMenu {
                 if comment.profile == profileEnvironmentModel.profile {
                     Button("labels.edit", systemImage: "pencil") {

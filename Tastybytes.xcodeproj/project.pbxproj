@@ -253,6 +253,7 @@
 		5CD9B1882BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */; };
 		5CD9B18A2BDEB2BF00A86387 /* ProfileCheckInsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1892BDEB2BF00A86387 /* ProfileCheckInsList.swift */; };
 		5CD9B18C2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */; };
+		5CD9D1132BFA9CE100CD9EE8 /* Translate+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9D1122BFA9CE100CD9EE8 /* Translate+View.swift */; };
 		5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
@@ -545,6 +546,7 @@
 		5CD9B1872BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeRangeChart.swift; sourceTree = "<group>"; };
 		5CD9B1892BDEB2BF00A86387 /* ProfileCheckInsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCheckInsList.swift; sourceTree = "<group>"; };
 		5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTopLocationsScreen.swift; sourceTree = "<group>"; };
+		5CD9D1122BFA9CE100CD9EE8 /* Translate+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Translate+View.swift"; sourceTree = "<group>"; };
 		5CE030DF2B9E4E9200E119E4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
@@ -877,6 +879,7 @@
 		5C9057372B2894BE00EC157B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				5CD9D1112BFA9CD700CD9EE8 /* Extensions */,
 				5C9057342B2894BE00EC157B /* Utils */,
 				5C9057C12B2894BE00EC157B /* Components */,
 			);
@@ -1495,6 +1498,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		5CD9D1112BFA9CD700CD9EE8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5CD9D1122BFA9CE100CD9EE8 /* Translate+View.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		5CEC64062B854B20008050B4 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
@@ -1689,6 +1700,7 @@
 				5C4FC6402BA70C110025DB83 /* WebView.swift in Sources */,
 				5C90582D2B2894BE00EC157B /* VerificationScreen.swift in Sources */,
 				5C90583F2B2894BE00EC157B /* CheckInCommentView.swift in Sources */,
+				5CD9D1132BFA9CE100CD9EE8 /* Translate+View.swift in Sources */,
 				5CCEE2832B2CA5D600F276DF /* CheckInCardTaggedFriends.swift in Sources */,
 				5CCEE27F2B2CA4DC00F276DF /* CheckInCardCheckIn.swift in Sources */,
 				5C9058002B2894BE00EC157B /* SubscriptionStatus.swift in Sources */,

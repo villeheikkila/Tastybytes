@@ -27,7 +27,6 @@ public struct ProductDuplicateSuggestion: Codable, Hashable, Sendable, Identifia
     public let createdBy: Profile
     public let product: Product.Joined
     public let duplicate: Product.Joined
-
     enum CodingKeys: String, CodingKey {
         case createdAt = "created_at"
         case createdBy = "profiles"

@@ -86,7 +86,7 @@ struct ProductInnerScreen: View {
         }
         .navigationTitle(product.formatted(.fullName))
         .navigationBarTitleDisplayMode(.inline)
-        .translationPresentation(isPresented: $showTranslator, text: product.formatted(.fullName))
+        .translateText(isPresented: $showTranslator, text: product.formatted(.fullName))
         .toolbar {
             toolbarContent
         }
