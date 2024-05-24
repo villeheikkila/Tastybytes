@@ -41,6 +41,7 @@ struct CheckInScreen: View {
                 ForEach(checkInComments) { comment in
                     CheckInCommentRow(checkIn: checkIn, comment: comment, checkInComments: $checkInComments)
                         .listRowSeparator(.hidden)
+                        .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
                         .id(comment.id)
                 }
             }

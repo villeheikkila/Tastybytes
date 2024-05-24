@@ -25,8 +25,8 @@ struct ProductScreenActionSection: View {
             )
             .frame(maxWidth: .infinity)
             .padding(.all, 6.5)
-            .background(Color.accentColor)
-            .foregroundColor(.white)
+            .background(.blue)
+            .tint(.blue)
             .cornerRadius(4, corners: [.topLeft, .bottomLeft])
             ProgressButton("wishlist.add.label", systemImage: "star", actionOptions: []) {
                 await toggleWishlist()
@@ -35,7 +35,7 @@ struct ProductScreenActionSection: View {
             .symbolVariant(isOnWishlist ? .fill : .none)
             .frame(maxWidth: .infinity)
             .padding(.all, 6)
-            .background(Color.orange)
+            .background(.orange)
             .foregroundColor(.white)
             .cornerRadius(3, corners: [.topRight, .bottomRight])
         }
