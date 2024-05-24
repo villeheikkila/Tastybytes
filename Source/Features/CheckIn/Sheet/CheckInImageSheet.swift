@@ -11,17 +11,31 @@ struct CheckInImageSheet: View {
 
     private let logger = Logger(category: "CheckInImageSheet")
     @Environment(Repository.self) private var repository
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var showDeleteConfirmationFor: ImageEntity?
     let checkIn: CheckIn
-    let imageUrl: URL
 
     let onDeleteImage: OnDeleteImageCallback?
+    
+    var image: ImageEntity?  {
+        checkIn.images.first
+    }
+    
+    var imageUrl: URL? {
+        if let image {
+            return image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
+        }
+        return nil
+    }
+    
 
     var body: some View {
         VStack(alignment: .center) {
-            ZoomableRemoteImage(imageUrl: imageUrl, blurHash: checkIn.images.first?.blurHash)
+            if let imageUrl {
+                ZoomableRemoteImage(imageUrl: imageUrl, blurHash: image?.blurHash)
+            }
         }
         .safeAreaInset(edge: .bottom, content: {
             CheckInImageCheckInSection(checkIn: checkIn)
@@ -33,9 +47,13 @@ struct CheckInImageSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ImageShareLink(url: imageUrl, title: "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))")
+            if let imageUrl {
+                ImageShareLink(url: imageUrl, title: "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))")
+            }
             Menu {
-                SaveToPhotoGalleryButton(imageUrl: imageUrl)
+                if let imageUrl {
+                    SaveToPhotoGalleryButton(imageUrl: imageUrl)
+                }
                 if let imageEntity = checkIn.images.first {
                     ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: imageEntity)))
                     if profileEnvironmentModel.profile.id == checkIn.profile.id {

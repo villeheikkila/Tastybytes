@@ -61,7 +61,7 @@ enum Sheet: Identifiable, Equatable {
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
-    case checkInImage(checkIn: CheckIn, imageUrl: URL, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
+    case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
 
     @ViewBuilder var view: some View {
         switch self {
@@ -140,8 +140,8 @@ enum Sheet: Identifiable, Equatable {
                 .ignoresSafeArea(edges: .bottom)
         case let .editComment(checkInComment, checkInComments):
             CheckInCommentEditSheet(checkInComment: checkInComment, checkInComments: checkInComments)
-        case let .checkInImage(checkIn, imageUrl, onDeleteImage):
-            CheckInImageSheet(checkIn: checkIn, imageUrl: imageUrl, onDeleteImage: onDeleteImage)
+        case let .checkInImage(checkIn, onDeleteImage):
+            CheckInImageSheet(checkIn: checkIn, onDeleteImage: onDeleteImage)
         }
     }
 
@@ -253,8 +253,8 @@ enum Sheet: Identifiable, Equatable {
             "send_email"
         case let .editComment(checkInComment, _):
             "edit_comment_\(checkInComment.hashValue)"
-        case let .checkInImage(checkIn, imageUrl, _):
-            "check_in_image_\(checkIn.hashValue)_\(imageUrl)"
+        case let .checkInImage(checkIn, _):
+            "check_in_image_\(checkIn.hashValue)"
         }
     }
 

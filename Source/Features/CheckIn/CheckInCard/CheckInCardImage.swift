@@ -16,18 +16,26 @@ struct CheckInCardImage: View {
     private let imageHeight: Double = 200
 
     var body: some View {
-        if let imageUrl = checkIn.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-            RemoteImageBlurHash(url: imageUrl, blurHash: checkIn.images.first?.blurHash, height: 200) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: imageHeight)
-                    .clipped()
-                    .contentShape(Rectangle())
-                    .openSheetOnTap(.checkInImage(checkIn: checkIn, imageUrl: imageUrl, onDeleteImage: onDeleteImage))
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 0) {
+                    ForEach(checkIn.images) { image in
+                        if let imageUrl = image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+                            RemoteImageBlurHash(url: imageUrl, blurHash: image.blurHash, height: 200) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(height: imageHeight)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            .frame(height: imageHeight)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 4)
+                            .containerRelativeFrame(.horizontal)
+                        }
+                }
             }
-            .frame(height: imageHeight)
-            .padding(.vertical, 4)
+            .scrollTargetBehavior(.paging)
+            .openSheetOnTap(.checkInImage(checkIn: checkIn, onDeleteImage: onDeleteImage))
         }
     }
 }
