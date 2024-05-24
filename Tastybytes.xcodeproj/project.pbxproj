@@ -131,7 +131,7 @@
 		5C9058142B2894BE00EC157B /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057812B2894BE00EC157B /* SettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058152B2894BE00EC157B /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057822B2894BE00EC157B /* AboutScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058162B2894BE00EC157B /* PrivacySettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057832B2894BE00EC157B /* PrivacySettingsPage.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058172B2894BE00EC157B /* ContributionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057842B2894BE00EC157B /* ContributionsScreenView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C9058172B2894BE00EC157B /* ContributionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057842B2894BE00EC157B /* ContributionsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058182B2894BE00EC157B /* AppIconScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057852B2894BE00EC157B /* AppIconScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058192B2894BE00EC157B /* ProfileSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057862B2894BE00EC157B /* ProfileSettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90581A2B2894BE00EC157B /* AccountSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057872B2894BE00EC157B /* AccountSettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -424,7 +424,7 @@
 		5C9057812B2894BE00EC157B /* SettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		5C9057822B2894BE00EC157B /* AboutScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
 		5C9057832B2894BE00EC157B /* PrivacySettingsPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingsPage.swift; sourceTree = "<group>"; };
-		5C9057842B2894BE00EC157B /* ContributionsScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContributionsScreenView.swift; sourceTree = "<group>"; };
+		5C9057842B2894BE00EC157B /* ContributionsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContributionsScreen.swift; sourceTree = "<group>"; };
 		5C9057852B2894BE00EC157B /* AppIconScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIconScreen.swift; sourceTree = "<group>"; };
 		5C9057862B2894BE00EC157B /* ProfileSettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSettingsScreen.swift; sourceTree = "<group>"; };
 		5C9057872B2894BE00EC157B /* AccountSettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreen.swift; sourceTree = "<group>"; };
@@ -1087,7 +1087,7 @@
 				5C9057812B2894BE00EC157B /* SettingsScreen.swift */,
 				5C9057822B2894BE00EC157B /* AboutScreen.swift */,
 				5C9057832B2894BE00EC157B /* PrivacySettingsPage.swift */,
-				5C9057842B2894BE00EC157B /* ContributionsScreenView.swift */,
+				5C9057842B2894BE00EC157B /* ContributionsScreen.swift */,
 				5C9057852B2894BE00EC157B /* AppIconScreen.swift */,
 				5C9057862B2894BE00EC157B /* ProfileSettingsScreen.swift */,
 				5C9057872B2894BE00EC157B /* AccountSettingsScreen.swift */,
@@ -1760,7 +1760,7 @@
 				5C82E8962B2F74BF00F2B369 /* CheckInStatisticView.swift in Sources */,
 				5C9057F62B2894BE00EC157B /* BarcodeUtils.swift in Sources */,
 				5C8036422B814D2300DE9EF3 /* EmptyActivityFeedView.swift in Sources */,
-				5C9058172B2894BE00EC157B /* ContributionsScreenView.swift in Sources */,
+				5C9058172B2894BE00EC157B /* ContributionsScreen.swift in Sources */,
 				5C9057ED2B2894BE00EC157B /* ProductFilterSheet.swift in Sources */,
 				5C9058032B2894BE00EC157B /* EditSubcategorySheet.swift in Sources */,
 				5C511D872BA7952100F95290 /* Pagination.swift in Sources */,
