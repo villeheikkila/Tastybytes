@@ -112,4 +112,3 @@ struct CheckInWatchListItem: View {
         }
     }
 }
-

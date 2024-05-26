@@ -4,11 +4,11 @@ import SwiftUI
 @MainActor
 public extension View {
     func fullScreenImageCrop(isPresented: Binding<Bool>, image: UIImage?,
-                             finalImage: Binding<UIImage?>) -> some View
+                             onSubmit: @escaping (_ image: UIImage?) -> Void) -> some View
     {
         fullScreenCover(isPresented: isPresented, content: {
             NavigationStack {
-                CropView(finalImage: finalImage, crop: .square, image: image)
+                CropView(crop: .square, image: image, onSubmit: onSubmit)
             }
         })
     }
@@ -23,12 +23,12 @@ struct CropView: View {
     @State private var lastStoredOffset: CGSize = .zero
     @State private var selectedCropType: Crop = .rectangle
     @GestureState private var isInteracting = false
-    @Binding var finalImage: UIImage?
 
     private let coordinateSpace = "cropView"
 
-    var crop: Crop
-    var image: UIImage?
+    let crop: Crop
+    let image: UIImage?
+    let onSubmit: (_ image: UIImage?) -> Void
 
     var body: some View {
         imageView()
@@ -58,7 +58,7 @@ struct CropView: View {
 
         ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
-                finalImage = image
+                onSubmit(image)
                 dismiss()
             }, label: {
                 Label("labels.close", systemImage: "xmark")
@@ -152,9 +152,9 @@ struct CropView: View {
         let renderer = ImageRenderer(content: imageView())
         renderer.proposedSize = .init(crop.size())
         if let image = renderer.uiImage {
-            finalImage = image
+            onSubmit(image)
         } else {
-            finalImage = image
+            onSubmit(image)
         }
         dismiss()
     }

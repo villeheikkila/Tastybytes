@@ -32,13 +32,12 @@ struct CheckInSheet: View {
     @State private var checkInAt: Date = .now
     @State private var isLegacyCheckIn: Bool
     @State private var isNostalgic: Bool
-    @State private var blurHash: String?
     @State private var alertError: AlertError?
     @State private var image: UIImage?
     @State private var showPhotoPicker = false
     @State private var photoSelection: PhotosPickerItem?
 
-    @State private var finalImage: UIImage?
+    @State private var newImages = [UIImage]()
     @State private var showImageCropper = false
     @State private var sheet: Sheet?
     @State private var images: [ImageEntity]?
@@ -48,13 +47,6 @@ struct CheckInSheet: View {
     let action: Action
     let product: Product.Joined
     let editCheckIn: CheckIn?
-
-    var showImageSection: Bool {
-        if let images {
-            return !images.isEmpty
-        }
-        return finalImage != nil
-    }
 
     init(product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) async -> Void) {
         self.onCreation = onCreation
@@ -126,18 +118,17 @@ struct CheckInSheet: View {
         .fullScreenImageCrop(
             isPresented: $showImageCropper,
             image: image,
-            finalImage: $finalImage
+            onSubmit: { image in
+                if let image {
+                    newImages.append(image)
+                }
+            }
         )
         .alertError($alertError)
         .toolbar {
             toolbarContent
         }
         .photosPicker(isPresented: $showPhotoPicker, selection: $photoSelection, matching: .images, photoLibrary: .shared())
-        .task(id: finalImage, priority: .background) {
-            if let finalImage, let hash = finalImage.resize(to: 100)?.blurHash(numberOfComponents: (5, 5)) {
-                blurHash = BlurHash(hash: hash, height: finalImage.size.height, width: finalImage.size.width).encoded
-            }
-        }
         .onChange(of: photoSelection) {
             Task {
                 guard let photoSelection, let data = try? await photoSelection.loadTransferable(type: Data.self) else { return }
@@ -166,56 +157,60 @@ struct CheckInSheet: View {
                     focusedField = nil
                 }
 
-                HStack {
-                    if let image = finalImage {
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: 150, alignment: .top)
-                            .clipShape(.rect(cornerRadius: 8))
-                            .shadow(radius: 1)
-                            .accessibilityLabel("checkIn.image.label")
-                            .overlayDeleteButton(action: {
-                                    finalImage = nil
-                            })
-                    }
-
-                    if let images {
-                        ForEach(images) { image in
-                            RemoteImage(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
-                                if let image = state.image {
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(height: 150, alignment: .top)
-                                        .clipShape(.rect(cornerRadius: 8))
-                                        .shadow(radius: 1)
-                                        .accessibilityLabel("checkIn.image.label")
-                                }
-                            }
-                            .overlayDeleteButton(action: {
-                                await deleteImage(entity: image)
-                            })
-                            .padding(3)
-                        }
-                    }
-                        VStack(alignment: .center) {
-                            Spacer()
-                            Label("checkIn.image.add", systemImage: "camera")
-                                .font(.system(size: 24))
-                            Spacer()
-                        }
-                        .frame(width: 110, height: 150, alignment: .top)
-                        .labelStyle(.iconOnly)
-                        .background(.ultraThinMaterial)
+            HStack {
+                ForEach(newImages, id: \.self) { image in
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .clipShape(.rect(cornerRadius: 8))
+                        .containerRelativeFrame([.horizontal, .vertical])
                         .shadow(radius: 1)
-                        .onTapGesture {
-                            showPhotoMenu.toggle()
+                        .accessibilityLabel("checkIn.image.label")
+                        .overlayDeleteButton(action: {
+                            if let index = newImages.firstIndex(of: image) {
+                                newImages.remove(at: index)
+                            }
+
+                        })
+                }
+
+                if let images {
+                    ForEach(images) { image in
+                        RemoteImage(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
+                            if let image = state.image {
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .clipShape(.rect(cornerRadius: 8))
+                                    .containerRelativeFrame([.horizontal, .vertical])
+                                    .shadow(radius: 1)
+                                    .accessibilityLabel("checkIn.image.label")
+                            }
                         }
+                        .overlayDeleteButton(action: {
+                            await deleteImage(entity: image)
+                        })
+                        .padding(3)
+                    }
+                }
+                VStack(alignment: .center) {
                     Spacer()
-                
+                    Label("checkIn.image.add", systemImage: "camera")
+                        .font(.system(size: 24))
+                    Spacer()
+                }
+                .frame(width: 110, alignment: .top)
+                .labelStyle(.iconOnly)
+                .background(.ultraThinMaterial)
+                .clipShape(.rect(cornerRadius: 8))
+                .shadow(radius: 1)
+                .accessibilityAddTraits(.isButton)
+                .onTapGesture {
+                    showPhotoMenu.toggle()
+                }
+                Spacer()
             }
+            .frame(height: 150)
             RatingPickerView(rating: $rating)
         }
         .listRowSeparator(.hidden)
@@ -355,9 +350,7 @@ struct CheckInSheet: View {
 
         switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
         case let .success(updatedCheckIn):
-            if let finalImage {
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, image: finalImage, blurHash: blurHash)
-            }
+            imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
             await onUpdate(updatedCheckIn.copyWith(images: images))
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -400,9 +393,7 @@ struct CheckInSheet: View {
 
         switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
         case let .success(newCheckIn):
-            if let finalImage {
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, image: finalImage, blurHash: blurHash)
-            }
+            imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
             await onCreation(newCheckIn)
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -480,7 +471,7 @@ struct LocationInputButton: View {
 
 struct OverlayDeleteButtonModifier: ViewModifier {
     var action: () async -> Void
-    
+
     func body(content: Content) -> some View {
         content
             .overlay(alignment: .topTrailing) {
@@ -500,6 +491,6 @@ struct OverlayDeleteButtonModifier: ViewModifier {
 
 extension View {
     func overlayDeleteButton(action: @escaping () async -> Void) -> some View {
-        self.modifier(OverlayDeleteButtonModifier(action: action))
+        modifier(OverlayDeleteButtonModifier(action: action))
     }
 }

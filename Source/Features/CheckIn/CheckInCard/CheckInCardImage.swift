@@ -18,7 +18,7 @@ struct CheckInCardImage: View {
 struct CheckInImageScrollView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let checkIn: CheckIn
-    
+
     private let imageHeight: Double = 200
 
     var body: some View {
@@ -44,4 +44,3 @@ struct CheckInImageScrollView: View {
         }
     }
 }
-
