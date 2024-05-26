@@ -40,7 +40,7 @@ struct CheckInSheet: View {
     @State private var newImages = [UIImage]()
     @State private var showImageCropper = false
     @State private var sheet: Sheet?
-    @State private var images: [ImageEntity]?
+    @State private var images: [ImageEntity]
 
     let onCreation: ((_ checkIn: CheckIn) async -> Void)?
     let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
@@ -56,6 +56,7 @@ struct CheckInSheet: View {
         action = .create
         _isLegacyCheckIn = State(initialValue: false)
         _isNostalgic = State(initialValue: false)
+        _images = State(initialValue: [])
     }
 
     init(
@@ -83,7 +84,18 @@ struct CheckInSheet: View {
 
     var body: some View {
         Form {
-            topSection
+            Group {
+                ProductItemView(product: product)
+                    .accessibilityAddTraits(.isButton)
+                    .onTapGesture {
+                        focusedField = nil
+                    }
+                CheckInImageManagementView(newImages: $newImages, images: $images, showPhotoMenu: $showPhotoMenu, deleteImage: deleteImage)
+                    .listRowInsets(.init())
+                RatingPickerView(rating: $rating)
+            }
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
             reviewSection
             additionalInformationSection
             locationAndFriendsSection
@@ -147,74 +159,6 @@ struct CheckInSheet: View {
                 appEnvironmentModel.categories.first(where: { $0.id == product.category.id })?
                     .servingStyles ?? []
         }
-    }
-
-    @ViewBuilder private var topSection: some View {
-        Section {
-            ProductItemView(product: product)
-                .accessibilityAddTraits(.isButton)
-                .onTapGesture {
-                    focusedField = nil
-                }
-
-            HStack {
-                ForEach(newImages, id: \.self) { image in
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(.rect(cornerRadius: 8))
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .shadow(radius: 1)
-                        .accessibilityLabel("checkIn.image.label")
-                        .overlayDeleteButton(action: {
-                            if let index = newImages.firstIndex(of: image) {
-                                newImages.remove(at: index)
-                            }
-
-                        })
-                }
-
-                if let images {
-                    ForEach(images) { image in
-                        RemoteImage(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
-                            if let image = state.image {
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .clipShape(.rect(cornerRadius: 8))
-                                    .containerRelativeFrame([.horizontal, .vertical])
-                                    .shadow(radius: 1)
-                                    .accessibilityLabel("checkIn.image.label")
-                            }
-                        }
-                        .overlayDeleteButton(action: {
-                            await deleteImage(entity: image)
-                        })
-                        .padding(3)
-                    }
-                }
-                VStack(alignment: .center) {
-                    Spacer()
-                    Label("checkIn.image.add", systemImage: "camera")
-                        .font(.system(size: 24))
-                    Spacer()
-                }
-                .frame(width: 110, alignment: .top)
-                .labelStyle(.iconOnly)
-                .background(.ultraThinMaterial)
-                .clipShape(.rect(cornerRadius: 8))
-                .shadow(radius: 1)
-                .accessibilityAddTraits(.isButton)
-                .onTapGesture {
-                    showPhotoMenu.toggle()
-                }
-                Spacer()
-            }
-            .frame(height: 150)
-            RatingPickerView(rating: $rating)
-        }
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
     }
 
     @ViewBuilder private var reviewSection: some View {
@@ -376,6 +320,19 @@ struct CheckInSheet: View {
         }
     }
 
+    func deleteImage(entity: ImageEntity) async {
+        switch await repository.imageEntity.delete(from: .checkInImages, entity: entity) {
+        case .success:
+            withAnimation {
+                images.remove(object: entity)
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
     func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) async -> Void) async {
         let newCheckParams = CheckIn.NewRequest(
             product: product,
@@ -401,19 +358,6 @@ struct CheckInSheet: View {
             logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
         }
     }
-
-    func deleteImage(entity: ImageEntity) async {
-        switch await repository.imageEntity.delete(from: .checkInImages, entity: entity) {
-        case .success:
-            withAnimation {
-                images?.remove(object: entity)
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
-        }
-    }
 }
 
 extension CheckInSheet {
@@ -424,6 +368,70 @@ extension CheckInSheet {
     enum Action {
         case create
         case update
+    }
+}
+
+@MainActor struct CheckInImageManagementView: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Binding var newImages: [UIImage]
+    @Binding var images: [ImageEntity]
+    @Binding var showPhotoMenu: Bool
+    let deleteImage: (_ image: ImageEntity) async -> Void
+
+    var body: some View {
+        ScrollView(.horizontal) {
+            LazyHStack(alignment: .center) {
+                ForEach(newImages, id: \.self) { image in
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipShape(.rect(cornerRadius: 8))
+                        .frame(height: 150)
+                        .shadow(radius: 1)
+                        .accessibilityLabel("checkIn.image.label")
+                        .overlayDeleteButton(action: {
+                            if let index = newImages.firstIndex(of: image) {
+                                newImages.remove(at: index)
+                            }
+
+                        })
+                }
+
+                ForEach(images) { image in
+                    RemoteImage(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
+                        if let image = state.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .clipShape(.rect(cornerRadius: 8))
+                                .frame(height: 150)
+                                .shadow(radius: 1)
+                                .accessibilityLabel("checkIn.image.label")
+                        }
+                    }
+                    .overlayDeleteButton(action: {
+                        await deleteImage(image)
+                    })
+                }
+                VStack(alignment: .center) {
+                    Spacer()
+                    Label("checkIn.image.add", systemImage: "camera")
+                        .font(.system(size: 24))
+                    Spacer()
+                }
+                .labelStyle(.iconOnly)
+                .frame(width: 110, height: 150)
+                .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
+                .shadow(radius: 1)
+                .accessibilityAddTraits(.isButton)
+                .onTapGesture {
+                    showPhotoMenu.toggle()
+                }
+                Spacer()
+            }
+        }
+        .scrollIndicators(.hidden)
+        .contentMargins(.horizontal, 16)
     }
 }
 
@@ -470,21 +478,28 @@ struct LocationInputButton: View {
 }
 
 struct OverlayDeleteButtonModifier: ViewModifier {
+    @State private var submitting = false
     var action: () async -> Void
 
     func body(content: Content) -> some View {
         content
             .overlay(alignment: .topTrailing) {
-                ProgressButton(role: .destructive, action: action) {
-                    Label("labels.delete", systemImage: "trash")
-                        .labelStyle(.iconOnly)
-                        .imageScale(.small)
-                        .tint(.red)
-                        .padding(3)
-                        .foregroundColor(.red)
-                        .background(.ultraThinMaterial, in: .circle)
+                Label("labels.delete", systemImage: "trash")
+                    .labelStyle(.iconOnly)
+                    .imageScale(.small)
+                    .tint(.red)
+                    .padding(3)
+                    .foregroundColor(.red)
+                    .background(.ultraThinMaterial, in: .circle)
+            }
+            .padding(4)
+            .onTapGesture {
+                guard submitting == false else { return }
+                Task {
+                    submitting = true
+                    await action()
+                    submitting = false
                 }
-                .padding(4)
             }
     }
 }
