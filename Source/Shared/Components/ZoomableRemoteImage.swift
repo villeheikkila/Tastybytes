@@ -15,9 +15,7 @@ struct ZoomableRemoteImage: View {
         DragGesture()
             .onChanged { value in
                 guard scale != 1.0 else { return }
-                withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
-                    location = value.location
-                }
+                location = value.location
             }
     }
 

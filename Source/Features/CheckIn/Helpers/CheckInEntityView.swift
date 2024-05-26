@@ -43,22 +43,7 @@ public struct CheckInEntityView: View {
     }
 
     @ViewBuilder private var checkInImage: some View {
-        if let imageUrl = checkIn.getImageUrl(baseUrl: baseUrl) {
-            HStack {
-                RemoteImage(url: imageUrl) { state in
-                    if let image = state.image {
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(height: 200)
-                            .clipped()
-                            .contentShape(Rectangle())
-                    } else {
-                        BlurHashPlaceholder(blurHash: checkIn.images.first?.blurHash, height: 200)
-                    }
-                }.frame(height: 200)
-            }
-        }
+        CheckInCardImage(checkIn: checkIn, onDeleteImage: nil)
     }
 
     private var productSection: some View {

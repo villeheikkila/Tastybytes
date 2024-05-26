@@ -14,29 +14,34 @@ struct CheckInImageSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var currentImage: ImageEntity
     @State private var showDeleteConfirmationFor: ImageEntity?
     let checkIn: CheckIn
 
     let onDeleteImage: OnDeleteImageCallback?
-    
-    var image: ImageEntity?  {
-        checkIn.images.first
-    }
-    
-    var imageUrl: URL? {
-        if let image {
-            return image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
+
+    init(checkIn: CheckIn, onDeleteImage: OnDeleteImageCallback?) {
+        self.checkIn = checkIn
+        currentImage = if let firstImage = checkIn.images.first {
+            firstImage
+        } else {
+            .init(id: 0, file: "", bucket: "", blurHash: nil)
         }
-        return nil
+        self.onDeleteImage = onDeleteImage
     }
-    
 
     var body: some View {
-        VStack(alignment: .center) {
-            if let imageUrl {
-                ZoomableRemoteImage(imageUrl: imageUrl, blurHash: image?.blurHash)
+        TabView(selection: $currentImage) {
+            ForEach(checkIn.images) { image in
+                VStack(alignment: .center) {
+                    if let imageUrl = image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+                        ZoomableRemoteImage(imageUrl: imageUrl, blurHash: image.blurHash)
+                    }
+                }
+                .tag(image)
             }
         }
+        .tabViewStyle(.page)
         .safeAreaInset(edge: .bottom, content: {
             CheckInImageCheckInSection(checkIn: checkIn)
         })
@@ -47,18 +52,16 @@ struct CheckInImageSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            if let imageUrl {
+            if let imageUrl = currentImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                 ImageShareLink(url: imageUrl, title: "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))")
             }
             Menu {
-                if let imageUrl {
+                if let imageUrl = currentImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                     SaveToPhotoGalleryButton(imageUrl: imageUrl)
                 }
-                if let imageEntity = checkIn.images.first {
-                    ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: imageEntity)))
-                    if profileEnvironmentModel.profile.id == checkIn.profile.id {
-                        Button("labels.delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = imageEntity })
-                    }
+                ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
+                if profileEnvironmentModel.profile.id == checkIn.profile.id {
+                    Button("labels.delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = currentImage })
                 }
 
             } label: {

@@ -1053,6 +1053,7 @@
       }
     },
     "checkIn.image.change" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

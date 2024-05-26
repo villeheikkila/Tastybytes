@@ -6,6 +6,13 @@ public struct ImageEntity: Codable, Hashable, Sendable, Identifiable {
     public let bucket: String
     public let blurHash: BlurHash?
 
+    public init(id: Int, file: String, bucket: String, blurHash: BlurHash?) {
+        self.id = id
+        self.file = file
+        self.bucket = bucket
+        self.blurHash = blurHash
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
         case file

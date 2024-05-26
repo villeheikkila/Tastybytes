@@ -277,17 +277,3 @@ public extension CheckIn {
 public enum CheckInSegment: String, CaseIterable, Sendable {
     case everyone, friends, you
 }
-
-public extension CheckIn {
-    func getImageUrl(baseUrl: URL) -> URL? {
-        guard let image = images.first else { return nil }
-        return image.getLogoUrl(baseUrl: baseUrl)
-    }
-}
-
-public extension CheckIn.Image {
-    func getImageUrl(baseUrl: URL) -> URL? {
-        guard let image = images.first else { return nil }
-        return image.getLogoUrl(baseUrl: baseUrl)
-    }
-}

@@ -101,7 +101,7 @@ struct CheckInWatchListItem: View {
                 .font(.headline)
                 .foregroundColor(.primary)
 
-            CheckInCardWatchImage(checkIn: checkIn)
+            CheckInImageScrollView(checkIn: checkIn)
 
             if let rating = checkIn.rating {
                 RatingView(rating: rating)
@@ -113,29 +113,3 @@ struct CheckInWatchListItem: View {
     }
 }
 
-@MainActor
-struct CheckInCardWatchImage: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-
-    let checkIn: CheckIn
-
-    private let imageHeight: Double = 100
-
-    var body: some View {
-        if let imageUrl = checkIn.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-            RemoteImage(url: imageUrl) { state in
-                if let image = state.image {
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: imageHeight)
-                        .clipped()
-                        .cornerRadius(8)
-                } else {
-                    ProgressView()
-                }
-            }
-            .frame(height: imageHeight)
-        }
-    }
-}

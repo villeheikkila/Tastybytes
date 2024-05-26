@@ -166,23 +166,18 @@ struct CheckInSheet: View {
                     focusedField = nil
                 }
 
-            if showImageSection {
                 HStack {
-                    Spacer()
                     if let image = finalImage {
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(height: 150, alignment: .top)
-                            .clipped()
-                            .cornerRadius(4)
-                            .shadow(radius: 4)
+                            .clipShape(.rect(cornerRadius: 8))
+                            .shadow(radius: 1)
                             .accessibilityLabel("checkIn.image.label")
-                            .contextMenu {
-                                ProgressButton("labels.delete", systemImage: "trash", role: .destructive) {
+                            .overlayDeleteButton(action: {
                                     finalImage = nil
-                                }
-                            }
+                            })
                     }
 
                     if let images {
@@ -193,19 +188,33 @@ struct CheckInSheet: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(height: 150, alignment: .top)
-                                        .shadow(radius: 4)
+                                        .clipShape(.rect(cornerRadius: 8))
+                                        .shadow(radius: 1)
                                         .accessibilityLabel("checkIn.image.label")
                                 }
                             }
-                            .contextMenu {
-                                ProgressButton("labels.delete") {
-                                    await deleteImage(entity: image)
-                                }
-                            }
+                            .overlayDeleteButton(action: {
+                                await deleteImage(entity: image)
+                            })
+                            .padding(3)
                         }
                     }
+                        VStack(alignment: .center) {
+                            Spacer()
+                            Label("checkIn.image.add", systemImage: "camera")
+                                .font(.system(size: 24))
+                            Spacer()
+                        }
+                        .frame(width: 110, height: 150, alignment: .top)
+                        .labelStyle(.iconOnly)
+                        .background(.ultraThinMaterial)
+                        .clipShape(.rect(cornerRadius: 8))
+                        .shadow(radius: 1)
+                        .onTapGesture {
+                            showPhotoMenu.toggle()
+                        }
                     Spacer()
-                }
+                
             }
             RatingPickerView(rating: $rating)
         }
@@ -226,10 +235,6 @@ struct CheckInSheet: View {
                         Text("flavors.label")
                     }
                 }
-            )
-            Button(
-                editCheckIn?.getImageUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) == nil && image == nil ? "checkIn.image.add" : "checkIn.image.change",
-                systemImage: "photo", action: { showPhotoMenu.toggle() }
             )
         }
         .headerProminence(.increased)
@@ -470,5 +475,31 @@ struct LocationInputButton: View {
                 }
             }
         )
+    }
+}
+
+struct OverlayDeleteButtonModifier: ViewModifier {
+    var action: () async -> Void
+    
+    func body(content: Content) -> some View {
+        content
+            .overlay(alignment: .topTrailing) {
+                ProgressButton(role: .destructive, action: action) {
+                    Label("labels.delete", systemImage: "trash")
+                        .labelStyle(.iconOnly)
+                        .imageScale(.small)
+                        .tint(.red)
+                        .padding(3)
+                        .foregroundColor(.red)
+                        .background(.ultraThinMaterial, in: .circle)
+                }
+                .padding(4)
+            }
+    }
+}
+
+extension View {
+    func overlayDeleteButton(action: @escaping () async -> Void) -> some View {
+        self.modifier(OverlayDeleteButtonModifier(action: action))
     }
 }

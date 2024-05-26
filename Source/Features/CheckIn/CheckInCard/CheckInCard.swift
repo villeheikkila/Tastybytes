@@ -25,7 +25,9 @@ struct CheckInCard: View {
                     servingStyle: checkIn.servingStyle
                 )
             }.padding(.horizontal, 8)
-            CheckInCardImage(checkIn: checkIn, onDeleteImage: onDeleteImage)
+            if !checkIn.images.isEmpty {
+                CheckInCardImage(checkIn: checkIn, onDeleteImage: onDeleteImage)
+            }
             Group {
                 CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
                 CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
