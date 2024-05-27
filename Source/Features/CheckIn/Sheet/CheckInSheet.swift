@@ -17,13 +17,14 @@ struct CheckInSheet: View {
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
-    @State private var showPhotoMenu = false
+    @State private var servingStyles = [ServingStyle]()
+    @State private var alertError: AlertError?
+    @State private var sheet: Sheet?
+    // check-in properties
     @State private var pickedFlavors = [Flavor]()
-    @State private var showCamera = false
     @State private var review: String = ""
     @State private var rating: Double = 0
     @State private var manufacturer: Company?
-    @State private var servingStyles = [ServingStyle]()
     @State private var servingStyle: ServingStyle?
     @State private var taggedFriends = [Profile]()
     @State private var location: Location?
@@ -32,14 +33,8 @@ struct CheckInSheet: View {
     @State private var checkInAt: Date = .now
     @State private var isLegacyCheckIn: Bool
     @State private var isNostalgic: Bool
-    @State private var alertError: AlertError?
     @State private var image: UIImage?
-    @State private var showPhotoPicker = false
-    @State private var photoSelection: PhotosPickerItem?
-
     @State private var newImages = [UIImage]()
-    @State private var showImageCropper = false
-    @State private var sheet: Sheet?
     @State private var images: [ImageEntity]
 
     let onCreation: ((_ checkIn: CheckIn) async -> Void)?
@@ -90,7 +85,8 @@ struct CheckInSheet: View {
                     .onTapGesture {
                         focusedField = nil
                     }
-                CheckInImageManagementView(newImages: $newImages, images: $images, showPhotoMenu: $showPhotoMenu, showCamera: $showCamera, showPhotoPicker: $showPhotoPicker, deleteImage: deleteImage)
+                CheckInImageManagementView(newImages: $newImages, images: $images,
+                                           image: $image, checkInAt: $checkInAt, locationFromImage: $locationFromImage)
                     .listRowInsets(.init())
                 RatingPickerView(rating: $rating)
             }
@@ -104,45 +100,9 @@ struct CheckInSheet: View {
         .toolbarBackground(.hidden, for: .navigationBar)
         .foregroundColor(.primary)
         .sheets(item: $sheet)
-        .fullScreenCamera(
-            isPresented: $showCamera,
-            selectedImage: .init(
-                get: {
-                    nil
-                },
-                set: { image in
-                    guard let image else { return }
-                    self.image = image
-                    showImageCropper = true
-                }
-            )
-        )
-        .fullScreenImageCrop(
-            isPresented: $showImageCropper,
-            image: image,
-            onSubmit: { image in
-                if let image {
-                    newImages.append(image)
-                }
-            }
-        )
         .alertError($alertError)
         .toolbar {
             toolbarContent
-        }
-        .photosPicker(isPresented: $showPhotoPicker, selection: $photoSelection, matching: .images, photoLibrary: .shared())
-        .onChange(of: photoSelection) {
-            Task {
-                guard let photoSelection, let data = try? await photoSelection.loadTransferable(type: Data.self) else { return }
-                if let imageTakenAt = photoSelection.imageMetadata.date {
-                    checkInAt = imageTakenAt
-                }
-                if let imageTakenLocation = photoSelection.imageMetadata.location {
-                    await getLocationFromCoordinate(coordinate: imageTakenLocation)
-                }
-                image = UIImage(data: data)
-                showImageCropper = true
-            }
         }
         .onAppear {
             servingStyles =
@@ -293,12 +253,6 @@ struct CheckInSheet: View {
         }
     }
 
-    func getLocationFromCoordinate(coordinate: CLLocationCoordinate2D) async {
-        let countryCode = try? await coordinate.getISOCountryCode()
-        let country = appEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
-        locationFromImage = Location(coordinate: coordinate, countryCode: countryCode, country: country)
-    }
-
     func storeLocation(_ location: Location) async {
         switch await repository.location.insert(location: location) {
         case let .success(savedLocation):
@@ -307,19 +261,6 @@ struct CheckInSheet: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func deleteImage(entity: ImageEntity) async {
-        switch await repository.imageEntity.delete(from: .checkInImages, entity: entity) {
-        case .success:
-            withAnimation {
-                images.remove(object: entity)
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }
 
