@@ -102,6 +102,7 @@ struct CheckInSheet: View {
         }
         .scrollContentBackground(.hidden)
         .foregroundColor(.primary)
+        .dismissKeyboardOnBackgroundTap()
         .sheets(item: $sheet)
         .confirmationDialog("checkIn.photo.title", isPresented: $showPhotoMenu) {
             Button("checkIn.photo.picker.camera", action: { showCamera.toggle() })

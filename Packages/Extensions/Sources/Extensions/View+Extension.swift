@@ -214,3 +214,18 @@ private struct InitialTask: ViewModifier {
         }
     }
 }
+
+public struct DismissKeyboardOnBackgroundTapModifier: ViewModifier {
+    public func body(content: Content) -> some View {
+        content
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
+    }
+}
+
+public extension View {
+    func dismissKeyboardOnBackgroundTap() -> some View {
+        modifier(DismissKeyboardOnBackgroundTapModifier())
+    }
+}
