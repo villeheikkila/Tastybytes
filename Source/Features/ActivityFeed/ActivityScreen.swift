@@ -36,13 +36,10 @@ struct ActivityScreen: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                         proxy.scrollTo(checkIn.id, anchor: .top)
                     }
-                }, onLoadMore: {
-                    checkInLoader.onLoadMore()
-                })
+                }, onLoadMore: checkInLoader.onLoadMore)
                 CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
             }
             .listStyle(.plain)
-            .defaultScrollContentBackground()
             .scrollIndicators(.hidden)
             .refreshable {
                 await checkInLoader.fetchFeedItems(reset: true)

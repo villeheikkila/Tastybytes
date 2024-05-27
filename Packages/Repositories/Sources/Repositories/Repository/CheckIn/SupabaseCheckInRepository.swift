@@ -12,7 +12,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .from(.viewActivityFeed)
                 .select(CheckIn.getQuery(.joined(false)))
                 .range(from: from, to: to)
-                .order("created_at", ascending: false)
+                .order("check_in_at", ascending: false)
                 .execute()
                 .value
             return .success(response)
@@ -39,7 +39,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 filter
             }
 
-            let ordered = conditionalFilters.order("created_at", ascending: false)
+            let ordered = conditionalFilters.order("check_in_at", ascending: false)
 
             let query = if case let .paginated(from, to) = queryType {
                 ordered.range(from: from, to: to)

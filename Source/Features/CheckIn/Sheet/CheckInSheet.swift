@@ -371,7 +371,8 @@ extension CheckInSheet {
     }
 }
 
-@MainActor struct CheckInImageManagementView: View {
+@MainActor
+struct CheckInImageManagementView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Binding var newImages: [UIImage]
     @Binding var images: [ImageEntity]
