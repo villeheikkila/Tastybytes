@@ -90,7 +90,7 @@ struct CheckInSheet: View {
                     .onTapGesture {
                         focusedField = nil
                     }
-                CheckInImageManagementView(newImages: $newImages, images: $images, showPhotoMenu: $showPhotoMenu, deleteImage: deleteImage)
+                CheckInImageManagementView(newImages: $newImages, images: $images, showPhotoMenu: $showPhotoMenu, showCamera: $showCamera, showPhotoPicker: $showPhotoPicker, deleteImage: deleteImage)
                     .listRowInsets(.init())
                 RatingPickerView(rating: $rating)
             }
@@ -101,19 +101,9 @@ struct CheckInSheet: View {
             locationAndFriendsSection
         }
         .scrollContentBackground(.hidden)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .foregroundColor(.primary)
         .sheets(item: $sheet)
-        .confirmationDialog("checkIn.photo.title", isPresented: $showPhotoMenu) {
-            Button("checkIn.photo.picker.camera", action: { showCamera.toggle() })
-            Button(
-                "checkIn.photo.picker.photoGallery",
-                action: {
-                    showPhotoPicker = true
-                }
-            )
-        } message: {
-            Text("checkIn.photo.picker.title")
-        }
         .fullScreenCamera(
             isPresented: $showCamera,
             selectedImage: .init(

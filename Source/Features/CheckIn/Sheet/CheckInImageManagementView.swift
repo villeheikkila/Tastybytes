@@ -9,6 +9,9 @@ struct CheckInImageManagementView: View {
     @Binding var newImages: [UIImage]
     @Binding var images: [ImageEntity]
     @Binding var showPhotoMenu: Bool
+    @Binding var showCamera: Bool
+    @Binding var showPhotoPicker: Bool
+
     let deleteImage: (_ image: ImageEntity) async -> Void
 
     var totalImages: Int {
@@ -55,6 +58,17 @@ struct CheckInImageManagementView: View {
                     showPhotoMenu.toggle()
                 }
                 .opacity(totalImages >= 2 ? 0 : 1)
+                .confirmationDialog("checkIn.photo.title", isPresented: $showPhotoMenu) {
+                    Button("checkIn.photo.picker.camera", action: { showCamera.toggle() })
+                    Button(
+                        "checkIn.photo.picker.photoGallery",
+                        action: {
+                            showPhotoPicker = true
+                        }
+                    )
+                } message: {
+                    Text("checkIn.photo.picker.title")
+                }
                 Spacer()
             }
         }
