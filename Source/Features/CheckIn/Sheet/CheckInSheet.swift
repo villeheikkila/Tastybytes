@@ -37,29 +37,20 @@ struct CheckInSheet: View {
     @State private var newImages = [UIImage]()
     @State private var images: [ImageEntity]
 
-    let onCreation: ((_ checkIn: CheckIn) async -> Void)?
-    let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
     let action: Action
     let product: Product.Joined
 
-    init(product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) async -> Void) {
-        self.onCreation = onCreation
+    init(product: Product.Joined, action: Action) {
         self.product = product
-        onUpdate = nil
-        action = .create
+        self.action = action
         _isLegacyCheckIn = State(initialValue: false)
         _isNostalgic = State(initialValue: false)
         _images = State(initialValue: [])
     }
 
-    init(
-        checkIn: CheckIn,
-        onUpdate: @escaping (_ checkIn: CheckIn) async -> Void
-    ) {
+    init(checkIn: CheckIn, action: Action) {
         product = checkIn.product
-        onCreation = nil
-        self.onUpdate = onUpdate
-        action = .update(checkIn)
+        self.action = action
         _images = State(initialValue: checkIn.images)
         _review = State(wrappedValue: checkIn.review.orEmpty)
         _rating = State(wrappedValue: checkIn.rating ?? 0)
@@ -197,7 +188,7 @@ struct CheckInSheet: View {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(
-                action == .create ? "checkIn.create.label" : "checkIn.update.label",
+                action == .create(nil) ? "checkIn.create.label" : "checkIn.update.label",
                 action: primaryAction
             )
             .foregroundColor(.primary)
@@ -207,82 +198,60 @@ struct CheckInSheet: View {
 
     func primaryAction() async {
         switch action {
-        case .create:
-            guard let newCheckIn = await createCheckIn() else { return }
-            if let onCreation {
-                await onCreation(newCheckIn)
+        case let .create(onCreation):
+            switch await repository.checkIn.create(newCheckInParams: .init(
+                product: product,
+                review: review,
+                taggedFriends: taggedFriends,
+                servingStyle: servingStyle,
+                manufacturer: manufacturer,
+                flavors: pickedFlavors,
+                rating: rating,
+                location: location,
+                purchaseLocation: purchaseLocation,
+                checkInAt: isLegacyCheckIn ? nil : checkInAt,
+                isNostalgic: isNostalgic
+            )) {
+            case let .success(newCheckIn):
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
+                if let onCreation {
+                    await onCreation(newCheckIn)
+                }
+                feedbackEnvironmentModel.trigger(.notification(.success))
+                dismiss()
+            case let .failure(error):
+                guard !error.isCancelled else { return }
+                alertError = .init()
+                logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
+                return
             }
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            dismiss()
-        case let .update(editCheckIn):
-            guard let updatedCheckIn = await updateCheckIn(checkIn: editCheckIn) else { return }
-            if let onUpdate {
-                await onUpdate(updatedCheckIn)
+        case let .update(checkIn, onUpdate):
+            switch await repository.checkIn.update(updateCheckInParams: .init(
+                checkIn: checkIn,
+                product: product,
+                review: review,
+                taggedFriends: taggedFriends,
+                servingStyle: servingStyle,
+                manufacturer: manufacturer,
+                flavors: pickedFlavors,
+                rating: rating,
+                location: location,
+                purchaseLocation: purchaseLocation,
+                checkInAt: isLegacyCheckIn ? nil : checkInAt,
+                isNostalgic: isNostalgic
+            )) {
+            case let .success(updatedCheckIn):
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
+                if let onUpdate {
+                    await onUpdate(updatedCheckIn.copyWith(images: images))
+                }
+                feedbackEnvironmentModel.trigger(.notification(.success))
+                dismiss()
+            case let .failure(error):
+                guard !error.isCancelled else { return  }
+                alertError = .init()
+                logger.error("Failed to update check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
             }
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            dismiss()
-        }
-    }
-
-    func updateCheckIn(checkIn: CheckIn) async -> CheckIn? {
-        switch await repository.checkIn.update(updateCheckInParams: .init(
-            checkIn: checkIn,
-            product: product,
-            review: review,
-            taggedFriends: taggedFriends,
-            servingStyle: servingStyle,
-            manufacturer: manufacturer,
-            flavors: pickedFlavors,
-            rating: rating,
-            location: location,
-            purchaseLocation: purchaseLocation,
-            checkInAt: isLegacyCheckIn ? nil : checkInAt,
-            isNostalgic: isNostalgic
-        )) {
-        case let .success(updatedCheckIn):
-            imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
-            return updatedCheckIn.copyWith(images: images)
-        case let .failure(error):
-            guard !error.isCancelled else { return nil }
-            alertError = .init()
-            logger.error("Failed to update check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
-            return nil
-        }
-    }
-
-    func storeLocation(_ location: Location) async {
-        switch await repository.location.insert(location: location) {
-        case let .success(savedLocation):
-            logger.info("Succesfully created a location \(savedLocation.name) from an image")
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func createCheckIn() async -> CheckIn? {
-        switch await repository.checkIn.create(newCheckInParams: .init(
-            product: product,
-            review: review,
-            taggedFriends: taggedFriends,
-            servingStyle: servingStyle,
-            manufacturer: manufacturer,
-            flavors: pickedFlavors,
-            rating: rating,
-            location: location,
-            purchaseLocation: purchaseLocation,
-            checkInAt: isLegacyCheckIn ? nil : checkInAt,
-            isNostalgic: isNostalgic
-        )) {
-        case let .success(newCheckIn):
-            imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
-            return newCheckIn
-        case let .failure(error):
-            guard !error.isCancelled else { return nil }
-            alertError = .init()
-            logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
-            return nil
         }
     }
 }
@@ -292,8 +261,19 @@ extension CheckInSheet {
         case review
     }
 
-    enum Action: Hashable {
-        case create
-        case update(CheckIn)
+    enum Action: Equatable {
+        case create(((_ checkIn: CheckIn) async -> Void)?)
+        case update(CheckIn, ((_ checkIn: CheckIn) async -> Void)?)
+
+        static func == (lhs: Action, rhs: Action) -> Bool {
+            switch (lhs, rhs) {
+            case (.create, .create):
+                true
+            case let (.update(lhsCheckIn, _), .update(rhsCheckIn, _)):
+                lhsCheckIn == rhsCheckIn
+            default:
+                false
+            }
+        }
     }
 }

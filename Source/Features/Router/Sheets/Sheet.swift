@@ -68,9 +68,9 @@ enum Sheet: Identifiable, Equatable {
         case let .report(entity):
             ReportSheet(entity: entity)
         case let .checkIn(checkIn, onUpdate):
-            CheckInSheet(checkIn: checkIn, onUpdate: onUpdate)
+            CheckInSheet(checkIn: checkIn, action: .update(checkIn, onUpdate))
         case let .newCheckIn(product, onCreation):
-            CheckInSheet(product: product, onCreation: onCreation)
+            CheckInSheet(product: product, action: .create(onCreation))
         case let .barcodeScanner(onComplete: onComplete):
             BarcodeScannerSheet(onComplete: onComplete)
         case let .productFilter(initialFilter, sections, onApply):
