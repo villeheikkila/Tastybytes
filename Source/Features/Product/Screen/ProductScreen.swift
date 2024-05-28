@@ -139,7 +139,7 @@ struct ProductInnerScreen: View {
             Menu {
                 ControlGroup {
                     ProductShareLinkView(product: product)
-                    Button("checkIn.create.label", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: checkInLoader.onCreateCheckIn) })
+                    Button("checkIn.create.label", systemImage: "plus", action: { sheet = .checkIn(.create(product: product, onCreation: checkInLoader.onCreateCheckIn)) })
                         .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                         Button(

@@ -40,29 +40,29 @@ struct CheckInSheet: View {
     let action: Action
     let product: Product.Joined
 
-    init(product: Product.Joined, action: Action) {
-        self.product = product
+    init(action: Action) {
         self.action = action
-        _isLegacyCheckIn = State(initialValue: false)
-        _isNostalgic = State(initialValue: false)
-        _images = State(initialValue: [])
-    }
-
-    init(checkIn: CheckIn, action: Action) {
-        product = checkIn.product
-        self.action = action
-        _images = State(initialValue: checkIn.images)
-        _review = State(wrappedValue: checkIn.review.orEmpty)
-        _rating = State(wrappedValue: checkIn.rating ?? 0)
-        _manufacturer = State(wrappedValue: checkIn.variant?.manufacturer)
-        _servingStyle = State(wrappedValue: checkIn.servingStyle)
-        _taggedFriends = State(wrappedValue: checkIn.taggedProfiles.map(\.profile))
-        _pickedFlavors = State(wrappedValue: checkIn.flavors.map(\.flavor))
-        _location = State(wrappedValue: checkIn.location)
-        _purchaseLocation = State(wrappedValue: checkIn.purchaseLocation)
-        _checkInAt = State(wrappedValue: checkIn.checkInAt ?? Date.now)
-        _isLegacyCheckIn = State(initialValue: checkIn.checkInAt == nil)
-        _isNostalgic = State(initialValue: checkIn.isNostalgic)
+        switch action {
+        case let .create(product: product, _):
+            self.product = product
+            _isLegacyCheckIn = State(initialValue: false)
+            _isNostalgic = State(initialValue: false)
+            _images = State(initialValue: [])
+        case let .update(checkIn, _):
+            product = checkIn.product
+            _images = State(initialValue: checkIn.images)
+            _review = State(wrappedValue: checkIn.review.orEmpty)
+            _rating = State(wrappedValue: checkIn.rating ?? 0)
+            _manufacturer = State(wrappedValue: checkIn.variant?.manufacturer)
+            _servingStyle = State(wrappedValue: checkIn.servingStyle)
+            _taggedFriends = State(wrappedValue: checkIn.taggedProfiles.map(\.profile))
+            _pickedFlavors = State(wrappedValue: checkIn.flavors.map(\.flavor))
+            _location = State(wrappedValue: checkIn.location)
+            _purchaseLocation = State(wrappedValue: checkIn.purchaseLocation)
+            _checkInAt = State(wrappedValue: checkIn.checkInAt ?? Date.now)
+            _isLegacyCheckIn = State(initialValue: checkIn.checkInAt == nil)
+            _isNostalgic = State(initialValue: checkIn.isNostalgic)
+        }
     }
 
     var body: some View {
@@ -184,11 +184,20 @@ struct CheckInSheet: View {
         }
     }
 
+    var primaryActionLabel: LocalizedStringKey {
+        switch action {
+        case .create:
+            "checkIn.create.label"
+        case .update:
+            "checkIn.update.label"
+        }
+    }
+
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(
-                action == .create(nil) ? "checkIn.create.label" : "checkIn.update.label",
+                primaryActionLabel,
                 action: primaryAction
             )
             .foregroundColor(.primary)
@@ -198,7 +207,7 @@ struct CheckInSheet: View {
 
     func primaryAction() async {
         switch action {
-        case let .create(onCreation):
+        case let .create(product, onCreation):
             switch await repository.checkIn.create(newCheckInParams: .init(
                 product: product,
                 review: review,
@@ -248,7 +257,7 @@ struct CheckInSheet: View {
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 dismiss()
             case let .failure(error):
-                guard !error.isCancelled else { return  }
+                guard !error.isCancelled else { return }
                 alertError = .init()
                 logger.error("Failed to update check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
             }
@@ -261,18 +270,29 @@ extension CheckInSheet {
         case review
     }
 
-    enum Action: Equatable {
-        case create(((_ checkIn: CheckIn) async -> Void)?)
-        case update(CheckIn, ((_ checkIn: CheckIn) async -> Void)?)
+    enum Action: Hashable {
+        case create(product: Product.Joined, onCreation: ((_ checkIn: CheckIn) async -> Void)?)
+        case update(checkIn: CheckIn, onUpdate: ((_ checkIn: CheckIn) async -> Void)?)
 
         static func == (lhs: Action, rhs: Action) -> Bool {
             switch (lhs, rhs) {
-            case (.create, .create):
-                true
+            case let (.create(lhsProduct, _), .create(rhsProduct, _)):
+                lhsProduct == rhsProduct
             case let (.update(lhsCheckIn, _), .update(rhsCheckIn, _)):
                 lhsCheckIn == rhsCheckIn
             default:
                 false
+            }
+        }
+
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case let .create(product, _):
+                hasher.combine("create")
+                hasher.combine(product)
+            case let .update(checkIn, _):
+                hasher.combine("update")
+                hasher.combine(checkIn)
             }
         }
     }

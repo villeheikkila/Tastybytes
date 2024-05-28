@@ -21,9 +21,9 @@ struct DiscoverProductRow: View {
     var body: some View {
         ProductItemView(product: product, extras: [.checkInCheck, .rating, .logoOnLeft])
             .swipeActions {
-                Button("checkIn.create.label", systemImage: "plus", action: { sheet = .newCheckIn(product, onCreation: { checkIn in
+                Button("checkIn.create.label", systemImage: "plus", action: { sheet = .checkIn(.create(product: product, onCreation: { checkIn in
                     router.navigate(screen: .checkIn(checkIn))
-                }) }).tint(.green)
+                })) }).tint(.green)
             }
             .contentShape(Rectangle())
             .accessibilityAddTraits(.isLink)

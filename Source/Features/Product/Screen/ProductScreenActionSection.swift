@@ -20,7 +20,7 @@ struct ProductScreenActionSection: View {
             RouterLink(
                 "checkIn.create.label.prominent",
                 systemImage: "checkmark.circle",
-                sheet: .newCheckIn(product, onCreation: onCreateCheckIn),
+                sheet: .checkIn(.create(product: product, onCreation: onCreateCheckIn)),
                 asTapGesture: true
             )
             .frame(maxWidth: .infinity)

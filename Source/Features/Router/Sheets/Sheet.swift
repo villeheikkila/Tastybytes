@@ -6,8 +6,7 @@ import SwiftUI
 @MainActor
 enum Sheet: Identifiable, Equatable {
     case report(Report.Entity)
-    case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
-    case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) async -> Void)
+    case checkIn(CheckInSheet.Action)
     case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
     case productFilter(
         initialFilter: Product.Filter?,
@@ -67,10 +66,8 @@ enum Sheet: Identifiable, Equatable {
         switch self {
         case let .report(entity):
             ReportSheet(entity: entity)
-        case let .checkIn(checkIn, onUpdate):
-            CheckInSheet(checkIn: checkIn, action: .update(checkIn, onUpdate))
-        case let .newCheckIn(product, onCreation):
-            CheckInSheet(product: product, action: .create(onCreation))
+        case let .checkIn(action):
+            CheckInSheet(action: action)
         case let .barcodeScanner(onComplete: onComplete):
             BarcodeScannerSheet(onComplete: onComplete)
         case let .productFilter(initialFilter, sections, onApply):
@@ -181,10 +178,8 @@ enum Sheet: Identifiable, Equatable {
         switch self {
         case .report:
             "report"
-        case let .checkIn(checkIn, _):
+        case let .checkIn(checkIn):
             "check_in_\(checkIn.hashValue)"
-        case .newCheckIn:
-            "new_check_in"
         case .productFilter:
             "product_filter"
         case .barcodeScanner:
