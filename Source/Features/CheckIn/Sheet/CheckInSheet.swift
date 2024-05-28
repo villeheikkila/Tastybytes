@@ -41,12 +41,10 @@ struct CheckInSheet: View {
     let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
     let action: Action
     let product: Product.Joined
-    let editCheckIn: CheckIn?
 
     init(product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) async -> Void) {
         self.onCreation = onCreation
         self.product = product
-        editCheckIn = nil
         onUpdate = nil
         action = .create
         _isLegacyCheckIn = State(initialValue: false)
@@ -61,8 +59,7 @@ struct CheckInSheet: View {
         product = checkIn.product
         onCreation = nil
         self.onUpdate = onUpdate
-        action = .update
-        editCheckIn = checkIn
+        action = .update(checkIn)
         _images = State(initialValue: checkIn.images)
         _review = State(wrappedValue: checkIn.review.orEmpty)
         _rating = State(wrappedValue: checkIn.rating ?? 0)
@@ -201,34 +198,35 @@ struct CheckInSheet: View {
         ToolbarItemGroup(placement: .primaryAction) {
             ProgressButton(
                 action == .create ? "checkIn.create.label" : "checkIn.update.label",
-                action: {
-                    switch action {
-                    case .create:
-                        if let onCreation {
-                            await createCheckIn { newCheckIn in
-                                await onCreation(newCheckIn)
-                            }
-                        }
-                    case .update:
-                        if let onUpdate {
-                            await updateCheckIn { updatedCheckIn in
-                                await onUpdate(updatedCheckIn)
-                            }
-                        }
-                    }
-                    feedbackEnvironmentModel.trigger(.notification(.success))
-                    dismiss()
-                }
+                action: primaryAction
             )
             .foregroundColor(.primary)
             .bold()
         }
     }
 
-    func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) async -> Void) async {
-        guard let editCheckIn else { return }
-        let updateCheckInParams = CheckIn.UpdateRequest(
-            checkIn: editCheckIn,
+    func primaryAction() async {
+        switch action {
+        case .create:
+            guard let newCheckIn = await createCheckIn() else { return }
+            if let onCreation {
+                await onCreation(newCheckIn)
+            }
+            feedbackEnvironmentModel.trigger(.notification(.success))
+            dismiss()
+        case let .update(editCheckIn):
+            guard let updatedCheckIn = await updateCheckIn(checkIn: editCheckIn) else { return }
+            if let onUpdate {
+                await onUpdate(updatedCheckIn)
+            }
+            feedbackEnvironmentModel.trigger(.notification(.success))
+            dismiss()
+        }
+    }
+
+    func updateCheckIn(checkIn: CheckIn) async -> CheckIn? {
+        switch await repository.checkIn.update(updateCheckInParams: .init(
+            checkIn: checkIn,
             product: product,
             review: review,
             taggedFriends: taggedFriends,
@@ -240,16 +238,15 @@ struct CheckInSheet: View {
             purchaseLocation: purchaseLocation,
             checkInAt: isLegacyCheckIn ? nil : checkInAt,
             isNostalgic: isNostalgic
-        )
-
-        switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
+        )) {
         case let .success(updatedCheckIn):
             imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
-            await onUpdate(updatedCheckIn.copyWith(images: images))
+            return updatedCheckIn.copyWith(images: images)
         case let .failure(error):
-            guard !error.isCancelled else { return }
+            guard !error.isCancelled else { return nil }
             alertError = .init()
-            logger.error("Failed to update check-in '\(editCheckIn.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to update check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
+            return nil
         }
     }
 
@@ -264,8 +261,8 @@ struct CheckInSheet: View {
         }
     }
 
-    func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) async -> Void) async {
-        let newCheckParams = CheckIn.NewRequest(
+    func createCheckIn() async -> CheckIn? {
+        switch await repository.checkIn.create(newCheckInParams: .init(
             product: product,
             review: review,
             taggedFriends: taggedFriends,
@@ -277,16 +274,15 @@ struct CheckInSheet: View {
             purchaseLocation: purchaseLocation,
             checkInAt: isLegacyCheckIn ? nil : checkInAt,
             isNostalgic: isNostalgic
-        )
-
-        switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
+        )) {
         case let .success(newCheckIn):
             imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
-            await onCreation(newCheckIn)
+            return newCheckIn
         case let .failure(error):
-            guard !error.isCancelled else { return }
+            guard !error.isCancelled else { return nil }
             alertError = .init()
             logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
+            return nil
         }
     }
 }
@@ -296,8 +292,8 @@ extension CheckInSheet {
         case review
     }
 
-    enum Action {
+    enum Action: Hashable {
         case create
-        case update
+        case update(CheckIn)
     }
 }
