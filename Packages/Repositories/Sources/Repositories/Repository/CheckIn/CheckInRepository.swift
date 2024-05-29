@@ -8,8 +8,13 @@ public enum CheckInQueryType: Sendable {
     case all
 }
 
+public enum ActivityFeedQueryType: Sendable {
+    case paginated(Int, Int)
+    case afterId(Int)
+}
+
 public protocol CheckInRepository: Sendable {
-    func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error>
+    func getActivityFeed(query: ActivityFeedQueryType) async -> Result<[CheckIn], Error>
     func getById(id: Int) async -> Result<CheckIn, Error>
     func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error>
     func getByProductId(id: Int, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error>

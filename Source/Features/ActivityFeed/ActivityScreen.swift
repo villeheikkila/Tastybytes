@@ -22,7 +22,7 @@ struct ActivityScreen: View {
 
     init(repository: Repository, scrollToTop: Binding<Int>) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in
-            await repository.checkIn.getActivityFeed(from: from, to: to)
+            await repository.checkIn.getActivityFeed(query: .paginated(from, to))
         }, id: "ActivityScreen"))
         _scrollToTop = scrollToTop
     }
@@ -43,6 +43,20 @@ struct ActivityScreen: View {
             .scrollIndicators(.hidden)
             .refreshable {
                 await checkInLoader.fetchFeedItems(reset: true)
+            }
+            .onAppear {
+                // TODO: Move this to the check-in loader
+                if !checkInLoader.isLoading, !checkInLoader.isRefreshing, let first = checkInLoader.checkIns.first {
+                    Task {
+                        switch await repository.checkIn.getActivityFeed(query: .afterId(first.id)) {
+                        case let .success(newCheckIns):
+                            checkInLoader.checkIns.insert(contentsOf: newCheckIns, at: 0)
+                            print("Loaded \(newCheckIns.count) to activity screen")
+                        case let .failure(error):
+                            logger.error("\(error)")
+                        }
+                    }
+                }
             }
             .sensoryFeedback(.success, trigger: checkInLoader.isRefreshing) { oldValue, newValue in
                 oldValue && !newValue

@@ -30,7 +30,7 @@ struct ActivityWatchTabContent: View {
 
     init(repository: Repository) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in
-            await repository.checkIn.getActivityFeed(from: from, to: to)
+            await repository.checkIn.getActivityFeed(query: .paginated(from, to))
         }, id: "ActivityWatchTab", pageSize: 15))
     }
 
