@@ -64,21 +64,15 @@ struct ProductMutationView: View {
 
     let mode: Mode
     let isSheet: Bool
-    let onEdit: ProductCallback?
-    let onCreate: ProductCallback?
 
     init(
         mode: Mode,
         isSheet: Bool = true,
-        initialBarcode: Barcode? = nil,
-        onEdit: ProductCallback? = nil,
-        onCreate: ProductCallback? = nil
+        initialBarcode: Barcode? = nil
     ) {
         self.mode = mode
         self.isSheet = isSheet
         _barcode = State(initialValue: initialBarcode)
-        self.onEdit = onEdit
-        self.onCreate = onCreate
     }
 
     private var selectedCategory: Models.Category.JoinedSubcategoriesServingStyles? {
@@ -250,21 +244,92 @@ struct ProductMutationView: View {
     func primaryAction() async {
         switch mode {
         case let .editSuggestion(product):
-            await createProductEditSuggestion(product: product)
-        case let .edit(product):
-            await editProduct(product: product)
-        case .new, .addToBrand, .addToSubBrand:
-            await createProduct(onSuccess: { product in
-                if let onCreate {
-                    await onCreate(product)
+            guard let subBrand, let selectedCategory else { return }
+            let editSuggestion = Product.EditSuggestionRequest(
+                id: product.id,
+                name: name,
+                description: description,
+                subBrand: subBrand,
+                category: selectedCategory,
+                isDiscontinued: isDiscontinued
+            )
+
+            let diffFromCurrent = editSuggestion.diff(from: product)
+            guard let diffFromCurrent else {
+                feedbackEnvironmentModel.toggle(.warning("product.editSuggestion.nothingToEdit.toast"))
+                return
+            }
+
+            switch await repository.product
+                .createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent)
+            {
+            case .success:
+                dismiss()
+                feedbackEnvironmentModel.toggle(.success("product.editSuggestion.success.toast"))
+            case let .failure(error):
+                guard !error.isCancelled else { return }
+                alertError = .init()
+                logger.error("Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))")
+            }
+        case let .edit(product, onEdit):
+            guard let category, let brand else { return }
+            let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
+            guard let subBrandWithNil else { return }
+
+            switch await repository.product.editProduct(productEditParams: .init(
+                productId: product.id,
+                name: name,
+                description: description,
+                categoryId: category,
+                subBrandId: subBrandWithNil.id,
+                subcategories: Array(subcategories),
+                isDiscontinued: isDiscontinued
+            )) {
+            case let .success(updatedProduct):
+                isSuccess = true
+                if let onEdit {
+                    await onEdit(updatedProduct)
                 }
-            })
+                dismiss()
+            case let .failure(error):
+                guard !error.isCancelled else { return }
+                alertError = .init()
+                logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
+            }
+        case let .new(onCreate), let .addToBrand(_, onCreate), let .addToSubBrand(_, _, onCreate):
+            guard let category, let brandId = brand?.id else { return }
+            let newProductParams = Product.NewRequest(
+                name: name,
+                description: description,
+                categoryId: category,
+                brandId: brandId,
+                subBrandId: subBrand?.id,
+                subcategories: Array(subcategories),
+                isDiscontinued: isDiscontinued,
+                barcode: barcode
+            )
+            switch await repository.product.create(newProductParams: newProductParams) {
+            case let .success(newProduct):
+                isSuccess = true
+                if isSheet {
+                    dismiss()
+                }
+
+                router.navigate(screen: .product(newProduct), removeLast: true)
+                if let onCreate {
+                    await onCreate(newProduct)
+                }
+            case let .failure(error):
+                guard !error.isCancelled else { return }
+                alertError = .init()
+                logger.error("Failed to create new product. Error: \(error) (\(#file):\(#line))")
+            }
         }
     }
 
     func initialize() async {
         switch mode {
-        case let .edit(initialProduct), let .editSuggestion(initialProduct):
+        case let .edit(initialProduct, _), let .editSuggestion(initialProduct):
             switch await repository.brand.getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id) {
             case let .success(brandsWithSubBrands):
                 category = initialProduct.category.id
@@ -285,11 +350,11 @@ struct ProductMutationView: View {
                 status = .error(error)
                 logger.error("Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))")
             }
-        case let .addToBrand(brand):
+        case let .addToBrand(brand, _):
             brandOwner = brand.brandOwner
             self.brand = .init(brand: brand)
             status = .initialized
-        case let .addToSubBrand(brand, subBrand):
+        case let .addToSubBrand(brand, subBrand, _):
             brandOwner = brand.brandOwner
             self.brand = .init(brand: brand)
             if subBrand.name != nil {
@@ -299,92 +364,6 @@ struct ProductMutationView: View {
             status = .initialized
         case .new:
             status = .initialized
-        }
-    }
-
-    func createProduct(onSuccess: @escaping (_ product: Product.Joined) async -> Void) async {
-        guard let category, let brandId = brand?.id else { return }
-        let newProductParams = Product.NewRequest(
-            name: name,
-            description: description,
-            categoryId: category,
-            brandId: brandId,
-            subBrandId: subBrand?.id,
-            subcategories: Array(subcategories),
-            isDiscontinued: isDiscontinued,
-            barcode: barcode
-        )
-        switch await repository.product.create(newProductParams: newProductParams) {
-        case let .success(newProduct):
-            isSuccess = true
-            if isSheet {
-                dismiss()
-            }
-
-            router.navigate(screen: .product(newProduct), removeLast: true)
-            await onSuccess(newProduct)
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to create new product. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func createProductEditSuggestion(product: Product.Joined) async {
-        guard let subBrand, let selectedCategory else { return }
-        let editSuggestion = Product.EditSuggestionRequest(
-            id: product.id,
-            name: name,
-            description: description,
-            subBrand: subBrand,
-            category: selectedCategory,
-            isDiscontinued: isDiscontinued
-        )
-
-        let diffFromCurrent = editSuggestion.diff(from: product)
-        guard let diffFromCurrent else {
-            feedbackEnvironmentModel.toggle(.warning("product.editSuggestion.nothingToEdit.toast"))
-            return
-        }
-
-        switch await repository.product
-            .createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent)
-        {
-        case .success:
-            dismiss()
-            feedbackEnvironmentModel.toggle(.success("product.editSuggestion.success.toast"))
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func editProduct(product: Product.Joined) async {
-        guard let category, let brand else { return }
-        let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
-        guard let subBrandWithNil else { return }
-        let productEditParams = Product.EditRequest(
-            productId: product.id,
-            name: name,
-            description: description,
-            categoryId: category,
-            subBrandId: subBrandWithNil.id,
-            subcategories: Array(subcategories),
-            isDiscontinued: isDiscontinued
-        )
-
-        switch await repository.product.editProduct(productEditParams: productEditParams) {
-        case let .success(updatedProduct):
-            isSuccess = true
-            if let onEdit {
-                await onEdit(updatedProduct)
-            }
-            dismiss()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -402,7 +381,7 @@ struct ProductMutationView: View {
     }
 
     func uploadData(data: Data) async {
-        guard case let .edit(product) = mode else { return }
+        guard case let .edit(product, _) = mode else { return }
         switch await repository.product.uploadLogo(productId: product.id, data: data) {
         case let .success(imageEntity):
             logos.append(imageEntity)
@@ -431,9 +410,26 @@ extension ProductMutationView {
     }
 
     enum Mode: Equatable {
-        case new, edit(Product.Joined), editSuggestion(Product.Joined),
-             addToBrand(Brand.JoinedSubBrandsProductsCompany),
-             addToSubBrand(Brand.JoinedSubBrandsProductsCompany, SubBrand.JoinedProduct)
+        case new(onCreate: ProductCallback? = nil), edit(Product.Joined, onEdit: ProductCallback?), editSuggestion(Product.Joined),
+             addToBrand(Brand.JoinedSubBrandsProductsCompany, onCreate: ProductCallback?),
+             addToSubBrand(Brand.JoinedSubBrandsProductsCompany, SubBrand.JoinedProduct, onCreate: ProductCallback?)
+
+        static func == (lhs: Mode, rhs: Mode) -> Bool {
+            switch (lhs, rhs) {
+            case (.new(_), .new(_)):
+                false
+            case let (.edit(lhsProduct, _), .edit(rhsProduct, _)):
+                lhsProduct == rhsProduct
+            case let (.editSuggestion(lhsProduct), .editSuggestion(rhsProduct)):
+                lhsProduct == rhsProduct
+            case let (.addToBrand(lhsBrand, _), .addToBrand(rhsBrand, _)):
+                lhsBrand == rhsBrand
+            case let (.addToSubBrand(lhsBrand, lhsSubBrand, _), .addToSubBrand(rhsBrand, rhsSubBrand, _)):
+                lhsBrand == rhsBrand && lhsSubBrand == rhsSubBrand
+            default:
+                false
+            }
+        }
 
         var doneLabel: LocalizedStringKey {
             switch self {

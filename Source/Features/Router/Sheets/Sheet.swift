@@ -89,11 +89,11 @@ enum Sheet: Identifiable, Equatable {
         case let .productEditSuggestion(product: product):
             ProductMutationView(mode: .editSuggestion(product))
         case let .productEdit(product, onEdit):
-            ProductMutationView(mode: .edit(product), onEdit: onEdit)
+            ProductMutationView(mode: .edit(product, onEdit: onEdit))
         case let .addProductToBrand(brand: brand):
-            ProductMutationView(mode: .addToBrand(brand))
+            ProductMutationView(mode: .addToBrand(brand, onCreate: nil))
         case let .addProductToSubBrand(brand: brand, subBrand: subBrand):
-            ProductMutationView(mode: .addToSubBrand(brand, subBrand))
+            ProductMutationView(mode: .addToSubBrand(brand, subBrand, onCreate: nil))
         case let .duplicateProduct(mode: mode, product: product):
             DuplicateProductSheet(mode: mode, product: product)
         case let .editBrand(brand: brand, onUpdate):

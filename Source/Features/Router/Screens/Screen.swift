@@ -72,7 +72,7 @@ enum Screen: Hashable, Codable, Sendable {
         case let .profileStatisticsTopLocations(profile):
             ProfileTopLocationsScreen(profile: profile)
         case let .addProduct(initialBarcode):
-            ProductMutationView(mode: .new, isSheet: false, initialBarcode: initialBarcode)
+            ProductMutationView(mode: .new(onCreate: nil), isSheet: false, initialBarcode: initialBarcode)
         case let .checkIn(checkIn):
             CheckInScreen(checkIn: checkIn)
         case let .profile(profile):
