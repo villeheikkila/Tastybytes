@@ -14,6 +14,7 @@ struct ActivityScreen: View {
 
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
+    @Environment(TabManager.self) private var tabManager
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Binding var scrollToTop: Int
@@ -46,7 +47,7 @@ struct ActivityScreen: View {
             }
             .onAppear {
                 // TODO: Move this to the check-in loader
-                if !checkInLoader.isLoading, !checkInLoader.isRefreshing, let first = checkInLoader.checkIns.first {
+                if tabManager.selection == .activity, !checkInLoader.isLoading, !checkInLoader.isRefreshing, let first = checkInLoader.checkIns.first {
                     Task {
                         switch await repository.checkIn.getActivityFeed(query: .afterId(first.id)) {
                         case let .success(newCheckIns):
