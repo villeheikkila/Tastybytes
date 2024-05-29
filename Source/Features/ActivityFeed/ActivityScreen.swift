@@ -73,6 +73,9 @@ struct ActivityScreen: View {
                     screenState = .initialized
                 }
             }
+            .onAppear {
+                if screenState == .initialized {}
+            }
             .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
                 if let updatedCheckIn = newValue {
                     imageUploadEnvironmentModel.uploadedImageForCheckIn = nil

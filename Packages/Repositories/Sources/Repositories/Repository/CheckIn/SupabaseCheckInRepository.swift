@@ -227,7 +227,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             _ = try await client
                 .storage
                 .from(.checkIns)
-                .upload(path: path, file: data, options: .init(contentType: "image/jpeg"))
+                .upload(path: path, file: data, options: .init(cacheControl: "max-age=3600", contentType: "image/jpeg"))
 
             if let blurHash {
                 return await updateImageBlurHash(file: path, blurHash: blurHash)

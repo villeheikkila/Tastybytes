@@ -41,22 +41,15 @@ final class CheckInListLoader {
         self.showCheckInsFrom = showCheckInsFrom
     }
 
-    func loadData(isRefresh: Bool = false, onComplete: OnLoadComplete? = nil) async {
+    func loadData(isRefresh: Bool = false) async {
         if isRefresh {
             logger.info("Refreshing check-in feed data")
             isRefreshing = true
-            await fetchFeedItems(
-                reset: true,
-                onComplete: onComplete
-            )
+            await fetchFeedItems(reset: true)
             isRefreshing = false
             return
         }
-        await fetchFeedItems(
-            onComplete: { _ in
-                self.logger.info("Refreshing check-ins completed for \(self.id)")
-            }
-        )
+        await fetchFeedItems()
     }
 
     func onCreateCheckIn(_ checkIn: CheckIn) {
@@ -99,15 +92,14 @@ final class CheckInListLoader {
         }
     }
 
-    func fetchFeedItems(
-        reset: Bool = false,
-        onComplete: OnLoadComplete? = nil
-    ) async {
+    @discardableResult
+    func fetchFeedItems(reset: Bool = false) async -> [CheckIn] {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
         errorContentUnavailable = nil
         switch await fetcher(from, to, showCheckInsFrom) {
         case let .success(fetchedCheckIns):
+            logger.info("Succesfully loaded check-ins from \(from) to \(to)")
             withAnimation {
                 if reset {
                     checkIns = fetchedCheckIns
@@ -116,19 +108,19 @@ final class CheckInListLoader {
                 }
             }
             page += 1
-            if let onComplete {
-                await onComplete(checkIns)
-            }
+            isLoading = false
+            return checkIns
         case let .failure(error):
-            guard !error.isCancelled else { return }
+            guard !error.isCancelled else { return [] }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
             let e = AlertError(title: "checkInList.error.failedToLoad.alert")
             if checkIns.isEmpty {
                 errorContentUnavailable = e
             }
-            guard !error.isNetworkUnavailable else { return }
+            guard !error.isNetworkUnavailable else { return [] }
             alertError = e
+            isLoading = false
+            return []
         }
-        isLoading = false
     }
 }
