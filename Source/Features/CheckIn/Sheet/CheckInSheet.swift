@@ -20,6 +20,7 @@ struct CheckInSheet: View {
     @State private var servingStyles = [ServingStyle]()
     @State private var alertError: AlertError?
     @State private var sheet: Sheet?
+    @State private var fullScreenCover: FullScreenCover?
     // check-in properties
     @State private var pickedFlavors = [Flavor]()
     @State private var review: String = ""
@@ -33,7 +34,6 @@ struct CheckInSheet: View {
     @State private var checkInAt: Date = .now
     @State private var isLegacyCheckIn: Bool
     @State private var isNostalgic: Bool
-    @State private var image: UIImage?
     @State private var newImages = [UIImage]()
     @State private var images: [ImageEntity]
 
@@ -74,7 +74,7 @@ struct CheckInSheet: View {
                         focusedField = nil
                     }
                 CheckInImageManagementView(newImages: $newImages, images: $images,
-                                           image: $image, checkInAt: $checkInAt, locationFromImage: $locationFromImage)
+                                           checkInAt: $checkInAt, locationFromImage: $locationFromImage, fullScreenCover: $fullScreenCover)
                     .listRowInsets(.init())
                 RatingPickerView(rating: $rating)
             }
@@ -88,6 +88,7 @@ struct CheckInSheet: View {
         .toolbarBackground(.hidden, for: .navigationBar)
         .foregroundColor(.primary)
         .sheets(item: $sheet)
+        .fullScreenCovers(item: $fullScreenCover)
         .alertError($alertError)
         .toolbar {
             toolbarContent

@@ -12,18 +12,18 @@ struct CheckInImageManagementView: View {
 
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
 
     @State private var showPhotoPicker = false
-    @State private var showImageCropper = false
     @State private var photoSelection: PhotosPickerItem?
     @State private var showPhotoMenu = false
     @State private var showCamera = false
 
     @Binding var newImages: [UIImage]
     @Binding var images: [ImageEntity]
-    @Binding var image: UIImage?
     @Binding var checkInAt: Date
     @Binding var locationFromImage: Location?
+    @Binding var fullScreenCover: FullScreenCover?
 
     var totalImages: Int {
         images.count + newImages.count
@@ -70,7 +70,10 @@ struct CheckInImageManagementView: View {
                 }
                 .opacity(totalImages >= 2 ? 0 : 1)
                 .confirmationDialog("checkIn.photo.title", isPresented: $showPhotoMenu) {
-                    Button("checkIn.photo.picker.camera", action: { showCamera.toggle() })
+                    Button("checkIn.photo.picker.camera", action: { fullScreenCover = .cameraWithCropping(onSubmit: { image in
+                        guard let image else { return }
+                        newImages.append(image)
+                    }) })
                     Button(
                         "checkIn.photo.picker.photoGallery",
                         action: {
@@ -84,28 +87,6 @@ struct CheckInImageManagementView: View {
             }
         }
         .photosPicker(isPresented: $showPhotoPicker, selection: $photoSelection, matching: .images, photoLibrary: .shared())
-        .fullScreenCamera(
-            isPresented: $showCamera,
-            selectedImage: .init(
-                get: {
-                    nil
-                },
-                set: { image in
-                    guard let image else { return }
-                    self.image = image
-                    showImageCropper = true
-                }
-            )
-        )
-        .fullScreenImageCrop(
-            isPresented: $showImageCropper,
-            image: image,
-            onSubmit: { image in
-                if let image {
-                    newImages.append(image)
-                }
-            }
-        )
         .onChange(of: photoSelection) {
             Task {
                 guard let photoSelection, let data = try? await photoSelection.loadTransferable(type: Data.self) else { return }
@@ -115,8 +96,10 @@ struct CheckInImageManagementView: View {
                 if let imageTakenLocation = photoSelection.imageMetadata.location {
                     await getLocationFromCoordinate(coordinate: imageTakenLocation)
                 }
-                image = UIImage(data: data)
-                showImageCropper = true
+                fullScreenCover = .cropImage(image: UIImage(data: data), onSubmit: { image in
+                    guard let image else { return }
+                    newImages.append(image)
+                })
             }
         }
         .scrollIndicators(.hidden)

@@ -9,6 +9,7 @@ final class Router {
     private let logger = Logger(category: "Router")
     var path = [Screen]()
     var sheet: Sheet?
+    var fullScreenCover: FullScreenCover?
 
     init(path: [Screen] = [], sheet: Sheet? = nil) {
         self.path = path
@@ -28,6 +29,10 @@ final class Router {
 
     func openRootSheet(_ sheet: Sheet) {
         self.sheet = sheet
+    }
+
+    func openFullScreenCover(_ fullScreenCover: FullScreenCover) {
+        self.fullScreenCover = fullScreenCover
     }
 
     func reset() {

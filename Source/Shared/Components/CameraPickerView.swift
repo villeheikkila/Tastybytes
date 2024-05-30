@@ -3,7 +3,6 @@ import UIKit
 
 struct CameraPickerView: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
-    @Environment(\.presentationMode) var isPresented
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let picker: CameraPickerView
@@ -18,7 +17,6 @@ struct CameraPickerView: UIViewControllerRepresentable {
         ) {
             guard let selectedImage = info[.originalImage] as? UIImage else { return }
             picker.selectedImage = selectedImage
-            picker.isPresented.wrappedValue.dismiss()
         }
     }
 
@@ -42,5 +40,26 @@ public extension View {
             CameraPickerView(selectedImage: selectedImage)
                 .background(.black)
         })
+    }
+}
+
+struct CameraWithCroppingView: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var navigationPath = NavigationPath()
+    @State private var selectedImage: UIImage?
+    
+    let onSubmit: (UIImage?) -> Void
+    
+    var body: some View {
+        NavigationStack(path: $navigationPath) {
+            if let selectedImage {
+                CropView(crop: .rectangle, image: selectedImage, onSubmit: { croppedImage in
+                    onSubmit(croppedImage)
+                })
+            } else {
+                CameraPickerView(selectedImage: $selectedImage)
+            }
+        }
+        .background(.black)
     }
 }
