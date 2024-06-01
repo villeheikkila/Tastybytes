@@ -9,4 +9,3 @@ struct AdminTab: View {
             .backToRootOnTab(.admin)
     }
 }
-

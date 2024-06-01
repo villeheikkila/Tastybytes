@@ -51,5 +51,4 @@ struct TabsView: View {
             0
         }
     }
-
 }

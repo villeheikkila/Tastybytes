@@ -20,6 +20,7 @@ struct SheetsModifier: ViewModifier {
                 .presentationDetents(item.detents)
                 .presentationCornerRadius(item.cornerRadius)
                 .presentationDragIndicator(.hidden)
+                .environment(\.isPresentedInSheet, true)
             }
     }
 }

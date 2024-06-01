@@ -182,6 +182,7 @@ struct EditLogoSection: View {
             }
         }
         .headerProminence(.increased)
+        .customListRowBackground()
         .task(id: selectedLogo) {
             guard let selectedLogo else { return }
             guard let data = await selectedLogo.getJPEG() else {

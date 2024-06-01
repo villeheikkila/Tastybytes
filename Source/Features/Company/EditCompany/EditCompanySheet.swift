@@ -41,6 +41,7 @@ struct EditCompanySheet: View {
                 .disabled(!newCompanyName.isValidLength(.normal))
             }
             .headerProminence(.increased)
+            .customListRowBackground()
 
             EditLogoSection(logos: company.logos, onUpload: { imageData in
                 await uploadLogo(data: imageData)
@@ -53,7 +54,9 @@ struct EditCompanySheet: View {
                     LabeledContent("labels.id", value: "\(company.id)")
                         .textSelection(.enabled)
                     LabeledContent("verification.verified.label", value: "\(company.isVerified)".capitalized)
-                }.headerProminence(.increased)
+                }
+                .headerProminence(.increased)
+                .customListRowBackground()
             }
         }
         .scrollContentBackground(.hidden)

@@ -259,6 +259,8 @@
 		5CD9B18A2BDEB2BF00A86387 /* ProfileCheckInsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1892BDEB2BF00A86387 /* ProfileCheckInsList.swift */; };
 		5CD9B18C2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */; };
 		5CD9D1132BFA9CE100CD9EE8 /* Translate+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9D1122BFA9CE100CD9EE8 /* Translate+View.swift */; };
+		5CE10CD92C0BCA8800B8AE24 /* List+background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE10CD82C0BCA8800B8AE24 /* List+background.swift */; };
+		5CE10CDB2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE10CDA2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift */; };
 		5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */; };
 		5CEB35A92C0B24380098E75D /* View+backToRootOnTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEB35A82C0B24380098E75D /* View+backToRootOnTab.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -560,6 +562,8 @@
 		5CD9D1122BFA9CE100CD9EE8 /* Translate+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Translate+View.swift"; sourceTree = "<group>"; };
 		5CE030DF2B9E4E9200E119E4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
+		5CE10CD82C0BCA8800B8AE24 /* List+background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+background.swift"; sourceTree = "<group>"; };
+		5CE10CDA2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsPresentedInsideSheet.swift"; sourceTree = "<group>"; };
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
 		5CEB35A82C0B24380098E75D /* View+backToRootOnTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+backToRootOnTab.swift"; sourceTree = "<group>"; };
 		5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsUniqueByCategoryScreen.swift; sourceTree = "<group>"; };
@@ -1528,6 +1532,8 @@
 			children = (
 				5CD9D1122BFA9CE100CD9EE8 /* Translate+View.swift */,
 				5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */,
+				5CE10CD82C0BCA8800B8AE24 /* List+background.swift */,
+				5CE10CDA2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1874,6 +1880,7 @@
 				5C90583B2B2894BE00EC157B /* FriendsScreen.swift in Sources */,
 				5CCEE2892B2D0C0100F276DF /* CheckInListCard.swift in Sources */,
 				5C90584B2B2894BE00EC157B /* ReactionsView.swift in Sources */,
+				5CE10CDB2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift in Sources */,
 				5C9058612B2894BE00EC157B /* AppDelegate.swift in Sources */,
 				5C90583C2B2894BE00EC157B /* CurrentUserFriendsScreen.swift in Sources */,
 				5C511D832BA791D400F95290 /* ActivityWatchTab.swift in Sources */,
@@ -1895,6 +1902,7 @@
 				5C9058432B2894BE00EC157B /* DiscoverScreen.swift in Sources */,
 				5C9058372B2894BE00EC157B /* ProfileStatisticsScreen.swift in Sources */,
 				5CD9B18A2BDEB2BF00A86387 /* ProfileCheckInsList.swift in Sources */,
+				5CE10CD92C0BCA8800B8AE24 /* List+background.swift in Sources */,
 				5C90580F2B2894BE00EC157B /* CheckInSheet.swift in Sources */,
 				5C9058582B2894BE00EC157B /* QuickAction.swift in Sources */,
 				5C24E1CC2B5D38D4003AB7C8 /* CheckInCardSheet.swift in Sources */,

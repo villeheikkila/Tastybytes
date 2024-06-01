@@ -3,7 +3,7 @@ import SwiftUI
 struct BackToRootOnTabViewModifier: ViewModifier {
     @Environment(Router.self) private var router
     @Environment(TabManager.self) private var tabManager
-    
+
     let tab: Tab
 
     func body(content: Content) -> some View {
@@ -39,12 +39,12 @@ struct ScrollToTopBackToRootOnTabViewModifier: ViewModifier {
 
 extension View {
     func backToRootOnTab(_ tab: Tab) -> some View {
-        self.modifier(BackToRootOnTabViewModifier(tab: tab))
+        modifier(BackToRootOnTabViewModifier(tab: tab))
     }
 }
 
 extension View {
     func scrollToTopBackToRootOnTab(_ tab: Tab, scrollToTop: Binding<Int>) -> some View {
-        self.modifier(ScrollToTopBackToRootOnTabViewModifier(scrollToTop: scrollToTop, tab: tab ))
+        modifier(ScrollToTopBackToRootOnTabViewModifier(scrollToTop: scrollToTop, tab: tab))
     }
 }

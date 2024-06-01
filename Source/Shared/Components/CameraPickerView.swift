@@ -47,9 +47,9 @@ struct CameraWithCroppingView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var navigationPath = NavigationPath()
     @State private var selectedImage: UIImage?
-    
+
     let onSubmit: (UIImage?) -> Void
-    
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             if let selectedImage {

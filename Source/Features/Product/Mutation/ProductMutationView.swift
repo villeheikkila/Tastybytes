@@ -16,6 +16,7 @@ struct ProductMutationView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isPresentedInSheet) var isPresentedInSheet
     @FocusState private var focusedField: Focusable?
     // Sheet status
     @State private var isSuccess = false
@@ -63,15 +64,9 @@ struct ProductMutationView: View {
     @State private var logos: [ImageEntity] = []
 
     let mode: Mode
-    let isSheet: Bool
 
-    init(
-        mode: Mode,
-        isSheet: Bool = true,
-        initialBarcode: Barcode? = nil
-    ) {
+    init(mode: Mode, initialBarcode: Barcode? = nil) {
         self.mode = mode
-        self.isSheet = isSheet
         _barcode = State(initialValue: initialBarcode)
     }
 
@@ -96,7 +91,7 @@ struct ProductMutationView: View {
                 })
             }
         }
-        .scrollContentBackground(isSheet ? .hidden : .visible)
+        .scrollContentBackground(isPresentedInSheet ? .hidden : .visible)
         .navigationTitle(mode.navigationTitle)
         .foregroundColor(.primary)
         .alertError($alertError)
@@ -111,7 +106,7 @@ struct ProductMutationView: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        if isSheet {
+        if isPresentedInSheet {
             ToolbarDismissAction()
         }
         ToolbarItemGroup(placement: .primaryAction) {
@@ -163,6 +158,7 @@ struct ProductMutationView: View {
                 }
         }
         .headerProminence(.increased)
+        .customListRowBackground()
     }
 
     private var brandSection: some View {
@@ -213,6 +209,7 @@ struct ProductMutationView: View {
                 }
         }
         .headerProminence(.increased)
+        .customListRowBackground()
     }
 
     private var productSection: some View {
@@ -239,6 +236,7 @@ struct ProductMutationView: View {
                 }
         }
         .headerProminence(.increased)
+        .customListRowBackground()
     }
 
     func primaryAction() async {
@@ -311,7 +309,7 @@ struct ProductMutationView: View {
             switch await repository.product.create(newProductParams: newProductParams) {
             case let .success(newProduct):
                 isSuccess = true
-                if isSheet {
+                if isPresentedInSheet {
                     dismiss()
                 }
 

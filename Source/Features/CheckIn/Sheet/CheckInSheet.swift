@@ -85,7 +85,6 @@ struct CheckInSheet: View {
             locationAndFriendsSection
         }
         .scrollContentBackground(.hidden)
-        .toolbarBackground(.hidden, for: .navigationBar)
         .foregroundColor(.primary)
         .sheets(item: $sheet)
         .fullScreenCovers(item: $fullScreenCover)
@@ -116,6 +115,7 @@ struct CheckInSheet: View {
             )
         }
         .headerProminence(.increased)
+        .customListRowBackground()
     }
 
     @ViewBuilder private var additionalInformationSection: some View {
@@ -139,6 +139,7 @@ struct CheckInSheet: View {
                 })
             )
         }
+        .customListRowBackground()
     }
 
     @ViewBuilder private var locationAndFriendsSection: some View {
@@ -183,6 +184,7 @@ struct CheckInSheet: View {
                 }
             )
         }
+        .customListRowBackground()
     }
 
     var primaryActionLabel: LocalizedStringKey {
