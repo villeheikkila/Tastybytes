@@ -16,15 +16,7 @@ struct ActivityTab: View {
             .toolbar {
                 toolbarContent
             }
-            .onChange(of: tabManager.resetNavigationOnTab) { _, tab in
-                if tab == .activity {
-                    if router.path.isEmpty {
-                        scrollToTop += 1
-                    } else {
-                        router.reset()
-                    }
-                }
-            }
+            .scrollToTopBackToRootOnTab(.activity, scrollToTop: $scrollToTop)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

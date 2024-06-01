@@ -260,6 +260,7 @@
 		5CD9B18C2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */; };
 		5CD9D1132BFA9CE100CD9EE8 /* Translate+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9D1122BFA9CE100CD9EE8 /* Translate+View.swift */; };
 		5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */; };
+		5CEB35A92C0B24380098E75D /* View+backToRootOnTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEB35A82C0B24380098E75D /* View+backToRootOnTab.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -560,6 +561,7 @@
 		5CE030DF2B9E4E9200E119E4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
+		5CEB35A82C0B24380098E75D /* View+backToRootOnTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+backToRootOnTab.swift"; sourceTree = "<group>"; };
 		5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsUniqueByCategoryScreen.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
@@ -903,6 +905,7 @@
 				5C90573D2B2894BE00EC157B /* Tab.swift */,
 				5C9057CE2B2894BE00EC157B /* TabsView.swift */,
 				5C82E8822B2DCFD600F2B369 /* TabManager.swift */,
+				5CEB35A82C0B24380098E75D /* View+backToRootOnTab.swift */,
 			);
 			path = Tab;
 			sourceTree = "<group>";
@@ -1941,6 +1944,7 @@
 				5CD9B1882BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift in Sources */,
 				5C9057EB2B2894BE00EC157B /* Tab.swift in Sources */,
 				5CD3C0E02B814BF90049E563 /* ToolbarDismissAction.swift in Sources */,
+				5CEB35A92C0B24380098E75D /* View+backToRootOnTab.swift in Sources */,
 				5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */,
 				5C9058242B2894BE00EC157B /* NotificationScreen.swift in Sources */,
 				5C9058292B2894BE00EC157B /* CurrentProfileScreen.swift in Sources */,

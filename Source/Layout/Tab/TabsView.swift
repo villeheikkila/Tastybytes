@@ -22,7 +22,6 @@ struct TabsView: View {
             tabs
         }
         .sensoryFeedback(.selection, trigger: tabManager.selection)
-        // .simultaneousGesture(switchTabGesture)
         .environment(tabManager)
         .onOpenURL { url in
             if let tab = TabUrlHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).tab {
@@ -53,25 +52,4 @@ struct TabsView: View {
         }
     }
 
-    private let switchTabGestureRangeDistance: Double = 50
-
-    private var switchTabGesture: some Gesture {
-        DragGesture(minimumDistance: switchTabGestureRangeDistance)
-            .onEnded { value in
-                if value.translation.width < -switchTabGestureRangeDistance,
-                   value.translation.width > -(3 * switchTabGestureRangeDistance),
-                   tabManager.selection.rawValue < shownTabs.count - 1
-                {
-                    if let tab = Tab(rawValue: tabManager.selection.rawValue + 1) {
-                        tabManager.selection = tab
-                    }
-                } else if value.translation.width > switchTabGestureRangeDistance,
-                          value.translation.width < 3 * switchTabGestureRangeDistance, tabManager.selection.rawValue > 0
-                {
-                    if let tab = Tab(rawValue: tabManager.selection.rawValue - 1) {
-                        tabManager.selection = tab
-                    }
-                }
-            }
-    }
 }
