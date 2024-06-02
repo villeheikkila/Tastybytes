@@ -31,16 +31,18 @@ struct CheckInImageScrollView: View {
                                 .resizable()
                                 .scaledToFill()
                                 .frame(height: imageHeight)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
                         .frame(height: imageHeight)
+                        .clipShape(.rect(cornerRadius: 8))
                         .padding(.vertical, 4)
                         .padding(.horizontal, 4)
                         .containerRelativeFrame(.horizontal)
                     }
                 }
             }
-            .scrollTargetBehavior(.paging)
+            .scrollTargetLayout()
         }
+        .scrollTargetBehavior(.paging)
+        .scrollBounceBehavior(.basedOnSize, axes: [.horizontal])
     }
 }
