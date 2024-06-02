@@ -16,6 +16,8 @@ struct ActivityTab: View {
             .toolbar {
                 toolbarContent
             }
+            .navigationTitle("tab.activity")
+            .navigationBarTitleDisplayMode(.inline)
             .scrollToTopBackToRootOnTab(.activity, scrollToTop: $scrollToTop)
     }
 
@@ -26,6 +28,7 @@ struct ActivityTab: View {
                 .imageScale(.large)
                 .customBadge(notificationEnvironmentModel.unreadFriendRequestCount)
         }
+        ToolbarItem(placement: .principal) {}
         ToolbarItemGroup(placement: .topBarTrailing) {
             RouterLink("settings.navigationTitle", systemImage: "gear", screen: .settings)
                 .labelStyle(.iconOnly)

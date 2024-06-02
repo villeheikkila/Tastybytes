@@ -33,22 +33,27 @@ struct CompanySearchSheet: View {
     }
 
     var body: some View {
-        List {
-            ForEach(searchResults) { company in
-                CompanyResultRow(company: company) {
-                    onSelect(company)
-                    dismiss()
-                }
+        List(searchResults) { company in
+            CompanyResultRow(company: company) {
+                onSelect(company)
+                dismiss()
             }
-
+        }
+        .listStyle(.plain)
+        .safeAreaInset(edge: .bottom) {
             if profileEnvironmentModel.hasPermission(.canCreateCompanies), !showEmptyResults {
-                switch status {
-                case .searched:
-                    Section("company.create.notFound.section.title") {
+                if status == .searched {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("company.create.notFound.section.title")
                         Button("company.create.label", action: { createNew() })
                     }
-                case .add:
-                    Section("company.create.section.title") {
+                    .padding()
+                    .frame(width: .infinity)
+                    .background(.ultraThinMaterial)
+                }
+                if status == .add {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("company.create.section.title")
                         ScanTextField(title: "company.name.placeholder", text: $companyName)
                         ProgressButton("company.create.label") {
                             await createNewCompany(onSuccess: { company in
@@ -57,27 +62,30 @@ struct CompanySearchSheet: View {
                             })
                         }
                         .disabled(!companyName.isValidLength(.normal))
+                        .buttonStyle(.borderedProminent)
+                        .foregroundStyle(.black)
+                        .controlSize(.large)
                     }
-                case .none:
-                    EmptyView()
+                    .padding()
+                    .frame(width: .infinity)
+                    .background(.ultraThinMaterial)
                 }
             }
         }
-        .listStyle(.plain)
-        .safeAreaInset(edge: .top, content: {
-            if showEmptyResults {
-                VStack {
-                    Text("company.search.noResults.title")
-                    if profileEnvironmentModel.hasPermission(.canCreateCompanies) {
-                        Button("company.search.noResults.create.label", action: { createNew() })
-                    }
-                }
-            }
-        })
         .overlay {
             if searchResults.isEmpty {
                 if !searchTerm.isEmpty {
-                    ContentUnavailableView.search(text: searchTerm)
+                    if showEmptyResults {
+                        ContentUnavailableView {
+                            Label("company.search.noResults.title", systemImage: "magnifyingglass")
+                        } actions: {
+                            Button("company.search.noResults.create.label", action: { createNew() })
+                                .buttonStyle(.borderedProminent)
+                                .controlSize(.large)
+                        }
+                    } else {
+                        ContentUnavailableView.search(text: searchTerm)
+                    }
                 } else {
                     ContentUnavailableView("company.search.empty.title", systemImage: "magnifyingglass")
                 }

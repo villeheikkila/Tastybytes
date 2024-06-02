@@ -72,12 +72,14 @@ struct ProductFilterSheet: View {
                     .pickerStyle(.navigationLink)
                     .disabled(categoryFilter == nil)
                 }
+                .customListRowBackground()
             }
 
             if sections.contains(.checkIns) {
                 Section("checkIn.title") {
                     Toggle("checkIn.filter.onlyNotHad", isOn: $onlyNonCheckedIn)
                 }
+                .customListRowBackground()
             }
             if sections.contains(.sortBy) {
                 Section("labels.sortBy") {
@@ -90,8 +92,11 @@ struct ProductFilterSheet: View {
                         Text("checkIn.rating.label")
                     }
                 }
+                .customListRowBackground()
             }
-            Button("product.filter.reset", action: { resetFilter() }).bold()
+            Button("product.filter.reset", action: { resetFilter() })
+                .bold()
+                .customListRowBackground()
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("product.filter.navigationTitle")
