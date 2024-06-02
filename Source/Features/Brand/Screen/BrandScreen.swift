@@ -60,7 +60,7 @@ struct BrandScreen: View {
     }
 
     var body: some View {
-        ScrollViewReader { _ in
+        ScrollViewReader { proxy in
             List {
                 Section {
                     SummaryView(summary: summary)
@@ -81,7 +81,7 @@ struct BrandScreen: View {
                 await getBrandData(withHaptics: true)
             }
             .initialTask {
-                await getBrandData()
+                await getBrandData(proxy: proxy)
             }
             .navigationTitle(brand.name)
             .navigationBarTitleDisplayMode(.inline)
@@ -118,7 +118,7 @@ struct BrandScreen: View {
                 SubBrandSectionHeader(brand: $brand, sheet: $sheet, subBrand: subBrand, verifySubBrand: verifySubBrand, deleteSubBrand: deleteSubBrand)
             }
             .headerProminence(.increased)
-            .id(subBrand)
+            .id(subBrand.id)
         }
     }
 
@@ -233,7 +233,7 @@ struct BrandScreen: View {
         }
     }
 
-    func getBrandData(withHaptics: Bool = false) async {
+    func getBrandData(withHaptics: Bool = false, proxy: ScrollViewProxy? = nil) async {
         let brandId = brand.id
         async let summaryPromise = repository.brand.getSummaryById(id: brandId)
         async let brandPromise = repository.brand.getJoinedById(id: brandId)
@@ -275,6 +275,11 @@ struct BrandScreen: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Request to check if brand is liked failed. Error: \(error) (\(#file):\(#line))")
+        }
+
+        if let initialScrollPosition, let proxy {
+            try? await Task.sleep(for: .milliseconds(100))
+            proxy.scrollTo(initialScrollPosition.id, anchor: .top)
         }
     }
 
