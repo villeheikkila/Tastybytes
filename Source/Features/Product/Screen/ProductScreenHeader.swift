@@ -15,7 +15,6 @@ struct ProductScreenHeader: View {
     let loadMoreImages: @MainActor () -> Void
     let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) async -> Void
     @Binding var isOnWishlist: Bool
-    @Binding var isLogoVisible: Bool
 
     var productItemViewExtras: Set<ProductItemView.Extra> {
         product.logos.isEmpty ? [.companyLink] : [.companyLink, .logoOnRight]
@@ -23,7 +22,6 @@ struct ProductScreenHeader: View {
 
     var body: some View {
         ProductItemView(product: product, extras: productItemViewExtras)
-            .isVisible($isLogoVisible)
         ProductScreenActionSection(
             isOnWishlist: $isOnWishlist,
             product: product,

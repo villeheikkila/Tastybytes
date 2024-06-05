@@ -43,7 +43,6 @@ struct ProductInnerScreen: View {
     @State private var showUnverifyProductConfirmation = false
     @State private var loadedWithBarcode: Barcode?
     @State private var alertError: AlertError?
-    @State private var isLogoVisible = true
     @State private var showTranslator = false
     // check-in images
     @State private var checkInImageTask: Task<Void, Never>?
@@ -122,8 +121,7 @@ struct ProductInnerScreen: View {
             checkInImages: checkInImages,
             loadMoreImages: loadMoreImages,
             onCreateCheckIn: onCreateCheckIn,
-            isOnWishlist: $isOnWishlist,
-            isLogoVisible: $isLogoVisible
+            isOnWishlist: $isOnWishlist
         )
         .listRowSeparator(.hidden)
         CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
@@ -134,7 +132,7 @@ struct ProductInnerScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ProductToolbarItem(product: product, isLogoVisible: isLogoVisible)
+        ToolbarItem(placement: .principal) { HStack {} }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 ControlGroup {
@@ -377,26 +375,6 @@ struct ProductInnerScreen: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
-        }
-    }
-}
-
-struct ProductToolbarItem: ToolbarContent {
-    var product: Product.Joined
-    let isLogoVisible: Bool
-
-    var body: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            VStack {
-                Text(product.formatted(.fullName))
-                    .font(.headline)
-                    .textSelection(.enabled)
-                Text(product.formatted(.brandOwner))
-                    .font(.subheadline)
-                    .textSelection(.enabled)
-                    .foregroundColor(.secondary)
-            }
-            .opacity(isLogoVisible ? 0 : 1)
         }
     }
 }
