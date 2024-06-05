@@ -10,10 +10,9 @@ import SwiftUI
 struct ProfileHeaderAvatarSection: View {
     private let logger = Logger(category: "ProfileHeaderAvatarSection")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
-    @State private var selectedItem: PhotosPickerItem?
+    @Binding  var showPicker: Bool
     @Binding var profile: Profile
 
     let isCurrentUser: Bool
@@ -34,17 +33,15 @@ struct ProfileHeaderAvatarSection: View {
                     .avatarSize(.custom(90))
                     .overlay(alignment: .bottomTrailing) {
                         if isCurrentUser {
-                            PhotosPicker(selection: $selectedItem,
-                                         matching: .images,
-                                         photoLibrary: .shared())
-                            {
-                                Image(systemName: "pencil.circle.fill")
-                                    .accessibilityHidden(true)
+                            Button(action: {
+                                showPicker = true
+                            }, label: {
+                                Label("profile.avatar.actions.change", systemImage: "pencil.circle.fill")
+                                    .labelStyle(.iconOnly)
                                     .symbolRenderingMode(.multicolor)
+                                    .foregroundStyle(.thinMaterial)
                                     .font(.system(size: 24))
-                                    .foregroundColor(.accentColor)
-                            }
-                            .buttonStyle(.borderless)
+                            })
                         }
                     }
             }
@@ -63,22 +60,7 @@ struct ProfileHeaderAvatarSection: View {
                 }
             }
         }
-        .onChange(of: selectedItem) { _, newValue in
-            Task {
-                guard let data = await newValue?.getJPEG() else { return }
-                await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
-            }
-        }
-    }
 
-    func uploadAvatar(userId: UUID, data: Data) async {
-        switch await repository.profile.uploadAvatar(userId: userId, data: data) {
-        case let .success(imageEntity):
-            profile = profile.copyWith(avatars: [imageEntity])
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            logger.error("Uploading of a avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
-        }
     }
 
     func deleteAvatar(entity: ImageEntity) async {

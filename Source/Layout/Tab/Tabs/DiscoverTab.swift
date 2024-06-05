@@ -9,6 +9,14 @@ struct DiscoverTab: View {
 
     var body: some View {
         DiscoverScreen(scrollToTop: $scrollToTop)
-            .scrollToTopBackToRootOnTab(.discover, scrollToTop: $scrollToTop)
+            .onChange(of: tabManager.resetNavigationOnTab) { _, tab in
+                if tab == .discover {
+                    if router.path.isEmpty {
+                        scrollToTop += 1
+                    } else {
+                        router.reset()
+                    }
+                }
+            }
     }
 }

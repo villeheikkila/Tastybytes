@@ -10,6 +10,14 @@ struct NotificationTab: View {
 
     var body: some View {
         NotificationScreen(scrollToTop: $scrollToTop)
-            .scrollToTopBackToRootOnTab(.notifications, scrollToTop: $scrollToTop)
+            .onChange(of: tabManager.resetNavigationOnTab) { _, tab in
+                if  tab == .notifications {
+                    if router.path.isEmpty {
+                        scrollToTop += 1
+                    } else {
+                        router.reset()
+                    }
+                }
+            }
     }
 }

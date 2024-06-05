@@ -11,6 +11,14 @@ struct ProfileTab: View {
 
     var body: some View {
         CurrentProfileScreen(scrollToTop: $scrollToTop)
-            .scrollToTopBackToRootOnTab(.profile, scrollToTop: $scrollToTop)
+            .onChange(of: tabManager.resetNavigationOnTab) { _, tab in
+                if  tab == .profile {
+                    if router.path.isEmpty {
+                        scrollToTop += 1
+                    } else {
+                        router.reset()
+                    }
+                }
+            }
     }
 }

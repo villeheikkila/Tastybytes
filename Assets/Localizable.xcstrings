@@ -3625,6 +3625,9 @@
         }
       }
     },
+    "profile.avatar.actions.change" : {
+
+    },
     "profile.avatar.delete.label" : {
       "localizations" : {
         "en" : {

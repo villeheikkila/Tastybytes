@@ -24,6 +24,7 @@ struct ProfileView: View {
 struct ProfileInnerView: View {
     private let logger = Logger(category: "ProfileView")
     @Environment(Repository.self) private var repository
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
     @State private var alertError: AlertError?
@@ -33,6 +34,8 @@ struct ProfileInnerView: View {
     @State private var isLoading = false
     @State private var loadImagesTask: Task<Void, Never>?
     @State private var page = 0
+    @State private var showPicker = false
+    @State private var selectedItem: PhotosPickerItem?
     @Binding var scrollToTop: Int
 
     private let topAnchor = 0
@@ -59,7 +62,7 @@ struct ProfileInnerView: View {
             List {
                 Group {
                     ProfileHeaderAvatarSection(
-                        profile: $profile,
+                        showPicker: $showPicker, profile: $profile,
                         isCurrentUser: isCurrentUser,
                         showInFull: showInFull,
                         profileSummary: profileSummary
@@ -88,6 +91,7 @@ struct ProfileInnerView: View {
                 CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
             }
             .listStyle(.plain)
+            .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
             .refreshable {
                 await getProfileData(isRefresh: true)
             }
@@ -102,6 +106,12 @@ struct ProfileInnerView: View {
             .onChange(of: scrollToTop) {
                 withAnimation {
                     proxy.scrollTo(topAnchor, anchor: .top)
+                }
+            }
+            .onChange(of: selectedItem) { _, newValue in
+                Task {
+                    guard let data = await newValue?.getJPEG() else { return }
+                    await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
                 }
             }
         }
@@ -174,6 +184,16 @@ struct ProfileInnerView: View {
                 .error(
                     "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
                 )
+        }
+    }
+    
+    func uploadAvatar(userId: UUID, data: Data) async {
+        switch await repository.profile.uploadAvatar(userId: userId, data: data) {
+        case let .success(imageEntity):
+            profile = profile.copyWith(avatars: [imageEntity])
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Uploading of a avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }
