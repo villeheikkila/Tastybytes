@@ -196,14 +196,12 @@ struct LocationSheetRow: View {
 
 @MainActor
 struct LocationRow: View {
-    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
-
     let location: Location
     let currentLocation: CLLocation?
     let onSelect: (_ location: Location) -> Void
 
     var distance: Measurement<UnitLength>? {
-        guard let currentLocation = locationEnvironmentModel.location, let clLocation = location.location else { return nil }
+        guard let currentLocation, let clLocation = location.location else { return nil }
         let distanceInMeters = currentLocation.distance(from: clLocation)
         return .init(value: distanceInMeters, unit: UnitLength.meters)
     }
