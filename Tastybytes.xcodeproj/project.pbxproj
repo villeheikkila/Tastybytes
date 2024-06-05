@@ -74,7 +74,7 @@
 		5C82E8A42B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8A32B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C82E8A62B2F7FE000F2B369 /* CheckInImagesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8A52B2F7FE000F2B369 /* CheckInImagesSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C82E8AE2B2F97E400F2B369 /* ProductScreenActionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8AD2B2F97E400F2B369 /* ProductScreenActionSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C82E8AE2B2F97E400F2B369 /* CreateCheckInButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8AD2B2F97E400F2B369 /* CreateCheckInButtonView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C82E8B12B2F996400F2B369 /* ProductScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C885F002B2873A900F17C78 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885EFF2B2873A900F17C78 /* Models */; };
 		5C885F032B2873B400F17C78 /* Extensions in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F022B2873B400F17C78 /* Extensions */; };
@@ -375,7 +375,7 @@
 		5C82E8A32B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderAvatarSection.swift; sourceTree = "<group>"; };
 		5C82E8A52B2F7FE000F2B369 /* CheckInImagesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImagesSection.swift; sourceTree = "<group>"; };
 		5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreenLoadedFromBarcodeOverlay.swift; sourceTree = "<group>"; };
-		5C82E8AD2B2F97E400F2B369 /* ProductScreenActionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreenActionSection.swift; sourceTree = "<group>"; };
+		5C82E8AD2B2F97E400F2B369 /* CreateCheckInButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckInButtonView.swift; sourceTree = "<group>"; };
 		5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreenHeader.swift; sourceTree = "<group>"; };
 		5C885F122B28740800F17C78 /* EnvironmentModels */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EnvironmentModels; sourceTree = "<group>"; };
 		5C885F132B28740800F17C78 /* Repositories */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Repositories; sourceTree = "<group>"; };
@@ -863,7 +863,7 @@
 			isa = PBXGroup;
 			children = (
 				5C82E8AB2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift */,
-				5C82E8AD2B2F97E400F2B369 /* ProductScreenActionSection.swift */,
+				5C82E8AD2B2F97E400F2B369 /* CreateCheckInButtonView.swift */,
 				5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */,
 				5C90579B2B2894BE00EC157B /* ProductScreen.swift */,
 			);
@@ -1850,7 +1850,7 @@
 				5C4FC63A2BA6EBD20025DB83 /* SaveToPhotoGalleryButton.swift in Sources */,
 				5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */,
 				5C9057F82B2894BE00EC157B /* EditCompanySheet.swift in Sources */,
-				5C82E8AE2B2F97E400F2B369 /* ProductScreenActionSection.swift in Sources */,
+				5C82E8AE2B2F97E400F2B369 /* CreateCheckInButtonView.swift in Sources */,
 				5C9058542B2894BE00EC157B /* OnboardingProfileSection.swift in Sources */,
 				5C24E1D32B5E4464003AB7C8 /* SubBrandSheetRow.swift in Sources */,
 				5C90581F2B2894BE00EC157B /* AdminScreen.swift in Sources */,

@@ -14,7 +14,6 @@ struct ProductScreenHeader: View {
     let isLoadingCheckInImages = false
     let loadMoreImages: @MainActor () -> Void
     let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) async -> Void
-    @Binding var isOnWishlist: Bool
 
     var productItemViewExtras: Set<ProductItemView.Extra> {
         product.logos.isEmpty ? [.companyLink] : [.companyLink, .logoOnRight]
@@ -22,8 +21,7 @@ struct ProductScreenHeader: View {
 
     var body: some View {
         ProductItemView(product: product, extras: productItemViewExtras)
-        ProductScreenActionSection(
-            isOnWishlist: $isOnWishlist,
+        CreateCheckInButtonView(
             product: product,
             onCreateCheckIn: onCreateCheckIn
         )
@@ -37,33 +35,5 @@ struct ProductScreenHeader: View {
                 onLoadMore: loadMoreImages
             )
         }
-    }
-}
-
-public extension View {
-    func isVisible(_ isVisible: Binding<Bool>) -> some View {
-        modifier(BecomingVisible(isVisible: isVisible))
-    }
-}
-
-private struct BecomingVisible: ViewModifier {
-    @Binding var isVisible: Bool
-
-    func body(content: Content) -> some View {
-        content.overlay(
-            GeometryReader { proxy in
-                Color.clear.onAppear {
-                    updateVisibility(with: proxy)
-                }
-                .onChange(of: proxy.frame(in: .global)) {
-                    updateVisibility(with: proxy)
-                }
-            }
-        )
-    }
-
-    @MainActor
-    private func updateVisibility(with proxy: GeometryProxy) {
-        isVisible = UIScreen.main.bounds.intersects(proxy.frame(in: .global))
     }
 }

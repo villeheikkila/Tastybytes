@@ -120,8 +120,7 @@ struct ProductInnerScreen: View {
             summary: summary,
             checkInImages: checkInImages,
             loadMoreImages: loadMoreImages,
-            onCreateCheckIn: onCreateCheckIn,
-            isOnWishlist: $isOnWishlist
+            onCreateCheckIn: onCreateCheckIn
         )
         .listRowSeparator(.hidden)
         CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
@@ -134,6 +133,10 @@ struct ProductInnerScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) { HStack {} }
         ToolbarItemGroup(placement: .topBarTrailing) {
+            ProgressButton("wishlist.add.label", systemImage: "star", actionOptions: []) {
+                await toggleWishlist()
+            }
+            .symbolVariant(isOnWishlist ? .fill : .none)
             Menu {
                 ControlGroup {
                     ProductShareLinkView(product: product)
@@ -375,6 +378,32 @@ struct ProductInnerScreen: View {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func toggleWishlist() async {
+        if isOnWishlist {
+            switch await repository.product.removeFromWishlist(productId: product.id) {
+            case .success:
+                feedbackEnvironmentModel.trigger(.notification(.success))
+                withAnimation {
+                    isOnWishlist = false
+                }
+            case let .failure(error):
+                guard !error.isCancelled else { return }
+                logger.error("Removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
+            }
+        } else {
+            switch await repository.product.addToWishlist(productId: product.id) {
+            case .success:
+                feedbackEnvironmentModel.trigger(.notification(.success))
+                withAnimation {
+                    isOnWishlist = true
+                }
+            case let .failure(error):
+                guard !error.isCancelled else { return }
+                logger.error("Adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
+            }
         }
     }
 }
