@@ -12,7 +12,7 @@ struct ProfileHeaderAvatarSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
-    @Binding  var showPicker: Bool
+    @Binding var showPicker: Bool
     @Binding var profile: Profile
 
     let isCurrentUser: Bool
@@ -60,7 +60,6 @@ struct ProfileHeaderAvatarSection: View {
                 }
             }
         }
-
     }
 
     func deleteAvatar(entity: ImageEntity) async {

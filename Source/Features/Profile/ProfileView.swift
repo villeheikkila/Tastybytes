@@ -186,7 +186,7 @@ struct ProfileInnerView: View {
                 )
         }
     }
-    
+
     func uploadAvatar(userId: UUID, data: Data) async {
         switch await repository.profile.uploadAvatar(userId: userId, data: data) {
         case let .success(imageEntity):
