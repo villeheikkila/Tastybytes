@@ -2205,7 +2205,14 @@
       }
     },
     "friend.friendRequest.send.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Friend Request"
+          }
+        }
+      }
     },
     "friend.status.accepted" : {
       "localizations" : {
@@ -3135,7 +3142,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show notification when someone sends you a friend requests"
+            "value" : "Friend Requests"
           }
         }
       }
@@ -3145,7 +3152,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Friend Requests"
+            "value" : "Show notification when someone sends you a friend requests"
           }
         }
       }

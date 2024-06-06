@@ -104,6 +104,11 @@ public final class FriendEnvironmentModel {
         return friends.first(where: { $0.status == .pending && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
+    public func isPendingCurrentUserApproval(_ friend: Profile) -> Friend? {
+        guard let profile else { return nil }
+        return friends.first(where: { $0.status == .pending && $0.sender == friend })
+    }
+
     public func refresh(withHaptics: Bool = false) async {
         guard let profile else { return }
         if withHaptics {

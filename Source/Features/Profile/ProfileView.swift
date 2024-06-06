@@ -120,7 +120,7 @@ struct ProfileInnerView: View {
     @ViewBuilder private var sendFriendRequestSection: some View {
         if !isCurrentUser,
            !friendEnvironmentModel.isFriend(profile) || friendEnvironmentModel
-           .isPendingUserApproval(profile) != nil
+           .isPendingCurrentUserApproval(profile) != nil
         {
             ProfileFriendActionSection(profile: profile)
         }
