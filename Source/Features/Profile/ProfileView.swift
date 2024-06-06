@@ -70,11 +70,13 @@ struct ProfileInnerView: View {
                     .id(topAnchor)
                     if showInFull {
                         RatingChartView(profile: profile, profileSummary: profileSummary)
-                        CheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
-                            loadImagesTask = Task {
-                                await fetchImages()
-                            }
-                        })
+                        if !checkInImages.isEmpty {
+                            CheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
+                                loadImagesTask = Task {
+                                    await fetchImages()
+                                }
+                            })
+                        }
                         ProfileSummarySection(profile: profile, profileSummary: profileSummary)
                         ProfileJoinedAtSection(joinedAt: profile.joinedAt)
                         sendFriendRequestSection
@@ -118,10 +120,7 @@ struct ProfileInnerView: View {
     }
 
     @ViewBuilder private var sendFriendRequestSection: some View {
-        if !isCurrentUser,
-           !friendEnvironmentModel.isFriend(profile) || friendEnvironmentModel
-           .isPendingCurrentUserApproval(profile) != nil
-        {
+        if !isCurrentUser, friendEnvironmentModel.hasNoFriendStatus(friend: profile) || (friendEnvironmentModel.isPendingCurrentUserApproval(profile) != nil) {
             ProfileFriendActionSection(profile: profile)
         }
     }
