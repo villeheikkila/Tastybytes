@@ -19,7 +19,7 @@ struct SignInWithAppleView: View {
             let nonce = randomString()
             self.nonce = nonce
             request.nonce = sha256(nonce)
-            request.requestedScopes = [.email, .fullName]
+            request.requestedScopes = [.email]
         }, onCompletion: { result in Task {
             await handleAuthorizationResult(result)
         }})
