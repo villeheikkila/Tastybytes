@@ -203,6 +203,9 @@
 		5C9058612B2894BE00EC157B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E32B2894BE00EC157B /* AppDelegate.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */; };
 		5C90AF6F2C15B90E00BA3202 /* ScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF6E2C15B90E00BA3202 /* ScreenState.swift */; };
+		5C90AF712C15C41D00BA3202 /* ScreenStateOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF702C15C41D00BA3202 /* ScreenStateOverlayView.swift */; };
+		5C90AF732C15C43400BA3202 /* ScreenLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF722C15C43400BA3202 /* ScreenLoadingView.swift */; };
+		5C90AF752C15C44C00BA3202 /* ScreenContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */; };
 		5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* Sheets.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C974CCD2C04E9B500CFE98A /* CheckInImageManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */; };
 		5C974CCF2C04E9E600CFE98A /* LocationInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCE2C04E9E600CFE98A /* LocationInputButton.swift */; };
@@ -505,6 +508,9 @@
 		5C9057E32B2894BE00EC157B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStateObserver.swift; sourceTree = "<group>"; };
 		5C90AF6E2C15B90E00BA3202 /* ScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenState.swift; sourceTree = "<group>"; };
+		5C90AF702C15C41D00BA3202 /* ScreenStateOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenStateOverlayView.swift; sourceTree = "<group>"; };
+		5C90AF722C15C43400BA3202 /* ScreenLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingView.swift; sourceTree = "<group>"; };
+		5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenContentUnavailableView.swift; sourceTree = "<group>"; };
 		5C9583862B41EE0000A2A03B /* Sheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheets.swift; sourceTree = "<group>"; };
 		5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageManagementView.swift; sourceTree = "<group>"; };
 		5C974CCE2C04E9E600CFE98A /* LocationInputButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputButton.swift; sourceTree = "<group>"; };
@@ -1365,6 +1371,9 @@
 			isa = PBXGroup;
 			children = (
 				5C90AF6E2C15B90E00BA3202 /* ScreenState.swift */,
+				5C90AF702C15C41D00BA3202 /* ScreenStateOverlayView.swift */,
+				5C90AF722C15C43400BA3202 /* ScreenLoadingView.swift */,
+				5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */,
 			);
 			path = ScreenState;
 			sourceTree = "<group>";
@@ -1757,6 +1766,7 @@
 				5CD3C0D92B814B4D0049E563 /* CropImagView.swift in Sources */,
 				5C9058602B2894BE00EC157B /* EnvironmentProvider.swift in Sources */,
 				5C9058442B2894BE00EC157B /* CompanyScreen.swift in Sources */,
+				5C90AF712C15C41D00BA3202 /* ScreenStateOverlayView.swift in Sources */,
 				5C90582F2B2894BE00EC157B /* ProfileScreen.swift in Sources */,
 				5C9057E72B2894BE00EC157B /* ActivityTab.swift in Sources */,
 				5C90580D2B2894BE00EC157B /* EditBrandSheet.swift in Sources */,
@@ -1774,6 +1784,7 @@
 				5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */,
 				5C24E1D52B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift in Sources */,
 				5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */,
+				5C90AF752C15C44C00BA3202 /* ScreenContentUnavailableView.swift in Sources */,
 				5C4FC6382BA68A130025DB83 /* DataScannerViewRepresentable.swift in Sources */,
 				5C9057F12B2894BE00EC157B /* CategoryPickerSheet.swift in Sources */,
 				5C4FC6412BA70C110025DB83 /* CameraPickerView.swift in Sources */,
@@ -1965,6 +1976,7 @@
 				5C9057EB2B2894BE00EC157B /* Tab.swift in Sources */,
 				5CD3C0E02B814BF90049E563 /* ToolbarDismissAction.swift in Sources */,
 				5CEB35A92C0B24380098E75D /* View+backToRootOnTab.swift in Sources */,
+				5C90AF732C15C43400BA3202 /* ScreenLoadingView.swift in Sources */,
 				5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */,
 				5C9058242B2894BE00EC157B /* NotificationScreen.swift in Sources */,
 				5C9058292B2894BE00EC157B /* CurrentProfileScreen.swift in Sources */,

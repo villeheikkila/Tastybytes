@@ -15,7 +15,7 @@ public extension Error {
 }
 
 public extension Array where Element: Error {
-    func isNetworkUnavailable() -> Bool {
+    var isNetworkUnavailable: Bool {
         for error in self {
             if error.isNetworkUnavailable {
                 return true
