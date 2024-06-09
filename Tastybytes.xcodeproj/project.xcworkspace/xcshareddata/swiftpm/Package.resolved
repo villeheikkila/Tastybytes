@@ -1,13 +1,13 @@
 {
-  "originHash" : "9ee3c28e372bbad330f1910b719c92222bb2de1a51c72b8ba24f5054fd0e2b35",
+  "originHash" : "aaeceba3dfe6931fe5a63c612e82b2c7b687a571293dba1d6ad05d7c21799fb8",
   "pins" : [
     {
       "identity" : "nuke",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke.git",
       "state" : {
-        "revision" : "2efd206503e99dd3a88a4dc433a76f98ce8cc198",
-        "version" : "12.7.1"
+        "revision" : "084076db4f9b9ee4db51177ef5a4879689c1aa09",
+        "version" : "12.7.2"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift.git",
       "state" : {
-        "revision" : "0c9915469320b9e62f5bd49c55040aabb3f4946b",
-        "version" : "2.13.1"
+        "revision" : "40112d26f2f1a58a989fee10dce85de49b0b8e7b",
+        "version" : "2.13.2"
       }
     },
     {

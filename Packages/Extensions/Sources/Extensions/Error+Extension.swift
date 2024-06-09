@@ -16,10 +16,8 @@ public extension Error {
 
 public extension Array where Element: Error {
     var isNetworkUnavailable: Bool {
-        for error in self {
-            if error.isNetworkUnavailable {
-                return true
-            }
+        for error in self where error.isNetworkUnavailable {
+            return true
         }
         return false
     }
