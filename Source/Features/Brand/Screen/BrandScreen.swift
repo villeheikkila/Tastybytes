@@ -288,19 +288,7 @@ struct BrandScreen: View {
             logger.error("Request to check if brand is liked failed. Error: \(error) (\(#file):\(#line))")
         }
 
-        withAnimation {
-            if errors.isEmpty {
-                state = .populated
-                if withHaptics {
-                    feedbackEnvironmentModel.trigger(.impact(intensity: .high))
-                }
-            } else {
-                state = .error(errors)
-                if withHaptics {
-                    feedbackEnvironmentModel.trigger(.notification(.error))
-                }
-            }
-        }
+        state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
 
         if let initialScrollPosition, let proxy {
             try? await Task.sleep(for: .milliseconds(100))

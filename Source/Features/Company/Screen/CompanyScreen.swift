@@ -191,19 +191,7 @@ struct CompanyScreen: View {
             logger.error("Failed to load summary for company. Error: \(error) (\(#file):\(#line))")
         }
 
-        withAnimation {
-            if errors.isEmpty {
-                state = .populated
-                if withHaptics {
-                    feedbackEnvironmentModel.trigger(.impact(intensity: .high))
-                }
-            } else {
-                state = .error(errors)
-                if withHaptics {
-                    feedbackEnvironmentModel.trigger(.notification(.error))
-                }
-            }
-        }
+        state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     func deleteCompany(_ company: Company.Joined) async {

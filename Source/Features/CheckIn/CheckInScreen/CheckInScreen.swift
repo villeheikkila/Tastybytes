@@ -269,13 +269,7 @@ struct CheckInScreen: View {
             logger.error("Failed to load check-in comments. Error: \(error) (\(#file):\(#line))")
         }
 
-        withAnimation {
-            state = if errors.isEmpty {
-                .populated
-            } else {
-                .error(errors)
-            }
-        }
+        state = .getState(errors: errors, withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     func deleteCheckIn(_ checkIn: CheckIn) async {

@@ -301,13 +301,7 @@ struct ProductInnerScreen: View {
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
 
-        withAnimation(.easeIn) {
-            state = if !errors.isEmpty {
-                .error(errors)
-            } else {
-                .populated
-            }
-        }
+        state = .getState(errors: errors, withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {
