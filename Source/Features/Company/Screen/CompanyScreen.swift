@@ -14,6 +14,7 @@ struct CompanyScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
+    @State private var state: ScreenState = .loading
     @State private var company: Company.Joined
     @State private var summary: Summary?
     @State private var showUnverifyCompanyConfirmation = false
@@ -31,30 +32,18 @@ struct CompanyScreen: View {
 
     var body: some View {
         List {
-            if let summary, summary.averageRating != nil {
-                Section {
-                    SummaryView(summary: summary)
-                }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
+            if state == .populated {
+                populatedContent
             }
-            Section("brand.title") {
-                ForEach(sortedBrands) { brand in
-                    RouterLink(
-                        screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
-                    ) {
-                        CompanyBrandRow(brand: brand)
-                    }
-                    .alignmentGuide(.listRowSeparatorLeading) { _ in
-                        0
-                    }
-                }
-            }
-            .headerProminence(.increased)
         }
         .listStyle(.plain)
         .refreshable {
             await getCompanyData(withHaptics: true)
+        }
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "company.screen.failedToLoad \(company.name)") {
+                await getCompanyData(withHaptics: true)
+            }
         }
         .navigationTitle(company.name)
         .navigationBarTitleDisplayMode(.inline)
@@ -80,6 +69,29 @@ struct CompanyScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             navigationBarMenu
         }
+    }
+
+    @ViewBuilder private var populatedContent: some View {
+        if let summary, summary.averageRating != nil {
+            Section {
+                SummaryView(summary: summary)
+            }
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+        }
+        Section("brand.title") {
+            ForEach(sortedBrands) { brand in
+                RouterLink(
+                    screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
+                ) {
+                    CompanyBrandRow(brand: brand)
+                }
+                .alignmentGuide(.listRowSeparatorLeading) { _ in
+                    0
+                }
+            }
+        }
+        .headerProminence(.increased)
     }
 
     private var navigationBarMenu: some View {
@@ -159,15 +171,14 @@ struct CompanyScreen: View {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
+
+        var errors = [Error]()
         switch companyResult {
         case let .success(company):
             self.company = company
-            if withHaptics {
-                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
-            }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to refresh data for company. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -176,8 +187,22 @@ struct CompanyScreen: View {
             self.summary = summary
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to load summary for company. Error: \(error) (\(#file):\(#line))")
+        }
+
+        withAnimation {
+            if errors.isEmpty {
+                state = .populated
+                if withHaptics {
+                    feedbackEnvironmentModel.trigger(.impact(intensity: .high))
+                }
+            } else {
+                state = .error(errors)
+                if withHaptics {
+                    feedbackEnvironmentModel.trigger(.notification(.error))
+                }
+            }
         }
     }
 

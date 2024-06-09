@@ -15,6 +15,7 @@ struct CheckInScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState private var focusedField: CheckInLeaveComment.Focusable?
+    @State private var state: ScreenState = .loading
     @State private var checkIn: CheckIn
     @State private var checkInComments = [CheckInComment]()
     @State private var showDeleteConfirmation = false
@@ -28,25 +29,17 @@ struct CheckInScreen: View {
     var body: some View {
         ScrollViewReader { scrollProxy in
             List {
-                header
-                    .id(0)
-                    .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
-                    .listRowSeparator(.visible, edges: .bottom)
-                    .alignmentGuide(.listRowSeparatorLeading) { _ in
-                        -50
-                    }
-                    .onTapGesture {
-                        focusedField = nil
-                    }
-                ForEach(checkInComments) { comment in
-                    CheckInCommentRow(checkIn: checkIn, comment: comment, checkInComments: $checkInComments)
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
-                        .id(comment.id)
+                if state == .populated {
+                    populatedContent
                 }
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
+            .overlay {
+                ScreenStateOverlayView(state: state, errorDescription: "checkIn.screen.failedToLoad \(checkIn.product.formatted(.fullName)) \(checkIn.profile.preferredName)", errorAction: {
+                    await loadCheckInData()
+                })
+            }
             .contentMargins(.bottom, 100)
             .refreshable {
                 await loadCheckInData()
@@ -63,6 +56,25 @@ struct CheckInScreen: View {
                 await loadCheckInData()
             }
             .alertError($alertError)
+        }
+    }
+
+    @ViewBuilder private var populatedContent: some View {
+        header
+            .id(0)
+            .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+            .listRowSeparator(.visible, edges: .bottom)
+            .alignmentGuide(.listRowSeparatorLeading) { _ in
+                -50
+            }
+            .onTapGesture {
+                focusedField = nil
+            }
+        ForEach(checkInComments) { comment in
+            CheckInCommentRow(checkIn: checkIn, comment: comment, checkInComments: $checkInComments)
+                .listRowSeparator(.hidden)
+                .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+                .id(comment.id)
         }
     }
 
@@ -234,6 +246,7 @@ struct CheckInScreen: View {
             summaryPromise
         )
 
+        var errors = [Error]()
         switch checkInResult {
         case let .success(checkIn):
             withAnimation {
@@ -241,7 +254,7 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to load check-in. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -252,8 +265,16 @@ struct CheckInScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to load check-in comments. Error: \(error) (\(#file):\(#line))")
+        }
+
+        withAnimation {
+            state = if errors.isEmpty {
+                .populated
+            } else {
+                .error(errors)
+            }
         }
     }
 

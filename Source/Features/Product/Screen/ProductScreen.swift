@@ -22,23 +22,6 @@ struct ProductScreen: View {
     }
 }
 
-enum ScreenState: Equatable {
-    case loading
-    case populated
-    case error([Error])
-    
-    static func ==(lhs: ScreenState, rhs: ScreenState) -> Bool {
-        switch (lhs, rhs) {
-        case (.loading, .loading), (.populated, .populated):
-            return true
-        case (.error(let lhsErrors), .error(let rhsErrors)):
-            return lhsErrors.count == rhsErrors.count && lhsErrors.elementsEqual(rhsErrors, by: { $0.localizedDescription == $1.localizedDescription })
-        default:
-            return false
-        }
-    }
-}
-
 @MainActor
 struct ProductInnerScreen: View {
     private let logger = Logger(category: "ProductScreen")
@@ -412,62 +395,6 @@ struct ProductInnerScreen: View {
                 guard !error.isCancelled else { return }
                 logger.error("Adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
             }
-        }
-    }
-}
-
-@MainActor
-struct ScreenContentUnavailable: View {
-    @State private var isTaskRunning = false
-
-    let errors: [Error]
-    var description: LocalizedStringKey
-    let action: () async -> Void
-    
-    var label: some View {
-        if errors.isNetworkUnavailable() {
-            Label("screen.error.networkUnavailable", systemImage: "wifi.slash")
-        } else {
-            Label("screen.error.unexpectedError", systemImage: "exclamationmark.triangle")
-        }
-    }
-
-    var body: some View {
-        ContentUnavailableView {
-            label
-        } description: {
-            Text(description)
-        } actions: {
-            Button("labels.tryAgain") {
-                if !isTaskRunning {
-                    isTaskRunning = true
-                    Task {
-                        await action()
-                        isTaskRunning = false
-                    }
-                }
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-            .disabled(isTaskRunning)
-        }
-    }
-}
-
-@MainActor
-struct ScreenStateOverlayView: View {
-    let state: ScreenState
-    let errorDescription: LocalizedStringKey
-    let errorAction: () async -> Void
-    
-    var body: some View {
-        switch state {
-        case let .error(errors):
-            ScreenContentUnavailable(errors: errors, description: errorDescription, action: errorAction)
-        case .loading:
-            ProgressView()
-        case .populated:
-            EmptyView()
         }
     }
 }

@@ -682,6 +682,9 @@
         }
       }
     },
+    "brand.screen.failedToLoad %@" : {
+
+    },
     "brand.screen.open" : {
       "localizations" : {
         "en" : {
@@ -1233,6 +1236,16 @@
         }
       }
     },
+    "checkIn.screen.failedToLoad %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "checkIn.screen.failedToLoad %1$@ %2$@"
+          }
+        }
+      }
+    },
     "checkIn.section.additionalInformation.title" : {
       "localizations" : {
         "en" : {
@@ -1597,6 +1610,9 @@
           }
         }
       }
+    },
+    "company.screen.failedToLoad %@" : {
+
     },
     "company.screen.open" : {
       "localizations" : {

@@ -202,6 +202,7 @@
 		5C9058602B2894BE00EC157B /* EnvironmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */; };
 		5C9058612B2894BE00EC157B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E32B2894BE00EC157B /* AppDelegate.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */; };
+		5C90AF6F2C15B90E00BA3202 /* ScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF6E2C15B90E00BA3202 /* ScreenState.swift */; };
 		5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* Sheets.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C974CCD2C04E9B500CFE98A /* CheckInImageManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */; };
 		5C974CCF2C04E9E600CFE98A /* LocationInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCE2C04E9E600CFE98A /* LocationInputButton.swift */; };
@@ -503,6 +504,7 @@
 		5C9057E22B2894BE00EC157B /* EnvironmentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentProvider.swift; sourceTree = "<group>"; };
 		5C9057E32B2894BE00EC157B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStateObserver.swift; sourceTree = "<group>"; };
+		5C90AF6E2C15B90E00BA3202 /* ScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenState.swift; sourceTree = "<group>"; };
 		5C9583862B41EE0000A2A03B /* Sheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheets.swift; sourceTree = "<group>"; };
 		5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageManagementView.swift; sourceTree = "<group>"; };
 		5C974CCE2C04E9E600CFE98A /* LocationInputButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputButton.swift; sourceTree = "<group>"; };
@@ -895,6 +897,7 @@
 		5C9057372B2894BE00EC157B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				5C90AF6D2C15B90000BA3202 /* ScreenState */,
 				5CD9D1112BFA9CD700CD9EE8 /* Extensions */,
 				5C9057342B2894BE00EC157B /* Utils */,
 				5C9057C12B2894BE00EC157B /* Components */,
@@ -1356,6 +1359,14 @@
 				5C9057E32B2894BE00EC157B /* AppDelegate.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		5C90AF6D2C15B90000BA3202 /* ScreenState */ = {
+			isa = PBXGroup;
+			children = (
+				5C90AF6E2C15B90E00BA3202 /* ScreenState.swift */,
+			);
+			path = ScreenState;
 			sourceTree = "<group>";
 		};
 		5C9990A62B8A2682002BD3F7 /* NotificationRows */ = {
@@ -1877,6 +1888,7 @@
 				5CAADEF62B5C23C700D956C1 /* CompanyRow.swift in Sources */,
 				5C90583D2B2894BE00EC157B /* NameTagTip.swift in Sources */,
 				5C90585B2B2894BE00EC157B /* Router.swift in Sources */,
+				5C90AF6F2C15B90E00BA3202 /* ScreenState.swift in Sources */,
 				5C90583B2B2894BE00EC157B /* FriendsScreen.swift in Sources */,
 				5CCEE2892B2D0C0100F276DF /* CheckInListCard.swift in Sources */,
 				5C90584B2B2894BE00EC157B /* ReactionsView.swift in Sources */,

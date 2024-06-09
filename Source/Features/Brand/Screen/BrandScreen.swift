@@ -23,6 +23,7 @@ struct BrandScreen: View {
     @State private var showDeleteBrandConfirmationDialog = false
     @State private var alertError: AlertError?
     @State private var sheet: Sheet?
+    @State private var state: ScreenState = .loading
 
     let initialScrollPosition: SubBrand.JoinedBrand?
 
@@ -62,23 +63,18 @@ struct BrandScreen: View {
     var body: some View {
         ScrollViewReader { proxy in
             List {
-                Section {
-                    SummaryView(summary: summary)
-                }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
-                .sheets(item: $sheet)
-
-                switch productGrouping {
-                case .subBrand:
-                    subBrandList
-                case .category:
-                    groupedByCategoryList
+                if state == .populated {
+                    populatedContent
                 }
             }
             .listStyle(.plain)
             .refreshable {
                 await getBrandData(withHaptics: true)
+            }
+            .overlay {
+                ScreenStateOverlayView(state: state, errorDescription: "brand.screen.failedToLoad \(brand.name)", errorAction: {
+                    await getBrandData(withHaptics: true)
+                })
             }
             .initialTask {
                 await getBrandData(proxy: proxy)
@@ -89,6 +85,22 @@ struct BrandScreen: View {
                 toolbarContent
             }
             .alertError($alertError)
+        }
+    }
+
+    @ViewBuilder private var populatedContent: some View {
+        Section {
+            SummaryView(summary: summary)
+        }
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+        .sheets(item: $sheet)
+
+        switch productGrouping {
+        case .subBrand:
+            subBrandList
+        case .category:
+            groupedByCategoryList
         }
     }
 
@@ -246,15 +258,13 @@ struct BrandScreen: View {
             brandPromise,
             isLikedPromisePromise
         )
+        var errors = [Error]()
         switch summaryResult {
         case let .success(summary):
             self.summary = summary
-            if withHaptics {
-                feedbackEnvironmentModel.trigger(.impact(intensity: .high))
-            }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -263,7 +273,7 @@ struct BrandScreen: View {
             self.brand = brand
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Request for brand with \(brandId) failed. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -274,7 +284,22 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
+            errors.append(error)
             logger.error("Request to check if brand is liked failed. Error: \(error) (\(#file):\(#line))")
+        }
+
+        withAnimation {
+            if errors.isEmpty {
+                state = .populated
+                if withHaptics {
+                    feedbackEnvironmentModel.trigger(.impact(intensity: .high))
+                }
+            } else {
+                state = .error(errors)
+                if withHaptics {
+                    feedbackEnvironmentModel.trigger(.notification(.error))
+                }
+            }
         }
 
         if let initialScrollPosition, let proxy {
