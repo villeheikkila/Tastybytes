@@ -86,9 +86,6 @@ struct ProductInnerScreen: View {
             }
         }
         .sheets(item: $sheet)
-        .sensoryFeedback(.success, trigger: checkInLoader.isRefreshing) { oldValue, newValue in
-            oldValue && !newValue
-        }
         .onDisappear {
             checkInImageTask?.cancel()
         }
@@ -301,7 +298,7 @@ struct ProductInnerScreen: View {
             logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
 
-        state = .getState(errors: errors, withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
+        state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {

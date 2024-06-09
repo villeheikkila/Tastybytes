@@ -37,12 +37,12 @@ struct CheckInScreen: View {
             .scrollIndicators(.hidden)
             .overlay {
                 ScreenStateOverlayView(state: state, errorDescription: "checkIn.screen.failedToLoad \(checkIn.product.formatted(.fullName)) \(checkIn.profile.preferredName)", errorAction: {
-                    await loadCheckInData()
+                    await loadCheckInData(withHaptics: true)
                 })
             }
             .contentMargins(.bottom, 100)
             .refreshable {
-                await loadCheckInData()
+                await loadCheckInData(withHaptics: true)
             }
             .safeAreaInset(edge: .bottom, alignment: .trailing, content: {
                 CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField, onSubmitted: { comment in
@@ -234,7 +234,7 @@ struct CheckInScreen: View {
         }
     }
 
-    func loadCheckInData() async {
+    func loadCheckInData(withHaptics: Bool = false) async {
         async let checkInPromise = repository.checkIn.getById(id: checkIn.id)
         async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: checkIn.id)
         async let summaryPromise: Void = notificationEnvironmentModel.markCheckInAsRead(
@@ -269,7 +269,7 @@ struct CheckInScreen: View {
             logger.error("Failed to load check-in comments. Error: \(error) (\(#file):\(#line))")
         }
 
-        state = .getState(errors: errors, withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
+        state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     func deleteCheckIn(_ checkIn: CheckIn) async {
