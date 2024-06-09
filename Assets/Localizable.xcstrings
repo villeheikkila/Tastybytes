@@ -3576,7 +3576,7 @@
         }
       }
     },
-    "product.screen.failedToLoadErro %@" : {
+    "product.screen.failedToLoadError %@" : {
 
     },
     "product.screen.open" : {
@@ -4142,6 +4142,9 @@
           }
         }
       }
+    },
+    "screen.error.networkUnavailable" : {
+
     },
     "screen.error.unexpectedError" : {
       "localizations" : {

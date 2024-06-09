@@ -25,7 +25,18 @@ struct ProductScreen: View {
 enum ScreenState: Equatable {
     case loading
     case populated
-    case error
+    case error([Error])
+    
+    static func ==(lhs: ScreenState, rhs: ScreenState) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading), (.populated, .populated):
+            return true
+        case (.error(let lhsErrors), .error(let rhsErrors)):
+            return lhsErrors.count == rhsErrors.count && lhsErrors.elementsEqual(rhsErrors, by: { $0.localizedDescription == $1.localizedDescription })
+        default:
+            return false
+        }
+    }
 }
 
 @MainActor
@@ -74,11 +85,8 @@ struct ProductInnerScreen: View {
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .overlay {
-            if state == .error {
-                ScreenContentUnavailable(description: "product.screen.failedToLoadErro \(product.formatted(.fullName))") {
-                    await getProductData()
-                }
-            }
+            ScreenStateOverlayView(state: state, errorDescription: "product.screen.failedToLoadError \(product.formatted(.fullName))", errorAction: { await getProductData()
+            })
         }
         .refreshable {
             await getProductData()
@@ -312,7 +320,7 @@ struct ProductInnerScreen: View {
 
         withAnimation(.easeIn) {
             state = if !errors.isEmpty {
-                .error
+                .error(errors)
             } else {
                 .populated
             }
@@ -408,15 +416,25 @@ struct ProductInnerScreen: View {
     }
 }
 
+@MainActor
 struct ScreenContentUnavailable: View {
     @State private var isTaskRunning = false
 
-    let description: LocalizedStringKey
+    let errors: [Error]
+    var description: LocalizedStringKey
     let action: () async -> Void
+    
+    var label: some View {
+        if errors.isNetworkUnavailable() {
+            Label("screen.error.networkUnavailable", systemImage: "wifi.slash")
+        } else {
+            Label("screen.error.unexpectedError", systemImage: "exclamationmark.triangle")
+        }
+    }
 
     var body: some View {
         ContentUnavailableView {
-            Label("screen.error.unexpectedError", systemImage: "exclamationmark.triangle")
+            label
         } description: {
             Text(description)
         } actions: {
@@ -430,7 +448,26 @@ struct ScreenContentUnavailable: View {
                 }
             }
             .buttonStyle(.borderedProminent)
+            .controlSize(.large)
             .disabled(isTaskRunning)
+        }
+    }
+}
+
+@MainActor
+struct ScreenStateOverlayView: View {
+    let state: ScreenState
+    let errorDescription: LocalizedStringKey
+    let errorAction: () async -> Void
+    
+    var body: some View {
+        switch state {
+        case let .error(errors):
+            ScreenContentUnavailable(errors: errors, description: errorDescription, action: errorAction)
+        case .loading:
+            ProgressView()
+        case .populated:
+            EmptyView()
         }
     }
 }

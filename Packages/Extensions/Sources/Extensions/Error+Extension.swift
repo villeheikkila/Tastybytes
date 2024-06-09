@@ -13,3 +13,14 @@ public extension Error {
         return nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorNotConnectedToInternet
     }
 }
+
+public extension Array where Element: Error {
+    func isNetworkUnavailable() -> Bool {
+        for error in self {
+            if error.isNetworkUnavailable {
+                return true
+            }
+        }
+        return false
+    }
+}
