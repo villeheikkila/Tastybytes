@@ -26,6 +26,7 @@ struct ProfileInnerView: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
     @State private var alertError: AlertError?
     @State private var profile: Profile
@@ -36,6 +37,7 @@ struct ProfileInnerView: View {
     @State private var page = 0
     @State private var showPicker = false
     @State private var selectedItem: PhotosPickerItem?
+    @State private var state: ScreenState = .loading
     @Binding var scrollToTop: Int
 
     private let topAnchor = 0
@@ -60,39 +62,16 @@ struct ProfileInnerView: View {
     var body: some View {
         ScrollViewReader { proxy in
             List {
-                Group {
-                    ProfileHeaderAvatarSection(
-                        showPicker: $showPicker, profile: $profile,
-                        isCurrentUser: isCurrentUser,
-                        showInFull: showInFull,
-                        profileSummary: profileSummary
-                    )
-                    .id(topAnchor)
-                    if showInFull {
-                        RatingChartView(profile: profile, profileSummary: profileSummary)
-                        if !checkInImages.isEmpty {
-                            CheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
-                                loadImagesTask = Task {
-                                    await fetchImages()
-                                }
-                            })
-                        }
-                        ProfileSummarySection(profile: profile, profileSummary: profileSummary)
-                        ProfileJoinedAtSection(joinedAt: profile.joinedAt)
-                        sendFriendRequestSection
-                        ProfileLinksSection(profile: profile, isCurrentUser: isCurrentUser)
-                    } else {
-                        PrivateProfileSign()
-                        sendFriendRequestSection
-                    }
-                }.listRowSeparator(.hidden)
-
-                CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .profile(profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
-                    checkInLoader.onLoadMore()
-                })
-                CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+                if state == .populated {
+                    populatedContent
+                }
             }
             .listStyle(.plain)
+            .overlay {
+                ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
+                    await getProfileData(isRefresh: true)
+                })
+            }
             .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
             .refreshable {
                 await getProfileData(isRefresh: true)
@@ -119,6 +98,40 @@ struct ProfileInnerView: View {
         }
     }
 
+    @ViewBuilder private var populatedContent: some View {
+        Group {
+            ProfileHeaderAvatarSection(
+                showPicker: $showPicker, profile: $profile,
+                isCurrentUser: isCurrentUser,
+                showInFull: showInFull,
+                profileSummary: profileSummary
+            )
+            .id(topAnchor)
+            if showInFull {
+                RatingChartView(profile: profile, profileSummary: profileSummary)
+                if !checkInImages.isEmpty {
+                    CheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
+                        loadImagesTask = Task {
+                            await fetchImages()
+                        }
+                    })
+                }
+                ProfileSummarySection(profile: profile, profileSummary: profileSummary)
+                ProfileJoinedAtSection(joinedAt: profile.joinedAt)
+                sendFriendRequestSection
+                ProfileLinksSection(profile: profile, isCurrentUser: isCurrentUser)
+            } else {
+                PrivateProfileSign()
+                sendFriendRequestSection
+            }
+        }.listRowSeparator(.hidden)
+
+        CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .profile(profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+            checkInLoader.onLoadMore()
+        })
+        CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+    }
+
     @ViewBuilder private var sendFriendRequestSection: some View {
         if !isCurrentUser, friendEnvironmentModel.hasNoFriendStatus(friend: profile) || (friendEnvironmentModel.isPendingCurrentUserApproval(profile) != nil) {
             ProfileFriendActionSection(profile: profile)
@@ -131,6 +144,7 @@ struct ProfileInnerView: View {
         async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile), from: 0, to: pageSize)
         let (summaryResult, imagesResult) = await (summaryPromise, imagesPromise)
 
+        var errors = [Error]()
         switch summaryResult {
         case let .success(summary):
             withAnimation {
@@ -138,7 +152,7 @@ struct ProfileInnerView: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
 
@@ -155,12 +169,14 @@ struct ProfileInnerView: View {
             isLoading = false
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger
                 .error(
                     "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
                 )
         }
+
+        state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
 
         await productPromise
     }
