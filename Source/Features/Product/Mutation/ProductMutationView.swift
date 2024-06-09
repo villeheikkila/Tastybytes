@@ -21,7 +21,7 @@ struct ProductMutationView: View {
     // Sheet status
     @State private var isSuccess = false
     @State private var sheet: Sheet?
-    @State private var status: Status = .initial
+    @State private var state: ScreenState = .loading
     @State private var alertError: AlertError?
     // Product details
     @State private var subcategories = [Subcategory]()
@@ -80,20 +80,18 @@ struct ProductMutationView: View {
 
     var body: some View {
         Form {
-            categorySection
-            brandSection
-            productSection
-            if case .edit = mode {
-                EditLogoSection(logos: logos, onUpload: { imageData in
-                    await uploadData(data: imageData)
-                }, onDelete: { imageEntity in
-                    await deleteLogo(entity: imageEntity)
-                })
+            if state == .populated {
+                populatedContent
             }
         }
         .scrollContentBackground(isPresentedInSheet ? .hidden : .visible)
         .navigationTitle(mode.navigationTitle)
         .foregroundColor(.primary)
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
+                await initialize()
+            })
+        }
         .alertError($alertError)
         .toolbar {
             toolbarContent
@@ -116,6 +114,19 @@ struct ProductMutationView: View {
             .foregroundColor(isValid ? .primary : .secondary)
             .fontWeight(.medium)
             .disabled(!isValid)
+        }
+    }
+
+    @ViewBuilder private var populatedContent: some View {
+        categorySection
+        brandSection
+        productSection
+        if case .edit = mode {
+            EditLogoSection(logos: logos, onUpload: { imageData in
+                await uploadData(data: imageData)
+            }, onDelete: { imageEntity in
+                await deleteLogo(entity: imageEntity)
+            })
         }
     }
 
@@ -342,16 +353,16 @@ struct ProductMutationView: View {
                 description = initialProduct.description.orEmpty
                 isDiscontinued = initialProduct.isDiscontinued
                 logos = initialProduct.logos
-                status = .initialized
+                state = .populated
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                status = .error(error)
+                state = .error([error])
                 logger.error("Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))")
             }
         case let .addToBrand(brand, _):
             brandOwner = brand.brandOwner
             self.brand = .init(brand: brand)
-            status = .initialized
+            state = .populated
         case let .addToSubBrand(brand, subBrand, _):
             brandOwner = brand.brandOwner
             self.brand = .init(brand: brand)
@@ -359,9 +370,9 @@ struct ProductMutationView: View {
                 hasSubBrand = true
             }
             self.subBrand = brand.subBrands.map(\.subBrand).first(where: { $0.id == subBrand.id })
-            status = .initialized
+            state = .populated
         case .new:
-            status = .initialized
+            state = .populated
         }
     }
 
@@ -391,22 +402,6 @@ struct ProductMutationView: View {
 }
 
 extension ProductMutationView {
-    enum Status: Sendable, Equatable {
-        case initial
-        case initialized
-        case error(Error)
-
-        static func == (lhs: Status, rhs: Status) -> Bool {
-            switch (lhs, rhs) {
-            case (.initial, .initial),
-                 (.initialized, .initialized):
-                true
-            default:
-                false
-            }
-        }
-    }
-
     enum Mode: Equatable {
         case new(onCreate: ProductCallback? = nil), edit(Product.Joined, onEdit: ProductCallback?), editSuggestion(Product.Joined),
              addToBrand(Brand.JoinedSubBrandsProductsCompany, onCreate: ProductCallback?),
