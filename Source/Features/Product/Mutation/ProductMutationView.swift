@@ -307,7 +307,7 @@ struct ProductMutationView: View {
             }
         case let .new(onCreate), let .addToBrand(_, onCreate), let .addToSubBrand(_, _, onCreate):
             guard let category, let brandId = brand?.id else { return }
-            let newProductParams = Product.NewRequest(
+            switch await repository.product.create(newProductParams: .init(
                 name: name,
                 description: description,
                 categoryId: category,
@@ -316,8 +316,7 @@ struct ProductMutationView: View {
                 subcategories: Array(subcategories),
                 isDiscontinued: isDiscontinued,
                 barcode: barcode
-            )
-            switch await repository.product.create(newProductParams: newProductParams) {
+            )) {
             case let .success(newProduct):
                 isSuccess = true
                 if isPresentedInSheet {
