@@ -32,5 +32,5 @@ struct AppUnsupportedVersionState: View {
 }
 
 #Preview {
-    AppNetworkUnavailableState()
+    AppUnsupportedVersionState()
 }

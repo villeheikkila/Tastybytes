@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailableState.swift */; };
-		5C02A73B2B4F28B700B497FA /* AppUnexpectedErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73A2B4F28B700B497FA /* AppUnexpectedErrorState.swift */; };
+		5C02A73B2B4F28B700B497FA /* AppErrorStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73A2B4F28B700B497FA /* AppErrorStateView.swift */; };
 		5C02A73D2B4F2A7800B497FA /* AppUnsupportedVersionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */; };
 		5C02A73F2B4F316800B497FA /* AppStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A73E2B4F316800B497FA /* AppStateObserver.swift */; };
 		5C02A7412B4FBA5900B497FA /* DeviceInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */; };
@@ -309,8 +308,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkUnavailableState.swift; sourceTree = "<group>"; };
-		5C02A73A2B4F28B700B497FA /* AppUnexpectedErrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUnexpectedErrorState.swift; sourceTree = "<group>"; };
+		5C02A73A2B4F28B700B497FA /* AppErrorStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppErrorStateView.swift; sourceTree = "<group>"; };
 		5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUnsupportedVersionState.swift; sourceTree = "<group>"; };
 		5C02A73E2B4F316800B497FA /* AppStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateObserver.swift; sourceTree = "<group>"; };
 		5C02A7402B4FBA5900B497FA /* DeviceInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoProvider.swift; sourceTree = "<group>"; };
@@ -605,8 +603,7 @@
 		5C02A7372B4EAF7700B497FA /* AppStates */ = {
 			isa = PBXGroup;
 			children = (
-				5C02A7382B4EAF8C00B497FA /* AppNetworkUnavailableState.swift */,
-				5C02A73A2B4F28B700B497FA /* AppUnexpectedErrorState.swift */,
+				5C02A73A2B4F28B700B497FA /* AppErrorStateView.swift */,
 				5C02A73C2B4F2A7800B497FA /* AppUnsupportedVersionState.swift */,
 			);
 			path = AppStates;
@@ -1829,7 +1826,7 @@
 				5CAADF072B5C541900D956C1 /* DiscoverProductAddNew.swift in Sources */,
 				5C90580B2B2894BE00EC157B /* ReportButtonView.swift in Sources */,
 				5C187E4D2B8B33FD0007AD17 /* CheckInListLoader.swift in Sources */,
-				5C02A73B2B4F28B700B497FA /* AppUnexpectedErrorState.swift in Sources */,
+				5C02A73B2B4F28B700B497FA /* AppErrorStateView.swift in Sources */,
 				5C82E8A62B2F7FE000F2B369 /* CheckInImagesSection.swift in Sources */,
 				5C90583A2B2894BE00EC157B /* ProductFeedScreen.swift in Sources */,
 				5C68D76B2B965FBE00D88229 /* ReportEntity+Extension.swift in Sources */,
@@ -1912,7 +1909,6 @@
 				5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */,
 				5C9057FB2B2894BE00EC157B /* MergeLocationSheet.swift in Sources */,
 				5CB33AD22B8A56DF00CDC09F /* MapThumbnail.swift in Sources */,
-				5C02A7392B4EAF8C00B497FA /* AppNetworkUnavailableState.swift in Sources */,
 				5C9057F02B2894BE00EC157B /* FriendSheet.swift in Sources */,
 				5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */,
 				5C90582B2B2894BE00EC157B /* CategoryManagementScreen.swift in Sources */,

@@ -1,17 +1,26 @@
+import Components
 import EnvironmentModels
 import SwiftUI
 
 @MainActor
-struct AppNetworkUnavailableState: View {
+struct AppErrorStateView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    let errors: [Error]
+
+    var label: some View {
+        if errors.isNetworkUnavailable {
+            ContentUnavailableView("app.networkUnavailable.description", systemImage: "wifi.slash")
+        } else {
+            ContentUnavailableView("app.error.unexpected.title", systemImage: "exclamationmark.triangle")
+        }
+    }
+
     var body: some View {
-        ContentUnavailableView("app.networkUnavailable.description", systemImage: "wifi.slash")
+        label
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(alignment: .bottom) {
-                Button(action: {
-                    Task {
-                        await appEnvironmentModel.initialize(reset: true)
-                    }
+                ProgressButton(action: {
+                    await appEnvironmentModel.initialize(reset: true)
                 }, label: {
                     Text("labels.tryAgain")
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -34,5 +43,5 @@ struct AppNetworkUnavailableState: View {
 }
 
 #Preview {
-    AppNetworkUnavailableState()
+    AppErrorStateView(errors: [])
 }

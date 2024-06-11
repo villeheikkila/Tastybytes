@@ -9,16 +9,15 @@ struct ProfileStateObserver<Content: View>: View {
 
     var body: some View {
         switch profileEnvironmentModel.profileState {
-        case .initialized:
+        case .populated:
             content()
                 .task {
                     await friendEnvironmentModel.initialize(profile: profileEnvironmentModel.profile)
                 }
-        case .uninitialized:
+        case .loading:
             EmptyView()
-        case .error:
-            // TODO: Add proper error page
-            AppUnexpectedErrorState()
+        case let .error(errors):
+            AppErrorStateView(errors: errors)
         }
     }
 }

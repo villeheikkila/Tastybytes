@@ -4,12 +4,22 @@ import OSLog
 import Repositories
 import SwiftUI
 
-public enum AppState: String, Sendable {
-    case networkUnavailable
-    case unexpectedError
+public enum AppState: Sendable, Equatable {
+    case error([Error])
     case tooOldAppVersion
     case operational
-    case uninitialized
+    case loading
+
+    public static func == (lhs: AppState, rhs: AppState) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading), (.operational, .operational):
+            true
+        case let (.error(lhsErrors), .error(rhsErrors)):
+            lhsErrors.count == rhsErrors.count && lhsErrors.elementsEqual(rhsErrors, by: { $0.localizedDescription == $1.localizedDescription })
+        default:
+            false
+        }
+    }
 }
 
 public enum SplashScreenState {
@@ -45,7 +55,7 @@ public final class AppEnvironmentModel {
     private let logger = Logger(category: "AppEnvironmentModel")
     // App state
     public var isInitializing = false
-    public var state: AppState = .uninitialized {
+    public var state: AppState = .loading {
         didSet {
             dismissSplashScreen()
         }
@@ -170,7 +180,7 @@ public final class AppEnvironmentModel {
         let isPreviouslyInitialied = aboutPage != nil && subscriptionGroup != nil && appConfig != nil && !countries.isEmpty && !flavors.isEmpty && !categories.isEmpty
 
         logger.notice("\(reset || isPreviouslyInitialied ? "Refreshing" : "Initializing") app data")
-        if !reset, isPreviouslyInitialied, state == .uninitialized {
+        if !reset, isPreviouslyInitialied, state == .loading {
             splashScreenState = .finished
             state = .operational
             logger.info("App optimistically loaded from stored data")
@@ -241,11 +251,13 @@ public final class AppEnvironmentModel {
             logger.error("Failed to load countries. Error: \(error) (\(#file):\(#line))")
         }
 
-        if !errors.isEmpty {
-            state = errors.contains(where: { error in error.isNetworkUnavailable }) ? .networkUnavailable : .unexpectedError
-            return
+        withAnimation {
+            state = if errors.isEmpty {
+                .operational
+            } else {
+                .error(errors)
+            }
         }
-        state = .operational
         logger.info("App \(reset ? "refreshed" : "initialized") in \(startTime.elapsedTime())ms")
     }
 

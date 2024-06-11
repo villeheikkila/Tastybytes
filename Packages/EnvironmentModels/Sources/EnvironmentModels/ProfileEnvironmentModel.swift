@@ -6,7 +6,18 @@ import Repositories
 import SwiftUI
 
 public enum ProfileState: Sendable {
-    case uninitialized, initialized, error
+    case loading, populated, error([Error])
+
+    public static func == (lhs: ProfileState, rhs: ProfileState) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading), (.populated, .populated):
+            true
+        case let (.error(lhsErrors), .error(rhsErrors)):
+            lhsErrors.count == rhsErrors.count && lhsErrors.elementsEqual(rhsErrors, by: { $0.localizedDescription == $1.localizedDescription })
+        default:
+            false
+        }
+    }
 }
 
 @MainActor
@@ -14,7 +25,7 @@ public enum ProfileState: Sendable {
 public final class ProfileEnvironmentModel: ObservableObject {
     private let logger = Logger(category: "ProfileEnvironmentModel")
     // Auth state
-    public var profileState: ProfileState = .uninitialized
+    public var profileState: ProfileState = .loading
     public var authState: AuthState?
     private var initialValuesLoaded = false
     public var alertError: AlertError?
@@ -164,7 +175,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
             sendCommentNotifications = extendedProfile.settings.sendCommentNotifications
             appIcon = .currentAppIcon
             initialValuesLoaded = true
-            profileState = .initialized
+            profileState = .populated
             logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
         }
 
@@ -174,6 +185,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
         let (profileResult, userResult) = await (profilePromise, userPromise)
 
+        var errors = [Error]()
         switch profileResult {
         case let .success(currentUserProfile):
             extendedProfile = currentUserProfile
@@ -185,10 +197,9 @@ public final class ProfileEnvironmentModel: ObservableObject {
             sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
             appIcon = .currentAppIcon
             initialValuesLoaded = true
-            profileState = .initialized
             logger.info("User data initialized in \(startTime.elapsedTime())ms")
         case let .failure(error):
-            profileState = .error
+            errors.append(error)
             logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
             await logOut()
         }
@@ -198,8 +209,16 @@ public final class ProfileEnvironmentModel: ObservableObject {
             email = user.email.orEmpty
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to get current user data. Error: \(error) (\(#file):\(#line))")
+        }
+        guard extendedProfile != nil else { return }
+        withAnimation {
+            profileState = if errors.isEmpty {
+                .populated
+            } else {
+                .error(errors)
+            }
         }
     }
 

@@ -10,13 +10,11 @@ struct AppStateObserver<Content: View>: View {
         switch appEnvironmentModel.state {
         case .operational:
             content()
-        case .networkUnavailable:
-            AppNetworkUnavailableState()
-        case .unexpectedError:
-            AppUnexpectedErrorState()
+        case let .error(errors):
+            AppErrorStateView(errors: errors)
         case .tooOldAppVersion:
             AppUnsupportedVersionState()
-        case .uninitialized:
+        case .loading:
             EmptyView()
         }
     }
