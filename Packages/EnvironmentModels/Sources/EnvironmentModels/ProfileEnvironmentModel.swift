@@ -27,7 +27,6 @@ public final class ProfileEnvironmentModel: ObservableObject {
     // Auth state
     public var profileState: ProfileState = .loading
     public var authState: AuthState?
-    private var initialValuesLoaded = false
     public var alertError: AlertError?
 
     // Profile Settings
@@ -174,7 +173,6 @@ public final class ProfileEnvironmentModel: ObservableObject {
             checkInTagNotifications = extendedProfile.settings.sendTaggedCheckInNotifications
             sendCommentNotifications = extendedProfile.settings.sendCommentNotifications
             appIcon = .currentAppIcon
-            initialValuesLoaded = true
             profileState = .populated
             logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
         }
@@ -196,7 +194,6 @@ public final class ProfileEnvironmentModel: ObservableObject {
             checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
             sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
             appIcon = .currentAppIcon
-            initialValuesLoaded = true
             logger.info("User data initialized in \(startTime.elapsedTime())ms")
         case let .failure(error):
             errors.append(error)
