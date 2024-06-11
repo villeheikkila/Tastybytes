@@ -8,9 +8,10 @@ import SwiftUI
 
 @MainActor
 struct ProfileStatisticsUniqueByCategoryScreen: View {
-    private let logger = Logger(category: "ProfileStatisticsView")
+    private let logger = Logger(category: "ProfileStatisticsUniqueByCategoryScreen")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var categoryStatistics = [CategoryStatistics]()
     @State private var alertError: AlertError?
 
@@ -21,6 +22,11 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
             ProfileStatisticsUniqueByCategoryRow(profile: profile, category: category)
         }
         .listStyle(.plain)
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "profileStatistics.uniqueByCategory.screen.failedToLoad", errorAction: {
+                await loadStatistics()
+            })
+        }
         .refreshable {
             await loadStatistics()
         }
@@ -36,10 +42,11 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
         case let .success(categoryStatistics):
             withAnimation {
                 self.categoryStatistics = categoryStatistics
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            state = .error([error])
             logger.error("Failed loading category statistics. Error: \(error) (\(#file):\(#line))")
         }
     }

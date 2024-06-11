@@ -3927,6 +3927,9 @@
         }
       }
     },
+    "profileStatistics.uniqueByCategory.screen.failedToLoad" : {
+
+    },
     "qrcode.label" : {
       "localizations" : {
         "en" : {
