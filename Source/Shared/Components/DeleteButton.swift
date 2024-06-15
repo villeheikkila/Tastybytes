@@ -8,3 +8,7 @@ struct DeleteButton: View {
         ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive, action: action)
     }
 }
+
+#Preview {
+    DeleteButton(action: {})
+}
