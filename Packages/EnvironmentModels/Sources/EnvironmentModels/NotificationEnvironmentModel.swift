@@ -16,6 +16,7 @@ public final class NotificationEnvironmentModel {
     public var pushNotificationSettings: ProfilePushNotification?
     public var unreadCount: Int = 0
     public var alertError: AlertError?
+    public var state: ScreenState = .loading
 
     private let repository: Repository
 
@@ -70,9 +71,12 @@ public final class NotificationEnvironmentModel {
                 } else {
                     notifications.append(contentsOf: newNotifications)
                 }
+                self.state = .populated
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                if state != .populated {
+                    self.state = .error([error])
+                }
                 logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
             }
             if withHaptics {
@@ -84,10 +88,8 @@ public final class NotificationEnvironmentModel {
     public func deleteAll() async {
         switch await repository.notification.deleteAll() {
         case .success:
-            await MainActor.run {
-                withAnimation {
-                    self.notifications = [Models.Notification]()
-                }
+            withAnimation {
+                self.notifications = [Models.Notification]()
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -129,7 +131,6 @@ public final class NotificationEnvironmentModel {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
                 logger.error("Failed to mark all friend requests as read. Error: \(error) (\(#file):\(#line))")
             }
         }

@@ -5,7 +5,7 @@ struct ScreenContentUnavailableView: View {
     @State private var isTaskRunning = false
 
     let errors: [Error]
-    var description: LocalizedStringKey
+    var description: LocalizedStringKey?
     let action: () async -> Void
 
     var label: some View {
@@ -16,12 +16,16 @@ struct ScreenContentUnavailableView: View {
         }
     }
 
-    var body: some View {
-        ContentUnavailableView {
-            label
-        } description: {
+    var descriptionText: Text? {
+        if let description {
             Text(description)
-        } actions: {
+        } else {
+            nil
+        }
+    }
+
+    var body: some View {
+        ContentUnavailableView(label: { label }, description: { descriptionText }, actions: {
             Button("labels.tryAgain") {
                 if !isTaskRunning {
                     isTaskRunning = true
@@ -34,6 +38,6 @@ struct ScreenContentUnavailableView: View {
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
             .disabled(isTaskRunning)
-        }
+        })
     }
 }

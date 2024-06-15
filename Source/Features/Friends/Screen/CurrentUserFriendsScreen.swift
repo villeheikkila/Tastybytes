@@ -37,12 +37,18 @@ struct CurrentUserFriendsScreen: View {
             oldValue && !newValue
         }
         .overlay {
-            if friendEnvironmentModel.friends.isEmpty {
-                ContentUnavailableView {
-                    Label("friends.contentUnavailable.noFriends", systemImage: "person.3")
+            if friendEnvironmentModel.state == .populated {
+                if friendEnvironmentModel.friends.isEmpty {
+                    ContentUnavailableView {
+                        Label("friends.contentUnavailable.noFriends", systemImage: "person.3")
+                    }
+                } else if !searchTerm.isEmpty, filteredFriends.isEmpty {
+                    ContentUnavailableView.search(text: searchTerm)
                 }
-            } else if !searchTerm.isEmpty, filteredFriends.isEmpty {
-                ContentUnavailableView.search(text: searchTerm)
+            } else {
+                ScreenStateOverlayView(state: friendEnvironmentModel.state, errorDescription: "") {
+                    await friendEnvironmentModel.refresh()
+                }
             }
         }
         .navigationTitle("friends.title \(friendEnvironmentModel.friends.count.formatted())")

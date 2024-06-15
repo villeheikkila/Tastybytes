@@ -175,9 +175,9 @@ struct ProfileInnerView: View {
                     "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
                 )
         }
-
-        state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
-
+        if state != .populated {
+            state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
+        }
         await productPromise
     }
 

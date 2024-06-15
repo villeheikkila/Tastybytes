@@ -54,20 +54,27 @@ struct NotificationScreen: View {
             .refreshable {
                 notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
             }
-            .background {
-                if showContentUnavailableView {
-                    ContentUnavailableView {
-                        Label(
-                            filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
-                            systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
-                        )
-                    } description: {
-                        if let description = filter?.contentUnavailableViewProps.description {
-                            Text(description)
+            .overlay {
+                if notificationEnvironmentModel.state == .populated {
+                    if showContentUnavailableView {
+                        ContentUnavailableView {
+                            Label(
+                                filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
+                                systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
+                            )
+                        } description: {
+                            if let description = filter?.contentUnavailableViewProps.description {
+                                Text(description)
+                            }
                         }
+                    }
+                } else {
+                    ScreenStateOverlayView(state: notificationEnvironmentModel.state, errorDescription: "") {
+                        notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
                     }
                 }
             }
+            .background {}
             .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }

@@ -29,7 +29,7 @@ struct DiscoverScreen: View {
     @State private var companies = [Company]()
     @State private var locations = [Location]()
     // Search State
-    @State private var alertError: AlertError?
+    @State private var error: Error?
     // Barcode
     @State private var barcode: Barcode?
 
@@ -75,6 +75,13 @@ struct DiscoverScreen: View {
                 }
             }
             .listStyle(.plain)
+            .overlay {
+                if let error {
+                    ScreenContentUnavailableView(errors: [error], description: nil) {
+                        await loadData(searchKey: searchKey)
+                    }
+                }
+            }
             .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                         prompt: searchScope.prompt)
             .searchScopes($searchScope, activation: .onSearchPresentation) {
@@ -110,7 +117,6 @@ struct DiscoverScreen: View {
                     ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
                 }
             }
-            .alertError($alertError)
             .task(id: searchKey, milliseconds: 200) { @MainActor [searchKey] in
                 await loadData(searchKey: searchKey)
             }
@@ -273,7 +279,7 @@ struct DiscoverScreen: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                self.error = error
                 logger.error("Searching products with barcode failed. Error: \(error) (\(#file):\(#line))")
             }
         case let .text(searchTerm, searchScope):
@@ -292,7 +298,7 @@ struct DiscoverScreen: View {
                         logger.info("Search cancelled for id: '\(searchKey.id)'")
                         return
                     }
-                    alertError = .init()
+                    self.error = error
                     logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .companies:
@@ -305,7 +311,7 @@ struct DiscoverScreen: View {
                     logger.info("Search completed for id: '\(searchKey.id)'")
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    alertError = .init()
+                    self.error = error
                     logger.error("Searching companies failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .users:
@@ -318,7 +324,7 @@ struct DiscoverScreen: View {
                     logger.info("Search completed for id: '\(searchKey.id)'")
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    alertError = .init()
+                    self.error = error
                     logger.error("Searching profiles failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .locations:
@@ -331,7 +337,7 @@ struct DiscoverScreen: View {
                     logger.info("Search completed for id: '\(searchKey.id)'")
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    alertError = .init()
+                    self.error = error
                     logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")
                 }
             }

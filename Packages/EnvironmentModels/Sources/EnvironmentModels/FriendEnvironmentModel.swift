@@ -11,6 +11,7 @@ public final class FriendEnvironmentModel {
     public var friends = [Friend]()
     public var alertError: AlertError?
     public var isRefreshing = false
+    public var state: ScreenState = .loading
 
     public var profile: Profile?
 
@@ -114,15 +115,14 @@ public final class FriendEnvironmentModel {
         if withHaptics {
             isRefreshing = true
         }
-        switch await repository.friend.getByUserId(
-            userId: profile.id,
-            status: .none
-        ) {
+        switch await repository.friend.getByUserId(userId: profile.id, status: .none) {
         case let .success(friends):
             self.friends = friends
+            state = .populated
         case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
+            if state != .populated {
+                state = .error([error])
+            }
             logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
         }
         if withHaptics {
