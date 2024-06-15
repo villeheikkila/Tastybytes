@@ -7,41 +7,33 @@ struct AppErrorStateView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let errors: [Error]
 
-    var label: some View {
+    var title: LocalizedStringKey {
         if errors.isNetworkUnavailable {
-            ContentUnavailableView("app.networkUnavailable.description", systemImage: "wifi.slash")
+            "app.error.networkUnavailable.title"
         } else {
-            ContentUnavailableView("app.error.unexpected.title", systemImage: "exclamationmark.triangle")
+            "app.error.unexpected.title"
+        }
+    }
+
+    var description: Text {
+        if errors.isNetworkUnavailable {
+            Text("app.error.networkUnavailable.description")
+        } else {
+            Text("app.error.unexpected.description")
+        }
+    }
+
+    var systemImage: String {
+        if errors.isNetworkUnavailable {
+            "wifi.slash"
+        } else {
+            "exclamationmark.triangle"
         }
     }
 
     var body: some View {
-        label
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .overlay(alignment: .bottom) {
-                ProgressButton(action: {
-                    await appEnvironmentModel.initialize(reset: true)
-                }, label: {
-                    Text("labels.tryAgain")
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .frame(height: 50)
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .background(Color.accentColor)
-                        .cornerRadius(15)
-                })
-                .disabled(appEnvironmentModel.isInitializing)
-                .padding()
-                .padding()
-            }
-            .background(
-                AppGradient(color: Color(.sRGB, red: 130 / 255, green: 135 / 255, blue: 230 / 255, opacity: 1)),
-                alignment: .bottom
-            )
-            .ignoresSafeArea()
+        FullScreenErrorView(title: title, description: description, systemImage: systemImage, action: {
+            await appEnvironmentModel.initialize(reset: true)
+        })
     }
-}
-
-#Preview {
-    AppErrorStateView(errors: [])
 }

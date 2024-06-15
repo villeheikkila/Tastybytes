@@ -293,7 +293,13 @@
         }
       }
     },
-    "app.error.unexpected.title" : {
+    "app.error.networkUnavailable.description" : {
+
+    },
+    "app.error.networkUnavailable.title" : {
+
+    },
+    "app.error.unexpected.description" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -303,8 +309,15 @@
         }
       }
     },
-    "app.networkUnavailable.description" : {
-
+    "app.error.unexpected.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops!"
+          }
+        }
+      }
     },
     "app.unsupportedVersion.description" : {
       "localizations" : {

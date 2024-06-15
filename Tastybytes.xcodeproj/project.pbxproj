@@ -20,6 +20,7 @@
 		5C07F27D2B51EBB800D8740B /* CheckInShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F2732B51EBB700D8740B /* CheckInShareLinkView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C07F27F2B51F00600D8740B /* PhaseObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C07F27E2B51F00600D8740B /* PhaseObserver.swift */; };
 		5C0F3D8A2B9511D100307648 /* ReportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0F3D892B9511D100307648 /* ReportScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C13190E2C1DB1BF00C9BF25 /* FullScreenErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C13190D2C1DB1BF00C9BF25 /* FullScreenErrorView.swift */; };
 		5C187E4D2B8B33FD0007AD17 /* CheckInListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C187E4C2B8B33FD0007AD17 /* CheckInListLoader.swift */; };
 		5C24E1C62B5D1F83003AB7C8 /* CheckInLeaveComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1C52B5D1F83003AB7C8 /* CheckInLeaveComment.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C24E1CA2B5D34CE003AB7C8 /* CheckInCommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1C92B5D34CE003AB7C8 /* CheckInCommentRow.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -321,6 +322,7 @@
 		5C07F2772B51EBB800D8740B /* CompanyShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyShareLinkView.swift; sourceTree = "<group>"; };
 		5C07F27E2B51F00600D8740B /* PhaseObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseObserver.swift; sourceTree = "<group>"; };
 		5C0F3D892B9511D100307648 /* ReportScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportScreen.swift; sourceTree = "<group>"; };
+		5C13190D2C1DB1BF00C9BF25 /* FullScreenErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenErrorView.swift; sourceTree = "<group>"; };
 		5C187E4C2B8B33FD0007AD17 /* CheckInListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListLoader.swift; sourceTree = "<group>"; };
 		5C24E1C52B5D1F83003AB7C8 /* CheckInLeaveComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInLeaveComment.swift; sourceTree = "<group>"; };
 		5C24E1C92B5D34CE003AB7C8 /* CheckInCommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentRow.swift; sourceTree = "<group>"; };
@@ -1311,6 +1313,7 @@
 				5C4FC63F2BA70C110025DB83 /* SendMailView.swift */,
 				5C4FC63D2BA70C110025DB83 /* WebView.swift */,
 				5C8FE4962BAA2EF80038869E /* AppGradient.swift */,
+				5C13190D2C1DB1BF00C9BF25 /* FullScreenErrorView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1737,7 +1740,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1964,6 +1967,7 @@
 				5C9057F92B2894BE00EC157B /* ProductLogoSheet.swift in Sources */,
 				5CCEE2772B2C6AAF00F276DF /* CheckInCard.swift in Sources */,
 				5CAADEFC2B5C485300D956C1 /* DiscoverLocationResults.swift in Sources */,
+				5C13190E2C1DB1BF00C9BF25 /* FullScreenErrorView.swift in Sources */,
 				5C07F27B2B51EBB800D8740B /* LocationShareLinkView.swift in Sources */,
 				5CAB45DC2BA8A8CF0017E71A /* AvatarView.swift in Sources */,
 				5C9058132B2894BE00EC157B /* SideBarView.swift in Sources */,

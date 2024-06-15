@@ -165,6 +165,7 @@ public final class ProfileEnvironmentModel: ObservableObject {
 
     public func initialize() async {
         logger.notice("Initializing user data")
+        let isPreviouslyLoaded = extendedProfile != nil
         if let extendedProfile {
             showFullName = extendedProfile.nameDisplay == Profile.NameDisplay.fullName
             isPrivateProfile = extendedProfile.isPrivate
@@ -198,18 +199,15 @@ public final class ProfileEnvironmentModel: ObservableObject {
         case let .failure(error):
             errors.append(error)
             logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
-            await logOut()
         }
-
         switch userResult {
         case let .success(user):
             email = user.email.orEmpty
         case let .failure(error):
-            guard !error.isCancelled else { return }
             errors.append(error)
             logger.error("Failed to get current user data. Error: \(error) (\(#file):\(#line))")
         }
-        guard extendedProfile != nil else { return }
+        guard !isPreviouslyLoaded else { return }
         withAnimation {
             profileState = if errors.isEmpty {
                 .populated

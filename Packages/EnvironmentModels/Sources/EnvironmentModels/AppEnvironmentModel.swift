@@ -251,6 +251,8 @@ public final class AppEnvironmentModel {
             logger.error("Failed to load countries. Error: \(error) (\(#file):\(#line))")
         }
 
+        guard !isPreviouslyInitialied else { return }
+
         withAnimation {
             state = if errors.isEmpty {
                 .operational
