@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 public extension PhotosPickerItem {
-    func getJPEG() async -> Data? {
+    @MainActor func getJPEG() async -> Data? {
         do {
             guard let imageData = try await loadTransferable(type: Data.self) else { return nil }
             guard let image = UIImage(data: imageData) else { return nil }

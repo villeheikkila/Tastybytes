@@ -104,27 +104,39 @@ struct LocationSearchSheet: View {
 
     func search(for query: String?) async {
         if let query {
-            let request = MKLocalSearch.Request()
-            request.naturalLanguageQuery = query
-            request.resultTypes = .pointOfInterest
-            request.region = .init(center: centerCoordinate, latitudinalMeters: radius, longitudinalMeters: radius)
-            let search = MKLocalSearch(request: request)
             do {
-                let response = try await search.start()
+                let response = try await searchLocationsNatural(query: query, center: centerCoordinate, radius: radius)
                 searchResults = response.mapItems.map { Location(mapItem: $0) }
             } catch {
                 logger.error("Error occured while looking up locations: \(error)")
             }
         } else if let initialCoordinate = initialLocation?.location?.coordinate {
-            let request = MKLocalPointsOfInterestRequest(center: initialCoordinate, radius: radius)
-            let search = MKLocalSearch(request: request)
             do {
-                let response = try await search.start()
+                let response = try await searchLocations(center: initialCoordinate, radius: radius)
                 searchResults = response.mapItems.map { Location(mapItem: $0) }
             } catch {
                 logger.error("Error occured while looking up locations: \(error)")
             }
         }
+    }
+
+    private nonisolated func searchLocationsNatural(query: String?, center: CLLocationCoordinate2D, radius: CLLocationDistance)
+        async throws -> MKLocalSearch.Response
+    {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = query
+        request.resultTypes = .pointOfInterest
+        request.region = .init(center: center, latitudinalMeters: radius, longitudinalMeters: radius)
+        let search = MKLocalSearch(request: request)
+        return try await search.start()
+    }
+
+    private nonisolated func searchLocations(center: CLLocationCoordinate2D, radius: CLLocationDistance)
+        async throws -> MKLocalSearch.Response
+    {
+        let request = MKLocalPointsOfInterestRequest(center: center, radius: radius)
+        let search = MKLocalSearch(request: request)
+        return try await search.start()
     }
 
     func loadInitialData() async {

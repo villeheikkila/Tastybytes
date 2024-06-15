@@ -18,6 +18,7 @@ struct MapThumbnail: View {
         }
         .frame(width: 60, height: 60)
         .cornerRadius(4, corners: .allCorners)
+        .accessibilityAddTraits(.isButton)
         .onTapGesture {
             showFullSizedMap = true
         }

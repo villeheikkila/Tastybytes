@@ -21,7 +21,10 @@ struct CheckInsByTimeRangeChart: View {
         }
         .chartOverlay { proxy in
             GeometryReader { geometry in
-                Rectangle().fill(.clear).contentShape(Rectangle())
+                Rectangle()
+                    .fill(.clear)
+                    .contentShape(Rectangle())
+                    .accessibilityAddTraits(.isButton)
                     .onTapGesture { location in
                         onBarChartClick(at: location, proxy: proxy, geometry: geometry)
                     }

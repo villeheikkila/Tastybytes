@@ -67,6 +67,7 @@ struct CheckInScreen: View {
             .alignmentGuide(.listRowSeparatorLeading) { _ in
                 -50
             }
+            .accessibilityAddTraits(.isButton)
             .onTapGesture {
                 focusedField = nil
             }

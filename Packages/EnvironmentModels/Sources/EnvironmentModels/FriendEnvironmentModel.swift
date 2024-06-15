@@ -106,7 +106,7 @@ public final class FriendEnvironmentModel {
     }
 
     public func isPendingCurrentUserApproval(_ friend: Profile) -> Friend? {
-        guard let profile else { return nil }
+        guard profile != nil else { return nil }
         return friends.first(where: { $0.status == .pending && $0.sender == friend })
     }
 
