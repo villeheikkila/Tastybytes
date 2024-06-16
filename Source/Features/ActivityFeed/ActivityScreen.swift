@@ -44,20 +44,6 @@ struct ActivityScreen: View {
             .refreshable {
                 await checkInLoader.fetchFeedItems(reset: true)
             }
-            .onAppear {
-                // TODO: Move this to the check-in loader
-                if tabManager.selection == .activity, !checkInLoader.isLoading, !checkInLoader.isRefreshing, let first = checkInLoader.checkIns.first {
-                    Task {
-                        switch await repository.checkIn.getActivityFeed(query: .afterId(first.id)) {
-                        case let .success(newCheckIns):
-                            checkInLoader.checkIns.insert(contentsOf: newCheckIns, at: 0)
-                            print("Loaded \(newCheckIns.count) to activity screen")
-                        case let .failure(error):
-                            logger.error("\(error)")
-                        }
-                    }
-                }
-            }
             .sensoryFeedback(.success, trigger: checkInLoader.isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }

@@ -17,17 +17,13 @@ struct ProductFeedScreen: View {
     @State private var page = 0
     @State private var isLoading = false
     @State private var isRefreshing = false
-    @State private var alertError: AlertError?
+    @State private var state: ScreenState = .loading
     @State private var loadingAdditionalItemsTask: Task<Void, Never>?
 
     let feed: Product.FeedType
 
     private let pageSize = 10
-
-    var filteredProducts: [Product.Joined] {
-        products.unique(selector: { $0.id == $1.id })
-    }
-
+    
     var title: LocalizedStringKey {
         if let categoryFilter {
             .init(stringLiteral: "\(feed.label): \(categoryFilter.name)")
@@ -38,7 +34,7 @@ struct ProductFeedScreen: View {
 
     var body: some View {
         List {
-            ForEach(filteredProducts) { product in
+            ForEach(products) { product in
                 ProductItemView(product: product, extras: [.checkInCheck, .rating])
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
@@ -49,7 +45,7 @@ struct ProductFeedScreen: View {
                         if product == products.last, isLoading != true {
                             loadingAdditionalItemsTask = Task {
                                 defer { loadingAdditionalItemsTask = nil }
-                                await fetchProductFeedItems()
+                                await loadFeedItems()
                             }
                         }
                     }
@@ -60,10 +56,14 @@ struct ProductFeedScreen: View {
                     .listRowSeparator(.hidden)
             }
         }
-        .defaultScrollContentBackground()
         .listStyle(.plain)
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "") {
+                await loadFeedItems(refresh: true)
+            }
+        }
         .refreshable {
-            await refresh()
+            await loadFeedItems(refresh: true)
         }
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
@@ -71,17 +71,11 @@ struct ProductFeedScreen: View {
         .toolbar {
             toolbarContent
         }
-        .alertError($alertError)
         .task(id: categoryFilter) {
-            await refresh()
+            await loadFeedItems(refresh: true)
         }
         .onDisappear {
             loadingAdditionalItemsTask?.cancel()
-        }
-        .task {
-            if products.isEmpty {
-                await fetchProductFeedItems()
-            }
         }
     }
 
@@ -94,34 +88,34 @@ struct ProductFeedScreen: View {
         }
     }
 
-    func refresh() async {
-        loadingAdditionalItemsTask?.cancel()
-        page = 0
-        products = [Product.Joined]()
-        isRefreshing = true
-        await fetchProductFeedItems()
-        isRefreshing = false
-    }
-
-    func fetchProductFeedItems(onComplete: (() -> Void)? = nil) async {
+    func loadFeedItems(refresh: Bool = false) async {
+        guard isLoading == false else { return }
+        if refresh {
+            loadingAdditionalItemsTask?.cancel()
+            page = 0
+            products = [Product.Joined]()
+            isRefreshing = true
+        }
         let (from, to) = getPagination(page: page, size: pageSize)
-
         isLoading = true
-
         switch await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
         case let .success(additionalProducts):
+            guard !Task.isCancelled else { return }
             withAnimation {
                 products.append(contentsOf: additionalProducts)
             }
             page += 1
-            isLoading = false
-            if let onComplete {
-                onComplete()
-            }
+            state = .populated
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            if refresh || state != .populated {
+                state = .error([error])
+            }
             logger.error("Fetching products failed. Error: \(error) (\(#file):\(#line))")
+        }
+        isLoading = false
+        if refresh {
+            isRefreshing = false
         }
     }
 }
