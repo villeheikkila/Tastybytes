@@ -93,7 +93,6 @@ struct ProductFeedScreen: View {
         if refresh {
             loadingAdditionalItemsTask?.cancel()
             page = 0
-            products = [Product.Joined]()
             isRefreshing = true
         }
         let (from, to) = getPagination(page: page, size: pageSize)
@@ -102,7 +101,11 @@ struct ProductFeedScreen: View {
         case let .success(additionalProducts):
             guard !Task.isCancelled else { return }
             withAnimation {
-                products.append(contentsOf: additionalProducts)
+                if refresh {
+                    products = additionalProducts
+                } else {
+                    products.append(contentsOf: additionalProducts)
+                }
             }
             page += 1
             state = .populated
