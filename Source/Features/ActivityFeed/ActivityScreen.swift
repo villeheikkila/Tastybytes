@@ -34,9 +34,8 @@ struct ActivityScreen: View {
             List {
                 CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: { checkIn in
                     checkInLoader.onCreateCheckIn(checkIn)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                        proxy.scrollTo(checkIn.id, anchor: .top)
-                    }
+                    try? await Task.sleep(nanoseconds: 100_000_000)
+                    proxy.scrollTo(checkIn.id, anchor: .top)
                 }, onLoadMore: checkInLoader.onLoadMore)
                 CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
             }

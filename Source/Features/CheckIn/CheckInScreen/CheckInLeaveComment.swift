@@ -13,7 +13,7 @@ struct CheckInLeaveComment: View {
     let checkIn: CheckIn
     @Binding var checkInComments: [CheckInComment]
     @FocusState var focusedField: Focusable?
-    let onSubmitted: (_ comment: CheckInComment) -> Void
+    let onSubmitted: (_ comment: CheckInComment) async -> Void
 
     var body: some View {
         HStack(alignment: .center) {
@@ -38,10 +38,8 @@ struct CheckInLeaveComment: View {
             withAnimation {
                 checkInComments.insert(newCheckInComment, at: 0)
                 commentText = ""
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    onSubmitted(newCheckInComment)
-                }
             }
+            await onSubmitted(newCheckInComment)
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Failed to send comment. Error: \(error) (\(#file):\(#line))")

@@ -7,7 +7,7 @@ import SwiftUI
 @MainActor
 @Observable
 public class ImageUploadEnvironmentModel {
-    private let logger = Logger(category: "PermissionEnvironmentModel")
+    private let logger = Logger(category: "ImageUploadEnvironmentModel")
 
     public var uploadedImageForCheckIn: CheckIn?
     public var alertError: AlertError?

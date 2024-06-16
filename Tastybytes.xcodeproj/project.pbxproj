@@ -188,9 +188,7 @@
 		5C9058502B2894BE00EC157B /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057CE2B2894BE00EC157B /* TabsView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058512B2894BE00EC157B /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C9057D02B2894BE00EC157B /* Comfortaa-Bold.ttf */; };
 		5C9058522B2894BE00EC157B /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D22B2894BE00EC157B /* OnboardingScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058532B2894BE00EC157B /* OnboardingLocationPermissionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D32B2894BE00EC157B /* OnboardingLocationPermissionSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058542B2894BE00EC157B /* OnboardingProfileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058552B2894BE00EC157B /* OnboardingNotificationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D52B2894BE00EC157B /* OnboardingNotificationSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058572B2894BE00EC157B /* RouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D82B2894BE00EC157B /* RouterLink.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058582B2894BE00EC157B /* QuickAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D92B2894BE00EC157B /* QuickAction.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90585A2B2894BE00EC157B /* PathIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -493,9 +491,7 @@
 		5C9057CE2B2894BE00EC157B /* TabsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		5C9057D02B2894BE00EC157B /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		5C9057D22B2894BE00EC157B /* OnboardingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
-		5C9057D32B2894BE00EC157B /* OnboardingLocationPermissionSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingLocationPermissionSection.swift; sourceTree = "<group>"; };
 		5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingProfileSection.swift; sourceTree = "<group>"; };
-		5C9057D52B2894BE00EC157B /* OnboardingNotificationSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationSection.swift; sourceTree = "<group>"; };
 		5C9057D82B2894BE00EC157B /* RouterLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterLink.swift; sourceTree = "<group>"; };
 		5C9057D92B2894BE00EC157B /* QuickAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickAction.swift; sourceTree = "<group>"; };
 		5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIdentifier.swift; sourceTree = "<group>"; };
@@ -1331,9 +1327,7 @@
 			children = (
 				5C82E88D2B2F692A00F2B369 /* OnboardingStateObserver.swift */,
 				5C9057D22B2894BE00EC157B /* OnboardingScreen.swift */,
-				5C9057D32B2894BE00EC157B /* OnboardingLocationPermissionSection.swift */,
 				5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */,
-				5C9057D52B2894BE00EC157B /* OnboardingNotificationSection.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1757,7 +1751,6 @@
 				5CCEE27F2B2CA4DC00F276DF /* CheckInCardCheckIn.swift in Sources */,
 				5C9058002B2894BE00EC157B /* SubscriptionStatus.swift in Sources */,
 				5C9058272B2894BE00EC157B /* BrandScreen.swift in Sources */,
-				5C9058552B2894BE00EC157B /* OnboardingNotificationSection.swift in Sources */,
 				5C9058072B2894BE00EC157B /* CategoryServingStyleSheet.swift in Sources */,
 				5CA4AC4D2B586FDF00E17629 /* BarcodeManagementRow.swift in Sources */,
 				5C9058502B2894BE00EC157B /* TabsView.swift in Sources */,
@@ -1982,7 +1975,6 @@
 				5C9058292B2894BE00EC157B /* CurrentProfileScreen.swift in Sources */,
 				5CD3C0E22B814C680049E563 /* CloseButton.swift in Sources */,
 				5C9057FF2B2894BE00EC157B /* SubscriptionSheet.swift in Sources */,
-				5C9058532B2894BE00EC157B /* OnboardingLocationPermissionSection.swift in Sources */,
 				5C672E972B51DE2A0048605B /* VerificationButton.swift in Sources */,
 				5C82E88B2B2F678500F2B369 /* SubscriptionProvider.swift in Sources */,
 				5C9058162B2894BE00EC157B /* PrivacySettingsPage.swift in Sources */,

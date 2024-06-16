@@ -28,7 +28,7 @@ struct ProfileSettingsScreen: View {
             usernameIsAvailable = false
             isLoading = true
         }
-        .task(id: username, milliseconds: 300) { @MainActor in
+        .task(id: username, milliseconds: 300) {
             guard username.count >= 3 else { return }
             let isAvailable = await profileEnvironmentModel
                 .checkIfUsernameIsAvailable(username: username)

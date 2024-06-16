@@ -13,9 +13,7 @@ struct NewFlavorSheet: View {
             TextField("flavor.name.placeholder", text: $name)
             ProgressButton("labels.add", action: {
                 await onSubmit(name)
-                await MainActor.run {
-                    dismiss()
-                }
+                dismiss()
             })
         }
         .scrollContentBackground(.hidden)

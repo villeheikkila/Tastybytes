@@ -14,13 +14,13 @@ struct CheckInListCard: View {
 
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
-    let onUpdate: @MainActor (_ checkIn: CheckIn) -> Void
+    let onUpdate: @MainActor (_ checkIn: CheckIn) async -> Void
     let onDelete: @MainActor (_ checkIn: CheckIn) async -> Void
-    let onCreate: @MainActor (_ checkIn: CheckIn) -> Void
+    let onCreate: @MainActor (_ checkIn: CheckIn) async -> Void
 
     var body: some View {
         CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom, onDeleteImage: { deletedImageEntity in
-            onUpdate(checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity)))
+            await onUpdate(checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity)))
         })
         .contextMenu {
             ControlGroup {
@@ -31,7 +31,7 @@ struct CheckInListCard: View {
                         systemImage: "pencil",
                         action: {
                             router.sheet = .checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
-                                onUpdate(updatedCheckIn)
+                                await onUpdate(updatedCheckIn)
                             }))
                         }
                     )

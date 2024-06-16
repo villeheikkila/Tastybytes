@@ -20,9 +20,7 @@ struct EditSubcategorySheet: View {
             TextField("subcategory.name.placeholder", text: $subcategoryName)
             ProgressButton("labels.saveChanges", action: {
                 await onSubmit(subcategoryName)
-                await MainActor.run {
-                    dismiss()
-                }
+                dismiss()
             }).disabled(subcategoryName.isEmpty || subcategory.name == subcategoryName)
         }
         .scrollContentBackground(.hidden)

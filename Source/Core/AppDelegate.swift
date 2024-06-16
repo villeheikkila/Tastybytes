@@ -24,6 +24,22 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         UNUserNotificationCenter.current().delegate = self
+        Task {
+            let center = UNUserNotificationCenter.current()
+            let authorizationStatus = await center.notificationSettings().authorizationStatus
+
+            if authorizationStatus != .authorized ||
+                authorizationStatus != .provisional
+            {
+                do {
+                    try await center.requestAuthorization(
+                        options: [.alert, .sound, .badge, .provisional]
+                    )
+                } catch {
+                    print("Error requesting notification authorization: \(error)")
+                }
+            }
+        }
         application.registerForRemoteNotifications()
         applyNavigationBarUITweaks(application: application)
         applyTabBarUITweaks(application: application)

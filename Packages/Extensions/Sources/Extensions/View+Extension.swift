@@ -51,7 +51,7 @@ struct DebouncedTaskViewModifier<ID: Equatable>: ViewModifier {
     let id: ID
     let priority: TaskPriority
     let milliseconds: Int
-    let task: @Sendable () async -> Void
+    let task: @Sendable @MainActor () async -> Void
 
     init(
         id: ID,
@@ -80,7 +80,7 @@ public extension View {
         id: some Equatable,
         priority: TaskPriority = .userInitiated,
         milliseconds: Int = 0,
-        task: @Sendable @escaping () async -> Void
+        task: @Sendable @MainActor @escaping () async -> Void
     ) -> some View {
         modifier(
             DebouncedTaskViewModifier(

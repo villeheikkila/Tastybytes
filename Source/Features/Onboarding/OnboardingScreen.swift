@@ -4,7 +4,6 @@ import SwiftUI
 @MainActor
 struct OnboardingScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @State private var currentTab: OnboardingSection
 
@@ -22,10 +21,6 @@ struct OnboardingScreen: View {
         !profileEnvironmentModel.isOnboarded
     }
 
-    var showNotificationSection: Bool {
-        permissionEnvironmentModel.pushNotificationStatus == .notDetermined
-    }
-
     var showLocationSection: Bool {
         locationEnvironmentModel.locationsStatus == .notDetermined
     }
@@ -36,31 +31,9 @@ struct OnboardingScreen: View {
         })) {
             if showProfileSection {
                 OnboardingProfileSection(onContinue: {
-                    if showNotificationSection {
-                        currentTab = .notifications
-                    } else if showLocationSection {
-                        currentTab = .location
-                    } else {
                         finishOnboarding()
-                    }
                 })
                 .tag(OnboardingSection.profile)
-            }
-            if showNotificationSection {
-                OnboardingNotificationSection(onContinue: {
-                    if showLocationSection {
-                        currentTab = .location
-                    } else {
-                        finishOnboarding()
-                    }
-                })
-                .tag(OnboardingSection.notifications)
-            }
-            if showLocationSection {
-                OnboardingLocationPermissionSection(onContinue: {
-                    finishOnboarding()
-                })
-                .tag(OnboardingSection.location)
             }
         }
         .ignoresSafeArea(edges: .bottom)
@@ -74,7 +47,7 @@ enum OnboardField {
 }
 
 enum OnboardingSection: Int, Identifiable, Hashable {
-    case profile, avatar, notifications, location
+    case profile, avatar
 
     var id: Int {
         rawValue

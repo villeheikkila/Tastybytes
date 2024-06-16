@@ -17,7 +17,6 @@ struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(PermissionEnvironmentModel.self) private var permissionEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchResults = [Location]()

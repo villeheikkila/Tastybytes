@@ -7,7 +7,7 @@ import SwiftUI
 
 @MainActor
 struct CheckInImageSheet: View {
-    typealias OnDeleteImageCallback = (_ imageEntity: ImageEntity) -> Void
+    typealias OnDeleteImageCallback = (_ imageEntity: ImageEntity) async -> Void
 
     private let logger = Logger(category: "CheckInImageSheet")
     @Environment(Repository.self) private var repository
@@ -87,10 +87,8 @@ struct CheckInImageSheet: View {
     func deleteImage(_ imageEntity: ImageEntity) async {
         switch await repository.imageEntity.delete(from: .checkInImages, entity: imageEntity) {
         case .success:
-            withAnimation {
-                onDeleteImage?(imageEntity)
-                dismiss()
-            }
+            await onDeleteImage?(imageEntity)
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")

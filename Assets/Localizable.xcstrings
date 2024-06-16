@@ -2614,6 +2614,7 @@
       }
     },
     "labels.skip" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3247,6 +3248,7 @@
       }
     },
     "onboarding.locationPermission.accessToLocation.description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3257,6 +3259,7 @@
       }
     },
     "onboarding.locationPermission.accessToLocation.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3267,6 +3270,7 @@
       }
     },
     "onboarding.notification.description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3277,6 +3281,7 @@
       }
     },
     "onboarding.notification.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

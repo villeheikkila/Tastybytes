@@ -15,9 +15,7 @@ struct AddSubcategorySheet: View {
                 TextField("subcategory.name.placeholder", text: $newSubcategoryName)
                 ProgressButton("labels.add", action: {
                     await onSubmit(newSubcategoryName)
-                    await MainActor.run {
-                        dismiss()
-                    }
+                    dismiss()
                 }).disabled(newSubcategoryName.isEmpty)
             }
         }

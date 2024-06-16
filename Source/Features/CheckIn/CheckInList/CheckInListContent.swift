@@ -13,8 +13,8 @@ struct CheckInListContent: View {
     @Binding var checkIns: [CheckIn]
     @Binding var alertError: AlertError?
     let loadedFrom: CheckInCard.LoadedFrom
-    let onCheckInUpdate: @MainActor (_ checkIn: CheckIn) -> Void
-    let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) -> Void
+    let onCheckInUpdate: @MainActor (_ checkIn: CheckIn) async -> Void
+    let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) async -> Void
     let onLoadMore: () -> Void
 
     var body: some View {

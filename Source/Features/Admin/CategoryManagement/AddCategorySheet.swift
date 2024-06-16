@@ -15,9 +15,7 @@ struct AddCategorySheet: View {
             TextField("category.name.placeholder", text: $newCategoryName)
             ProgressButton("labels.add", action: {
                 await appEnvironmentModel.addCategory(name: newCategoryName)
-                await MainActor.run {
-                    dismiss()
-                }
+                dismiss()
             }).disabled(newCategoryName.isEmpty)
         }
         .scrollContentBackground(.hidden)
