@@ -12,8 +12,8 @@ struct BarcodeManagementSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var state: ScreenState = .loading
     @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
-    @State private var isInitialized = false
     @State private var alertError: AlertError?
 
     let product: Product.Joined
@@ -35,9 +35,15 @@ struct BarcodeManagementSheet: View {
                 }
         }
         .listStyle(.plain)
-        .background {
-            if isInitialized, barcodes.isEmpty {
-                BarcodeManagementContentUnavailable()
+        .overlay {
+            if state == .populated {
+                if barcodes.isEmpty {
+                    BarcodeManagementContentUnavailable()
+                }
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "") {
+                    await getBarcodes()
+                }
             }
         }
         .task {
@@ -72,12 +78,12 @@ struct BarcodeManagementSheet: View {
         switch await repository.productBarcode.getByProductId(id: product.id) {
         case let .success(barcodes):
             withAnimation {
-                isInitialized = true
                 self.barcodes = barcodes
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            state = .error([error])
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }

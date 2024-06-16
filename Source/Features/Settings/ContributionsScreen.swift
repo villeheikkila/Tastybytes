@@ -11,6 +11,7 @@ struct ContributionsScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var alertError: AlertError?
     @State private var contributions: Contributions?
 
@@ -29,10 +30,18 @@ struct ContributionsScreen: View {
             }
         }
         .listStyle(.insetGrouped)
+        .refreshable {
+            await loadContributions(userId: profileEnvironmentModel.id)
+        }
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "") {
+                await loadContributions(userId: profileEnvironmentModel.id)
+            }
+        }
         .navigationTitle("settings.contributions.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .alertError($alertError)
-        .task {
+        .initialTask {
             await loadContributions(userId: profileEnvironmentModel.id)
         }
     }
@@ -42,10 +51,11 @@ struct ContributionsScreen: View {
         case let .success(contributions):
             withAnimation {
                 self.contributions = contributions
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            state = .error([error])
             logger.error("Failed to load contributions. Error: \(error) (\(#file):\(#line))")
         }
     }

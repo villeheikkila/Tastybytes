@@ -10,11 +10,10 @@ struct ProfileProductListView: View {
     private let logger = Logger(category: "ProfileProductListView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var products: [Product.Joined] = []
     @State private var searchTerm = ""
     @State private var productFilter: Product.Filter?
-    @State private var initialDataLoaded = false
-    @State private var alertError: AlertError?
     @State private var sheet: Sheet?
 
     let profile: Profile
@@ -42,7 +41,7 @@ struct ProfileProductListView: View {
                 return "rating.topEntries.label"
             }
         }
-        return initialDataLoaded ? "profileProductList.navigationTitle \(filteredProducts.count.formatted())" : "profileProductList.navigationTitle"
+        return state == .populated ? "profileProductList.navigationTitle \(filteredProducts.count.formatted())" : "profileProductList.navigationTitle"
     }
 
     var filteredProducts: [Product.Joined] {
@@ -71,10 +70,16 @@ struct ProfileProductListView: View {
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .overlay {
-            if let productFilter, !locked {
-                ProductFilterOverlayView(filters: productFilter, onReset: {
-                    self.productFilter = nil
-                })
+            if state == .populated {
+                if let productFilter, !locked {
+                    ProductFilterOverlayView(filters: productFilter, onReset: {
+                        self.productFilter = nil
+                    })
+                }
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "") {
+                    await loadProducts()
+                }
             }
         }
         .navigationTitle(navigationTitle)
@@ -82,11 +87,8 @@ struct ProfileProductListView: View {
             toolbarContent
         }
         .sheets(item: $sheet)
-        .alertError($alertError)
-        .task {
-            if !initialDataLoaded {
-                await loadProducts()
-            }
+        .initialTask {
+            await loadProducts()
         }
     }
 
@@ -140,11 +142,13 @@ struct ProfileProductListView: View {
         case let .success(products):
             withAnimation {
                 self.products = products
-                initialDataLoaded = true
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            if state != .populated {
+                state = .error([error])
+            }
             logger.error("Error occured while loading products. Error: \(error) (\(#file):\(#line))")
         }
     }

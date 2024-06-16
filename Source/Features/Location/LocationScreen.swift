@@ -26,6 +26,7 @@ struct LocationInnerScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var scrollToTop: Int = 0
     @State private var summary: Summary?
     @State private var showDeleteLocationConfirmation = false
@@ -46,17 +47,24 @@ struct LocationInnerScreen: View {
 
     var body: some View {
         List {
-            LocationScreenHeader(location: location, summary: summary)
-                .sheets(item: $sheet)
-            CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .location(location), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
-                checkInLoader.onLoadMore()
-            })
-            CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+            if state == .populated {
+                LocationScreenHeader(location: location, summary: summary)
+                    .sheets(item: $sheet)
+                CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
+                CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .location(location), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+                    checkInLoader.onLoadMore()
+                })
+                CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+            }
         }
         .listStyle(.plain)
         .refreshable {
             await getLocationData(isRefresh: true)
+        }
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "") {
+                await getLocationData(isRefresh: true)
+            }
         }
         .navigationTitle(location.name)
         .navigationBarTitleDisplayMode(.inline)
@@ -126,10 +134,13 @@ struct LocationInnerScreen: View {
         case let .success(summary):
             withAnimation {
                 self.summary = summary
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            if state != .populated {
+                state = .error([error])
+            }
             logger.error("Failed to get summary. Error: \(error) (\(#file):\(#line))")
         }
     }

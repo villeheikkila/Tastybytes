@@ -11,20 +11,11 @@ struct ProfileWishlistScreen: View {
     private let logger = Logger(category: "ProfileWishlistScreen")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var products: [Product.Joined] = []
     @State private var searchTerm = ""
-    @State private var initialDataLoaded = false
-    @State private var alertError: AlertError?
 
     let profile: Profile
-
-    init(profile: Profile) {
-        self.profile = profile
-    }
-
-    var isEmpty: Bool {
-        initialDataLoaded && products.isEmpty
-    }
 
     var body: some View {
         List(products) { product in
@@ -47,19 +38,22 @@ struct ProfileWishlistScreen: View {
         .refreshable {
             await loadProducts()
         }
-        .background {
-            if isEmpty {
-                ContentUnavailableView {
-                    Label("wishlist.empty.title", systemImage: "list.star")
+        .overlay {
+            if state == .populated {
+                if products.isEmpty {
+                    ContentUnavailableView {
+                        Label("wishlist.empty.title", systemImage: "list.star")
+                    }
+                }
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "") {
+                    await loadProducts()
                 }
             }
         }
         .navigationTitle("wishlist.navigationTitle")
-        .alertError($alertError)
-        .task {
-            if !initialDataLoaded {
-                await loadProducts()
-            }
+        .initialTask {
+            await loadProducts()
         }
     }
 
@@ -81,11 +75,13 @@ struct ProfileWishlistScreen: View {
         case let .success(wishlist):
             withAnimation {
                 products = wishlist.map(\.product)
-                initialDataLoaded = true
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            if state != .populated {
+                state = .error([error])
+            }
             logger
                 .error(
                     "Error occured while loading wishlist items. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
