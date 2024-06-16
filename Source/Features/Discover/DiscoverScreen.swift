@@ -273,6 +273,7 @@ struct DiscoverScreen: View {
                 withAnimation {
                     products = searchResults
                     searchResultKey = searchKey
+                    error = nil
                 }
                 if searchResults.count == 1, let result = searchResults.first {
                     router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
@@ -291,6 +292,7 @@ struct DiscoverScreen: View {
                     withAnimation {
                         products = searchResults
                         searchResultKey = searchKey
+                        error = nil
                     }
                     logger.info("Search completed for id: '\(searchKey.id)'")
                 case let .failure(error):
@@ -307,6 +309,7 @@ struct DiscoverScreen: View {
                     withAnimation {
                         companies = searchResults
                         searchResultKey = searchKey
+                        error = nil
                     }
                     logger.info("Search completed for id: '\(searchKey.id)'")
                 case let .failure(error):
@@ -320,6 +323,7 @@ struct DiscoverScreen: View {
                     withAnimation {
                         profiles = searchResults
                         searchResultKey = searchKey
+                        error = nil
                     }
                     logger.info("Search completed for id: '\(searchKey.id)'")
                 case let .failure(error):
@@ -333,6 +337,7 @@ struct DiscoverScreen: View {
                     withAnimation {
                         locations = searchResults
                         searchResultKey = searchKey
+                        error = nil
                     }
                     logger.info("Search completed for id: '\(searchKey.id)'")
                 case let .failure(error):

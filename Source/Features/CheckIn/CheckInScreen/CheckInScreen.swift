@@ -45,10 +45,12 @@ struct CheckInScreen: View {
                 await loadCheckInData(withHaptics: true)
             }
             .safeAreaInset(edge: .bottom, alignment: .trailing, content: {
-                CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField, onSubmitted: { comment in
-                    try? await Task.sleep(nanoseconds: 100_000_000)
-                    scrollProxy.scrollTo(comment.id, anchor: .top)
-                })
+                if state == .populated {
+                    CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField, onSubmitted: { comment in
+                        try? await Task.sleep(nanoseconds: 100_000_000)
+                        scrollProxy.scrollTo(comment.id, anchor: .top)
+                    })
+                }
             })
             .toolbar {
                 toolbarContent

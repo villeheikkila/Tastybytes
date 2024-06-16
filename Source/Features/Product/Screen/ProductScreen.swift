@@ -358,7 +358,6 @@ struct ProductInnerScreen: View {
             isLoadingCheckInImages = false
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
         }
     }

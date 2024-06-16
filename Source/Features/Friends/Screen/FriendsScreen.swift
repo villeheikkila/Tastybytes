@@ -13,9 +13,9 @@ struct FriendsScreen: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var friends: [Friend]
     @State private var searchTerm = ""
-    @State private var alertError: AlertError?
     @State private var isRefreshing = false
 
     let profile: Profile
@@ -47,14 +47,19 @@ struct FriendsScreen: View {
         .navigationTitle("friends.title \(friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
-            if !searchTerm.isEmpty, filteredFriends.isEmpty {
-                ContentUnavailableView.search(text: searchTerm)
+            if state == .populated {
+                if !searchTerm.isEmpty, filteredFriends.isEmpty {
+                    ContentUnavailableView.search(text: searchTerm)
+                }
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
+                    await loadFriends()
+                })
             }
         }
         .toolbar {
             toolbarContent
         }
-        .alertError($alertError)
         .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
             oldValue && !newValue
         }
@@ -85,10 +90,13 @@ struct FriendsScreen: View {
         case let .success(friends):
             withAnimation {
                 self.friends = friends
+                self.state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            if state != .populated {
+                state = .error([error])
+            }
             logger.error("Failed to load friends' . Error: \(error) (\(#file):\(#line))")
         }
     }
