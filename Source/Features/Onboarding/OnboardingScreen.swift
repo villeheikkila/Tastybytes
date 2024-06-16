@@ -4,7 +4,6 @@ import SwiftUI
 @MainActor
 struct OnboardingScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @State private var currentTab: OnboardingSection
 
     init(initialTab: OnboardingSection) {
@@ -21,17 +20,13 @@ struct OnboardingScreen: View {
         !profileEnvironmentModel.isOnboarded
     }
 
-    var showLocationSection: Bool {
-        locationEnvironmentModel.locationsStatus == .notDetermined
-    }
-
     var body: some View {
         TabView(selection: .init(get: { currentTab }, set: { newTab in
             currentTab = newTab
         })) {
             if showProfileSection {
                 OnboardingProfileSection(onContinue: {
-                        finishOnboarding()
+                    finishOnboarding()
                 })
                 .tag(OnboardingSection.profile)
             }
@@ -42,12 +37,8 @@ struct OnboardingScreen: View {
     }
 }
 
-enum OnboardField {
-    case username, firstName, lastName
-}
-
 enum OnboardingSection: Int, Identifiable, Hashable {
-    case profile, avatar
+    case profile
 
     var id: Int {
         rawValue

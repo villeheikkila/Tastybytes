@@ -4,6 +4,10 @@ import Models
 import PhotosUI
 import SwiftUI
 
+enum OnboardField {
+    case username, firstName, lastName
+}
+
 @MainActor
 struct OnboardingProfileSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

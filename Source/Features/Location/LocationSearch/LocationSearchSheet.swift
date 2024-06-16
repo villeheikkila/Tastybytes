@@ -9,9 +9,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-// HACK: Remove when no longer necessary
-extension MKLocalSearch.Response: @unchecked Sendable {}
-
 @MainActor
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")

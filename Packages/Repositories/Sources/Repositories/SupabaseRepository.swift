@@ -58,7 +58,7 @@ public final class Repository: RepositoryProtocol {
     }
 }
 
-final class CustomSupabaseLogger: SupabaseLogger, @unchecked Sendable {
+final class CustomSupabaseLogger: SupabaseLogger, Sendable {
     private let lock = NSLock()
     private var loggers: [String: Logger] = [:]
 

@@ -2,11 +2,6 @@ import EnvironmentModels
 import OSLog
 import SwiftUI
 
-// HACK: Remove when no longer necessary
-extension UNUserNotificationCenter: @unchecked Sendable {}
-extension UNNotification: @unchecked Sendable {}
-extension UIApplicationShortcutItem: @unchecked Sendable {}
-
 @MainActor func applyNavigationBarUITweaks(application _: UIApplication) {
     UINavigationBar.appearance().shadowImage = .init()
 }
@@ -15,7 +10,6 @@ extension UIApplicationShortcutItem: @unchecked Sendable {}
     UITabBar.appearance().clipsToBounds = true
 }
 
-@MainActor
 final class AppDelegate: NSObject, UIApplicationDelegate {
     private let logger = Logger(category: "AppDelegate")
 
