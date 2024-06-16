@@ -142,7 +142,7 @@ public final class FriendEnvironmentModel {
             withAnimation {
                 self.friends.remove(object: friend)
             }
-            logger.notice("Friend manager initialized")
+            logger.notice("\(friend.id) unblocked")
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

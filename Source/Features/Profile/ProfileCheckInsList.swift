@@ -63,15 +63,11 @@ struct ProfileCheckInsList: View {
 
 @MainActor
 struct ProfileCheckInsListInnerView: View {
-    enum ScreenState {
-        case initial, initialized
-    }
-
     private let logger = Logger(category: "ProfileCheckInsListInnerView")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
-    @State private var screenState: ScreenState = .initial
+    @State private var state: ScreenState = .loading
 
     let profile: Profile
     let filter: ProfileCheckInListFilter
@@ -103,7 +99,7 @@ struct ProfileCheckInsListInnerView: View {
                         await checkInLoader.fetchFeedItems(reset: true)
                     }
                 }
-            } else if screenState == .initialized, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
+            } else if state == .populated, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
                 EmptyActivityFeedView()
             }
         }
@@ -112,11 +108,9 @@ struct ProfileCheckInsListInnerView: View {
             filter.toolbar
         }
         .alertError($checkInLoader.alertError)
-        .task {
-            if screenState == .initial {
-                await checkInLoader.loadData()
-                screenState = .initialized
-            }
+        .initialTask {
+            await checkInLoader.loadData()
+            state = .populated
         }
     }
 }

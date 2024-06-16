@@ -10,7 +10,6 @@ public final class NotificationEnvironmentModel {
     private let logger = Logger(category: "NotificationEnvironmentModel")
     public var notifications = [Models.Notification]()
     public var isRefreshing = false
-    public var isInitialized = false
     public var task: Task<Void, Never>?
 
     public var pushNotificationSettings: ProfilePushNotification?
@@ -62,7 +61,6 @@ public final class NotificationEnvironmentModel {
             }
             switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
             case let .success(newNotifications):
-                isInitialized = true
                 if reset {
                     notifications = newNotifications
                     unreadCount = newNotifications

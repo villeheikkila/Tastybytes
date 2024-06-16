@@ -12,7 +12,7 @@ struct ActivityTab: View {
     @State private var scrollToTop: Int = 0
 
     var body: some View {
-        ActivityScreen(repository: repository, scrollToTop: $scrollToTop)
+        ActivityScreen(scrollToTop: $scrollToTop)
             .toolbar {
                 toolbarContent
             }

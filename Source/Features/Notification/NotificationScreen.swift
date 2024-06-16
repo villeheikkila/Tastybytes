@@ -31,8 +31,7 @@ struct NotificationScreen: View {
     }
 
     var showContentUnavailableView: Bool {
-        notificationEnvironmentModel.isInitialized && filteredNotifications.isEmpty && !notificationEnvironmentModel
-            .isRefreshing
+        filteredNotifications.isEmpty && !notificationEnvironmentModel.isRefreshing
     }
 
     var body: some View {

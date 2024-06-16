@@ -30,7 +30,6 @@ struct ProductInnerScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var isInitialized = false
     @State private var product: Product.Joined
     @State private var summary: Summary?
     @State private var showDeleteProductConfirmationDialog = false

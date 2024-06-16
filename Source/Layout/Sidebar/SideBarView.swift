@@ -168,7 +168,7 @@ struct SideBarContent: View {
     var body: some View {
         switch selection {
         case .activity:
-            ActivityScreen(repository: repository, scrollToTop: $scrollToTop)
+            ActivityScreen(scrollToTop: $scrollToTop)
                 .navigationTitle("activity.navigationTitle")
                 .navigationBarTitleDisplayMode(.inline)
         case .discover:

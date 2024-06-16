@@ -17,16 +17,12 @@ struct ActivityWatchTab: View {
 
 @MainActor
 struct ActivityWatchTabContent: View {
-    enum ScreenState {
-        case initial, initialized
-    }
-
     private let logger = Logger(category: "ActivityWatchTab")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
-    @State private var screenState: ScreenState = .initial
+    @State private var state: ScreenState = .loading
 
     init(repository: Repository) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in
@@ -56,14 +52,14 @@ struct ActivityWatchTabContent: View {
                 ContentUnavailableView {
                     Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
                 }
-            } else if screenState == .initialized, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
+            } else if state == .populated, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
                 EmptyActivityFeedView()
             }
         }
         .task {
-            if screenState == .initial {
+            if state == .loading {
                 await checkInLoader.loadData()
-                screenState = .initialized
+                state = .populated
             }
         }
     }

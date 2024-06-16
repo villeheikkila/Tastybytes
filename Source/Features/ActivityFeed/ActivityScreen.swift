@@ -8,80 +8,127 @@ import SwiftUI
 
 @MainActor
 struct ActivityScreen: View {
-    enum ScreenState {
-        case initial, initialized
-    }
-
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
     @Environment(TabManager.self) private var tabManager
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Binding var scrollToTop: Int
-    @State private var checkInLoader: CheckInListLoader
-    @State private var screenState: ScreenState = .initial
+    @State private var state: ScreenState = .loading
 
-    init(repository: Repository, scrollToTop: Binding<Int>) {
-        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in
-            await repository.checkIn.getActivityFeed(query: .paginated(from, to))
-        }, id: "ActivityScreen"))
-        _scrollToTop = scrollToTop
-    }
+    @State private var loadingCheckInsOnAppearTask: Task<Void, Error>?
+    // Feed state
+    @State private var isRefreshing = false
+    @State private var isLoading = false
+    @State private var page = 0
+    // Check-ins
+    @State private var checkIns = [CheckIn]()
+    @State private var alertError: AlertError?
 
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         ScrollViewReader { proxy in
             List {
-                CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: { checkIn in
-                    checkInLoader.onCreateCheckIn(checkIn)
-                    try? await Task.sleep(nanoseconds: 100_000_000)
-                    proxy.scrollTo(checkIn.id, anchor: .top)
-                }, onLoadMore: checkInLoader.onLoadMore)
-                CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+                if state == .populated {
+                    CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: onCheckInUpdate, onCreateCheckIn: { checkIn in
+                        onCreateCheckIn(checkIn)
+                        try? await Task.sleep(nanoseconds: 100_000_000)
+                        proxy.scrollTo(checkIn.id, anchor: .top)
+                    }, onLoadMore: onLoadMore)
+                    CheckInListLoadingIndicator(isLoading: $isLoading, isRefreshing: $isRefreshing)
+                }
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
             .refreshable {
-                await checkInLoader.fetchFeedItems(reset: true)
+                await fetchFeedItems(reset: true)
             }
-            .sensoryFeedback(.success, trigger: checkInLoader.isRefreshing) { oldValue, newValue in
+            .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }
             .overlay {
-                if checkInLoader.errorContentUnavailable != nil {
-                    ContentUnavailableView {
-                        Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
-                    } actions: {
-                        ProgressButton("labels.reload") {
-                            await checkInLoader.fetchFeedItems(reset: true)
-                        }
+                if state == .populated {
+                    if checkIns.isEmpty, !isLoading {
+                        EmptyActivityFeedView()
                     }
-                } else if screenState == .initialized, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
-                    EmptyActivityFeedView()
+                } else {
+                    ScreenStateOverlayView(state: state, errorDescription: "") {
+                        await fetchFeedItems(reset: true)
+                    }
                 }
             }
-            .alertError($checkInLoader.alertError)
+            .alertError($alertError)
             .onChange(of: scrollToTop) {
-                guard let first = checkInLoader.checkIns.first else { return }
+                guard let first = checkIns.first else { return }
                 withAnimation {
                     proxy.scrollTo(first.id, anchor: .top)
                 }
             }
-            .task {
-                if screenState == .initial {
-                    await checkInLoader.loadData()
-                    screenState = .initialized
-                }
-            }
-            .onAppear {
-                if screenState == .initialized {}
+            .initialTask {
+                await fetchFeedItems()
             }
             .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
                 if let updatedCheckIn = newValue {
                     imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                    checkInLoader.onCheckInUpdate(updatedCheckIn)
+                    onCheckInUpdate(updatedCheckIn)
                 }
             }
+        }
+    }
+
+    func onCreateCheckIn(_ checkIn: CheckIn) {
+        withAnimation {
+            checkIns.insert(checkIn, at: 0)
+        }
+    }
+
+    func onCheckInUpdate(_ checkIn: CheckIn) {
+        guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
+        withAnimation {
+            checkIns[index] = checkIn
+        }
+    }
+
+    func onLoadMore() {
+        guard loadingCheckInsOnAppearTask == nil else { return }
+        loadingCheckInsOnAppearTask = Task {
+            defer { loadingCheckInsOnAppearTask = nil }
+            logger.info("Loading more items invoked")
+            await fetchFeedItems()
+        }
+    }
+
+    func fetchFeedItems(reset: Bool = false) async {
+        if reset {
+            isRefreshing = true
+        } else {
+            isLoading = true
+        }
+        let (from, to) = getPagination(page: reset ? 0 : page, size: 10)
+        switch await repository.checkIn.getActivityFeed(query: .paginated(from, to)) {
+        case let .success(fetchedCheckIns):
+            guard !Task.isCancelled else { return }
+            logger.info("Succesfully loaded check-ins from \(from) to \(to)")
+            withAnimation {
+                if reset {
+                    checkIns = fetchedCheckIns
+                } else {
+                    checkIns.append(contentsOf: fetchedCheckIns)
+                }
+                state = .populated
+            }
+            page += 1
+        case let .failure(error):
+            guard !error.isCancelled, !Task.isCancelled else { return }
+            logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
+            if state != .populated {
+                state = .error([error])
+            }
+        }
+        if reset {
+            isRefreshing = false
+        } else {
+            isLoading = false
         }
     }
 }
