@@ -1636,7 +1636,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C94722FA2AD1859E006DE096 /* Build configuration list for PBXNativeTarget "Tastybytes" */;
 			buildPhases = (
-				5C8FAC8C2B49E80D0024A2E8 /* SwiftLint */,
 				C94722D12AD1859C006DE096 /* Sources */,
 				C94722D22AD1859C006DE096 /* Frameworks */,
 				C94722D32AD1859C006DE096 /* Resources */,
@@ -1715,28 +1714,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		5C8FAC8C2B49E80D0024A2E8 /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C94722D12AD1859C006DE096 /* Sources */ = {
