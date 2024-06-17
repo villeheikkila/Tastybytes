@@ -243,6 +243,9 @@
         }
       }
     },
+    "Additional information" : {
+
+    },
     "admin.category.title" : {
       "localizations" : {
         "en" : {
@@ -3301,6 +3304,9 @@
         }
       }
     },
+    "Pick an unique username" : {
+
+    },
     "product.barcode.add.label" : {
       "localizations" : {
         "en" : {
@@ -4460,7 +4466,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "First Name*"
+            "value" : "First Name"
           }
         }
       }
@@ -4470,7 +4476,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Last Name*"
+            "value" : "Last Name"
           }
         }
       }
@@ -4913,6 +4919,9 @@
           }
         }
       }
+    },
+    "These values are optional but can help people find your profile" : {
+
     },
     "timePeriod.abbreviated.month" : {
       "localizations" : {

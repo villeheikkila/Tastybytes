@@ -21,8 +21,6 @@ struct OnboardingProfileSection: View {
     @State private var usernameIsAvailable = false
     @State private var isLoading = false
 
-    let onContinue: () -> Void
-
     var userNameIsValid: Bool {
         username.count >= 3
     }
@@ -31,41 +29,29 @@ struct OnboardingProfileSection: View {
         userNameIsValid && usernameIsAvailable && !username.isEmpty && !isLoading
     }
 
-    let color = Color(red: 215.0 / 255.0, green: 137.0 / 255.0, blue: 185.0 / 255.0)
-
     var body: some View {
         Form {
-            titleSection
             avatarSection
-            profileSection
+            requiredSection
+            optionalSection
         }
         .safeAreaInset(edge: .bottom) {
-            if focusedField == nil {
-                Button(action: {
-                    onContinue()
-                }, label: {
-                    Text("labels.continue")
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .frame(height: 60)
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .background(color)
-                        .cornerRadius(15)
-                })
-                .padding(.horizontal, 32)
-                .padding(.bottom, 32)
-            }
+            ProgressButton(action: {
+                await profileEnvironmentModel.onboardingUpdate()
+            }, label: {
+                Text("labels.continue")
+                    .frame(maxWidth: .infinity)
+            })
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .frame(maxWidth: .infinity)
+            .foregroundColor(.black)
+            .disabled(!usernameIsAvailable || isLoading || username.count <= 3)
+            .padding(.horizontal, 32)
+            .padding(.bottom, 32)
         }
-        .background(
-            AppGradient(color: color),
-            alignment: .bottom
-        )
-        .ignoresSafeArea(edges: .bottom)
         .listStyle(.plain)
-        .defaultScrollContentBackground()
-        .scrollDisabled(true)
-        .simultaneousGesture(DragGesture())
-        .accessibility(hidden: true)
+        .navigationTitle("onboarding.profile.title")
         .task {
             username = profileEnvironmentModel.username
             firstName = profileEnvironmentModel.firstName ?? ""
@@ -87,14 +73,6 @@ struct OnboardingProfileSection: View {
         }
     }
 
-    private var titleSection: some View {
-        Text("onboarding.profile.title")
-            .font(.largeTitle)
-            .fontWeight(.semibold)
-            .listRowBackground(Color.clear)
-            .listRowSeparator(.hidden)
-    }
-
     private var avatarSection: some View {
         HStack {
             Spacer()
@@ -114,7 +92,7 @@ struct OnboardingProfileSection: View {
                                 .accessibilityHidden(true)
                                 .symbolRenderingMode(.multicolor)
                                 .font(.system(size: 32))
-                                .foregroundColor(color)
+                                .foregroundColor(.black)
                         }
                         .buttonStyle(.borderless)
                     }
@@ -132,16 +110,33 @@ struct OnboardingProfileSection: View {
         .listRowSeparator(.hidden)
     }
 
-    private var profileSection: some View {
-        Section {
-            LabeledTextField(title: "settings.profile.username", text: $username)
+    private var requiredSection: some View {
+        Section("settings.profile.username") {
+            TextField("Pick an unique username", text: $username)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(.secondary)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .focused($focusedField, equals: .username)
-            LabeledTextField(title: "settings.profile.firstName", text: $firstName)
-                .focused($focusedField, equals: .firstName)
-            LabeledTextField(title: "settings.profile.lastName", text: $lastName)
-                .focused($focusedField, equals: .lastName)
         }
+        .headerProminence(.increased)
+    }
+
+    private var optionalSection: some View {
+        Section {
+            TextField("settings.profile.firstName", text: $firstName)
+                .focused($focusedField, equals: .firstName)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(.primary)
+            TextField("settings.profile.lastName", text: $lastName)
+                .focused($focusedField, equals: .lastName)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(.black)
+        } header: {
+            Text("Additional information")
+        } footer: {
+            Text("These values are optional but can help people find your profile")
+        }
+        .headerProminence(.increased)
     }
 }

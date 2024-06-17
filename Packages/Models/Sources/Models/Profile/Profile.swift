@@ -9,14 +9,18 @@ public protocol AvatarURL {
 
 public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
     public let id: UUID
-    public let preferredName: String?
+    private let rawPreferredName: String?
+    public var preferredName: String {
+        rawPreferredName ?? ""
+    }
+
     public let isPrivate: Bool
     public let joinedAt: Date
     public let avatars: [ImageEntity]
 
     public init(id: UUID, preferredName: String?, isPrivate: Bool, joinedAt: Date, avatars: [ImageEntity]) {
         self.id = id
-        self.preferredName = preferredName
+        rawPreferredName = preferredName
         self.isPrivate = isPrivate
         self.joinedAt = joinedAt
         self.avatars = avatars
@@ -24,7 +28,7 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
 
     enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case preferredName = "preferred_name"
+        case rawPreferredName = "preferred_name"
         case isPrivate = "is_private"
         case joinedAt = "joined_at"
         case avatars = "profile_avatars"
@@ -50,7 +54,11 @@ public extension Profile {
         public let joinedAt: Date
         public let isPrivate: Bool
         public let isOnboarded: Bool
-        public let preferredName: String?
+        private let rawPreferredName: String?
+        public var preferredName: String {
+            rawPreferredName ?? ""
+        }
+
         public let nameDisplay: NameDisplay
         public let roles: [Role]
         public let settings: ProfileSettings
@@ -77,7 +85,7 @@ public extension Profile {
             self.joinedAt = joinedAt
             self.isPrivate = isPrivate
             self.isOnboarded = isOnboarded
-            self.preferredName = preferredName
+            rawPreferredName = preferredName
             self.nameDisplay = nameDisplay
             self.roles = roles
             self.settings = settings
@@ -127,7 +135,7 @@ public extension Profile {
             case id
             case username
             case joinedAt = "joined_at"
-            case preferredName = "preferred_name"
+            case rawPreferredName = "preferred_name"
             case isPrivate = "is_private"
             case isOnboarded = "is_onboarded"
             case firstName = "first_name"

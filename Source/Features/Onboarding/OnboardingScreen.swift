@@ -10,30 +10,25 @@ struct OnboardingScreen: View {
         _currentTab = State(initialValue: initialTab)
     }
 
-    func finishOnboarding() {
-        Task {
-            await profileEnvironmentModel.onboardingUpdate()
-        }
-    }
-
     var showProfileSection: Bool {
         !profileEnvironmentModel.isOnboarded
     }
 
     var body: some View {
-        TabView(selection: .init(get: { currentTab }, set: { newTab in
-            currentTab = newTab
-        })) {
-            if showProfileSection {
-                OnboardingProfileSection(onContinue: {
-                    finishOnboarding()
-                })
-                .tag(OnboardingSection.profile)
+        NavigationStack {
+            TabView(selection: .init(get: { currentTab }, set: { newTab in
+                currentTab = newTab
+            })) {
+                if showProfileSection {
+                    OnboardingProfileSection()
+                        .tag(OnboardingSection.profile)
+                }
             }
+            .navigationBarTitleDisplayMode(.large)
+            .ignoresSafeArea(edges: .bottom)
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
         }
-        .ignoresSafeArea(edges: .bottom)
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
     }
 }
 
