@@ -90,7 +90,7 @@ struct FriendsScreen: View {
         case let .success(friends):
             withAnimation {
                 self.friends = friends
-                self.state = .populated
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }

@@ -23,7 +23,7 @@ struct ProductFeedScreen: View {
     let feed: Product.FeedType
 
     private let pageSize = 10
-    
+
     var title: LocalizedStringKey {
         if let categoryFilter {
             .init(stringLiteral: "\(feed.label): \(categoryFilter.name)")

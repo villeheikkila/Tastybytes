@@ -9,12 +9,12 @@ public protocol AvatarURL {
 
 public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
     public let id: UUID
-    public let preferredName: String
+    public let preferredName: String?
     public let isPrivate: Bool
     public let joinedAt: Date
     public let avatars: [ImageEntity]
 
-    public init(id: UUID, preferredName: String, isPrivate: Bool, joinedAt: Date, avatars: [ImageEntity]) {
+    public init(id: UUID, preferredName: String?, isPrivate: Bool, joinedAt: Date, avatars: [ImageEntity]) {
         self.id = id
         self.preferredName = preferredName
         self.isPrivate = isPrivate
@@ -50,7 +50,7 @@ public extension Profile {
         public let joinedAt: Date
         public let isPrivate: Bool
         public let isOnboarded: Bool
-        public let preferredName: String
+        public let preferredName: String?
         public let nameDisplay: NameDisplay
         public let roles: [Role]
         public let settings: ProfileSettings
@@ -62,7 +62,7 @@ public extension Profile {
             joinedAt: Date,
             isPrivate: Bool,
             isOnboarded: Bool,
-            preferredName: String,
+            preferredName: String?,
             nameDisplay: Profile.NameDisplay,
             roles: [Role],
             settings: ProfileSettings,

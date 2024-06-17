@@ -17,7 +17,43 @@ struct ProfileStateObserver<Content: View>: View {
         case .loading:
             EmptyView()
         case let .error(errors):
-            AppErrorStateView(errors: errors)
+            ProfileErrorStateView(errors: errors)
         }
+    }
+}
+
+@MainActor
+struct ProfileErrorStateView: View {
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    let errors: [Error]
+
+    var title: LocalizedStringKey {
+        if errors.isNetworkUnavailable {
+            "app.error.networkUnavailable.title"
+        } else {
+            "profile.error.unexpected.title"
+        }
+    }
+
+    var description: Text {
+        if errors.isNetworkUnavailable {
+            Text("app.error.networkUnavailable.description")
+        } else {
+            Text("profile.error.unexpected.description")
+        }
+    }
+
+    var systemImage: String {
+        if errors.isNetworkUnavailable {
+            "wifi.slash"
+        } else {
+            "exclamationmark.triangle"
+        }
+    }
+
+    var body: some View {
+        FullScreenErrorView(title: title, description: description, systemImage: systemImage, action: {
+            await profileEnvironmentModel.initialize()
+        })
     }
 }

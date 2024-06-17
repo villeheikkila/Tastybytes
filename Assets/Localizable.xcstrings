@@ -3679,6 +3679,26 @@
         }
       }
     },
+    "profile.error.unexpected.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something unexpected went wrong while trying to load profile data"
+          }
+        }
+      }
+    },
+    "profile.error.unexpected.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops!"
+          }
+        }
+      }
+    },
     "profile.joinedAt %@" : {
       "localizations" : {
         "en" : {
