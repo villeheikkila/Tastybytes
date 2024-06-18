@@ -39,7 +39,7 @@ struct AuthenticationScreenContent: View {
                     .frame(width: 120, height: 120)
                 Spacer()
             }
-            .background(
+            .overlay(
                 SparklesView()
             )
             AppNameView(size: 38)
