@@ -61,6 +61,7 @@ enum Sheet: Identifiable, Equatable {
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
+    case profileDeleteConfirmation
 
     @ViewBuilder var view: some View {
         switch self {
@@ -139,6 +140,8 @@ enum Sheet: Identifiable, Equatable {
             CheckInCommentEditSheet(checkInComment: checkInComment, checkInComments: checkInComments)
         case let .checkInImage(checkIn, onDeleteImage):
             CheckInImageSheet(checkIn: checkIn, onDeleteImage: onDeleteImage)
+        case .profileDeleteConfirmation:
+            AccountDeletedScreen()
         }
     }
 
@@ -250,6 +253,8 @@ enum Sheet: Identifiable, Equatable {
             "edit_comment_\(checkInComment.hashValue)"
         case let .checkInImage(checkIn, _):
             "check_in_image_\(checkIn.hashValue)"
+        case .profileDeleteConfirmation:
+            "profile_delete_confirmation"
         }
     }
 

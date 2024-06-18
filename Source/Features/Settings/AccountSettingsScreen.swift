@@ -14,6 +14,7 @@ struct AccountSettingsScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @AppStorage(.profileDeleted) private var profileDeleted = false
     @State private var showDeleteConfirmation = false
     @State private var showEmailConfirmation = false
     @State private var showAccountDeleteScreen = false
@@ -73,9 +74,8 @@ struct AccountSettingsScreen: View {
                 "account.delete.label",
                 role: .destructive,
                 action: {
-                    await profileEnvironmentModel.deleteCurrentAccount(onAccountDeletion: {
-                        showAccountDeleteScreen = true
-                    })
+                    await profileEnvironmentModel.deleteCurrentAccount()
+                    profileDeleted = true
                 }
             )
         }

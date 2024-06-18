@@ -10,4 +10,5 @@ public protocol AuthRepository: Sendable {
     func sendMagicLink(email: String) async -> Result<Void, Error>
     func signInWithApple(token: String, nonce: String) async -> Result<Void, Error>
     func authStateListener() async -> AsyncStream<AuthState>
+    func refreshSession() async -> Result<Void, Error>
 }

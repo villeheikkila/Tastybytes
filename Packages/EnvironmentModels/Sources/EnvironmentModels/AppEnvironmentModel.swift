@@ -34,6 +34,7 @@ enum AppDataKey: String, CaseIterable {
     case appDataAppConfig = "app_data_app_config"
     case appDataSubscriptionGroup = "app_data_subcategories"
     case profileData = "profile_data"
+    case profileDeleted = "profile_deleted"
 }
 
 extension UserDefaults {
@@ -46,6 +47,14 @@ extension UserDefaults {
         guard let data = UserDefaults.standard.data(forKey: key.rawValue) else { return nil }
         let element = try? JSONDecoder().decode(Element.self, from: data)
         return element
+    }
+
+    static func clearUserDefaults() {
+        let userDefaults = UserDefaults.standard
+        for key in AppDataKey.allCases {
+            userDefaults.removeObject(forKey: key.rawValue)
+        }
+        userDefaults.synchronize()
     }
 }
 

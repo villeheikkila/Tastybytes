@@ -260,10 +260,11 @@ public final class ProfileEnvironmentModel: ObservableObject {
         }
     }
 
-    public func deleteCurrentAccount(onAccountDeletion: @MainActor @Sendable @escaping () -> Void) async {
+    public func deleteCurrentAccount() async {
         switch await repository.profile.deleteCurrentAccount() {
         case .success:
-            onAccountDeletion()
+            logger.info("User succesfully deleted")
+            _ = await repository.auth.logOut()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

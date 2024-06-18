@@ -14,6 +14,7 @@ enum UserDefaultsKey: String, CaseIterable {
     case appDataAboutPage = "app_data_about_page"
     case appDataAppConfig = "app_data_app_config"
     case appDataSubscriptionGroup = "app_data_subcategories"
+    case profileDeleted = "profile_deleted"
 }
 
 extension UserDefaults {

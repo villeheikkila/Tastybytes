@@ -2,16 +2,33 @@ import SwiftUI
 
 @MainActor
 struct AuthenticationScreenContent: View {
+    @State private var sheet: Sheet?
+    @AppStorage(.profileDeleted) private var profileDeleted = false
+
     var body: some View {
-        Spacer()
-        Spacer()
-        Spacer()
-        logo
-        Spacer()
-        Spacer()
-        Spacer()
-        actions
-        Spacer()
+        GeometryReader { geometry in
+            ScrollView {
+                logo
+                    .padding(.top, max(0, (geometry.size.height - 200) / 2))
+            }
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .sheets(item: $sheet)
+        .onChange(of: profileDeleted, initial: true) {
+            if profileDeleted {
+                sheet = .profileDeleteConfirmation
+                profileDeleted = false
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            VStack(alignment: .leading, spacing: 12) {
+                SignInWithAppleView()
+                    .frame(height: 52)
+                PrivacyPolicyView()
+            }
+            .padding(40)
+            .frame(maxWidth: 500)
+        }
     }
 
     private var logo: some View {
@@ -27,15 +44,5 @@ struct AuthenticationScreenContent: View {
             )
             AppNameView(size: 38)
         }
-    }
-
-    private var actions: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            SignInWithAppleView()
-                .frame(height: 52)
-            PrivacyPolicyView()
-        }
-        .padding(40)
-        .frame(maxWidth: 500)
     }
 }

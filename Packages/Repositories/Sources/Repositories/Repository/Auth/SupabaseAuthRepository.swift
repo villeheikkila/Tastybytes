@@ -136,6 +136,15 @@ struct SupabaseAuthRepository: AuthRepository {
         }
         .eraseToStream()
     }
+
+    func refreshSession() async -> Result<Void, Error> {
+        do {
+            try await client.auth.refreshSession()
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
 }
 
 extension AsyncStream {

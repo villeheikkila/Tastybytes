@@ -1797,6 +1797,7 @@
 
     },
     "deleteAccount.success.done.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -23,18 +23,6 @@ struct AccountDeletedScreen: View {
                         Text("deleteAccount.success.welcomeBack")
                     }
                     .multilineTextAlignment(.center)
-
-                    ProgressButton(
-                        action: {
-                            exit(0)
-                        },
-                        label: {
-                            Text("deleteAccount.success.done.label")
-                                .font(.headline)
-                                .padding(.all, 8)
-                        }
-                    )
-                    .buttonStyle(.borderedProminent)
                 }
                 .padding(.horizontal, 24)
                 Spacer()
