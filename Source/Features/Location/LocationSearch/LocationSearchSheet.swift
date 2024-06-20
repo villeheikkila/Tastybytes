@@ -11,11 +11,13 @@ import SwiftUI
 
 @MainActor
 struct LocationSearchSheet: View {
-    private let logger = Logger(category: "LocationSearchView")
+    private let logger = Logger(category: "LocationSearchSheet")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var state: ScreenState = .loading
+    @State private var storeLocationTask: Task<Void, Never>?
     @State private var searchResults = [Location]()
     @State private var recentLocations = [Location]()
     @State private var nearbyLocations = [Location]()
@@ -47,36 +49,23 @@ struct LocationSearchSheet: View {
 
     var body: some View {
         List {
-            if hasSearched {
-                ForEach(searchResults) { location in
-                    LocationSheetRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
-                }
-            } else {
-                if !recentLocations.isEmpty {
-                    Section("location.recent") {
-                        ForEach(recentLocations) { location in
-                            LocationSheetRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
-                        }
-                    }
-                    .headerProminence(.increased)
-                }
-                if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty {
-                    Section("location.nearBy") {
-                        ForEach(nearbyLocations) { location in
-                            LocationSheetRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
-                        }
-                    }
-                    .headerProminence(.increased)
-                }
+            if state == .populated {
+                populatedContent
             }
         }
         .searchable(text: $searchText)
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "") {
+               await loadInitialData()
+            }
+        }
         .safeAreaInset(edge: .bottom, alignment: .trailing) {
             if initialLocation != nil {
                 InitialLocationOverlay(initialLocation: $initialLocation)
             }
         }
         .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
@@ -93,6 +82,31 @@ struct LocationSearchSheet: View {
         }
         .alertError($alertError)
     }
+    
+    @ViewBuilder private var populatedContent: some View {
+        if hasSearched {
+            ForEach(searchResults) { location in
+                LocationRow(location: location, currentLocation: currentLocation, onSelect: storeLocation)
+            }
+        } else {
+            if !recentLocations.isEmpty {
+                Section("location.recent") {
+                    ForEach(recentLocations) { location in
+                        LocationRow(location: location, currentLocation: currentLocation, onSelect: storeLocation)
+                    }
+                }
+                .headerProminence(.increased)
+            }
+            if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty {
+                Section("location.nearBy") {
+                    ForEach(nearbyLocations) { location in
+                        LocationRow(location: location, currentLocation: currentLocation, onSelect: storeLocation)
+                    }
+                }
+                .headerProminence(.increased)
+            }
+        }
+    }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
@@ -101,39 +115,54 @@ struct LocationSearchSheet: View {
     func search(for query: String?) async {
         if let query {
             do {
-                let response = try await searchLocationsNatural(query: query, center: centerCoordinate, radius: radius)
-                searchResults = response.mapItems.map { Location(mapItem: $0) }
+                searchResults = try await searchLocationsNatural(query: query, center: centerCoordinate, radius: radius)
             } catch {
                 logger.error("Error occured while looking up locations: \(error)")
             }
         } else if let initialCoordinate = initialLocation?.location?.coordinate {
             do {
-                let response = try await searchLocations(center: initialCoordinate, radius: radius)
-                searchResults = response.mapItems.map { Location(mapItem: $0) }
+                searchResults = try await searchLocations(center: initialCoordinate, radius: radius)
             } catch {
                 logger.error("Error occured while looking up locations: \(error)")
             }
         }
     }
+    
+    func storeLocation(_ location: Location) {
+        guard storeLocationTask == nil else { return }
+        defer { storeLocationTask = nil }
+        storeLocationTask = Task {
+            switch await repository.location.insert(location: location) {
+            case let .success(savedLocation):
+                onSelect(savedLocation)
+                dismiss()
+            case let .failure(error):
+                guard !error.isCancelled else { return }
+                alertError = .init()
+                logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
+            }
+        }
+    }
 
     private nonisolated func searchLocationsNatural(query: String?, center: CLLocationCoordinate2D, radius: CLLocationDistance)
-        async throws -> MKLocalSearch.Response
+        async throws -> [Location]
     {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
         request.resultTypes = .pointOfInterest
         request.region = .init(center: center, latitudinalMeters: radius, longitudinalMeters: radius)
         let search = MKLocalSearch(request: request)
-        return try await search.start()
+        let response = try await search.start()
+        return response.mapItems.map { Location(mapItem: $0) }
     }
 
     private nonisolated func searchLocations(center: CLLocationCoordinate2D, radius: CLLocationDistance)
-        async throws -> MKLocalSearch.Response
+        async throws ->  [Location]
     {
         let request = MKLocalPointsOfInterestRequest(center: center, radius: radius)
         let search = MKLocalSearch(request: request)
-        return try await search.start()
-    }
+        let response = try await search.start()
+        return response.mapItems.map { Location(mapItem: $0) }    }
 
     func loadInitialData() async {
         if initialLocation != nil {
@@ -142,10 +171,11 @@ struct LocationSearchSheet: View {
         currentLocation = await locationEnvironmentModel.getCurrentLocation()
         let coordinate = currentLocation?.coordinate ?? centerCoordinate
         async let recentLocationsPromise = repository.location.getRecentLocations(category: category)
-        async let suggestionsPromise = repository.location.getSuggestions(location: Location.SuggestionParams(coordinate: coordinate))
+        async let suggestionsPromise = repository.location.getSuggestions(location: .init(coordinate: coordinate))
 
         let (recentLocationsResult, suggestionResult) = await (recentLocationsPromise, suggestionsPromise)
-
+        
+        var errors = [Error]()
         switch suggestionResult {
         case let .success(nearbyLocations):
             withAnimation {
@@ -153,7 +183,7 @@ struct LocationSearchSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            errors.append(error)
             logger.error("Failed to load location suggestions. Error: \(error) (\(#file):\(#line))")
         }
         switch recentLocationsResult {
@@ -163,42 +193,10 @@ struct LocationSearchSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to load recemt locations. Error: \(error) (\(#file):\(#line))")
+            errors.append(error)
+            logger.error("Failed to load recent locations. Error: \(error) (\(#file):\(#line))")
         }
-    }
-}
-
-@MainActor
-struct LocationSheetRow: View {
-    private let logger = Logger(category: "LocationSearchView")
-    @Environment(Repository.self) private var repository
-    @Environment(\.dismiss) private var dismiss
-    @State private var alertError: AlertError?
-
-    let location: Location
-    let currentLocation: CLLocation?
-    let onSelect: (_ location: Location) -> Void
-
-    var body: some View {
-        LocationRow(location: location, currentLocation: currentLocation) { location in
-            Task {
-                await storeLocation(location)
-            }
-        }
-        .alertError($alertError)
-    }
-
-    func storeLocation(_ location: Location) async {
-        switch await repository.location.insert(location: location) {
-        case let .success(savedLocation):
-            onSelect(savedLocation)
-            dismiss()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
-        }
+        state = .getState(errors: errors, withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 }
 
