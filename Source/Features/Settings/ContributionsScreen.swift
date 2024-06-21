@@ -12,7 +12,6 @@ struct ContributionsScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
-    @State private var alertError: AlertError?
     @State private var contributions: Contributions?
 
     var body: some View {
@@ -40,7 +39,6 @@ struct ContributionsScreen: View {
         }
         .navigationTitle("settings.contributions.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
-        .alertError($alertError)
         .initialTask {
             await loadContributions(userId: profileEnvironmentModel.id)
         }

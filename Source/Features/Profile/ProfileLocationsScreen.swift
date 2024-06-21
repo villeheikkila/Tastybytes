@@ -12,9 +12,9 @@ struct ProfileLocationsScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var checkInLocations = [Location]()
     @State private var selectedLocation: Location?
-    @State private var alertError: AlertError?
 
     let profile: Profile
 
@@ -49,7 +49,6 @@ struct ProfileLocationsScreen: View {
         })
         .navigationTitle("profile.locations.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
-        .alertError($alertError)
         .task {
             await loadCheckInlocations()
         }
@@ -60,10 +59,11 @@ struct ProfileLocationsScreen: View {
         case let .success(checkInLocations):
             withAnimation {
                 self.checkInLocations = checkInLocations
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            state = .error([error])
             logger.error("Failed loading check-in locations statistics. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -10,7 +10,8 @@ import SwiftUI
 struct ReportScreen: View {
     private let logger = Logger(category: "ReportScreen")
     @Environment(Repository.self) private var repository
-    @State private var alertError: AlertError?
+    @Environment(Router.self) private var router
+    @State private var state: ScreenState = .loading
     @State private var reports = [Report]()
 
     var body: some View {
@@ -21,8 +22,12 @@ struct ReportScreen: View {
         .refreshable {
             await loadInitialData()
         }
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "") {
+                await loadInitialData()
+            }
+        }
         .navigationTitle("report.admin.navigationTitle")
-        .alertError($alertError)
         .initialTask {
             await loadInitialData()
         }
@@ -33,10 +38,11 @@ struct ReportScreen: View {
         case let .success(reports):
             withAnimation {
                 self.reports = reports
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            state = .error([error])
             logger.error("Loading reports failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -49,7 +55,7 @@ struct ReportScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -62,7 +68,7 @@ struct ReportScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to resolve report \(report.id). Error: \(error) (\(#file):\(#line))")
         }
     }

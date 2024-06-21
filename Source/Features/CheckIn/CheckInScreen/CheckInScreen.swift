@@ -20,7 +20,6 @@ struct CheckInScreen: View {
     @State private var checkInComments = [CheckInComment]()
     @State private var showDeleteConfirmation = false
     @State private var toDeleteCheckInAsModerator: CheckIn?
-    @State private var alertError: AlertError?
 
     init(checkIn: CheckIn) {
         _checkIn = State(wrappedValue: checkIn)
@@ -58,7 +57,6 @@ struct CheckInScreen: View {
             .initialTask {
                 await loadCheckInData()
             }
-            .alertError($alertError)
         }
     }
 
@@ -283,7 +281,7 @@ struct CheckInScreen: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -294,7 +292,7 @@ struct CheckInScreen: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

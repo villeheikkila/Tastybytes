@@ -19,7 +19,6 @@ struct CompanyScreen: View {
     @State private var summary: Summary?
     @State private var showUnverifyCompanyConfirmation = false
     @State private var showDeleteCompanyConfirmationDialog = false
-    @State private var alertError: AlertError?
 
     init(company: Company) {
         _company = State(wrappedValue: .init(company: company))
@@ -146,7 +145,6 @@ struct CompanyScreen: View {
                 await verifyCompany(isVerified: false)
             })
         }
-        .alertError($alertError)
         .confirmationDialog("company.delete.confirmationDialog.title",
                             isPresented: $showDeleteCompanyConfirmationDialog,
                             presenting: company)
@@ -199,7 +197,7 @@ struct CompanyScreen: View {
             router.reset()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -210,7 +208,7 @@ struct CompanyScreen: View {
             company = company.copyWith(isVerified: isVerified)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }

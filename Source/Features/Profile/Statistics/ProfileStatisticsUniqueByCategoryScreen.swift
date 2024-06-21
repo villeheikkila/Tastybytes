@@ -10,10 +10,8 @@ import SwiftUI
 struct ProfileStatisticsUniqueByCategoryScreen: View {
     private let logger = Logger(category: "ProfileStatisticsUniqueByCategoryScreen")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var categoryStatistics = [CategoryStatistics]()
-    @State private var alertError: AlertError?
 
     let profile: Profile
 
@@ -31,7 +29,6 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
             await loadStatistics()
         }
         .navigationTitle("profileStatistics.uniqueByCategory.navigationTitle")
-        .alertError($alertError)
         .task {
             await loadStatistics()
         }
@@ -74,47 +71,43 @@ struct ProfileStatisticsUniqueByCategoryRow: View {
 struct SubcategoryStatisticsView: View {
     private let logger = Logger(category: "SubcategoryStatisticsView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var subcategoryStatistics = [SubcategoryStatistics]()
-    @State private var isLoading = false
-    @State private var alertError: AlertError?
 
     let profile: Profile
     let category: CategoryStatistics
 
     var body: some View {
         Section {
-            if isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-            } else {
+            if state == .populated {
                 SubcategoryStatisticsRow(profile: profile, category: category.category, subcategory: nil)
                 ForEach(subcategoryStatistics) { subcategory in
                     SubcategoryStatisticsRow(profile: profile, category: category.category, subcategory: subcategory)
                 }
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "") {
+                    await loadSubcategoryStatistics()
+                }
             }
         }
-        .alertError($alertError)
         .task {
             await loadSubcategoryStatistics()
         }
     }
 
     func loadSubcategoryStatistics() async {
-        guard isLoading == false, subcategoryStatistics.isEmpty else { return }
-        isLoading = true
+        guard state != .loading, subcategoryStatistics.isEmpty else { return }
         switch await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id) {
         case let .success(subcategoryStatistics):
             withAnimation {
                 self.subcategoryStatistics = subcategoryStatistics
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            state = .error([error])
             logger.error("Failed loading subcategory statistics. Error: \(error) (\(#file):\(#line))")
         }
-        isLoading = false
     }
 }
 

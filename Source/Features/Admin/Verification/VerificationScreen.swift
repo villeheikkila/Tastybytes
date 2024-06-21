@@ -36,7 +36,6 @@ struct VerificationScreen: View {
     @State private var brands = [Brand.JoinedSubBrandsProductsCompany]()
     @State private var subBrands = [SubBrand.JoinedBrand]()
     @State private var verificationType: VerificationType = .products
-    @State private var alertError: AlertError?
     @State private var deleteProduct: Product.Joined?
 
     var body: some View {
@@ -67,7 +66,6 @@ struct VerificationScreen: View {
                 action: { await deleteProduct(presenting) }
             )
         }
-        .alertError($alertError)
         .navigationBarTitle(Text("labels.unverified") + Text(verificationType.label))
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)
@@ -173,7 +171,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to verify brand \(brand.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -186,7 +184,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to verify brand \(subBrand.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -199,7 +197,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -212,7 +210,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -224,7 +222,7 @@ struct VerificationScreen: View {
             await loadData(refresh: true)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -243,7 +241,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    alertError = .init()
+                    router.openAlert(.init())
                     logger.error("Loading unverfied products failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -256,7 +254,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    alertError = .init()
+                    router.openAlert(.init())
                     logger.error("Loading unverfied companies failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -269,7 +267,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    alertError = .init()
+                    router.openAlert(.init())
                     logger.error("Loading unverfied brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -282,7 +280,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    alertError = .init()
+                    router.openAlert(.init())
                     logger.error("Loading unverfied sub-brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }

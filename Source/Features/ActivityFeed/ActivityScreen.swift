@@ -23,14 +23,13 @@ struct ActivityScreen: View {
     @State private var page = 0
     // Check-ins
     @State private var checkIns = [CheckIn]()
-    @State private var alertError: AlertError?
 
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         ScrollViewReader { proxy in
             List {
                 if state == .populated {
-                    CheckInListContent(checkIns: $checkIns, alertError: $alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: onCheckInUpdate, onCreateCheckIn: { checkIn in
+                    CheckInListContent(checkIns: $checkIns, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: onCheckInUpdate, onCreateCheckIn: { checkIn in
                         onCreateCheckIn(checkIn)
                         try? await Task.sleep(nanoseconds: 100_000_000)
                         proxy.scrollTo(checkIn.id, anchor: .top)
@@ -57,7 +56,6 @@ struct ActivityScreen: View {
                     }
                 }
             }
-            .alertError($alertError)
             .onChange(of: scrollToTop) {
                 guard let first = checkIns.first else { return }
                 withAnimation {

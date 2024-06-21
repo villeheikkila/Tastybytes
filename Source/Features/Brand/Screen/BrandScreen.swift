@@ -21,7 +21,6 @@ struct BrandScreen: View {
 
     @State private var showBrandUnverificationConfirmation = false
     @State private var showDeleteBrandConfirmationDialog = false
-    @State private var alertError: AlertError?
     @State private var state: ScreenState = .loading
 
     let initialScrollPosition: SubBrand.JoinedBrand?
@@ -83,7 +82,6 @@ struct BrandScreen: View {
             .toolbar {
                 toolbarContent
             }
-            .alertError($alertError)
         }
     }
 
@@ -307,7 +305,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -346,7 +344,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -358,7 +356,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -373,7 +371,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error(
                 "Failed to delete brand '\(subBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }

@@ -11,6 +11,7 @@ import SwiftUI
 struct AccountSettingsScreen: View {
     private let logger = Logger(category: "AccountSettingsScreen")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -21,7 +22,6 @@ struct AccountSettingsScreen: View {
     @State private var email = ""
     @State private var csvExport: CSVFile?
     @State private var showingExporter = false
-    @State private var alertError: AlertError?
 
     var body: some View {
         @Bindable var profileEnvironmentModel = profileEnvironmentModel
@@ -61,10 +61,9 @@ struct AccountSettingsScreen: View {
             case .success:
                 feedbackEnvironmentModel.toggle(.success("account.export.success.toast"))
             case .failure:
-                alertError = .init(title: "account.export.failure.alert")
+                router.openAlert(.init(title: "account.export.failure.alert"))
             }
         }
-        .alertError($alertError)
         .confirmationDialog(
             "account.delete.confirmationDialog.title",
             isPresented: $showDeleteConfirmation,
@@ -132,7 +131,7 @@ struct AccountSettingsScreen: View {
             feedbackEnvironmentModel.toggle(.success("account.feedback.sent.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to change email. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -144,7 +143,7 @@ struct AccountSettingsScreen: View {
             showingExporter = true
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to export check-in csv. Error: \(error) (\(#file):\(#line))")
         }
     }

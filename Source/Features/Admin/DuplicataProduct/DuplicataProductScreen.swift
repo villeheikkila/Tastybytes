@@ -13,7 +13,6 @@ struct DuplicateProductScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var duplicateProductSuggestions = [ProductDuplicateSuggestion]()
-    @State private var alertError: AlertError?
     @State private var deleteProduct: Product.Joined?
 
     var body: some View {
@@ -28,7 +27,6 @@ struct DuplicateProductScreen: View {
         .task {
             await loadDuplicateProducts()
         }
-        .alertError($alertError)
     }
 
     func loadDuplicateProducts(withHaptics: Bool = false) async {
@@ -46,7 +44,7 @@ struct DuplicateProductScreen: View {
 
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Fetching duplicate products failed. Error: \(error) (\(#file):\(#line))")
         }
     }

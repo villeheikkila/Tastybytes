@@ -13,7 +13,6 @@ struct BrandScreenProductRow: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @State private var alertError: AlertError?
     @State private var showDeleteProductConfirmationDialog = false
     @State private var productToDelete: Product.Joined?
 
@@ -71,7 +70,7 @@ struct BrandScreenProductRow: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }

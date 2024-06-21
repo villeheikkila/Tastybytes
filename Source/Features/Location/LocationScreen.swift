@@ -30,7 +30,6 @@ struct LocationInnerScreen: View {
     @State private var scrollToTop: Int = 0
     @State private var summary: Summary?
     @State private var showDeleteLocationConfirmation = false
-    @State private var alertError: AlertError?
     @State private var isSuccess = false
 
     @State private var checkInLoader: CheckInListLoader
@@ -49,7 +48,7 @@ struct LocationInnerScreen: View {
             if state == .populated {
                 LocationScreenHeader(location: location, summary: summary)
                 CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-                CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .location(location), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+                CheckInListContent(checkIns: $checkInLoader.checkIns, loadedFrom: .location(location), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
                     checkInLoader.onLoadMore()
                 })
                 CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
@@ -70,7 +69,6 @@ struct LocationInnerScreen: View {
             toolbarContent
         }
         .sensoryFeedback(.success, trigger: isSuccess)
-        .alertError($alertError)
         .initialTask {
             await getLocationData()
         }
@@ -150,7 +148,7 @@ struct LocationInnerScreen: View {
             isSuccess = true
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")
         }
     }

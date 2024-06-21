@@ -12,9 +12,9 @@ struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(Router.self) private var router
     @Environment(\.requestReview) var requestReview
     @State private var email: Email = .init()
-    @State private var alertError: AlertError?
 
     var body: some View {
         List {
@@ -32,7 +32,6 @@ struct AboutScreen: View {
                           subject: "Feedback for \(appEnvironmentModel.infoPlist.appName)",
                           body: "")
         }
-        .alertError($alertError)
     }
 
     var header: some View {
@@ -60,7 +59,7 @@ struct AboutScreen: View {
                 case let .success(successResult) where successResult == MFMailComposeResult.sent:
                     feedbackEnvironmentModel.toggle(.success("about.sendFeedback.success.toast"))
                 case .failure:
-                    alertError = .init()
+                    router.openAlert(.init())
                 default:
                     return
                 }

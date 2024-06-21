@@ -28,7 +28,6 @@ struct ProfileInnerView: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
-    @State private var alertError: AlertError?
     @State private var profile: Profile
     @State private var profileSummary: ProfileSummary?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
@@ -77,7 +76,6 @@ struct ProfileInnerView: View {
                 await getProfileData(isRefresh: true)
             }
             .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
-            .alertError($alertError)
             .onDisappear {
                 loadImagesTask?.cancel()
             }
@@ -126,7 +124,7 @@ struct ProfileInnerView: View {
             }
         }.listRowSeparator(.hidden)
 
-        CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .profile(profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+        CheckInListContent(checkIns: $checkInLoader.checkIns, loadedFrom: .profile(profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
             checkInLoader.onLoadMore()
         })
         CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
@@ -194,11 +192,7 @@ struct ProfileInnerView: View {
             isLoading = false
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
-            logger
-                .error(
-                    "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
-                )
+            logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
         }
     }
 

@@ -1,3 +1,4 @@
+import Extensions
 import Models
 import OSLog
 import Repositories
@@ -9,6 +10,7 @@ final class Router {
     private let logger = Logger(category: "Router")
     var path = [Screen]()
     var sheet: Sheet?
+    var alert: AlertError?
     var fullScreenCover: FullScreenCover?
 
     init(path: [Screen] = [], sheet: Sheet? = nil) {
@@ -29,6 +31,10 @@ final class Router {
 
     func openRootSheet(_ sheet: Sheet) {
         self.sheet = sheet
+    }
+
+    func openAlert(_ alert: AlertError) {
+        self.alert = alert
     }
 
     func openFullScreenCover(_ fullScreenCover: FullScreenCover) {

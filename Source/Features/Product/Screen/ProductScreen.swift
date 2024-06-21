@@ -35,7 +35,6 @@ struct ProductInnerScreen: View {
     @State private var showDeleteProductConfirmationDialog = false
     @State private var showUnverifyProductConfirmation = false
     @State private var loadedWithBarcode: Barcode?
-    @State private var alertError: AlertError?
     @State private var showTranslator = false
     // check-in images
     @State private var checkInImageTask: Task<Void, Never>?
@@ -95,7 +94,6 @@ struct ProductInnerScreen: View {
                 checkInLoader.onCheckInUpdate(updatedCheckIn)
             }
         }
-        .alertError($alertError)
     }
 
     @ViewBuilder
@@ -109,7 +107,7 @@ struct ProductInnerScreen: View {
         )
         .listRowSeparator(.hidden)
         CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-        CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+        CheckInListContent(checkIns: $checkInLoader.checkIns, loadedFrom: .product, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
             checkInLoader.onLoadMore()
         })
         CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
@@ -245,7 +243,7 @@ struct ProductInnerScreen: View {
             self.summary = summary
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -305,7 +303,7 @@ struct ProductInnerScreen: View {
             self.product = product.copyWith(isVerified: isVerified)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -317,7 +315,7 @@ struct ProductInnerScreen: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -328,7 +326,7 @@ struct ProductInnerScreen: View {
             feedbackEnvironmentModel.toggle(.success("bracode.add.success.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
     }

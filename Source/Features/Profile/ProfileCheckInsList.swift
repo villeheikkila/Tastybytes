@@ -81,7 +81,7 @@ struct ProfileCheckInsListInnerView: View {
     var body: some View {
         List {
             filter.header
-            CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn,
+            CheckInListContent(checkIns: $checkInLoader.checkIns, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn,
                                onLoadMore: checkInLoader.onLoadMore)
             CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
         }

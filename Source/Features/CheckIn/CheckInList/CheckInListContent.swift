@@ -10,8 +10,8 @@ import SwiftUI
 struct CheckInListContent: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Binding var checkIns: [CheckIn]
-    @Binding var alertError: AlertError?
     let loadedFrom: CheckInCard.LoadedFrom
     let onCheckInUpdate: @MainActor (_ checkIn: CheckIn) async -> Void
     let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) async -> Void
@@ -48,7 +48,7 @@ struct CheckInListContent: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = AlertError(title: "checkIn.delete.failure.alert")
+            router.openAlert(.init(title: "checkIn.delete.failure.alert"))
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
         }
     }

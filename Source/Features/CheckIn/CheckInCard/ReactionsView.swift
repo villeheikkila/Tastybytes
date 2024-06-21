@@ -10,11 +10,11 @@ import SwiftUI
 struct ReactionsView: View {
     private let logger = Logger(category: "ReactionsView")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInReactions = [CheckInReaction]()
     @State private var isLoading = false
-    @State private var alertError: AlertError?
     @State private var task: Task<Void, Never>?
 
     let checkIn: CheckIn
@@ -51,7 +51,6 @@ struct ReactionsView: View {
         }
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxHeight: 24)
-        .alertError($alertError)
         .disabled(isLoading)
         .onDisappear {
             task?.cancel()
@@ -71,7 +70,6 @@ struct ReactionsView: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
                 logger.error("Removing check-in reaction \(reaction.id) failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
@@ -84,7 +82,7 @@ struct ReactionsView: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                router.openAlert(.init())
                 logger.error("Adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed: \(error.localizedDescription)")
             }
         }
