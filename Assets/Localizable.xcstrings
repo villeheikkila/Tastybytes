@@ -2340,6 +2340,9 @@
         }
       }
     },
+    "friends.empty.title" : {
+
+    },
     "friends.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -3955,6 +3958,9 @@
         }
       }
     },
+    "profileStatistics.uniqueByCategory.empty.title" : {
+
+    },
     "profileStatistics.uniqueByCategory.label" : {
       "localizations" : {
         "en" : {
@@ -3976,6 +3982,9 @@
       }
     },
     "profileStatistics.uniqueByCategory.screen.failedToLoad" : {
+
+    },
+    "profileTopLocations.empty.title" : {
 
     },
     "qrcode.label" : {

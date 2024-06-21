@@ -21,15 +21,19 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
         }
         .listStyle(.plain)
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "profileStatistics.uniqueByCategory.screen.failedToLoad", errorAction: {
-                await loadStatistics()
-            })
+            if state == .populated, categoryStatistics.isEmpty {
+                ContentUnavailableView("profileStatistics.uniqueByCategory.empty.title", systemImage: "tray")
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "profileStatistics.uniqueByCategory.screen.failedToLoad", errorAction: {
+                    await loadStatistics()
+                })
+            }
         }
         .refreshable {
             await loadStatistics()
         }
         .navigationTitle("profileStatistics.uniqueByCategory.navigationTitle")
-        .task {
+        .initialTask {
             await loadStatistics()
         }
     }

@@ -8,8 +8,8 @@ import SwiftUI
 struct ProfileTopLocationsScreen: View {
     private let logger = Logger(category: "ProfileTopLocationsScreen")
     @Environment(Repository.self) private var repository
+    @State private var state: ScreenState = .loading
     @State private var locations = [ProfileTopLocations]()
-    @State private var isLoading = false
 
     let profile: Profile
 
@@ -18,24 +18,32 @@ struct ProfileTopLocationsScreen: View {
             TopLocationRow(location: location, profile: profile)
         }
         .listStyle(.plain)
+        .overlay {
+            if state == .populated {
+                ContentUnavailableView("profileTopLocations.empty.title", systemImage: "tray")
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "") {
+                    await loadData()
+                }
+            }
+        }
         .initialTask {
             await loadData()
         }
     }
 
     func loadData() async {
-        guard isLoading == false else { return }
-        isLoading = true
         switch await repository.profile.getNumberOfCheckInsByLocation(userId: profile.id) {
         case let .success(locations):
             withAnimation {
                 self.locations = locations
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
+            state = .error([error])
             logger.error("Failed loading top location statistics. Error: \(error) (\(#file):\(#line))")
         }
-        isLoading = false
     }
 }
 

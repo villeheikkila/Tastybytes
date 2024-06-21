@@ -43,8 +43,11 @@ struct FriendSheet: View {
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
         .overlay {
-            ContentUnavailableView.search(text: searchTerm)
-                .opacity(showContentUnavailableView ? 1 : 0)
+            if friendEnvironmentModel.acceptedFriends.isEmpty {
+                ContentUnavailableView("friends.empty.title", systemImage: "tray")
+            } else if showContentUnavailableView {
+                ContentUnavailableView.search(text: searchTerm)
+            }
         }
         .navigationTitle("friends.navigationTitle")
         .toolbar {
