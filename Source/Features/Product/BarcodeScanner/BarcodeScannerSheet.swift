@@ -70,17 +70,13 @@ struct BarcodeScannerSheet: View {
 
     func setTorchIsOn(isOn: Bool) {
         guard let device = AVCaptureDevice.userPreferredCamera else { return }
-
-        if device.hasTorch, device.isTorchAvailable {
-            do {
-                try device.lockForConfiguration()
-                if isOn {
-                    try device.setTorchModeOn(level: 1.0)
-                } else {
-                    device.torchMode = .off
-                }
-                device.unlockForConfiguration()
-            } catch {}
+        guard device.hasTorch, device.isTorchAvailable else { return }
+        try? device.lockForConfiguration()
+        if isOn {
+            try? device.setTorchModeOn(level: 1.0)
+        } else {
+            device.torchMode = .off
         }
+        device.unlockForConfiguration()
     }
 }
