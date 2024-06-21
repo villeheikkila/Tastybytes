@@ -11,9 +11,7 @@ struct DiscoverScreen: View {
     private let logger = Logger(category: "SearchListView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     // Scroll Position
     @Binding var scrollToTop: Int
     // Search Query
@@ -75,7 +73,7 @@ struct DiscoverScreen: View {
             }
             .listStyle(.plain)
             .overlay {
-                if let error {
+                if let error, currentScopeIsEmpty {
                     ScreenContentUnavailableView(errors: [error], description: nil) {
                         await loadData(searchKey: searchKey)
                     }

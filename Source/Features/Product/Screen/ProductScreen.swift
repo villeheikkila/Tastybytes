@@ -157,7 +157,7 @@ struct ProductInnerScreen: View {
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: {router.openRootSheet(.productEdit(product: product, onEdit: { updatedProduct in
+                    Button("labels.edit", systemImage: "pencil", action: { router.openRootSheet(.productEdit(product: product, onEdit: { updatedProduct in
                         withAnimation {
                             product = updatedProduct
                             checkInLoader.onUpdateProduct(updatedProduct)
@@ -184,7 +184,7 @@ struct ProductInnerScreen: View {
 
                 Menu {
                     if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
-                        Button("barcode.management.open", systemImage: "barcode", action: { router.openRootSheet( .barcodeManagement(product: product)) })
+                        Button("barcode.management.open", systemImage: "barcode", action: { router.openRootSheet(.barcodeManagement(product: product)) })
                     }
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {

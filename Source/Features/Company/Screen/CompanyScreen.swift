@@ -104,7 +104,7 @@ struct CompanyScreen: View {
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: { router.openRootSheet( .editCompany(company: company.saved, onSuccess: {
+                    Button("labels.edit", systemImage: "pencil", action: { router.openRootSheet(.editCompany(company: company.saved, onSuccess: {
                         await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("company.update.success.toast"))
                     })) })
