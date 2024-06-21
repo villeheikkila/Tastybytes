@@ -9,8 +9,9 @@ struct BarcodeScannerSheet: View {
     @State private var showBarcodeTextField = false
     @State private var barcodeInput = ""
     @State private var isTorchOn = false
+    @State private var task: Task<Void, Never>?
 
-    let onComplete: (_ barcode: Barcode) -> Void
+    let onComplete: (_ barcode: Barcode) async -> Void
 
     var body: some View {
         VStack {
@@ -18,8 +19,8 @@ struct BarcodeScannerSheet: View {
                 Form {
                     TextField("barcode.scanner.textInput.placeholder", text: $barcodeInput)
                         .keyboardType(.decimalPad)
-                    Button("labels.submit", action: {
-                        onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13.rawValue))
+                    ProgressButton("labels.submit", action: {
+                        await onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13.rawValue))
                         dismiss()
                     })
                     .disabled(!isValidEAN13(input: barcodeInput))
@@ -28,9 +29,12 @@ struct BarcodeScannerSheet: View {
             } else {
                 #if !targetEnvironment(macCatalyst)
                     DataScannerViewRepresentable(recognizedDataTypes: [.barcode(symbologies: [.codabar, .code39, .ean8, .ean13])], onDataFound: { data in
-                        if case let .barcode(foundBarcode) = data {
+                        if task == nil, case let .barcode(foundBarcode) = data {
+                            defer { task = nil }
                             guard let payloadStringValue = foundBarcode.payloadStringValue else { return }
-                            onComplete(.init(barcode: payloadStringValue, type: ""))
+                            task = Task {
+                                await onComplete(.init(barcode: payloadStringValue, type: ""))
+                            }
                             dismiss()
                         }
                     })

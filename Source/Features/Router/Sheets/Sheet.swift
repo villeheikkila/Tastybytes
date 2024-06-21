@@ -7,7 +7,7 @@ import SwiftUI
 enum Sheet: Identifiable, Equatable {
     case report(Report.Entity)
     case checkIn(CheckInSheet.Action)
-    case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
+    case barcodeScanner(onComplete: (_ barcode: Barcode) async -> Void)
     case productFilter(
         initialFilter: Product.Filter?,
         sections: [ProductFilterSheet.Sections],

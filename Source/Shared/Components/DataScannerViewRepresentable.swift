@@ -39,7 +39,9 @@ import VisionKit
             self.onDataFound = onDataFound
         }
 
-        func dataScanner(_: DataScannerViewController, didTapOn _: RecognizedItem) {}
+        func dataScanner(_: DataScannerViewController, didTapOn: RecognizedItem) {
+            onDataFound(didTapOn)
+        }
 
         func dataScanner(_: DataScannerViewController, didAdd: [RecognizedItem], allItems _: [RecognizedItem]) {
             UINotificationFeedbackGenerator().notificationOccurred(.success)

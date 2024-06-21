@@ -130,7 +130,7 @@ struct ProductInnerScreen: View {
                             "labels.add",
                             systemImage: "barcode.viewfinder",
                             action: { router.openRootSheet(.barcodeScanner(onComplete: { barcode in
-                                Task { await addBarcodeToProduct(barcode) }
+                                await addBarcodeToProduct(barcode)
                             })) }
                         )
                     }
