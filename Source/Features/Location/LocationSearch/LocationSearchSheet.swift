@@ -56,7 +56,7 @@ struct LocationSearchSheet: View {
         .searchable(text: $searchText)
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "") {
-               await loadInitialData()
+                await loadInitialData()
             }
         }
         .safeAreaInset(edge: .bottom, alignment: .trailing) {
@@ -82,7 +82,7 @@ struct LocationSearchSheet: View {
         }
         .alertError($alertError)
     }
-    
+
     @ViewBuilder private var populatedContent: some View {
         if hasSearched {
             ForEach(searchResults) { location in
@@ -127,7 +127,7 @@ struct LocationSearchSheet: View {
             }
         }
     }
-    
+
     func storeLocation(_ location: Location) {
         guard storeLocationTask == nil else { return }
         defer { storeLocationTask = nil }
@@ -157,12 +157,13 @@ struct LocationSearchSheet: View {
     }
 
     private nonisolated func searchLocations(center: CLLocationCoordinate2D, radius: CLLocationDistance)
-        async throws ->  [Location]
+        async throws -> [Location]
     {
         let request = MKLocalPointsOfInterestRequest(center: center, radius: radius)
         let search = MKLocalSearch(request: request)
         let response = try await search.start()
-        return response.mapItems.map { Location(mapItem: $0) }    }
+        return response.mapItems.map { Location(mapItem: $0) }
+    }
 
     func loadInitialData() async {
         if initialLocation != nil {
@@ -174,13 +175,11 @@ struct LocationSearchSheet: View {
         async let suggestionsPromise = repository.location.getSuggestions(location: .init(coordinate: coordinate))
 
         let (recentLocationsResult, suggestionResult) = await (recentLocationsPromise, suggestionsPromise)
-        
+
         var errors = [Error]()
         switch suggestionResult {
         case let .success(nearbyLocations):
-            withAnimation {
-                self.nearbyLocations = nearbyLocations
-            }
+            self.nearbyLocations = nearbyLocations
         case let .failure(error):
             guard !error.isCancelled else { return }
             errors.append(error)
@@ -188,9 +187,7 @@ struct LocationSearchSheet: View {
         }
         switch recentLocationsResult {
         case let .success(recentLocations):
-            withAnimation {
-                self.recentLocations = recentLocations
-            }
+            self.recentLocations = recentLocations
         case let .failure(error):
             guard !error.isCancelled else { return }
             errors.append(error)
@@ -224,7 +221,7 @@ struct LocationRow: View {
                         .foregroundColor(.secondary)
                 }
                 if let distance {
-                    Text("location.distance \(distance, format: .measurement(width: .narrow))")
+                    Text(distance, format: .measurement(width: .narrow))
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -235,6 +232,7 @@ struct LocationRow: View {
                 onSelect(location)
             }
         }
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
         .listRowBackground(Color.clear)
     }
 }

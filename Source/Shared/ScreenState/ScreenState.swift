@@ -3,6 +3,15 @@ import Models
 import SwiftUI
 
 extension ScreenState {
+    static func updateState(currentState: ScreenState, errors: [Error]) -> Self {
+        if errors.isEmpty {
+            return .populated
+        } else if currentState != .populated {
+            return .error(errors)
+        }
+        return currentState
+    }
+
     @MainActor
     static func getState(errors: [Error], withHaptics: Bool, feedbackEnvironmentModel: FeedbackEnvironmentModel) -> Self {
         withAnimation(.easeIn) {
