@@ -22,7 +22,6 @@ struct BrandScreen: View {
     @State private var showBrandUnverificationConfirmation = false
     @State private var showDeleteBrandConfirmationDialog = false
     @State private var alertError: AlertError?
-    @State private var sheet: Sheet?
     @State private var state: ScreenState = .loading
 
     let initialScrollPosition: SubBrand.JoinedBrand?
@@ -94,7 +93,6 @@ struct BrandScreen: View {
         }
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)
-        .sheets(item: $sheet)
 
         switch productGrouping {
         case .subBrand:
@@ -127,7 +125,7 @@ struct BrandScreen: View {
                         ))
                 }
             } header: {
-                SubBrandSectionHeader(brand: $brand, sheet: $sheet, subBrand: subBrand, verifySubBrand: verifySubBrand, deleteSubBrand: deleteSubBrand)
+                SubBrandSectionHeader(brand: $brand, subBrand: subBrand, verifySubBrand: verifySubBrand, deleteSubBrand: deleteSubBrand)
             }
             .headerProminence(.increased)
             .id(subBrand.id)
@@ -156,17 +154,17 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        Button("brand.addProduct.menu.label", systemImage: "plus", action: { sheet = .addProductToBrand(brand: brand) })
+                        Button("brand.addProduct.menu.label", systemImage: "plus", action: { router.openRootSheet(.addProductToBrand(brand: brand)) })
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         Button(
                             "labels.edit", systemImage: "pencil",
-                            action: { sheet = .editBrand(
+                            action: { router.openRootSheet(.editBrand(
                                 brand: brand,
                                 onUpdate: { updatedBrand in
                                     brand = updatedBrand
                                 }
-                            ) }
+                            )) }
                         )
                     }
                 }
@@ -397,9 +395,9 @@ private enum GroupProductsBy: String, CaseIterable {
 
 @MainActor
 struct SubBrandSectionHeader: View {
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
-    @Binding var sheet: Sheet?
     @State private var showUnverifyConfirmation = false
     @State private var showDeleteConfirmation = false
     let subBrand: SubBrand.JoinedProduct
@@ -429,7 +427,7 @@ struct SubBrandSectionHeader: View {
                         "brand.createProduct.label",
                         systemImage: "plus",
                         action: {
-                            sheet = .addProductToSubBrand(brand: brand, subBrand: subBrand)
+                            router.openRootSheet(.addProductToSubBrand(brand: brand, subBrand: subBrand))
                         }
                     )
                 }
@@ -437,13 +435,13 @@ struct SubBrandSectionHeader: View {
                     Button(
                         "labels.edit",
                         systemImage: "pencil",
-                        action: { sheet = .editSubBrand(
+                        action: { router.openRootSheet(.editSubBrand(
                             brand: brand, subBrand: subBrand,
                             onUpdate: { updatedSubBrand in
                                 let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
                                 brand = brand.copyWith(subBrands: updatedSubBrands)
                             }
-                        ) }
+                        )) }
                     )
                 }
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))

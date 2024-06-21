@@ -14,7 +14,6 @@ struct DiscoverScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @State private var sheet: Sheet?
     // Scroll Position
     @Binding var scrollToTop: Int
     // Search Query
@@ -97,7 +96,6 @@ struct DiscoverScreen: View {
                     searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
                 }
             }
-            .sheets(item: $sheet)
             .navigationTitle("discover.title")
             .toolbar {
                 toolbarContent
@@ -166,13 +164,13 @@ struct DiscoverScreen: View {
                 Button(
                     "discover.filter.show",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    action: { sheet = .productFilter(
+                    action: { router.openRootSheet(.productFilter(
                         initialFilter: productFilter,
                         sections: [.category, .checkIns],
                         onApply: { filter in
                             productFilter = filter
                         }
-                    ) }
+                    )) }
                 ).labelStyle(.iconOnly)
             }
 
@@ -181,10 +179,10 @@ struct DiscoverScreen: View {
                     Button(
                         "discover.barcode.scan",
                         systemImage: "barcode.viewfinder",
-                        action: { sheet = .barcodeScanner(onComplete: { barcode in
+                        action: { router.openRootSheet(.barcodeScanner(onComplete: { barcode in
                             self.barcode = barcode
                             searchKey = .barcode(barcode)
-                        }) }
+                        })) }
                     )
                 }
             }

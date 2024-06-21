@@ -4,9 +4,9 @@ import SwiftUI
 
 @MainActor
 struct FlavorManagementScreen: View {
+    @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var sheet: Sheet?
 
     var body: some View {
         List(appEnvironmentModel.flavors) { flavor in
@@ -25,14 +25,13 @@ struct FlavorManagementScreen: View {
         .toolbar {
             toolbarContent
         }
-        .sheets(item: $sheet)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
-            Button("flavor.add.labels", systemImage: "plus", action: { sheet = .newFlavor(onSubmit: { newFlavor in
+            Button("flavor.add.labels", systemImage: "plus", action: { router.openRootSheet(.newFlavor(onSubmit: { newFlavor in
                 await appEnvironmentModel.addFlavor(name: newFlavor)
-            }) }).labelStyle(.iconOnly)
+            })) }).labelStyle(.iconOnly)
         }
     }
 }

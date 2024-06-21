@@ -5,6 +5,7 @@ import SwiftUI
 
 @MainActor
 struct CurrentUserFriendsScreen: View {
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -12,7 +13,6 @@ struct CurrentUserFriendsScreen: View {
     @State private var friendToBeRemoved: Friend?
     @State private var showUserSearchSheet = false
     @State private var searchTerm = ""
-    @State private var sheet: Sheet?
 
     let showToolbar: Bool
 
@@ -58,7 +58,6 @@ struct CurrentUserFriendsScreen: View {
                 toolbarContent
             }
         }
-        .sheets(item: $sheet)
         .initialTask {
             await friendEnvironmentModel.refresh()
         }
@@ -72,11 +71,11 @@ struct CurrentUserFriendsScreen: View {
             Button(
                 "friends.toolbar.showNameTag",
                 systemImage: "qrcode",
-                action: { sheet = .nameTag(onSuccess: { profileId in
+                action: { router.openRootSheet(.nameTag(onSuccess: { profileId in
                     Task {
                         await friendEnvironmentModel.sendFriendRequest(receiver: profileId)
                     }
-                }) }
+                })) }
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)
@@ -84,12 +83,12 @@ struct CurrentUserFriendsScreen: View {
 
             Button(
                 "friends.add.label", systemImage: "plus",
-                action: { sheet = .userSheet(
+                action: { router.openRootSheet(.userSheet(
                     mode: .add,
                     onSubmit: {
                         feedbackEnvironmentModel.toggle(.success("friends.add.success"))
                     }
-                ) }
+                )) }
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)

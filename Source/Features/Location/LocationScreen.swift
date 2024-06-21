@@ -32,7 +32,6 @@ struct LocationInnerScreen: View {
     @State private var showDeleteLocationConfirmation = false
     @State private var alertError: AlertError?
     @State private var isSuccess = false
-    @State private var sheet: Sheet?
 
     @State private var checkInLoader: CheckInListLoader
 
@@ -49,7 +48,6 @@ struct LocationInnerScreen: View {
         List {
             if state == .populated {
                 LocationScreenHeader(location: location, summary: summary)
-                    .sheets(item: $sheet)
                 CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
                 CheckInListContent(checkIns: $checkInLoader.checkIns, alertError: $checkInLoader.alertError, loadedFrom: .location(location), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
                     checkInLoader.onLoadMore()
@@ -88,7 +86,7 @@ struct LocationInnerScreen: View {
                 if profileEnvironmentModel.hasRole(.admin) {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canMergeLocations) {
-                            Button(action: { sheet = .mergeLocationSheet(location: location) }, label: {
+                            Button(action: { router.openRootSheet(.mergeLocationSheet(location: location)) }, label: {
                                 Label("location.mergeTo.label", systemImage: "doc.on.doc")
                             })
                         }

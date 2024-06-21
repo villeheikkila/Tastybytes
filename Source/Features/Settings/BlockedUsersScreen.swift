@@ -5,10 +5,10 @@ import SwiftUI
 
 @MainActor
 struct BlockedUsersScreen: View {
+    @Environment(Router.self) private var router
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var sheet: Sheet?
 
     var body: some View {
         List(friendEnvironmentModel.blockedUsers) { friend in
@@ -41,15 +41,14 @@ struct BlockedUsersScreen: View {
         .toolbar {
             toolbarContent
         }
-        .sheets(item: $sheet)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
-                Button("blockedUsers.block.label", systemImage: "plus", action: { sheet = .userSheet(mode: .block, onSubmit: {
+                Button("blockedUsers.block.label", systemImage: "plus", action: { router.openRootSheet( .userSheet(mode: .block, onSubmit: {
                     feedbackEnvironmentModel.toggle(.success("blockedUsers.block.success"))
-                }) })
+                })) })
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
             }

@@ -8,7 +8,7 @@ struct ReportButton: View {
 
     var body: some View {
         Button("report.open", systemImage: "exclamationmark.bubble.fill") {
-            router.sheet = .report(entity)
+            router.openRootSheet(.report(entity))
         }
     }
 }

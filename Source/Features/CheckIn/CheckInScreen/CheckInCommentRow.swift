@@ -10,8 +10,8 @@ import SwiftUI
 struct CheckInCommentRow: View {
     private let logger = Logger(category: "CheckInScreen")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @State private var sheet: Sheet?
     @State private var showDeleteAsModeratorConfirmationDialog = false
     @State private var showTranslator = false
 
@@ -21,7 +21,6 @@ struct CheckInCommentRow: View {
 
     var body: some View {
         CheckInCommentView(comment: comment)
-            .sheets(item: $sheet)
             .confirmationDialog(
                 "comment.deleteAsModerator.confirmation.description",
                 isPresented: $showDeleteAsModeratorConfirmationDialog,
@@ -38,7 +37,7 @@ struct CheckInCommentRow: View {
             .contextMenu {
                 if comment.profile == profileEnvironmentModel.profile {
                     Button("labels.edit", systemImage: "pencil") {
-                        sheet = .editComment(checkInComment: comment, checkInComments: $checkInComments)
+                        router.openRootSheet(.editComment(checkInComment: comment, checkInComments: $checkInComments))
                     }
                     ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive) {
                         await deleteComment(comment)

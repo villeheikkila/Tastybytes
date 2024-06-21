@@ -20,7 +20,6 @@ struct CompanyScreen: View {
     @State private var showUnverifyCompanyConfirmation = false
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var alertError: AlertError?
-    @State private var sheet: Sheet?
 
     init(company: Company) {
         _company = State(wrappedValue: .init(company: company))
@@ -50,7 +49,6 @@ struct CompanyScreen: View {
         .toolbar {
             toolbarContent
         }
-        .sheets(item: $sheet)
         .initialTask {
             await getCompanyData()
         }
@@ -102,21 +100,21 @@ struct CompanyScreen: View {
                     Button(
                         "brand.title",
                         systemImage: "plus",
-                        action: { sheet = .addBrand(brandOwner: company.saved, mode: .new) }
+                        action: { router.openRootSheet(.addBrand(brandOwner: company.saved, mode: .new)) }
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: { sheet = .editCompany(company: company.saved, onSuccess: {
+                    Button("labels.edit", systemImage: "pencil", action: { router.openRootSheet( .editCompany(company: company.saved, onSuccess: {
                         await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("company.update.success.toast"))
-                    }) })
+                    })) })
                 } else {
                     Button(
                         "company.editSuggestion.title",
                         systemImage: "pencil",
-                        action: { sheet = .companyEditSuggestion(company: company.saved, onSuccess: {
+                        action: { router.openRootSheet(.companyEditSuggestion(company: company.saved, onSuccess: {
                             feedbackEnvironmentModel.toggle(.success("company.editSuggestion.success.toast"))
-                        }) }
+                        })) }
                     )
                 }
             }

@@ -12,7 +12,6 @@ struct DiscoverProductRow: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var sheet: Sheet?
     @State private var addBarcodeTo: Product.Joined?
 
     let product: Product.Joined
@@ -21,9 +20,9 @@ struct DiscoverProductRow: View {
     var body: some View {
         ProductItemView(product: product, extras: [.checkInCheck, .rating, .logoOnLeft])
             .swipeActions {
-                Button("checkIn.create.label", systemImage: "plus", action: { sheet = .checkIn(.create(product: product, onCreation: { checkIn in
+                Button("checkIn.create.label", systemImage: "plus", action: { router.openRootSheet( .checkIn(.create(product: product, onCreation: { checkIn in
                     router.navigate(screen: .checkIn(checkIn))
-                })) }).tint(.green)
+                }))) }).tint(.green)
             }
             .contentShape(Rectangle())
             .accessibilityAddTraits(.isLink)
@@ -53,7 +52,6 @@ struct DiscoverProductRow: View {
                     }
                 )
             }
-            .sheets(item: $sheet)
     }
 
     func addBarcodeToProduct(_ addBarcodeTo: Product.Joined) async {

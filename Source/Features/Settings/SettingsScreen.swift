@@ -5,10 +5,10 @@ import SwiftUI
 
 @MainActor
 struct SettingsScreen: View {
+    @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @State private var sheet: Sheet?
 
     var body: some View {
         List {
@@ -22,13 +22,12 @@ struct SettingsScreen: View {
         .toolbar {
             toolbarContent
         }
-        .sheets(item: $sheet)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if let subscriptionGroup = appEnvironmentModel.subscriptionGroup {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                Button("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", action: { sheet = .subscribe })
+                Button("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", action: { router.openRootSheet(.subscribe) })
                     .labelStyle(.iconOnly)
                     .imageScale(.large)
                     .foregroundColor(.yellow)

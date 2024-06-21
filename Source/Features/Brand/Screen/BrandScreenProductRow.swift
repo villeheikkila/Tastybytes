@@ -15,7 +15,6 @@ struct BrandScreenProductRow: View {
     @Environment(Router.self) private var router
     @State private var alertError: AlertError?
     @State private var showDeleteProductConfirmationDialog = false
-    @State private var sheet: Sheet?
     @State private var productToDelete: Product.Joined?
 
     let product: Product.Joined
@@ -25,11 +24,11 @@ struct BrandScreenProductRow: View {
             ProductItemView(product: product, extras: [.logoOnLeft])
                 .padding(2)
                 .contextMenu {
-                    Button(action: { sheet = .duplicateProduct(
+                    Button(action: { router.openRootSheet(.duplicateProduct(
                         mode: profileEnvironmentModel
                             .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                         product: product
-                    ) }, label: {
+                    )) }, label: {
                         if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                             Label("product.mergeTo.label", systemImage: "doc.on.doc")
                         } else {
@@ -48,7 +47,6 @@ struct BrandScreenProductRow: View {
                         .disabled(product.isVerified)
                     }
                 }
-                .sheets(item: $sheet)
         }
         .confirmationDialog("product.delete.confirmation.description",
                             isPresented: $productToDelete.isNotNull(),
