@@ -3,6 +3,7 @@ import SwiftUI
 
 @MainActor
 struct LocationInputButton: View {
+    @Binding var sheet: Sheet?
     let category: Location.RecentLocation
     let title: LocalizedStringKey
     @Binding var selection: Location?
@@ -10,8 +11,8 @@ struct LocationInputButton: View {
     let onSelect: (_ location: Location) -> Void
 
     var body: some View {
-        RouterLink(
-            sheet: .locationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect),
+        Button(
+            action: { sheet = .locationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect) },
             label: {
                 HStack {
                     if let location = selection, let coordinate = selection?.location?.coordinate {

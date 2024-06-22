@@ -4,7 +4,6 @@ import SwiftUI
 @MainActor
 struct RouterLink<LabelView: View>: View {
     @Environment(Router.self) private var router
-    @State private var activeSheet: Sheet?
 
     let screen: Screen?
     let sheet: Sheet?
@@ -35,10 +34,9 @@ struct RouterLink<LabelView: View>: View {
                     if let screen {
                         router.navigate(screen: screen)
                     } else if let sheet {
-                        activeSheet = sheet
+                        router.openRootSheet(sheet)
                     }
                 }
-                .sheets(item: $activeSheet)
         } else if let screen {
             if isPadOrMac() {
                 Button(action: { router.navigate(screen: screen) }, label: {
@@ -58,9 +56,8 @@ struct RouterLink<LabelView: View>: View {
             }
         } else if let sheet {
             Button(action: {
-                activeSheet = sheet
+                router.openRootSheet(sheet)
             }, label: { label })
-                .sheets(item: $activeSheet)
         }
     }
 }

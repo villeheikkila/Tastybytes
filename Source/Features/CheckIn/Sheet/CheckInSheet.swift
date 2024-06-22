@@ -103,8 +103,8 @@ struct CheckInSheet: View {
         Section("checkIn.review.title") {
             TextField("checkIn.review.label", text: $review, axis: .vertical)
                 .focused($focusedField, equals: .review)
-            RouterLink(
-                sheet: .flavors(pickedFlavors: $pickedFlavors),
+            Button(
+                action: { sheet = .flavors(pickedFlavors: $pickedFlavors) },
                 label: {
                     if !pickedFlavors.isEmpty {
                         FlavorsView(flavors: pickedFlavors)
@@ -132,11 +132,12 @@ struct CheckInSheet: View {
                 .pickerStyle(.navigationLink)
             }
 
-            RouterLink(
+            Button(
                 "checkIn.manufacturedBy.label \(manufacturer?.name ?? "")",
-                sheet: .companySearch(onSelect: { company in
+                action: { sheet = .companySearch(onSelect: { company in
                     manufacturer = company
                 })
+                }
             )
         }
         .customListRowBackground()
@@ -144,11 +145,12 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("checkIn.section.locationsFriends.title") {
-            LocationInputButton(category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: $locationFromImage, onSelect: { location in
+            LocationInputButton(sheet: $sheet, category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: $locationFromImage, onSelect: { location in
                 self.location = location
             })
 
             LocationInputButton(
+                sheet: $sheet,
                 category: .purchase, title: "checkIn.purchaseLocation.add.label",
                 selection: $purchaseLocation,
                 initialLocation: $locationFromImage,
@@ -158,9 +160,9 @@ struct CheckInSheet: View {
             )
 
             if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
-                RouterLink(
-                    sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic)
-                ) {
+                Button(action: {
+                    sheet = .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic)
+                }) {
                     Text(
                         isLegacyCheckIn
                             ? "checkIn.date.legacyCheckIn"
@@ -168,8 +170,8 @@ struct CheckInSheet: View {
                 }
             }
 
-            RouterLink(
-                sheet: .friends(taggedFriends: $taggedFriends),
+            Button(
+                action: { sheet = .friends(taggedFriends: $taggedFriends) },
                 label: {
                     if taggedFriends.isEmpty {
                         Text("checkIn.friends.tag")

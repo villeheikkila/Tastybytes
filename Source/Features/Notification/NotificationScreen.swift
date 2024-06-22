@@ -225,21 +225,3 @@ public extension NotificationType {
         }
     }
 }
-
-struct CustomPlainListStyle: ViewModifier {
-    @Environment(\.colorScheme) var colorScheme
-
-    func body(content: Content) -> some View {
-        if colorScheme == .dark {
-            content.scrollContentBackground(.hidden)
-        } else {
-            content.scrollContentBackground(.visible)
-        }
-    }
-}
-
-extension View {
-    func defaultScrollContentBackground() -> some View {
-        modifier(CustomPlainListStyle())
-    }
-}

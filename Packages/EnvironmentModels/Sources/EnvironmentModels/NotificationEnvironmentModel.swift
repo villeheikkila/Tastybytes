@@ -67,7 +67,7 @@ public final class NotificationEnvironmentModel {
                         .filter { $0.seenAt == nil }
                         .count
                 } else {
-                    notifications.append(contentsOf: newNotifications)
+                    notifications.insert(contentsOf: newNotifications, at: 0)
                 }
                 self.state = .populated
             case let .failure(error):
