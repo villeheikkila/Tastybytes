@@ -179,11 +179,11 @@ public final class NotificationEnvironmentModel {
 
     public func deleteFromIndex(at: IndexSet) async {
         guard let index = at.first else { return }
-        let notificationId = notifications[index].id
-        switch await repository.notification.delete(id: notificationId) {
+        let notification = notifications[index]
+        switch await repository.notification.delete(id: notification.id) {
         case .success:
             withAnimation {
-                _ = self.notifications.remove(at: index)
+                self.notifications = notifications.removing(notification)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -192,11 +192,11 @@ public final class NotificationEnvironmentModel {
         }
     }
 
-    public func deleteNotifications(notification: Models.Notification) async {
+    public func deleteNotification(notification: Models.Notification) async {
         switch await repository.notification.delete(id: notification.id) {
         case .success:
             withAnimation {
-                self.notifications.remove(object: notification)
+                self.notifications = notifications.removing(notification)
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
