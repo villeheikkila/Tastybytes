@@ -41,7 +41,8 @@ struct NotificationScreen: View {
                 ForEach(filteredNotifications) { notification in
                     HStack {
                         notification.view
-                    }.listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
+                    }
+                    .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
                 }
                 .onDelete { index in
                     Task {

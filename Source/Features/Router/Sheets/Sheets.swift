@@ -16,6 +16,7 @@ struct SheetsModifier: ViewModifier {
                 NavigationStack {
                     item.view
                 }
+                .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
                 .presentationBackground(colorScheme == .dark ? item.backgroundDark : item.backgroundLight)
                 .presentationDetents(item.detents)
                 .presentationCornerRadius(item.cornerRadius)
