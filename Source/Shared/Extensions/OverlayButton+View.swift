@@ -14,15 +14,17 @@ struct OverlayDeleteButtonModifier: ViewModifier {
                     .padding(3)
                     .foregroundColor(.red)
                     .background(.ultraThinMaterial, in: .circle)
-            }
-            .padding(4)
-            .onTapGesture {
-                guard submitting == false else { return }
-                Task {
-                    submitting = true
-                    await action()
-                    submitting = false
-                }
+                    .onTapGesture {
+                        guard submitting == false else { return }
+                        Task {
+                            submitting = true
+                            await action()
+                            submitting = false
+                        }
+                    }
+                    .alignmentGuide(.trailing) { $0[.trailing] + $0.width * 0.2 }
+                    .alignmentGuide(.top) { $0[.top] - $0.height * 0.13 }
+
             }
     }
 }
