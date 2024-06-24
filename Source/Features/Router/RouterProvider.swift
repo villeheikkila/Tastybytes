@@ -24,6 +24,7 @@ struct RouterProvider<Content: View>: View {
                 }
         }
         .sheets(item: $router.sheet)
+        .alertError($router.alert)
         .onOpenURL { url in
             if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
                 router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
