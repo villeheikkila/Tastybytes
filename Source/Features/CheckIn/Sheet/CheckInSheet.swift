@@ -17,6 +17,7 @@ struct CheckInSheet: View {
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
+    @State private var primaryActionTask: Task<Void, Never>?
     @State private var servingStyles = [ServingStyle]()
     @State private var alertError: AlertError?
     @State private var sheet: Sheet?
@@ -201,16 +202,23 @@ struct CheckInSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .primaryAction) {
-            ProgressButton(
+            Button(
                 primaryActionLabel,
-                action: primaryAction
+                action: {
+                    primaryActionTask = Task {
+                        await primaryAction()
+                    }
+                }
             )
             .foregroundColor(.primary)
             .bold()
+            .disabled(primaryActionTask != nil)
         }
     }
 
     func primaryAction() async {
+        guard primaryActionTask != nil else { return }
+        defer { primaryActionTask = nil }
         switch action {
         case let .create(product, onCreation):
             switch await repository.checkIn.create(newCheckInParams: .init(
@@ -235,7 +243,11 @@ struct CheckInSheet: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                alertError = .init(title: "checkIn.errors.failedToCreateCheckIn.title", retryLabel: "labels.retry", retry: {
+                    primaryActionTask = Task {
+                        await primaryAction()
+                    }
+                })
                 logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
                 return
             }
@@ -263,7 +275,11 @@ struct CheckInSheet: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                alertError = .init(title: "checkIn.errors.failedToUpdateCheckIn.title", retry: {
+                    primaryActionTask = Task {
+                        await primaryAction()
+                    }
+                })
                 logger.error("Failed to update check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
             }
         }

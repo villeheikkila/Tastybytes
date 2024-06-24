@@ -1034,6 +1034,12 @@
         }
       }
     },
+    "checkIn.errors.failedToCreateCheckIn.title" : {
+
+    },
+    "checkIn.errors.failedToUpdateCheckIn.title" : {
+
+    },
     "checkIn.filter.onlyNotHad" : {
       "localizations" : {
         "en" : {
@@ -2582,6 +2588,9 @@
           }
         }
       }
+    },
+    "labels.retry" : {
+
     },
     "labels.saveChanges" : {
       "localizations" : {

@@ -156,16 +156,39 @@ public extension Task {
 
 public struct AlertError: Identifiable, Equatable {
     public let id: UUID
-    public let title: LocalizedStringKey
+    let title: Text
+    let message: Text?
+    let retryLabel: LocalizedStringKey?
+    let retry: (() -> Void)?
 
     public init() {
-        title = "Unexpected error occured"
+        title = Text("Unexpected error occured")
         id = UUID()
+        message = nil
+        retry = nil
+        retryLabel = nil
     }
 
-    public init(title: LocalizedStringKey) {
-        self.title = title
+    public init(title: LocalizedStringKey, message: Text? = nil, retryLabel: LocalizedStringKey? = nil, retry: (() -> Void)? = nil) {
         id = UUID()
+        self.title = Text(title)
+        self.message = message
+        self.retry = retry
+        self.retryLabel = retryLabel
+    }
+
+    var alert: Alert {
+        if let retry {
+            .init(title: title, message: message, primaryButton: .default(Text(retryLabel ?? "Retry"), action: retry), secondaryButton: .cancel())
+        } else {
+            .init(title: title, message: message)
+        }
+    }
+
+    public static func == (lhs: AlertError, rhs: AlertError) -> Bool {
+        lhs.id == rhs.id &&
+            lhs.title == rhs.title &&
+            lhs.message == rhs.message
     }
 }
 
@@ -178,7 +201,7 @@ struct AlertErrorModifier: ViewModifier {
                 newValue != nil
             }
             .alert(item: $alertError) { error in
-                Alert(title: Text(error.title))
+                error.alert
             }
     }
 }

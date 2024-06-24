@@ -24,7 +24,6 @@ struct OverlayDeleteButtonModifier: ViewModifier {
                     }
                     .alignmentGuide(.trailing) { $0[.trailing] + $0.width * 0.2 }
                     .alignmentGuide(.top) { $0[.top] - $0.height * 0.13 }
-
             }
     }
 }
