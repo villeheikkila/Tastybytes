@@ -18,6 +18,7 @@ struct ProductMutationView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isPresentedInSheet) var isPresentedInSheet
     @FocusState private var focusedField: Focusable?
+    @State private var primaryActionTask: Task<Void, Never>?
     // Sheet status
     @State private var isSuccess = false
     @State private var sheet: Sheet?
@@ -108,12 +109,14 @@ struct ProductMutationView: View {
             ToolbarDismissAction()
         }
         ToolbarItemGroup(placement: .primaryAction) {
-            ProgressButton(mode.doneLabel) {
-                await primaryAction()
+            Button(mode.doneLabel) {
+                primaryActionTask = Task {
+                    await primaryAction()
+                }
             }
             .foregroundColor(isValid ? .primary : .secondary)
             .fontWeight(.medium)
-            .disabled(!isValid)
+            .disabled(!isValid || primaryActionTask != nil)
         }
     }
 
@@ -251,6 +254,8 @@ struct ProductMutationView: View {
     }
 
     func primaryAction() async {
+        guard primaryActionTask != nil else { return }
+        defer { primaryActionTask = nil }
         switch mode {
         case let .editSuggestion(product):
             guard let subBrand, let selectedCategory else { return }
@@ -277,14 +282,17 @@ struct ProductMutationView: View {
                 feedbackEnvironmentModel.toggle(.success("product.editSuggestion.success.toast"))
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                alertError = .init(title: "product.error.failedToCreateEditSuggestion.title", retryLabel: "labels.retry", retry: {
+                    primaryActionTask = Task {
+                        await primaryAction()
+                    }
+                })
                 logger.error("Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))")
             }
         case let .edit(product, onEdit):
             guard let category, let brand else { return }
             let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
             guard let subBrandWithNil else { return }
-
             switch await repository.product.editProduct(productEditParams: .init(
                 productId: product.id,
                 name: name,
@@ -302,7 +310,11 @@ struct ProductMutationView: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                alertError = .init(title: "product.error.failedToUpdate.title", retryLabel: "labels.retry", retry: {
+                    primaryActionTask = Task {
+                        await primaryAction()
+                    }
+                })
                 logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
             }
         case let .new(onCreate), let .addToBrand(_, onCreate), let .addToSubBrand(_, _, onCreate):
@@ -329,7 +341,11 @@ struct ProductMutationView: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                alertError = .init(title: "product.error.failedToCreate.title", retryLabel: "labels.retry", retry: {
+                    primaryActionTask = Task {
+                        await primaryAction()
+                    }
+                })
                 logger.error("Failed to create new product. Error: \(error) (\(#file):\(#line))")
             }
         }
