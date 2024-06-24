@@ -18,7 +18,7 @@ let package = Package(
         .package(name: "Models", path: "../Models"),
         .package(name: "Extensions", path: "../Extensions"),
         .package(url: "https://github.com/kean/Nuke.git", from: "12.7.2"),
-
+        .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
     ],
     targets: [
         .target(
@@ -28,6 +28,9 @@ let package = Package(
                 .product(name: "Extensions", package: "Extensions"),
                 .product(name: "Nuke", package: "Nuke"),
                 .product(name: "NukeUI", package: "Nuke"),
+                .product(name: "BrightroomEngine", package: "Brightroom"),
+                .product(name: "BrightroomUI", package: "Brightroom"),
+                .product(name: "BrightroomUIPhotosCrop", package: "Brightroom"),
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency"),

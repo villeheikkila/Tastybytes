@@ -19,10 +19,9 @@ public extension Array where Element: Equatable {
 
 public extension Array {
     subscript(safe index: Int) -> Element? {
-        return indices.contains(index) ? self[index] : nil
+        indices.contains(index) ? self[index] : nil
     }
 }
-
 
 public extension Array where Element: Equatable {
     func removing(_ items: [Element]) -> [Element] {

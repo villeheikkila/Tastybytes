@@ -178,7 +178,7 @@ public final class NotificationEnvironmentModel {
     }
 
     public func deleteFromIndex(at: IndexSet) async {
-        guard let index = at.first,  let notification = notifications[safe: index] else { return }
+        guard let index = at.first, let notification = notifications[safe: index] else { return }
         switch await repository.notification.delete(id: notification.id) {
         case .success:
             withAnimation {

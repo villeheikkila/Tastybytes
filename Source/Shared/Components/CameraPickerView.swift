@@ -1,3 +1,4 @@
+import Components
 import SwiftUI
 import UIKit
 
@@ -53,9 +54,7 @@ struct CameraWithCroppingView: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             if let selectedImage {
-                CropView(crop: .rectangle, image: selectedImage, onSubmit: { croppedImage in
-                    onSubmit(croppedImage)
-                })
+                ImageCropView(image: selectedImage, onSubmit: onSubmit)
             } else {
                 CameraPickerView(selectedImage: $selectedImage)
             }

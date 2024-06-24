@@ -96,7 +96,8 @@ struct CheckInImageManagementView: View {
                 if let imageTakenLocation = photoSelection.imageMetadata.location {
                     await getLocationFromCoordinate(coordinate: imageTakenLocation)
                 }
-                fullScreenCover = .cropImage(image: UIImage(data: data), onSubmit: { image in
+                guard let image = UIImage(data: data) else { return }
+                fullScreenCover = .cropImage(image: image, onSubmit: { image in
                     guard let image else { return }
                     newImages.append(image)
                 })
