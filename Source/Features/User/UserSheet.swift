@@ -13,10 +13,10 @@ struct UserSheet: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var state: ScreenState = .populated
     @State private var searchTerm: String = ""
     @State private var alertError: AlertError?
     @State private var searchedFor: String?
-    @State private var isLoading = false
     @State private var searchResults = [Profile]()
 
     let onSubmit: @MainActor () -> Void
@@ -28,10 +28,6 @@ struct UserSheet: View {
     ) {
         self.mode = mode
         self.onSubmit = onSubmit
-    }
-
-    private var showContentUnavailableView: Bool {
-        !isLoading && searchResults.isEmpty
     }
 
     var body: some View {
@@ -81,12 +77,14 @@ struct UserSheet: View {
             }
         }
         .overlay {
-            if showContentUnavailableView, let searchedFor {
+            if state != .populated {
+                ScreenStateOverlayView(state: state, errorDescription: "") {
+                    await searchUsers()
+                }
+            } else if searchResults.isEmpty, let searchedFor {
                 ContentUnavailableView.search(text: searchedFor)
-            } else if showContentUnavailableView {
+            } else if searchResults.isEmpty {
                 ContentUnavailableView("user.search.empty.title", systemImage: "magnifyingglass")
-            } else if isLoading {
-                ProgressView()
             }
         }
         .navigationTitle("user.search.navigationTitle")
@@ -95,7 +93,7 @@ struct UserSheet: View {
         }
         .searchable(text: $searchTerm)
         .disableAutocorrection(true)
-        .onSubmit(of: .search) { Task { await searchUsers(currentUserId: profileEnvironmentModel.id) }
+        .onSubmit(of: .search) { Task { await searchUsers() }
         }
     }
 
@@ -103,20 +101,20 @@ struct UserSheet: View {
         ToolbarDismissAction()
     }
 
-    func searchUsers(currentUserId: UUID) async {
-        isLoading = true
-        switch await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId) {
+    func searchUsers() async {
+        state = .loading
+        switch await repository.profile.search(searchTerm: searchTerm, currentUserId: profileEnvironmentModel.id) {
         case let .success(searchResults):
             withAnimation {
                 searchedFor = searchTerm
                 self.searchResults = searchResults
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            state = .error([error])
             logger.error("Failed searching users. Error: \(error) (\(#file):\(#line))")
         }
-        isLoading = false
     }
 }
 

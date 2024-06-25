@@ -415,6 +415,9 @@
         }
       }
     },
+    "barcode.error.failedToAdd.title" : {
+
+    },
     "barcode.management.navigationTitle" : {
       "localizations" : {
         "en" : {
