@@ -109,7 +109,6 @@ struct UserSheet: View {
         case let .success(searchResults):
             withAnimation {
                 searchedFor = searchTerm
-                isLoading = false
                 self.searchResults = searchResults
             }
         case let .failure(error):
@@ -117,6 +116,7 @@ struct UserSheet: View {
             alertError = .init()
             logger.error("Failed searching users. Error: \(error) (\(#file):\(#line))")
         }
+        isLoading = false
     }
 }
 

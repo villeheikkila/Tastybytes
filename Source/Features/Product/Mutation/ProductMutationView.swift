@@ -259,21 +259,18 @@ struct ProductMutationView: View {
         switch mode {
         case let .editSuggestion(product):
             guard let subBrand, let selectedCategory else { return }
-            let editSuggestion = Product.EditSuggestionRequest(
+            let diffFromCurrent = Product.EditSuggestionRequest(
                 id: product.id,
                 name: name,
                 description: description,
                 subBrand: subBrand,
                 category: selectedCategory,
                 isDiscontinued: isDiscontinued
-            )
-
-            let diffFromCurrent = editSuggestion.diff(from: product)
+            ).diff(from: product)
             guard let diffFromCurrent else {
                 feedbackEnvironmentModel.toggle(.warning("product.editSuggestion.nothingToEdit.toast"))
                 return
             }
-
             switch await repository.product
                 .createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent)
             {

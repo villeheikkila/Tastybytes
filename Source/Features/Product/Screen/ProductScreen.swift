@@ -326,7 +326,9 @@ struct ProductInnerScreen: View {
             feedbackEnvironmentModel.toggle(.success("bracode.add.success.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.openAlert(.init(title: "barcode.error.failedToAdd.title", retryLabel: "labels.retry", retry: {
+                Task { await addBarcodeToProduct(barcode) }
+            }))
             logger.error("Adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
     }
