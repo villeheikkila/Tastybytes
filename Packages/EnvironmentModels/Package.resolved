@@ -2,21 +2,12 @@
   "originHash" : "c38c1514c9b05204ae86233cd67327e0df77c7696448ca6d5a3283a9f014dffd",
   "pins" : [
     {
-      "identity" : "keychainaccess",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
-      "state" : {
-        "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
-        "version" : "4.2.2"
-      }
-    },
-    {
       "identity" : "supabase-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift.git",
       "state" : {
-        "revision" : "c29ac728f0ac355f2adaf3bd1eec15e59b75dc51",
-        "version" : "2.8.0"
+        "revision" : "a50157fb848e1748aaf432ed36f71604cfa96d29",
+        "version" : "2.13.3"
       }
     },
     {

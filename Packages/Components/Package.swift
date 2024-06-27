@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         .package(name: "Models", path: "../Models"),
         .package(name: "Extensions", path: "../Extensions"),
-        .package(url: "https://github.com/kean/Nuke.git", from: "12.7.2"),
+        .package(url: "https://github.com/kean/Nuke.git", from: "12.7.3"),
         .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
     ],
     targets: [
