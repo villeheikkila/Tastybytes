@@ -14,6 +14,14 @@ struct MainApp: App {
     private let repository: Repository
 
     init() {
+        #if DEBUG
+            if Bundle(path: "/Applications/RocketSim.app/Contents/Frameworks/RocketSimConnectLinker.nocache.framework")?.load() != true {
+                logger.error("Failed to load linker framework")
+            } else {
+                logger.info("RocketSim Connect succesfully linked")
+            }
+        #endif
+
         URLCache.shared.memoryCapacity = 50_000_000 // 50M
         URLCache.shared.diskCapacity = 200_000_000 // 200MB
 
