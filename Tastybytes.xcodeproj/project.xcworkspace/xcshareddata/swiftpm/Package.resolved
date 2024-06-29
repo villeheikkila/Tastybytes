@@ -1,5 +1,5 @@
 {
-  "originHash" : "fac0fd5e827e8fbc601fe807adc67a17fb598d0d2eb75109cb58e27f6bc5fa58",
+  "originHash" : "d92460022edeb40b72944e8d084a312a72a3ba50270080d5d7c8185cbca7621f",
   "pins" : [
     {
       "identity" : "brightroom",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift.git",
       "state" : {
-        "revision" : "a50157fb848e1748aaf432ed36f71604cfa96d29",
-        "version" : "2.13.3"
+        "revision" : "fea42cf15e4e915bc780b006a8b3b438261dfa81",
+        "version" : "2.13.5"
       }
     },
     {
