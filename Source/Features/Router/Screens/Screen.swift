@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 enum Screen: Hashable, Codable, Sendable {
     case product(Product.Joined)
     case productFromBarcode(Product.Joined, Barcode)
@@ -41,7 +40,9 @@ enum Screen: Hashable, Codable, Sendable {
     case reports
     case error(reason: String)
 
-    @ViewBuilder var view: some View {
+    @MainActor
+    @ViewBuilder
+    var view: some View {
         switch self {
         case let .company(company):
             CompanyScreen(company: company)

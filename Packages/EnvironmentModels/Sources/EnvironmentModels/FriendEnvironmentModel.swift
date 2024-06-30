@@ -150,7 +150,7 @@ public final class FriendEnvironmentModel {
         }
     }
 
-    public func blockUser(user: Profile, onSuccess: @MainActor @Sendable @escaping () -> Void) async {
+    public func blockUser(user: Profile, onSuccess: @escaping () -> Void) async {
         guard let profile else { return }
         if let friend = friends.first(where: { $0.getFriend(userId: profile.id) == user }) {
             await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)

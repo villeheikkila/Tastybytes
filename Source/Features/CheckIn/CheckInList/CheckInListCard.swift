@@ -13,9 +13,9 @@ struct CheckInListCard: View {
 
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
-    let onUpdate: @MainActor (_ checkIn: CheckIn) async -> Void
-    let onDelete: @MainActor (_ checkIn: CheckIn) async -> Void
-    let onCreate: @MainActor (_ checkIn: CheckIn) async -> Void
+    let onUpdate: (_ checkIn: CheckIn) async -> Void
+    let onDelete: (_ checkIn: CheckIn) async -> Void
+    let onCreate: (_ checkIn: CheckIn) async -> Void
 
     var body: some View {
         CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom, onDeleteImage: { deletedImageEntity in

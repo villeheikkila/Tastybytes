@@ -5,7 +5,8 @@ import StoreKit
 import SwiftUI
 
 @MainActor
-@Observable class SubscriptionEnvironmentModel {
+@Observable
+class SubscriptionEnvironmentModel {
     private let logger = Logger(category: "SubscriptionEnvironmentModel")
     var productSubscription = ProductSubscription()
     private var activeTransactions: Set<StoreKit.Transaction> = []

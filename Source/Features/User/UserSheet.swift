@@ -63,7 +63,7 @@ struct UserSheet: View {
                             ProgressButton(
                                 "user.block.label",
                                 systemImage: "person.fill.xmark",
-                                action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: {
+                                action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: { @MainActor in
                                     onSubmit()
                                     dismiss()
                                 })

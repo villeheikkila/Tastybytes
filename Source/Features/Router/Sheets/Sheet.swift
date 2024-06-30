@@ -3,7 +3,6 @@ import CoreLocation
 import Models
 import SwiftUI
 
-@MainActor
 enum Sheet: Identifiable, Equatable {
     case report(Report.Entity)
     case checkIn(CheckInSheet.Action)
@@ -63,6 +62,7 @@ enum Sheet: Identifiable, Equatable {
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
 
+    @MainActor
     @ViewBuilder var view: some View {
         switch self {
         case let .report(entity):

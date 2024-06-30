@@ -7,7 +7,7 @@ import Repositories
 import SwiftUI
 
 struct ProductMutationView: View {
-    typealias ProductCallback = @MainActor (_ product: Product.Joined) async -> Void
+    typealias ProductCallback = (_ product: Product.Joined) async -> Void
 
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository

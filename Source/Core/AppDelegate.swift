@@ -83,18 +83,17 @@ class SceneConfiguration: UIResponder, UIWindowSceneDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-//    @MainActor
-//    func userNotificationCenter(_: UNUserNotificationCenter,
-//                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions
-//    {
-//        let userInfo = notification.request.content.userInfo
-//        NotificationCenter.default.post(
-//            name: NSNotification.Name(rawValue: "PushNotificationReceived"),
-//            object: nil,
-//            userInfo: userInfo
-//        )
-//        return [.sound, .badge, .banner, .list]
-//    }
+    nonisolated func userNotificationCenter(_: UNUserNotificationCenter,
+                                            willPresent notification: UNNotification) async -> UNNotificationPresentationOptions
+    {
+        let userInfo = notification.request.content.userInfo
+        NotificationCenter.default.post(
+            name: NSNotification.Name(rawValue: "PushNotificationReceived"),
+            object: nil,
+            userInfo: userInfo
+        )
+        return [.sound, .badge, .banner, .list]
+    }
 
     nonisolated func userNotificationCenter(
         _: UNUserNotificationCenter,

@@ -11,8 +11,8 @@ struct ProductScreenHeader: View {
     let summary: Summary?
     let checkInImages: [ImageEntity.JoinedCheckIn]
     let isLoadingCheckInImages = false
-    let loadMoreImages: @MainActor () -> Void
-    let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) async -> Void
+    let loadMoreImages: () -> Void
+    let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
 
     var productItemViewExtras: Set<ProductItemView.Extra> {
         product.logos.isEmpty ? [.companyLink] : [.companyLink, .logoOnRight]

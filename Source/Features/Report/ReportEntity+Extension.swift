@@ -28,7 +28,8 @@ public extension Report.Entity {
 
 extension Report.Entity {
     @MainActor
-    @ViewBuilder var view: some View {
+    @ViewBuilder
+    var view: some View {
         switch self {
         case let .product(product):
             ProductItemView(product: product, extras: [.companyLink, .logoOnRight])

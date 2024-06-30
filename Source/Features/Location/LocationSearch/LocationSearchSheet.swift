@@ -68,7 +68,7 @@ struct LocationSearchSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task(id: searchText, milliseconds: 500) { @MainActor [searchText] in
+        .task(id: searchText, milliseconds: 500) { [searchText] in
             guard initialLocation == nil else { return }
             guard !searchText.isEmpty else {
                 searchResults = []

@@ -112,7 +112,7 @@ struct DiscoverScreen: View {
                     ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
                 }
             }
-            .task(id: searchKey, milliseconds: 200) { @MainActor [searchKey] in
+            .task(id: searchKey, milliseconds: 200) { [searchKey] in
                 await loadData(searchKey: searchKey)
             }
             .onChange(of: searchScope) {

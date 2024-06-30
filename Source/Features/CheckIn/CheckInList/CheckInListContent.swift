@@ -12,8 +12,8 @@ struct CheckInListContent: View {
     @Environment(Router.self) private var router
     @Binding var checkIns: [CheckIn]
     let loadedFrom: CheckInCard.LoadedFrom
-    let onCheckInUpdate: @MainActor (_ checkIn: CheckIn) async -> Void
-    let onCreateCheckIn: @MainActor (_ checkIn: CheckIn) async -> Void
+    let onCheckInUpdate: (_ checkIn: CheckIn) async -> Void
+    let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
     let onLoadMore: () -> Void
 
     var body: some View {

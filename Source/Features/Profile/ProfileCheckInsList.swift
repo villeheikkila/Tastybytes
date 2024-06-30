@@ -40,7 +40,9 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
         }
     }
 
-    @MainActor @ToolbarContentBuilder var toolbar: some ToolbarContent {
+    @MainActor
+    @ToolbarContentBuilder
+    var toolbar: some ToolbarContent {
         if case let .location(location) = self {
             LocationToolbarItem(location: location)
             ToolbarItem(placement: .primaryAction) {

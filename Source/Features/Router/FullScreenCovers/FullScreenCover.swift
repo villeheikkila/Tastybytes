@@ -1,12 +1,12 @@
 import Components
 import SwiftUI
 
-@MainActor
 enum FullScreenCover: Identifiable, Equatable {
     case camera(selectedImage: Binding<UIImage?>)
     case cameraWithCropping(onSubmit: (UIImage?) -> Void)
     case cropImage(image: UIImage, onSubmit: (UIImage?) -> Void)
 
+    @MainActor
     @ViewBuilder
     var view: some View {
         switch self {
