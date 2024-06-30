@@ -97,12 +97,10 @@ struct OnboardingProfileSection: View {
                         .buttonStyle(.borderless)
                     }
             }
-            .onChange(of: selectedItem) { _, newValue in
-                guard let newValue else { return }
-                Task {
-                    guard let data = await newValue.getJPEG() else { return }
-                    await profileEnvironmentModel.uploadAvatar(data: data)
-                }
+            .task(id: selectedItem) {
+                guard let selectedItem else { return }
+                guard let data = await selectedItem.getJPEG() else { return }
+                await profileEnvironmentModel.uploadAvatar(data: data)
             }
             Spacer()
         }

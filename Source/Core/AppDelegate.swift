@@ -15,7 +15,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         let center = UNUserNotificationCenter.current()
         return await center.notificationSettings().authorizationStatus
     }
-    
+
     private let logger = Logger(category: "AppDelegate")
 
     func application(

@@ -1,7 +1,6 @@
 import Extensions
 import SwiftUI
 
-@MainActor
 public extension View {
     func fullScreenImageCrop(isPresented: Binding<Bool>, image: UIImage?,
                              onSubmit: @escaping (_ image: UIImage?) -> Void) -> some View

@@ -85,11 +85,9 @@ struct ProfileInnerView: View {
                     proxy.scrollTo(topAnchor, anchor: .top)
                 }
             }
-            .onChange(of: selectedItem) { _, newValue in
-                Task {
-                    guard let data = await newValue?.getJPEG() else { return }
-                    await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
-                }
+            .task(id: selectedItem) {
+                guard let data = await selectedItem?.getJPEG() else { return }
+                await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
             }
         }
     }

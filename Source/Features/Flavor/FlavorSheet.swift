@@ -35,25 +35,25 @@ struct FlavorSheet: View {
 //            Text(pickedFlavor.name.capitalized)
 //                .listRowBackground(Color.clear)
 //        }
-        .environment(\.defaultMinListRowHeight, 48)
-        .environment(\.editMode, .constant(.active))
-        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
-        .navigationTitle("flavor.navigationTitle")
-        .toasts(presenting: $feedbackEnvironmentModel.toast)
-        .overlay {
-            ContentUnavailableView.search(text: searchTerm)
-                .opacity(showContentUnavailableView ? 1 : 0)
-        }
-        .onChange(of: pickedFlavors) { oldValue, newValue in
-            if newValue.count > maxFlavors {
-                pickedFlavors = pickedFlavors.removing(newValue.addedValues(oldValue))
-                feedbackEnvironmentModel.toggle(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)"))
-                return
+            .environment(\.defaultMinListRowHeight, 48)
+            .environment(\.editMode, .constant(.active))
+            .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+            .navigationTitle("flavor.navigationTitle")
+            .toasts(presenting: $feedbackEnvironmentModel.toast)
+            .overlay {
+                ContentUnavailableView.search(text: searchTerm)
+                    .opacity(showContentUnavailableView ? 1 : 0)
             }
-        }
-        .toolbar {
-            toolbarContent
-        }
+            .onChange(of: pickedFlavors) { oldValue, newValue in
+                if newValue.count > maxFlavors {
+                    pickedFlavors = pickedFlavors.removing(newValue.addedValues(oldValue))
+                    feedbackEnvironmentModel.toggle(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)"))
+                    return
+                }
+            }
+            .toolbar {
+                toolbarContent
+            }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

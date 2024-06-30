@@ -13,7 +13,7 @@ enum Sheet: Identifiable, Equatable {
         sections: [ProductFilterSheet.Sections],
         onApply: (_ filter: Product.Filter?) -> Void
     )
-    case nameTag(onSuccess: @MainActor (_ profileId: UUID) -> Void)
+    case nameTag(onSuccess: (_ profileId: UUID) -> Void)
     case companySearch(onSelect: (_ company: Company) -> Void)
     case brand(brandOwner: Company,
                brand: Binding<Brand.JoinedSubBrands?>,

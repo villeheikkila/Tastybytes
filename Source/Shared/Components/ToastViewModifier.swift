@@ -1,7 +1,6 @@
 import EnvironmentModels
 import SwiftUI
 
-@MainActor
 public extension View {
     func toasts(presenting: Binding<ToastEvent?>) -> some View {
         modifier(ToastViewModifier(presenting: presenting))

@@ -124,7 +124,7 @@ struct CompanySearchSheet: View {
         }
     }
 
-    func createNewCompany(onSuccess: @MainActor @escaping (_ company: Company) -> Void) async {
+    func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) async {
         let newCompany = Company.NewRequest(name: companyName)
         switch await repository.company.insert(newCompany: newCompany) {
         case let .success(newCompany):

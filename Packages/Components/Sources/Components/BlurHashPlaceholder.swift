@@ -1,7 +1,7 @@
+import BlurHashViews
 import Extensions
 import Models
 import SwiftUI
-import BlurHashViews
 
 public struct BlurHashPlaceholder: View {
     @State private var image: UIImage?

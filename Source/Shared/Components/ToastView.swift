@@ -69,7 +69,6 @@ public struct Toast: View {
     }
 }
 
-@MainActor
 private struct AnimatedXmark: View {
     @State private var percentage: CGFloat = .zero
     let color: Color
@@ -109,7 +108,6 @@ private struct AnimatedXmark: View {
     }
 }
 
-@MainActor
 private struct AnimatedCheckmark: View {
     @State private var percentage: CGFloat = .zero
     let color: Color

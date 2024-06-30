@@ -18,9 +18,9 @@ struct PhaseObserver<Content: View>: View {
                     logger.info("Scene phase is active.")
                     Task {
                         guard let quickAction = await quickActionActor.selectedQuickAction else { return }
-                            await UIApplication.shared.open(quickAction.getUrl(baseUrl: appEnvironmentModel.infoPlist.deepLinkBaseUrl))
-                            await quickActionActor.setSelectedQuickAction(nil)
-                        }
+                        await UIApplication.shared.open(quickAction.getUrl(baseUrl: appEnvironmentModel.infoPlist.deepLinkBaseUrl))
+                        await quickActionActor.setSelectedQuickAction(nil)
+                    }
                 case .inactive:
                     logger.info("Scene phase is inactive.")
                 case .background:

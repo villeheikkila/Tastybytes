@@ -90,7 +90,7 @@ public final class Repository: RepositoryProtocol {
     }
 }
 
-//final class CustomSupabaseLogger: SupabaseLogger, Sendable {
+// final class CustomSupabaseLogger: SupabaseLogger, Sendable {
 //    private let lock = NSLock()
 //    private var loggers: [String: Logger] = [:]
 //
@@ -111,4 +111,4 @@ public final class Repository: RepositoryProtocol {
 //            }
 //        }
 //    }
-//}
+// }

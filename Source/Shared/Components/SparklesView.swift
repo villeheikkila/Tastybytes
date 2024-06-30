@@ -41,7 +41,7 @@ struct SparkleView: View {
             }
             .onAppear {
                 timer = Timer.publish(every: duration, on: .current, in: .common).autoconnect()
-                position = sparkle.position
+                position = sparkle.position(screenWidth: UIScreen.main.bounds.size.width)
             }
             .onDisappear {
                 timer.upstream.connect().cancel()
@@ -105,9 +105,8 @@ struct Sparkle {
         return CGSize(width: height, height: height)
     }
 
-    @MainActor
-    var position: CGPoint {
-        let x = CGFloat.random(in: 36 + size.width ... UIScreen.main.bounds.size.width - 36 - size.width)
+    func position(screenWidth: CGFloat) -> CGPoint {
+        let x = CGFloat.random(in: 36 + size.width ... screenWidth - 36 - size.width)
         let y = CGFloat.random(in: -50 + size.height ... 100 - size.height)
         return CGPoint(x: x, y: y)
     }

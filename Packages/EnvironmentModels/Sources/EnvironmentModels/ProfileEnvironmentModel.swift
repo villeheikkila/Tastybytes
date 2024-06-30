@@ -22,7 +22,7 @@ public enum ProfileState: Sendable {
 
 @MainActor
 @Observable
-public final class ProfileEnvironmentModel: ObservableObject {
+public final class ProfileEnvironmentModel {
     private let logger = Logger(category: "ProfileEnvironmentModel")
     // Auth state
     public var profileState: ProfileState = .loading

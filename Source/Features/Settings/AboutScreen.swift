@@ -65,7 +65,7 @@ struct AboutScreen: View {
             })
         )
         ProgressButton("about.rateApp.label \(appEnvironmentModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
-           // requestReview()
+            // requestReview()
         })
     }
 

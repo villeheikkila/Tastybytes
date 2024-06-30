@@ -6,10 +6,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-// TODO: HACK!
-extension PhotosPickerItem: @unchecked @retroactive Sendable {}
-
-
 struct CheckInImageManagementView: View {
     private let logger = Logger(category: "CheckInImageManagementView")
 
@@ -90,21 +86,19 @@ struct CheckInImageManagementView: View {
             }
         }
         .photosPicker(isPresented: $showPhotoPicker, selection: $photoSelection, matching: .images, photoLibrary: .shared())
-        .onChange(of: photoSelection) {
-            Task {
-                guard let photoSelection, let data = try? await photoSelection.loadTransferable(type: Data.self) else { return }
-                if let imageTakenAt = photoSelection.imageMetadata.date {
-                    checkInAt = imageTakenAt
-                }
-                if let imageTakenLocation = photoSelection.imageMetadata.location {
-                    await getLocationFromCoordinate(coordinate: imageTakenLocation)
-                }
-                guard let image = UIImage(data: data) else { return }
-                fullScreenCover = .cropImage(image: image, onSubmit: { image in
-                    guard let image else { return }
-                    newImages.append(image)
-                })
+        .task(id: photoSelection) {
+            guard let photoSelection, let data = await photoSelection.getImageData() else { return }
+            if let imageTakenAt = photoSelection.imageMetadata.date {
+                checkInAt = imageTakenAt
             }
+            if let imageTakenLocation = photoSelection.imageMetadata.location {
+                await getLocationFromCoordinate(coordinate: imageTakenLocation)
+            }
+            guard let image = UIImage(data: data) else { return }
+            fullScreenCover = .cropImage(image: image, onSubmit: { image in
+                guard let image else { return }
+                newImages.append(image)
+            })
         }
         .scrollIndicators(.hidden)
         .contentMargins(.horizontal, 16)

@@ -19,7 +19,7 @@ let package = Package(
         .package(name: "Extensions", path: "../Extensions"),
         .package(url: "https://github.com/kean/Nuke.git", from: "12.7.3"),
         .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
-        .package(url: "https://github.com/daprice/BlurHashViews.git", from: "1.0.0")
+        .package(url: "https://github.com/daprice/BlurHashViews.git", from: "1.0.0"),
     ],
     targets: [
         .target(
@@ -32,7 +32,7 @@ let package = Package(
                 .product(name: "BrightroomEngine", package: "Brightroom"),
                 .product(name: "BrightroomUI", package: "Brightroom"),
                 .product(name: "BrightroomUIPhotosCrop", package: "Brightroom"),
-                .product(name: "BlurHashViews", package: "blurhashviews")
+                .product(name: "BlurHashViews", package: "blurhashviews"),
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency"),

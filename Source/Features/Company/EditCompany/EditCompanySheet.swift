@@ -32,7 +32,7 @@ struct EditCompanySheet: View {
             Section(mode.nameSectionHeader) {
                 TextField("company.edit.name.placeholder", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
-                    await submit(onSuccess: {
+                    await submit(onSuccess: { @MainActor in
                         dismiss()
                         await onSuccess()
                     })
@@ -94,7 +94,7 @@ struct EditCompanySheet: View {
         }
     }
 
-    func submit(onSuccess: @MainActor @Sendable () async -> Void) async {
+    func submit(onSuccess: @Sendable () async -> Void) async {
         switch mode {
         case .edit:
             await editCompany(onSuccess: onSuccess)
