@@ -25,35 +25,38 @@ struct FlavorSheet: View {
         !searchTerm.isEmpty && filteredFlavors.isEmpty
     }
 
+    private var availableFlavours: [Flavor] {
+        appEnvironmentModel.flavors
+    }
+
     var body: some View {
-        List {}
-//        List(filteredFlavors.sorted(by: { pickedFlavors.contains($0) && !pickedFlavors.contains($1) }), selection: $pickedFlavors.map(getter: { flavors in
-//            Set(flavors.map(\.id))
-//        }, setter: { ids in
-//            Array(ids.compactMap { id in appEnvironmentModel.flavors.first(where: { $0.id == id }) })
-//        })) { pickedFlavor in
-//            Text(pickedFlavor.name.capitalized)
-//                .listRowBackground(Color.clear)
-//        }
-            .environment(\.defaultMinListRowHeight, 48)
-            .environment(\.editMode, .constant(.active))
-            .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
-            .navigationTitle("flavor.navigationTitle")
-            .toasts(presenting: $feedbackEnvironmentModel.toast)
-            .overlay {
-                ContentUnavailableView.search(text: searchTerm)
-                    .opacity(showContentUnavailableView ? 1 : 0)
+        List(filteredFlavors.sorted(by: { pickedFlavors.contains($0) && !pickedFlavors.contains($1) }), selection: $pickedFlavors.map(getter: { flavors in
+            Set(flavors.map(\.id))
+        }, setter: { ids in
+            Array(ids.compactMap { id in availableFlavours.first(where: { $0.id == id }) })
+        })) { pickedFlavor in
+            Text(pickedFlavor.name.capitalized)
+                .listRowBackground(Color.clear)
+        }
+        .environment(\.defaultMinListRowHeight, 48)
+        .environment(\.editMode, .constant(.active))
+        .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .navigationTitle("flavor.navigationTitle")
+        .toasts(presenting: $feedbackEnvironmentModel.toast)
+        .overlay {
+            ContentUnavailableView.search(text: searchTerm)
+                .opacity(showContentUnavailableView ? 1 : 0)
+        }
+        .onChange(of: pickedFlavors) { oldValue, newValue in
+            if newValue.count > maxFlavors {
+                pickedFlavors = pickedFlavors.removing(newValue.addedValues(oldValue))
+                feedbackEnvironmentModel.toggle(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)"))
+                return
             }
-            .onChange(of: pickedFlavors) { oldValue, newValue in
-                if newValue.count > maxFlavors {
-                    pickedFlavors = pickedFlavors.removing(newValue.addedValues(oldValue))
-                    feedbackEnvironmentModel.toggle(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)"))
-                    return
-                }
-            }
-            .toolbar {
-                toolbarContent
-            }
+        }
+        .toolbar {
+            toolbarContent
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

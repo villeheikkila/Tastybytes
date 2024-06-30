@@ -6,7 +6,8 @@ public extension Binding {
                       set: { _ in self.wrappedValue = nil })
     }
 
-    func map<V>(getter: @escaping @Sendable (Value) -> V, setter: @escaping @Sendable (V) -> Value) -> Binding<V> {
+    @MainActor
+    func map<V>(getter: @escaping (Value) -> V, setter: @escaping (V) -> Value) -> Binding<V> {
         Binding<V>(get: { getter(self.wrappedValue) },
                    set: { self.wrappedValue = setter($0) })
     }
