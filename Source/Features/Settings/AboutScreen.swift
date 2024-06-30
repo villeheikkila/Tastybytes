@@ -13,7 +13,7 @@ struct AboutScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @Environment(\.requestReview) var requestReview
+    // @Environment(\.requestReview) var requestReview
     @State private var email: Email = .init()
 
     var body: some View {
@@ -66,7 +66,7 @@ struct AboutScreen: View {
             })
         )
         ProgressButton("about.rateApp.label \(appEnvironmentModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
-            requestReview()
+           // requestReview()
         })
     }
 

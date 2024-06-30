@@ -38,7 +38,7 @@ public struct RatingView: View {
     }
 }
 
-public enum StarType {
+public enum StarType: Sendable {
     case large, small
 
     var size: Double {
@@ -52,7 +52,7 @@ public enum StarType {
 }
 
 struct RatingColorKey: EnvironmentKey {
-    static var defaultValue: Color = .yellow
+    static let defaultValue: Color = .yellow
 }
 
 extension EnvironmentValues {
@@ -69,7 +69,7 @@ extension View {
 }
 
 struct RatingSizeKey: EnvironmentKey {
-    static var defaultValue: StarType = .large
+    static let defaultValue: StarType = .large
 }
 
 extension EnvironmentValues {

@@ -11,6 +11,11 @@ import SwiftUI
 }
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
+    nonisolated func getNotificationAuthorizationStatus() async -> sending UNAuthorizationStatus {
+        let center = UNUserNotificationCenter.current()
+        return await center.notificationSettings().authorizationStatus
+    }
+    
     private let logger = Logger(category: "AppDelegate")
 
     func application(
@@ -20,7 +25,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         Task {
             let center = UNUserNotificationCenter.current()
-            let authorizationStatus = await center.notificationSettings().authorizationStatus
+            let authorizationStatus = await getNotificationAuthorizationStatus()
 
             if authorizationStatus != .authorized ||
                 authorizationStatus != .provisional
@@ -78,17 +83,18 @@ class SceneConfiguration: UIResponder, UIWindowSceneDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_: UNUserNotificationCenter,
-                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions
-    {
-        let userInfo = notification.request.content.userInfo
-        NotificationCenter.default.post(
-            name: NSNotification.Name(rawValue: "PushNotificationReceived"),
-            object: nil,
-            userInfo: userInfo
-        )
-        return [.sound, .badge, .banner, .list]
-    }
+//    @MainActor
+//    func userNotificationCenter(_: UNUserNotificationCenter,
+//                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions
+//    {
+//        let userInfo = notification.request.content.userInfo
+//        NotificationCenter.default.post(
+//            name: NSNotification.Name(rawValue: "PushNotificationReceived"),
+//            object: nil,
+//            userInfo: userInfo
+//        )
+//        return [.sound, .badge, .banner, .list]
+//    }
 
     nonisolated func userNotificationCenter(
         _: UNUserNotificationCenter,
@@ -117,10 +123,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 // Actors to make passing values between AppDelegate and SwiftUI views safe without using shared singletons
 
 actor QuickActionActor {
-    var selectedQuickAction: UIApplicationShortcutItem?
+    var selectedQuickAction: QuickAction?
 
     func setSelectedQuickAction(_ newValue: UIApplicationShortcutItem?) async {
-        selectedQuickAction = newValue
+        if let name = newValue?.userInfo?["name"] as? String,
+           let quickAction = QuickAction(rawValue: name)
+        {
+            selectedQuickAction = quickAction
+        } else {
+            selectedQuickAction = nil
+        }
     }
 }
 
