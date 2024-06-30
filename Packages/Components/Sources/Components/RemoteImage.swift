@@ -36,8 +36,11 @@ public struct RemoteImageBlurHash<Content: View>: View {
         LazyImage(url: url) { state in
             if let image = state.image {
                 content(image)
-            } else {
+            } else if let blurHash {
                 BlurHashPlaceholder(blurHash: blurHash, height: height)
+            } else {
+                ProgressView()
+                    .frame(height: height)
             }
         }
     }

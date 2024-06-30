@@ -6,6 +6,10 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+// TODO: HACK!
+extension PhotosPickerItem: @unchecked @retroactive Sendable {}
+
+
 @MainActor
 struct CheckInImageManagementView: View {
     private let logger = Logger(category: "CheckInImageManagementView")

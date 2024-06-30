@@ -68,11 +68,11 @@ public final class LocationEnvironmentModel {
 
     public func getCurrentLocation() async -> CLLocation? {
         requestLocationAuthorization()
-        logger.info("Updating location...")
         let updates = CLLocationUpdate.liveUpdates()
         do {
             for try await update in updates {
                 if let location = update.location {
+                    logger.info("Current location: \(location)")
                     self.location = location
                     return location
                 }

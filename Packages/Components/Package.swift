@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 
 import PackageDescription
 
@@ -6,7 +6,7 @@ let package = Package(
     name: "Components",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v17), .watchOS(.v10), .macOS(.v14),
+        .iOS(.v18), .watchOS(.v11), .tvOS(.v17), .visionOS(.v2),
     ],
     products: [
         .library(
@@ -19,6 +19,7 @@ let package = Package(
         .package(name: "Extensions", path: "../Extensions"),
         .package(url: "https://github.com/kean/Nuke.git", from: "12.7.3"),
         .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
+        .package(url: "https://github.com/daprice/BlurHashViews.git", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -31,11 +32,13 @@ let package = Package(
                 .product(name: "BrightroomEngine", package: "Brightroom"),
                 .product(name: "BrightroomUI", package: "Brightroom"),
                 .product(name: "BrightroomUIPhotosCrop", package: "Brightroom"),
+                .product(name: "BlurHashViews", package: "blurhashviews")
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency"),
                 .enableExperimentalFeature("DisableOutwardActorInference"),
             ]
         ),
-    ]
+    ],
+    swiftLanguageVersions: [.version("6")]
 )

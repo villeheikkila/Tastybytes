@@ -22,8 +22,10 @@ struct CheckInImageCellView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 100, height: 100)
+                } else if let blurHash = checkInImage.blurHash {
+                    BlurHashPlaceholder(blurHash: blurHash, height: 100)
                 } else {
-                    BlurHashPlaceholder(blurHash: checkInImage.blurHash, height: 100)
+                    ProgressView()
                 }
             }
             .frame(width: 100, height: 100)

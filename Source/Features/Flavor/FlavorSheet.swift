@@ -4,7 +4,6 @@ import Extensions
 import Models
 import SwiftUI
 
-@MainActor
 struct FlavorSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
@@ -27,14 +26,15 @@ struct FlavorSheet: View {
     }
 
     var body: some View {
-        List(filteredFlavors.sorted(by: { pickedFlavors.contains($0) && !pickedFlavors.contains($1) }), selection: $pickedFlavors.map(getter: { flavors in
-            Set(flavors.map(\.id))
-        }, setter: { ids in
-            Array(ids.compactMap { id in appEnvironmentModel.flavors.first(where: { $0.id == id }) })
-        })) { pickedFlavor in
-            Text(pickedFlavor.name.capitalized)
-                .listRowBackground(Color.clear)
-        }
+        List {}
+//        List(filteredFlavors.sorted(by: { pickedFlavors.contains($0) && !pickedFlavors.contains($1) }), selection: $pickedFlavors.map(getter: { flavors in
+//            Set(flavors.map(\.id))
+//        }, setter: { ids in
+//            Array(ids.compactMap { id in appEnvironmentModel.flavors.first(where: { $0.id == id }) })
+//        })) { pickedFlavor in
+//            Text(pickedFlavor.name.capitalized)
+//                .listRowBackground(Color.clear)
+//        }
         .environment(\.defaultMinListRowHeight, 48)
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))

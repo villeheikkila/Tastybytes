@@ -1,11 +1,11 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 
 import PackageDescription
 
 let package = Package(
     name: "EnvironmentModels",
     platforms: [
-        .iOS(.v17), .watchOS(.v10), .tvOS(.v14), .visionOS(.v1),
+        .iOS(.v18), .watchOS(.v11), .tvOS(.v17), .visionOS(.v2),
     ],
     products: [
         .library(
@@ -31,5 +31,6 @@ let package = Package(
                 .enableExperimentalFeature("DisableOutwardActorInference"),
             ]
         ),
-    ]
+    ],
+    swiftLanguageVersions: [.version("6")]
 )
