@@ -94,7 +94,7 @@ struct EditCompanySheet: View {
         }
     }
 
-    func submit(onSuccess: @Sendable () async -> Void) async {
+    func submit(onSuccess: () async -> Void) async {
         switch mode {
         case .edit:
             await editCompany(onSuccess: onSuccess)

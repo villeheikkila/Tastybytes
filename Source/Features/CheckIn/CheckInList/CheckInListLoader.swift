@@ -8,7 +8,7 @@ import SwiftUI
 @MainActor
 @Observable
 final class CheckInListLoader {
-    typealias OnLoadComplete = @Sendable (_ checkIns: [CheckIn]) async -> Void
+    typealias OnLoadComplete = (_ checkIns: [CheckIn]) async -> Void
     typealias Fetcher = (_ from: Int, _ to: Int, _ segment: CheckInSegment) async -> Result<[CheckIn], Error>
     private let logger = Logger(category: "CheckInLoader")
 
