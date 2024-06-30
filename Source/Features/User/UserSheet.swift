@@ -18,7 +18,7 @@ struct UserSheet: View {
     @State private var searchedFor: String?
     @State private var searchResults = [Profile]()
 
-    let onSubmit: @MainActor () -> Void
+    let onSubmit: () -> Void
     let mode: Mode
 
     init(
@@ -63,7 +63,7 @@ struct UserSheet: View {
                             ProgressButton(
                                 "user.block.label",
                                 systemImage: "person.fill.xmark",
-                                action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: { @MainActor in
+                                action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: {
                                     onSubmit()
                                     dismiss()
                                 })

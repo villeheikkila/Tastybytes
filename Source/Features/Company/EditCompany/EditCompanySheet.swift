@@ -32,7 +32,7 @@ struct EditCompanySheet: View {
             Section(mode.nameSectionHeader) {
                 TextField("company.edit.name.placeholder", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
-                    await submit(onSuccess: { @MainActor in
+                    await submit(onSuccess: {
                         dismiss()
                         await onSuccess()
                     })
