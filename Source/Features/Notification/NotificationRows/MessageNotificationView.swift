@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct MessageNotificationView: View {
     let message: String
 

@@ -5,7 +5,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ProfileProductListView: View {
     private let logger = Logger(category: "ProfileProductListView")
     @Environment(Router.self) private var router
@@ -153,7 +152,6 @@ struct ProfileProductListView: View {
     }
 }
 
-@MainActor
 struct ProfileProductListRow: View {
     let product: Product.Joined
 

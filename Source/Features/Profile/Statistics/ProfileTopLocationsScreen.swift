@@ -4,7 +4,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ProfileTopLocationsScreen: View {
     private let logger = Logger(category: "ProfileTopLocationsScreen")
     @Environment(Repository.self) private var repository
@@ -47,7 +46,6 @@ struct ProfileTopLocationsScreen: View {
     }
 }
 
-@MainActor
 struct TopLocationRow: View {
     @Environment(Router.self) private var router
 

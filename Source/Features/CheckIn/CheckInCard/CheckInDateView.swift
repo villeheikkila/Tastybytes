@@ -2,7 +2,6 @@ import Components
 import Models
 import SwiftUI
 
-@MainActor
 struct CheckInDateView: View {
     let checkInAt: Date?
 

@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct DuplicateProductSheetRow: View {
     let product: Product.Joined
     let onClick: (_ product: Product.Joined) -> Void

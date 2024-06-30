@@ -2,7 +2,6 @@ import Components
 import Models
 import SwiftUI
 
-@MainActor
 struct ProductScreenLoadedFromBarcodeOverlay: View {
     @Environment(Router.self) private var router
     @Binding var loadedWithBarcode: Barcode?

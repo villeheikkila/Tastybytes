@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ProductScreen: View {
     @Environment(Repository.self) private var repository
     let product: Product.Joined
@@ -22,7 +21,6 @@ struct ProductScreen: View {
     }
 }
 
-@MainActor
 struct ProductInnerScreen: View {
     private let logger = Logger(category: "ProductScreen")
     @Environment(Repository.self) private var repository

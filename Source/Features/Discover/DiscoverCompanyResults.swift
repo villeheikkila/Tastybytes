@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct DiscoverCompanyResults: View {
     @Environment(Router.self) private var router
     let companies: [Company]

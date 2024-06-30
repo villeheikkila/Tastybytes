@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct ProfileJoinedAtSection: View {
     let joinedAt: Date
 

@@ -3,7 +3,6 @@ import Models
 import StoreKit
 import SwiftUI
 
-@MainActor
 struct SubscriptionStoreContentView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 

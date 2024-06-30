@@ -1,7 +1,6 @@
 import EnvironmentModels
 import SwiftUI
 
-@MainActor
 struct ProfileStateObserver<Content: View>: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -22,7 +21,6 @@ struct ProfileStateObserver<Content: View>: View {
     }
 }
 
-@MainActor
 struct ProfileErrorStateView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     let errors: [Error]

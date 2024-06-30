@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct BarcodeManagementSheet: View {
     private let logger = Logger(category: "BarcodeManagementSheet")
     @Environment(Repository.self) private var repository

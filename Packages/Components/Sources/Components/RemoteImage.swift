@@ -2,7 +2,6 @@ import Models
 import NukeUI
 import SwiftUI
 
-@MainActor
 public struct RemoteImage<Content: View>: View {
     let url: URL?
     let content: (LazyImageState) -> Content
@@ -17,7 +16,6 @@ public struct RemoteImage<Content: View>: View {
     }
 }
 
-@MainActor
 public struct RemoteImageBlurHash<Content: View>: View {
     public typealias ImageBuilder = (Image) -> Content
     let url: URL?

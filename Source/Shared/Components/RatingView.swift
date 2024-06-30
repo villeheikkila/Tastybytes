@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 public struct RatingView: View {
     @Environment(\.ratingColor) private var starColor
     @Environment(\.ratingSize) private var starSize

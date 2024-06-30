@@ -7,7 +7,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CheckInSheet: View {
     private let logger = Logger(category: "CheckInSheet")
     @Environment(Repository.self) private var repository

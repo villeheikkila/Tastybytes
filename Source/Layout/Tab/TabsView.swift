@@ -2,7 +2,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct TabsView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel

@@ -7,7 +7,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CompanyScreen: View {
     private let logger = Logger(category: "CompanyScreen")
     @Environment(Repository.self) private var repository

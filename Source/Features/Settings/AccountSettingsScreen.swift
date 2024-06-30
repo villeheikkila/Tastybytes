@@ -7,7 +7,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-@MainActor
 struct AccountSettingsScreen: View {
     private let logger = Logger(category: "AccountSettingsScreen")
     @Environment(Repository.self) private var repository

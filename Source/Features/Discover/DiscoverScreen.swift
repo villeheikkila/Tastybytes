@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct DiscoverScreen: View {
     private let logger = Logger(category: "SearchListView")
     @Environment(Repository.self) private var repository

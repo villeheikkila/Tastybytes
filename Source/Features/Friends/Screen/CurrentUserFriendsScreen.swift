@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct CurrentUserFriendsScreen: View {
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -96,7 +95,6 @@ struct CurrentUserFriendsScreen: View {
     }
 }
 
-@MainActor
 struct CurrentUserFriendListRow: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel

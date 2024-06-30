@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CategoryServingStyleSheet: View {
     private let logger = Logger(category: "CategoryServingStyleSheet")
     @Environment(Repository.self) private var repository
@@ -87,7 +86,6 @@ struct CategoryServingStyleSheet: View {
     }
 }
 
-@MainActor
 struct CategoryServingStyleRow: View {
     @State private var showDeleteServingStyleConfirmation = false
 

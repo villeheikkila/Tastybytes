@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct DiscoverProductAssignBarcode: View {
     let isEmpty: Bool
     @Binding var barcode: Barcode?

@@ -3,7 +3,6 @@ import Models
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CurrentProfileScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router

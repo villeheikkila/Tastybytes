@@ -5,7 +5,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct AuthenticationScreenWatchOSContent: View {
     var body: some View {
         VStack {

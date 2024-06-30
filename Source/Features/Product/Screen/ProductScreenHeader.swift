@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ProductScreenHeader: View {
     let product: Product.Joined
     let summary: Summary?

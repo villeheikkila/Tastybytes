@@ -7,7 +7,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-@MainActor
 struct EditBrandSheet: View {
     typealias BrandUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
     private let logger = Logger(category: "EditBrandSheet")
@@ -135,7 +134,6 @@ struct EditBrandSheet: View {
     }
 }
 
-@MainActor
 struct EditLogoSection: View {
     private let logger = Logger(category: "EditLogoSection")
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel

@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct FullScreenErrorView: View {
     @State private var task: Task<Void, Never>?
 

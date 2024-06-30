@@ -3,7 +3,6 @@ import Models
 import Repositories
 import SwiftUI
 
-@MainActor
 struct RouterProvider<Content: View>: View {
     @Environment(Repository.self) private var repository
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel

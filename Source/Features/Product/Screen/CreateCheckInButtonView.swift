@@ -5,7 +5,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CreateCheckInButtonView: View {
     @Environment(Router.self) private var router
 

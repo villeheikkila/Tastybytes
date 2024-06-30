@@ -4,7 +4,6 @@ import Models
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CheckInCardContainer<Content: View>: View {
     @Environment(Router.self) private var router
     @Environment(\.colorScheme) private var colorScheme

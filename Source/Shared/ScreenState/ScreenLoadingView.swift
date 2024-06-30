@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct ScreenLoadingView: View {
     @State private var showProgressView = false
 

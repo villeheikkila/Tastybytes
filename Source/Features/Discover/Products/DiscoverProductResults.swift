@@ -4,7 +4,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct DiscoverProductResults: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Router.self) private var router

@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ReportScreen: View {
     private let logger = Logger(category: "ReportScreen")
     @Environment(Repository.self) private var repository
@@ -74,7 +73,6 @@ struct ReportScreen: View {
     }
 }
 
-@MainActor
 struct ReportScreenRow: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router

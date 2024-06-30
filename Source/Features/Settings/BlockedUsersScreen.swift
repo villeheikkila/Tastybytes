@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct BlockedUsersScreen: View {
     @Environment(Router.self) private var router
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
@@ -56,7 +55,6 @@ struct BlockedUsersScreen: View {
     }
 }
 
-@MainActor
 struct BlockedUserListItemView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let profile: Profile

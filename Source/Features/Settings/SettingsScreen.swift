@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct SettingsScreen: View {
     @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
@@ -94,7 +93,6 @@ struct SettingsScreen: View {
     }
 }
 
-@MainActor
 struct AppIconLabelRow: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 

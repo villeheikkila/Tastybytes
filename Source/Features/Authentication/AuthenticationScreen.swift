@@ -5,7 +5,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct AuthenticationScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 

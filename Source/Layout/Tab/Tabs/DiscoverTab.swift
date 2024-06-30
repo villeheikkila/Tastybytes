@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct DiscoverTab: View {
     @Environment(Router.self) private var router
     @Environment(TabManager.self) private var tabManager

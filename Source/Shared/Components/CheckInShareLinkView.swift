@@ -2,7 +2,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 public struct CheckInShareLinkView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let checkIn: CheckIn

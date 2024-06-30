@@ -1,7 +1,6 @@
 import SwiftUI
 import TipKit
 
-@MainActor
 struct DeviceInfoProvider<Content: View>: View {
     @AppStorage(.colorScheme) var colorScheme: String = "system"
     @State private var isPortrait = false

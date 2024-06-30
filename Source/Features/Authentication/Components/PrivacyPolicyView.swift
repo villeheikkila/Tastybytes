@@ -1,7 +1,6 @@
 import EnvironmentModels
 import SwiftUI
 
-@MainActor
 struct PrivacyPolicyView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var openUrlInWebView: WebViewLink?

@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct CheckInCardImage: View {
     let checkIn: CheckIn
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
@@ -14,7 +13,6 @@ struct CheckInCardImage: View {
     }
 }
 
-@MainActor
 struct CheckInImageScrollView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let checkIn: CheckIn

@@ -4,7 +4,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct AuthStateObserver<Authenticated: View>: View {
     private let logger = Logger(category: "AuthStateObserver")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

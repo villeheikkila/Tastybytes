@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct BrandLogo: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let brand: BrandProtocol

@@ -3,7 +3,6 @@ import Models
 import SwiftUI
 import BlurHashViews
 
-@MainActor
 public struct BlurHashPlaceholder: View {
     @State private var image: UIImage?
 
@@ -33,7 +32,6 @@ public struct BlurHashPlaceholder: View {
     }
 }
 
-@MainActor
 public struct LegacyBlurHashPlaceholder: View {
     @State private var image: UIImage?
 

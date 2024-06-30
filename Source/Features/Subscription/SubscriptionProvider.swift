@@ -3,7 +3,6 @@ import OSLog
 import StoreKit
 import SwiftUI
 
-@MainActor
 struct SubscriptionProvider<Content: View>: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel

@@ -5,7 +5,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CheckInImageSheet: View {
     typealias OnDeleteImageCallback = (_ imageEntity: ImageEntity) async -> Void
 
@@ -96,7 +95,6 @@ struct CheckInImageSheet: View {
     }
 }
 
-@MainActor
 struct CheckInImageCheckInSection: View {
     let checkIn: CheckIn
 

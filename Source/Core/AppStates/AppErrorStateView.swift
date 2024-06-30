@@ -2,7 +2,6 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
-@MainActor
 struct AppErrorStateView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let errors: [Error]

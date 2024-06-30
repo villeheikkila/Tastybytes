@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct ProfileLinksSection: View {
     let profile: Profile
     let isCurrentUser: Bool

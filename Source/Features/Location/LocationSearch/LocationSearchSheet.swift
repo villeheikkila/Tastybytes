@@ -9,7 +9,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchSheet")
     @Environment(Repository.self) private var repository
@@ -197,7 +196,6 @@ struct LocationSearchSheet: View {
     }
 }
 
-@MainActor
 struct LocationRow: View {
     let location: Location
     let currentLocation: CLLocation?
@@ -237,7 +235,6 @@ struct LocationRow: View {
     }
 }
 
-@MainActor
 struct InitialLocationOverlay: View {
     @Binding var initialLocation: Location?
 

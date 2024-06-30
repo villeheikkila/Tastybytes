@@ -1,7 +1,6 @@
 import EnvironmentModels
 import SwiftUI
 
-@MainActor
 struct AdminScreen: View {
     var body: some View {
         List {

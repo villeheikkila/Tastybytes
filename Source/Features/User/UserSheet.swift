@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct UserSheet: View {
     private let logger = Logger(category: "UserSheet")
     @Environment(Repository.self) private var repository

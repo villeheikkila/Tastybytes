@@ -50,7 +50,6 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
     }
 }
 
-@MainActor
 struct ProfileCheckInsList: View {
     @Environment(Repository.self) private var repository
     let profile: Profile
@@ -61,7 +60,6 @@ struct ProfileCheckInsList: View {
     }
 }
 
-@MainActor
 struct ProfileCheckInsListInnerView: View {
     private let logger = Logger(category: "ProfileCheckInsListInnerView")
     @Environment(Repository.self) private var repository

@@ -2,7 +2,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct SplashScreenProvider<Content: View>: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @ViewBuilder let content: () -> Content
@@ -17,7 +16,6 @@ struct SplashScreenProvider<Content: View>: View {
     }
 }
 
-@MainActor
 struct SplashScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var dismissAnimation = false
@@ -70,7 +68,6 @@ struct SplashScreen: View {
     }
 }
 
-@MainActor
 struct AppLogoView: View {
     let appIcon: AppIcon?
 
@@ -137,7 +134,6 @@ extension AppIcon {
     }
 }
 
-@MainActor
 struct AppNameView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let size: Double

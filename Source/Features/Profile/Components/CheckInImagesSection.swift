@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct CheckInImagesSection: View {
     let checkInImages: [ImageEntity.JoinedCheckIn]
     let isLoading: Bool

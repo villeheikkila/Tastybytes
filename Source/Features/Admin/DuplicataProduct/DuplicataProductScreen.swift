@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct DuplicateProductScreen: View {
     private let logger = Logger(category: "ProductVerificationScreen")
     @Environment(Repository.self) private var repository

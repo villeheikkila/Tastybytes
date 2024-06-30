@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct DuplicateProductContentUnavailableView: View {
     let productName: String
 

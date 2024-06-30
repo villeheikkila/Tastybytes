@@ -3,7 +3,6 @@ import Models
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ActivityTab: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(Router.self) private var router

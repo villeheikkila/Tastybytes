@@ -8,7 +8,6 @@ public extension View {
     }
 }
 
-@MainActor
 public struct ToastViewModifier: ViewModifier {
     @Binding var presenting: ToastEvent?
     @State private var workItem: DispatchWorkItem?

@@ -9,7 +9,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-@MainActor
 struct LocationScreen: View {
     @Environment(Repository.self) private var repository
     let location: Location
@@ -19,7 +18,6 @@ struct LocationScreen: View {
     }
 }
 
-@MainActor
 struct LocationInnerScreen: View {
     private let logger = Logger(category: "LocationScreen")
     @Environment(Repository.self) private var repository
@@ -154,7 +152,6 @@ struct LocationInnerScreen: View {
     }
 }
 
-@MainActor
 struct LocationScreenHeader: View {
     let location: Location
     let summary: Summary?
@@ -180,7 +177,6 @@ struct LocationScreenHeader: View {
     }
 }
 
-@MainActor
 struct LocationScreenMap: View {
     let location: Location
 

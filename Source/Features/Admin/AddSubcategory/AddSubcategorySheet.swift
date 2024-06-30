@@ -2,7 +2,6 @@ import Components
 import Models
 import SwiftUI
 
-@MainActor
 struct AddSubcategorySheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var newSubcategoryName = ""

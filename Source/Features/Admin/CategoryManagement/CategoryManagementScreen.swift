@@ -4,7 +4,6 @@ import Models
 import OSLog
 import SwiftUI
 
-@MainActor
 struct CategoryManagementScreen: View {
     private let logger = Logger(category: "CategoryManagementScreen")
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -40,7 +39,6 @@ struct CategoryManagementScreen: View {
     }
 }
 
-@MainActor
 struct CategoryManagementRow: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
@@ -83,7 +81,6 @@ struct CategoryManagementRow: View {
     }
 }
 
-@MainActor
 struct CategoryManagementSubcategoryRow: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var showDeleteConfirmationDialog = false

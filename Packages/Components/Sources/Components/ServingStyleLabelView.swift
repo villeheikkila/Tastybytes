@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 public struct ServingStyleLabelView: View {
     let servingStyle: ServingStyle
 

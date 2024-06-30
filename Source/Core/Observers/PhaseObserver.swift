@@ -2,7 +2,6 @@ import EnvironmentModels
 import OSLog
 import SwiftUI
 
-@MainActor
 struct PhaseObserver<Content: View>: View {
     private let logger = Logger(category: "PhaseObserver")
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel

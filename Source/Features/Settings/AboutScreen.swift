@@ -7,7 +7,6 @@ import OSLog
 import StoreKit
 import SwiftUI
 
-@MainActor
 struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel

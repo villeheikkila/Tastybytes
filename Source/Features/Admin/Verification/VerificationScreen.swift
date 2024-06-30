@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct VerificationScreen: View {
     enum VerificationType: String, CaseIterable, Identifiable {
         var id: Self { self }

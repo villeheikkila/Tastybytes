@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct FriendRequestNotificationView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let friend: Friend

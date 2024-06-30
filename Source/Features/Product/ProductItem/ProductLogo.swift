@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct ProductLogo: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let product: Product.Joined

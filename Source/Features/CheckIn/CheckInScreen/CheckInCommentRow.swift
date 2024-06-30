@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CheckInCommentRow: View {
     private let logger = Logger(category: "CheckInScreen")
     @Environment(Repository.self) private var repository

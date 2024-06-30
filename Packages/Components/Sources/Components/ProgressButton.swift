@@ -1,7 +1,6 @@
 import OSLog
 import SwiftUI
 
-@MainActor
 public struct ProgressButton<LabelView: View>: View {
     private let logger = Logger(category: "ProgressButton")
     public enum ActionOption: CaseIterable {
@@ -140,7 +139,6 @@ public extension ProgressButton where LabelView == LinkIconLabel {
     }
 }
 
-@MainActor
 public struct LinkIconLabel: View {
     let titleKey: LocalizedStringKey
     let systemName: String

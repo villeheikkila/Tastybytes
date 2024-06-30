@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct ScreenStateOverlayView: View {
     let state: ScreenState
     let errorDescription: LocalizedStringKey

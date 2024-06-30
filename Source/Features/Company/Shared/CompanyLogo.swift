@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct CompanyLogo: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let company: CompanyLogoProtocol

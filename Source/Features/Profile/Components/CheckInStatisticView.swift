@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct CheckInStatisticView: View {
     let title: LocalizedStringKey
     let subtitle: LocalizedStringKey

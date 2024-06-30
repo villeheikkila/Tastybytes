@@ -5,7 +5,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct DiscoverProductRow: View {
     private let logger = Logger(category: "DiscoverProductRow")
     @Environment(Repository.self) private var repository

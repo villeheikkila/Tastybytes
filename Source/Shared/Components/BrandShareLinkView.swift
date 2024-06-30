@@ -2,7 +2,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 public struct BrandShareLinkView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let brand: Brand.JoinedSubBrandsProductsCompany

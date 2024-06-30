@@ -2,7 +2,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 public struct LocationShareLinkView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let location: Location

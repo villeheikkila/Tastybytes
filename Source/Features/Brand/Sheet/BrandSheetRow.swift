@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct BrandSheetRow: View {
     let brand: Brand.JoinedSubBrands
     let onClick: (_ brand: Brand.JoinedSubBrands) -> Void

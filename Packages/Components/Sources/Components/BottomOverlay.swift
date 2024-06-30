@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 public struct MaterialOverlay<RootView: View>: View {
     public enum Alignment {
         case top, bottom

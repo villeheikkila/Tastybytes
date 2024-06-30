@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CheckInImageCellView: View {
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository

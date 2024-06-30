@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ActivityScreen: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository

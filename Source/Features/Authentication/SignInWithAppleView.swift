@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct SignInWithAppleView: View {
     private let logger = Logger(category: "SignInWithAppleView")
     @Environment(\.colorScheme) var colorScheme

@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct TimePeriodStatisticSegmentView: View {
     let checkInsPerDay: [CheckInsPerDay]
 

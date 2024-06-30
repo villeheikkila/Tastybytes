@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct MergeLocationSheet: View {
     private let logger = Logger(category: "MergeLocationSheet")
     @Environment(Repository.self) private var repository
@@ -71,7 +70,6 @@ struct MergeLocationSheet: View {
     }
 }
 
-@MainActor
 struct MergeLocationSheetRow: View {
     @State private var mergeToLocation: Location?
 

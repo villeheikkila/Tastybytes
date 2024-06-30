@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct AuthenticationScreenContent: View {
     @State private var sheet: Sheet?
     @AppStorage(.profileDeleted) private var profileDeleted = false

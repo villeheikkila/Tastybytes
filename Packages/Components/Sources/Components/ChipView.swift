@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 public struct ChipView: View {
     public let title: String
 

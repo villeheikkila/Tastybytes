@@ -2,7 +2,6 @@ import Components
 import Models
 import SwiftUI
 
-@MainActor
 struct ZoomableRemoteImage: View {
     @State private var scale: CGFloat = 1.0
     @State private var location: CGPoint?

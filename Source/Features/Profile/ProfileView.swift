@@ -8,7 +8,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ProfileView: View {
     @Environment(Repository.self) private var repository
     let profile: Profile
@@ -20,7 +19,6 @@ struct ProfileView: View {
     }
 }
 
-@MainActor
 struct ProfileInnerView: View {
     private let logger = Logger(category: "ProfileView")
     @Environment(Repository.self) private var repository

@@ -1,7 +1,6 @@
 import EnvironmentModels
 import SwiftUI
 
-@MainActor
 struct OnboardingStateObserver<Content: View>: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @ViewBuilder let content: () -> Content

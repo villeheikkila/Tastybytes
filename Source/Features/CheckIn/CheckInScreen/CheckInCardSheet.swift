@@ -4,7 +4,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CheckInCommentEditSheet: View {
     private let logger = Logger(category: "CheckInCommentEditSheet")
     @Environment(Repository.self) private var repository

@@ -1,7 +1,6 @@
 import Components
 import SwiftUI
 
-@MainActor
 struct RouterLink<LabelView: View>: View {
     @Environment(Router.self) private var router
 

@@ -3,7 +3,6 @@ import Models
 import SwiftUI
 import TipKit
 
-@MainActor
 struct RatingChartView: View {
     @Environment(Router.self) private var router
     @State private var selection: String?

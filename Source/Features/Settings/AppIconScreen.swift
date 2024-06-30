@@ -2,7 +2,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct AppIconScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var selection: AppIcon?

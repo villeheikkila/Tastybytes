@@ -5,7 +5,6 @@ import Repositories
 import StoreKit
 import SwiftUI
 
-@MainActor
 struct EnvironmentProvider<Content: View>: View {
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
     @State private var notificationEnvironmentModel: NotificationEnvironmentModel

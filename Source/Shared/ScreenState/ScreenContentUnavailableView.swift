@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct ScreenContentUnavailableView: View {
     @State private var isTaskRunning = false
 

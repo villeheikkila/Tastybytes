@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ActivityWatchTab: View {
     @Environment(Repository.self) private var repository
 
@@ -15,7 +14,6 @@ struct ActivityWatchTab: View {
     }
 }
 
-@MainActor
 struct ActivityWatchTabContent: View {
     private let logger = Logger(category: "ActivityWatchTab")
     @Environment(Repository.self) private var repository

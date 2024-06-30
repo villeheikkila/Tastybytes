@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct EmptyActivityFeedView: View {
     var body: some View {
         ContentUnavailableView {

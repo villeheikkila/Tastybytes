@@ -3,7 +3,6 @@ import Components
 import Models
 import SwiftUI
 
-@MainActor
 struct BarcodeScannerSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showBarcodeTextField = false

@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct AppearanceSettingsScreen: View {
     @Environment(\.colorScheme) private var systemColorScheme
     @AppStorage(.colorScheme) private var colorScheme = CustomColorScheme.system.rawValue

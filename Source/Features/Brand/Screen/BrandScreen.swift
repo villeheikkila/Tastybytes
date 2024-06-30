@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct BrandScreen: View {
     private let logger = Logger(category: "BrandScreen")
     @Environment(Repository.self) private var repository
@@ -391,7 +390,6 @@ private enum GroupProductsBy: String, CaseIterable {
     case subBrand, category
 }
 
-@MainActor
 struct SubBrandSectionHeader: View {
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

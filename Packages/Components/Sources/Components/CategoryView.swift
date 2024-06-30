@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 public struct CategoryView: View {
     let category: Models.Category
     let subcategories: [SubcategoryProtocol]

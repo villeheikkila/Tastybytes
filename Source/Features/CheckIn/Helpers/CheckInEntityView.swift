@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 public struct CheckInEntityView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let checkIn: CheckIn

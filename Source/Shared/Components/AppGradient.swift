@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 public struct AppGradient: View {
     let color: Color
 

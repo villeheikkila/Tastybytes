@@ -8,7 +8,6 @@ enum OnboardField {
     case username, firstName, lastName
 }
 
-@MainActor
 struct OnboardingProfileSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

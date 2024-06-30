@@ -2,7 +2,6 @@ import Charts
 import Models
 import SwiftUI
 
-@MainActor
 struct CheckInsByTimeRangeChart: View {
     @Environment(Router.self) private var router
     let profile: Profile

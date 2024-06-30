@@ -6,7 +6,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ProfileHeaderAvatarSection: View {
     private let logger = Logger(category: "ProfileHeaderAvatarSection")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

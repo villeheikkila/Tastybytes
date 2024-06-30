@@ -2,7 +2,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct NotificationTab: View {
     @Environment(Router.self) private var router
     @Environment(TabManager.self) private var tabManager

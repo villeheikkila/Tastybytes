@@ -7,7 +7,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-@MainActor
 struct EditSubBrandSheet: View {
     typealias UpdateSubBrandCallback = (_ subBrand: SubBrand.JoinedProduct) async -> Void
 

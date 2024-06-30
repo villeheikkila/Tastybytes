@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 public struct SummaryView: View {
     public let summary: Summary?
 
@@ -40,7 +39,6 @@ public struct SummaryView: View {
     }
 }
 
-@MainActor
 struct SummaryDivider: View {
     var body: some View {
         Divider()
@@ -49,7 +47,6 @@ struct SummaryDivider: View {
     }
 }
 
-@MainActor
 struct RatingSummaryItem: View {
     let title: LocalizedStringKey
     let count: Int?
@@ -74,7 +71,6 @@ struct RatingSummaryItem: View {
     }
 }
 
-@MainActor
 struct SummaryItem<Content: View, SubContent: View>: View {
     let title: LocalizedStringKey
     @ViewBuilder var content: () -> Content

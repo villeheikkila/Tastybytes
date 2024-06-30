@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ReactionsView: View {
     private let logger = Logger(category: "ReactionsView")
     @Environment(Repository.self) private var repository

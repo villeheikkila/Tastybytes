@@ -4,7 +4,6 @@ import Models
 import PhotosUI
 import SwiftUI
 
-@MainActor
 struct ProfileSettingsScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var username = ""

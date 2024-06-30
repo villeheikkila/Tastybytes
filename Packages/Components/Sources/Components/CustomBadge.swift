@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct Badge: View {
     let badgeCount: Int
 

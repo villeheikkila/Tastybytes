@@ -4,7 +4,6 @@ import Models
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CheckInCard: View {
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom

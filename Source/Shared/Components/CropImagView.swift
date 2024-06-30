@@ -14,7 +14,6 @@ public extension View {
     }
 }
 
-@MainActor
 struct CropView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var scale: CGFloat = 1

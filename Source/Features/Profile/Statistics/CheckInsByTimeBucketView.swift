@@ -7,7 +7,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct CheckInsByTimeBucketView: View {
     private let logger = Logger(category: "CheckInsByTimeBucketView")
     @Environment(Repository.self) private var repository

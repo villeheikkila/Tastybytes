@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct BrandSheet: View {
     private let logger = Logger(category: "BrandSheet")
     @Environment(Repository.self) private var repository

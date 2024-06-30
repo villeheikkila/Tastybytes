@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct IdiomSelector: View {
     var body: some View {
         #if !os(watchOS)

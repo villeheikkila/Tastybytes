@@ -4,7 +4,6 @@ import Models
 import OSLog
 import SwiftUI
 
-@MainActor
 struct ProductFilterSheet: View {
     enum Sections {
         case category, checkIns, sortBy

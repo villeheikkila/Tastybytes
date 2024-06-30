@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct CompanyResultRow: View {
     let company: Company
     let action: () -> Void

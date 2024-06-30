@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 public struct CategoryNameView: View {
     let category: CategoryProtocol
     let withBorder: Bool

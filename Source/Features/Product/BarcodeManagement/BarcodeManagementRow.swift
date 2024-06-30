@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct BarcodeManagementRow: View {
     let barcode: ProductBarcode.JoinedWithCreator
 

@@ -2,7 +2,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct AdminTab: View {
     @Environment(TabManager.self) private var tabManager
     @Environment(Router.self) private var router

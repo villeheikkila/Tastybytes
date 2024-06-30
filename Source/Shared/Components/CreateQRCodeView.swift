@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 public struct CreateQRCodeView: View {
     @State private var qrCodeImageData: Data?
     let qrCodeText: String

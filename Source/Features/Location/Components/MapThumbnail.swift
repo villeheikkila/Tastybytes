@@ -2,7 +2,6 @@ import MapKit
 import Models
 import SwiftUI
 
-@MainActor
 struct MapThumbnail: View {
     @State private var showFullSizedMap = false
     @State private var image: UIImage?
@@ -63,7 +62,6 @@ struct MapThumbnail: View {
     }
 }
 
-@MainActor
 struct MapPopOver: View {
     @Environment(\.dismiss) private var dismiss
     let location: Location

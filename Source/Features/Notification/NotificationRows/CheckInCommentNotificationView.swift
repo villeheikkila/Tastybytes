@@ -2,7 +2,6 @@ import Components
 import Models
 import SwiftUI
 
-@MainActor
 struct CheckInCommentNotificationView: View {
     let checkInComment: CheckInComment.Joined
     let createdAt: Date

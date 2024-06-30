@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct LocationInputButton: View {
     @Binding var sheet: Sheet?
     let category: Location.RecentLocation

@@ -6,7 +6,6 @@ import OSLog
 import Repositories
 import SwiftUI
 
-@MainActor
 struct ProductMutationView: View {
     typealias ProductCallback = @MainActor (_ product: Product.Joined) async -> Void
 

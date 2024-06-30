@@ -3,7 +3,6 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-@MainActor
 struct ProfileFriendActionSection: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
 

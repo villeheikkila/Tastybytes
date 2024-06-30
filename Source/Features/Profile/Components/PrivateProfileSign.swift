@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct PrivateProfileSign: View {
     var body: some View {
         VStack {

@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 struct WatchView: View {
     @State private var selection: WatchTab = .activity
 

@@ -48,7 +48,6 @@ final class SidebarRouterPath {
     var settings = Router()
 }
 
-@MainActor
 struct SideBarView: View {
     @Environment(Repository.self) private var repository
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
@@ -133,7 +132,6 @@ struct SideBarView: View {
     }
 }
 
-@MainActor
 struct SidebarSidebar: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Binding var selection: SiderBarTab?
@@ -158,7 +156,6 @@ struct SidebarSidebar: View {
     }
 }
 
-@MainActor
 struct SideBarContent: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Repository.self) private var repository
@@ -195,7 +192,6 @@ struct SideBarContent: View {
     }
 }
 
-@MainActor
 struct SidebarDetail: View {
     @Bindable var router: Router
 

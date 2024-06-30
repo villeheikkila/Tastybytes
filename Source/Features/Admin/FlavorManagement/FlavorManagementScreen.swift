@@ -2,7 +2,6 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
-@MainActor
 struct FlavorManagementScreen: View {
     @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel

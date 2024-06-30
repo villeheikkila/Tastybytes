@@ -1,7 +1,6 @@
 import Models
 import SwiftUI
 
-@MainActor
 struct DiscoverProductLinks: View {
     var body: some View {
         Section("discover.product.links") {
