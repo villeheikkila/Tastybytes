@@ -69,6 +69,7 @@ public struct LegacyBlurHashPlaceholder: View {
                     .accessibility(hidden: true)
             } else {
                 ProgressView()
+                    .frame(width: width, height: height)
             }
         }
         .task(id: blurHash) {
