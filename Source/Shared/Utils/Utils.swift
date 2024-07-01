@@ -26,12 +26,10 @@ struct CSVFile: FileDocument {
     }
 }
 
-@MainActor func isPadOrMac() -> Bool {
-    [.pad, .mac].contains(UIDevice.current.userInterfaceIdiom)
-}
-
-@MainActor func isMac() -> Bool {
-    UIDevice.current.userInterfaceIdiom == .mac
+extension UIDevice {
+    static var isMac: Bool {
+        UIDevice.current.userInterfaceIdiom == .mac
+    }
 }
 
 struct IsPortrait: EnvironmentKey {

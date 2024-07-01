@@ -37,7 +37,7 @@ struct RouterLink<LabelView: View>: View {
                     }
                 }
         } else if let screen {
-            if isPadOrMac() {
+            if UIDevice.isMac {
                 Button(action: { router.navigate(screen: screen) }, label: {
                     HStack {
                         label
