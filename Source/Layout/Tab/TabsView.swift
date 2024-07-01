@@ -20,6 +20,7 @@ struct TabsView: View {
         TabView(selection: $tabManager.selection) {
             tabs
         }
+        .tabViewStyle(.sidebarAdaptable)
         .sensoryFeedback(.selection, trigger: tabManager.selection)
         .environment(tabManager)
         .onOpenURL { url in

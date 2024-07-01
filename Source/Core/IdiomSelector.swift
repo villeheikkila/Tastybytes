@@ -6,9 +6,9 @@ struct IdiomSelector: View {
             OnboardingStateObserver {
                 NotificationObserver {
                     switch UIDevice.current.userInterfaceIdiom {
-                    case .pad, .mac, .vision:
+                    case .mac, .vision:
                         SideBarView()
-                    case .phone:
+                    case .phone, .pad:
                         TabsView()
                     default:
                         EmptyView()
