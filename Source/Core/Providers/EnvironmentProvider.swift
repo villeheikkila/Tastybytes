@@ -4,6 +4,7 @@ import OSLog
 import Repositories
 import StoreKit
 import SwiftUI
+import TipKit
 
 struct EnvironmentProvider<Content: View>: View {
     @AppStorage(.colorScheme) var colorScheme: String = "system"
