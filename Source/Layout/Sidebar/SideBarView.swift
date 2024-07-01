@@ -54,7 +54,7 @@ struct SideBarView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(\.isPortrait) private var isPortrait
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
     @State private var selection: SiderBarTab? = SiderBarTab.activity
     @State private var scrollToTop: Int = 0
     @State private var sidebarRouterPath = SidebarRouterPath()
@@ -93,7 +93,7 @@ struct SideBarView: View {
         @Bindable var router = router
         GeometryReader { geometry in
             NavigationSplitView(columnVisibility: .init(get: {
-                isPortrait ? .doubleColumn : geometry.size.width < 1100 ? .automatic : .all
+                horizontalSizeClass == .regular ? .doubleColumn : geometry.size.width < 1100 ? .automatic : .all
             }, set: { _ in
             }), sidebar: {
                 SidebarSidebar(selection: $selection, scrollToTop: $scrollToTop)

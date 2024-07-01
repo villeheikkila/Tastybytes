@@ -44,15 +44,13 @@ struct MainApp: App {
     var body: some Scene {
         WindowGroup {
             EnvironmentProvider(repository: repository, infoPlist: infoPlist) {
-                DeviceInfoProvider {
-                    SplashScreenProvider {
-                        PhaseObserver {
-                            AppStateObserver {
-                                SubscriptionProvider {
-                                    AuthStateObserver {
-                                        ProfileStateObserver {
-                                            IdiomSelector()
-                                        }
+                SplashScreenProvider {
+                    PhaseObserver {
+                        AppStateObserver {
+                            SubscriptionProvider {
+                                AuthStateObserver {
+                                    ProfileStateObserver {
+                                        IdiomSelector()
                                     }
                                 }
                             }

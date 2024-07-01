@@ -6,6 +6,7 @@ import StoreKit
 import SwiftUI
 
 struct EnvironmentProvider<Content: View>: View {
+    @AppStorage(.colorScheme) var colorScheme: String = "system"
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
     @State private var notificationEnvironmentModel: NotificationEnvironmentModel
     @State private var appEnvironmentModel: AppEnvironmentModel
@@ -47,6 +48,10 @@ struct EnvironmentProvider<Content: View>: View {
             .alertError($profileEnvironmentModel.alertError)
             .alertError($appEnvironmentModel.alertError)
             .alertError($friendEnvironmentModel.alertError)
+            .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
+            .task {
+                try? Tips.configure([.displayFrequency(.daily)])
+            }
             .task {
                 await appEnvironmentModel.initialize()
             }

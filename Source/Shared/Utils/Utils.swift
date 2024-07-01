@@ -31,14 +31,3 @@ extension UIDevice {
         UIDevice.current.userInterfaceIdiom == .mac
     }
 }
-
-struct IsPortrait: EnvironmentKey {
-    static let defaultValue = false
-}
-
-extension EnvironmentValues {
-    var isPortrait: Bool {
-        get { self[IsPortrait.self] }
-        set { self[IsPortrait.self] = newValue }
-    }
-}
