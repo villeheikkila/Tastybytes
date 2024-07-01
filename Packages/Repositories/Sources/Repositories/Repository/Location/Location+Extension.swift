@@ -3,7 +3,7 @@ import Models
 
 extension Location: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name, title, longitude, latitude, country_code, source"
+        let saved = "id, name, title, longitude, latitude, country_code, source, map_kit_identifier"
 
         switch queryType {
         case let .joined(withTableName):

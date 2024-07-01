@@ -18,7 +18,7 @@ struct ProfileTopLocationsScreen: View {
         }
         .listStyle(.plain)
         .overlay {
-            if state == .populated {
+            if state == .populated, locations.isEmpty {
                 ContentUnavailableView("profileTopLocations.empty.title", systemImage: "tray")
             } else {
                 ScreenStateOverlayView(state: state, errorDescription: "") {
