@@ -85,11 +85,7 @@ struct BrandScreen: View {
     }
 
     @ViewBuilder private var populatedContent: some View {
-        Section {
-            SummaryView(summary: summary)
-        }
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
+        SummaryView(summary: summary)
 
         switch productGrouping {
         case .subBrand:

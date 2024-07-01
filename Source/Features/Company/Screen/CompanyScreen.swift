@@ -69,11 +69,7 @@ struct CompanyScreen: View {
 
     @ViewBuilder private var populatedContent: some View {
         if let summary, summary.averageRating != nil {
-            Section {
-                SummaryView(summary: summary)
-            }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
+            SummaryView(summary: summary)
         }
         Section("brand.title") {
             ForEach(sortedBrands) { brand in

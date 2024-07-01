@@ -1,14 +1,10 @@
 import Models
 import SwiftUI
 
-public struct SummaryView: View {
-    public let summary: Summary?
+struct SummaryView: View {
+    let summary: Summary?
 
-    public init(summary: Summary? = nil) {
-        self.summary = summary
-    }
-
-    public var body: some View {
+    var body: some View {
         ScrollView(.horizontal) {
             VStack(alignment: .leading) {
                 Divider()
@@ -34,8 +30,11 @@ public struct SummaryView: View {
                 .frame(minWidth: UIScreen.main.bounds.width)
             }
         }
+        .scrollIndicators(.hidden)
         .contentMargins(.leading, 16)
         .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
     }
 }
 

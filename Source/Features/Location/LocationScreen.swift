@@ -171,9 +171,7 @@ struct LocationScreenHeader: View {
             .frame(height: 200)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 4, trailing: 0))
         }
-        Section {
-            SummaryView(summary: summary)
-        }
+        SummaryView(summary: summary)
     }
 }
 
