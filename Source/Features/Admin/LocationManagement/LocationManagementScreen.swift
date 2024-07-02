@@ -10,7 +10,7 @@ struct LocationManagementScreen: View {
     @State private var state: ScreenState = .loading
     @State private var locations = [Location]()
     @State private var searchTerm = ""
-    
+
     var filteredLocations: [Location] {
         if searchTerm.isEmpty {
             locations

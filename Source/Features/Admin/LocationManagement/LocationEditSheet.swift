@@ -22,7 +22,7 @@ struct LocationEditSheet: View {
                     }
                 }
             }
-            
+
             Section("location.details.section.title") {
                 VStack {
                     LabeledContent("labels.id", value: "\(location.id)")
@@ -33,6 +33,6 @@ struct LocationEditSheet: View {
                 }
             }
         }
-            .navigationTitle("admin.locations.edit.location.title")
+        .navigationTitle("admin.locations.edit.location.title")
     }
 }

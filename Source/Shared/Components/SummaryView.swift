@@ -4,37 +4,43 @@ import SwiftUI
 struct SummaryView: View {
     let summary: Summary?
 
+    var isEmpty: Bool {
+        summary?.isEmpty == true
+    }
+
     var body: some View {
-        ScrollView(.horizontal) {
-            VStack(alignment: .leading) {
-                Divider()
-                    .padding(.bottom, 3)
-                HStack(alignment: .center) {
-                    if let totalCheckIns = summary?.totalCheckIns, let rating = summary?.averageRating {
-                        RatingSummaryItem(title: "checkIn.segment.everyone", count: totalCheckIns, rating: rating)
+        if !isEmpty {
+            ScrollView(.horizontal) {
+                VStack(alignment: .leading) {
+                    Divider()
+                        .padding(.bottom, 3)
+                    HStack(alignment: .center) {
+                        if let totalCheckIns = summary?.totalCheckIns, let rating = summary?.averageRating {
+                            RatingSummaryItem(title: "checkIn.segment.everyone", count: totalCheckIns, rating: rating)
+                        }
+                        if let friendsTotalCheckIns = summary?.friendsTotalCheckIns, let friendsAverageRating = summary?.friendsAverageRating {
+                            SummaryDivider()
+                            RatingSummaryItem(title: "checkIn.segment.friends", count: friendsTotalCheckIns, rating: friendsAverageRating)
+                        }
+                        if let currentUserTotalCheckIns = summary?.currentUserTotalCheckIns, let currentUserAverageRating = summary?.currentUserAverageRating {
+                            SummaryDivider()
+                            RatingSummaryItem(
+                                title: "checkIn.segment.you",
+                                count: currentUserTotalCheckIns,
+                                rating: currentUserAverageRating
+                            )
+                        }
+                        Spacer()
                     }
-                    if let friendsTotalCheckIns = summary?.friendsTotalCheckIns, let friendsAverageRating = summary?.friendsAverageRating {
-                        SummaryDivider()
-                        RatingSummaryItem(title: "checkIn.segment.friends", count: friendsTotalCheckIns, rating: friendsAverageRating)
-                    }
-                    if let currentUserTotalCheckIns = summary?.currentUserTotalCheckIns, let currentUserAverageRating = summary?.currentUserAverageRating {
-                        SummaryDivider()
-                        RatingSummaryItem(
-                            title: "checkIn.segment.you",
-                            count: currentUserTotalCheckIns,
-                            rating: currentUserAverageRating
-                        )
-                    }
-                    Spacer()
+                    .frame(minWidth: UIScreen.main.bounds.width)
                 }
-                .frame(minWidth: UIScreen.main.bounds.width)
             }
+            .scrollIndicators(.hidden)
+            .contentMargins(.leading, 16)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
         }
-        .scrollIndicators(.hidden)
-        .contentMargins(.leading, 16)
-        .listRowInsets(.init(top: 0, leading: 0, bottom: 12, trailing: 0))
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
     }
 }
 
