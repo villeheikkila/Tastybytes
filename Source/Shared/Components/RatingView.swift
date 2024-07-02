@@ -50,15 +50,8 @@ public enum StarType: Sendable {
     }
 }
 
-struct RatingColorKey: EnvironmentKey {
-    static let defaultValue: Color = .yellow
-}
-
 extension EnvironmentValues {
-    var ratingColor: Color {
-        get { self[RatingColorKey.self] }
-        set { self[RatingColorKey.self] = newValue }
-    }
+   @Entry var ratingColor: Color = .yellow
 }
 
 extension View {
@@ -67,15 +60,8 @@ extension View {
     }
 }
 
-struct RatingSizeKey: EnvironmentKey {
-    static let defaultValue: StarType = .large
-}
-
 extension EnvironmentValues {
-    var ratingSize: StarType {
-        get { self[RatingSizeKey.self] }
-        set { self[RatingSizeKey.self] = newValue }
-    }
+    @Entry var ratingSize: StarType = .large
 }
 
 extension View {

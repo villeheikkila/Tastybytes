@@ -66,15 +66,8 @@ public enum AvatarSize: Sendable {
     }
 }
 
-public struct AvatarSizeKey: EnvironmentKey {
-    public static let defaultValue: AvatarSize = .small
-}
-
 public extension EnvironmentValues {
-    var avatarSize: AvatarSize {
-        get { self[AvatarSizeKey.self] }
-        set { self[AvatarSizeKey.self] = newValue }
-    }
+    @Entry var avatarSize: AvatarSize = .small
 }
 
 public extension View {
