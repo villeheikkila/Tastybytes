@@ -19,15 +19,15 @@ struct DiscoverProductRow: View {
     var body: some View {
         ProductItemView(product: product, extras: [.checkInCheck, .rating, .logoOnLeft])
             .swipeActions {
-                RouterLink("checkIn.create.label", systemImage: "plus", sheet: .checkIn(.create(product: product, onCreation: { checkIn in
-                    router.navigate(screen: .checkIn(checkIn))
-                }))).tint(.green)
+                RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIn in
+                    router.open(.screen(.checkIn(checkIn)))
+                })))).tint(.green)
             }
             .contentShape(Rectangle())
             .accessibilityAddTraits(.isLink)
             .onTapGesture {
                 if barcode == nil || product.barcodes.contains(where: { $0.isBarcode(barcode) }) {
-                    router.navigate(screen: .product(product))
+                    router.open(.screen(.product(product)))
                 } else {
                     addBarcodeTo = product
                 }
@@ -60,7 +60,7 @@ struct DiscoverProductRow: View {
             self.barcode = nil
             self.addBarcodeTo = nil
             feedbackEnvironmentModel.toggle(.success("checkIn.addBarcode.success.toast"))
-            router.navigate(screen: .product(addBarcodeTo))
+            router.open(.screen(.product(addBarcodeTo)))
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed. error: \(error)")

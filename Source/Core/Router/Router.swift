@@ -7,6 +7,13 @@ import SwiftUI
 @MainActor
 @Observable
 final class Router {
+    enum Open {
+        case sheet(Sheet)
+        case screen(Screen, resetStack: Bool = false, removeLast: Bool = false)
+        case alert(AlertError)
+        case fullScreenCover(FullScreenCover)
+    }
+
     private let logger = Logger(category: "Router")
     var path = [Screen]()
     var sheet: Sheet?
@@ -18,27 +25,24 @@ final class Router {
         self.sheet = sheet
     }
 
-    func navigate(screen: Screen, resetStack: Bool = false, removeLast: Bool = false) {
-        if resetStack {
-            reset()
+    func open(_ open: Open) {
+        switch open {
+        case let .screen(screen, resetStack: resetStack, removeLast: removeLast):
+            if resetStack {
+                reset()
+            }
+            path.append(screen)
+            if removeLast {
+                guard path.count >= 2 else { return }
+                path.remove(at: path.count - 2)
+            }
+        case let .sheet(sheet):
+            self.sheet = sheet
+        case let .alert(alert):
+            self.alert = alert
+        case let .fullScreenCover(fullScreenCover):
+            self.fullScreenCover = fullScreenCover
         }
-        path.append(screen)
-        if removeLast {
-            guard path.count >= 2 else { return }
-            path.remove(at: path.count - 2)
-        }
-    }
-
-    func openSheet(_ sheet: Sheet) {
-        self.sheet = sheet
-    }
-
-    func openAlert(_ alert: AlertError) {
-        self.alert = alert
-    }
-
-    func openFullScreenCover(_ fullScreenCover: FullScreenCover) {
-        self.fullScreenCover = fullScreenCover
     }
 
     func reset() {
@@ -59,67 +63,61 @@ final class Router {
             case let .product(id):
                 switch await repository.product.getById(id: id) {
                 case let .success(product):
-                    self.navigate(screen: .product(product), resetStack: resetStack)
+                    self.open(.screen(.product(product), resetStack: resetStack))
                 case let .failure(error):
-                    self.navigate(
-                        screen: .error(reason: "Failed to load requested product page"),
+                    self.open(.screen( .error(reason: "Failed to load requested product page"),
                         resetStack: resetStack
-                    )
+                    ))
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .productWithBarcode(id, barcode):
                 switch await repository.product.getById(id: id) {
                 case let .success(product):
-                    self.navigate(screen: .productFromBarcode(product, barcode))
+                    self.open(.screen(.productFromBarcode(product, barcode)))
                 case let .failure(error):
-                    self.navigate(
-                        screen: .error(reason: "Failed to load requested product page"),
+                    self.open(.screen(.error(reason: "Failed to load requested product page"),
                         resetStack: resetStack
-                    )
+                    ))
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .checkIn(id):
                 switch await repository.checkIn.getById(id: id) {
                 case let .success(checkIn):
-                    self.navigate(screen: .checkIn(checkIn), resetStack: resetStack)
+                    self.open(.screen(.checkIn(checkIn), resetStack: resetStack))
                 case let .failure(error):
-                    self.navigate(
-                        screen: .error(reason: "Failed to load requested check-in page"),
+                    self.open(.screen(.error(reason: "Failed to load requested check-in page"),
                         resetStack: resetStack
-                    )
+                    ))
                     logger.error("Request for check-in with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .company(id):
                 switch await repository.company.getById(id: id) {
                 case let .success(company):
-                    self.navigate(screen: .company(company), resetStack: resetStack)
+                    self.open(.screen(.company(company), resetStack: resetStack))
                 case let .failure(error):
-                    self.navigate(
-                        screen: .error(reason: "Failed to load requested company page"),
+                    self.open(.screen(.error(reason: "Failed to load requested company page"),
                         resetStack: resetStack
-                    )
+                    ))
                     logger.error("Request for company with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .brand(id):
                 switch await repository.brand.getJoinedById(id: id) {
                 case let .success(brand):
-                    self.navigate(screen: .brand(brand), resetStack: resetStack)
+                    self.open(.screen(.brand(brand), resetStack: resetStack))
                 case let .failure(error):
-                    self.navigate(
-                        screen: .error(reason: "Failed to load requested company page"),
+                    self.open(.screen(.error(reason: "Failed to load requested company page"),
                         resetStack: resetStack
-                    )
+                    ))
                     logger.error("Request for brand with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .profile(id):
                 switch await repository.profile.getById(id: id) {
                 case let .success(profile):
-                    self.navigate(screen: .profile(profile), resetStack: resetStack)
+                    self.open(.screen(.profile(profile), resetStack: resetStack))
                 case let .failure(error):
-                    self.navigate(
-                        screen: .error(reason: "Failed to load requested profile page"),
+                    self.open(.screen(.error(reason: "Failed to load requested profile page"),
                         resetStack: resetStack
-                    )
+                    ))
                     logger
                         .error(
                             "request for profile with \(id.uuidString.lowercased()) failed. error: \(error)"
@@ -128,12 +126,11 @@ final class Router {
             case let .location(id):
                 switch await repository.location.getById(id: id) {
                 case let .success(location):
-                    self.navigate(screen: .location(location), resetStack: resetStack)
+                    self.open(.screen(.location(location), resetStack: resetStack))
                 case let .failure(error):
-                    self.navigate(
-                        screen: .error(reason: "Failed to load requested location page"),
+                    self.open(.screen(.error(reason: "Failed to load requested location page"),
                         resetStack: resetStack
-                    )
+                    ))
                     logger.error("Request for location with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -151,9 +148,9 @@ struct NavigateOnTapModifier: ViewModifier {
             .onTapGesture {
                 switch action {
                 case let .sheet(sheet):
-                    router.openSheet(sheet)
+                    router.open(.sheet(sheet))
                 case let .screen(screen):
-                    router.navigate(screen: screen)
+                    router.open(.screen(screen))
                 }
             }
             .accessibility(addTraits: .isLink)

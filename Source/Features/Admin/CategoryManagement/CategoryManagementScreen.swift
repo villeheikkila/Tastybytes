@@ -28,9 +28,9 @@ struct CategoryManagementScreen: View {
             RouterLink(
                 "category.add.label",
                 systemImage: "plus",
-                sheet: .addCategory(onSubmit: { _ in
+                open: .sheet(.addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("category.add.success.toast"))
-                })
+                }))
             )
             .labelStyle(.iconOnly)
             .bold()
@@ -56,17 +56,17 @@ struct CategoryManagementRow: View {
                     RouterLink(
                         "servingStyle.edit.menu.label",
                         systemImage: "pencil",
-                        sheet: .categoryServingStyle(category: category)
+                        open: .sheet(.categoryServingStyle(category: category))
                     )
                     RouterLink(
                         "subcategory.add",
                         systemImage: "plus",
-                        sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                        open: .sheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
                             await appEnvironmentModel.addSubcategory(
                                 category: category,
                                 name: newSubcategoryName
                             )
-                        })
+                        }))
                     )
                 } label: {
                     Label("labels.menu", systemImage: "ellipsis")

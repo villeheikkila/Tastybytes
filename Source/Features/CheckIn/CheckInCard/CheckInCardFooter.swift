@@ -19,7 +19,7 @@ struct CheckInCardFooter: View {
             .accessibilityAddTraits(.isLink)
             .onTapGesture {
                 if loadedFrom != .checkIn {
-                    router.navigate(screen: .checkIn(checkIn))
+                    router.open(.screen(.checkIn(checkIn)))
                 }
             }
             ReactionsView(checkIn: checkIn)

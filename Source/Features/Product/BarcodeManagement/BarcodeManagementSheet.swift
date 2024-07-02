@@ -67,7 +67,7 @@ struct BarcodeManagementSheet: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }

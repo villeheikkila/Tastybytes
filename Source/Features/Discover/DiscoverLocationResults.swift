@@ -6,7 +6,7 @@ struct DiscoverLocationResults: View {
 
     var body: some View {
         ForEach(locations) { location in
-            RouterLink(location.name, screen: .location(location))
+            RouterLink(location.name, open: .screen(.location(location)))
                 .id(location.id)
         }
     }

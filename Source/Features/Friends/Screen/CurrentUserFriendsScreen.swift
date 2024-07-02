@@ -69,11 +69,11 @@ struct CurrentUserFriendsScreen: View {
             RouterLink(
                 "friends.toolbar.showNameTag",
                 systemImage: "qrcode",
-                sheet: .nameTag(onSuccess: { profileId in
+                open: .sheet(.nameTag(onSuccess: { profileId in
                     Task {
                         await friendEnvironmentModel.sendFriendRequest(receiver: profileId)
                     }
-                })
+                }))
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)
@@ -81,12 +81,12 @@ struct CurrentUserFriendsScreen: View {
 
             RouterLink(
                 "friends.add.label", systemImage: "plus",
-                sheet: .userSheet(
+                open: .sheet(.userSheet(
                     mode: .add,
                     onSubmit: {
                         feedbackEnvironmentModel.toggle(.success("friends.add.success"))
                     }
-                )
+                ))
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)

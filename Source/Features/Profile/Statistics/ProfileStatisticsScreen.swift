@@ -8,9 +8,9 @@ struct ProfileStatisticsScreen: View {
         List {
             CheckInsByTimeBucketView(profile: profile)
             Section("profileStatistics.links.title") {
-                RouterLink("profileStatistics.uniqueByCategory.label", screen: .profileStatisticsUniqueProducts(profile))
-                RouterLink("profileStatistics.topLocations.label", screen: .profileStatisticsTopLocations(profile))
-                RouterLink("profileStatistics.topProducts.label", screen: .profileProductsByFilter(profile, .init(sortBy: .highestRated)))
+                RouterLink("profileStatistics.uniqueByCategory.label", open: .screen(.profileStatisticsUniqueProducts(profile)))
+                RouterLink("profileStatistics.topLocations.label", open: .screen(.profileStatisticsTopLocations(profile)))
+                RouterLink("profileStatistics.topProducts.label", open: .screen(.profileProductsByFilter(profile, .init(sortBy: .highestRated))))
             }.headerProminence(.increased)
         }
         .listStyle(.insetGrouped)

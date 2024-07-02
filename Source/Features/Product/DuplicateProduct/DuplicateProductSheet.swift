@@ -81,7 +81,7 @@ struct DuplicateProductSheet: View {
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("reporting duplicate product \(product.id) of \(to.id) failed. error: \(error)")
         }
     }
@@ -93,7 +93,7 @@ struct DuplicateProductSheet: View {
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -105,7 +105,7 @@ struct DuplicateProductSheet: View {
             products = searchResults.filter { $0.id != product.id }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -38,12 +38,12 @@ struct CategoryServingStyleSheet: View {
             RouterLink(
                 "servingStyle.create.label",
                 systemImage: "plus",
-                sheet: .servingStyleManagement(
+                open: .sheet(.servingStyleManagement(
                     pickedServingStyles: $servingStyles,
                     onSelect: { servingStyle in
                         await addServingStyleToCategory(servingStyle)
                     }
-                )
+                ))
             )
             .bold()
         }
@@ -60,7 +60,7 @@ struct CategoryServingStyleSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to add serving style to category'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -74,7 +74,7 @@ struct CategoryServingStyleSheet: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error(
                 "Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }

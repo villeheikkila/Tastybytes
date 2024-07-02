@@ -26,7 +26,7 @@ struct CheckInCardHeader: View {
                     .accessibilityAddTraits(.isLink)
                     .allowsHitTesting(!loadedFrom.isLoadedFromLocation(location))
                     .onTapGesture {
-                        router.navigate(screen: .location(location))
+                        router.open(.screen(.location(location)))
                     }
             }
         }
@@ -34,7 +34,7 @@ struct CheckInCardHeader: View {
         .accessibilityAddTraits(.isLink)
         .allowsHitTesting(!loadedFrom.isLoadedFromProfile(profile))
         .onTapGesture {
-            router.navigate(screen: .profile(profile))
+            router.open(.screen(.profile(profile)))
         }
     }
 }

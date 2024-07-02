@@ -118,13 +118,13 @@ struct SubcategoryStatisticsRow: View {
     let subcategory: SubcategoryStatistics?
 
     var body: some View {
-        RouterLink(screen: .profileProductsByFilter(
+        RouterLink(open: .screen(.profileProductsByFilter(
             profile,
             .init(
                 category: category,
                 subcategory: subcategory?.subcategory,
                 sortBy: .highestRated
-            )
+            ))
         )) {
             if let subcategory {
                 HStack {

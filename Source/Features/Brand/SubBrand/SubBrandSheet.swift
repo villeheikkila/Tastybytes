@@ -74,7 +74,7 @@ struct SubBrandSheet: View {
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Saving sub-brand failed. Error: \(error) (\(#file):\(#line))")
         }
     }

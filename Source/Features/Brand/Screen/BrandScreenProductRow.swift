@@ -18,15 +18,15 @@ struct BrandScreenProductRow: View {
     let product: Product.Joined
 
     var body: some View {
-        RouterLink(screen: .product(product)) {
+        RouterLink(open: .screen(.product(product))) {
             ProductItemView(product: product, extras: [.logoOnLeft])
                 .padding(2)
                 .contextMenu {
-                    RouterLink(sheet: .duplicateProduct(
+                    RouterLink(open: .sheet(.duplicateProduct(
                         mode: profileEnvironmentModel
                             .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                         product: product
-                    ), label: {
+                    )), label: {
                         if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                             Label("product.mergeTo.label", systemImage: "doc.on.doc")
                         } else {
@@ -69,7 +69,7 @@ struct BrandScreenProductRow: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
     }

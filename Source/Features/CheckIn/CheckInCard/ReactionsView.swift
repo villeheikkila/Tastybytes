@@ -80,7 +80,7 @@ struct ReactionsView: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                router.openAlert(.init())
+                router.open(.alert(.init()))
                 logger.error("Adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed: \(error.localizedDescription)")
             }
         }

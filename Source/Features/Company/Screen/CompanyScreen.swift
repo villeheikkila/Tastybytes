@@ -74,8 +74,8 @@ struct CompanyScreen: View {
         Section("brand.title") {
             ForEach(sortedBrands) { brand in
                 RouterLink(
-                    screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
-                ) {
+                    open: .screen(.brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
+                )) {
                     CompanyBrandRow(brand: brand)
                 }
                 .alignmentGuide(.listRowSeparatorLeading) { _ in
@@ -94,21 +94,21 @@ struct CompanyScreen: View {
                     RouterLink(
                         "brand.title",
                         systemImage: "plus",
-                        sheet: .addBrand(brandOwner: company.saved, mode: .new)
+                        open: .sheet(.addBrand(brandOwner: company.saved, mode: .new))
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    RouterLink("labels.edit", systemImage: "pencil", sheet: .editCompany(company: company.saved, onSuccess: {
+                    RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.editCompany(company: company.saved, onSuccess: {
                         await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("company.update.success.toast"))
-                    }))
+                    })))
                 } else {
                     RouterLink(
                         "company.editSuggestion.title",
                         systemImage: "pencil",
-                        sheet: .companyEditSuggestion(company: company.saved, onSuccess: {
+                        open: .sheet(.companyEditSuggestion(company: company.saved, onSuccess: {
                             feedbackEnvironmentModel.toggle(.success("company.editSuggestion.success.toast"))
-                        })
+                        }))
                     )
                 }
             }
@@ -192,7 +192,7 @@ struct CompanyScreen: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -203,7 +203,7 @@ struct CompanyScreen: View {
             company = company.copyWith(isVerified: isVerified)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }

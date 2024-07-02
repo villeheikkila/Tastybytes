@@ -18,7 +18,7 @@ struct FriendListItemView<RootView: View>: View {
     }
 
     var body: some View {
-        RouterLink(screen: .profile(profile)) {
+        RouterLink(open: .screen(.profile(profile))) {
             HStack {
                 Avatar(profile: profile)
                     .avatarSize(.extraLarge)

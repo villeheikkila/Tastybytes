@@ -135,13 +135,13 @@ struct DiscoverScreen: View {
                 RouterLink(
                     "discover.filter.show",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    sheet: .productFilter(
+                    open: .sheet(.productFilter(
                         initialFilter: productFilter,
                         sections: [.category, .checkIns],
                         onApply: { filter in
                             productFilter = filter
                         }
-                    )
+                    ))
                 ).labelStyle(.iconOnly)
             }
 
@@ -150,10 +150,10 @@ struct DiscoverScreen: View {
                     RouterLink(
                         "discover.barcode.scan",
                         systemImage: "barcode.viewfinder",
-                        sheet: .barcodeScanner(onComplete: { barcode in
+                        open: .sheet(.barcodeScanner(onComplete: { barcode in
                             self.barcode = barcode
                             searchKey = .barcode(barcode)
-                        })
+                        }))
                     )
                 }
             }
@@ -168,7 +168,7 @@ struct DiscoverScreen: View {
                 Label("discover.barcode.notFound.title", systemImage: "bubbles.and.sparkles")
             } actions: {
                 Button("checkIn.action.createNew") {
-                    router.navigate(screen: .addProduct(barcode))
+                    router.open(.screen(.addProduct(barcode)))
                 }
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.capsule)
@@ -197,7 +197,7 @@ struct DiscoverScreen: View {
                     Button("checkIn.action.createNew") {
                         let barcodeCopy = barcode
                         barcode = nil
-                        router.navigate(screen: .addProduct(barcodeCopy))
+                        router.open(.screen(.addProduct(barcodeCopy)))
                     }
                     .buttonStyle(.bordered)
                     .buttonBorderShape(.capsule)

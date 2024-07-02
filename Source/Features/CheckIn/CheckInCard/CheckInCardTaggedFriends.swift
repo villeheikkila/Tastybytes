@@ -24,7 +24,7 @@ struct CheckInCardTaggedFriends: View {
                             .accessibilityAddTraits(.isLink)
                             .allowsHitTesting(!loadedFrom.isLoadedFromProfile(taggedProfile))
                             .onTapGesture {
-                                router.navigate(screen: .profile(taggedProfile))
+                                router.open(.screen(.profile(taggedProfile)))
                             }
                     }
                     Spacer()

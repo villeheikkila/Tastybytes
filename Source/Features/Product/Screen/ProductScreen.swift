@@ -121,15 +121,15 @@ struct ProductInnerScreen: View {
             Menu {
                 ControlGroup {
                     ProductShareLinkView(product: product)
-                    RouterLink("checkIn.create.label", systemImage: "plus", sheet: .checkIn(.create(product: product, onCreation: checkInLoader.onCreateCheckIn)))
+                    RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: checkInLoader.onCreateCheckIn))))
                         .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                         RouterLink(
                             "labels.add",
                             systemImage: "barcode.viewfinder",
-                            sheet: .barcodeScanner(onComplete: { barcode in
+                            open: .sheet(.barcodeScanner(onComplete: { barcode in
                                 await addBarcodeToProduct(barcode)
-                            })
+                            }))
                         )
                     }
                 }
@@ -139,38 +139,38 @@ struct ProductInnerScreen: View {
                     showUnverifyProductConfirmation = true
                 })
                 Divider()
-                RouterLink("product.screen.open", systemImage: "grid", screen: .product(product))
+                RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(product)))
                 RouterLink(
                     "subBrand.screen.open",
                     systemImage: "cart",
-                    screen: .fetchSubBrand(product.subBrand)
+                    open: .screen(.fetchSubBrand(product.subBrand))
                 )
-                RouterLink("brand.screen.open", systemImage: "cart", screen: .fetchBrand(product.subBrand.brand))
+                RouterLink("brand.screen.open", systemImage: "cart", open: .screen(.fetchBrand(product.subBrand.brand)))
                 RouterLink(
                     "company.screen.open",
                     systemImage: "network",
-                    screen: .company(product.subBrand.brand.brandOwner)
+                    open: .screen(.company(product.subBrand.brand.brandOwner))
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    RouterLink("labels.edit", systemImage: "pencil", sheet: .product(.edit(product, onEdit: { updatedProduct in
+                    RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: { updatedProduct in
                         withAnimation {
                             product = updatedProduct
                             checkInLoader.onUpdateProduct(updatedProduct)
                         }
-                    })))
+                    }))))
                 } else {
                     RouterLink(
                         "product.editSuggestion.label",
                         systemImage: "pencil",
-                        sheet: .product(.editSuggestion(product))
+                        open: .sheet( .product(.editSuggestion(product)))
                     )
                 }
 
-                RouterLink(sheet: .duplicateProduct(
+                RouterLink(open: .sheet(.duplicateProduct(
                     mode: profileEnvironmentModel.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                     product: product
-                ), label: {
+                )), label: {
                     if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                         Label("product.mergeTo.label", systemImage: "doc.on.doc")
                     } else {
@@ -180,7 +180,7 @@ struct ProductInnerScreen: View {
 
                 Menu {
                     if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
-                        RouterLink("barcode.management.open", systemImage: "barcode", sheet: .barcodeManagement(product: product))
+                        RouterLink("barcode.management.open", systemImage: "barcode", open: .sheet(.barcodeManagement(product: product)))
                     }
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
@@ -241,7 +241,7 @@ struct ProductInnerScreen: View {
             self.summary = summary
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -301,7 +301,7 @@ struct ProductInnerScreen: View {
             self.product = product.copyWith(isVerified: isVerified)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -313,7 +313,7 @@ struct ProductInnerScreen: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -324,9 +324,9 @@ struct ProductInnerScreen: View {
             feedbackEnvironmentModel.toggle(.success("bracode.add.success.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init(title: "barcode.error.failedToAdd.title", retryLabel: "labels.retry", retry: {
+            router.open(.alert(.init(title: "barcode.error.failedToAdd.title", retryLabel: "labels.retry", retry: {
                 Task { await addBarcodeToProduct(barcode) }
-            }))
+            })))
             logger.error("Adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
     }

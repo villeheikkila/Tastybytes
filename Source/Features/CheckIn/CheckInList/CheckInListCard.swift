@@ -27,7 +27,7 @@ struct CheckInListCard: View {
                     RouterLink(
                         "labels.edit",
                         systemImage: "pencil",
-                        sheet: .checkIn(.update(checkIn: checkIn, onUpdate: onUpdate))
+                        open: .sheet(.checkIn(.update(checkIn: checkIn, onUpdate: onUpdate)))
                     )
                     Button(
                         "labels.delete",
@@ -41,40 +41,40 @@ struct CheckInListCard: View {
                     RouterLink(
                         "checkIn.title",
                         systemImage: "pencil",
-                        sheet: .checkIn(.create(product: checkIn.product, onCreation: onCreate))
+                        open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: onCreate)))
                     )
                     ReportButton(entity: .checkIn(checkIn))
                 }
             }
             Divider()
-            RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
+            RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product)))
             RouterLink(
                 "company.screen.open",
                 systemImage: "network",
-                screen: .company(checkIn.product.subBrand.brand.brandOwner)
+                open: .screen(.company(checkIn.product.subBrand.brand.brandOwner))
             )
             RouterLink(
                 "brand.screen.open",
                 systemImage: "cart",
-                screen: .fetchBrand(checkIn.product.subBrand.brand)
+                open: .screen(.fetchBrand(checkIn.product.subBrand.brand))
             )
             RouterLink(
                 "subBrand.screen.open",
                 systemImage: "cart",
-                screen: .fetchSubBrand(checkIn.product.subBrand)
+                open: .screen(.fetchSubBrand(checkIn.product.subBrand))
             )
             if let location = checkIn.location {
                 RouterLink(
                     "location.open",
                     systemImage: "network",
-                    screen: .location(location)
+                    open: .screen(.location(location))
                 )
             }
             if let purchaseLocation = checkIn.purchaseLocation {
                 RouterLink(
                     "location.open.purchaseLocation",
                     systemImage: "network",
-                    screen: .location(purchaseLocation)
+                    open: .screen(.location(purchaseLocation))
                 )
             }
             Divider()

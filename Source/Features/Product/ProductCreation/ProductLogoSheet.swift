@@ -79,7 +79,7 @@ struct ProductLogoSheet: View {
             logger.info("Succesfully uploaded image \(imageEntity.file)")
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init(title: "Uploading of a product logo failed."))
+            router.open(.alert(.init(title: "Uploading of a product logo failed.")))
             logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

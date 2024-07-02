@@ -43,7 +43,7 @@ struct DuplicateProductScreen: View {
 
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Fetching duplicate products failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -67,13 +67,13 @@ struct DuplicateProductScreeRow: View {
                 .contentShape(Rectangle())
                 .accessibilityAddTraits(.isLink)
                 .onTapGesture {
-                    router.navigate(screen: .product(duplicateProductSuggestion.product))
+                    router.open(.screen(.product(duplicateProductSuggestion.product)))
                 }
             ProductItemView(product: duplicateProductSuggestion.duplicate)
                 .contentShape(Rectangle())
                 .accessibilityAddTraits(.isLink)
                 .onTapGesture {
-                    router.navigate(screen: .product(duplicateProductSuggestion.duplicate))
+                    router.open(.screen(.product(duplicateProductSuggestion.duplicate)))
                 }
         }
     }

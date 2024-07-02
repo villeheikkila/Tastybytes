@@ -80,7 +80,7 @@ struct LocationInnerScreen: View {
                 if profileEnvironmentModel.hasRole(.admin) {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canMergeLocations) {
-                            RouterLink(sheet: .mergeLocationSheet(location: location), label: {
+                            RouterLink(open: .sheet(.mergeLocationSheet(location: location)), label: {
                                 Label("location.mergeTo.label", systemImage: "doc.on.doc")
                             })
                         }
@@ -144,7 +144,7 @@ struct LocationInnerScreen: View {
             isSuccess = true
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")
         }
     }

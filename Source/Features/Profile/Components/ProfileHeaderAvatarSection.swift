@@ -23,7 +23,7 @@ struct ProfileHeaderAvatarSection: View {
             if showInFull {
                 Spacer()
                 CheckInStatisticView(title: "profile.summary.total", subtitle: .init(stringLiteral: profileSummary?.totalCheckIns.formatted() ?? "0")) {
-                    router.navigate(screen: .profileProducts(profile))
+                    router.open(.screen(.profileProducts(profile)))
                 }
             }
             Spacer()
@@ -47,7 +47,7 @@ struct ProfileHeaderAvatarSection: View {
             Spacer()
             if showInFull {
                 CheckInStatisticView(title: "profile.summary.unique", subtitle: .init(stringLiteral: profileSummary?.uniqueCheckIns.formatted() ?? "0")) {
-                    router.navigate(screen: .profileProducts(profile))
+                    router.open(.screen(.profileProducts(profile)))
                 }
                 Spacer()
             }

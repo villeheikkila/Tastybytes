@@ -97,7 +97,7 @@ struct CheckInSheet: View {
         Section("checkIn.review.title") {
             TextField("checkIn.review.label", text: $review, axis: .vertical)
                 .focused($focusedField, equals: .review)
-            RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors),
+            RouterLink(open: .sheet(.flavors(pickedFlavors: $pickedFlavors)),
                        label: {
                            if !pickedFlavors.isEmpty {
                                FlavorsView(flavors: pickedFlavors)
@@ -126,9 +126,9 @@ struct CheckInSheet: View {
 
             RouterLink(
                 "checkIn.manufacturedBy.label \(manufacturer?.name ?? "")",
-                sheet: .companySearch(onSelect: { company in
+                open: .sheet(.companySearch(onSelect: { company in
                     manufacturer = company
-                })
+                }))
             )
         }
         .customListRowBackground()
@@ -150,7 +150,7 @@ struct CheckInSheet: View {
             )
 
             if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
-                RouterLink(sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic)) {
+                RouterLink(open: .sheet(.checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic))) {
                     Text(
                         isLegacyCheckIn
                             ? "checkIn.date.legacyCheckIn"
@@ -158,7 +158,7 @@ struct CheckInSheet: View {
                 }
             }
 
-            RouterLink(sheet: .friends(taggedFriends: $taggedFriends),
+            RouterLink(open: .sheet(.friends(taggedFriends: $taggedFriends)),
                        label: {
                            if taggedFriends.isEmpty {
                                Text("checkIn.friends.tag")
@@ -228,11 +228,11 @@ struct CheckInSheet: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                router.openAlert(.init(title: "checkIn.errors.failedToCreateCheckIn.title", retryLabel: "labels.retry", retry: {
+                router.open(.alert(.init(title: "checkIn.errors.failedToCreateCheckIn.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                }))
+                })))
                 logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
                 return
             }
@@ -260,11 +260,11 @@ struct CheckInSheet: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                router.openAlert(.init(title: "checkIn.errors.failedToUpdateCheckIn.title", retry: {
+                router.open(.alert(.init(title: "checkIn.errors.failedToUpdateCheckIn.title", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                }))
+                })))
                 logger.error("Failed to update check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
             }
         }

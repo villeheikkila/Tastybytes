@@ -22,7 +22,7 @@ struct LocationManagementScreen: View {
     var body: some View {
         List(filteredLocations) { location in
             LocationRow(location: location, currentLocation: nil) { location in
-                router.openSheet(.locationEdit(location: location))
+                router.open(.sheet(.locationEdit(location: location)))
             }
         }
         .navigationTitle("admin.locations.title")

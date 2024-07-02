@@ -109,7 +109,7 @@ struct EditCompanySheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -120,7 +120,7 @@ struct EditCompanySheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to send company edit suggestion. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -132,7 +132,7 @@ struct EditCompanySheet: View {
             logger.info("Succesfully uploaded company logo: \(imageEntity.file)")
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Uploading company logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -145,7 +145,7 @@ struct EditCompanySheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }

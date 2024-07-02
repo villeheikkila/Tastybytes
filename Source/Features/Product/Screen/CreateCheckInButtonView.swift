@@ -13,7 +13,7 @@ struct CreateCheckInButtonView: View {
         RouterLink(
             "checkIn.create.label.prominent",
             systemImage: "checkmark.circle",
-            sheet: .checkIn(.create(product: product, onCreation: onCreateCheckIn))
+            open: .sheet(.checkIn(.create(product: product, onCreation: onCreateCheckIn)))
         )
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.capsule)

@@ -47,7 +47,7 @@ struct CheckInListContent: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init(title: "checkIn.delete.failure.alert"))
+            router.open(.alert(.init(title: "checkIn.delete.failure.alert")))
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
         }
     }

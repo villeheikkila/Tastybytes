@@ -51,7 +51,7 @@ struct ReportSheet: View {
             feedbackEnvironmentModel.toggle(.success("report.submit.success.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Submitting report failed. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -136,7 +136,7 @@ struct LocationSearchSheet: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                router.openAlert(.init())
+                router.open(.alert(.init()))
                 logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
             }
         }

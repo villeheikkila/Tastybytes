@@ -48,7 +48,7 @@ struct RatingChartView: View {
             .chartXSelection(value: $selection)
             .onChange(of: selection) { _, newValue in
                 if let newValue, let rating = Double(newValue) {
-                    router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(rating: rating)))
+                    router.open(.screen(.profileProductsByFilter(profile, Product.Filter(rating: rating))))
                 }
             }
             .frame(height: 100)

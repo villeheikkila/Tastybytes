@@ -37,7 +37,7 @@ struct ProfileLocationsScreen: View {
             if let selectedLocation {
                 HStack {
                     Spacer()
-                    RouterLink("location.open \(selectedLocation.name)", screen: .location(selectedLocation))
+                    RouterLink("location.open \(selectedLocation.name)", open: .screen(.location(selectedLocation)))
                     Spacer()
                 }
                 .padding()

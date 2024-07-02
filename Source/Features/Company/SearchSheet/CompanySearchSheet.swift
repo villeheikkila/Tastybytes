@@ -118,7 +118,7 @@ struct CompanySearchSheet: View {
             status = .searched
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to search companies. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -131,7 +131,7 @@ struct CompanySearchSheet: View {
             onSuccess(newCompany)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to create new company'. Error: \(error) (\(#file):\(#line))")
         }
     }

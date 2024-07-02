@@ -6,7 +6,7 @@ struct PickerLinkRow: View {
     let sheet: Sheet
 
     var body: some View {
-        RouterLink(sheet: sheet) {
+        RouterLink(open: .sheet(sheet)) {
             LabeledContent(label) {
                 if let selection {
                     Text(selection)

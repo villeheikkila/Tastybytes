@@ -37,7 +37,7 @@ struct CheckInCardProduct: View {
                         .contentShape(Rectangle())
                         .accessibilityAddTraits(.isLink)
                         .onTapGesture {
-                            router.navigate(screen: .company(product.subBrand.brand.brandOwner))
+                            router.open(.screen(.company(product.subBrand.brand.brandOwner)))
                         }
 
                     if let manufacturer = productVariant?.manufacturer,
@@ -59,7 +59,7 @@ struct CheckInCardProduct: View {
         .accessibilityAddTraits(.isLink)
         .allowsHitTesting(loadedFrom != .product)
         .onTapGesture {
-            router.navigate(screen: .product(product))
+            router.open(.screen(.product(product)))
         }
     }
 }

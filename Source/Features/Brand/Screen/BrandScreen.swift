@@ -146,19 +146,19 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        RouterLink("brand.addProduct.menu.label", systemImage: "plus", sheet: .product(.addToBrand(brand, onCreate: { product in
-                            router.navigate(screen: .product(product), removeLast: true)
-                        })))
+                        RouterLink("brand.addProduct.menu.label", systemImage: "plus", open: .sheet(.product(.addToBrand(brand, onCreate: { product in
+                            router.open(.screen(.product(product), removeLast: true))
+                        }))))
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         RouterLink(
                             "labels.edit", systemImage: "pencil",
-                            sheet: .editBrand(
+                            open: .sheet(.editBrand(
                                 brand: brand,
                                 onUpdate: { updatedBrand in
                                     brand = updatedBrand
                                 }
-                            )
+                            ))
                         )
                     }
                 }
@@ -175,7 +175,7 @@ struct BrandScreen: View {
                 RouterLink(
                     "company.screen.open",
                     systemImage: "network",
-                    screen: .company(brand.brandOwner)
+                    open: .screen(.company(brand.brandOwner))
                 )
                 Divider()
                 Button("brand.product.groupBy.label", systemImage: "list.bullet.indent") {
@@ -301,7 +301,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -340,7 +340,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -352,7 +352,7 @@ struct BrandScreen: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -367,7 +367,7 @@ struct BrandScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error(
                 "Failed to delete brand '\(subBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -419,22 +419,22 @@ struct SubBrandSectionHeader: View {
                     RouterLink(
                         "brand.createProduct.label",
                         systemImage: "plus",
-                        sheet: .product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
-                            router.navigate(screen: .product(newProduct), removeLast: true)
-                        }))
+                        open: .sheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
+                            router.open(.screen(.product(newProduct), removeLast: true))
+                        })))
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
                     RouterLink(
                         "labels.edit",
                         systemImage: "pencil",
-                        sheet: .editSubBrand(
+                        open: .sheet( .editSubBrand(
                             brand: brand, subBrand: subBrand,
                             onUpdate: { updatedSubBrand in
                                 let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
                                 brand = brand.copyWith(subBrands: updatedSubBrands)
                             }
-                        )
+                        ))
                     )
                 }
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))

@@ -90,9 +90,9 @@ struct CheckInScreen: View {
                     RouterLink(
                         "labels.edit",
                         systemImage: "pencil",
-                        sheet: .checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
+                        open: .sheet(.checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
                             checkIn = updatedCheckIn
-                        }))
+                        })))
                     )
                     Button(
                         "labels.delete",
@@ -106,42 +106,42 @@ struct CheckInScreen: View {
                     RouterLink(
                         "checkIn.add.label",
                         systemImage: "pencil",
-                        sheet: .checkIn(.create(product: checkIn.product, onCreation: { checkIn in
-                            router.navigate(screen: .checkIn(checkIn))
-                        }))
+                        open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: { checkIn in
+                            router.open(.screen(.checkIn(checkIn)))
+                        })))
                     )
                     ReportButton(entity: .checkIn(checkIn))
                 }
             }
             Divider()
-            RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
+            RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product)))
             RouterLink(
                 "company.screen.open",
                 systemImage: "network",
-                screen: .company(checkIn.product.subBrand.brand.brandOwner)
+                open: .screen(.company(checkIn.product.subBrand.brand.brandOwner))
             )
             RouterLink(
                 "brand.screen.open",
                 systemImage: "cart",
-                screen: .fetchBrand(checkIn.product.subBrand.brand)
+                open: .screen(.fetchBrand(checkIn.product.subBrand.brand))
             )
             RouterLink(
                 "subBrand.screen.open",
                 systemImage: "cart",
-                screen: .fetchSubBrand(checkIn.product.subBrand)
+                open: .screen(.fetchSubBrand(checkIn.product.subBrand))
             )
             if let location = checkIn.location {
                 RouterLink(
                     "location.open",
                     systemImage: "network",
-                    screen: .location(location)
+                    open: .screen(.location(location))
                 )
             }
             if let purchaseLocation = checkIn.purchaseLocation {
                 RouterLink(
                     "location.open.purchaseLocation",
                     systemImage: "network",
-                    screen: .location(purchaseLocation)
+                    open: .screen(.location(purchaseLocation))
                 )
             }
         }
@@ -155,12 +155,12 @@ struct CheckInScreen: View {
                         CheckInShareLinkView(checkIn: checkIn)
                         RouterLink(
                             "labels.edit", systemImage: "pencil",
-                            sheet: .checkIn(.update(checkIn:
+                            open: .sheet(.checkIn(.update(checkIn:
                                 checkIn,
                                 onUpdate: { updatedCheckIn in
                                     checkIn = updatedCheckIn
                                 })
-                            )
+                            ))
                         )
                         Button(
                             "labels.delete",
@@ -174,16 +174,16 @@ struct CheckInScreen: View {
                 RouterLink(
                     "company.screen.open",
                     systemImage: "network",
-                    screen: .company(checkIn.product.subBrand.brand.brandOwner)
+                    open: .screen(.company(checkIn.product.subBrand.brand.brandOwner))
                 )
-                RouterLink("product.screen.open", systemImage: "grid", screen: .product(checkIn.product))
+                RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product)))
                 RouterLink(
-                    "brand.screen.open", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand)
+                    "brand.screen.open", systemImage: "cart", open: .screen(.fetchBrand(checkIn.product.subBrand.brand))
                 )
                 RouterLink(
                     "subBrand.screen.open",
                     systemImage: "cart",
-                    screen: .fetchSubBrand(checkIn.product.subBrand)
+                    open: .screen(.fetchSubBrand(checkIn.product.subBrand))
                 )
                 Divider()
                 if profileEnvironmentModel.id != checkIn.profile.id {
@@ -277,7 +277,7 @@ struct CheckInScreen: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -288,7 +288,7 @@ struct CheckInScreen: View {
             router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -53,16 +53,16 @@ struct AboutScreen: View {
             "about.sendFeedback.label",
             systemName: "envelope",
             color: .green,
-            sheet: .sendEmail(email: $email, callback: { result in
+            open: .sheet(.sendEmail(email: $email, callback: { result in
                 switch result {
                 case let .success(successResult) where successResult == MFMailComposeResult.sent:
                     feedbackEnvironmentModel.toggle(.success("about.sendFeedback.success.toast"))
                 case .failure:
-                    router.openAlert(.init())
+                    router.open(.alert(.init()))
                 default:
                     return
                 }
-            })
+            }))
         )
         ProgressButton("about.rateApp.label \(appEnvironmentModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
             // requestReview()

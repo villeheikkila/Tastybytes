@@ -48,9 +48,9 @@ struct EditBrandSheet: View {
             }.headerProminence(.increased)
 
             Section("brand.edit.brandOwner.title") {
-                RouterLink(brandOwner.name, sheet: .companySearch(onSelect: { company in
+                RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
                     brandOwner = company
-                }))
+                })))
                 ProgressButton("brand.edit.brandOwner.label") {
                     await editBrand { updatedBrand in
                         await onUpdate(updatedBrand)
@@ -99,7 +99,7 @@ struct EditBrandSheet: View {
             await onSuccess(brand)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to edit brand. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -114,7 +114,7 @@ struct EditBrandSheet: View {
             await onUpdate(brand)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Uploading of a brand logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -127,7 +127,7 @@ struct EditBrandSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }

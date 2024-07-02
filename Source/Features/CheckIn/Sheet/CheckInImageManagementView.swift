@@ -68,10 +68,10 @@ struct CheckInImageManagementView: View {
                 }
                 .opacity(totalImages >= 2 ? 0 : 1)
                 .confirmationDialog("checkIn.photo.title", isPresented: $showPhotoMenu) {
-                    Button("checkIn.photo.picker.camera", action: { router.openFullScreenCover(.cameraWithCropping(onSubmit: { image in
+                    RouterLink("checkIn.photo.picker.camera", open: .fullScreenCover(.cameraWithCropping(onSubmit: { image in
                         guard let image else { return }
                         newImages.append(image)
-                    })) })
+                    })))
                     Button(
                         "checkIn.photo.picker.photoGallery",
                         action: {
@@ -94,10 +94,10 @@ struct CheckInImageManagementView: View {
                 await getLocationFromCoordinate(coordinate: imageTakenLocation)
             }
             guard let image = UIImage(data: data) else { return }
-            router.openFullScreenCover(.cropImage(image: image, onSubmit: { image in
+            router.open(.fullScreenCover(.cropImage(image: image, onSubmit: { image in
                 guard let image else { return }
                 newImages.append(image)
-            }))
+            })))
         }
         .scrollIndicators(.hidden)
         .contentMargins(.horizontal, 16)

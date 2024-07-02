@@ -25,7 +25,7 @@ struct SettingsScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if let subscriptionGroup = appEnvironmentModel.subscriptionGroup {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                RouterLink("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", sheet: .subscribe)
+                RouterLink("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", open: .sheet(.subscribe))
                     .labelStyle(.iconOnly)
                     .imageScale(.large)
                     .foregroundColor(.yellow)
@@ -35,23 +35,23 @@ struct SettingsScreen: View {
 
     @ViewBuilder private var profileSection: some View {
         Section {
-            RouterLink("profile.title", systemName: "person.fill", color: .indigo, screen: .profileSettings)
-            RouterLink("account.navigationTitle", systemName: "gear", color: .gray, screen: .accountSettings)
-            RouterLink("settings.privacy.navigationTitle", systemName: "key.fill", color: .yellow, screen: .privacySettings)
-            RouterLink("blockedUsers.navigationTitle", systemName: "person.fill.xmark", color: .green, screen: .blockedUsers)
+            RouterLink("profile.title", systemName: "person.fill", color: .indigo, open: .screen(.profileSettings))
+            RouterLink("account.navigationTitle", systemName: "gear", color: .gray, open: .screen(.accountSettings))
+            RouterLink("settings.privacy.navigationTitle", systemName: "key.fill", color: .yellow, open: .screen(.privacySettings))
+            RouterLink("blockedUsers.navigationTitle", systemName: "person.fill.xmark", color: .green, open: .screen(.blockedUsers))
         }
     }
 
     @ViewBuilder private var appSection: some View {
         Section {
-            RouterLink("settings.appearance.title", systemName: "paintbrush.fill", color: .blue, screen: .appearanaceSettings)
+            RouterLink("settings.appearance.title", systemName: "paintbrush.fill", color: .blue, open: .screen(.appearanaceSettings))
             RouterLink(
                 "notifications.title",
                 systemName: "bell.badge.fill",
                 color: .red,
-                screen: .notificationSettingsScreen
+                open: .screen(.notificationSettingsScreen)
             )
-            RouterLink(screen: .appIcon, label: {
+            RouterLink(open: .screen(.appIcon), label: {
                 AppIconLabelRow()
             })
         }
@@ -63,9 +63,9 @@ struct SettingsScreen: View {
                 "contributions.title",
                 systemName: "plus",
                 color: .teal,
-                screen: .contributions
+                open: .screen(.contributions)
             )
-            RouterLink("about.title", systemName: "at", color: .blue, screen: .about)
+            RouterLink("about.title", systemName: "at", color: .blue, open: .screen(.about))
         } footer: {
             if case .subscribed = subscriptionEnvironmentModel.subscriptionStatus, let subscriptionName = appEnvironmentModel.subscriptionGroup?.name {
                 HStack {

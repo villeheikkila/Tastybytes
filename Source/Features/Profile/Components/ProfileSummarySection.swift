@@ -14,13 +14,13 @@ struct ProfileSummarySection: View {
         HStack {
             Spacer()
             CheckInStatisticView(title: "profile.summary.unrated", subtitle: .init(stringLiteral: profileSummary?.unrated.formatted() ?? "0")) {
-                router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(onlyUnrated: true)))
+                router.open(.screen(.profileProductsByFilter(profile, Product.Filter(onlyUnrated: true))))
             }
             Spacing(width: 12)
             Divider()
             Spacing(width: 12)
             CheckInStatisticView(title: "profile.summary.average", subtitle: .init(stringLiteral: profileSummary?.averageRating?.formatted(.number.precision(.fractionLength(2))) ?? "-")) {
-                router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(sortBy: .highestRated)))
+                router.open(.screen(.profileProductsByFilter(profile, Product.Filter(sortBy: .highestRated))))
             }
             Spacer()
         }

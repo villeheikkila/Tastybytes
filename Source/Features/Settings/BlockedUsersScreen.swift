@@ -27,9 +27,9 @@ struct BlockedUsersScreen: View {
             } description: {
                 Text("blockedUsers.empty.description")
             } actions: {
-                RouterLink("blockedUsers.empty.block.label", sheet: .userSheet(mode: .block, onSubmit: {
+                RouterLink("blockedUsers.empty.block.label", open: .sheet(.userSheet(mode: .block, onSubmit: {
                     feedbackEnvironmentModel.toggle(.success("blockedUsers.block.success"))
-                }))
+                })))
             }
             .opacity(friendEnvironmentModel.blockedUsers.isEmpty ? 1 : 0)
         }
@@ -44,9 +44,9 @@ struct BlockedUsersScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
-                RouterLink("blockedUsers.block.label", systemImage: "plus", sheet: .userSheet(mode: .block, onSubmit: {
+                RouterLink("blockedUsers.block.label", systemImage: "plus", open: .sheet(.userSheet(mode: .block, onSubmit: {
                     feedbackEnvironmentModel.toggle(.success("blockedUsers.block.success"))
-                }))
+                })))
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
             }

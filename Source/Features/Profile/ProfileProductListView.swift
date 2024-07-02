@@ -94,8 +94,8 @@ struct ProfileProductListView: View {
                 RouterLink(
                     "profileProductList.filters.show.label",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    sheet: .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
-                                          onApply: { filter in productFilter = filter })
+                    open: .sheet(.productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
+                                          onApply: { filter in productFilter = filter }))
                 )
                 .labelStyle(.iconOnly)
             }
@@ -154,7 +154,7 @@ struct ProfileProductListRow: View {
     let product: Product.Joined
 
     var body: some View {
-        RouterLink(screen: .product(product)) {
+        RouterLink(open: .screen(.product(product))) {
             ProductItemView(product: product, extras: [.rating])
         }
     }

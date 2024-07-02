@@ -14,7 +14,7 @@ struct AuthenticationScreenContent: View {
         .scrollBounceBehavior(.basedOnSize)
         .onChange(of: profileDeleted, initial: true) {
             if profileDeleted {
-                router.openSheet(.profileDeleteConfirmation)
+                router.open(.sheet(.profileDeleteConfirmation))
                 profileDeleted = false
             }
         }

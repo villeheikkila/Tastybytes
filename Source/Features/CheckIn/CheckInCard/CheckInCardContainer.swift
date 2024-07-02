@@ -18,7 +18,7 @@ struct CheckInCardContainer<Content: View>: View {
         }
         .onTapGesture {
             if loadedFrom != .checkIn {
-                router.navigate(screen: .checkIn(checkIn))
+                router.open(.screen(.checkIn(checkIn)))
             }
         }
         .accessibilityAddTraits(.isLink)

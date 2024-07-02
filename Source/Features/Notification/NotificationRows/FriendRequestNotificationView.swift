@@ -10,7 +10,7 @@ struct FriendRequestNotificationView: View {
     let seenAt: Date?
 
     var body: some View {
-        RouterLink(screen: .currentUserFriends, asTapGesture: true) {
+        RouterLink(open: .screen(.currentUserFriends), asTapGesture: true) {
             NotificationFromUserWrapper(profile: friend.sender, createdAt: createdAt) {
                 Text("notifications.friendRequest.recievedFrom \(friend.sender.preferredName)")
                 Spacer()

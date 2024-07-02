@@ -78,7 +78,7 @@ struct VerificationScreen: View {
 
     private var unverifiedCompanies: some View {
         ForEach(companies) { company in
-            RouterLink(company.name, screen: .company(company))
+            RouterLink(company.name, open: .screen(.company(company)))
                 .swipeActions {
                     ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifyCompany(company) })
                         .tint(.green)
@@ -105,7 +105,7 @@ struct VerificationScreen: View {
 
     private var unverifiedBrands: some View {
         ForEach(brands) { brand in
-            RouterLink(screen: .brand(brand)) {
+            RouterLink(open: .screen(.brand(brand))) {
                 HStack {
                     Text("\(brand.brandOwner.name): \(brand.name)")
                     Spacer()
@@ -136,14 +136,14 @@ struct VerificationScreen: View {
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
                     .onTapGesture {
-                        router.navigate(screen: .product(product))
+                        router.open(.screen(.product(product)))
                     }
                     .swipeActions {
                         ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifyProduct(product) })
                             .tint(.green)
-                        RouterLink("labels.edit", systemImage: "pencil", sheet: .product(.edit(product, onEdit: { _ in
+                        RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: { _ in
                             await loadData(refresh: true)
-                        }))).tint(.yellow)
+                        })))).tint(.yellow)
                         Button("labels.delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })
                     }
             }
@@ -170,7 +170,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to verify brand \(brand.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -183,7 +183,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to verify brand \(subBrand.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -196,7 +196,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -209,7 +209,7 @@ struct VerificationScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -221,7 +221,7 @@ struct VerificationScreen: View {
             await loadData(refresh: true)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -240,7 +240,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    router.openAlert(.init())
+                    router.open(.alert(.init()))
                     logger.error("Loading unverfied products failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -253,7 +253,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    router.openAlert(.init())
+                    router.open(.alert(.init()))
                     logger.error("Loading unverfied companies failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -266,7 +266,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    router.openAlert(.init())
+                    router.open(.alert(.init()))
                     logger.error("Loading unverfied brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
@@ -279,7 +279,7 @@ struct VerificationScreen: View {
                     }
                 case let .failure(error):
                     guard !error.isCancelled else { return }
-                    router.openAlert(.init())
+                    router.open(.alert(.init()))
                     logger.error("Loading unverfied sub-brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }

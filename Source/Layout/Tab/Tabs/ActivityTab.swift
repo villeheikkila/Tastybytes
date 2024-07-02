@@ -19,14 +19,14 @@ struct ActivityTab: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
-            RouterLink("friends.navigationTitle", systemImage: "person.2", screen: .currentUserFriends)
+            RouterLink("friends.navigationTitle", systemImage: "person.2", open: .screen(.currentUserFriends))
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
                 .customBadge(notificationEnvironmentModel.unreadFriendRequestCount)
         }
         ToolbarItem(placement: .principal) {}
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("settings.navigationTitle", systemImage: "gear", screen: .settings)
+            RouterLink("settings.navigationTitle", systemImage: "gear", open: .screen( .settings))
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
         }

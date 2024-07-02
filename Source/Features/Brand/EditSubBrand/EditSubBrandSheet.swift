@@ -109,7 +109,7 @@ struct EditSubBrandSheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -121,7 +121,7 @@ struct EditSubBrandSheet: View {
             await onSuccess(subBrand.copyWith(name: updatedSubBrand.name))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
         }
     }

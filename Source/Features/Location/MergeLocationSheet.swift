@@ -52,7 +52,7 @@ struct MergeLocationSheet: View {
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Merging location failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -64,7 +64,7 @@ struct MergeLocationSheet: View {
             locations = searchResults
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")
         }
     }

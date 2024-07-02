@@ -48,7 +48,7 @@ struct AccountSettingsScreen: View {
             case .success:
                 feedbackEnvironmentModel.toggle(.success("account.export.success.toast"))
             case .failure:
-                router.openAlert(.init(title: "account.export.failure.alert"))
+                router.open(.alert(.init(title: "account.export.failure.alert")))
             }
         }
         .confirmationDialog(
@@ -118,7 +118,7 @@ struct AccountSettingsScreen: View {
             feedbackEnvironmentModel.toggle(.success("account.feedback.sent.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to change email. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -130,7 +130,7 @@ struct AccountSettingsScreen: View {
             showingExporter = true
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to export check-in csv. Error: \(error) (\(#file):\(#line))")
         }
     }

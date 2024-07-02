@@ -132,15 +132,12 @@ struct ProductMutationView: View {
         Section {
             RouterLink(
                 selectedCategory?.name ?? String(localized: "product.mutation.pickCategory.label"),
-                sheet: .categoryPickerSheet(category: $category)
+                open: .sheet(.categoryPickerSheet(category: $category))
             )
 
             Button(action: {
                 if let selectedCategory {
-                    router.openSheet(.subcategory(
-                        subcategories: $subcategories,
-                        category: selectedCategory
-                    ))
+                    router.open(.sheet(.subcategory(subcategories: $subcategories, category: selectedCategory)))
                 }
             }, label: {
                 HStack {
@@ -226,9 +223,9 @@ struct ProductMutationView: View {
             if mode.showBarcodeSection {
                 RouterLink(
                     barcode == nil ? "product.barcode.add.label" : "product.barcode.added.label",
-                    sheet: .barcodeScanner(onComplete: { barcode in
+                    open: .sheet(.barcodeScanner(onComplete: { barcode in
                         self.barcode = barcode
-                    })
+                    }))
                 )
             }
             Toggle("product.isDiscontinued.label", isOn: $isDiscontinued)
@@ -267,11 +264,11 @@ struct ProductMutationView: View {
                 feedbackEnvironmentModel.toggle(.success("product.editSuggestion.success.toast"))
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                router.openAlert(.init(title: "product.error.failedToCreateEditSuggestion.title", retryLabel: "labels.retry", retry: {
+                router.open(.alert(.init(title: "product.error.failedToCreateEditSuggestion.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                }))
+                })))
                 logger.error("Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))")
             }
         case let .edit(product, onEdit):
@@ -295,11 +292,11 @@ struct ProductMutationView: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                router.openAlert(.init(title: "product.error.failedToUpdate.title", retryLabel: "labels.retry", retry: {
+                router.open(.alert(.init(title: "product.error.failedToUpdate.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                }))
+                })))
                 logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
             }
         case let .new(onCreate), let .addToBrand(_, onCreate), let .addToSubBrand(_, _, onCreate):
@@ -324,11 +321,11 @@ struct ProductMutationView: View {
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                router.openAlert(.init(title: "product.error.failedToCreate.title", retryLabel: "labels.retry", retry: {
+                router.open(.alert(.init(title: "product.error.failedToCreate.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                }))
+                })))
                 logger.error("Failed to create new product. Error: \(error) (\(#file):\(#line))")
             }
         }
@@ -382,7 +379,7 @@ struct ProductMutationView: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }

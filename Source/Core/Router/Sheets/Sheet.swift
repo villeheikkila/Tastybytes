@@ -266,7 +266,7 @@ struct OpenSheetOnTapModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onTapGesture {
-                router.openSheet(sheet)
+                router.open(.sheet(sheet))
             }
             .accessibility(addTraits: .isButton)
     }

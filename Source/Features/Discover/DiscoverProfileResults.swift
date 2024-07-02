@@ -6,7 +6,7 @@ struct DiscoverProfileResults: View {
 
     var body: some View {
         ForEach(profiles) { profile in
-            RouterLink(screen: .profile(profile)) {
+            RouterLink(open: .screen(.profile(profile))) {
                 HStack(alignment: .center) {
                     Avatar(profile: profile)
                         .avatarSize(.extraLarge)

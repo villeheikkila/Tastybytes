@@ -8,7 +8,7 @@ struct DiscoverCompanyResults: View {
     var body: some View {
         ForEach(companies) { company in
             CompanyResultRow(company: company, action: {
-                router.navigate(screen: .company(company))
+                router.open(.screen(.company(company)))
             })
             .id(company.id)
         }

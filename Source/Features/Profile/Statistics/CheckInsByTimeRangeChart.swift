@@ -39,7 +39,7 @@ struct CheckInsByTimeRangeChart: View {
             return
         }
         if let timeBucket = checkInsTimeBuckets.first(where: { bucket in bucket.label == value }) {
-            router.navigate(screen: .profileCheckIns(profile, .dateRange(timeBucket.dateRange)))
+            router.open(.screen(.profileCheckIns(profile, .dateRange(timeBucket.dateRange))))
         }
     }
 }

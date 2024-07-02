@@ -54,7 +54,7 @@ struct ReportScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -67,7 +67,7 @@ struct ReportScreen: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to resolve report \(report.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -86,21 +86,21 @@ struct ReportScreenRow: View {
         guard let entity = report.entity else { return }
         switch entity {
         case let .brand(brand):
-            router.navigate(screen: .brand(brand))
+            router.open(.screen(.brand(brand)))
         case let .product(product):
-            router.navigate(screen: .product(product))
+            router.open(.screen(.product(product)))
         case let .company(company):
-            router.navigate(screen: .company(company))
+            router.open(.screen(.company(company)))
         case let .subBrand(subBrand):
             router.fetchAndNavigateTo(repository, .brand(id: subBrand.brand.id))
         case let .checkIn(checkIn):
-            router.navigate(screen: .checkIn(checkIn))
+            router.open(.screen(.checkIn(checkIn)))
         case let .comment(comment):
             router.fetchAndNavigateTo(repository, .company(id: comment.id))
         case let .checkInImage(imageEntity):
             router.fetchAndNavigateTo(repository, .checkIn(id: imageEntity.checkIn.id))
         case let .profile(profile):
-            router.navigate(screen: .profile(profile))
+            router.open(.screen(.profile(profile)))
         }
     }
 

@@ -17,7 +17,7 @@ struct DiscoverProductAddNew: View {
             .onTapGesture {
                 let barcodeCopy = barcode
                 barcode = nil
-                router.navigate(screen: .addProduct(barcodeCopy))
+                router.open(.screen(.addProduct(barcodeCopy)))
             }
         }
     }

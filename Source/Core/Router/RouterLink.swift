@@ -4,24 +4,16 @@ import SwiftUI
 struct RouterLink<LabelView: View>: View {
     @Environment(Router.self) private var router
 
-    let screen: Screen?
-    let sheet: Sheet?
+    let open: Router.Open
     let asTapGesture: Bool
     let label: LabelView
 
-    init(screen: Screen, asTapGesture: Bool = false, @ViewBuilder label: () -> LabelView) {
-        self.screen = screen
-        sheet = nil
+    init(open: Router.Open, asTapGesture: Bool = false, @ViewBuilder label: () -> LabelView) {
+        self.open = open
         self.asTapGesture = asTapGesture
         self.label = label()
     }
 
-    init(sheet: Sheet, asTapGesture: Bool = false, @ViewBuilder label: () -> LabelView) {
-        self.sheet = sheet
-        screen = nil
-        self.asTapGesture = asTapGesture
-        self.label = label()
-    }
 
     var body: some View {
         if asTapGesture {
@@ -30,15 +22,11 @@ struct RouterLink<LabelView: View>: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    if let screen {
-                        router.navigate(screen: screen)
-                    } else if let sheet {
-                        router.openSheet(sheet)
-                    }
+                    router.open(open)
                 }
-        } else if let screen {
-            if UIDevice.isMac {
-                Button(action: { router.navigate(screen: screen) }, label: {
+        } else if case let .screen(screen, resetStack, removeLast) = open {
+            if UIDevice.isMac || resetStack || removeLast {
+                Button(action: { router.open(open) }, label: {
                     HStack {
                         label
                         Spacer()
@@ -54,26 +42,18 @@ struct RouterLink<LabelView: View>: View {
                 })
                 .contentShape(Rectangle())
             }
-        } else if let sheet {
+        } else {
             Button(action: {
-                router.openSheet(sheet)
+                router.open(open)
             }, label: { label })
-            .accessibilityAddTraits(.isLink)
+                .accessibilityAddTraits(.isLink)
         }
     }
 }
 
 extension RouterLink where LabelView == Text {
-    init(_ label: LocalizedStringKey, screen: Screen, asTapGesture: Bool = false) {
-        self.init(screen: screen, asTapGesture: asTapGesture) {
-            Text(label)
-        }
-    }
-}
-
-extension RouterLink where LabelView == Text {
-    init(_ label: LocalizedStringKey, sheet: Sheet, asTapGesture: Bool = false) {
-        self.init(sheet: sheet, asTapGesture: asTapGesture) {
+    init(_ label: LocalizedStringKey, open: Router.Open, asTapGesture: Bool = false) {
+        self.init(open: open, asTapGesture: asTapGesture) {
             Text(label)
         }
     }
@@ -81,17 +61,8 @@ extension RouterLink where LabelView == Text {
 
 extension RouterLink where LabelView == Text {
     @_disfavoredOverload
-    init(_ label: String, screen: Screen, asTapGesture: Bool = false) {
-        self.init(screen: screen, asTapGesture: asTapGesture) {
-            Text(label)
-        }
-    }
-}
-
-extension RouterLink where LabelView == Text {
-    @_disfavoredOverload
-    init(_ label: String, sheet: Sheet, asTapGesture: Bool = false) {
-        self.init(sheet: sheet, asTapGesture: asTapGesture) {
+    init(_ label: String, open: Router.Open, asTapGesture: Bool = false) {
+        self.init(open: open, asTapGesture: asTapGesture) {
             Text(label)
         }
     }
@@ -99,40 +70,24 @@ extension RouterLink where LabelView == Text {
 
 extension RouterLink where LabelView == Label<Text, Image> {
     @_disfavoredOverload
-    init(_ titleKey: String, systemImage: String, screen: Screen, asTapGesture: Bool = false) {
-        self.init(screen: screen, asTapGesture: asTapGesture, label: {
+    init(_ titleKey: String, systemImage: String, open: Router.Open, asTapGesture: Bool = false) {
+        self.init(open: open, asTapGesture: asTapGesture, label: {
             Label(titleKey, systemImage: systemImage)
         })
     }
 }
 
 extension RouterLink where LabelView == Label<Text, Image> {
-    init(_ titleKey: LocalizedStringKey, systemImage: String, screen: Screen, asTapGesture: Bool = false) {
-        self.init(screen: screen, asTapGesture: asTapGesture, label: {
-            Label(titleKey, systemImage: systemImage)
-        })
-    }
-}
-
-extension RouterLink where LabelView == Label<Text, Image> {
-    init(_ titleKey: LocalizedStringKey, systemImage: String, sheet: Sheet, asTapGesture: Bool = false) {
-        self.init(sheet: sheet, asTapGesture: asTapGesture, label: {
+    init(_ titleKey: LocalizedStringKey, systemImage: String, open: Router.Open, asTapGesture: Bool = false) {
+        self.init(open: open, asTapGesture: asTapGesture, label: {
             Label(titleKey, systemImage: systemImage)
         })
     }
 }
 
 extension RouterLink where LabelView == LinkIconLabel {
-    init(_ titleKey: LocalizedStringKey, systemName: String, color: Color, screen: Screen, asTapGesture: Bool = false) {
-        self.init(screen: screen, asTapGesture: asTapGesture, label: {
-            LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
-        })
-    }
-}
-
-extension RouterLink where LabelView == LinkIconLabel {
-    init(_ titleKey: LocalizedStringKey, systemName: String, color: Color, sheet: Sheet, asTapGesture: Bool = false) {
-        self.init(sheet: sheet, asTapGesture: asTapGesture, label: {
+    init(_ titleKey: LocalizedStringKey, systemName: String, color: Color, open: Router.Open, asTapGesture: Bool = false) {
+        self.init(open: open, asTapGesture: asTapGesture, label: {
             LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
         })
     }

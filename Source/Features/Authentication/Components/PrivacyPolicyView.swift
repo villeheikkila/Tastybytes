@@ -9,7 +9,7 @@ struct PrivacyPolicyView: View {
         Text("authentication.welcomeAndPrivacyPolicy \(appEnvironmentModel.infoPlist.appName) [Privacy Policy](\(appEnvironmentModel.config.privacyPolicyUrl))")
             .font(.caption)
             .environment(\.openURL, OpenURLAction { url in
-                router.openSheet(.webView(link: .init(title: "Privacy Policy", url: url)))
+                router.open(.sheet(.webView(link: .init(title: "Privacy Policy", url: url))))
                 return .handled
             })
     }

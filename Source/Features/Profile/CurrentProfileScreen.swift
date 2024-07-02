@@ -19,12 +19,12 @@ struct CurrentProfileScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
-            RouterLink("nameTag.show.label", systemImage: "qrcode", sheet: .nameTag(onSuccess: { profileId in
+            RouterLink("nameTag.show.label", systemImage: "qrcode", open: .sheet(.nameTag(onSuccess: { profileId in
                 router.fetchAndNavigateTo(repository, .profile(id: profileId))
-            }))
+            })))
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("settings.title", systemImage: "gear", screen: .settings)
+            RouterLink("settings.title", systemImage: "gear", open: .screen(.settings))
         }
     }
 }

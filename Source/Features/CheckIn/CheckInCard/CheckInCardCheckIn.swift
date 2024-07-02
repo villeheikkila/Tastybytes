@@ -35,7 +35,7 @@ struct CheckInCardCheckIn: View {
                         .accessibilityAddTraits(.isLink)
                         .allowsHitTesting(!loadedFrom.isLoadedFromLocation(purchaseLocation))
                         .onTapGesture {
-                            router.navigate(screen: .location(purchaseLocation))
+                            router.open(.screen(.location(purchaseLocation)))
                         }
 
                     Spacer()
@@ -46,7 +46,7 @@ struct CheckInCardCheckIn: View {
         .accessibilityAddTraits(.isLink)
         .allowsHitTesting(loadedFrom != .checkIn)
         .onTapGesture {
-            router.navigate(screen: .checkIn(checkIn))
+            router.open(.screen(.checkIn(checkIn)))
         }
     }
 }

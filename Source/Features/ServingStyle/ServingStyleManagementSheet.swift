@@ -52,7 +52,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to load all serving styles. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -68,7 +68,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to create new serving style. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -82,7 +82,7 @@ struct ServingStyleManagementSheet: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error(
                 "Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
@@ -98,7 +98,7 @@ struct ServingStyleManagementSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.openAlert(.init())
+            router.open(.alert(.init()))
             logger.error("Failed to edit serving style '\(servingStyle.name)'. Error: \(error) (\(#file):\(#line))")
         }
     }
