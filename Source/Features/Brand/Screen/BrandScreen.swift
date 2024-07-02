@@ -148,7 +148,7 @@ struct BrandScreen: View {
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
                         Button("brand.addProduct.menu.label", systemImage: "plus", action: { router.openRootSheet(.product(.addToBrand(brand, onCreate: { product in
                             router.navigate(screen: .product(product), removeLast: true)
-                        })))})
+                        }))) })
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         Button(

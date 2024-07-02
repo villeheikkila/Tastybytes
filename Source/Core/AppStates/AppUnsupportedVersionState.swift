@@ -4,6 +4,7 @@ import SwiftUI
 
 struct AppUnsupportedVersionState: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+
     var body: some View {
         ContentUnavailableView("app.unsupportedVersion.title", systemImage: "arrow.triangle.2.circlepath", description: Text("app.unsupportedVersion.description"))
             .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -14,7 +14,7 @@ struct OnboardingScreen: View {
     }
 
     var body: some View {
-        NavigationStack {
+        RouterProvider(enableRoutingFromURLs: false) {
             TabView(selection: .init(get: { currentTab }, set: { newTab in
                 currentTab = newTab
             })) {

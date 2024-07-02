@@ -11,9 +11,9 @@ struct AuthenticationScreen: View {
     var body: some View {
         VStack(alignment: .center) {
             #if !os(watchOS)
-            RouterProvider {
-                AuthenticationScreenContent()
-            }
+                RouterProvider(enableRoutingFromURLs: false) {
+                    AuthenticationScreenContent()
+                }
             #else
                 AuthenticationScreenWatchOSContent()
             #endif

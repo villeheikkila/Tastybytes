@@ -50,7 +50,15 @@ struct MainApp: App {
                             SubscriptionProvider {
                                 AuthStateObserver {
                                     ProfileStateObserver {
-                                        IdiomSelector()
+                                        #if !os(watchOS)
+                                            OnboardingStateObserver {
+                                                NotificationObserver {
+                                                    TabsView()
+                                                }
+                                            }
+                                        #else
+                                            WatchView()
+                                        #endif
                                     }
                                 }
                             }

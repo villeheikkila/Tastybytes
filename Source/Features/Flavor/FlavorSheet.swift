@@ -6,7 +6,7 @@ import SwiftUI
 
 struct FlavorSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
+    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Binding var pickedFlavors: [Flavor]
     @State private var searchTerm = ""
@@ -42,7 +42,6 @@ struct FlavorSheet: View {
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .navigationTitle("flavor.navigationTitle")
-        .toasts(presenting: $feedbackEnvironmentModel.toast)
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)

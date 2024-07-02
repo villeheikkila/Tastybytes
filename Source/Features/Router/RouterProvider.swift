@@ -6,14 +6,13 @@ import SwiftUI
 struct RouterProvider<Content: View>: View {
     @Environment(Repository.self) private var repository
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
     @State private var router = Router()
 
-    let isRootLevelNavigationStack: Bool
+    let enableRoutingFromURLs: Bool
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        @Bindable var feedbackEnvironmentModel = feedbackEnvironmentModel
         NavigationStack(path: $router.path) {
             content()
                 .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
@@ -25,7 +24,7 @@ struct RouterProvider<Content: View>: View {
         }
         .sheets(item: $router.sheet)
         .alertError($router.alert)
-        .if(isRootLevelNavigationStack) { view in
+        .if(enableRoutingFromURLs) { view in
             view.onOpenURL { url in
                 if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
                     router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
@@ -34,6 +33,7 @@ struct RouterProvider<Content: View>: View {
         }
         .toasts(presenting: $feedbackEnvironmentModel.toast)
         .environment(router)
+        .environment(feedbackEnvironmentModel)
         .sensoryFeedback(trigger: feedbackEnvironmentModel.sensoryFeedback) { _, newValue in
             newValue?.sensoryFeedback
         }

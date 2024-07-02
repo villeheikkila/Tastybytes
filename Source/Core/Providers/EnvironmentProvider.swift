@@ -14,7 +14,6 @@ struct EnvironmentProvider<Content: View>: View {
     @State private var friendEnvironmentModel: FriendEnvironmentModel
     @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
     @State private var locationEnvironmentModel: LocationEnvironmentModel
-    @State private var feedbackEnvironmentModel: FeedbackEnvironmentModel
     @State private var subscriptionEnvironmentModel: SubscriptionEnvironmentModel
 
     let repository: Repository
@@ -26,7 +25,6 @@ struct EnvironmentProvider<Content: View>: View {
         friendEnvironmentModel = FriendEnvironmentModel(repository: repository)
         imageUploadEnvironmentModel = ImageUploadEnvironmentModel(repository: repository)
         locationEnvironmentModel = LocationEnvironmentModel()
-        feedbackEnvironmentModel = FeedbackEnvironmentModel()
         subscriptionEnvironmentModel = SubscriptionEnvironmentModel(repository: repository)
         self.content = content
         self.repository = repository
@@ -38,7 +36,6 @@ struct EnvironmentProvider<Content: View>: View {
         content()
             .environment(notificationEnvironmentModel)
             .environment(profileEnvironmentModel)
-            .environment(feedbackEnvironmentModel)
             .environment(appEnvironmentModel)
             .environment(friendEnvironmentModel)
             .environment(imageUploadEnvironmentModel)

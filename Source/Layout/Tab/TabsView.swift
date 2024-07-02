@@ -32,7 +32,7 @@ struct TabsView: View {
 
     private var tabs: some View {
         ForEach(shownTabs) { tab in
-            RouterProvider {
+            RouterProvider(enableRoutingFromURLs: true) {
                 tab.view
             }
             .tabItem {

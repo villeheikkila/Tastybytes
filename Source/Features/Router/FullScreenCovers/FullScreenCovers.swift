@@ -12,7 +12,7 @@ struct FullScreenCoverModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .fullScreenCover(item: $item) { item in
-                NavigationStack {
+                RouterProvider(enableRoutingFromURLs: false) {
                     item.view
                 }
             }
