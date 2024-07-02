@@ -5,6 +5,7 @@ import Models
 import OSLog
 import Repositories
 import SwiftUI
+import Translation
 
 struct CheckInCommentRow: View {
     private let logger = Logger(category: "CheckInScreen")
@@ -31,7 +32,7 @@ struct CheckInCommentRow: View {
                     action: { await deleteCommentAsModerator(presenting) }
                 )
             }
-            .translateText(isPresented: $showTranslator, text: comment.content)
+            .translationPresentation(isPresented: $showTranslator, text: comment.content)
             .contextMenu {
                 if comment.profile == profileEnvironmentModel.profile {
                     RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.editComment(checkInComment: comment, checkInComments: $checkInComments)))

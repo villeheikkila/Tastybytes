@@ -27,27 +27,25 @@ struct SparkleView: View {
     }
 
     var body: some View {
-        GeometryReader { geometryReader in
-            image
-                .rotationEffect(Angle(degrees: rotation))
-                .shadow(
-                    color: sparkle.shadowColor,
-                    radius: sparkle.size.width * 0.5,
-                    y: colorScheme == .light ? sparkle.size.height * 0.5 : 0
-                )
-                .offset(y: direction ? offset : 0)
-                .position(position)
-                .onReceive(timer) { _ in
-                    moveSparkles()
-                }
-                .onAppear {
-                    timer = Timer.publish(every: duration, on: .current, in: .common).autoconnect()
-                    position = sparkle.position(screenWidth: geometryReader.size.width)
-                }
-                .onDisappear {
-                    timer.upstream.connect().cancel()
-                }
-        }
+        image
+            .rotationEffect(Angle(degrees: rotation))
+            .shadow(
+                color: sparkle.shadowColor,
+                radius: sparkle.size.width * 0.5,
+                y: colorScheme == .light ? sparkle.size.height * 0.5 : 0
+            )
+            .offset(y: direction ? offset : 0)
+            .position(position)
+            .onReceive(timer) { _ in
+                moveSparkles()
+            }
+            .onAppear {
+                timer = Timer.publish(every: duration, on: .current, in: .common).autoconnect()
+                position = sparkle.position(screenWidth: UIScreen.main.bounds.width)
+            }
+            .onDisappear {
+                timer.upstream.connect().cancel()
+            }
     }
 
     var image: some View {

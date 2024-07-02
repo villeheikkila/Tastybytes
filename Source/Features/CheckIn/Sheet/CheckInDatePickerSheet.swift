@@ -9,11 +9,14 @@ struct CheckInDatePickerSheet: View {
 
     var body: some View {
         Form {
-            DatePicker("checkIn.datePicker.label", selection: $checkInAt, in: ...Date.now)
-                .datePickerStyle(.graphical)
-                .disabled(isLegacyCheckIn)
-            Toggle("checkIn.datePicker.markAsLegacy.label", isOn: $isLegacyCheckIn)
-            Toggle("checkIn.datePicker.markAsNostalgic.label", isOn: $isNostalgic)
+            Group {
+                DatePicker("checkIn.datePicker.label", selection: $checkInAt, in: ...Date.now)
+                    .datePickerStyle(.graphical)
+                    .disabled(isLegacyCheckIn)
+                Toggle("checkIn.datePicker.markAsLegacy.label", isOn: $isLegacyCheckIn)
+                Toggle("checkIn.datePicker.markAsNostalgic.label", isOn: $isNostalgic)
+            }
+            .customListRowBackground()
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("checkIn.datePicker.title")

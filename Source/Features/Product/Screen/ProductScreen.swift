@@ -5,6 +5,7 @@ import Models
 import OSLog
 import Repositories
 import SwiftUI
+import Translation
 
 struct ProductScreen: View {
     @Environment(Repository.self) private var repository
@@ -71,7 +72,7 @@ struct ProductInnerScreen: View {
         }
         .navigationTitle(product.formatted(.fullName))
         .navigationBarTitleDisplayMode(.inline)
-        .translateText(isPresented: $showTranslator, text: product.formatted(.fullName))
+        .translationPresentation(isPresented: $showTranslator, text: product.formatted(.fullName))
         .toolbar {
             toolbarContent
         }
