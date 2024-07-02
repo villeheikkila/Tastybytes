@@ -198,7 +198,7 @@
 		5C90AF712C15C41D00BA3202 /* ScreenStateOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF702C15C41D00BA3202 /* ScreenStateOverlayView.swift */; };
 		5C90AF732C15C43400BA3202 /* ScreenLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF722C15C43400BA3202 /* ScreenLoadingView.swift */; };
 		5C90AF752C15C44C00BA3202 /* ScreenContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */; };
-		5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* Sheets.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C9583872B41EE0000A2A03B /* View+InjectSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* View+InjectSheets.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C974CCD2C04E9B500CFE98A /* CheckInImageManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */; };
 		5C974CCF2C04E9E600CFE98A /* LocationInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCE2C04E9E600CFE98A /* LocationInputButton.swift */; };
 		5C974CD12C04EA0B00CFE98A /* OverlayButton+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */; };
@@ -246,7 +246,7 @@
 		5CD3C0E02B814BF90049E563 /* ToolbarDismissAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D52B814AE90049E563 /* ToolbarDismissAction.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0E12B814BFB0049E563 /* ToolbarDoneActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D42B814AE90049E563 /* ToolbarDoneActionView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0E22B814C680049E563 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D22B814ACD0049E563 /* CloseButton.swift */; };
-		5CD741B22C084B5D00BD90A2 /* FullScreenCovers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD741B12C084B5D00BD90A2 /* FullScreenCovers.swift */; };
+		5CD741B22C084B5D00BD90A2 /* View+InjectFullScreenCovers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD741B12C084B5D00BD90A2 /* View+InjectFullScreenCovers.swift */; };
 		5CD741B42C084B9300BD90A2 /* FullScreenCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD741B32C084B9300BD90A2 /* FullScreenCover.swift */; };
 		5CD9B1822BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1812BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift */; };
 		5CD9B1842BDEA98E00A86387 /* CheckInsTimeBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD9B1832BDEA98E00A86387 /* CheckInsTimeBucket.swift */; };
@@ -494,7 +494,7 @@
 		5C90AF702C15C41D00BA3202 /* ScreenStateOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenStateOverlayView.swift; sourceTree = "<group>"; };
 		5C90AF722C15C43400BA3202 /* ScreenLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingView.swift; sourceTree = "<group>"; };
 		5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenContentUnavailableView.swift; sourceTree = "<group>"; };
-		5C9583862B41EE0000A2A03B /* Sheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheets.swift; sourceTree = "<group>"; };
+		5C9583862B41EE0000A2A03B /* View+InjectSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+InjectSheets.swift"; sourceTree = "<group>"; };
 		5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageManagementView.swift; sourceTree = "<group>"; };
 		5C974CCE2C04E9E600CFE98A /* LocationInputButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputButton.swift; sourceTree = "<group>"; };
 		5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverlayButton+View.swift"; sourceTree = "<group>"; };
@@ -542,7 +542,7 @@
 		5CD3C0DA2B814B790049E563 /* RatingPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPickerView.swift; sourceTree = "<group>"; };
 		5CD3C0DC2B814B910049E563 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		5CD3C0DE2B814B9A0049E563 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
-		5CD741B12C084B5D00BD90A2 /* FullScreenCovers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCovers.swift; sourceTree = "<group>"; };
+		5CD741B12C084B5D00BD90A2 /* View+InjectFullScreenCovers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+InjectFullScreenCovers.swift"; sourceTree = "<group>"; };
 		5CD741B32C084B9300BD90A2 /* FullScreenCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCover.swift; sourceTree = "<group>"; };
 		5CD9B1812BDEA96A00A86387 /* StatisticsTimePeriod+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatisticsTimePeriod+Extension.swift"; sourceTree = "<group>"; };
 		5CD9B1832BDEA98E00A86387 /* CheckInsTimeBucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsTimeBucket.swift; sourceTree = "<group>"; };
@@ -705,7 +705,7 @@
 			isa = PBXGroup;
 			children = (
 				5C9057432B2894BE00EC157B /* Sheet.swift */,
-				5C9583862B41EE0000A2A03B /* Sheets.swift */,
+				5C9583862B41EE0000A2A03B /* View+InjectSheets.swift */,
 			);
 			path = Sheets;
 			sourceTree = "<group>";
@@ -1514,7 +1514,7 @@
 		5CD741B02C084B5000BD90A2 /* FullScreenCovers */ = {
 			isa = PBXGroup;
 			children = (
-				5CD741B12C084B5D00BD90A2 /* FullScreenCovers.swift */,
+				5CD741B12C084B5D00BD90A2 /* View+InjectFullScreenCovers.swift */,
 				5CD741B32C084B9300BD90A2 /* FullScreenCover.swift */,
 			);
 			path = FullScreenCovers;
@@ -1829,7 +1829,7 @@
 				5CD1F0B42B9E4FD100C76F0C /* ToastView.swift in Sources */,
 				5C9990A52B8A24F5002BD3F7 /* NotificationFromUserWrapper.swift in Sources */,
 				5C90581E2B2894BE00EC157B /* ErrorScreen.swift in Sources */,
-				5C9583872B41EE0000A2A03B /* Sheets.swift in Sources */,
+				5C9583872B41EE0000A2A03B /* View+InjectSheets.swift in Sources */,
 				5CAADF032B5C4F2300D956C1 /* DiscoverProductLinks.swift in Sources */,
 				5C9058232B2894BE00EC157B /* TaggedInCheckInNotificationView.swift in Sources */,
 				5C4FC6342BA5F8910025DB83 /* CheckInImageSheet.swift in Sources */,
@@ -1939,7 +1939,7 @@
 				5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */,
 				5CD3C0DF2B814B9A0049E563 /* SummaryView.swift in Sources */,
 				5C90584A2B2894BE00EC157B /* SignInWithAppleView.swift in Sources */,
-				5CD741B22C084B5D00BD90A2 /* FullScreenCovers.swift in Sources */,
+				5CD741B22C084B5D00BD90A2 /* View+InjectFullScreenCovers.swift in Sources */,
 				5C07F27D2B51EBB800D8740B /* CheckInShareLinkView.swift in Sources */,
 				5C2B25D02C33C93900CFDAFB /* LocationManagementScreen.swift in Sources */,
 			);

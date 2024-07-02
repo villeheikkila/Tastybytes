@@ -1,12 +1,12 @@
 import SwiftUI
 
 extension View {
-    func sheets(item: Binding<Sheet?>) -> some View {
-        modifier(SheetsModifier(item: item))
+    func injectSheets(item: Binding<Sheet?>) -> some View {
+        modifier(InjectSheetsModifier(item: item))
     }
 }
 
-struct SheetsModifier: ViewModifier {
+struct InjectSheetsModifier: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
     @Binding var item: Sheet?
 

@@ -40,6 +40,7 @@ struct FriendSheet: View {
             FriendSheetRow(friend: friend)
         }
         .environment(\.editMode, .constant(.active))
+        .scrollContentBackground(.hidden)
         .searchable(text: $searchTerm)
         .overlay {
             if friendEnvironmentModel.acceptedFriends.isEmpty {
@@ -58,7 +59,7 @@ struct FriendSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneActionView()
+        ToolbarDismissAction()
     }
 }
 

@@ -52,6 +52,7 @@ struct LocationSearchSheet: View {
                 populatedContent
             }
         }
+        .scrollContentBackground(.hidden)
         .searchable(text: $searchText)
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "") {

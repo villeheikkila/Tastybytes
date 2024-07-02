@@ -38,10 +38,12 @@ struct FlavorSheet: View {
             Text(pickedFlavor.name.capitalized)
                 .listRowBackground(Color.clear)
         }
+        .scrollContentBackground(.hidden)
         .environment(\.defaultMinListRowHeight, 48)
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .navigationTitle("flavor.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
@@ -59,6 +61,6 @@ struct FlavorSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneActionView()
+        ToolbarDismissAction()
     }
 }

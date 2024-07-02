@@ -22,9 +22,9 @@ struct RouterProvider<Content: View>: View {
                     screen.view
                 }
         }
-        .sheets(item: $router.sheet)
+        .injectSheets(item: $router.sheet)
+        .injectFullScreenCovers(item: $router.fullScreenCover)
         .alertError($router.alert)
-        .fullScreenCovers(item: $router.fullScreenCover)
         .if(enableRoutingFromURLs) { view in
             view.onOpenURL { url in
                 if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
