@@ -90,7 +90,7 @@ struct CheckInScreen: View {
                     Button(
                         "labels.edit",
                         systemImage: "pencil",
-                        action: { router.openRootSheet(.checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
+                        action: { router.openSheet(.checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
                             checkIn = updatedCheckIn
                         })))
                         }
@@ -107,7 +107,7 @@ struct CheckInScreen: View {
                     Button(
                         "checkIn.add.label",
                         systemImage: "pencil",
-                        action: { router.openRootSheet(.checkIn(.create(product: checkIn.product, onCreation: { checkIn in
+                        action: { router.openSheet(.checkIn(.create(product: checkIn.product, onCreation: { checkIn in
                             router.navigate(screen: .checkIn(checkIn))
                         })))
                         }
@@ -157,7 +157,7 @@ struct CheckInScreen: View {
                         CheckInShareLinkView(checkIn: checkIn)
                         Button(
                             "labels.edit", systemImage: "pencil",
-                            action: { router.openRootSheet(.checkIn(.update(checkIn:
+                            action: { router.openSheet(.checkIn(.update(checkIn:
                                 checkIn,
                                 onUpdate: { updatedCheckIn in
                                     checkIn = updatedCheckIn

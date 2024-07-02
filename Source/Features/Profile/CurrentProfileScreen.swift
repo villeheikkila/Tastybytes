@@ -21,7 +21,7 @@ struct CurrentProfileScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
             Button("nameTag.show.label", systemImage: "qrcode", action: {
-                router.openRootSheet(.nameTag(onSuccess: { profileId in
+                router.openSheet(.nameTag(onSuccess: { profileId in
                     router.fetchAndNavigateTo(repository, .profile(id: profileId))
                 }))
             })

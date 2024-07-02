@@ -29,7 +29,7 @@ struct CategoryManagementScreen: View {
             Button(
                 "category.add.label",
                 systemImage: "plus",
-                action: { router.openRootSheet(.addCategory(onSubmit: { _ in
+                action: { router.openSheet(.addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("category.add.success.toast"))
                 })) }
             )
@@ -58,12 +58,12 @@ struct CategoryManagementRow: View {
                     Button(
                         "servingStyle.edit.menu.label",
                         systemImage: "pencil",
-                        action: { router.openRootSheet(.categoryServingStyle(category: category)) }
+                        action: { router.openSheet(.categoryServingStyle(category: category)) }
                     )
                     Button(
                         "subcategory.add",
                         systemImage: "plus",
-                        action: { router.openRootSheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                        action: { router.openSheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
                             await appEnvironmentModel.addSubcategory(
                                 category: category,
                                 name: newSubcategoryName

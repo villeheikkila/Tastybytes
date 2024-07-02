@@ -16,7 +16,7 @@ struct CreateCheckInButtonView: View {
             "checkIn.create.label.prominent",
             systemImage: "checkmark.circle",
             action: {
-                router.openRootSheet(.checkIn(.create(product: product, onCreation: onCreateCheckIn)))
+                router.openSheet(.checkIn(.create(product: product, onCreation: onCreateCheckIn)))
             }
         )
         .buttonStyle(.borderedProminent)

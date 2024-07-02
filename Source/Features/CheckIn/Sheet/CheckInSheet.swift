@@ -19,7 +19,6 @@ struct CheckInSheet: View {
     @FocusState private var focusedField: Focusable?
     @State private var primaryActionTask: Task<Void, Never>?
     @State private var servingStyles = [ServingStyle]()
-    @State private var fullScreenCover: FullScreenCover?
     // check-in properties
     @State private var pickedFlavors = [Flavor]()
     @State private var review: String = ""
@@ -72,8 +71,7 @@ struct CheckInSheet: View {
                     .onTapGesture {
                         focusedField = nil
                     }
-                CheckInImageManagementView(newImages: $newImages, images: $images,
-                                           checkInAt: $checkInAt, locationFromImage: $locationFromImage, fullScreenCover: $fullScreenCover)
+                CheckInImageManagementView(newImages: $newImages, images: $images, checkInAt: $checkInAt, locationFromImage: $locationFromImage)
                     .listRowInsets(.init())
                 RatingPickerView(rating: $rating)
             }
@@ -85,7 +83,6 @@ struct CheckInSheet: View {
         }
         .scrollContentBackground(.hidden)
         .foregroundColor(.primary)
-        .fullScreenCovers(item: $fullScreenCover)
         .toolbar {
             toolbarContent
         }
@@ -101,7 +98,7 @@ struct CheckInSheet: View {
             TextField("checkIn.review.label", text: $review, axis: .vertical)
                 .focused($focusedField, equals: .review)
             Button(
-                action: { router.openRootSheet(.flavors(pickedFlavors: $pickedFlavors)) },
+                action: { router.openSheet(.flavors(pickedFlavors: $pickedFlavors)) },
                 label: {
                     if !pickedFlavors.isEmpty {
                         FlavorsView(flavors: pickedFlavors)
@@ -131,7 +128,7 @@ struct CheckInSheet: View {
 
             Button(
                 "checkIn.manufacturedBy.label \(manufacturer?.name ?? "")",
-                action: { router.openRootSheet(.companySearch(onSelect: { company in
+                action: { router.openSheet(.companySearch(onSelect: { company in
                     manufacturer = company
                 }))
                 }
@@ -157,7 +154,7 @@ struct CheckInSheet: View {
 
             if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
                 Button(action: {
-                    router.openRootSheet(.checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic))
+                    router.openSheet(.checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic))
                 }) {
                     Text(
                         isLegacyCheckIn
@@ -167,7 +164,7 @@ struct CheckInSheet: View {
             }
 
             Button(
-                action: { router.openRootSheet(.friends(taggedFriends: $taggedFriends)) },
+                action: { router.openSheet(.friends(taggedFriends: $taggedFriends)) },
                 label: {
                     if taggedFriends.isEmpty {
                         Text("checkIn.friends.tag")

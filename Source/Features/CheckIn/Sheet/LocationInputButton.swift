@@ -11,7 +11,7 @@ struct LocationInputButton: View {
 
     var body: some View {
         Button(
-            action: { router.openRootSheet(.locationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect)) },
+            action: { router.openSheet(.locationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect)) },
             label: {
                 HStack {
                     if let location = selection, let coordinate = selection?.location?.coordinate {

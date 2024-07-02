@@ -33,7 +33,7 @@ struct RouterLink<LabelView: View>: View {
                     if let screen {
                         router.navigate(screen: screen)
                     } else if let sheet {
-                        router.openRootSheet(sheet)
+                        router.openSheet(sheet)
                     }
                 }
         } else if let screen {
@@ -55,7 +55,7 @@ struct RouterLink<LabelView: View>: View {
             }
         } else if let sheet {
             Button(action: {
-                router.openRootSheet(sheet)
+                router.openSheet(sheet)
             }, label: { label })
         }
     }

@@ -59,6 +59,7 @@ enum Sheet: Identifiable, Equatable {
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
     case locationEdit(location: Location)
+    case webView(link: WebViewLink)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -136,6 +137,8 @@ enum Sheet: Identifiable, Equatable {
             AccountDeletedScreen()
         case let .locationEdit(location):
             LocationEditSheet(location: location)
+        case let .webView(link):
+            WebViewSheet(link: link)
         }
     }
 
@@ -245,6 +248,8 @@ enum Sheet: Identifiable, Equatable {
             "profile_delete_confirmation"
         case let .locationEdit(location):
             "location_edit_\(location)"
+        case let .webView(link):
+            "webview_\(link)"
         }
     }
 
@@ -261,7 +266,7 @@ struct OpenSheetOnTapModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onTapGesture {
-                router.openRootSheet(sheet)
+                router.openSheet(sheet)
             }
             .accessibility(addTraits: .isButton)
     }

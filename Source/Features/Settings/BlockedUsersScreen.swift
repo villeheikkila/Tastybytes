@@ -45,7 +45,7 @@ struct BlockedUsersScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
-                Button("blockedUsers.block.label", systemImage: "plus", action: { router.openRootSheet(.userSheet(mode: .block, onSubmit: {
+                Button("blockedUsers.block.label", systemImage: "plus", action: { router.openSheet(.userSheet(mode: .block, onSubmit: {
                     feedbackEnvironmentModel.toggle(.success("blockedUsers.block.success"))
                 })) })
                 .labelStyle(.iconOnly)

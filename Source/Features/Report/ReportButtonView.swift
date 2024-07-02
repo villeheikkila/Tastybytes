@@ -7,7 +7,7 @@ struct ReportButton: View {
 
     var body: some View {
         Button("report.open", systemImage: "exclamationmark.bubble.fill") {
-            router.openRootSheet(.report(entity))
+            router.openSheet(.report(entity))
         }
     }
 }

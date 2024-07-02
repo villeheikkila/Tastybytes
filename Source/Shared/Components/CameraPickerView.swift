@@ -35,15 +35,6 @@ struct CameraPickerView: UIViewControllerRepresentable {
     }
 }
 
-public extension View {
-    func fullScreenCamera(isPresented: Binding<Bool>, selectedImage: Binding<UIImage?>) -> some View {
-        fullScreenCover(isPresented: isPresented, content: {
-            CameraPickerView(selectedImage: selectedImage)
-                .background(.black)
-        })
-    }
-}
-
 struct CameraWithCroppingView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selectedImage: UIImage?
@@ -51,10 +42,12 @@ struct CameraWithCroppingView: View {
     let onSubmit: (UIImage?) -> Void
 
     var body: some View {
+        Group {
             if let selectedImage {
                 ImageCropView(image: selectedImage, onSubmit: onSubmit)
             } else {
                 CameraPickerView(selectedImage: $selectedImage)
             }
+        }.background(.black)
     }
 }

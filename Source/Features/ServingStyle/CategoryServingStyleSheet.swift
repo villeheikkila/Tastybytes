@@ -39,7 +39,7 @@ struct CategoryServingStyleSheet: View {
                 "servingStyle.create.label",
                 systemImage: "plus",
                 action: {
-                    router.openRootSheet(.servingStyleManagement(
+                    router.openSheet(.servingStyleManagement(
                         pickedServingStyles: $servingStyles,
                         onSelect: { servingStyle in
                             await addServingStyleToCategory(servingStyle)

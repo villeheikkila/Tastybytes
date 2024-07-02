@@ -94,11 +94,11 @@ struct CompanyScreen: View {
                     Button(
                         "brand.title",
                         systemImage: "plus",
-                        action: { router.openRootSheet(.addBrand(brandOwner: company.saved, mode: .new)) }
+                        action: { router.openSheet(.addBrand(brandOwner: company.saved, mode: .new)) }
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: { router.openRootSheet(.editCompany(company: company.saved, onSuccess: {
+                    Button("labels.edit", systemImage: "pencil", action: { router.openSheet(.editCompany(company: company.saved, onSuccess: {
                         await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("company.update.success.toast"))
                     })) })
@@ -106,7 +106,7 @@ struct CompanyScreen: View {
                     Button(
                         "company.editSuggestion.title",
                         systemImage: "pencil",
-                        action: { router.openRootSheet(.companyEditSuggestion(company: company.saved, onSuccess: {
+                        action: { router.openSheet(.companyEditSuggestion(company: company.saved, onSuccess: {
                             feedbackEnvironmentModel.toggle(.success("company.editSuggestion.success.toast"))
                         })) }
                     )

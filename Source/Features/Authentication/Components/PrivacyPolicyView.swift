@@ -3,28 +3,15 @@ import SwiftUI
 
 struct PrivacyPolicyView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @State private var openUrlInWebView: WebViewLink?
+    @Environment(Router.self) private var router
 
     var body: some View {
         Text("authentication.welcomeAndPrivacyPolicy \(appEnvironmentModel.infoPlist.appName) [Privacy Policy](\(appEnvironmentModel.config.privacyPolicyUrl))")
             .font(.caption)
             .environment(\.openURL, OpenURLAction { url in
-                openUrlInWebView = WebViewLink(title: "Privacy Policy", url: url)
+                router.openSheet(.webView(link: .init(title: "Privacy Policy", url: url)))
                 return .handled
             })
-            .sheet(item: $openUrlInWebView) { link in
-                NavigationStack {
-                    WebView(url: link.url)
-                        .ignoresSafeArea()
-                        .navigationTitle(link.title)
-                        .toolbar {
-                            ToolbarItemGroup(placement: .cancellationAction) {
-                                CloseButton { openUrlInWebView = nil }
-                            }
-                        }
-                        .navigationBarTitleDisplayMode(.inline)
-                }
-            }
     }
 }
 

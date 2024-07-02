@@ -24,6 +24,7 @@ struct RouterProvider<Content: View>: View {
         }
         .sheets(item: $router.sheet)
         .alertError($router.alert)
+        .fullScreenCovers(item: $router.fullScreenCover)
         .if(enableRoutingFromURLs) { view in
             view.onOpenURL { url in
                 if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {

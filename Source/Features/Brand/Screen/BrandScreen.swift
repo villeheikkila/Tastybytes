@@ -146,14 +146,14 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        Button("brand.addProduct.menu.label", systemImage: "plus", action: { router.openRootSheet(.product(.addToBrand(brand, onCreate: { product in
+                        Button("brand.addProduct.menu.label", systemImage: "plus", action: { router.openSheet(.product(.addToBrand(brand, onCreate: { product in
                             router.navigate(screen: .product(product), removeLast: true)
                         }))) })
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         Button(
                             "labels.edit", systemImage: "pencil",
-                            action: { router.openRootSheet(.editBrand(
+                            action: { router.openSheet(.editBrand(
                                 brand: brand,
                                 onUpdate: { updatedBrand in
                                     brand = updatedBrand
@@ -420,7 +420,7 @@ struct SubBrandSectionHeader: View {
                         "brand.createProduct.label",
                         systemImage: "plus",
                         action: {
-                            router.openRootSheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
+                            router.openSheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
                                 router.navigate(screen: .product(newProduct), removeLast: true)
                             })))
                         }
@@ -430,7 +430,7 @@ struct SubBrandSectionHeader: View {
                     Button(
                         "labels.edit",
                         systemImage: "pencil",
-                        action: { router.openRootSheet(.editSubBrand(
+                        action: { router.openSheet(.editSubBrand(
                             brand: brand, subBrand: subBrand,
                             onUpdate: { updatedSubBrand in
                                 let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)

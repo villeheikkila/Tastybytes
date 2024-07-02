@@ -36,7 +36,7 @@ struct CheckInCommentRow: View {
             .contextMenu {
                 if comment.profile == profileEnvironmentModel.profile {
                     Button("labels.edit", systemImage: "pencil") {
-                        router.openRootSheet(.editComment(checkInComment: comment, checkInComments: $checkInComments))
+                        router.openSheet(.editComment(checkInComment: comment, checkInComments: $checkInComments))
                     }
                     ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive) {
                         await deleteComment(comment)

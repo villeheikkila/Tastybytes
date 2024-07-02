@@ -26,7 +26,7 @@ struct SettingsScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if let subscriptionGroup = appEnvironmentModel.subscriptionGroup {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                Button("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", action: { router.openRootSheet(.subscribe) })
+                Button("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", action: { router.openSheet(.subscribe) })
                     .labelStyle(.iconOnly)
                     .imageScale(.large)
                     .foregroundColor(.yellow)

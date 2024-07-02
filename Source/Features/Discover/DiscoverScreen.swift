@@ -161,7 +161,7 @@ struct DiscoverScreen: View {
                 Button(
                     "discover.filter.show",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    action: { router.openRootSheet(.productFilter(
+                    action: { router.openSheet(.productFilter(
                         initialFilter: productFilter,
                         sections: [.category, .checkIns],
                         onApply: { filter in
@@ -176,7 +176,7 @@ struct DiscoverScreen: View {
                     Button(
                         "discover.barcode.scan",
                         systemImage: "barcode.viewfinder",
-                        action: { router.openRootSheet(.barcodeScanner(onComplete: { barcode in
+                        action: { router.openSheet(.barcodeScanner(onComplete: { barcode in
                             self.barcode = barcode
                             searchKey = .barcode(barcode)
                         })) }

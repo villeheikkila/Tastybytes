@@ -82,7 +82,7 @@ struct LocationInnerScreen: View {
                 if profileEnvironmentModel.hasRole(.admin) {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canMergeLocations) {
-                            Button(action: { router.openRootSheet(.mergeLocationSheet(location: location)) }, label: {
+                            Button(action: { router.openSheet(.mergeLocationSheet(location: location)) }, label: {
                                 Label("location.mergeTo.label", systemImage: "doc.on.doc")
                             })
                         }

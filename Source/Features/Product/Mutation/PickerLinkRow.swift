@@ -8,7 +8,7 @@ struct PickerLinkRow: View {
 
     var body: some View {
         Button(action: {
-            router.openRootSheet(sheet)
+            router.openSheet(sheet)
         }, label: {
             LabeledContent(label) {
                 if let selection {

@@ -70,7 +70,7 @@ struct CurrentUserFriendsScreen: View {
             Button(
                 "friends.toolbar.showNameTag",
                 systemImage: "qrcode",
-                action: { router.openRootSheet(.nameTag(onSuccess: { profileId in
+                action: { router.openSheet(.nameTag(onSuccess: { profileId in
                     Task {
                         await friendEnvironmentModel.sendFriendRequest(receiver: profileId)
                     }
@@ -82,7 +82,7 @@ struct CurrentUserFriendsScreen: View {
 
             Button(
                 "friends.add.label", systemImage: "plus",
-                action: { router.openRootSheet(.userSheet(
+                action: { router.openSheet(.userSheet(
                     mode: .add,
                     onSubmit: {
                         feedbackEnvironmentModel.toggle(.success("friends.add.success"))

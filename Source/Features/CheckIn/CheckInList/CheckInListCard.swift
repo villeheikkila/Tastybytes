@@ -29,7 +29,7 @@ struct CheckInListCard: View {
                         "labels.edit",
                         systemImage: "pencil",
                         action: {
-                            router.openRootSheet(.checkIn(.update(checkIn: checkIn, onUpdate: onUpdate)))
+                            router.openSheet(.checkIn(.update(checkIn: checkIn, onUpdate: onUpdate)))
                         }
                     )
                     Button(
@@ -45,7 +45,7 @@ struct CheckInListCard: View {
                         "checkIn.title",
                         systemImage: "pencil",
                         action: {
-                            router.openRootSheet(.checkIn(.create(product: checkIn.product, onCreation: onCreate)))
+                            router.openSheet(.checkIn(.create(product: checkIn.product, onCreation: onCreate)))
                         }
                     )
                     ReportButton(entity: .checkIn(checkIn))

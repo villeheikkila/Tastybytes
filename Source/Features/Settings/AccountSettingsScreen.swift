@@ -17,7 +17,6 @@ struct AccountSettingsScreen: View {
     @AppStorage(.profileDeleted) private var profileDeleted = false
     @State private var showDeleteConfirmation = false
     @State private var showEmailConfirmation = false
-    @State private var showAccountDeleteScreen = false
     @State private var email = ""
     @State private var csvExport: CSVFile?
     @State private var showingExporter = false
@@ -30,17 +29,6 @@ struct AccountSettingsScreen: View {
         }
         .navigationTitle("account.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
-        .fullScreenCover(
-            isPresented: $showAccountDeleteScreen,
-            content: {
-                AccountDeletedScreen()
-            }
-        )
-        .transaction { transaction in
-            if showAccountDeleteScreen {
-                transaction.disablesAnimations = true
-            }
-        }
         .onChange(of: email) {
             withAnimation {
                 showEmailConfirmation = email != profileEnvironmentModel.email

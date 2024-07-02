@@ -1,7 +1,7 @@
 import SwiftUI
 import WebKit
 
-public struct WebView: UIViewRepresentable {
+struct WebView: UIViewRepresentable {
     let url: URL
 
     public init(url: URL) {

@@ -133,13 +133,13 @@ struct ProductMutationView: View {
             Button(
                 selectedCategory?.name ?? String(localized: "product.mutation.pickCategory.label"),
                 action: {
-                    router.openRootSheet(.categoryPickerSheet(category: $category))
+                    router.openSheet(.categoryPickerSheet(category: $category))
                 }
             )
 
             Button(action: {
                 if let selectedCategory {
-                    router.openRootSheet(.subcategory(
+                    router.openSheet(.subcategory(
                         subcategories: $subcategories,
                         category: selectedCategory
                     ))
@@ -228,7 +228,7 @@ struct ProductMutationView: View {
             if mode.showBarcodeSection {
                 Button(
                     barcode == nil ? "product.barcode.add.label" : "product.barcode.added.label",
-                    action: { router.openRootSheet(.barcodeScanner(onComplete: { barcode in
+                    action: { router.openSheet(.barcodeScanner(onComplete: { barcode in
                         self.barcode = barcode
                     })) }
                 )

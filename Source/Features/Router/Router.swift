@@ -29,7 +29,7 @@ final class Router {
         }
     }
 
-    func openRootSheet(_ sheet: Sheet) {
+    func openSheet(_ sheet: Sheet) {
         self.sheet = sheet
     }
 
@@ -151,7 +151,7 @@ struct NavigateOnTapModifier: ViewModifier {
             .onTapGesture {
                 switch action {
                 case let .sheet(sheet):
-                    router.openRootSheet(sheet)
+                    router.openSheet(sheet)
                 case let .screen(screen):
                     router.navigate(screen: screen)
                 }
