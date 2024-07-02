@@ -302,6 +302,36 @@
         }
       }
     },
+    "admin.section.data.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        }
+      }
+    },
+    "admin.section.management.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Management"
+          }
+        }
+      }
+    },
+    "admin.section.reports.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reports"
+          }
+        }
+      }
+    },
     "admin.verification.title" : {
       "localizations" : {
         "en" : {
