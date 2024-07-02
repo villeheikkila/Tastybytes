@@ -9,7 +9,7 @@ struct CheckInCardImage: View {
 
     var body: some View {
         CheckInImageScrollView(checkIn: checkIn)
-            .openSheetOnTap(.checkInImage(checkIn: checkIn, onDeleteImage: onDeleteImage))
+            .openOnTap(.sheet(.checkInImage(checkIn: checkIn, onDeleteImage: onDeleteImage)))
     }
 }
 

@@ -8,7 +8,6 @@ import SwiftUI
 struct ProductFeedScreen: View {
     private let logger = Logger(category: "ProductFeedView")
     @Environment(Repository.self) private var repository
-    @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var products = [Product.Joined]()
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
@@ -36,9 +35,7 @@ struct ProductFeedScreen: View {
                 ProductItemView(product: product, extras: [.checkInCheck, .rating])
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
-                    .onTapGesture {
-                        router.open(.screen(.product(product)))
-                    }
+                    .openOnTap(.screen(.product(product)))
                     .onAppear {
                         if product == products.last, isLoading != true {
                             loadingAdditionalItemsTask = Task {

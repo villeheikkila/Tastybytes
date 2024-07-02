@@ -5,7 +5,6 @@ import SwiftUI
 
 struct ActivityTab: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
 
     var body: some View {

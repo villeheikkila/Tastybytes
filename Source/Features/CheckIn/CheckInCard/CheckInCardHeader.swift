@@ -4,11 +4,9 @@ import Models
 import SwiftUI
 
 struct CheckInCardHeader: View {
-    @Environment(Router.self) private var router
-
-    public let profile: Profile
-    public let loadedFrom: CheckInCard.LoadedFrom
-    public let location: Location?
+    let profile: Profile
+    let loadedFrom: CheckInCard.LoadedFrom
+    let location: Location?
 
     var body: some View {
         HStack {
@@ -25,16 +23,12 @@ struct CheckInCardHeader: View {
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
                     .allowsHitTesting(!loadedFrom.isLoadedFromLocation(location))
-                    .onTapGesture {
-                        router.open(.screen(.location(location)))
-                    }
+                    .openOnTap(.screen(.location(location)))
             }
         }
         .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
         .allowsHitTesting(!loadedFrom.isLoadedFromProfile(profile))
-        .onTapGesture {
-            router.open(.screen(.profile(profile)))
-        }
+        .openOnTap(.screen(.profile(profile)))
     }
 }

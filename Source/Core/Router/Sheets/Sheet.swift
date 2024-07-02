@@ -257,23 +257,3 @@ enum Sheet: Identifiable, Equatable {
         lhs.id == rhs.id
     }
 }
-
-struct OpenSheetOnTapModifier: ViewModifier {
-    @Environment(Router.self) private var router
-
-    let sheet: Sheet
-
-    func body(content: Content) -> some View {
-        content
-            .onTapGesture {
-                router.open(.sheet(sheet))
-            }
-            .accessibility(addTraits: .isButton)
-    }
-}
-
-extension View {
-    func openSheetOnTap(_ sheet: Sheet) -> some View {
-        modifier(OpenSheetOnTapModifier(sheet: sheet))
-    }
-}

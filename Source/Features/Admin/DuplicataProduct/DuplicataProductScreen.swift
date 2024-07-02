@@ -50,7 +50,6 @@ struct DuplicateProductScreen: View {
 }
 
 struct DuplicateProductScreeRow: View {
-    @Environment(Router.self) private var router
     @State private var showDeleteProductConfirmation = false
     let duplicateProductSuggestion: ProductDuplicateSuggestion
 
@@ -66,15 +65,11 @@ struct DuplicateProductScreeRow: View {
             ProductItemView(product: duplicateProductSuggestion.product)
                 .contentShape(Rectangle())
                 .accessibilityAddTraits(.isLink)
-                .onTapGesture {
-                    router.open(.screen(.product(duplicateProductSuggestion.product)))
-                }
+                .openOnTap(.screen(.product(duplicateProductSuggestion.product)))
             ProductItemView(product: duplicateProductSuggestion.duplicate)
                 .contentShape(Rectangle())
                 .accessibilityAddTraits(.isLink)
-                .onTapGesture {
-                    router.open(.screen(.product(duplicateProductSuggestion.duplicate)))
-                }
+                .openOnTap(.screen(.product(duplicateProductSuggestion.duplicate)))
         }
     }
 }

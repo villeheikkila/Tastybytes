@@ -68,7 +68,7 @@ struct TopLocationRow: View {
                 Spacer()
                 Text("(\(location.count.formatted()))")
             }
-            .navigateOnTap(.screen(.profileCheckIns(profile, .location(location.loc))))
+            .openOnTap(.screen(.profileCheckIns(profile, .location(location.loc))))
         }
         .listRowBackground(Color.clear)
     }

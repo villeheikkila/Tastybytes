@@ -135,9 +135,7 @@ struct VerificationScreen: View {
                 ProductItemView(product: product)
                     .contentShape(Rectangle())
                     .accessibilityAddTraits(.isLink)
-                    .onTapGesture {
-                        router.open(.screen(.product(product)))
-                    }
+                    .openOnTap(.screen(.product(product)))
                     .swipeActions {
                         ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifyProduct(product) })
                             .tint(.green)

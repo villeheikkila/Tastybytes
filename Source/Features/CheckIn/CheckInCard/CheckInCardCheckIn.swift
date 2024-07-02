@@ -3,8 +3,6 @@ import Models
 import SwiftUI
 
 struct CheckInCardCheckIn: View {
-    @Environment(Router.self) private var router
-
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
 
@@ -34,9 +32,7 @@ struct CheckInCardCheckIn: View {
                     Text("checkIn.location.purchasedFrom __\(purchaseLocation.name)__")
                         .accessibilityAddTraits(.isLink)
                         .allowsHitTesting(!loadedFrom.isLoadedFromLocation(purchaseLocation))
-                        .onTapGesture {
-                            router.open(.screen(.location(purchaseLocation)))
-                        }
+                        .openOnTap(.screen(.location(purchaseLocation)))
 
                     Spacer()
                 }
@@ -45,8 +41,6 @@ struct CheckInCardCheckIn: View {
         .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
         .allowsHitTesting(loadedFrom != .checkIn)
-        .onTapGesture {
-            router.open(.screen(.checkIn(checkIn)))
-        }
+        .openOnTap(.screen(.checkIn(checkIn)))
     }
 }

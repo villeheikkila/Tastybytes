@@ -9,7 +9,6 @@ struct ProductItemView: View {
         case checkInCheck, rating, companyLink, logoOnLeft, logoOnRight
     }
 
-    @Environment(Router.self) private var router
     let product: Product.Joined
     let extras: Set<Extra>
 
@@ -52,9 +51,7 @@ struct ProductItemView: View {
                     .if(extras.contains(.companyLink), transform: { view in
                         view.contentShape(Rectangle())
                             .accessibilityAddTraits(.isLink)
-                            .onTapGesture {
-                                router.open(.screen(.company(product.subBrand.brand.brandOwner)))
-                            }
+                            .openOnTap(.screen(.company(product.subBrand.brand.brandOwner)))
                     })
 
                 HStack {

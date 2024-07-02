@@ -3,8 +3,6 @@ import Models
 import SwiftUI
 
 struct CheckInCardTaggedFriends: View {
-    @Environment(Router.self) private var router
-
     let taggedProfiles: [Profile]
     let loadedFrom: CheckInCard.LoadedFrom
 
@@ -23,9 +21,7 @@ struct CheckInCardTaggedFriends: View {
                             .contentShape(Rectangle())
                             .accessibilityAddTraits(.isLink)
                             .allowsHitTesting(!loadedFrom.isLoadedFromProfile(taggedProfile))
-                            .onTapGesture {
-                                router.open(.screen(.profile(taggedProfile)))
-                            }
+                            .openOnTap(.screen(.profile(taggedProfile)))
                     }
                     Spacer()
                 }
