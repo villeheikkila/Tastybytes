@@ -269,6 +269,19 @@
         }
       }
     },
+    "admin.locations.edit.location.title" : {
+
+    },
+    "admin.locations.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locations"
+          }
+        }
+      }
+    },
     "admin.menuSection.title" : {
       "localizations" : {
         "en" : {
@@ -2773,6 +2786,9 @@
         }
       }
     },
+    "location.details.section.title" : {
+
+    },
     "location.distance %@" : {
       "localizations" : {
         "en" : {
@@ -2792,6 +2808,9 @@
           }
         }
       }
+    },
+    "location.mapKitIdentifier.label" : {
+
     },
     "location.merge.confirmation.description" : {
       "localizations" : {

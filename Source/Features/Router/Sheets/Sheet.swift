@@ -61,6 +61,7 @@ enum Sheet: Identifiable, Equatable {
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
+    case locationEdit(location: Location)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -142,6 +143,8 @@ enum Sheet: Identifiable, Equatable {
             CheckInImageSheet(checkIn: checkIn, onDeleteImage: onDeleteImage)
         case .profileDeleteConfirmation:
             AccountDeletedScreen()
+        case let .locationEdit(location):
+            LocationEditSheet(location: location)
         }
     }
 
@@ -255,6 +258,8 @@ enum Sheet: Identifiable, Equatable {
             "check_in_image_\(checkIn.hashValue)"
         case .profileDeleteConfirmation:
             "profile_delete_confirmation"
+        case let .locationEdit(location):
+            "location_edit_\(location)"
         }
     }
 

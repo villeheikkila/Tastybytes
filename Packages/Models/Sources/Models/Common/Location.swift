@@ -40,7 +40,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         self.name = name
         self.title = title
         self.location = location
-        self.mapKitIdentifier = nil
+        mapKitIdentifier = nil
         self.countryCode = countryCode
         self.country = country
         self.source = source
@@ -111,7 +111,7 @@ public extension Location {
 
         enum EncodingKeys: String, CodingKey {
             case name = "p_name", title = "p_title", longitude = "p_longitude", latitude = "p_latitude",
-                 countryCode = "p_country_code",  mapKitIdentifier = "p_map_kit_identifier"
+                 countryCode = "p_country_code", mapKitIdentifier = "p_map_kit_identifier"
         }
 
         public func encode(to encoder: Encoder) throws {

@@ -156,4 +156,18 @@ struct SupabaseLocationRepository: LocationRepository {
             return .failure(error)
         }
     }
+
+    func getLocations() async -> Result<[Location], Error> {
+        do {
+            let response: [Location] = try await client
+                .from(.locations)
+                .select(Location.getQuery(.joined(false)))
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
 }

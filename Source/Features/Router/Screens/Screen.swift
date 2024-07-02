@@ -38,6 +38,7 @@ enum Screen: Hashable, Codable, Sendable {
     case contributions
     case about
     case reports
+    case locationManagement
     case error(reason: String)
 
     @MainActor
@@ -118,6 +119,8 @@ enum Screen: Hashable, Codable, Sendable {
             ReportScreen()
         case let .error(reason):
             ErrorScreen(reason: reason)
+        case .locationManagement:
+            LocationManagementScreen()
         }
     }
 }

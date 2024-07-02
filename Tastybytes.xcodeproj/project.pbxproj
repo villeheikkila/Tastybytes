@@ -29,6 +29,8 @@
 		5C24E1D32B5E4464003AB7C8 /* SubBrandSheetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1D22B5E4464003AB7C8 /* SubBrandSheetRow.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C24E1D52B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1D42B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C2899DD2BA8ACA50099C976 /* CheckInDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2899DC2BA8ACA50099C976 /* CheckInDateView.swift */; };
+		5C2B25D02C33C93900CFDAFB /* LocationManagementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2B25CF2C33C93900CFDAFB /* LocationManagementScreen.swift */; };
+		5C2B25D22C33CC5D00CFDAFB /* LocationEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2B25D12C33CC5D00CFDAFB /* LocationEditSheet.swift */; };
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C39076F2B3232420036253E /* IdiomSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C39076E2B3232420036253E /* IdiomSelector.swift */; };
 		5C3B6E8E2B81502C005C2F62 /* ScanTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -328,6 +330,8 @@
 		5C24E1D22B5E4464003AB7C8 /* SubBrandSheetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandSheetRow.swift; sourceTree = "<group>"; };
 		5C24E1D42B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandSheetCreateSection.swift; sourceTree = "<group>"; };
 		5C2899DC2BA8ACA50099C976 /* CheckInDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInDateView.swift; sourceTree = "<group>"; };
+		5C2B25CF2C33C93900CFDAFB /* LocationManagementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagementScreen.swift; sourceTree = "<group>"; };
+		5C2B25D12C33CC5D00CFDAFB /* LocationEditSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationEditSheet.swift; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
 		5C39076E2B3232420036253E /* IdiomSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdiomSelector.swift; sourceTree = "<group>"; };
 		5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextField.swift; sourceTree = "<group>"; };
@@ -644,6 +648,15 @@
 			path = Observers;
 			sourceTree = "<group>";
 		};
+		5C2B25CE2C33C91D00CFDAFB /* LocationManagement */ = {
+			isa = PBXGroup;
+			children = (
+				5C2B25CF2C33C93900CFDAFB /* LocationManagementScreen.swift */,
+				5C2B25D12C33CC5D00CFDAFB /* LocationEditSheet.swift */,
+			);
+			path = LocationManagement;
+			sourceTree = "<group>";
+		};
 		5C3907642B3208D10036253E /* ProductItem */ = {
 			isa = PBXGroup;
 			children = (
@@ -656,6 +669,7 @@
 		5C3907652B32093D0036253E /* Admin */ = {
 			isa = PBXGroup;
 			children = (
+				5C2B25CE2C33C91D00CFDAFB /* LocationManagement */,
 				5C9057552B2894BE00EC157B /* AddSubcategory */,
 				5C9057B92B2894BE00EC157B /* DuplicataProduct */,
 				5C90579F2B2894BE00EC157B /* Verification */,
@@ -1922,6 +1936,7 @@
 				5CAADF102B5C634E00D956C1 /* BrandLogo.swift in Sources */,
 				5C974CCF2C04E9E600CFE98A /* LocationInputButton.swift in Sources */,
 				5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */,
+				5C2B25D22C33CC5D00CFDAFB /* LocationEditSheet.swift in Sources */,
 				5C9057E92B2894BE00EC157B /* AdminTab.swift in Sources */,
 				5CA4AC512B58F5D300E17629 /* PickerLinkRow.swift in Sources */,
 				5C9058212B2894BE00EC157B /* FriendRequestNotificationView.swift in Sources */,
@@ -1966,6 +1981,7 @@
 				5C90584A2B2894BE00EC157B /* SignInWithAppleView.swift in Sources */,
 				5CD741B22C084B5D00BD90A2 /* FullScreenCovers.swift in Sources */,
 				5C07F27D2B51EBB800D8740B /* CheckInShareLinkView.swift in Sources */,
+				5C2B25D02C33C93900CFDAFB /* LocationManagementScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2043,6 +2059,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				MARKETING_VERSION = 0.0.9;
 				SDKROOT = auto;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Staging;
 		};
@@ -2169,6 +2186,7 @@
 				MARKETING_VERSION = 0.0.9;
 				PRODUCT_MODULE_NAME = "${APP_NAME}";
 				SDKROOT = auto;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -2195,6 +2213,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				MARKETING_VERSION = 0.0.9;
 				SDKROOT = auto;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
