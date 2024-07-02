@@ -9,7 +9,6 @@ import SwiftUI
 struct CheckInCommentRow: View {
     private let logger = Logger(category: "CheckInScreen")
     @Environment(Repository.self) private var repository
-    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var showDeleteAsModeratorConfirmationDialog = false
     @State private var showTranslator = false

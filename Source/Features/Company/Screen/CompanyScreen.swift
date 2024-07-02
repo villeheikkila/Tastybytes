@@ -189,7 +189,7 @@ struct CompanyScreen: View {
         switch await repository.company.delete(id: company.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            router.reset()
+            router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.openAlert(.init())

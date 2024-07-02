@@ -8,7 +8,6 @@ struct CategoryManagementScreen: View {
     private let logger = Logger(category: "CategoryManagementScreen")
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(Router.self) private var router
 
     var body: some View {
         List(appEnvironmentModel.categories) { category in
@@ -41,7 +40,6 @@ struct CategoryManagementScreen: View {
 
 struct CategoryManagementRow: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(Router.self) private var router
 
     let category: Models.Category.JoinedSubcategoriesServingStyles
 

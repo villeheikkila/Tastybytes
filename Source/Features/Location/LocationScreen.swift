@@ -22,7 +22,6 @@ struct LocationInnerScreen: View {
     private let logger = Logger(category: "LocationScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var scrollToTop: Int = 0
@@ -142,7 +141,7 @@ struct LocationInnerScreen: View {
     func deleteLocation(_ location: Location) async {
         switch await repository.location.delete(id: location.id) {
         case .success:
-            router.reset()
+            router.removeLast()
             isSuccess = true
         case let .failure(error):
             guard !error.isCancelled else { return }

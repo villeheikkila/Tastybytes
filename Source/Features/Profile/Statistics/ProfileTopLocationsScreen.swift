@@ -47,8 +47,6 @@ struct ProfileTopLocationsScreen: View {
 }
 
 struct TopLocationRow: View {
-    @Environment(Router.self) private var router
-
     let location: ProfileTopLocations
     let profile: Profile
 

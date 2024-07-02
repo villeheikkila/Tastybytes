@@ -6,7 +6,6 @@ import SwiftUI
 
 struct DiscoverProductResults: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(Router.self) private var router
     let products: [Product.Joined]
     @Binding var barcode: Barcode?
     let showContentUnavailableView: Bool

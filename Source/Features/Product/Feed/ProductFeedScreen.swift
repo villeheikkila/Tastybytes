@@ -8,7 +8,6 @@ import SwiftUI
 struct ProductFeedScreen: View {
     private let logger = Logger(category: "ProductFeedView")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var products = [Product.Joined]()

@@ -11,7 +11,6 @@ struct FriendsScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var friends: [Friend]
     @State private var searchTerm = ""

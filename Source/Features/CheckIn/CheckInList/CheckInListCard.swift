@@ -8,7 +8,6 @@ import SwiftUI
 
 struct CheckInListCard: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(Router.self) private var router
     @State private var showDeleteConfirmation = false
 
     let checkIn: CheckIn

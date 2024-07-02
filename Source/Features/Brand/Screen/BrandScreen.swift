@@ -348,7 +348,7 @@ struct BrandScreen: View {
     func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
         switch await repository.brand.delete(id: brand.id) {
         case .success:
-            router.reset()
+            router.removeLast()
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }

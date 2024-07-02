@@ -9,8 +9,6 @@ import SwiftUI
 struct ProfileLocationsScreen: View {
     private let logger = Logger(category: "ProfileLocationsScreen")
     @Environment(Repository.self) private var repository
-    @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var checkInLocations = [Location]()
     @State private var selectedLocation: Location?

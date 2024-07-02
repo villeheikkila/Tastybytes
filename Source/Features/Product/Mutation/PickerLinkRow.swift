@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct PickerLinkRow: View {
-    @Environment(Router.self) private var router
     let label: LocalizedStringKey
     let selection: String?
     let sheet: Sheet

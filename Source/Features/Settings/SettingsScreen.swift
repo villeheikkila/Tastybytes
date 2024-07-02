@@ -4,7 +4,6 @@ import Models
 import SwiftUI
 
 struct SettingsScreen: View {
-    @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

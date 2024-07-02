@@ -10,7 +10,6 @@ enum OnboardField {
 
 struct OnboardingProfileSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var keyboardShowing = false
     @FocusState var focusedField: OnboardField?
     @State private var selectedItem: PhotosPickerItem?

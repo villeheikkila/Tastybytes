@@ -11,7 +11,6 @@ struct ReactionsView: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInReactions = [CheckInReaction]()
     @State private var isLoading = false
     @State private var task: Task<Void, Never>?

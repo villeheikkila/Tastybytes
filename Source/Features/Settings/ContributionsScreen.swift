@@ -9,7 +9,6 @@ struct ContributionsScreen: View {
     private let logger = Logger(category: "ContributionsScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var contributions: Contributions?
 

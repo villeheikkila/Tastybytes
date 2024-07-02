@@ -4,7 +4,6 @@ import Models
 import SwiftUI
 
 struct CurrentUserFriendsScreen: View {
-    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

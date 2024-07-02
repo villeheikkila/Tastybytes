@@ -4,7 +4,6 @@ import Models
 import SwiftUI
 
 struct BlockedUsersScreen: View {
-    @Environment(Router.self) private var router
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

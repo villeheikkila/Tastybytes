@@ -7,9 +7,7 @@ import SwiftUI
 
 struct ProfileProductListView: View {
     private let logger = Logger(category: "ProfileProductListView")
-    @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var products: [Product.Joined] = []
     @State private var searchTerm = ""
