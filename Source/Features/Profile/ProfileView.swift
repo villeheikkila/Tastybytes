@@ -11,11 +11,10 @@ import SwiftUI
 struct ProfileView: View {
     @Environment(Repository.self) private var repository
     let profile: Profile
-    @Binding var scrollToTop: Int
     let isCurrentUser: Bool
 
     var body: some View {
-        ProfileInnerView(repository: repository, profile: profile, scrollToTop: $scrollToTop, isCurrentUser: isCurrentUser)
+        ProfileInnerView(repository: repository, profile: profile, isCurrentUser: isCurrentUser)
     }
 }
 
@@ -35,16 +34,14 @@ struct ProfileInnerView: View {
     @State private var showPicker = false
     @State private var selectedItem: PhotosPickerItem?
     @State private var state: ScreenState = .loading
-    @Binding var scrollToTop: Int
 
     private let topAnchor = 0
     private let pageSize = 10
     private let isCurrentUser: Bool
     private let isShownInFull: Bool
 
-    init(repository: Repository, profile: Profile, scrollToTop: Binding<Int>, isCurrentUser: Bool) {
+    init(repository: Repository, profile: Profile, isCurrentUser: Bool) {
         _profile = State(initialValue: profile)
-        _scrollToTop = scrollToTop
         self.isCurrentUser = isCurrentUser
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in
             await repository.checkIn.getByProfileId(id: profile.id, queryType: .paginated(from, to))
@@ -57,38 +54,31 @@ struct ProfileInnerView: View {
     }
 
     var body: some View {
-        ScrollViewReader { proxy in
-            List {
-                if state == .populated {
-                    populatedContent
-                }
+        List {
+            if state == .populated {
+                populatedContent
             }
-            .listStyle(.plain)
-            .overlay {
-                ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
-                    await getProfileData(isRefresh: true)
-                })
-            }
-            .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
-            .refreshable {
+        }
+        .listStyle(.plain)
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
                 await getProfileData(isRefresh: true)
-            }
-            .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
-            .onDisappear {
-                loadImagesTask?.cancel()
-            }
-            .initialTask {
-                await getProfileData()
-            }
-            .onChange(of: scrollToTop) {
-                withAnimation {
-                    proxy.scrollTo(topAnchor, anchor: .top)
-                }
-            }
-            .task(id: selectedItem) {
-                guard let data = await selectedItem?.getJPEG() else { return }
-                await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
-            }
+            })
+        }
+        .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
+        .refreshable {
+            await getProfileData(isRefresh: true)
+        }
+        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
+        .onDisappear {
+            loadImagesTask?.cancel()
+        }
+        .initialTask {
+            await getProfileData()
+        }
+        .task(id: selectedItem) {
+            guard let data = await selectedItem?.getJPEG() else { return }
+            await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
         }
     }
 

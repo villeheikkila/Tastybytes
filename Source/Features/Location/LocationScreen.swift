@@ -24,7 +24,6 @@ struct LocationInnerScreen: View {
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var state: ScreenState = .loading
-    @State private var scrollToTop: Int = 0
     @State private var summary: Summary?
     @State private var showDeleteLocationConfirmation = false
     @State private var isSuccess = false

@@ -9,10 +9,8 @@ import SwiftUI
 struct ActivityScreen: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
-    @Environment(TabManager.self) private var tabManager
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
-    @Binding var scrollToTop: Int
     @State private var state: ScreenState = .loading
 
     @State private var loadingCheckInsOnAppearTask: Task<Void, Error>?
@@ -53,12 +51,6 @@ struct ActivityScreen: View {
                     ScreenStateOverlayView(state: state, errorDescription: "") {
                         await fetchFeedItems(reset: true)
                     }
-                }
-            }
-            .onChange(of: scrollToTop) {
-                guard let first = checkIns.first else { return }
-                withAnimation {
-                    proxy.scrollTo(first.id, anchor: .top)
                 }
             }
             .initialTask {

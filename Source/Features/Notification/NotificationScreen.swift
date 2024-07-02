@@ -7,7 +7,6 @@ struct NotificationScreen: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var filter: NotificationType?
-    @Binding var scrollToTop: Int
 
     var filteredNotifications: [Models.Notification] {
         notificationEnvironmentModel.notifications.filter { notification in
@@ -35,56 +34,46 @@ struct NotificationScreen: View {
 
     var body: some View {
         @Bindable var notificationEnvironmentModel = notificationEnvironmentModel
-        ScrollViewReader { scrollProxy in
-            List {
-                ForEach(filteredNotifications) { notification in
-                    HStack {
-                        notification.view
-                    }
-                    .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
+        List {
+            ForEach(filteredNotifications) { notification in
+                HStack {
+                    notification.view
                 }
-                .onDelete { index in
-                    Task {
-                        await notificationEnvironmentModel.deleteFromIndex(at: index)
-                    }
+                .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
+            }
+            .onDelete { index in
+                Task {
+                    await notificationEnvironmentModel.deleteFromIndex(at: index)
                 }
             }
-            .listStyle(.plain)
-            .refreshable {
-                notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
-            }
-            .overlay {
-                if notificationEnvironmentModel.state == .populated {
-                    if showContentUnavailableView {
-                        ContentUnavailableView {
-                            Label(
-                                filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
-                                systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
-                            )
-                        } description: {
-                            if let description = filter?.contentUnavailableViewProps.description {
-                                Text(description)
-                            }
+        }
+        .listStyle(.plain)
+        .refreshable {
+            notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
+        }
+        .overlay {
+            if notificationEnvironmentModel.state == .populated {
+                if showContentUnavailableView {
+                    ContentUnavailableView {
+                        Label(
+                            filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
+                            systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
+                        )
+                    } description: {
+                        if let description = filter?.contentUnavailableViewProps.description {
+                            Text(description)
                         }
                     }
-                } else {
-                    ScreenStateOverlayView(state: notificationEnvironmentModel.state, errorDescription: "") {
-                        notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
-                    }
+                }
+            } else {
+                ScreenStateOverlayView(state: notificationEnvironmentModel.state, errorDescription: "") {
+                    notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
                 }
             }
-            .background {}
-            .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
-                oldValue && !newValue
-            }
-            .onChange(of: scrollToTop) {
-                withAnimation {
-                    filter = nil
-                    if let first = filteredNotifications.first {
-                        scrollProxy.scrollTo(first.id, anchor: .top)
-                    }
-                }
-            }
+        }
+        .background {}
+        .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
+            oldValue && !newValue
         }
         .onAppear {
             notificationEnvironmentModel.refresh()

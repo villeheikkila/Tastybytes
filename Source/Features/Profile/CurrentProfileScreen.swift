@@ -7,10 +7,9 @@ struct CurrentProfileScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Binding var scrollToTop: Int
 
     var body: some View {
-        ProfileView(profile: profileEnvironmentModel.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
+        ProfileView(profile: profileEnvironmentModel.profile, isCurrentUser: true)
             .navigationTitle(profileEnvironmentModel.profile.preferredName)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

@@ -6,7 +6,7 @@ struct TabsView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @State private var tabManager = TabManager()
+    @State private var selection = Tab.activity
 
     private var shownTabs: [Tab] {
         if profileEnvironmentModel.hasRole(.admin) {
@@ -17,15 +17,14 @@ struct TabsView: View {
     }
 
     var body: some View {
-        TabView(selection: $tabManager.selection) {
+        TabView(selection: $selection) {
             tabs
         }
         .tabViewStyle(.sidebarAdaptable)
-        .sensoryFeedback(.selection, trigger: tabManager.selection)
-        .environment(tabManager)
+        .sensoryFeedback(.selection, trigger: selection)
         .onOpenURL { url in
             if let tab = TabUrlHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).tab {
-                tabManager.selection = tab
+                selection = tab
             }
         }
     }

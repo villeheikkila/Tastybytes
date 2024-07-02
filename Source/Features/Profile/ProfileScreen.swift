@@ -6,14 +6,12 @@ import SwiftUI
 struct ProfileScreen: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @State private var scrollToTop = 0
 
     let profile: Profile
 
     var body: some View {
         ProfileView(
             profile: profile,
-            scrollToTop: $scrollToTop,
             isCurrentUser: profileEnvironmentModel.id == profile.id
         )
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)

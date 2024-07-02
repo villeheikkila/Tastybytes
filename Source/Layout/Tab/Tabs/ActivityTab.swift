@@ -6,26 +6,15 @@ import SwiftUI
 struct ActivityTab: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(Router.self) private var router
-    @Environment(TabManager.self) private var tabManager
     @Environment(Repository.self) private var repository
-    @State private var scrollToTop: Int = 0
 
     var body: some View {
-        ActivityScreen(scrollToTop: $scrollToTop)
+        ActivityScreen()
             .toolbar {
                 toolbarContent
             }
             .navigationTitle("tab.activity")
             .navigationBarTitleDisplayMode(.inline)
-            .onChange(of: tabManager.resetNavigationOnTab) { _, tab in
-                if tab == .activity {
-                    if router.path.isEmpty {
-                        scrollToTop += 1
-                    } else {
-                        router.reset()
-                    }
-                }
-            }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
