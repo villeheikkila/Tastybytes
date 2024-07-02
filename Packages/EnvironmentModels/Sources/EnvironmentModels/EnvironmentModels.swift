@@ -4,7 +4,6 @@ import SwiftUI
 
 enum UserDefaultsKey: String, CaseIterable {
     case selectedTab = "selected_tab"
-    case selectedSidebarTab = "selected_sidebar_tab"
     case isOnboardedOnDevice = "is_current_device_onboarded"
     case colorScheme = "color_scheme"
 }

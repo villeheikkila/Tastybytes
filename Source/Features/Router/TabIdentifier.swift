@@ -45,15 +45,4 @@ struct TabUrlHandler {
         case .currentProfile: return Tab.profile
         }
     }
-
-    var sidebarTab: SiderBarTab? {
-        guard let identifier = tabIdentifier else { return nil }
-
-        switch identifier {
-        case .activity: return SiderBarTab.activity
-        case .discover: return SiderBarTab.discover
-        case .notifications: return SiderBarTab.notifications
-        case .currentProfile: return SiderBarTab.profile
-        }
-    }
 }

@@ -128,7 +128,6 @@
 		5C9058102B2894BE00EC157B /* FlavorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057792B2894BE00EC157B /* FlavorSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058112B2894BE00EC157B /* EditSubBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577B2B2894BE00EC157B /* EditSubBrandSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058122B2894BE00EC157B /* LocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577D2B2894BE00EC157B /* LocationSearchSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058132B2894BE00EC157B /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577E2B2894BE00EC157B /* SideBarView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058142B2894BE00EC157B /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057812B2894BE00EC157B /* SettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058152B2894BE00EC157B /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057822B2894BE00EC157B /* AboutScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058162B2894BE00EC157B /* PrivacySettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057832B2894BE00EC157B /* PrivacySettingsPage.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -432,7 +431,6 @@
 		5C9057792B2894BE00EC157B /* FlavorSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlavorSheet.swift; sourceTree = "<group>"; };
 		5C90577B2B2894BE00EC157B /* EditSubBrandSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSubBrandSheet.swift; sourceTree = "<group>"; };
 		5C90577D2B2894BE00EC157B /* LocationSearchSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchSheet.swift; sourceTree = "<group>"; };
-		5C90577E2B2894BE00EC157B /* SideBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideBarView.swift; sourceTree = "<group>"; };
 		5C9057812B2894BE00EC157B /* SettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		5C9057822B2894BE00EC157B /* AboutScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
 		5C9057832B2894BE00EC157B /* PrivacySettingsPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingsPage.swift; sourceTree = "<group>"; };
@@ -778,7 +776,6 @@
 			children = (
 				5C511D7E2BA78F7C00F95290 /* Watch */,
 				5C9057382B2894BE00EC157B /* Tab */,
-				5C82E8882B2F65D400F2B369 /* Sidebar */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -802,14 +799,6 @@
 				5C82E8862B2F63A100F2B369 /* SplashScreenProvider.swift */,
 			);
 			path = SplashScreen;
-			sourceTree = "<group>";
-		};
-		5C82E8882B2F65D400F2B369 /* Sidebar */ = {
-			isa = PBXGroup;
-			children = (
-				5C90577E2B2894BE00EC157B /* SideBarView.swift */,
-			);
-			path = Sidebar;
 			sourceTree = "<group>";
 		};
 		5C82E8892B2F677A00F2B369 /* Subscription */ = {
@@ -1951,7 +1940,6 @@
 				5C13190E2C1DB1BF00C9BF25 /* FullScreenErrorView.swift in Sources */,
 				5C07F27B2B51EBB800D8740B /* LocationShareLinkView.swift in Sources */,
 				5CAB45DC2BA8A8CF0017E71A /* AvatarView.swift in Sources */,
-				5C9058132B2894BE00EC157B /* SideBarView.swift in Sources */,
 				5C68D7712B9794F600D88229 /* DeleteButton.swift in Sources */,
 				5CD9B1882BDEA9FA00A86387 /* CheckInsByTimeRangeChart.swift in Sources */,
 				5C9057EB2B2894BE00EC157B /* Tab.swift in Sources */,

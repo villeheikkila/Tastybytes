@@ -9,6 +9,7 @@ struct RouterProvider<Content: View>: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var router = Router()
 
+    let isRootLevelNavigationStack: Bool
     @ViewBuilder let content: () -> Content
 
     var body: some View {
@@ -24,9 +25,11 @@ struct RouterProvider<Content: View>: View {
         }
         .sheets(item: $router.sheet)
         .alertError($router.alert)
-        .onOpenURL { url in
-            if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
-                router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
+        .if(isRootLevelNavigationStack) { view in
+            view.onOpenURL { url in
+                if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
+                    router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
+                }
             }
         }
         .toasts(presenting: $feedbackEnvironmentModel.toast)
