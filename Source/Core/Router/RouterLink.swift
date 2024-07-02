@@ -46,6 +46,7 @@ struct RouterLink<LabelView: View>: View {
                     .contentShape(Rectangle())
                 })
                 .buttonStyle(.plain)
+                .accessibilityAddTraits(.isLink)
             } else {
                 NavigationLink(value: screen, label: {
                     label
@@ -57,6 +58,7 @@ struct RouterLink<LabelView: View>: View {
             Button(action: {
                 router.openSheet(sheet)
             }, label: { label })
+            .accessibilityAddTraits(.isLink)
         }
     }
 }
