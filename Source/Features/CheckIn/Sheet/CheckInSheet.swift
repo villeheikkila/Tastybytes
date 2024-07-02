@@ -97,16 +97,14 @@ struct CheckInSheet: View {
         Section("checkIn.review.title") {
             TextField("checkIn.review.label", text: $review, axis: .vertical)
                 .focused($focusedField, equals: .review)
-            Button(
-                action: { router.openSheet(.flavors(pickedFlavors: $pickedFlavors)) },
-                label: {
-                    if !pickedFlavors.isEmpty {
-                        FlavorsView(flavors: pickedFlavors)
-                    } else {
-                        Text("flavors.label")
-                    }
-                }
-            )
+            RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors),
+                       label: {
+                           if !pickedFlavors.isEmpty {
+                               FlavorsView(flavors: pickedFlavors)
+                           } else {
+                               Text("flavors.label")
+                           }
+                       })
         }
         .headerProminence(.increased)
         .customListRowBackground()
@@ -126,12 +124,11 @@ struct CheckInSheet: View {
                 .pickerStyle(.navigationLink)
             }
 
-            Button(
+            RouterLink(
                 "checkIn.manufacturedBy.label \(manufacturer?.name ?? "")",
-                action: { router.openSheet(.companySearch(onSelect: { company in
+                sheet: .companySearch(onSelect: { company in
                     manufacturer = company
-                }))
-                }
+                })
             )
         }
         .customListRowBackground()
@@ -153,9 +150,7 @@ struct CheckInSheet: View {
             )
 
             if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
-                Button(action: {
-                    router.openSheet(.checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic))
-                }) {
+                RouterLink(sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic)) {
                     Text(
                         isLegacyCheckIn
                             ? "checkIn.date.legacyCheckIn"
@@ -163,21 +158,19 @@ struct CheckInSheet: View {
                 }
             }
 
-            Button(
-                action: { router.openSheet(.friends(taggedFriends: $taggedFriends)) },
-                label: {
-                    if taggedFriends.isEmpty {
-                        Text("checkIn.friends.tag")
-                    } else {
-                        WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
-                            ForEach(taggedFriends) { friend in
-                                Avatar(profile: friend)
-                                    .avatarSize(.medium)
-                            }
-                        }
-                    }
-                }
-            )
+            RouterLink(sheet: .friends(taggedFriends: $taggedFriends),
+                       label: {
+                           if taggedFriends.isEmpty {
+                               Text("checkIn.friends.tag")
+                           } else {
+                               WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
+                                   ForEach(taggedFriends) { friend in
+                                       Avatar(profile: friend)
+                                           .avatarSize(.medium)
+                                   }
+                               }
+                           }
+                       })
         }
         .customListRowBackground()
     }

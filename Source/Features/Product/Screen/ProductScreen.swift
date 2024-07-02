@@ -121,15 +121,15 @@ struct ProductInnerScreen: View {
             Menu {
                 ControlGroup {
                     ProductShareLinkView(product: product)
-                    Button("checkIn.create.label", systemImage: "plus", action: { router.openSheet(.checkIn(.create(product: product, onCreation: checkInLoader.onCreateCheckIn))) })
+                    RouterLink("checkIn.create.label", systemImage: "plus", sheet: .checkIn(.create(product: product, onCreation: checkInLoader.onCreateCheckIn)))
                         .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
                     if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
-                        Button(
+                        RouterLink(
                             "labels.add",
                             systemImage: "barcode.viewfinder",
-                            action: { router.openSheet(.barcodeScanner(onComplete: { barcode in
+                            sheet: .barcodeScanner(onComplete: { barcode in
                                 await addBarcodeToProduct(barcode)
-                            })) }
+                            })
                         )
                     }
                 }
@@ -153,24 +153,24 @@ struct ProductInnerScreen: View {
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: { router.openSheet(.product(.edit(product, onEdit: { updatedProduct in
+                    RouterLink("labels.edit", systemImage: "pencil", sheet: .product(.edit(product, onEdit: { updatedProduct in
                         withAnimation {
                             product = updatedProduct
                             checkInLoader.onUpdateProduct(updatedProduct)
                         }
-                    }))) })
+                    })))
                 } else {
-                    Button(
+                    RouterLink(
                         "product.editSuggestion.label",
                         systemImage: "pencil",
-                        action: { router.openSheet(.product(.editSuggestion(product))) }
+                        sheet: .product(.editSuggestion(product))
                     )
                 }
 
-                Button(action: { router.openSheet(.duplicateProduct(
+                RouterLink(sheet: .duplicateProduct(
                     mode: profileEnvironmentModel.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                     product: product
-                )) }, label: {
+                ), label: {
                     if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                         Label("product.mergeTo.label", systemImage: "doc.on.doc")
                     } else {
@@ -180,7 +180,7 @@ struct ProductInnerScreen: View {
 
                 Menu {
                     if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
-                        Button("barcode.management.open", systemImage: "barcode", action: { router.openSheet(.barcodeManagement(product: product)) })
+                        RouterLink("barcode.management.open", systemImage: "barcode", sheet: .barcodeManagement(product: product))
                     }
 
                     if profileEnvironmentModel.hasPermission(.canDeleteProducts) {

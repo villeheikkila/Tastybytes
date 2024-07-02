@@ -93,11 +93,11 @@ struct ProfileProductListView: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if !locked {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                Button(
+                RouterLink(
                     "profileProductList.filters.show.label",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    action: { router.openSheet(.productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
-                                                                  onApply: { filter in productFilter = filter })) }
+                    sheet: .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
+                                          onApply: { filter in productFilter = filter })
                 )
                 .labelStyle(.iconOnly)
             }

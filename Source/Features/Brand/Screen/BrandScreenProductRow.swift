@@ -22,11 +22,11 @@ struct BrandScreenProductRow: View {
             ProductItemView(product: product, extras: [.logoOnLeft])
                 .padding(2)
                 .contextMenu {
-                    Button(action: { router.openSheet(.duplicateProduct(
+                    RouterLink(sheet: .duplicateProduct(
                         mode: profileEnvironmentModel
                             .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                         product: product
-                    )) }, label: {
+                    ), label: {
                         if profileEnvironmentModel.hasPermission(.canMergeProducts) {
                             Label("product.mergeTo.label", systemImage: "doc.on.doc")
                         } else {

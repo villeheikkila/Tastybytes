@@ -25,12 +25,10 @@ struct CheckInListCard: View {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
                 if checkIn.profile.id == profileEnvironmentModel.id {
-                    Button(
+                    RouterLink(
                         "labels.edit",
                         systemImage: "pencil",
-                        action: {
-                            router.openSheet(.checkIn(.update(checkIn: checkIn, onUpdate: onUpdate)))
-                        }
+                        sheet: .checkIn(.update(checkIn: checkIn, onUpdate: onUpdate))
                     )
                     Button(
                         "labels.delete",
@@ -41,12 +39,10 @@ struct CheckInListCard: View {
                         }
                     )
                 } else {
-                    Button(
+                    RouterLink(
                         "checkIn.title",
                         systemImage: "pencil",
-                        action: {
-                            router.openSheet(.checkIn(.create(product: checkIn.product, onCreation: onCreate)))
-                        }
+                        sheet: .checkIn(.create(product: checkIn.product, onCreation: onCreate))
                     )
                     ReportButton(entity: .checkIn(checkIn))
                 }

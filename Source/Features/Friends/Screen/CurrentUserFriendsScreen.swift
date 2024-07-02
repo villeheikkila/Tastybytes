@@ -67,27 +67,27 @@ struct CurrentUserFriendsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button(
+            RouterLink(
                 "friends.toolbar.showNameTag",
                 systemImage: "qrcode",
-                action: { router.openSheet(.nameTag(onSuccess: { profileId in
+                sheet: .nameTag(onSuccess: { profileId in
                     Task {
                         await friendEnvironmentModel.sendFriendRequest(receiver: profileId)
                     }
-                })) }
+                })
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)
             .popoverTip(NameTagTip())
 
-            Button(
+            RouterLink(
                 "friends.add.label", systemImage: "plus",
-                action: { router.openSheet(.userSheet(
+                sheet: .userSheet(
                     mode: .add,
                     onSubmit: {
                         feedbackEnvironmentModel.toggle(.success("friends.add.success"))
                     }
-                )) }
+                )
             )
             .labelStyle(.iconOnly)
             .imageScale(.large)

@@ -158,28 +158,28 @@ struct DiscoverScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if searchScope == .products {
             ToolbarItemGroup(placement: .topBarLeading) {
-                Button(
+                RouterLink(
                     "discover.filter.show",
                     systemImage: "line.3.horizontal.decrease.circle",
-                    action: { router.openSheet(.productFilter(
+                    sheet: .productFilter(
                         initialFilter: productFilter,
                         sections: [.category, .checkIns],
                         onApply: { filter in
                             productFilter = filter
                         }
-                    )) }
+                    )
                 ).labelStyle(.iconOnly)
             }
 
             if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button(
+                    RouterLink(
                         "discover.barcode.scan",
                         systemImage: "barcode.viewfinder",
-                        action: { router.openSheet(.barcodeScanner(onComplete: { barcode in
+                        sheet: .barcodeScanner(onComplete: { barcode in
                             self.barcode = barcode
                             searchKey = .barcode(barcode)
-                        })) }
+                        })
                     )
                 }
             }

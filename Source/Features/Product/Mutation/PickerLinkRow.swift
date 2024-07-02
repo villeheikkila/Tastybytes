@@ -7,15 +7,13 @@ struct PickerLinkRow: View {
     let sheet: Sheet
 
     var body: some View {
-        Button(action: {
-            router.openSheet(sheet)
-        }, label: {
+        RouterLink(sheet: sheet) {
             LabeledContent(label) {
                 if let selection {
                     Text(selection)
                         .foregroundColor(.secondary)
                 }
             }
-        })
+        }
     }
 }

@@ -91,24 +91,24 @@ struct CompanyScreen: View {
             ControlGroup {
                 CompanyShareLinkView(company: company.saved)
                 if profileEnvironmentModel.hasPermission(.canCreateBrands) {
-                    Button(
+                    RouterLink(
                         "brand.title",
                         systemImage: "plus",
-                        action: { router.openSheet(.addBrand(brandOwner: company.saved, mode: .new)) }
+                        sheet: .addBrand(brandOwner: company.saved, mode: .new)
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: { router.openSheet(.editCompany(company: company.saved, onSuccess: {
+                    RouterLink("labels.edit", systemImage: "pencil", sheet: .editCompany(company: company.saved, onSuccess: {
                         await getCompanyData(withHaptics: true)
                         feedbackEnvironmentModel.toggle(.success("company.update.success.toast"))
-                    })) })
+                    }))
                 } else {
-                    Button(
+                    RouterLink(
                         "company.editSuggestion.title",
                         systemImage: "pencil",
-                        action: { router.openSheet(.companyEditSuggestion(company: company.saved, onSuccess: {
+                        sheet: .companyEditSuggestion(company: company.saved, onSuccess: {
                             feedbackEnvironmentModel.toggle(.success("company.editSuggestion.success.toast"))
-                        })) }
+                        })
                     )
                 }
             }

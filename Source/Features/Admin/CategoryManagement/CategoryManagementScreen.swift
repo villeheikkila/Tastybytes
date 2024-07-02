@@ -26,12 +26,12 @@ struct CategoryManagementScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button(
+            RouterLink(
                 "category.add.label",
                 systemImage: "plus",
-                action: { router.openSheet(.addCategory(onSubmit: { _ in
+                sheet: .addCategory(onSubmit: { _ in
                     feedbackEnvironmentModel.toggle(.success("category.add.success.toast"))
-                })) }
+                })
             )
             .labelStyle(.iconOnly)
             .bold()
@@ -55,20 +55,20 @@ struct CategoryManagementRow: View {
                 Text(category.name)
                 Spacer()
                 Menu {
-                    Button(
+                    RouterLink(
                         "servingStyle.edit.menu.label",
                         systemImage: "pencil",
-                        action: { router.openSheet(.categoryServingStyle(category: category)) }
+                        sheet: .categoryServingStyle(category: category)
                     )
-                    Button(
+                    RouterLink(
                         "subcategory.add",
                         systemImage: "plus",
-                        action: { router.openSheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                        sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
                             await appEnvironmentModel.addSubcategory(
                                 category: category,
                                 name: newSubcategoryName
                             )
-                        })) }
+                        })
                     )
                 } label: {
                     Label("labels.menu", systemImage: "ellipsis")

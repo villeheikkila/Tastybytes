@@ -35,17 +35,15 @@ struct CategoryServingStyleSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDoneActionView()
         ToolbarItemGroup(placement: .primaryAction) {
-            Button(
+            RouterLink(
                 "servingStyle.create.label",
                 systemImage: "plus",
-                action: {
-                    router.openSheet(.servingStyleManagement(
-                        pickedServingStyles: $servingStyles,
-                        onSelect: { servingStyle in
-                            await addServingStyleToCategory(servingStyle)
-                        }
-                    ))
-                }
+                sheet: .servingStyleManagement(
+                    pickedServingStyles: $servingStyles,
+                    onSelect: { servingStyle in
+                        await addServingStyleToCategory(servingStyle)
+                    }
+                )
             )
             .bold()
         }

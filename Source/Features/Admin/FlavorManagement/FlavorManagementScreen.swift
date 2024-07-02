@@ -28,9 +28,9 @@ struct FlavorManagementScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
-            Button("flavor.add.labels", systemImage: "plus", action: { router.openSheet(.newFlavor(onSubmit: { newFlavor in
+            RouterLink("flavor.add.labels", systemImage: "plus", sheet: .newFlavor(onSubmit: { newFlavor in
                 await appEnvironmentModel.addFlavor(name: newFlavor)
-            })) }).labelStyle(.iconOnly)
+            })).labelStyle(.iconOnly)
         }
     }
 }

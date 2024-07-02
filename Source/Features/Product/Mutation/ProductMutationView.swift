@@ -130,11 +130,9 @@ struct ProductMutationView: View {
 
     private var categorySection: some View {
         Section {
-            Button(
+            RouterLink(
                 selectedCategory?.name ?? String(localized: "product.mutation.pickCategory.label"),
-                action: {
-                    router.openSheet(.categoryPickerSheet(category: $category))
-                }
+                sheet: .categoryPickerSheet(category: $category)
             )
 
             Button(action: {
@@ -226,11 +224,11 @@ struct ProductMutationView: View {
                 .focused($focusedField, equals: .description)
 
             if mode.showBarcodeSection {
-                Button(
+                RouterLink(
                     barcode == nil ? "product.barcode.add.label" : "product.barcode.added.label",
-                    action: { router.openSheet(.barcodeScanner(onComplete: { barcode in
+                    sheet: .barcodeScanner(onComplete: { barcode in
                         self.barcode = barcode
-                    })) }
+                    })
                 )
             }
             Toggle("product.isDiscontinued.label", isOn: $isDiscontinued)

@@ -6,8 +6,6 @@ struct ReportButton: View {
     let entity: Report.Entity
 
     var body: some View {
-        Button("report.open", systemImage: "exclamationmark.bubble.fill") {
-            router.openSheet(.report(entity))
-        }
+        RouterLink("report.open", systemImage: "exclamationmark.bubble.fill", sheet: .report(entity))
     }
 }

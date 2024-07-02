@@ -146,19 +146,19 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        Button("brand.addProduct.menu.label", systemImage: "plus", action: { router.openSheet(.product(.addToBrand(brand, onCreate: { product in
+                        RouterLink("brand.addProduct.menu.label", systemImage: "plus", sheet: .product(.addToBrand(brand, onCreate: { product in
                             router.navigate(screen: .product(product), removeLast: true)
-                        }))) })
+                        })))
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
-                        Button(
+                        RouterLink(
                             "labels.edit", systemImage: "pencil",
-                            action: { router.openSheet(.editBrand(
+                            sheet: .editBrand(
                                 brand: brand,
                                 onUpdate: { updatedBrand in
                                     brand = updatedBrand
                                 }
-                            )) }
+                            )
                         )
                     }
                 }
@@ -416,27 +416,25 @@ struct SubBrandSectionHeader: View {
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                    Button(
+                    RouterLink(
                         "brand.createProduct.label",
                         systemImage: "plus",
-                        action: {
-                            router.openSheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
-                                router.navigate(screen: .product(newProduct), removeLast: true)
-                            })))
-                        }
+                        sheet: .product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
+                            router.navigate(screen: .product(newProduct), removeLast: true)
+                        }))
                     )
                 }
                 if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
-                    Button(
+                    RouterLink(
                         "labels.edit",
                         systemImage: "pencil",
-                        action: { router.openSheet(.editSubBrand(
+                        sheet: .editSubBrand(
                             brand: brand, subBrand: subBrand,
                             onUpdate: { updatedSubBrand in
                                 let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
                                 brand = brand.copyWith(subBrands: updatedSubBrands)
                             }
-                        )) }
+                        )
                     )
                 }
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))

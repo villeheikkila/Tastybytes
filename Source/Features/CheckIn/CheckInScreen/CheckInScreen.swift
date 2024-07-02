@@ -87,13 +87,12 @@ struct CheckInScreen: View {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
                 if checkIn.profile.id == profileEnvironmentModel.id {
-                    Button(
+                    RouterLink(
                         "labels.edit",
                         systemImage: "pencil",
-                        action: { router.openSheet(.checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
+                        sheet: .checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
                             checkIn = updatedCheckIn
-                        })))
-                        }
+                        }))
                     )
                     Button(
                         "labels.delete",
@@ -104,13 +103,12 @@ struct CheckInScreen: View {
                         }
                     )
                 } else {
-                    Button(
+                    RouterLink(
                         "checkIn.add.label",
                         systemImage: "pencil",
-                        action: { router.openSheet(.checkIn(.create(product: checkIn.product, onCreation: { checkIn in
+                        sheet: .checkIn(.create(product: checkIn.product, onCreation: { checkIn in
                             router.navigate(screen: .checkIn(checkIn))
-                        })))
-                        }
+                        }))
                     )
                     ReportButton(entity: .checkIn(checkIn))
                 }
@@ -155,15 +153,14 @@ struct CheckInScreen: View {
                 if checkIn.profile.id == profileEnvironmentModel.id {
                     ControlGroup {
                         CheckInShareLinkView(checkIn: checkIn)
-                        Button(
+                        RouterLink(
                             "labels.edit", systemImage: "pencil",
-                            action: { router.openSheet(.checkIn(.update(checkIn:
+                            sheet: .checkIn(.update(checkIn:
                                 checkIn,
                                 onUpdate: { updatedCheckIn in
                                     checkIn = updatedCheckIn
                                 })
-                            ))
-                            }
+                            )
                         )
                         Button(
                             "labels.delete",
