@@ -10,6 +10,7 @@ struct ActivityScreen: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @State private var state: ScreenState = .loading
 
@@ -53,6 +54,11 @@ struct ActivityScreen: View {
                     }
                 }
             }
+            .toolbar {
+                toolbarContent
+            }
+            .navigationTitle("tab.activity")
+            .navigationBarTitleDisplayMode(.inline)
             .initialTask {
                 await fetchFeedItems()
             }
@@ -62,6 +68,21 @@ struct ActivityScreen: View {
                     onCheckInUpdate(updatedCheckIn)
                 }
             }
+        }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarLeading) {
+            RouterLink("friends.navigationTitle", systemImage: "person.2", open: .screen(.currentUserFriends))
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+                .customBadge(notificationEnvironmentModel.unreadFriendRequestCount)
+        }
+        ToolbarItem(placement: .principal) {}
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            RouterLink("settings.navigationTitle", systemImage: "gear", open: .screen(.settings))
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
         }
     }
 

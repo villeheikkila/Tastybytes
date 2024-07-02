@@ -75,12 +75,12 @@ struct CompanyScreen: View {
             ForEach(sortedBrands) { brand in
                 RouterLink(
                     open: .screen(.brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
-                )) {
-                    CompanyBrandRow(brand: brand)
-                }
-                .alignmentGuide(.listRowSeparatorLeading) { _ in
-                    0
-                }
+                    )) {
+                        CompanyBrandRow(brand: brand)
+                    }
+                    .alignmentGuide(.listRowSeparatorLeading) { _ in
+                        0
+                    }
             }
         }
         .headerProminence(.increased)

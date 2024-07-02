@@ -428,7 +428,7 @@ struct SubBrandSectionHeader: View {
                     RouterLink(
                         "labels.edit",
                         systemImage: "pencil",
-                        open: .sheet( .editSubBrand(
+                        open: .sheet(.editSubBrand(
                             brand: brand, subBrand: subBrand,
                             onUpdate: { updatedSubBrand in
                                 let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)

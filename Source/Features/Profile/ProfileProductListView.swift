@@ -95,7 +95,7 @@ struct ProfileProductListView: View {
                     "profileProductList.filters.show.label",
                     systemImage: "line.3.horizontal.decrease.circle",
                     open: .sheet(.productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
-                                          onApply: { filter in productFilter = filter }))
+                                                onApply: { filter in productFilter = filter }))
                 )
                 .labelStyle(.iconOnly)
             }

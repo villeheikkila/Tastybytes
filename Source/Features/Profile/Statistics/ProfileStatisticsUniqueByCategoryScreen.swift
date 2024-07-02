@@ -124,7 +124,8 @@ struct SubcategoryStatisticsRow: View {
                 category: category,
                 subcategory: subcategory?.subcategory,
                 sortBy: .highestRated
-            ))
+            )
+        )
         )) {
             if let subcategory {
                 HStack {

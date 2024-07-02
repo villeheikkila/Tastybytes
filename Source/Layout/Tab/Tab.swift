@@ -13,15 +13,15 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
     var view: some View {
         switch self {
         case .activity:
-            ActivityTab()
+            ActivityScreen()
         case .discover:
-            DiscoverTab()
+            DiscoverScreen()
         case .notifications:
-            NotificationTab()
+            NotificationScreen()
         case .admin:
-            AdminTab()
+            AdminScreen()
         case .profile:
-            ProfileTab()
+            CurrentProfileScreen()
         }
     }
 

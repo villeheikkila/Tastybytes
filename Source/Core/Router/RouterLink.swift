@@ -14,7 +14,6 @@ struct RouterLink<LabelView: View>: View {
         self.label = label()
     }
 
-
     var body: some View {
         if asTapGesture {
             label

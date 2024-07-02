@@ -14,7 +14,7 @@ struct ProfileLinksSection: View {
             RouterLink("profile.links.statistics", systemImage: "chart.bar.xaxis", open: .screen(.profileStatistics(profile)))
             RouterLink("profile.links.wishlist", systemImage: "heart", open: .screen(.profileWishlist(profile)))
             if isCurrentUser {
-                RouterLink("profile.links.locations", systemImage: "map", open: .screen( .profileLocations(profile)))
+                RouterLink("profile.links.locations", systemImage: "map", open: .screen(.profileLocations(profile)))
             }
         }
         .listRowSeparator(.visible)

@@ -163,7 +163,7 @@ struct ProductInnerScreen: View {
                     RouterLink(
                         "product.editSuggestion.label",
                         systemImage: "pencil",
-                        open: .sheet( .product(.editSuggestion(product)))
+                        open: .sheet(.product(.editSuggestion(product)))
                     )
                 }
 

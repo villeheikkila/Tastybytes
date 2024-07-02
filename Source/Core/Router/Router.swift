@@ -65,9 +65,8 @@ final class Router {
                 case let .success(product):
                     self.open(.screen(.product(product), resetStack: resetStack))
                 case let .failure(error):
-                    self.open(.screen( .error(reason: "Failed to load requested product page"),
-                        resetStack: resetStack
-                    ))
+                    self.open(.screen(.error(reason: "Failed to load requested product page"),
+                                      resetStack: resetStack))
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .productWithBarcode(id, barcode):
@@ -76,8 +75,7 @@ final class Router {
                     self.open(.screen(.productFromBarcode(product, barcode)))
                 case let .failure(error):
                     self.open(.screen(.error(reason: "Failed to load requested product page"),
-                        resetStack: resetStack
-                    ))
+                                      resetStack: resetStack))
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .checkIn(id):
@@ -86,8 +84,7 @@ final class Router {
                     self.open(.screen(.checkIn(checkIn), resetStack: resetStack))
                 case let .failure(error):
                     self.open(.screen(.error(reason: "Failed to load requested check-in page"),
-                        resetStack: resetStack
-                    ))
+                                      resetStack: resetStack))
                     logger.error("Request for check-in with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .company(id):
@@ -96,8 +93,7 @@ final class Router {
                     self.open(.screen(.company(company), resetStack: resetStack))
                 case let .failure(error):
                     self.open(.screen(.error(reason: "Failed to load requested company page"),
-                        resetStack: resetStack
-                    ))
+                                      resetStack: resetStack))
                     logger.error("Request for company with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .brand(id):
@@ -106,8 +102,7 @@ final class Router {
                     self.open(.screen(.brand(brand), resetStack: resetStack))
                 case let .failure(error):
                     self.open(.screen(.error(reason: "Failed to load requested company page"),
-                        resetStack: resetStack
-                    ))
+                                      resetStack: resetStack))
                     logger.error("Request for brand with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .profile(id):
@@ -116,8 +111,7 @@ final class Router {
                     self.open(.screen(.profile(profile), resetStack: resetStack))
                 case let .failure(error):
                     self.open(.screen(.error(reason: "Failed to load requested profile page"),
-                        resetStack: resetStack
-                    ))
+                                      resetStack: resetStack))
                     logger
                         .error(
                             "request for profile with \(id.uuidString.lowercased()) failed. error: \(error)"
@@ -129,8 +123,7 @@ final class Router {
                     self.open(.screen(.location(location), resetStack: resetStack))
                 case let .failure(error):
                     self.open(.screen(.error(reason: "Failed to load requested location page"),
-                        resetStack: resetStack
-                    ))
+                                      resetStack: resetStack))
                     logger.error("Request for location with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
