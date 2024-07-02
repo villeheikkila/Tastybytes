@@ -16,7 +16,6 @@ struct BrandSheet: View {
     @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
     @State private var brandName = ""
     @State private var searchTerm: String = ""
-    @State private var alertError: AlertError?
 
     @Binding var brand: Brand.JoinedSubBrands?
 
@@ -61,7 +60,6 @@ struct BrandSheet: View {
         .toolbar {
             toolbarContent
         }
-        .alertError($alertError)
         .task {
             await loadBrands(brandOwner)
         }
@@ -77,7 +75,7 @@ struct BrandSheet: View {
             self.brandsWithSubBrands = brandsWithSubBrands
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to load brands for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -93,7 +91,7 @@ struct BrandSheet: View {
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to create new brand for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")
         }
     }

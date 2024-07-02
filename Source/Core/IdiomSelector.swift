@@ -5,14 +5,7 @@ struct IdiomSelector: View {
         #if !os(watchOS)
             OnboardingStateObserver {
                 NotificationObserver {
-                    switch UIDevice.current.userInterfaceIdiom {
-                    case .mac, .vision:
-                        SideBarView()
-                    case .phone, .pad:
                         TabsView()
-                    default:
-                        EmptyView()
-                    }
                 }
             }
         #else

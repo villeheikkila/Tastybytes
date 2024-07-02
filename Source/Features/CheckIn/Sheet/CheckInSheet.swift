@@ -10,6 +10,7 @@ import SwiftUI
 struct CheckInSheet: View {
     private let logger = Logger(category: "CheckInSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
@@ -18,8 +19,6 @@ struct CheckInSheet: View {
     @FocusState private var focusedField: Focusable?
     @State private var primaryActionTask: Task<Void, Never>?
     @State private var servingStyles = [ServingStyle]()
-    @State private var alertError: AlertError?
-    @State private var sheet: Sheet?
     @State private var fullScreenCover: FullScreenCover?
     // check-in properties
     @State private var pickedFlavors = [Flavor]()
@@ -86,9 +85,7 @@ struct CheckInSheet: View {
         }
         .scrollContentBackground(.hidden)
         .foregroundColor(.primary)
-        .sheets(item: $sheet)
         .fullScreenCovers(item: $fullScreenCover)
-        .alertError($alertError)
         .toolbar {
             toolbarContent
         }
@@ -104,7 +101,7 @@ struct CheckInSheet: View {
             TextField("checkIn.review.label", text: $review, axis: .vertical)
                 .focused($focusedField, equals: .review)
             Button(
-                action: { sheet = .flavors(pickedFlavors: $pickedFlavors) },
+                action: { router.openRootSheet(.flavors(pickedFlavors: $pickedFlavors)) },
                 label: {
                     if !pickedFlavors.isEmpty {
                         FlavorsView(flavors: pickedFlavors)
@@ -134,9 +131,9 @@ struct CheckInSheet: View {
 
             Button(
                 "checkIn.manufacturedBy.label \(manufacturer?.name ?? "")",
-                action: { sheet = .companySearch(onSelect: { company in
+                action: { router.openRootSheet(.companySearch(onSelect: { company in
                     manufacturer = company
-                })
+                }))
                 }
             )
         }
@@ -145,12 +142,11 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("checkIn.section.locationsFriends.title") {
-            LocationInputButton(sheet: $sheet, category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: $locationFromImage, onSelect: { location in
+            LocationInputButton(category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: $locationFromImage, onSelect: { location in
                 self.location = location
             })
 
             LocationInputButton(
-                sheet: $sheet,
                 category: .purchase, title: "checkIn.purchaseLocation.add.label",
                 selection: $purchaseLocation,
                 initialLocation: $locationFromImage,
@@ -161,7 +157,7 @@ struct CheckInSheet: View {
 
             if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
                 Button(action: {
-                    sheet = .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic)
+                    router.openRootSheet(.checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic))
                 }) {
                     Text(
                         isLegacyCheckIn
@@ -171,7 +167,7 @@ struct CheckInSheet: View {
             }
 
             Button(
-                action: { sheet = .friends(taggedFriends: $taggedFriends) },
+                action: { router.openRootSheet(.friends(taggedFriends: $taggedFriends)) },
                 label: {
                     if taggedFriends.isEmpty {
                         Text("checkIn.friends.tag")
@@ -242,11 +238,11 @@ struct CheckInSheet: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init(title: "checkIn.errors.failedToCreateCheckIn.title", retryLabel: "labels.retry", retry: {
+                router.openAlert(.init(title: "checkIn.errors.failedToCreateCheckIn.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                })
+                }))
                 logger.error("Failed to create check-in. Error: \(error) (\(#file):\(#line))")
                 return
             }
@@ -274,11 +270,11 @@ struct CheckInSheet: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init(title: "checkIn.errors.failedToUpdateCheckIn.title", retry: {
+                router.openAlert(.init(title: "checkIn.errors.failedToUpdateCheckIn.title", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                })
+                }))
                 logger.error("Failed to update check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
             }
         }

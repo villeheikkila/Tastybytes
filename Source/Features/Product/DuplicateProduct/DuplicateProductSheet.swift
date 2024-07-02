@@ -13,11 +13,11 @@ struct DuplicateProductSheet: View {
     }
 
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var products = [Product.Joined]()
     @State private var searchTerm = ""
-    @State private var alertError: AlertError?
     @State private var mergeToProduct: Product.Joined?
 
     let mode: Mode
@@ -49,7 +49,6 @@ struct DuplicateProductSheet: View {
             // Change the .searchable cancel button tint
             UISearchBar.appearance().tintColor = UIColor(Color.primary)
         }
-        .alertError($alertError)
         .confirmationDialog("duplicateProduct.mergeTo.description",
                             isPresented: $mergeToProduct.isNotNull(),
                             presenting: mergeToProduct)
@@ -82,7 +81,7 @@ struct DuplicateProductSheet: View {
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("reporting duplicate product \(product.id) of \(to.id) failed. error: \(error)")
         }
     }
@@ -94,7 +93,7 @@ struct DuplicateProductSheet: View {
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -106,7 +105,7 @@ struct DuplicateProductSheet: View {
             products = searchResults.filter { $0.id != product.id }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }

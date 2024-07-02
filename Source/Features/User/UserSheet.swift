@@ -14,7 +14,6 @@ struct UserSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .populated
     @State private var searchTerm: String = ""
-    @State private var alertError: AlertError?
     @State private var searchedFor: String?
     @State private var searchResults = [Profile]()
 

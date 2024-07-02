@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct LocationInputButton: View {
-    @Binding var sheet: Sheet?
+    @Environment(Router.self) private var router
     let category: Location.RecentLocation
     let title: LocalizedStringKey
     @Binding var selection: Location?
@@ -11,7 +11,7 @@ struct LocationInputButton: View {
 
     var body: some View {
         Button(
-            action: { sheet = .locationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect) },
+            action: { router.openRootSheet(.locationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect)) },
             label: {
                 HStack {
                     if let location = selection, let coordinate = selection?.location?.coordinate {

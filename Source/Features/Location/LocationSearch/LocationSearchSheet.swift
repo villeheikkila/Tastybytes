@@ -11,6 +11,7 @@ import SwiftUI
 
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchSheet")
+    @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
@@ -21,7 +22,6 @@ struct LocationSearchSheet: View {
     @State private var recentLocations = [Location]()
     @State private var nearbyLocations = [Location]()
     @State private var searchText = ""
-    @State private var alertError: AlertError?
     @Binding private var initialLocation: Location?
     @State private var currentLocation: CLLocation?
 
@@ -79,7 +79,6 @@ struct LocationSearchSheet: View {
         .task {
             await loadInitialData()
         }
-        .alertError($alertError)
     }
 
     @ViewBuilder private var populatedContent: some View {
@@ -137,7 +136,7 @@ struct LocationSearchSheet: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                router.openAlert(.init())
                 logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
             }
         }

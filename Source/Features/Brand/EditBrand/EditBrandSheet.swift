@@ -11,6 +11,7 @@ struct EditBrandSheet: View {
     typealias BrandUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
     private let logger = Logger(category: "EditBrandSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
@@ -19,7 +20,6 @@ struct EditBrandSheet: View {
     @State private var brandOwner: Company
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var newCompanyName = ""
-    @State private var alertError: AlertError?
     @State private var selectedLogo: PhotosPickerItem?
 
     let onUpdate: BrandUpdateCallback
@@ -77,7 +77,6 @@ struct EditBrandSheet: View {
         .toolbar {
             toolbarContent
         }
-        .alertError($alertError)
         .task(id: selectedLogo) {
             guard let selectedLogo else { return }
             guard let data = await selectedLogo.getJPEG() else {
@@ -100,7 +99,7 @@ struct EditBrandSheet: View {
             await onSuccess(brand)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to edit brand. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -115,7 +114,7 @@ struct EditBrandSheet: View {
             await onUpdate(brand)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Uploading of a brand logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -128,7 +127,7 @@ struct EditBrandSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }

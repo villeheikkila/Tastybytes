@@ -146,7 +146,9 @@ struct BrandScreen: View {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        Button("brand.addProduct.menu.label", systemImage: "plus", action: { router.openRootSheet(.addProductToBrand(brand: brand)) })
+                        Button("brand.addProduct.menu.label", systemImage: "plus", action: { router.openRootSheet(.product(.addToBrand(brand, onCreate: { product in
+                            router.navigate(screen: .product(product), removeLast: true)
+                        })))})
                     }
                     if profileEnvironmentModel.hasPermission(.canEditBrands) {
                         Button(
@@ -418,7 +420,9 @@ struct SubBrandSectionHeader: View {
                         "brand.createProduct.label",
                         systemImage: "plus",
                         action: {
-                            router.openRootSheet(.addProductToSubBrand(brand: brand, subBrand: subBrand))
+                            router.openRootSheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
+                                router.navigate(screen: .product(newProduct), removeLast: true)
+                            })))
                         }
                     )
                 }

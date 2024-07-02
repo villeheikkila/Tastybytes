@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AuthenticationScreenContent: View {
-    @State private var sheet: Sheet?
+    @Environment(Router.self) private var router
     @AppStorage(.profileDeleted) private var profileDeleted = false
 
     var body: some View {
@@ -12,10 +12,9 @@ struct AuthenticationScreenContent: View {
             }
         }
         .scrollBounceBehavior(.basedOnSize)
-        .sheets(item: $sheet)
         .onChange(of: profileDeleted, initial: true) {
             if profileDeleted {
-                sheet = .profileDeleteConfirmation
+                router.openRootSheet(.profileDeleteConfirmation)
                 profileDeleted = false
             }
         }

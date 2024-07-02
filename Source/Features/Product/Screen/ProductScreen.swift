@@ -153,17 +153,17 @@ struct ProductInnerScreen: View {
                 )
                 Divider()
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    Button("labels.edit", systemImage: "pencil", action: { router.openRootSheet(.productEdit(product: product, onEdit: { updatedProduct in
+                    Button("labels.edit", systemImage: "pencil", action: { router.openRootSheet(.product(.edit(product, onEdit: { updatedProduct in
                         withAnimation {
                             product = updatedProduct
                             checkInLoader.onUpdateProduct(updatedProduct)
                         }
-                    })) })
+                    }))) })
                 } else {
                     Button(
                         "product.editSuggestion.label",
                         systemImage: "pencil",
-                        action: { router.openRootSheet(.productEditSuggestion(product: product)) }
+                        action: { router.openRootSheet(.product(.editSuggestion(product))) }
                     )
                 }
 

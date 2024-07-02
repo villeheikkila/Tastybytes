@@ -9,11 +9,11 @@ import SwiftUI
 struct ReportSheet: View {
     private let logger = Logger(category: "ReportSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var reasonText = ""
-    @State private var alertError: AlertError?
 
     let entity: Report.Entity
 
@@ -38,7 +38,6 @@ struct ReportSheet: View {
         .toolbar {
             toolbarContent
         }
-        .alertError($alertError)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -52,7 +51,7 @@ struct ReportSheet: View {
             feedbackEnvironmentModel.toggle(.success("report.submit.success.toast"))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Submitting report failed. Error: \(error) (\(#file):\(#line))")
         }
     }

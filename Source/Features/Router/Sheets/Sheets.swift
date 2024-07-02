@@ -13,7 +13,7 @@ struct SheetsModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .sheet(item: $item) { item in
-                NavigationStack {
+                RouterProvider {
                     item.view
                 }
                 .toolbarBackground(.ultraThinMaterial, for: .navigationBar)

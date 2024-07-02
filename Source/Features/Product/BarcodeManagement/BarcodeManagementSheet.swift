@@ -9,11 +9,11 @@ import SwiftUI
 struct BarcodeManagementSheet: View {
     private let logger = Logger(category: "BarcodeManagementSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
-    @State private var alertError: AlertError?
 
     let product: Product.Joined
 
@@ -48,7 +48,6 @@ struct BarcodeManagementSheet: View {
         .task {
             await getBarcodes()
         }
-        .alertError($alertError)
         .navigationTitle("barcode.management.navigationTitle")
         .toolbar {
             toolbarContent
@@ -68,7 +67,7 @@ struct BarcodeManagementSheet: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }

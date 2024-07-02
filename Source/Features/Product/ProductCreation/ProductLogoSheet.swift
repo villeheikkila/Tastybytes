@@ -10,10 +10,10 @@ import SwiftUI
 struct ProductLogoSheet: View {
     private let logger = Logger(category: "ProductLogoSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var alertError: AlertError?
     @State private var selectedLogo: PhotosPickerItem?
     @State private var product: Product.Joined
 
@@ -54,7 +54,6 @@ struct ProductLogoSheet: View {
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
         }
-        .alertError($alertError)
         .task(id: selectedLogo) {
             guard let selectedLogo else { return }
             guard let data = await selectedLogo.getJPEG() else {
@@ -80,7 +79,7 @@ struct ProductLogoSheet: View {
             logger.info("Succesfully uploaded image \(imageEntity.file)")
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init(title: "Uploading of a product logo failed.")
+            router.openAlert(.init(title: "Uploading of a product logo failed."))
             logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -20,9 +20,7 @@ struct ProductMutationView: View {
     @State private var primaryActionTask: Task<Void, Never>?
     // Sheet status
     @State private var isSuccess = false
-    @State private var sheet: Sheet?
     @State private var state: ScreenState = .loading
-    @State private var alertError: AlertError?
     // Product details
     @State private var subcategories = [Subcategory]()
     @State private var category: Int? {
@@ -92,14 +90,12 @@ struct ProductMutationView: View {
                 await initialize()
             })
         }
-        .alertError($alertError)
         .toolbar {
             toolbarContent
         }
         .task {
             await initialize()
         }
-        .sheets(item: $sheet)
         .sensoryFeedback(.success, trigger: isSuccess)
     }
 
@@ -137,16 +133,16 @@ struct ProductMutationView: View {
             Button(
                 selectedCategory?.name ?? String(localized: "product.mutation.pickCategory.label"),
                 action: {
-                    sheet = .categoryPickerSheet(category: $category)
+                    router.openRootSheet(.categoryPickerSheet(category: $category))
                 }
             )
 
             Button(action: {
                 if let selectedCategory {
-                    sheet = .subcategory(
+                    router.openRootSheet(.subcategory(
                         subcategories: $subcategories,
                         category: selectedCategory
-                    )
+                    ))
                 }
             }, label: {
                 HStack {
@@ -177,7 +173,6 @@ struct ProductMutationView: View {
     private var brandSection: some View {
         Section {
             PickerLinkRow(
-                shownSheet: $sheet,
                 label: "brand.owner.title",
                 selection: brandOwner?.name,
                 sheet: .companySearch(onSelect: { company in
@@ -187,7 +182,6 @@ struct ProductMutationView: View {
 
             if let brandOwner {
                 PickerLinkRow(
-                    shownSheet: $sheet,
                     label: "brand.title",
                     selection: brand?.name,
                     sheet: .brand(brandOwner: brandOwner, brand: $brand, mode: .select)
@@ -207,7 +201,6 @@ struct ProductMutationView: View {
 
             if hasSubBrand, let brand {
                 PickerLinkRow(
-                    shownSheet: $sheet,
                     label: "subBrand.title",
                     selection: subBrand?.name,
                     sheet: .subBrand(brandWithSubBrands: brand, subBrand: $subBrand)
@@ -235,9 +228,9 @@ struct ProductMutationView: View {
             if mode.showBarcodeSection {
                 Button(
                     barcode == nil ? "product.barcode.add.label" : "product.barcode.added.label",
-                    action: { sheet = .barcodeScanner(onComplete: { barcode in
+                    action: { router.openRootSheet(.barcodeScanner(onComplete: { barcode in
                         self.barcode = barcode
-                    }) }
+                    })) }
                 )
             }
             Toggle("product.isDiscontinued.label", isOn: $isDiscontinued)
@@ -270,19 +263,17 @@ struct ProductMutationView: View {
                 feedbackEnvironmentModel.toggle(.warning("product.editSuggestion.nothingToEdit.toast"))
                 return
             }
-            switch await repository.product
-                .createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent)
-            {
+            switch await repository.product.createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent) {
             case .success:
                 dismiss()
                 feedbackEnvironmentModel.toggle(.success("product.editSuggestion.success.toast"))
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init(title: "product.error.failedToCreateEditSuggestion.title", retryLabel: "labels.retry", retry: {
+                router.openAlert(.init(title: "product.error.failedToCreateEditSuggestion.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                })
+                }))
                 logger.error("Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))")
             }
         case let .edit(product, onEdit):
@@ -306,11 +297,11 @@ struct ProductMutationView: View {
                 dismiss()
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init(title: "product.error.failedToUpdate.title", retryLabel: "labels.retry", retry: {
+                router.openAlert(.init(title: "product.error.failedToUpdate.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                })
+                }))
                 logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
             }
         case let .new(onCreate), let .addToBrand(_, onCreate), let .addToSubBrand(_, _, onCreate):
@@ -330,18 +321,16 @@ struct ProductMutationView: View {
                 if isPresentedInSheet {
                     dismiss()
                 }
-
-                router.navigate(screen: .product(newProduct), removeLast: true)
                 if let onCreate {
                     await onCreate(newProduct)
                 }
             case let .failure(error):
                 guard !error.isCancelled else { return }
-                alertError = .init(title: "product.error.failedToCreate.title", retryLabel: "labels.retry", retry: {
+                router.openAlert(.init(title: "product.error.failedToCreate.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
                         await primaryAction()
                     }
-                })
+                }))
                 logger.error("Failed to create new product. Error: \(error) (\(#file):\(#line))")
             }
         }
@@ -395,7 +384,7 @@ struct ProductMutationView: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }

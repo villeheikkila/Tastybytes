@@ -9,8 +9,8 @@ import SwiftUI
 struct SignInWithAppleView: View {
     private let logger = Logger(category: "SignInWithAppleView")
     @Environment(\.colorScheme) var colorScheme
+    @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
-    @State private var alertError: AlertError?
     @State private var nonce: String?
 
     var body: some View {
@@ -23,7 +23,6 @@ struct SignInWithAppleView: View {
             await handleAuthorizationResult(result)
         }})
         .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-        .alertError($alertError)
     }
 
     private func handleAuthorizationResult(_ result: Result<ASAuthorization, Error>) async {
@@ -33,7 +32,7 @@ struct SignInWithAppleView: View {
             let token = String(decoding: tokenData, as: UTF8.self)
 
             if let nonce, case let .failure(error) = await repository.auth.signInWithApple(token: token, nonce: nonce) {
-                alertError = AlertError(title: .init(stringLiteral: error.localizedDescription))
+                router.openAlert(.init(title: .init(stringLiteral: error.localizedDescription)))
                 logger.error(
                     "Error occured when trying to sign in with Apple. Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))"
                 )

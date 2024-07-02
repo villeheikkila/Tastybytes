@@ -9,11 +9,10 @@ import SwiftUI
 struct CategoryServingStyleSheet: View {
     private let logger = Logger(category: "CategoryServingStyleSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var sheet: Sheet?
     @State private var servingStyles: [ServingStyle]
-    @State private var alertError: AlertError?
 
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
@@ -28,11 +27,9 @@ struct CategoryServingStyleSheet: View {
         }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
-        .sheets(item: $sheet)
         .toolbar {
             toolbarContent
         }
-        .alertError($alertError)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -42,12 +39,12 @@ struct CategoryServingStyleSheet: View {
                 "servingStyle.create.label",
                 systemImage: "plus",
                 action: {
-                    sheet = .servingStyleManagement(
+                    router.openRootSheet(.servingStyleManagement(
                         pickedServingStyles: $servingStyles,
                         onSelect: { servingStyle in
                             await addServingStyleToCategory(servingStyle)
                         }
-                    )
+                    ))
                 }
             )
             .bold()
@@ -65,7 +62,7 @@ struct CategoryServingStyleSheet: View {
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to add serving style to category'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -79,7 +76,7 @@ struct CategoryServingStyleSheet: View {
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error(
                 "Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }

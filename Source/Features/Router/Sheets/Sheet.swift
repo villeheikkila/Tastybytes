@@ -23,10 +23,7 @@ enum Sheet: Identifiable, Equatable {
         category: Models.Category.JoinedSubcategoriesServingStyles
     )
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
-    case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany)
-    case addProductToSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct)
-    case productEdit(product: Product.Joined, onEdit: ProductMutationView.ProductCallback? = nil)
-    case productEditSuggestion(product: Product.Joined)
+    case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
     case barcodeManagement(product: Product.Joined)
     case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: EditBrandSheet.BrandUpdateCallback)
@@ -88,14 +85,8 @@ enum Sheet: Identifiable, Equatable {
             CompanySearchSheet(onSelect: onSelect)
         case let .barcodeManagement(product):
             BarcodeManagementSheet(product: product)
-        case let .productEditSuggestion(product: product):
-            ProductMutationView(mode: .editSuggestion(product))
-        case let .productEdit(product, onEdit):
-            ProductMutationView(mode: .edit(product, onEdit: onEdit))
-        case let .addProductToBrand(brand: brand):
-            ProductMutationView(mode: .addToBrand(brand, onCreate: nil))
-        case let .addProductToSubBrand(brand: brand, subBrand: subBrand):
-            ProductMutationView(mode: .addToSubBrand(brand, subBrand, onCreate: nil))
+        case let .product(mode):
+            ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):
             DuplicateProductSheet(mode: mode, product: product)
         case let .editBrand(brand: brand, onUpdate):
@@ -202,10 +193,8 @@ enum Sheet: Identifiable, Equatable {
             "sub_brand_\(subBrand.hashValue)"
         case .subcategory:
             "subcategory"
-        case let .productEdit(product, _):
-            "edit_product_\(product.hashValue)"
-        case .productEditSuggestion:
-            "product_edit_suggestion"
+        case let .product(mode):
+            "edit_product_\(mode)"
         case .duplicateProduct:
             "duplicate_product"
         case .barcodeManagement:
@@ -214,10 +203,6 @@ enum Sheet: Identifiable, Equatable {
             "edit_brand_\(brand.hashValue)"
         case let .editSubBrand(brand, subBrand, _):
             "edit_sub_brand_\(brand.hashValue)_\(subBrand.hashValue)"
-        case .addProductToBrand:
-            "add_product_to_brand"
-        case .addProductToSubBrand:
-            "add_product_to_sub_brand"
         case .friends:
             "friends"
         case .flavors:

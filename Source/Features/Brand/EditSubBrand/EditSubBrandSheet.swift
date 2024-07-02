@@ -12,14 +12,13 @@ struct EditSubBrandSheet: View {
 
     private let logger = Logger(category: "EditSubBrandSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var newSubBrandName: String
     @State private var subBrand: SubBrand.JoinedProduct
     @State private var mergeTo: SubBrand.JoinedProduct?
-
-    @State private var alertError: AlertError?
 
     let onUpdate: UpdateSubBrandCallback
     let brand: Brand.JoinedSubBrandsProductsCompany
@@ -77,7 +76,6 @@ struct EditSubBrandSheet: View {
         .toolbar {
             toolbarContent
         }
-        .alertError($alertError)
         .confirmationDialog(
             "subBrand.mergeTo.confirmation.description",
             isPresented: $mergeTo.isNotNull(),
@@ -111,7 +109,7 @@ struct EditSubBrandSheet: View {
             await onSuccess()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -123,7 +121,7 @@ struct EditSubBrandSheet: View {
             await onSuccess(subBrand.copyWith(name: updatedSubBrand.name))
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -9,8 +9,8 @@ import SwiftUI
 struct MergeLocationSheet: View {
     private let logger = Logger(category: "MergeLocationSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var alertError: AlertError?
     @Environment(\.dismiss) private var dismiss
     @State private var locations = [Location]()
     @State private var mergeToLocation: Location?
@@ -52,7 +52,7 @@ struct MergeLocationSheet: View {
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Merging location failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -64,7 +64,7 @@ struct MergeLocationSheet: View {
             locations = searchResults
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")
         }
     }

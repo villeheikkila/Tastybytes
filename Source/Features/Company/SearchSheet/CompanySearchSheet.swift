@@ -9,6 +9,7 @@ import SwiftUI
 struct CompanySearchSheet: View {
     private let logger = Logger(category: "CompanySearchSheet")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
@@ -16,7 +17,6 @@ struct CompanySearchSheet: View {
     @State private var status: Status?
     @State private var companyName = ""
     @State private var isLoading = false
-    @State private var alertError: AlertError?
     @State private var searchTerm: String = "" {
         didSet {
             if searchTerm.isEmpty {
@@ -99,7 +99,6 @@ struct CompanySearchSheet: View {
         .onChange(of: searchTerm, debounceTime: 0.5, perform: { newValue in
             Task { await searchCompanies(name: newValue) }
         })
-        .alertError($alertError)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -119,7 +118,7 @@ struct CompanySearchSheet: View {
             status = .searched
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to search companies. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -132,7 +131,7 @@ struct CompanySearchSheet: View {
             onSuccess(newCompany)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            alertError = .init()
+            router.openAlert(.init())
             logger.error("Failed to create new company'. Error: \(error) (\(#file):\(#line))")
         }
     }
