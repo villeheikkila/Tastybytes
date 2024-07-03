@@ -13,10 +13,10 @@ struct EnvironmentProvider<Content: View>: View {
     @State private var appEnvironmentModel: AppEnvironmentModel
     @State private var friendEnvironmentModel: FriendEnvironmentModel
     @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
-    @State private var locationEnvironmentModel: LocationEnvironmentModel
+    @State private var locationEnvironmentModel = LocationEnvironmentModel()
     @State private var subscriptionEnvironmentModel: SubscriptionEnvironmentModel
-
-    let repository: Repository
+    @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
+    @ViewBuilder let content: () -> Content
 
     init(repository: Repository, infoPlist: InfoPlist, content: @escaping () -> Content) {
         profileEnvironmentModel = ProfileEnvironmentModel(repository: repository)
@@ -24,13 +24,9 @@ struct EnvironmentProvider<Content: View>: View {
         appEnvironmentModel = AppEnvironmentModel(repository: repository, infoPlist: infoPlist)
         friendEnvironmentModel = FriendEnvironmentModel(repository: repository)
         imageUploadEnvironmentModel = ImageUploadEnvironmentModel(repository: repository)
-        locationEnvironmentModel = LocationEnvironmentModel()
         subscriptionEnvironmentModel = SubscriptionEnvironmentModel(repository: repository)
         self.content = content
-        self.repository = repository
     }
-
-    @ViewBuilder let content: () -> Content
 
     var body: some View {
         content()
@@ -41,6 +37,10 @@ struct EnvironmentProvider<Content: View>: View {
             .environment(imageUploadEnvironmentModel)
             .environment(locationEnvironmentModel)
             .environment(subscriptionEnvironmentModel)
+            .environment(feedbackEnvironmentModel)
+            .sensoryFeedback(trigger: feedbackEnvironmentModel.sensoryFeedback) { _, newValue in
+                newValue?.sensoryFeedback
+            }
             // .alertError($appEnvironmentModel.alertError)
             // .alertError($notificationEnvironmentModel.alertError)
             // .alertError($profileEnvironmentModel.alertError)

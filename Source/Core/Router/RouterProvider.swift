@@ -6,7 +6,6 @@ import SwiftUI
 struct RouterProvider<Content: View>: View {
     @Environment(Repository.self) private var repository
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
     @State private var router = Router()
 
     let enableRoutingFromURLs: Bool
@@ -36,9 +35,5 @@ struct RouterProvider<Content: View>: View {
             }
         }
         .environment(router)
-        .environment(feedbackEnvironmentModel)
-        .sensoryFeedback(trigger: feedbackEnvironmentModel.sensoryFeedback) { _, newValue in
-            newValue?.sensoryFeedback
-        }
     }
 }
