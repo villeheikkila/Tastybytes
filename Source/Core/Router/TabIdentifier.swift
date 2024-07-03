@@ -1,13 +1,9 @@
 import Models
 import SwiftUI
 
-enum TabIdentifier: Hashable {
-    case activity, discover, notifications, currentProfile
-}
-
 struct TabUrlHandler {
     private let url: URL
-    let deeplinkSchemes: [String]
+    private let deeplinkSchemes: [String]
 
     init(url: URL, deeplinkSchemes: [String]) {
         self.url = url
@@ -23,26 +19,26 @@ struct TabUrlHandler {
         return deeplinkSchemes.contains(scheme)
     }
 
-    var tabIdentifier: TabIdentifier? {
+    var tabIdentifier: Tab? {
         guard isUniversalLink || isDeepLink, url.pathComponents.count == 2 else { return nil }
 
         switch url.pathComponents[1] {
-        case "activity": return .activity
-        case "discover": return .discover
-        case "notifications": return .notifications
-        case "profile": return .currentProfile
+        case Tab.activity.identifier: return .activity
+        case Tab.discover.identifier: return .discover
+        case Tab.notifications.identifier: return .notifications
+        case Tab.profile.identifier: return .profile
         default: return nil
         }
     }
 
     var tab: Tab? {
-        guard let identifier = tabIdentifier else { return nil }
-
-        switch identifier {
-        case .activity: return Tab.activity
-        case .discover: return Tab.discover
-        case .notifications: return Tab.notifications
-        case .currentProfile: return Tab.profile
+        guard let tabIdentifier else { return nil }
+        switch tabIdentifier {
+        case .activity: return .activity
+        case .discover: return .discover
+        case .notifications: return .notifications
+        case .profile: return .profile
+        case .admin: return .admin
         }
     }
 }

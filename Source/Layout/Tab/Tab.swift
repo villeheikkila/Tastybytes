@@ -39,6 +39,21 @@ public enum Tab: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
             Label("tab.profile", systemImage: "person.fill")
         }
     }
+
+    var identifier: String {
+        switch self {
+        case .activity:
+            "activity"
+        case .discover:
+            "discover"
+        case .notifications:
+            "notifications"
+        case .admin:
+            "admin"
+        case .profile:
+            "profile"
+        }
+    }
 }
 
 extension AppStorage {
