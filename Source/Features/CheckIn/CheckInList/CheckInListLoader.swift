@@ -27,8 +27,8 @@ final class CheckInListLoader {
     }
 
     // Dialogs
-    var alertError: AlertError?
-    var errorContentUnavailable: AlertError?
+    var alertError: AlertEvent?
+    var errorContentUnavailable: AlertEvent?
 
     let fetcher: Fetcher
     let id: String
@@ -113,7 +113,7 @@ final class CheckInListLoader {
         case let .failure(error):
             guard !error.isCancelled else { return [] }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
-            let e = AlertError(title: "checkInList.error.failedToLoad.alert")
+            let e = AlertEvent(title: "checkInList.error.failedToLoad.alert")
             if checkIns.isEmpty {
                 errorContentUnavailable = e
             }

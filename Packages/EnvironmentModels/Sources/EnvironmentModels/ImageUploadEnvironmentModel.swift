@@ -10,7 +10,7 @@ public class ImageUploadEnvironmentModel {
     private let logger = Logger(category: "ImageUploadEnvironmentModel")
 
     public var uploadedImageForCheckIn: CheckIn?
-    public var alertError: AlertError?
+    public var alertError: AlertEvent?
 
     private let repository: Repository
 

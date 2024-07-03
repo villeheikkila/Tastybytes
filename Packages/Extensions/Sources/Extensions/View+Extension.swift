@@ -125,7 +125,7 @@ public extension Task {
     }
 }
 
-public struct AlertError: Identifiable, Equatable {
+public struct AlertEvent: Identifiable, Equatable {
     public let id: UUID
     let title: Text
     let message: Text?
@@ -156,7 +156,7 @@ public struct AlertError: Identifiable, Equatable {
         }
     }
 
-    public static func == (lhs: AlertError, rhs: AlertError) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id &&
             lhs.title == rhs.title &&
             lhs.message == rhs.message

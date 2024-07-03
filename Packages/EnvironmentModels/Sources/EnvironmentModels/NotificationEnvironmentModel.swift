@@ -14,7 +14,7 @@ public final class NotificationEnvironmentModel {
 
     public var pushNotificationSettings: ProfilePushNotification?
     public var unreadCount: Int = 0
-    public var alertError: AlertError?
+    public var alertError: AlertEvent?
     public var state: ScreenState = .loading
 
     private let repository: Repository

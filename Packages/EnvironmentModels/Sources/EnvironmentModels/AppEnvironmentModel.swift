@@ -70,7 +70,7 @@ public final class AppEnvironmentModel {
         }
     }
 
-    public var alertError: AlertError?
+    public var alertError: AlertEvent?
     // App data
     public var categories: [Models.Category.JoinedSubcategoriesServingStyles] {
         get {

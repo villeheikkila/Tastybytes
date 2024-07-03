@@ -10,14 +10,14 @@ final class Router {
     enum Open {
         case sheet(Sheet)
         case screen(Screen, resetStack: Bool = false, removeLast: Bool = false)
-        case alert(AlertError)
+        case alert(AlertEvent)
         case fullScreenCover(FullScreenCover)
     }
 
     private let logger = Logger(category: "Router")
     var path = [Screen]()
     var sheet: Sheet?
-    var alert: AlertError?
+    var alert: AlertEvent?
     var fullScreenCover: FullScreenCover?
 
     init(path: [Screen] = [], sheet: Sheet? = nil) {

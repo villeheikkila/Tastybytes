@@ -27,7 +27,7 @@ public final class ProfileEnvironmentModel {
     // Auth state
     public var profileState: ProfileState = .loading
     public var authState: AuthState?
-    public var alertError: AlertError?
+    public var alertError: AlertEvent?
 
     // Profile Settings
     public var showFullName = false

@@ -2,7 +2,7 @@ import Extensions
 import SwiftUI
 
 struct InjectAlertModifier: ViewModifier {
-    @Binding var item: AlertError?
+    @Binding var item: AlertEvent?
 
     func body(content: Content) -> some View {
         content
@@ -16,7 +16,7 @@ struct InjectAlertModifier: ViewModifier {
 }
 
 extension View {
-    func injectAlerts(item: Binding<AlertError?>) -> some View {
+    func injectAlerts(item: Binding<AlertEvent?>) -> some View {
         modifier(InjectAlertModifier(item: item))
     }
 }
