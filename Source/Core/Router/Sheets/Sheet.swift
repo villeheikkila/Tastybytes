@@ -59,7 +59,7 @@ enum Sheet: Identifiable, Equatable {
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
-    case locationEdit(location: Location)
+    case locationEdit(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case webView(link: WebViewLink)
 
     @MainActor
@@ -136,8 +136,8 @@ enum Sheet: Identifiable, Equatable {
             CheckInImageSheet(checkIn: checkIn, onDeleteImage: onDeleteImage)
         case .profileDeleteConfirmation:
             AccountDeletedScreen()
-        case let .locationEdit(location):
-            LocationEditSheet(location: location)
+        case let .locationEdit(location, onEdit, onDelete):
+            LocationEditSheet(location: location, onEdit: onEdit, onDelete: onDelete)
         case let .webView(link):
             WebViewSheet(link: link)
         case let .locationSearch(initialLocation, onSelect):
