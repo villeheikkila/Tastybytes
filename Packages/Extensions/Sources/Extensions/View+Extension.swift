@@ -12,6 +12,17 @@ public extension View {
 }
 
 public extension View {
+    @ViewBuilder
+    func ifLet<T>(_ optional: T?, @ViewBuilder transform: (Self, T) -> some View) -> some View {
+        if let value = optional {
+            transform(self, value)
+        } else {
+            self
+        }
+    }
+}
+
+public extension View {
     func frame(size: CGSize) -> some View {
         frame(width: size.width, height: size.height)
     }

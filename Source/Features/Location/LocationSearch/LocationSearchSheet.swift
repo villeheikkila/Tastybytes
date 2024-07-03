@@ -11,13 +11,14 @@ struct LocationSearchSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var searchResults = [Location]()
-    @State private var searchText = ""
+    @State private var searchText: String
     @State private var initialLocation: Location?
 
     let onSelect: (_ location: Location) -> Void
 
-    init(initialLocation: Location?, onSelect: @escaping (_ location: Location) -> Void) {
+    init(initialLocation: Location?, initialSearchTerm: String?, onSelect: @escaping (_ location: Location) -> Void) {
         self.onSelect = onSelect
+        searchText = initialSearchTerm ?? ""
         _initialLocation = State(initialValue: initialLocation)
     }
 
@@ -96,7 +97,7 @@ struct LocationSearchSheet: View {
 
     func loadInitialData() async {
         if initialLocation != nil {
-            await search(for: nil)
+            await search(for: searchText)
         }
     }
 }

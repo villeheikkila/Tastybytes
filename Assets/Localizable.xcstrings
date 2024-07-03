@@ -2716,6 +2716,9 @@
         }
       }
     },
+    "location.creation.section.title" : {
+
+    },
     "location.delete.confirmation.description" : {
       "localizations" : {
         "en" : {
@@ -2758,6 +2761,9 @@
           }
         }
       }
+    },
+    "location.location.section.title" : {
+
     },
     "location.mapKitIdentifier.label" : {
 

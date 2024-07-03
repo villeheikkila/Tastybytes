@@ -161,7 +161,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: [Location] = try await client
                 .from(.locations)
-                .select(Location.getQuery(.joined(false)))
+                .select(Location.getQuery(.management(false)))
                 .order("created_at", ascending: false)
                 .execute()
                 .value
@@ -176,7 +176,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: Location = try await client
                 .rpc(fn: .updateLocation, params: request)
-                .select(Location.getQuery(.joined(false)))
+                .select(Location.getQuery(.management(false)))
                 .limit(1)
                 .single()
                 .execute()

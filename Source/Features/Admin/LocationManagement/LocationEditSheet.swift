@@ -23,16 +23,43 @@ struct LocationEditSheet: View {
 
     var body: some View {
         Form {
-            HStack {
-                if let coordinate = location.location?.coordinate {
-                    MapThumbnail(location: location, coordinate: coordinate, distance: nil)
-                }
-                VStack(alignment: .leading) {
-                    Text(location.name)
-                    if let title = location.title {
-                        Text(title)
-                            .foregroundColor(.secondary)
+            Section("location.location.section.title") {
+                HStack {
+                    if let coordinate = location.location?.coordinate {
+                        MapThumbnail(location: location, coordinate: coordinate, distance: nil)
                     }
+                    VStack(alignment: .leading) {
+                        Text(location.name)
+                        if let title = location.title {
+                            Text(title)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+                .openOnTap(.screen(.location(location)))
+            }
+
+            Section("location.creation.section.title") {
+                HStack {
+                    if let createdBy = location.createdBy {
+                        Avatar(profile: createdBy)
+                    }
+                    VStack(alignment: .leading) {
+                        Text(location.createdBy?.preferredName ?? "-")
+                        if let createdAt = location.createdAt {
+                            Text(createdAt, format:
+                                .dateTime
+                                    .year()
+                                    .month(.wide)
+                                    .day())
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    Spacer()
+                }
+                .contentShape(.rect)
+                .ifLet(location.createdBy) { view, createdBy in
+                    view.openOnTap(.screen(.profile(createdBy)))
                 }
             }
 
@@ -55,7 +82,7 @@ struct LocationEditSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .primaryAction) {
-            RouterLink("admin.location.edit.attachLocation.label", systemImage: "map.circle", open: .sheet(.locationSearch(initialLocation: location, onSelect: { location in
+            RouterLink("admin.location.edit.attachLocation.label", systemImage: "map.circle", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
                 Task {
                     await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
                 }

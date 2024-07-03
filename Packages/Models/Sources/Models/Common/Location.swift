@@ -10,6 +10,8 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
     public let countryCode: String?
     public let country: Country?
     public let source: String
+    public let createdAt: Date?
+    public let createdBy: Profile?
 
     public init(mapItem: MKMapItem) {
         id = UUID()
@@ -20,6 +22,8 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         countryCode = mapItem.placemark.countryCode
         country = nil
         source = "apple"
+        createdBy = nil
+        createdAt = nil
     }
 
     public init(coordinate: CLLocationCoordinate2D, countryCode: String?, country: Country?) {
@@ -31,6 +35,8 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         self.countryCode = countryCode
         self.country = country
         source = "image"
+        createdBy = nil
+        createdAt = nil
     }
 
     public init(id: UUID, mapKitIdentifier: String?, name: String, title: String?, location: CLLocation?, countryCode: String?,
@@ -44,6 +50,8 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         self.countryCode = countryCode
         self.country = country
         self.source = source
+        createdBy = nil
+        createdAt = nil
     }
 
     enum CodingKeys: String, CodingKey {
@@ -57,6 +65,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         case countryCode = "country_code"
         case country = "countries"
         case source
+        case createdBy = "profiles"
     }
 
     public init(from decoder: Decoder) throws {
@@ -71,6 +80,8 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         countryCode = try container.decode(String.self, forKey: .countryCode)
         country = try container.decode(Country.self, forKey: .country)
         source = try container.decode(String.self, forKey: .source)
+        createdBy = try container.decodeIfPresent(Profile.self, forKey: .createdBy)
+        createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
     }
 
     public func encode(to encoder: Encoder) throws {

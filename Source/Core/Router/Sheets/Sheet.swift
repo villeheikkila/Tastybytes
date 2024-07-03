@@ -40,7 +40,7 @@ enum Sheet: Identifiable, Equatable {
         initialLocation: Binding<Location?>,
         onSelect: (_ location: Location) -> Void
     )
-    case locationSearch(initialLocation: Location?, onSelect: (_ location: Location) -> Void)
+    case locationSearch(initialLocation: Location?, initialSearchTerm: String?, onSelect: (_ location: Location) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
                                 onSelect: (_ servingStyle: ServingStyle) async -> Void)
@@ -140,8 +140,8 @@ enum Sheet: Identifiable, Equatable {
             LocationEditSheet(location: location, onEdit: onEdit, onDelete: onDelete)
         case let .webView(link):
             WebViewSheet(link: link)
-        case let .locationSearch(initialLocation, onSelect):
-            LocationSearchSheet(initialLocation: initialLocation, onSelect: onSelect)
+        case let .locationSearch(initialLocation, initialSearchTerm, onSelect):
+            LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
         }
     }
 
@@ -249,12 +249,12 @@ enum Sheet: Identifiable, Equatable {
             "check_in_image_\(checkIn.hashValue)"
         case .profileDeleteConfirmation:
             "profile_delete_confirmation"
-        case let .locationEdit(location):
+        case let .locationEdit(location, _, _):
             "location_edit_\(location)"
         case let .webView(link):
             "webview_\(link)"
-        case let .locationSearch(initialLocation, _):
-            "location_search_\(String(describing: initialLocation))"
+        case let .locationSearch(initialLocation, initialSearchTerm, _):
+            "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
         }
     }
 
