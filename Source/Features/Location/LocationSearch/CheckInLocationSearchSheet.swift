@@ -10,7 +10,7 @@ import Repositories
 import SwiftUI
 
 struct CheckInLocationSearchSheet: View {
-    private let logger = Logger(category: "LocationSearchSheet")
+    private let logger = Logger(category: "CheckInLocationSearchSheet")
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel

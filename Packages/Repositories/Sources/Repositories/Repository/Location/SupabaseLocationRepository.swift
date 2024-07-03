@@ -162,6 +162,23 @@ struct SupabaseLocationRepository: LocationRepository {
             let response: [Location] = try await client
                 .from(.locations)
                 .select(Location.getQuery(.joined(false)))
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func update(request: Location.UpdateLocationRequest) async -> Result<Location, Error> {
+        do {
+            let response: Location = try await client
+                .rpc(fn: .updateLocation, params: request)
+                .select(Location.getQuery(.joined(false)))
+                .limit(1)
+                .single()
                 .execute()
                 .value
 

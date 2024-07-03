@@ -433,7 +433,7 @@ public struct ProfileTopLocations: Sendable, Decodable, Identifiable {
     }
 
     public var loc: Location {
-        .init(id: id, name: name, title: title, location: location, countryCode: countryCode, country: nil, source: "")
+        .init(id: id, mapKitIdentifier: nil, name: name, title: title, location: location, countryCode: countryCode, country: nil, source: "")
     }
 
     public init(from decoder: Decoder) throws {

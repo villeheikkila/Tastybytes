@@ -13,4 +13,5 @@ public protocol LocationRepository: Sendable {
     func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error>
     func getAllCountries() async -> Result<[Country], Error>
     func getLocations() async -> Result<[Location], Error>
+    func update(request: Location.UpdateLocationRequest) async -> Result<Location, Error>
 }

@@ -34,12 +34,13 @@ enum Sheet: Identifiable, Equatable {
     )
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)
-    case locationSearch(
+    case checkInLocationSearch(
         category: Location.RecentLocation,
         title: LocalizedStringKey,
         initialLocation: Binding<Location?>,
         onSelect: (_ location: Location) -> Void
     )
+    case locationSearch(initialLocation: Location?, onSelect: (_ location: Location) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
                                 onSelect: (_ servingStyle: ServingStyle) async -> Void)
@@ -98,7 +99,7 @@ enum Sheet: Identifiable, Equatable {
             FriendSheet(taggedFriends: taggedFriends)
         case let .flavors(pickedFlavors: pickedFlavors):
             FlavorSheet(pickedFlavors: pickedFlavors)
-        case let .locationSearch(category: category, title: title, initialLocation, onSelect: onSelect):
+        case let .checkInLocationSearch(category: category, title: title, initialLocation, onSelect: onSelect):
             CheckInLocationSearchSheet(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect)
         case let .newFlavor(onSubmit: onSubmit):
             NewFlavorSheet(onSubmit: onSubmit)
@@ -139,6 +140,8 @@ enum Sheet: Identifiable, Equatable {
             LocationEditSheet(location: location)
         case let .webView(link):
             WebViewSheet(link: link)
+        case let .locationSearch(initialLocation, onSelect):
+            LocationSearchSheet(initialLocation: initialLocation, onSelect: onSelect)
         }
     }
 
@@ -210,7 +213,7 @@ enum Sheet: Identifiable, Equatable {
             "friends"
         case .flavors:
             "flavors"
-        case .locationSearch:
+        case .checkInLocationSearch:
             "location_search"
         case .newFlavor:
             "new_flavor"
@@ -250,6 +253,8 @@ enum Sheet: Identifiable, Equatable {
             "location_edit_\(location)"
         case let .webView(link):
             "webview_\(link)"
+        case let .locationSearch(initialLocation, _):
+            "location_search_\(String(describing: initialLocation))"
         }
     }
 

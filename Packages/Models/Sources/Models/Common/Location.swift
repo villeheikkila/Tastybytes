@@ -33,14 +33,14 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         source = "image"
     }
 
-    public init(id: UUID, name: String, title: String?, location: CLLocation?, countryCode: String?,
+    public init(id: UUID, mapKitIdentifier: String?, name: String, title: String?, location: CLLocation?, countryCode: String?,
                 country: Country?, source: String)
     {
         self.id = id
         self.name = name
         self.title = title
         self.location = location
-        mapKitIdentifier = nil
+        self.mapKitIdentifier = mapKitIdentifier
         self.countryCode = countryCode
         self.country = country
         self.source = source
@@ -84,6 +84,28 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         try container.encode(country, forKey: .country)
     }
 
+    public func copyWith(
+        id: UUID? = nil,
+        mapKitIdentifier: String? = nil,
+        name: String? = nil,
+        title: String?? = nil,
+        location: CLLocation? = nil,
+        countryCode: String? = nil,
+        country: Country? = nil,
+        source: String? = nil
+    ) -> Location {
+        Location(
+            id: id ?? self.id,
+            mapKitIdentifier: mapKitIdentifier ?? self.mapKitIdentifier,
+            name: name ?? self.name,
+            title: title ?? self.title,
+            location: location ?? self.location,
+            countryCode: countryCode ?? self.countryCode,
+            country: country ?? self.country,
+            source: source ?? self.source
+        )
+    }
+
     public var newLocationRequest: NewLocationRequest {
         NewLocationRequest(location: self)
     }
@@ -122,6 +144,20 @@ public extension Location {
             try container.encode(location?.coordinate.longitude, forKey: .longitude)
             try container.encode(countryCode, forKey: .countryCode)
             try container.encode(mapKitIdentifier, forKey: .mapKitIdentifier)
+        }
+    }
+
+    struct UpdateLocationRequest: Codable, Sendable {
+        let id: UUID
+        let mapKitIdentifier: String?
+
+        public init(id: UUID, mapKitIdentifier: String?) {
+            self.id = id
+            self.mapKitIdentifier = mapKitIdentifier
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id = "p_id", mapKitIdentifier = "p_map_kit_identifier"
         }
     }
 

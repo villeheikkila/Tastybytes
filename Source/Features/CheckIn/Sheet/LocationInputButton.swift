@@ -10,7 +10,7 @@ struct LocationInputButton: View {
 
     var body: some View {
         RouterLink(
-            open: .sheet(.locationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect)),
+            open: .sheet(.checkInLocationSearch(category: category, title: title, initialLocation: $initialLocation, onSelect: onSelect)),
             label: {
                 HStack {
                     if let location = selection, let coordinate = selection?.location?.coordinate {

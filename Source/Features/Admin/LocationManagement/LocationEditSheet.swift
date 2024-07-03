@@ -1,7 +1,11 @@
 import Models
+import OSLog
+import Repositories
 import SwiftUI
 
 struct LocationEditSheet: View {
+    let logger = Logger(category: "LocationEditSheet")
+    @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var location: Location
 
@@ -43,9 +47,23 @@ struct LocationEditSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
-            RouterLink("admin.location.edit.attachLocation.label", systemImage: "map.circle", open: .sheet(.barcodeScanner(onComplete: { barcode in
-                print(barcode)
+            RouterLink("admin.location.edit.attachLocation.label", systemImage: "map.circle", open: .sheet(.locationSearch(initialLocation: location, onSelect: { location in
+                Task {
+                    await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
+                }
             })))
+        }
+    }
+
+    public func updateLocation(_ location: Location) async {
+        switch await repository.location.update(request: .init(id: location.id, mapKitIdentifier: location.mapKitIdentifier)) {
+        case let .success(location):
+            withAnimation {
+                self.location = location
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Failed to update location: '\(location.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

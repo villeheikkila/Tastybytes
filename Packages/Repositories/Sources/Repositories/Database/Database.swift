@@ -83,6 +83,7 @@ enum Database {
         case getLocationInsertIfNotExist = "fnc__get_location_insert_if_not_exist"
         case getLocationSuggestions = "fnc__get_location_suggestions"
         case getLocationSummary = "fnc__get_location_summary"
+        case updateLocation = "fnc__update_location"
         case getProductSummary = "fnc__get_product_summary"
         case getProfileSummary = "fnc__get_profile_summary"
         case getSubcategoryStats = "fnc__get_subcategory_stats"
