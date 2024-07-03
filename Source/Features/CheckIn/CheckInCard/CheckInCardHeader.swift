@@ -20,13 +20,13 @@ struct CheckInCardHeader: View {
                 Text(location.formatted(.withEmoji))
                     .font(.caption).bold()
                     .foregroundColor(.primary)
-                    .contentShape(Rectangle())
+                    .contentShape(.rect)
                     .accessibilityAddTraits(.isLink)
                     .allowsHitTesting(!loadedFrom.isLoadedFromLocation(location))
                     .openOnTap(.screen(.location(location)))
             }
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .accessibilityAddTraits(.isLink)
         .allowsHitTesting(!loadedFrom.isLoadedFromProfile(profile))
         .openOnTap(.screen(.profile(profile)))

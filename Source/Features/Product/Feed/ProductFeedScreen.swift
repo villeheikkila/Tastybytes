@@ -33,7 +33,7 @@ struct ProductFeedScreen: View {
         List {
             ForEach(products) { product in
                 ProductItemView(product: product, extras: [.checkInCheck, .rating])
-                    .contentShape(Rectangle())
+                    .contentShape(.rect)
                     .accessibilityAddTraits(.isLink)
                     .openOnTap(.screen(.product(product)))
                     .onAppear {

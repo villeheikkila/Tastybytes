@@ -278,7 +278,7 @@ struct VerificationScreenProductRowView: View {
                 }
             }
             ProductItemView(product: product)
-                .contentShape(Rectangle())
+                .contentShape(.rect)
                 .accessibilityAddTraits(.isLink)
                 .openOnTap(.screen(.product(product)))
                 .swipeActions {

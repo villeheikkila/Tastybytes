@@ -25,7 +25,7 @@ struct FullScreenErrorView: View {
                     .frame(height: 50)
                     .foregroundColor(.white)
                     .font(.headline)
-                    .background(Color.accentColor)
+                    .background(.accent)
                     .cornerRadius(15)
                 })
                 .allowsHitTesting(task == nil)

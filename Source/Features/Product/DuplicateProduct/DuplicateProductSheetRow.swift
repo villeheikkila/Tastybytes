@@ -14,7 +14,7 @@ struct DuplicateProductSheetRow: View {
                 ProductItemView(product: product)
                 Spacer()
             }
-            .contentShape(Rectangle())
+            .contentShape(.rect)
         })
         .buttonStyle(.plain)
         .listRowBackground(Color.clear)

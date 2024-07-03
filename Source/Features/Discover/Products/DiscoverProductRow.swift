@@ -21,7 +21,7 @@ struct DiscoverProductRow: View {
                     router.open(.screen(.checkIn(checkIn)))
                 })))).tint(.green)
             }
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .accessibilityAddTraits(.isLink)
             .onTapGesture {
                 if barcode == nil || product.barcodes.contains(where: { $0.isBarcode(barcode) }) {

@@ -38,7 +38,7 @@ struct CheckInCardCheckIn: View {
                 }
             }
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .accessibilityAddTraits(.isLink)
         .allowsHitTesting(loadedFrom != .checkIn)
         .openOnTap(.screen(.checkIn(checkIn)))

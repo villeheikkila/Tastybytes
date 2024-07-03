@@ -85,7 +85,7 @@ public struct CheckInEntityView: View {
                         .font(.subheadline)
                         .textSelection(.enabled)
                         .foregroundColor(.secondary)
-                        .contentShape(Rectangle())
+                        .contentShape(.rect)
                         .accessibilityAddTraits(.isLink)
 
                     if let manufacturer = checkIn.variant?.manufacturer,

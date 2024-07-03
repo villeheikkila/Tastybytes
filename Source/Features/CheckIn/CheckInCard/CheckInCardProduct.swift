@@ -32,7 +32,7 @@ struct CheckInCardProduct: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .textSelection(.enabled)
-                        .contentShape(Rectangle())
+                        .contentShape(.rect)
                         .accessibilityAddTraits(.isLink)
                         .openOnTap(.screen(.company(product.subBrand.brand.brandOwner)))
 
@@ -51,7 +51,7 @@ struct CheckInCardProduct: View {
                 ProductLogo(product: product, size: 48)
             }
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
         .accessibilityAddTraits(.isLink)
         .allowsHitTesting(loadedFrom != .product)
         .openOnTap(.screen(.product(product)))

@@ -49,7 +49,7 @@ struct ProductItemView: View {
                     .textSelection(.enabled)
                     .foregroundColor(.secondary)
                     .if(extras.contains(.companyLink), transform: { view in
-                        view.contentShape(Rectangle())
+                        view.contentShape(.rect)
                             .accessibilityAddTraits(.isLink)
                             .openOnTap(.screen(.company(product.subBrand.brand.brandOwner)))
                     })

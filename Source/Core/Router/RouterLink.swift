@@ -19,7 +19,7 @@ struct RouterLink<LabelView: View>: View {
             label
                 .accessibilityAddTraits(.isLink)
                 .frame(maxWidth: .infinity, alignment: .center)
-                .contentShape(Rectangle())
+                .contentShape(.rect)
                 .onTapGesture {
                     router.open(open)
                 }
@@ -30,7 +30,7 @@ struct RouterLink<LabelView: View>: View {
                         label
                         Spacer()
                     }
-                    .contentShape(Rectangle())
+                    .contentShape(.rect)
                 })
                 .buttonStyle(.plain)
                 .accessibilityAddTraits(.isLink)
@@ -39,7 +39,7 @@ struct RouterLink<LabelView: View>: View {
                     label
                     Spacer()
                 })
-                .contentShape(Rectangle())
+                .contentShape(.rect)
             }
         } else {
             Button(action: {

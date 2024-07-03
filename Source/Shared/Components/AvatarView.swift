@@ -24,7 +24,7 @@ public struct AvatarView: View {
             }, progress: {
                 ProgressView()
             })
-            .clipShape(Circle())
+            .clipShape(.circle)
             .aspectRatio(contentMode: .fill)
             .frame(width: avatarSize.size, height: avatarSize.size)
             .accessibility(hidden: true)
@@ -32,7 +32,7 @@ public struct AvatarView: View {
             Image(systemName: "person.fill")
                 .resizable()
                 .padding(.all, avatarSize.size / 5)
-                .clipShape(Circle())
+                .clipShape(.circle)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: avatarSize.size, height: avatarSize.size)
                 .foregroundColor(Color(seed: id.uuidString))

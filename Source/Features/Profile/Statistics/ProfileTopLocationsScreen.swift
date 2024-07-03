@@ -63,7 +63,7 @@ struct TopLocationRow: View {
                             .foregroundColor(.secondary)
                     }
                 }
-                .contentShape(Rectangle())
+                .contentShape(.rect)
                 .accessibilityAddTraits(.isButton)
                 Spacer()
                 Text("(\(location.count.formatted()))")

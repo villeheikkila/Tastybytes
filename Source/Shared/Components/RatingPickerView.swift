@@ -56,7 +56,7 @@ public struct RatingPickerView: View {
             }
             Color.clear
                 .frame(width: controlSize.width, height: controlSize.height)
-                .contentShape(Rectangle())
+                .contentShape(.rect)
                 .gesture(
                     DragGesture(minimumDistance: 0, coordinateSpace: .local)
                         .onChanged { value in

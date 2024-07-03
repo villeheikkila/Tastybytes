@@ -12,7 +12,7 @@ struct DiscoverProductAddNew: View {
                     .fontWeight(.medium)
                 Spacer()
             }
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .accessibilityAddTraits(.isLink)
             .onTapGesture {
                 let barcodeCopy = barcode

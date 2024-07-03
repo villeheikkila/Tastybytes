@@ -228,7 +228,7 @@ struct LocationRow: View {
                         .foregroundColor(.secondary)
                 }
             }
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .accessibilityAddTraits(.isButton)
             .onTapGesture {
                 onSelect(location)

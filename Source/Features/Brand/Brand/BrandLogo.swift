@@ -29,6 +29,6 @@ struct BrandLogo: View {
                     .accessibility(hidden: true)
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .clipShape(.rect(cornerRadius: 8))
     }
 }

@@ -63,11 +63,11 @@ struct DuplicateProductScreeRow: View {
                 Text(duplicateProductSuggestion.createdAt.formatted(.customRelativetime)).font(.caption).bold()
             }
             ProductItemView(product: duplicateProductSuggestion.product)
-                .contentShape(Rectangle())
+                .contentShape(.rect)
                 .accessibilityAddTraits(.isLink)
                 .openOnTap(.screen(.product(duplicateProductSuggestion.product)))
             ProductItemView(product: duplicateProductSuggestion.duplicate)
-                .contentShape(Rectangle())
+                .contentShape(.rect)
                 .accessibilityAddTraits(.isLink)
                 .openOnTap(.screen(.product(duplicateProductSuggestion.duplicate)))
         }

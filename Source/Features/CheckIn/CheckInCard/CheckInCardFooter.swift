@@ -15,7 +15,7 @@ struct CheckInCardFooter: View {
                 Spacer()
             }
             .allowsHitTesting(loadedFrom != .checkIn)
-            .contentShape(Rectangle())
+            .contentShape(.rect)
             .accessibilityAddTraits(.isLink)
             .onTapGesture {
                 if loadedFrom != .checkIn {

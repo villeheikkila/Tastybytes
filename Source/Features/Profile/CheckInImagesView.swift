@@ -28,9 +28,7 @@ struct CheckInImageCellView: View {
                 }
             })
             .frame(width: 100, height: 100)
-            .clipShape(
-                RoundedRectangle(cornerRadius: 4)
-            )
+            .clipShape(.rect(cornerRadius: 4))
             .onTapGesture {
                 router.fetchAndNavigateTo(repository, .checkIn(id: checkInImage.checkIn.id))
             }

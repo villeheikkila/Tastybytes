@@ -6,7 +6,7 @@ struct ScalingButtonStyle: ButtonStyle {
             .padding(.all, 10)
             .background(.blue)
             .foregroundColor(.white)
-            .clipShape(Rectangle())
+            .clipShape(.rect)
             .cornerRadius(8)
             .scaleEffect(configuration.isPressed ? 1.05 : 1)
             .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
