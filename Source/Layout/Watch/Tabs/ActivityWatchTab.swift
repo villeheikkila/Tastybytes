@@ -17,7 +17,6 @@ struct ActivityWatchTab: View {
 struct ActivityWatchTabContent: View {
     private let logger = Logger(category: "ActivityWatchTab")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
     @State private var state: ScreenState = .loading

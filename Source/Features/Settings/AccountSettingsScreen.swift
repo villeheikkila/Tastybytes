@@ -21,7 +21,6 @@ struct AccountSettingsScreen: View {
     @State private var showingExporter = false
 
     var body: some View {
-        @Bindable var profileEnvironmentModel = profileEnvironmentModel
         Form {
             emailSection
             deleteAccount

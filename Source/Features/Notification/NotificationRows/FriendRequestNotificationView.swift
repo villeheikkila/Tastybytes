@@ -4,7 +4,6 @@ import Models
 import SwiftUI
 
 struct FriendRequestNotificationView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let friend: Friend
     let createdAt: Date
     let seenAt: Date?

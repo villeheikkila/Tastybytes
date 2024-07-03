@@ -6,7 +6,6 @@ import SwiftUI
 struct FriendSheet: View {
     @Binding private var taggedFriends: [Profile]
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
     @State private var selectedFriendIds: Set<UUID> = Set()

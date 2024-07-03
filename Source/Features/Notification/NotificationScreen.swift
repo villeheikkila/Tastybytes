@@ -33,7 +33,6 @@ struct NotificationScreen: View {
     }
 
     var body: some View {
-        @Bindable var notificationEnvironmentModel = notificationEnvironmentModel
         List {
             ForEach(filteredNotifications) { notification in
                 HStack {
@@ -71,7 +70,6 @@ struct NotificationScreen: View {
                 }
             }
         }
-        .background {}
         .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
             oldValue && !newValue
         }

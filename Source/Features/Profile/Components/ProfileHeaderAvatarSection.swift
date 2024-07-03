@@ -8,7 +8,6 @@ import SwiftUI
 
 struct ProfileHeaderAvatarSection: View {
     private let logger = Logger(category: "ProfileHeaderAvatarSection")
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @Binding var showPicker: Bool

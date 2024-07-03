@@ -5,7 +5,6 @@ import SwiftUI
 
 struct ProfileSummarySection: View {
     @Environment(Router.self) private var router
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
 
     let profile: Profile
     let profileSummary: ProfileSummary?

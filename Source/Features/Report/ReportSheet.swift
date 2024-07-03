@@ -10,7 +10,6 @@ struct ReportSheet: View {
     private let logger = Logger(category: "ReportSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var reasonText = ""
 

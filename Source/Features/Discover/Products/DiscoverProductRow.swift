@@ -8,7 +8,6 @@ import SwiftUI
 struct DiscoverProductRow: View {
     private let logger = Logger(category: "DiscoverProductRow")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Router.self) private var router
     @State private var addBarcodeTo: Product.Joined?
 

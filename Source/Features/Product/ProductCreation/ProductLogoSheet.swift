@@ -11,7 +11,6 @@ struct ProductLogoSheet: View {
     private let logger = Logger(category: "ProductLogoSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var selectedLogo: PhotosPickerItem?
