@@ -18,15 +18,19 @@ struct DuplicateProductSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var products = [Product.Joined]()
     @State private var searchTerm = ""
-    @State private var mergeToProduct: Product.Joined?
 
     let mode: Mode
     let product: Product.Joined
 
     var body: some View {
         List(products) { product in
-            DuplicateProductSheetRow(product: product) { product in
-                mergeToProduct = product
+            DuplicateProductSheetRow(product: product, mode: mode) { product in
+                switch mode {
+                case .reportDuplicate:
+                    await reportDuplicate(product)
+                case .mergeDuplicate:
+                    await mergeProducts(product)
+                }
             }
         }
         .listStyle(.plain)
@@ -44,26 +48,6 @@ struct DuplicateProductSheet: View {
         }
         .task(id: searchTerm, milliseconds: 200) {
             await searchProducts(name: searchTerm)
-        }
-        .onAppear {
-            // Change the .searchable cancel button tint
-            UISearchBar.appearance().tintColor = UIColor(Color.primary)
-        }
-        .confirmationDialog("duplicateProduct.mergeTo.description",
-                            isPresented: $mergeToProduct.isNotNull(),
-                            presenting: mergeToProduct)
-        { presenting in
-            ProgressButton(
-                mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.label \(product.name) \(presenting.formatted(.fullName))" : "duplicateProduct.markAsDuplicate.label \(product.name) \(presenting.formatted(.fullName))",
-                role: .destructive
-            ) {
-                switch mode {
-                case .reportDuplicate:
-                    await reportDuplicate(presenting)
-                case .mergeDuplicate:
-                    await mergeProducts(presenting)
-                }
-            }
         }
     }
 

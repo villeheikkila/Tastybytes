@@ -18,7 +18,6 @@ struct EditSubBrandSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var newSubBrandName: String
     @State private var subBrand: SubBrand.JoinedProduct
-    @State private var mergeTo: SubBrand.JoinedProduct?
 
     let onUpdate: UpdateSubBrandCallback
     let brand: Brand.JoinedSubBrandsProductsCompany
@@ -48,7 +47,7 @@ struct EditSubBrandSheet: View {
             Section("subBrand.name.title") {
                 TextField("subBrand.name.placeholder", text: $newSubBrandName)
                 ProgressButton("labels.edit") {
-                    await editSubBrand(onSuccess: onUpdate)
+                    await editSubBrand()
                 }
                 .disabled(invalidNewName)
             }
@@ -56,8 +55,8 @@ struct EditSubBrandSheet: View {
             if !subBrandsToMergeTo.isEmpty {
                 Section("subBrand.mergeToAnotherSubBrand.title") {
                     ForEach(subBrandsToMergeTo) { subBrand in
-                        if let name = subBrand.name {
-                            Button(name, action: { mergeTo = subBrand })
+                        EditSubBrandMergeToRowView(subBrand: subBrand) { mergeTo in
+                            await mergeToSubBrand(mergeTo: mergeTo)
                         }
                     }
                 }
@@ -76,37 +75,19 @@ struct EditSubBrandSheet: View {
         .toolbar {
             toolbarContent
         }
-        .confirmationDialog(
-            "subBrand.mergeTo.confirmation.description",
-            isPresented: $mergeTo.isNotNull(),
-            titleVisibility: .visible,
-            presenting: mergeTo
-        ) { presenting in
-            ProgressButton(
-                "subBrand.mergeTo.confirmation.label \(subBrand.label) \(presenting.label)",
-                role: .destructive,
-                action: {
-                    await mergeToSubBrand(subBrand: subBrand, onSuccess: {
-                        feedbackEnvironmentModel.trigger(.notification(.success))
-                        await onUpdate(subBrand)
-                    })
-                }
-            )
-        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDoneActionView()
     }
 
-    func mergeToSubBrand(subBrand: SubBrand.JoinedProduct, onSuccess: @escaping () async -> Void) async {
-        guard let mergeTo else { return }
+    func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
         switch await repository.subBrand
             .update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
         {
         case .success:
-            self.mergeTo = nil
-            await onSuccess()
+            feedbackEnvironmentModel.trigger(.notification(.success))
+            await onUpdate(subBrand)
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -114,15 +95,42 @@ struct EditSubBrandSheet: View {
         }
     }
 
-    func editSubBrand(onSuccess: @escaping UpdateSubBrandCallback) async {
+    func editSubBrand() async {
         switch await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName))) {
         case let .success(updatedSubBrand):
             feedbackEnvironmentModel.toggle(.success("subBrand.updated.toast"))
-            await onSuccess(subBrand.copyWith(name: updatedSubBrand.name))
+            let updatedSubBrand = subBrand.copyWith(name: updatedSubBrand.name)
+            await onUpdate(updatedSubBrand)
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct EditSubBrandMergeToRowView: View {
+    @State private var showMergeConfirmationDialog = false
+    let subBrand: SubBrand.JoinedProduct
+    let onMerge: (_ mergeTo: SubBrand.JoinedProduct) async -> Void
+
+    var body: some View {
+        if let name = subBrand.name {
+            Button(name, action: { showMergeConfirmationDialog = true })
+                .confirmationDialog(
+                    "subBrand.mergeTo.confirmation.description",
+                    isPresented: $showMergeConfirmationDialog,
+                    titleVisibility: .visible,
+                    presenting: subBrand
+                ) { presenting in
+                    ProgressButton(
+                        "subBrand.mergeTo.confirmation.label \(subBrand.label) \(presenting.label)",
+                        role: .destructive,
+                        action: {
+                            await onMerge(subBrand)
+                        }
+                    )
+                }
         }
     }
 }

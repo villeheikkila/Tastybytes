@@ -60,15 +60,15 @@ struct ProfileInnerView: View {
             }
         }
         .listStyle(.plain)
+        .refreshable {
+            await getProfileData(isRefresh: true)
+        }
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
                 await getProfileData(isRefresh: true)
             })
         }
         .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
-        .refreshable {
-            await getProfileData(isRefresh: true)
-        }
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .onDisappear {
             loadImagesTask?.cancel()

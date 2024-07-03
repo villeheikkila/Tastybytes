@@ -51,7 +51,7 @@ public enum StarType: Sendable {
 }
 
 extension EnvironmentValues {
-   @Entry var ratingColor: Color = .yellow
+    @Entry var ratingColor: Color = .yellow
 }
 
 extension View {

@@ -35,7 +35,6 @@ struct VerificationScreen: View {
     @State private var brands = [Brand.JoinedSubBrandsProductsCompany]()
     @State private var subBrands = [SubBrand.JoinedBrand]()
     @State private var verificationType: VerificationType = .products
-    @State private var deleteProduct: Product.Joined?
 
     var body: some View {
         List {
@@ -53,17 +52,6 @@ struct VerificationScreen: View {
         .listStyle(.plain)
         .refreshable {
             await loadData(refresh: true)
-        }
-        .confirmationDialog("product.delete.confirmation.title",
-                            isPresented: $deleteProduct.isNotNull(),
-                            titleVisibility: .visible,
-                            presenting: deleteProduct)
-        { presenting in
-            ProgressButton(
-                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
-                role: .destructive,
-                action: { await deleteProduct(presenting) }
-            )
         }
         .navigationBarTitle(Text("labels.unverified") + Text(verificationType.label))
         .navigationBarTitleDisplayMode(.inline)
@@ -120,30 +108,12 @@ struct VerificationScreen: View {
 
     private var unverifiedProducts: some View {
         ForEach(products) { product in
-            VStack {
-                if let createdBy = product.createdBy {
-                    HStack {
-                        Avatar(profile: createdBy)
-                            .avatarSize(.small)
-                        Text(createdBy.preferredName).font(.caption).bold()
-                        Spacer()
-                        if let createdAt = product.createdAt {
-                            Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
-                        }
-                    }
-                }
-                ProductItemView(product: product)
-                    .contentShape(Rectangle())
-                    .accessibilityAddTraits(.isLink)
-                    .openOnTap(.screen(.product(product)))
-                    .swipeActions {
-                        ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifyProduct(product) })
-                            .tint(.green)
-                        RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: { _ in
-                            await loadData(refresh: true)
-                        })))).tint(.yellow)
-                        Button("labels.delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })
-                    }
+            VerificationScreenProductRowView(product: product) {
+                await verifyProduct(product)
+            } onEdit: { edited in
+                products.replace(product, with: edited)
+            } onDelete: {
+                await deleteProduct(product)
             }
         }
     }
@@ -216,7 +186,9 @@ struct VerificationScreen: View {
         switch await repository.product.delete(id: product.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await loadData(refresh: true)
+            withAnimation {
+                products = products.removing(product)
+            }
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -281,6 +253,55 @@ struct VerificationScreen: View {
                     logger.error("Loading unverfied sub-brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
+        }
+    }
+}
+
+struct VerificationScreenProductRowView: View {
+    @State private var showDeleteProductConfirmationDialog = false
+
+    let product: Product.Joined
+    let onVerify: () async -> Void
+    let onEdit: (_ product: Product.Joined) async -> Void
+    let onDelete: () async -> Void
+
+    var body: some View {
+        VStack {
+            if let createdBy = product.createdBy {
+                HStack {
+                    Avatar(profile: createdBy)
+                        .avatarSize(.small)
+                    Text(createdBy.preferredName).font(.caption).bold()
+                    Spacer()
+                    if let createdAt = product.createdAt {
+                        Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
+                    }
+                }
+            }
+            ProductItemView(product: product)
+                .contentShape(Rectangle())
+                .accessibilityAddTraits(.isLink)
+                .openOnTap(.screen(.product(product)))
+                .swipeActions {
+                    ProgressButton("labels.verify", systemImage: "checkmark", action: onVerify)
+                        .tint(.green)
+                    RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: onEdit)))).tint(.yellow)
+                    ProgressButton("labels.delete", systemImage: "trash", action: {
+                        showDeleteProductConfirmationDialog = true
+                    })
+                    .tint(.red)
+                }
+        }
+        .confirmationDialog("product.delete.confirmation.title",
+                            isPresented: $showDeleteProductConfirmationDialog,
+                            titleVisibility: .visible,
+                            presenting: product)
+        { presenting in
+            ProgressButton(
+                "product.delete.confirmation.label \(presenting.formatted(.fullName))",
+                role: .destructive,
+                action: onDelete
+            )
         }
     }
 }

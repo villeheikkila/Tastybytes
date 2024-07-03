@@ -51,20 +51,6 @@ struct AccountSettingsScreen: View {
                 router.open(.alert(.init(title: "account.export.failure.alert")))
             }
         }
-        .confirmationDialog(
-            "account.delete.confirmationDialog.title",
-            isPresented: $showDeleteConfirmation,
-            titleVisibility: .visible
-        ) {
-            ProgressButton(
-                "account.delete.label",
-                role: .destructive,
-                action: {
-                    await profileEnvironmentModel.deleteCurrentAccount()
-                    profileDeleted = true
-                }
-            )
-        }
     }
 
     private var emailSection: some View {
@@ -107,8 +93,24 @@ struct AccountSettingsScreen: View {
                     systemImage: "person.crop.circle.badge.minus",
                     role: .destructive,
                     action: { showDeleteConfirmation = true }
-                ).foregroundColor(.red)
-            }.fontWeight(.medium)
+                )
+                .foregroundColor(.red)
+                .confirmationDialog(
+                    "account.delete.confirmationDialog.title",
+                    isPresented: $showDeleteConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    ProgressButton(
+                        "account.delete.label",
+                        role: .destructive,
+                        action: {
+                            await profileEnvironmentModel.deleteCurrentAccount()
+                            profileDeleted = true
+                        }
+                    )
+                }
+            }
+            .fontWeight(.medium)
         }
     }
 
