@@ -1,6 +1,15 @@
 {
-  "originHash" : "cddba01a09b03edff628d88dd6fd046c0d81c74510aff51f713455fc9a451d73",
+  "originHash" : "910173b02d13c4ee403b89f5c0e6ffadb4385d6dd712fff61e9fc16257c7b391",
   "pins" : [
+    {
+      "identity" : "blurhashviews",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/daprice/BlurHashViews.git",
+      "state" : {
+        "revision" : "60fc8127030c3a4ba68fa4fe0b00eed8f1c32aa1",
+        "version" : "1.0.0"
+      }
+    },
     {
       "identity" : "brightroom",
       "kind" : "remoteSourceControl",
