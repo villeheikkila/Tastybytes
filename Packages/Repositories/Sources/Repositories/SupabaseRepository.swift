@@ -1,6 +1,6 @@
 import Foundation
 import OSLog
-import Supabase
+internal import Supabase
 
 @Observable
 public final class Repository: RepositoryProtocol {

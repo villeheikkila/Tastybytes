@@ -1,6 +1,6 @@
 import Foundation
 import Models
-import Supabase
+internal import Supabase
 
 struct SupabaseLocationRepository: LocationRepository {
     let client: SupabaseClient

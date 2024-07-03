@@ -1,6 +1,6 @@
 import Foundation
 import OSLog
-import Supabase
+internal import Supabase
 
 public protocol RepositoryProtocol: Sendable {
     var appConfig: AppConfigRepository { get }

@@ -1,5 +1,5 @@
 import Models
-import Supabase
+internal import Supabase
 
 struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     let client: SupabaseClient

@@ -1,14 +1,15 @@
 import Foundation
 import Models
-import Supabase
+internal import Supabase
 
 struct SupabaseAuthRepository: AuthRepository {
     let client: SupabaseClient
 
-    func getUser() async -> Result<User, Error> {
+    func getUser() async -> Result<Models.User, Error> {
         do {
             let response = try await client.auth.session.user
-            return .success(response)
+            let user = Models.User(id: response.id, email: response.email)
+            return .success(user)
         } catch {
             return .failure(error)
         }

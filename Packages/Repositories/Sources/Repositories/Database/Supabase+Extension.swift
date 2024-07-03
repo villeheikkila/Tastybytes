@@ -1,6 +1,6 @@
 import Foundation
 import Models
-import Supabase
+internal import Supabase
 
 extension SupabaseClient {
     func from(_ table: Database.Table) -> PostgrestQueryBuilder {

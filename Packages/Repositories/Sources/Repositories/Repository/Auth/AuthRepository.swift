@@ -1,9 +1,9 @@
 import Foundation
 import Models
-import Supabase
+internal import Supabase
 
 public protocol AuthRepository: Sendable {
-    func getUser() async -> Result<User, Error>
+    func getUser() async -> Result<Models.User, Error>
     func signInFromUrl(url: URL) async -> Result<Void, Error>
     @discardableResult func logOut() async -> Result<Void, Error>
     func sendEmailVerification(email: String) async -> Result<Void, Error>

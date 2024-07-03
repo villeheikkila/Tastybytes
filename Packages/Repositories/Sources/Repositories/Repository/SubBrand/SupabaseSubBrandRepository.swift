@@ -1,5 +1,5 @@
 import Models
-import Supabase
+internal import Supabase
 
 struct SupabaseSubBrandRepository: SubBrandRepository {
     let client: SupabaseClient
