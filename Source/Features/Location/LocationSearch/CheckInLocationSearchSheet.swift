@@ -9,7 +9,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct LocationSearchSheet: View {
+struct CheckInLocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchSheet")
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository

@@ -2,6 +2,7 @@ import Models
 import SwiftUI
 
 struct LocationEditSheet: View {
+    @Environment(Router.self) private var router
     @State private var location: Location
 
     init(location: Location) {
@@ -34,5 +35,17 @@ struct LocationEditSheet: View {
             }
         }
         .navigationTitle("admin.locations.edit.location.title")
+        .toolbar {
+            toolbarContent
+        }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarDismissAction()
+        ToolbarItem(placement: .primaryAction) {
+            RouterLink("admin.location.edit.attachLocation.label", systemImage: "map.circle", open: .sheet(.barcodeScanner(onComplete: { barcode in
+                print(barcode)
+            })))
+        }
     }
 }

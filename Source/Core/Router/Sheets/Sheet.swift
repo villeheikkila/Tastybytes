@@ -99,7 +99,7 @@ enum Sheet: Identifiable, Equatable {
         case let .flavors(pickedFlavors: pickedFlavors):
             FlavorSheet(pickedFlavors: pickedFlavors)
         case let .locationSearch(category: category, title: title, initialLocation, onSelect: onSelect):
-            LocationSearchSheet(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect)
+            CheckInLocationSearchSheet(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect)
         case let .newFlavor(onSubmit: onSubmit):
             NewFlavorSheet(onSubmit: onSubmit)
         case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):

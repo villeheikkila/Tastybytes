@@ -121,7 +121,7 @@
 		5C90580F2B2894BE00EC157B /* CheckInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057772B2894BE00EC157B /* CheckInSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058102B2894BE00EC157B /* FlavorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057792B2894BE00EC157B /* FlavorSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058112B2894BE00EC157B /* EditSubBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577B2B2894BE00EC157B /* EditSubBrandSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058122B2894BE00EC157B /* LocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577D2B2894BE00EC157B /* LocationSearchSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C9058122B2894BE00EC157B /* CheckInLocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577D2B2894BE00EC157B /* CheckInLocationSearchSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058142B2894BE00EC157B /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057812B2894BE00EC157B /* SettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058152B2894BE00EC157B /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057822B2894BE00EC157B /* AboutScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058162B2894BE00EC157B /* PrivacySettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057832B2894BE00EC157B /* PrivacySettingsPage.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -418,7 +418,7 @@
 		5C9057772B2894BE00EC157B /* CheckInSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInSheet.swift; sourceTree = "<group>"; };
 		5C9057792B2894BE00EC157B /* FlavorSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlavorSheet.swift; sourceTree = "<group>"; };
 		5C90577B2B2894BE00EC157B /* EditSubBrandSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSubBrandSheet.swift; sourceTree = "<group>"; };
-		5C90577D2B2894BE00EC157B /* LocationSearchSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchSheet.swift; sourceTree = "<group>"; };
+		5C90577D2B2894BE00EC157B /* CheckInLocationSearchSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInLocationSearchSheet.swift; sourceTree = "<group>"; };
 		5C9057812B2894BE00EC157B /* SettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		5C9057822B2894BE00EC157B /* AboutScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
 		5C9057832B2894BE00EC157B /* PrivacySettingsPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingsPage.swift; sourceTree = "<group>"; };
@@ -1071,7 +1071,7 @@
 		5C90577C2B2894BE00EC157B /* LocationSearch */ = {
 			isa = PBXGroup;
 			children = (
-				5C90577D2B2894BE00EC157B /* LocationSearchSheet.swift */,
+				5C90577D2B2894BE00EC157B /* CheckInLocationSearchSheet.swift */,
 			);
 			path = LocationSearch;
 			sourceTree = "<group>";
@@ -1905,7 +1905,7 @@
 				5C8FE4972BAA2EF80038869E /* AppGradient.swift in Sources */,
 				5CCEE2792B2C6CEA00F276DF /* CheckInCardHeader.swift in Sources */,
 				5CD3C0CE2B81384A0049E563 /* Date+Extension.swift in Sources */,
-				5C9058122B2894BE00EC157B /* LocationSearchSheet.swift in Sources */,
+				5C9058122B2894BE00EC157B /* CheckInLocationSearchSheet.swift in Sources */,
 				5CAADEF42B5C235D00D956C1 /* CompanyLogo.swift in Sources */,
 				5C07F2782B51EBB800D8740B /* ProfileShareLinkView.swift in Sources */,
 				5CD2EE122C349ACA009AA949 /* View+OpenOnTap.swift in Sources */,
