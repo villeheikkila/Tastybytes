@@ -52,7 +52,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> UISceneConfiguration {
         if let shortcutItem = options.shortcutItem {
             Task {
-                await quickActionActor.setSelectedQuickAction(shortcutItem)
+                await QuickActionActor.shared.setSelectedQuickAction(shortcutItem)
             }
         }
 
@@ -73,7 +73,7 @@ class SceneConfiguration: UIResponder, UIWindowSceneDelegate {
         completionHandler _: @escaping (Bool) -> Void
     ) {
         Task {
-            await quickActionActor.setSelectedQuickAction(shortcutItem)
+            await QuickActionActor.shared.setSelectedQuickAction(shortcutItem)
         }
     }
 }
@@ -110,15 +110,24 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     {
         let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
         Task {
-            await deviceTokenActor.setDeviceTokenForPusNotifications(deviceTokenString)
+            await DeviceTokenActor.shared.setDeviceTokenForPusNotifications(deviceTokenString)
         }
     }
 }
 
-// Actors to make passing values between AppDelegate and SwiftUI views safe without using shared singletons
-
 actor QuickActionActor {
-    var selectedQuickAction: QuickAction?
+    static let shared = QuickActionActor()
+
+    private init() {}
+
+    private var selectedQuickAction: QuickAction?
+
+    func readAndClearSelectedQuickAction() -> QuickAction? {
+        defer {
+            selectedQuickAction = nil
+        }
+        return selectedQuickAction
+    }
 
     func setSelectedQuickAction(_ newValue: UIApplicationShortcutItem?) async {
         if let name = newValue?.userInfo?["name"] as? String,
@@ -130,5 +139,3 @@ actor QuickActionActor {
         }
     }
 }
-
-let quickActionActor = QuickActionActor()

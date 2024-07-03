@@ -30,7 +30,7 @@ struct NotificationObserver<Content: View>: View {
                 notificationEnvironmentModel.unreadCount = unreadCount
             }
             .task {
-                if let deviceTokenForPusNotifications = await deviceTokenActor.deviceTokenForPusNotifications {
+                if let deviceTokenForPusNotifications = await DeviceTokenActor.shared.deviceTokenForPusNotifications {
                     await notificationEnvironmentModel.refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
                 }
             }
@@ -41,11 +41,13 @@ struct NotificationObserver<Content: View>: View {
 }
 
 actor DeviceTokenActor {
+    static let shared = DeviceTokenActor()
+
     var deviceTokenForPusNotifications: String?
+
+    private init() {}
 
     func setDeviceTokenForPusNotifications(_ newValue: String?) async {
         deviceTokenForPusNotifications = newValue
     }
 }
-
-let deviceTokenActor = DeviceTokenActor()
