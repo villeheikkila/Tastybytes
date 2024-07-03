@@ -7,7 +7,7 @@ extension View {
 }
 
 struct InjectSheetsModifier: ViewModifier {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
     @Binding var item: Sheet?
 
     func body(content: Content) -> some View {

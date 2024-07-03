@@ -2,43 +2,43 @@ import EnvironmentModels
 import SwiftUI
 
 public extension View {
-    func toasts(presenting: Binding<ToastEvent?>) -> some View {
-        modifier(ToastViewModifier(presenting: presenting))
+    func injectToasts(item: Binding<ToastEvent?>) -> some View {
+        modifier(ToastViewModifier(item: item))
     }
 }
 
 public struct ToastViewModifier: ViewModifier {
-    @Binding var presenting: ToastEvent?
+    @Binding var item: ToastEvent?
     @State private var workItem: DispatchWorkItem?
 
     @ViewBuilder
     public func body(content: Content) -> some View {
         content
             .overlay(ZStack {
-                if let presenting {
-                    Toast(type: presenting)
+                if let item {
+                    ToastView(type: item)
                         .onTapGesture {
-                            if presenting.tapToDismiss {
+                            if item.tapToDismiss {
                                 withAnimation(.spring) {
                                     workItem?.cancel()
-                                    self.presenting = nil
+                                    self.item = nil
                                     workItem = nil
                                 }
                             }
                         }
-                        .transition(AnyTransition.scale(scale: 0.8).combined(with: .opacity))
-                        .offset(y: presenting.offsetY)
+                        .transition(.scale(scale: 0.8).combined(with: .opacity))
+                        .offset(y: item.offsetY)
                 }
             }
-            .animation(.spring, value: presenting != nil))
-            .onChange(of: presenting) { _, presented in
+            .animation(.spring, value: item != nil))
+            .onChange(of: item) { _, presented in
                 if let presented {
                     if presented.duration > 0 {
                         workItem?.cancel()
 
                         let task = DispatchWorkItem {
                             withAnimation(.spring) {
-                                presenting = nil
+                                item = nil
                                 workItem = nil
                             }
                         }

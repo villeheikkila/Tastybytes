@@ -28,42 +28,10 @@ public final class Repository: RepositoryProtocol {
     public let imageEntity: ImageEntityRepository
 
     public init(supabaseURL: URL, supabaseKey: String, headers: [String: String]) {
-        let jsonDecoder = { () -> JSONDecoder in
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .custom { decoder in
-                let container = try decoder.singleValueContainer()
-                let string = try container.decode(String.self)
-
-                let supportedDateFormatters: [ISO8601DateFormatter] = [
-                    { () -> ISO8601DateFormatter in
-                        let formatter = ISO8601DateFormatter()
-                        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-                        return formatter
-                    }(),
-                    { () -> ISO8601DateFormatter in
-                        let formatter = ISO8601DateFormatter()
-                        formatter.formatOptions = [.withInternetDateTime]
-                        return formatter
-                    }(),
-                ]
-
-                for formatter in supportedDateFormatters {
-                    if let date = formatter.date(from: string) {
-                        return date
-                    }
-                }
-
-                throw DecodingError.dataCorruptedError(
-                    in: container, debugDescription: "Invalid date format: \(string)"
-                )
-            }
-            return decoder
-        }
-
         let client = SupabaseClient(
             supabaseURL: supabaseURL,
             supabaseKey: supabaseKey,
-            options: .init(db: .init(decoder: jsonDecoder()), auth: .init(flowType: .implicit), global: .init(headers: headers))
+            options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers))
         )
         appConfig = SupabaseAppConfigRepository(client: client)
         imageEntity = SupabaseImageEntityRepository(client: client)

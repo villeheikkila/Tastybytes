@@ -148,7 +148,7 @@ public struct AlertError: Identifiable, Equatable {
         self.retryLabel = retryLabel
     }
 
-    var alert: Alert {
+    public var alert: Alert {
         if let retry {
             .init(title: title, message: message, primaryButton: .default(Text(retryLabel ?? "Retry"), action: retry), secondaryButton: .cancel())
         } else {
@@ -160,26 +160,6 @@ public struct AlertError: Identifiable, Equatable {
         lhs.id == rhs.id &&
             lhs.title == rhs.title &&
             lhs.message == rhs.message
-    }
-}
-
-struct AlertErrorModifier: ViewModifier {
-    @Binding var alertError: AlertError?
-
-    func body(content: Content) -> some View {
-        content
-            .sensoryFeedback(.error, trigger: alertError) { _, newValue in
-                newValue != nil
-            }
-            .alert(item: $alertError) { error in
-                error.alert
-            }
-    }
-}
-
-public extension View {
-    func alertError(_ alertError: Binding<AlertError?>) -> some View {
-        modifier(AlertErrorModifier(alertError: alertError))
     }
 }
 

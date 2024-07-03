@@ -15,7 +15,7 @@ struct ProductMutationView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.isPresentedInSheet) var isPresentedInSheet
+    @Environment(\.isPresentedInSheet) private var isPresentedInSheet
     @FocusState private var focusedField: Focusable?
     @State private var primaryActionTask: Task<Void, Never>?
     // Sheet status

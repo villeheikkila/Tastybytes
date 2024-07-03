@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ListRowBackgroundModifier: ViewModifier {
-    @Environment(\.isPresentedInSheet) var isPresentedInSheet
+    @Environment(\.isPresentedInSheet) private var isPresentedInSheet
     @Environment(\.colorScheme) private var colorScheme
 
     var color: Color {

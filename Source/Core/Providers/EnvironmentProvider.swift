@@ -7,7 +7,7 @@ import SwiftUI
 import TipKit
 
 struct EnvironmentProvider<Content: View>: View {
-    @AppStorage(.colorScheme) var colorScheme: String = "system"
+    @AppStorage(.colorScheme) private var colorScheme: String = "system"
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
     @State private var notificationEnvironmentModel: NotificationEnvironmentModel
     @State private var appEnvironmentModel: AppEnvironmentModel
@@ -41,11 +41,11 @@ struct EnvironmentProvider<Content: View>: View {
             .environment(imageUploadEnvironmentModel)
             .environment(locationEnvironmentModel)
             .environment(subscriptionEnvironmentModel)
-            .alertError($appEnvironmentModel.alertError)
-            .alertError($notificationEnvironmentModel.alertError)
-            .alertError($profileEnvironmentModel.alertError)
-            .alertError($appEnvironmentModel.alertError)
-            .alertError($friendEnvironmentModel.alertError)
+            //.alertError($appEnvironmentModel.alertError)
+            //.alertError($notificationEnvironmentModel.alertError)
+            //.alertError($profileEnvironmentModel.alertError)
+            //.alertError($appEnvironmentModel.alertError)
+            //.alertError($friendEnvironmentModel.alertError)
             .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
             .task {
                 try? Tips.configure([.displayFrequency(.daily)])

@@ -65,6 +65,7 @@ struct ProfileCheckInsList: View {
 struct ProfileCheckInsListInnerView: View {
     private let logger = Logger(category: "ProfileCheckInsListInnerView")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
     @State private var state: ScreenState = .loading
@@ -107,7 +108,11 @@ struct ProfileCheckInsListInnerView: View {
         .toolbar {
             filter.toolbar
         }
-        .alertError($checkInLoader.alertError)
+        .onChange(of: checkInLoader.alertError) { _, alertError in
+            if let alertError {
+                router.open(.alert(alertError))
+            }
+        }
         .initialTask {
             await checkInLoader.loadData()
             state = .populated

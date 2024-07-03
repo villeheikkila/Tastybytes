@@ -12,7 +12,7 @@ struct AboutScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    // @Environment(\.requestReview) var requestReview
+    // @Environment(\.requestReview) private var requestReview
     @State private var email: Email = .init()
 
     var body: some View {

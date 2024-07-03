@@ -8,7 +8,7 @@ import SwiftUI
 
 struct SignInWithAppleView: View {
     private let logger = Logger(category: "SignInWithAppleView")
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @State private var nonce: String?

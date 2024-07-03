@@ -19,7 +19,8 @@ struct NotificationObserver<Content: View>: View {
         content()
             .onChange(of: phase) { _, newPhase in
                 if newPhase == .active {
-                    Task { await notificationEnvironmentModel.getUnreadCount()
+                    Task { 
+                        await notificationEnvironmentModel.getUnreadCount()
                     }
                 }
             }

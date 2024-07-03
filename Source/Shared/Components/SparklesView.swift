@@ -12,7 +12,7 @@ public struct SparklesView: View {
 }
 
 struct SparkleView: View {
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     @State private var timer = Timer.publish(every: 1, on: .current, in: .common).autoconnect()
     @State private var rotation: CGFloat = 0
     @State private var position = CGPoint.zero

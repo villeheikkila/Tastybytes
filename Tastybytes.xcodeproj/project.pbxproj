@@ -235,9 +235,10 @@
 		5CCEE2832B2CA5D600F276DF /* CheckInCardTaggedFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE2892B2D0C0100F276DF /* CheckInListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5CD1F0B32B9E4FD000C76F0C /* ToastViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5CD1F0B32B9E4FD000C76F0C /* View+InjectToasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE030E02B9E4E9200E119E4 /* View+InjectToasts.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD1F0B42B9E4FD100C76F0C /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE030DF2B9E4E9200E119E4 /* ToastView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD2EE122C349ACA009AA949 /* View+OpenOnTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE112C349ACA009AA949 /* View+OpenOnTap.swift */; };
+		5CD2EE162C35369B009AA949 /* View+InjectAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE152C35369B009AA949 /* View+InjectAlerts.swift */; };
 		5CD3C0CE2B81384A0049E563 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0CD2B81384A0049E563 /* Date+Extension.swift */; };
 		5CD3C0D72B814B400049E563 /* CreateQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D62B814B400049E563 /* CreateQRCodeView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0DB2B814B790049E563 /* RatingPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0DA2B814B790049E563 /* RatingPickerView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -532,6 +533,7 @@
 		5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContainer.swift; sourceTree = "<group>"; };
 		5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListCard.swift; sourceTree = "<group>"; };
 		5CD2EE112C349ACA009AA949 /* View+OpenOnTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OpenOnTap.swift"; sourceTree = "<group>"; };
+		5CD2EE152C35369B009AA949 /* View+InjectAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+InjectAlerts.swift"; sourceTree = "<group>"; };
 		5CD3C0CD2B81384A0049E563 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		5CD3C0D02B814ACD0049E563 /* EmptyActivityFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyActivityFeedView.swift; sourceTree = "<group>"; };
 		5CD3C0D22B814ACD0049E563 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
@@ -550,7 +552,7 @@
 		5CD9B1892BDEB2BF00A86387 /* ProfileCheckInsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCheckInsList.swift; sourceTree = "<group>"; };
 		5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTopLocationsScreen.swift; sourceTree = "<group>"; };
 		5CE030DF2B9E4E9200E119E4 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
+		5CE030E02B9E4E9200E119E4 /* View+InjectToasts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+InjectToasts.swift"; sourceTree = "<group>"; };
 		5CE10CD82C0BCA8800B8AE24 /* List+background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+background.swift"; sourceTree = "<group>"; };
 		5CE10CDA2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsPresentedInsideSheet.swift"; sourceTree = "<group>"; };
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
@@ -1252,8 +1254,6 @@
 			children = (
 				5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */,
 				5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */,
-				5CE030DF2B9E4E9200E119E4 /* ToastView.swift */,
-				5CE030E02B9E4E9200E119E4 /* ToastViewModifier.swift */,
 				5CD3C0DC2B814B910049E563 /* RatingView.swift */,
 				5CD3C0D62B814B400049E563 /* CreateQRCodeView.swift */,
 				5CD3C0DA2B814B790049E563 /* RatingPickerView.swift */,
@@ -1311,6 +1311,8 @@
 		5C9057D72B2894BE00EC157B /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				5CD2EE172C353907009AA949 /* Toasts */,
+				5CD2EE142C353693009AA949 /* Alerts */,
 				5CD741B02C084B5000BD90A2 /* FullScreenCovers */,
 				5C39076D2B322FD00036253E /* Sheets */,
 				5C90577F2B2894BE00EC157B /* Screens */,
@@ -1499,6 +1501,23 @@
 				5C511D842BA792DF00F95290 /* CheckInListLoadingIndicator.swift */,
 			);
 			path = CheckInList;
+			sourceTree = "<group>";
+		};
+		5CD2EE142C353693009AA949 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				5CD2EE152C35369B009AA949 /* View+InjectAlerts.swift */,
+			);
+			path = Alerts;
+			sourceTree = "<group>";
+		};
+		5CD2EE172C353907009AA949 /* Toasts */ = {
+			isa = PBXGroup;
+			children = (
+				5CE030DF2B9E4E9200E119E4 /* ToastView.swift */,
+				5CE030E02B9E4E9200E119E4 /* View+InjectToasts.swift */,
+			);
+			path = Toasts;
 			sourceTree = "<group>";
 		};
 		5CD3C0CC2B8138420049E563 /* Extensions */ = {
@@ -1774,6 +1793,7 @@
 				5C90583A2B2894BE00EC157B /* ProductFeedScreen.swift in Sources */,
 				5C2B25D62C3467AD00CFDAFB /* WebViewSheet.swift in Sources */,
 				5C68D76B2B965FBE00D88229 /* ReportEntity+Extension.swift in Sources */,
+				5CD2EE162C35369B009AA949 /* View+InjectAlerts.swift in Sources */,
 				5C24E1C62B5D1F83003AB7C8 /* CheckInLeaveComment.swift in Sources */,
 				5CAADF052B5C534000D956C1 /* DIscoverScreen+Extension.swift in Sources */,
 				5C9058182B2894BE00EC157B /* AppIconScreen.swift in Sources */,
@@ -1900,7 +1920,7 @@
 				5C9058212B2894BE00EC157B /* FriendRequestNotificationView.swift in Sources */,
 				5CD9B1842BDEA98E00A86387 /* CheckInsTimeBucket.swift in Sources */,
 				5C90581A2B2894BE00EC157B /* AccountSettingsScreen.swift in Sources */,
-				5CD1F0B32B9E4FD000C76F0C /* ToastViewModifier.swift in Sources */,
+				5CD1F0B32B9E4FD000C76F0C /* View+InjectToasts.swift in Sources */,
 				5CAADEFA2B5C480100D956C1 /* DiscoverProfileResults.swift in Sources */,
 				5C9058192B2894BE00EC157B /* ProfileSettingsScreen.swift in Sources */,
 				5C9057F92B2894BE00EC157B /* ProductLogoSheet.swift in Sources */,

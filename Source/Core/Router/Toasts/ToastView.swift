@@ -2,7 +2,7 @@
 import EnvironmentModels
 import SwiftUI
 
-public struct Toast: View {
+public struct ToastView: View {
     let type: ToastEvent.ToastType
     let title: LocalizedStringKey?
     let subTitle: LocalizedStringKey?

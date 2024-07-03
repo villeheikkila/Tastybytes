@@ -8,7 +8,7 @@ import SwiftUI
 struct MainApp: App {
     private let logger = Logger(category: "MainApp")
     #if !os(watchOS)
-        @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+        @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     #endif
     private let infoPlist: InfoPlist
     private let repository: Repository

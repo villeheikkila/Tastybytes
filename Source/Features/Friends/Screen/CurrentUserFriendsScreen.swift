@@ -173,16 +173,16 @@ struct CurrentUserFriendListRow: View {
         }
     }
 
-    var deleteFriendButton: some View {
+    private var deleteFriendButton: some View {
         Button(
             "labels.delete",
             systemImage: "person.fill.xmark",
-            role: .destructive,
             action: { showFriendDeleteConfirmation = true }
         )
+        .tint(.red)
     }
 
-    var blockFriendButton: some View {
+    private var blockFriendButton: some View {
         ProgressButton(
             "friends.block.label",
             systemImage: "person.2.slash",
