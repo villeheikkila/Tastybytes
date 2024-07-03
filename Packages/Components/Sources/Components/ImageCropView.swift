@@ -1,6 +1,6 @@
 
-import BrightroomEngine
-import BrightroomUI
+internal import BrightroomEngine
+internal import BrightroomUI
 import SwiftUI
 import UIKit
 

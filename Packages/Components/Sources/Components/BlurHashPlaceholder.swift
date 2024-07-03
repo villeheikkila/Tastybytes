@@ -1,4 +1,4 @@
-import BlurHashViews
+internal import BlurHashViews
 import Extensions
 import Models
 import SwiftUI
