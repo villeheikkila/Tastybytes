@@ -53,7 +53,7 @@ enum Sheet: Identifiable, Equatable {
     case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
     case categoryPickerSheet(category: Binding<Int?>)
-    case mergeLocationSheet(location: Location)
+    case mergeLocationSheet(location: Location, onMerge: ((_ newLocation: Location) async -> Void)? = nil)
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
@@ -125,8 +125,8 @@ enum Sheet: Identifiable, Equatable {
             CategoryPickerSheet(category: category)
         case .subscribe:
             SubscriptionSheet()
-        case let .mergeLocationSheet(location: location):
-            MergeLocationSheet(location: location)
+        case let .mergeLocationSheet(location, onMerge):
+            MergeLocationSheet(location: location, onMerge: onMerge)
         case let .sendEmail(email, callback):
             SendEmailView(email: email, callback: callback)
                 .ignoresSafeArea(edges: .bottom)
@@ -137,7 +137,7 @@ enum Sheet: Identifiable, Equatable {
         case .profileDeleteConfirmation:
             AccountDeletedScreen()
         case let .locationEdit(location, onEdit, onDelete):
-            LocationEditSheet(location: location, onEdit: onEdit, onDelete: onDelete)
+            LocationAdminSheet(location: location, onEdit: onEdit, onDelete: onDelete)
         case let .webView(link):
             WebViewSheet(link: link)
         case let .locationSearch(initialLocation, initialSearchTerm, onSelect):
@@ -239,7 +239,7 @@ enum Sheet: Identifiable, Equatable {
             "category_picker"
         case .subscribe:
             "support"
-        case let .mergeLocationSheet(location):
+        case let .mergeLocationSheet(location, _):
             "location_management_\(location.hashValue)"
         case .sendEmail:
             "send_email"

@@ -30,7 +30,7 @@
 		5C24E1D52B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24E1D42B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C2899DD2BA8ACA50099C976 /* CheckInDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2899DC2BA8ACA50099C976 /* CheckInDateView.swift */; };
 		5C2B25D02C33C93900CFDAFB /* LocationManagementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2B25CF2C33C93900CFDAFB /* LocationManagementScreen.swift */; };
-		5C2B25D22C33CC5D00CFDAFB /* LocationEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2B25D12C33CC5D00CFDAFB /* LocationEditSheet.swift */; };
+		5C2B25D22C33CC5D00CFDAFB /* LocationAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2B25D12C33CC5D00CFDAFB /* LocationAdminSheet.swift */; };
 		5C2B25D62C3467AD00CFDAFB /* WebViewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2B25D52C3467AD00CFDAFB /* WebViewSheet.swift */; };
 		5C39076A2B322D0C0036253E /* BrandScreenProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C3B6E8E2B81502C005C2F62 /* ScanTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -325,7 +325,7 @@
 		5C24E1D42B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandSheetCreateSection.swift; sourceTree = "<group>"; };
 		5C2899DC2BA8ACA50099C976 /* CheckInDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInDateView.swift; sourceTree = "<group>"; };
 		5C2B25CF2C33C93900CFDAFB /* LocationManagementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagementScreen.swift; sourceTree = "<group>"; };
-		5C2B25D12C33CC5D00CFDAFB /* LocationEditSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationEditSheet.swift; sourceTree = "<group>"; };
+		5C2B25D12C33CC5D00CFDAFB /* LocationAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAdminSheet.swift; sourceTree = "<group>"; };
 		5C2B25D52C3467AD00CFDAFB /* WebViewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSheet.swift; sourceTree = "<group>"; };
 		5C3907692B322D0C0036253E /* BrandScreenProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreenProductRow.swift; sourceTree = "<group>"; };
 		5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextField.swift; sourceTree = "<group>"; };
@@ -640,7 +640,7 @@
 			isa = PBXGroup;
 			children = (
 				5C2B25CF2C33C93900CFDAFB /* LocationManagementScreen.swift */,
-				5C2B25D12C33CC5D00CFDAFB /* LocationEditSheet.swift */,
+				5C2B25D12C33CC5D00CFDAFB /* LocationAdminSheet.swift */,
 			);
 			path = LocationManagement;
 			sourceTree = "<group>";
@@ -1923,7 +1923,7 @@
 				5CAADF102B5C634E00D956C1 /* BrandLogo.swift in Sources */,
 				5C974CCF2C04E9E600CFE98A /* LocationInputButton.swift in Sources */,
 				5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */,
-				5C2B25D22C33CC5D00CFDAFB /* LocationEditSheet.swift in Sources */,
+				5C2B25D22C33CC5D00CFDAFB /* LocationAdminSheet.swift in Sources */,
 				5CA4AC512B58F5D300E17629 /* PickerLinkRow.swift in Sources */,
 				5C9058212B2894BE00EC157B /* FriendRequestNotificationView.swift in Sources */,
 				5CD9B1842BDEA98E00A86387 /* CheckInsTimeBucket.swift in Sources */,

@@ -18,14 +18,20 @@ struct MergeLocationSheet: View {
     @State private var searchTask: Task<Void, Never>?
 
     let location: Location
+    let onMerge: ((_ newLocation: Location) async -> Void)?
+
+    init(location: Location, onMerge: ((_: Location) async -> Void)? = nil) {
+        self.location = location
+        self.onMerge = onMerge
+    }
 
     var shownLocations: [Location] {
         locations.filter { $0.id != location.id }
     }
 
     var body: some View {
-        List(shownLocations) { location in
-            MergeLocationSheetRow(location: location, mergeLocation: mergeLocation)
+        List(shownLocations) { mergeToLocation in
+            MergeLocationSheetRow(location: mergeToLocation, mergeToLocation: location, mergeLocation: mergeLocation)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
@@ -49,6 +55,9 @@ struct MergeLocationSheet: View {
         switch await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
+            if let onMerge {
+                await onMerge(to)
+            }
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -71,21 +80,22 @@ struct MergeLocationSheet: View {
 }
 
 struct MergeLocationSheetRow: View {
-    @State private var mergeToLocation: Location?
+    @State private var showMergeToConfirmation = false
 
     let location: Location
+    let mergeToLocation: Location
     let mergeLocation: (_ location: Location) async -> Void
 
     var body: some View {
-        LocationRow(location: location, currentLocation: nil, onSelect: { location in mergeToLocation = location })
+        LocationRow(location: location, currentLocation: nil, onSelect: { _ in showMergeToConfirmation = true })
             .confirmationDialog(
                 "location.merge.confirmation.description",
-                isPresented: $mergeToLocation.isNotNull(),
+                isPresented: $showMergeToConfirmation,
                 titleVisibility: .visible,
-                presenting: mergeToLocation
+                presenting: location
             ) { presenting in
                 ProgressButton(
-                    "location.merge.confirmation.label \(location.name) \(presenting.name)",
+                    "location.merge.confirmation.label \(mergeToLocation.name) \(presenting.name)",
                     role: .destructive
                 ) {
                     await mergeLocation(presenting)

@@ -1,10 +1,11 @@
 import Components
+import MapKit
 import Models
 import OSLog
 import Repositories
 import SwiftUI
 
-struct LocationEditSheet: View {
+struct LocationAdminSheet: View {
     let logger = Logger(category: "LocationEditSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(Repository.self) private var repository
@@ -23,7 +24,7 @@ struct LocationEditSheet: View {
 
     var body: some View {
         Form {
-            Section("location.location.section.title") {
+            Section("location.admin.section.location") {
                 HStack {
                     if let coordinate = location.location?.coordinate {
                         MapThumbnail(location: location, coordinate: coordinate, distance: nil)
@@ -39,7 +40,7 @@ struct LocationEditSheet: View {
                 .openOnTap(.screen(.location(location)))
             }
 
-            Section("location.creation.section.title") {
+            Section("location.admin.section.creator") {
                 HStack {
                     if let createdBy = location.createdBy {
                         Avatar(profile: createdBy)
@@ -63,7 +64,7 @@ struct LocationEditSheet: View {
                 }
             }
 
-            Section("location.details.section.title") {
+            Section("location.admin.section.details") {
                 VStack {
                     LabeledContent("labels.id", value: "\(location.id)")
                         .textSelection(.enabled)
@@ -72,8 +73,35 @@ struct LocationEditSheet: View {
                         .textSelection(.enabled)
                 }
             }
+
+            Section {
+                RouterLink("location.admin.changeLocation.label", systemImage: "map.circle", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
+                    Task {
+                        await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
+                    }
+                })))
+                RouterLink("location.admin.merge.label", systemImage: "arrow.triangle.merge", open: .sheet(.mergeLocationSheet(location: location, onMerge: { newLocation in
+                    await onDelete(location)
+                    withAnimation {
+                        location = newLocation
+                    }
+                })))
+            }
+
+            Section {
+                Button("labels.delete", systemImage: "trash", role: .destructive) {
+                    showDeleteConfirmation = true
+                }
+                .tint(.red)
+                .confirmationDialog("labels.delete", isPresented: $showDeleteConfirmation, presenting: location) { location in
+                    ProgressButton("labels.delete", role: .destructive, action: {
+                        await deleteLocation(location)
+                    })
+                }
+            }
         }
-        .navigationTitle("admin.locations.edit.location.title")
+        .navigationTitle("location.admin.location.title")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
@@ -81,21 +109,6 @@ struct LocationEditSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
-        ToolbarItemGroup(placement: .primaryAction) {
-            RouterLink("admin.location.edit.attachLocation.label", systemImage: "map.circle", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
-                Task {
-                    await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
-                }
-            })))
-            Button("labels.delete", systemImage: "trash") {
-                showDeleteConfirmation = true
-            }
-            .confirmationDialog("labels.delete", isPresented: $showDeleteConfirmation, presenting: location) { location in
-                ProgressButton("labels.delete", role: .destructive, action: {
-                    await deleteLocation(location)
-                })
-            }
-        }
     }
 
     public func updateLocation(_ location: Location) async {

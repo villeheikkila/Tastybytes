@@ -269,12 +269,6 @@
         }
       }
     },
-    "admin.location.edit.attachLocation.label" : {
-
-    },
-    "admin.locations.edit.location.title" : {
-
-    },
     "admin.locations.title" : {
       "localizations" : {
         "en" : {
@@ -2716,8 +2710,65 @@
         }
       }
     },
-    "location.creation.section.title" : {
-
+    "location.admin.changeLocation.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Location"
+          }
+        }
+      }
+    },
+    "location.admin.location.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Location"
+          }
+        }
+      }
+    },
+    "location.admin.merge.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge Locations"
+          }
+        }
+      }
+    },
+    "location.admin.section.creator" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creation"
+          }
+        }
+      }
+    },
+    "location.admin.section.details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        }
+      }
+    },
+    "location.admin.section.location" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location"
+          }
+        }
+      }
     },
     "location.delete.confirmation.description" : {
       "localizations" : {
@@ -2739,9 +2790,6 @@
         }
       }
     },
-    "location.details.section.title" : {
-
-    },
     "location.distance %@" : {
       "localizations" : {
         "en" : {
@@ -2762,11 +2810,15 @@
         }
       }
     },
-    "location.location.section.title" : {
-
-    },
     "location.mapKitIdentifier.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MapKit ID"
+          }
+        }
+      }
     },
     "location.merge.confirmation.description" : {
       "localizations" : {

@@ -30,7 +30,7 @@ struct LocationSearchSheet: View {
         initialLocation?.location?.coordinate ?? CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
     }
 
-    private let radius: CLLocationDistance = 2000
+    private let radius: CLLocationDistance = 5000
 
     var body: some View {
         List {
@@ -88,7 +88,7 @@ struct LocationSearchSheet: View {
     {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
-        request.resultTypes = .pointOfInterest
+        request.resultTypes = [.pointOfInterest, .physicalFeature]
         request.region = .init(center: center, latitudinalMeters: radius, longitudinalMeters: radius)
         let search = MKLocalSearch(request: request)
         let response = try await search.start()

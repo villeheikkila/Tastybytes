@@ -6,7 +6,6 @@ import SwiftUI
 
 struct CheckInCardContainer<Content: View>: View {
     @Environment(Router.self) private var router
-    @Environment(\.colorScheme) private var colorScheme
 
     let checkIn: CheckIn
     let loadedFrom: CheckInCard.LoadedFrom
