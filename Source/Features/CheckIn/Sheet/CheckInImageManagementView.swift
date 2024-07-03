@@ -31,17 +31,15 @@ struct CheckInImageManagementView: View {
         ScrollView(.horizontal) {
             LazyHStack(alignment: .center, spacing: 3) {
                 ForEach(images) { image in
-                    RemoteImage(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
-                        if let image = state.image {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .clipShape(.rect(cornerRadius: 8))
-                                .frame(height: 150)
-                                .shadow(radius: 1)
-                                .accessibilityLabel("checkIn.image.label")
-                        }
-                    }
+                    RemoteImage(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .clipShape(.rect(cornerRadius: 8))
+                            .frame(height: 150)
+                            .shadow(radius: 1)
+                            .accessibilityLabel("checkIn.image.label")
+                    })
                     .overlayDeleteButton(action: {
                         await deleteImage(image)
                     })

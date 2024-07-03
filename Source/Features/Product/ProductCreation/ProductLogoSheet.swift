@@ -32,18 +32,16 @@ struct ProductLogoSheet: View {
                     photoLibrary: .shared()
                 ) {
                     if let logoUrl = product.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                        RemoteImage(url: logoUrl) { state in
-                            if let image = state.image {
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 52, height: 52)
-                                    .accessibility(hidden: true)
-                            } else {
-                                Image(systemName: "photo")
-                                    .accessibility(hidden: true)
-                            }
-                        }
+                        RemoteImage(url: logoUrl, content: { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 52, height: 52)
+                                .accessibility(hidden: true)
+                        }, progress: {
+                            Image(systemName: "photo")
+                                .accessibility(hidden: true)
+                        })
                     } else {
                         Image(systemName: "photo")
                             .accessibility(hidden: true)

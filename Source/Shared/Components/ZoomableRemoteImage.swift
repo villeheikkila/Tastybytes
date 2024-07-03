@@ -28,29 +28,29 @@ struct ZoomableRemoteImage: View {
 
     var body: some View {
         GeometryReader { geometry in
-            RemoteImage(url: imageUrl) { state in
-                let height = geometry.size.height * 0.8
-                let width = geometry.size.width * 0.8
-                if let image = state.image {
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .cornerRadius(8)
-                        .scaleEffect(scale)
-                        .position(location ?? .init(x: geometry.size.width / 2, y: geometry.size.height / 2))
-                        .simultaneousGesture(zoomGesture)
-                        .simultaneousGesture(dragGesture)
-                        .frame(width: width, height: height)
-                        .onTapGesture(count: 2) {
-                            scale = 1
-                            location = .init(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                        }
-                } else if let blurHash {
+            let height = geometry.size.height * 0.8
+            let width = geometry.size.width * 0.8
+            RemoteImage(url: imageUrl, content: { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .cornerRadius(8)
+                    .scaleEffect(scale)
+                    .position(location ?? .init(x: geometry.size.width / 2, y: geometry.size.height / 2))
+                    .simultaneousGesture(zoomGesture)
+                    .simultaneousGesture(dragGesture)
+                    .frame(width: width, height: height)
+                    .onTapGesture(count: 2) {
+                        scale = 1
+                        location = .init(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                    }
+            }, progress: {
+                if let blurHash {
                     BlurHashPlaceholder(blurHash: blurHash, height: height, width: width)
                 } else {
                     ProgressView()
                 }
-            }
+            })
         }
     }
 }

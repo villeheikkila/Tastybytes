@@ -19,13 +19,11 @@ public struct AvatarView: View {
 
     public var body: some View {
         if let avatarUrl {
-            RemoteImage(url: avatarUrl) { state in
-                if let image = state.image {
-                    image.resizable()
-                } else {
-                    ProgressView()
-                }
-            }
+            RemoteImage(url: avatarUrl, content: { image in
+                image.resizable()
+            }, progress: {
+                ProgressView()
+            })
             .clipShape(Circle())
             .aspectRatio(contentMode: .fill)
             .frame(width: avatarSize.size, height: avatarSize.size)

@@ -1,18 +1,26 @@
 import Models
-import NukeUI
+internal import NukeUI
 import SwiftUI
 
-public struct RemoteImage<Content: View>: View {
+public struct RemoteImage<Content: View, LoadingContent: View>: View {
     let url: URL?
-    let content: (LazyImageState) -> Content
+    let content: (_: Image) -> Content
+    let progress: () -> LoadingContent
 
-    public init(url: URL?, @ViewBuilder content: @escaping (LazyImageState) -> Content) {
+    public init(url: URL?, @ViewBuilder content: @escaping (_: Image) -> Content, @ViewBuilder progress: @escaping () -> LoadingContent = { EmptyView() }) {
         self.url = url
         self.content = content
+        self.progress = progress
     }
 
     public var body: some View {
-        LazyImage(url: url, content: content)
+        LazyImage(url: url) { state in
+            if let image = state.image {
+                content(image)
+            } else {
+                progress()
+            }
+        }
     }
 }
 

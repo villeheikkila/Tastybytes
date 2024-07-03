@@ -145,13 +145,11 @@ struct EditLogoSection: View {
     var body: some View {
         Section {
             ForEach(logos) { logo in
-                RemoteImage(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)) { state in
-                    if let image = state.image {
-                        image.resizable()
-                    } else {
-                        ProgressView()
-                    }
-                }
+                RemoteImage(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
+                    image.resizable()
+                }, progress: {
+                    ProgressView()
+                })
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 120, height: 120)
                 .accessibility(hidden: true)

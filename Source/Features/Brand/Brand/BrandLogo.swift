@@ -11,13 +11,11 @@ struct BrandLogo: View {
     var body: some View {
         Group {
             if let logoUrl = brand.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                RemoteImage(url: logoUrl) { state in
-                    if let image = state.image {
-                        image.resizable()
-                    } else {
-                        ProgressView()
-                    }
-                }
+                RemoteImage(url: logoUrl, content: { image in
+                    image.resizable()
+                }, progress: {
+                    ProgressView()
+                })
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size, height: size)
                 .accessibility(hidden: true)
