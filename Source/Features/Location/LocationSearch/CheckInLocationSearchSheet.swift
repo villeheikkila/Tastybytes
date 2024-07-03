@@ -218,10 +218,6 @@ struct LocationRow: View {
                     Text(title)
                         .foregroundColor(.secondary)
                 }
-                if let title = location.mapKitIdentifier {
-                    Text(title)
-                        .foregroundColor(.secondary)
-                }
                 if let distance {
                     Text(distance, format: .measurement(width: .narrow))
                         .font(.caption)
