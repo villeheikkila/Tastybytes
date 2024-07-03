@@ -75,8 +75,7 @@ struct CategoryServingStyleSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
-            logger.error(
-                "Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }
@@ -96,9 +95,9 @@ struct CategoryServingStyleRow: View {
             Button(
                 "labels.delete",
                 systemImage: "trash",
-                role: .destructive,
                 action: { showDeleteServingStyleConfirmation = true }
             )
+            .tint(.red)
         }
         .confirmationDialog(
             "servingStyle.deleteWarning.title",

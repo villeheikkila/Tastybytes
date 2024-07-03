@@ -138,9 +138,9 @@ struct ServingStyleManagementRow: View {
             Button(
                 "labels.delete",
                 systemImage: "trash",
-                role: .destructive,
                 action: { showDeleteServingStyleConfirmation = true }
             )
+            .tint(.red)
         }
         .confirmationDialog(
             "servingStyle.deleteConfirmation.title",
