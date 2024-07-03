@@ -2720,7 +2720,7 @@
         }
       }
     },
-    "location.admin.location.title" : {
+    "location.admin.location.navigationTitle" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2850,7 +2850,7 @@
         }
       }
     },
-    "location.mergeTo.navigationTitle." : {
+    "location.mergeTo.navigationTitle" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2923,8 +2923,15 @@
     "location.shareLink.subject" : {
 
     },
-    "locations.search.title" : {
-
+    "locations.search.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search Locations"
+          }
+        }
+      }
     },
     "logos.edit.title" : {
       "localizations" : {
@@ -4267,7 +4274,14 @@
       }
     },
     "servingStyle.deleteConfirmation.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete %@ serving style? All check-ins with this flavor will lose the value"
+          }
+        }
+      }
     },
     "servingStyle.deleteConfirmation.title" : {
 

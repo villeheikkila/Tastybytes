@@ -50,7 +50,7 @@ struct LocationSearchSheet: View {
                 await loadInitialData()
             }
         }
-        .navigationTitle("locations.search.title")
+        .navigationTitle("locations.search.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent

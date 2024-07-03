@@ -38,7 +38,8 @@ struct MergeLocationSheet: View {
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: "location.mergeTo.search.placeholder")
         .disableAutocorrection(true)
-        .navigationTitle("location.mergeTo.navigationTitle.")
+        .navigationTitle("location.mergeTo.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }

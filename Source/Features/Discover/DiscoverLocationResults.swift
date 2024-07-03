@@ -6,8 +6,25 @@ struct DiscoverLocationResults: View {
 
     var body: some View {
         ForEach(locations) { location in
-            RouterLink(location.name, open: .screen(.location(location)))
-                .id(location.id)
+            RouterLink(open: .screen(.location(location))) {
+                HStack {
+                    if let coordinate = location.location?.coordinate {
+                        MapThumbnail(location: location, coordinate: coordinate, distance: nil)
+                    }
+                    VStack(alignment: .leading) {
+                        Text(location.name)
+                        if let title = location.title {
+                            Text(title)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .contentShape(.rect)
+                    .accessibilityAddTraits(.isButton)
+                }
+
+            }
+            .listRowBackground(Color.clear)
+            .id(location.id)
         }
     }
 }

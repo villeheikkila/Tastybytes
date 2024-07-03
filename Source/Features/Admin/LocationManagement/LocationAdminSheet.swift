@@ -100,7 +100,7 @@ struct LocationAdminSheet: View {
                 }
             }
         }
-        .navigationTitle("location.admin.location.title")
+        .navigationTitle("location.admin.location.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
