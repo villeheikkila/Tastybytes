@@ -232,7 +232,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
             let path = "\(userId.uuidString.lowercased())/\(fileName)"
 
-            _ = try await client
+            try await client
                 .storage
                 .from(.checkIns)
                 .upload(path: path, file: data, options: .init(cacheControl: "max-age=3600", contentType: "image/jpeg"))

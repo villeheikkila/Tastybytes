@@ -6,7 +6,7 @@ import SwiftUI
 
 struct FlavorSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @Binding var pickedFlavors: [Flavor]
     @State private var searchTerm = ""
@@ -51,8 +51,7 @@ struct FlavorSheet: View {
         .onChange(of: pickedFlavors) { oldValue, newValue in
             if newValue.count > maxFlavors {
                 pickedFlavors = pickedFlavors.removing(newValue.addedValues(oldValue))
-                feedbackEnvironmentModel.toggle(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)"))
-                return
+                router.open(.toast(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)")))
             }
         }
         .toolbar {

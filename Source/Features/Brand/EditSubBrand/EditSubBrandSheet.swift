@@ -98,7 +98,7 @@ struct EditSubBrandSheet: View {
     func editSubBrand() async {
         switch await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName))) {
         case let .success(updatedSubBrand):
-            feedbackEnvironmentModel.toggle(.success("subBrand.updated.toast"))
+            router.open(.toast(.success("subBrand.updated.toast")))
             let updatedSubBrand = subBrand.copyWith(name: updatedSubBrand.name)
             await onUpdate(updatedSubBrand)
         case let .failure(error):

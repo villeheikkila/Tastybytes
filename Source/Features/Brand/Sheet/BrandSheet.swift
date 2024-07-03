@@ -10,7 +10,6 @@ struct BrandSheet: View {
     private let logger = Logger(category: "BrandSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
@@ -83,7 +82,7 @@ struct BrandSheet: View {
     func createNewBrand() async {
         switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
         case let .success(brandWithSubBrands):
-            feedbackEnvironmentModel.toggle(.success("brand.created.toast"))
+            router.open(.toast(.success("brand.created.toast")))
             if mode == .new {
                 router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
             }

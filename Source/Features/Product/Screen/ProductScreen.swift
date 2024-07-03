@@ -322,7 +322,7 @@ struct ProductInnerScreen: View {
     func addBarcodeToProduct(_ barcode: Barcode) async {
         switch await repository.productBarcode.addToProduct(product: product, barcode: barcode) {
         case .success:
-            feedbackEnvironmentModel.toggle(.success("bracode.add.success.toast"))
+            router.open(.toast(.success("bracode.add.success.toast")))
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init(title: "barcode.error.failedToAdd.title", retryLabel: "labels.retry", retry: {

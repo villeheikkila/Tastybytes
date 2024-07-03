@@ -60,7 +60,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let fileName = "\(companyId)_\(Date.now.timeIntervalSince1970).jpeg"
 
-            _ = try await client
+            try await client
                 .storage
                 .from(.companyLogos)
                 .upload(path: fileName, file: data, options: .init(contentType: "image/jpeg"))

@@ -11,7 +11,6 @@ struct CompanySearchSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchResults = [Company]()
     @State private var status: Status?
@@ -127,7 +126,7 @@ struct CompanySearchSheet: View {
         let newCompany = Company.NewRequest(name: companyName)
         switch await repository.company.insert(newCompany: newCompany) {
         case let .success(newCompany):
-            feedbackEnvironmentModel.toggle(.success("company.create.success.toast"))
+            router.open(.toast(.success("company.create.success.toast")))
             onSuccess(newCompany)
         case let .failure(error):
             guard !error.isCancelled else { return }

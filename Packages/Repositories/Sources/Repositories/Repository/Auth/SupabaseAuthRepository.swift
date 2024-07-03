@@ -14,6 +14,7 @@ struct SupabaseAuthRepository: AuthRepository {
         }
     }
 
+    @discardableResult
     func logOut() async -> Result<Void, Error> {
         do {
             try await client

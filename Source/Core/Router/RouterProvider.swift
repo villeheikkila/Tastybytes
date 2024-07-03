@@ -25,7 +25,9 @@ struct RouterProvider<Content: View>: View {
         .injectSheets(item: $router.sheet)
         .injectFullScreenCovers(item: $router.fullScreenCover)
         .injectAlerts(item: $router.alert)
-        .injectToasts(item: $feedbackEnvironmentModel.toast)
+        .injectToasts(item: $router.toast.map(getter: { toastType in toastType?.toastEvent }, setter: { _ in
+            nil
+        }))
         .if(enableRoutingFromURLs) { view in
             view.onOpenURL { url in
                 if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {

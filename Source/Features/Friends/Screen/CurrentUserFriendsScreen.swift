@@ -6,7 +6,7 @@ import SwiftUI
 struct CurrentUserFriendsScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(Router.self) private var router
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @State private var friendToBeRemoved: Friend?
     @State private var showUserSearchSheet = false
@@ -84,7 +84,7 @@ struct CurrentUserFriendsScreen: View {
                 open: .sheet(.userSheet(
                     mode: .add,
                     onSubmit: {
-                        feedbackEnvironmentModel.toggle(.success("friends.add.success"))
+                        router.open(.toast(.success("friends.add.success")))
                     }
                 ))
             )

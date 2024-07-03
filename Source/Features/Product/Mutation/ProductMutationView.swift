@@ -12,7 +12,6 @@ struct ProductMutationView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isPresentedInSheet) private var isPresentedInSheet
@@ -255,13 +254,13 @@ struct ProductMutationView: View {
                 isDiscontinued: isDiscontinued
             ).diff(from: product)
             guard let diffFromCurrent else {
-                feedbackEnvironmentModel.toggle(.warning("product.editSuggestion.nothingToEdit.toast"))
+                router.open(.toast(.warning("product.editSuggestion.nothingToEdit.toast")))
                 return
             }
             switch await repository.product.createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent) {
             case .success:
                 dismiss()
-                feedbackEnvironmentModel.toggle(.success("product.editSuggestion.success.toast"))
+                router.open(.toast(.success("product.editSuggestion.success.toast")))
             case let .failure(error):
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init(title: "product.error.failedToCreateEditSuggestion.title", retryLabel: "labels.retry", retry: {

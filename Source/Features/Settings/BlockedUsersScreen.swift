@@ -6,7 +6,7 @@ import SwiftUI
 struct BlockedUsersScreen: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(Router.self) private var router
 
     var body: some View {
         List(friendEnvironmentModel.blockedUsers) { friend in
@@ -28,7 +28,7 @@ struct BlockedUsersScreen: View {
                 Text("blockedUsers.empty.description")
             } actions: {
                 RouterLink("blockedUsers.empty.block.label", open: .sheet(.userSheet(mode: .block, onSubmit: {
-                    feedbackEnvironmentModel.toggle(.success("blockedUsers.block.success"))
+                    router.open(.toast(.success("blockedUsers.block.success")))
                 })))
             }
             .opacity(friendEnvironmentModel.blockedUsers.isEmpty ? 1 : 0)
@@ -45,7 +45,7 @@ struct BlockedUsersScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
                 RouterLink("blockedUsers.block.label", systemImage: "plus", open: .sheet(.userSheet(mode: .block, onSubmit: {
-                    feedbackEnvironmentModel.toggle(.success("blockedUsers.block.success"))
+                    router.open(.toast(.success("blockedUsers.block.success")))
                 })))
                 .labelStyle(.iconOnly)
                 .imageScale(.large)

@@ -10,7 +10,6 @@ struct ReportSheet: View {
     private let logger = Logger(category: "ReportSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var reasonText = ""
@@ -48,7 +47,7 @@ struct ReportSheet: View {
         switch await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
         case .success:
             dismiss()
-            feedbackEnvironmentModel.toggle(.success("report.submit.success.toast"))
+            router.open(.toast(.success("report.submit.success.toast")))
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

@@ -13,7 +13,6 @@ struct AccountSettingsScreen: View {
     @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @AppStorage(.profileDeleted) private var profileDeleted = false
     @State private var showDeleteConfirmation = false
     @State private var showEmailConfirmation = false
@@ -46,7 +45,7 @@ struct AccountSettingsScreen: View {
         ) { result in
             switch result {
             case .success:
-                feedbackEnvironmentModel.toggle(.success("account.export.success.toast"))
+                router.open(.toast(.success("account.export.success.toast")))
             case .failure:
                 router.open(.alert(.init(title: "account.export.failure.alert")))
             }
@@ -117,7 +116,7 @@ struct AccountSettingsScreen: View {
     func changeEmail() async {
         switch await repository.auth.sendEmailVerification(email: email) {
         case .success:
-            feedbackEnvironmentModel.toggle(.success("account.feedback.sent.toast"))
+            router.open(.toast(.success("account.feedback.sent.toast")))
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

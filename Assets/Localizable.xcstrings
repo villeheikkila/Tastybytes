@@ -1126,17 +1126,6 @@
         }
       }
     },
-    "checkIn.image.change" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Change photo"
-          }
-        }
-      }
-    },
     "checkIn.image.deleteConfirmation.label" : {
       "localizations" : {
         "en" : {
@@ -1788,61 +1777,6 @@
         }
       }
     },
-    "crop.custom %lldX%lld" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Custom %1$lldX%2$lld"
-          }
-        }
-      }
-    },
-    "crop.navigationTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crop"
-          }
-        }
-      }
-    },
-    "crop.rectangle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rectangle"
-          }
-        }
-      }
-    },
-    "crop.resize.accessibilityLabel" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Image to be resized"
-          }
-        }
-      }
-    },
-    "crop.square" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Square"
-          }
-        }
-      }
-    },
     "customRelativeTimeFormat.justNow" : {
       "localizations" : {
         "en" : {
@@ -1855,17 +1789,6 @@
     },
     "deleteAccount.disclaimer" : {
 
-    },
-    "deleteAccount.success.done.label" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Account deleted"
-          }
-        }
-      }
     },
     "deleteAccount.success.title" : {
       "localizations" : {
@@ -2690,17 +2613,6 @@
         }
       }
     },
-    "labels.skip" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skip"
-          }
-        }
-      }
-    },
     "labels.sortBy" : {
       "localizations" : {
         "en" : {
@@ -3326,50 +3238,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Permissions"
-          }
-        }
-      }
-    },
-    "onboarding.locationPermission.accessToLocation.description" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Location is only used to suggest you venues for your check-ins and show near by activity"
-          }
-        }
-      }
-    },
-    "onboarding.locationPermission.accessToLocation.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Access to location"
-          }
-        }
-      }
-    },
-    "onboarding.notification.description" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To keep you updated and informed, we need access to send you notifications."
-          }
-        }
-      }
-    },
-    "onboarding.notification.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep up to date!"
           }
         }
       }

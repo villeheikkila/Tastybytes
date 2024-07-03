@@ -180,7 +180,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
             let path = "\(userId.uuidString.lowercased())/\(fileName)"
 
-            _ = try await client
+            try await client
                 .storage
                 .from(.avatars)
                 .upload(path: path, file: data, options: .init(contentType: "image/jpeg"))

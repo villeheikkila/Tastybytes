@@ -6,7 +6,7 @@ import SwiftUI
 
 struct CategoryManagementScreen: View {
     private let logger = Logger(category: "CategoryManagementScreen")
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 
     var body: some View {
@@ -29,7 +29,7 @@ struct CategoryManagementScreen: View {
                 "category.add.label",
                 systemImage: "plus",
                 open: .sheet(.addCategory(onSubmit: { _ in
-                    feedbackEnvironmentModel.toggle(.success("category.add.success.toast"))
+                    router.open(.toast(.success("category.add.success.toast")))
                 }))
             )
             .labelStyle(.iconOnly)

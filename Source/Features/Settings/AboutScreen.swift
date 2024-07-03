@@ -10,7 +10,6 @@ import SwiftUI
 struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     // @Environment(\.requestReview) private var requestReview
     @State private var email: Email = .init()
@@ -56,7 +55,7 @@ struct AboutScreen: View {
             open: .sheet(.sendEmail(email: $email, callback: { result in
                 switch result {
                 case let .success(successResult) where successResult == MFMailComposeResult.sent:
-                    feedbackEnvironmentModel.toggle(.success("about.sendFeedback.success.toast"))
+                    router.open(.toast(.success("about.sendFeedback.success.toast")))
                 case .failure:
                     router.open(.alert(.init()))
                 default:

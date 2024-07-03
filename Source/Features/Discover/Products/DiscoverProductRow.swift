@@ -9,7 +9,6 @@ struct DiscoverProductRow: View {
     private let logger = Logger(category: "DiscoverProductRow")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @State private var addBarcodeTo: Product.Joined?
 
@@ -59,7 +58,7 @@ struct DiscoverProductRow: View {
         case .success:
             self.barcode = nil
             self.addBarcodeTo = nil
-            feedbackEnvironmentModel.toggle(.success("checkIn.addBarcode.success.toast"))
+            router.open(.toast(.success("checkIn.addBarcode.success.toast")))
             router.open(.screen(.product(addBarcodeTo)))
         case let .failure(error):
             guard !error.isCancelled else { return }

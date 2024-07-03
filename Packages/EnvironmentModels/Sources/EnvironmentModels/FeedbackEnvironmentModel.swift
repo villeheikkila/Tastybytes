@@ -3,22 +3,9 @@ import SwiftUI
 @MainActor
 @Observable
 public final class FeedbackEnvironmentModel {
-    public var toast: ToastEvent?
     public var sensoryFeedback: SensoryFeedbackEvent?
 
     public init() {}
-
-    public func toggle(_ type: ToastType, disableHaptics: Bool = false) {
-        switch type {
-        case let .success(title):
-            toast = .init(type: .complete(.green), title: title)
-            if !disableHaptics {
-                trigger(.notification(.success))
-            }
-        case let .warning(title):
-            toast = .init(type: .error(.red), title: title)
-        }
-    }
 
     public func trigger(_ type: HapticType) {
         switch type {
@@ -82,7 +69,7 @@ public extension FeedbackEnvironmentModel {
 }
 
 public struct ToastEvent: Equatable {
-    public init(type: ToastType, title: LocalizedStringKey? = nil, subTitle: LocalizedStringKey? = nil, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, onTap _: (() -> Void)? = nil) {
+    public init(type: ToastType, title: LocalizedStringKey? = nil, subTitle: LocalizedStringKey? = nil, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0) {
         self.type = type
         self.title = title
         self.subTitle = subTitle

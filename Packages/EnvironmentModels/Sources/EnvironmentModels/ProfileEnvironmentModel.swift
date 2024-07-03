@@ -264,7 +264,7 @@ public final class ProfileEnvironmentModel {
         switch await repository.profile.deleteCurrentAccount() {
         case .success:
             logger.info("User succesfully deleted")
-            _ = await repository.auth.logOut()
+            await repository.auth.logOut()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

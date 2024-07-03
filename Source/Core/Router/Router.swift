@@ -1,3 +1,4 @@
+import EnvironmentModels
 import Extensions
 import Models
 import OSLog
@@ -12,6 +13,7 @@ final class Router {
         case screen(Screen, resetStack: Bool = false, removeLast: Bool = false)
         case alert(AlertEvent)
         case fullScreenCover(FullScreenCover)
+        case toast(ToastType)
     }
 
     private let logger = Logger(category: "Router")
@@ -19,6 +21,7 @@ final class Router {
     var sheet: Sheet?
     var alert: AlertEvent?
     var fullScreenCover: FullScreenCover?
+    var toast: ToastType?
 
     init(path: [Screen] = [], sheet: Sheet? = nil) {
         self.path = path
@@ -42,6 +45,8 @@ final class Router {
             self.alert = alert
         case let .fullScreenCover(fullScreenCover):
             self.fullScreenCover = fullScreenCover
+        case let .toast(toast):
+            self.toast = toast
         }
     }
 

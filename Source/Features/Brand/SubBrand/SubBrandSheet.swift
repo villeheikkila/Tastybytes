@@ -11,7 +11,6 @@ struct SubBrandSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var subBrandName = ""
     @State private var searchTerm: String = ""
@@ -69,7 +68,7 @@ struct SubBrandSheet: View {
             .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
         {
         case let .success(newSubBrand):
-            feedbackEnvironmentModel.toggle(.success("subBrand.create.success.toast"))
+            router.open(.toast(.success("subBrand.create.success.toast")))
             subBrand = newSubBrand
             dismiss()
         case let .failure(error):

@@ -217,7 +217,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let fileName = "\(productId)_\(Date.now.timeIntervalSince1970).jpeg"
 
-            _ = try await client
+            try await client
                 .storage
                 .from(.productLogos)
                 .upload(path: fileName, file: data, options: .init(contentType: "image/jpeg"))

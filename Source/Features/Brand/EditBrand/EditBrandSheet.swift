@@ -13,7 +13,6 @@ struct EditBrandSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var name: String
@@ -94,7 +93,7 @@ struct EditBrandSheet: View {
     func editBrand(onSuccess: @escaping BrandUpdateCallback) async {
         switch await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id)) {
         case let .success(brand):
-            feedbackEnvironmentModel.toggle(.success("brand.edit.success.toast"))
+            router.open(.toast(.success("brand.edit.success.toast")))
             self.brand = brand
             await onSuccess(brand)
         case let .failure(error):

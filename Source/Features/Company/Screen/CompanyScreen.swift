@@ -100,14 +100,14 @@ struct CompanyScreen: View {
                 if profileEnvironmentModel.hasPermission(.canEditCompanies) {
                     RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.editCompany(company: company.saved, onSuccess: {
                         await getCompanyData(withHaptics: true)
-                        feedbackEnvironmentModel.toggle(.success("company.update.success.toast"))
+                        router.open(.toast(.success("company.update.success.toast")))
                     })))
                 } else {
                     RouterLink(
                         "company.editSuggestion.title",
                         systemImage: "pencil",
                         open: .sheet(.companyEditSuggestion(company: company.saved, onSuccess: {
-                            feedbackEnvironmentModel.toggle(.success("company.editSuggestion.success.toast"))
+                            router.open(.toast(.success("company.editSuggestion.success.toast")))
                         }))
                     )
                 }
