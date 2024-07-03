@@ -11,7 +11,7 @@ struct SaveToPhotoGalleryButton: View {
 
     func downloadImage() async {
         do {
-            let (data, _) = try await URLSession.shared.data(from: imageUrl)
+            let (data, _) = try await URLSession.shared.data(from: imageUrl, delegate: nil)
             guard let image = UIImage(data: data) else { return }
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
         } catch {

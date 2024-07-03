@@ -64,10 +64,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
         return sceneConfiguration
     }
-
-    func applicationWillTerminate(_: UIApplication) {
-        // clearTemporaryData()
-    }
 }
 
 class SceneConfiguration: UIResponder, UIWindowSceneDelegate {

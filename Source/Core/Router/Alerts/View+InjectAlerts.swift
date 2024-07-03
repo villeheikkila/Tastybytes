@@ -1,5 +1,5 @@
-import SwiftUI
 import Extensions
+import SwiftUI
 
 struct InjectAlertModifier: ViewModifier {
     @Binding var item: AlertError?

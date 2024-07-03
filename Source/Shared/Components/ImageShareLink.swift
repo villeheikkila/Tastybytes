@@ -18,7 +18,7 @@ struct ImageTransferable: Codable, Transferable {
 
     func fetchImageData() async -> Data {
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
+            let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
             return data
         } catch {
             return Data()

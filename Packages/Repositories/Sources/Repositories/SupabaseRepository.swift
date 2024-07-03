@@ -31,7 +31,7 @@ public final class Repository: RepositoryProtocol {
         let client = SupabaseClient(
             supabaseURL: supabaseURL,
             supabaseKey: supabaseKey,
-            options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers))
+            options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers, logger: CustomSupabaseLogger()))
         )
         appConfig = SupabaseAppConfigRepository(client: client)
         imageEntity = SupabaseImageEntityRepository(client: client)
@@ -58,25 +58,17 @@ public final class Repository: RepositoryProtocol {
     }
 }
 
-// final class CustomSupabaseLogger: SupabaseLogger, Sendable {
-//    private let lock = NSLock()
-//    private var loggers: [String: Logger] = [:]
-//
-//    func log(message: SupabaseLogMessage) {
-//        lock.withLock {
-//            let category = message.system
-//            if loggers[category] == nil {
-//                loggers[category] = Logger(category: category)
-//            }
-//
-//            guard let logger = loggers[category] else { return }
-//
-//            switch message.level {
-//            case .debug: logger.debug("\(message)")
-//            case .error: logger.error("\(message)")
-//            case .verbose: logger.info("\(message)")
-//            case .warning: logger.notice("\(message)")
-//            }
-//        }
-//    }
-// }
+struct CustomSupabaseLogger: SupabaseLogger {
+    let logger = Logger(category: "SupabaseLogger")
+
+    func log(message: SupabaseLogMessage) {
+        switch message.level {
+        case .verbose:
+            logger.log(level: .info, "\(message.description)")
+        case .debug:
+            logger.log(level: .debug, "\(message.description)")
+        case .warning, .error:
+            logger.log(level: .error, "\(message.description)")
+        }
+    }
+}
