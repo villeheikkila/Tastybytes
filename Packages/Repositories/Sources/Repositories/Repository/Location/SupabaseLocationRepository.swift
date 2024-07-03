@@ -116,7 +116,7 @@ struct SupabaseLocationRepository: LocationRepository {
             let response: [Location] = try await client
                 .from(.locations)
                 .select(Location.getQuery(.joined(false)))
-                .textSearch("name", query: searchTerm + ":*")
+                .textSearch("name", query: "'\(searchTerm)'")
                 .execute()
                 .value
 
