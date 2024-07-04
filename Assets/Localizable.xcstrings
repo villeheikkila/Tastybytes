@@ -279,6 +279,17 @@
         }
       }
     },
+    "admin.manage.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage"
+          }
+        }
+      }
+    },
     "admin.menuSection.title" : {
       "localizations" : {
         "en" : {
@@ -4092,6 +4103,9 @@
 
     },
     "ratingChart.value.label" : {
+
+    },
+    "report.admin.isEmpty.title" : {
 
     },
     "report.admin.navigationTitle" : {

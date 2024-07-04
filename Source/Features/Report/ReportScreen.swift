@@ -23,8 +23,12 @@ struct ReportScreen: View {
             await loadInitialData()
         }
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "") {
-                await loadInitialData()
+            if state != .populated {
+                ScreenStateOverlayView(state: state, errorDescription: "") {
+                    await loadInitialData()
+                }
+            } else if reports.isEmpty {
+                ContentUnavailableView("report.admin.isEmpty.title", systemImage: "tray")
             }
         }
         .navigationTitle("report.admin.navigationTitle")

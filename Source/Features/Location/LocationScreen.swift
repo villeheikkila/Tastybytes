@@ -82,7 +82,7 @@ struct LocationInnerScreen: View {
                             }, onDelete: { _ in
                                 router.removeLast()
                             })), label: {
-                                Label("location.admin.manageLocation.label", systemImage: "slider.horizontal.3")
+                                Label("admin.manage.label", systemImage: "slider.horizontal.3")
                             })
                         }
                     } label: {

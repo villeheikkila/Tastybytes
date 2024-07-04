@@ -37,7 +37,7 @@ struct CompanyAdminSheet: View {
             EditLogoSection(logos: company.logos, onUpload: uploadLogo, onDelete: deleteLogo)
 
             Section {
-                RouterLink("admin.section.reports.title", open: .screen(.reports(.company(company.id))))
+                RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
                 Button(
                     "labels.delete",
                     systemImage: "trash.fill",
