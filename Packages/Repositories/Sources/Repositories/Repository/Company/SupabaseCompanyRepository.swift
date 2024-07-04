@@ -40,6 +40,23 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
+    func getDetailId(id: Int) async -> Result<Company, Error> {
+        do {
+            let response: Company = try await client
+                .from(.companies)
+                .select(Company.getQuery(.management(false)))
+                .eq("id", value: id)
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func insert(newCompany: Company.NewRequest) async -> Result<Company, Error> {
         do {
             let response: Company = try await client

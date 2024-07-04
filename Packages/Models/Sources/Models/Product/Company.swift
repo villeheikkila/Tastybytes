@@ -9,12 +9,16 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogoPro
     public let name: String
     public let isVerified: Bool
     public let logos: [ImageEntity]
+    public let createdBy: Profile?
+    public let createdAt: Date?
 
     public init(id: Int, name: String, logos: [ImageEntity] = [], isVerified: Bool) {
         self.id = id
         self.name = name
         self.isVerified = isVerified
         self.logos = logos
+        createdBy = nil
+        createdAt = nil
     }
 
     public init(company: Company.Joined) {
@@ -22,6 +26,8 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogoPro
         name = company.name
         isVerified = company.isVerified
         logos = company.logos
+        createdBy = nil
+        createdAt = nil
     }
 
     enum CodingKeys: String, CodingKey {
@@ -29,6 +35,8 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogoPro
         case name
         case logos = "company_logos"
         case isVerified = "is_verified"
+        case createdBy = "profiles"
+        case createdAt = "created_at"
     }
 
     public func copyWith(name: String? = nil, logos: [ImageEntity]? = nil, isVerified: Bool? = nil) -> Self {

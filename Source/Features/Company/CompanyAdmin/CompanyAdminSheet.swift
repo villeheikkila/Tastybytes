@@ -27,6 +27,36 @@ struct CompanyAdminSheet: View {
 
     var body: some View {
         Form {
+            Section("company.admin.section.company") {
+                RouterLink(open: .screen(.company(company))) {
+                    CompanyResultInnerView(company: company)
+                }
+            }
+
+            Section("location.admin.section.creator") {
+                HStack {
+                    if let createdBy = company.createdBy {
+                        Avatar(profile: createdBy)
+                    }
+                    VStack(alignment: .leading) {
+                        Text(company.createdBy?.preferredName ?? "-")
+                        if let createdAt = company.createdAt {
+                            Text(createdAt, format:
+                                .dateTime
+                                    .year()
+                                    .month(.wide)
+                                    .day())
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    Spacer()
+                }
+                .contentShape(.rect)
+                .ifLet(company.createdBy) { view, createdBy in
+                    view.openOnTap(.screen(.profile(createdBy)))
+                }
+            }
+
             Section("company.admin.section.details") {
                 LabeledTextField(title: "labels.name", text: $newCompanyName)
                 LabeledContent("labels.id", value: "\(company.id)")
@@ -62,6 +92,9 @@ struct CompanyAdminSheet: View {
         .toolbar {
             toolbarContent
         }
+        .initialTask {
+            await loadData()
+        }
         .task(id: selectedLogo) {
             guard let selectedLogo else { return }
             guard let data = await selectedLogo.getJPEG() else {
@@ -79,6 +112,18 @@ struct CompanyAdminSheet: View {
                 await editCompany(onSuccess: onSuccess)
             })
             .disabled(!newCompanyName.isValidLength(.normal) || newCompanyName == company.name)
+        }
+    }
+
+    func loadData() async {
+        switch await repository.company.getDetailId(id: company.id) {
+        case let .success(company):
+            withAnimation {
+                self.company = company
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -131,5 +176,11 @@ struct CompanyAdminSheet: View {
             router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
+    }
+}
+
+struct CompanyEditSuggestionScreen: View {
+    var body: some View {
+        HStack {}
     }
 }

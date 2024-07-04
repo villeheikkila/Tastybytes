@@ -4,6 +4,7 @@ import Models
 public protocol CompanyRepository: Sendable {
     func getById(id: Int) async -> Result<Company, Error>
     func getJoinedById(id: Int) async -> Result<Company.Joined, Error>
+    func getDetailId(id: Int) async -> Result<Company, Error>
     func getUnverified() async -> Result<[Company], Error>
     func insert(newCompany: Company.NewRequest) async -> Result<Company, Error>
     func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error>
