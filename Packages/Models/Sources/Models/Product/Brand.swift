@@ -103,6 +103,8 @@ public extension Brand {
         public let brandOwner: Company
         public let subBrands: [SubBrand.JoinedProduct]
         public let logos: [ImageEntity]
+        public let createdBy: Profile?
+        public let createdAt: Date?
 
         public init(brandOwner: Company, brand: JoinedSubBrandsProducts) {
             id = brand.id
@@ -111,6 +113,8 @@ public extension Brand {
             self.brandOwner = brandOwner
             subBrands = brand.subBrands
             logos = brand.logos
+            createdBy = nil
+            createdAt = nil
         }
 
         public init(subBrand: SubBrand.JoinedBrand) {
@@ -120,6 +124,8 @@ public extension Brand {
             brandOwner = subBrand.brand.brandOwner
             subBrands = []
             logos = subBrand.brand.logos
+            createdBy = nil
+            createdAt = nil
         }
 
         public init(brand: Brand.JoinedCompany) {
@@ -129,6 +135,8 @@ public extension Brand {
             brandOwner = brand.brandOwner
             subBrands = []
             logos = brand.logos
+            createdBy = nil
+            createdAt = nil
         }
 
         public var productCount: Int {
@@ -142,6 +150,8 @@ public extension Brand {
             self.brandOwner = brandOwner
             self.subBrands = subBrands
             self.logos = logos
+            createdBy = nil
+            createdAt = nil
         }
 
         enum CodingKeys: String, CodingKey {
@@ -151,6 +161,8 @@ public extension Brand {
             case brandOwner = "companies"
             case subBrands = "sub_brands"
             case logos = "brand_logos"
+            case createdBy = "profiles"
+            case createdAt = "created_at"
         }
 
         public func copyWith(name: String? = nil,

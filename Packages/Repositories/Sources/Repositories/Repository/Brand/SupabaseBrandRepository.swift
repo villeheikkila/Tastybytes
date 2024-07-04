@@ -39,6 +39,23 @@ struct SupabaseBrandRepository: BrandRepository {
             return .failure(error)
         }
     }
+    
+    func getDetailed(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error> {
+        do {
+            let response: Brand.JoinedSubBrandsProductsCompany = try await client
+                .from(.brands)
+                .select(Brand.getQuery(.detailed(false)))
+                .eq("id", value: id)
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
 
     func getUnverified() async -> Result<[Brand.JoinedSubBrandsProductsCompany], Error> {
         do {

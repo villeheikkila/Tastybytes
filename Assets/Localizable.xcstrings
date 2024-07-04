@@ -653,6 +653,16 @@
       }
     },
     "brand.admin.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Brand"
+          }
+        }
+      }
+    },
+    "brand.admin.section.brand" : {
 
     },
     "brand.created.toast" : {
@@ -3821,7 +3831,14 @@
       }
     },
     "profile.admin.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Profile"
+          }
+        }
+      }
     },
     "profile.avatar.actions.change" : {
 
@@ -4756,7 +4773,14 @@
       }
     },
     "subBrand.admin.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Sub-brand"
+          }
+        }
+      }
     },
     "subBrand.create.success.toast" : {
       "localizations" : {

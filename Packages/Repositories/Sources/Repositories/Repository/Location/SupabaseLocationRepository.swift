@@ -36,6 +36,23 @@ struct SupabaseLocationRepository: LocationRepository {
             return .failure(error)
         }
     }
+    
+    func getDetailed(id: UUID) async -> Result<Location, Error> {
+        do {
+            let response: Location = try await client
+                .from(.locations)
+                .select(Location.getQuery(.management(false)))
+                .eq("id", value: id)
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
 
     func getCheckInLocations(userId _: UUID) async -> Result<[Location], Error> {
         do {

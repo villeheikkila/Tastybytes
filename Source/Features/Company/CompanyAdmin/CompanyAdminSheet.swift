@@ -63,29 +63,7 @@ struct CompanyAdminSheet: View {
             }
         }
 
-        Section("location.admin.section.creator") {
-            HStack {
-                if let createdBy = company.createdBy {
-                    Avatar(profile: createdBy)
-                }
-                VStack(alignment: .leading) {
-                    Text(company.createdBy?.preferredName ?? "-")
-                    if let createdAt = company.createdAt {
-                        Text(createdAt, format:
-                            .dateTime
-                                .year()
-                                .month(.wide)
-                                .day())
-                            .foregroundColor(.secondary)
-                    }
-                }
-                Spacer()
-            }
-            .contentShape(.rect)
-            .ifLet(company.createdBy) { view, createdBy in
-                view.openOnTap(.screen(.profile(createdBy)))
-            }
-        }
+        CreationInfoView(createdBy: company.createdBy, createdAt: company.createdAt)
 
         Section("company.admin.section.details") {
             LabeledTextField(title: "labels.name", text: $newCompanyName)
@@ -325,6 +303,42 @@ struct CompanyEditSuggestionRow: View {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct CreationInfoView: View {
+    let createdBy: Profile?
+    let createdAt: Date?
+
+    var body: some View {
+        Section("location.admin.section.creator") {
+            if let createdBy {
+                RouterLink(open: .screen(.profile(createdBy))) {
+                    HStack {
+                        Avatar(profile: createdBy)
+                        VStack(alignment: .leading) {
+                            Text(createdBy.preferredName)
+                            if let createdAt {
+                                Text(createdAt, format:
+                                        .dateTime
+                                    .year()
+                                    .month(.wide)
+                                    .day())
+                                .foregroundColor(.secondary)
+                            }
+                        }
+                        Spacer()
+                    }
+                }
+            } else if let createdAt {
+                Text(createdAt, format:
+                    .dateTime
+                        .year()
+                        .month(.wide)
+                        .day())
+                    .foregroundColor(.secondary)
+            }
         }
     }
 }

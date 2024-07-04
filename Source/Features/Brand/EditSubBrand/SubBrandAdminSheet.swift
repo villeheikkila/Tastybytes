@@ -71,7 +71,7 @@ struct SubBrandAdminSheet: View {
                     LabeledContent("labels.id", value: "\(subBrand.id)")
                         .textSelection(.enabled)
                     LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
-                }.headerProminence(.increased)
+                }
             }
 
             if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
@@ -82,6 +82,7 @@ struct SubBrandAdminSheet: View {
                         role: .destructive,
                         action: { showDeleteConfirmation = true }
                     )
+                    .foregroundColor(.red)
                     .disabled(subBrand.isVerified)
                 }
                 .confirmationDialog(
@@ -102,6 +103,7 @@ struct SubBrandAdminSheet: View {
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("subBrand.admin.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }

@@ -4,6 +4,7 @@ import Models
 public protocol BrandRepository: Sendable {
     func getById(id: Int) async -> Result<Brand.JoinedSubBrandsProducts, Error>
     func getJoinedById(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error>
+    func getDetailed(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error>
     func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error>
     func getUnverified() async -> Result<[Brand.JoinedSubBrandsProductsCompany], Error>
     func getSummaryById(id: Int) async -> Result<Summary, Error>

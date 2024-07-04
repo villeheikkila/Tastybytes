@@ -4,6 +4,7 @@ import Models
 public protocol LocationRepository: Sendable {
     func insert(location: Location) async -> Result<Location, Error>
     func getById(id: UUID) async -> Result<Location, Error>
+    func getDetailed(id: UUID) async -> Result<Location, Error>
     func delete(id: UUID) async -> Result<Void, Error>
     func search(searchTerm: String) async -> Result<[Location], Error>
     func getCheckInLocations(userId: UUID) async -> Result<[Location], Error>

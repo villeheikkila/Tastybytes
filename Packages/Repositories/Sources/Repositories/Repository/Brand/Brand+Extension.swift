@@ -18,6 +18,12 @@ extension Brand: Queryable {
                 [saved, SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.brandLogos))],
                 withTableName
             )
+        case let .detailed(withTableName):
+            return buildQuery(
+                .brands,
+                [saved, "created_at", SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.brandLogos)), Profile.getQuery(.minimal(true))],
+                withTableName
+            )
         }
     }
 
@@ -26,5 +32,6 @@ extension Brand: Queryable {
         case joinedSubBrands(_ withTableName: Bool)
         case joinedCompany(_ withTableName: Bool)
         case joinedSubBrandsCompany(_ withTableName: Bool)
+        case detailed(_ withTableName: Bool)
     }
 }

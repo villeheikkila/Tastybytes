@@ -10,6 +10,7 @@ struct LocationAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
+    @State private var state: ScreenState = .loading
     @State private var location: Location
     @State private var showDeleteConfirmation = false
 
@@ -52,29 +53,7 @@ struct LocationAdminSheet: View {
                 .openOnTap(.screen(.location(location)))
             }
 
-            Section("location.admin.section.creator") {
-                HStack {
-                    if let createdBy = location.createdBy {
-                        Avatar(profile: createdBy)
-                    }
-                    VStack(alignment: .leading) {
-                        Text(location.createdBy?.preferredName ?? "-")
-                        if let createdAt = location.createdAt {
-                            Text(createdAt, format:
-                                .dateTime
-                                    .year()
-                                    .month(.wide)
-                                    .day())
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    Spacer()
-                }
-                .contentShape(.rect)
-                .ifLet(location.createdBy) { view, createdBy in
-                    view.openOnTap(.screen(.profile(createdBy)))
-                }
-            }
+            CreationInfoView(createdBy: location.createdBy, createdAt: location.createdAt)
 
             Section("location.admin.section.details") {
                 VStack {
@@ -125,13 +104,31 @@ struct LocationAdminSheet: View {
         .toolbar {
             toolbarContent
         }
+        .task {
+            await loadData()
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
     }
+    
+    func loadData() async {
+        switch await repository.location.getDetailed(id: location.id){
+        case let .success(location):
+            withAnimation {
+                self.location = location
+                self.state = .populated
+            }
+            await onEdit(location)
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            self.state = .error([error])
+            logger.error("Failed to update location: '\(location.id)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
 
-    public func updateLocation(_ location: Location) async {
+    func updateLocation(_ location: Location) async {
         switch await repository.location.update(request: .init(id: location.id, mapKitIdentifier: location.mapKitIdentifier)) {
         case let .success(location):
             withAnimation {
@@ -144,7 +141,7 @@ struct LocationAdminSheet: View {
         }
     }
 
-    private func deleteLocation(_ location: Location) async {
+    func deleteLocation(_ location: Location) async {
         switch await repository.location.delete(id: location.id) {
         case .success:
             await onDelete(location)

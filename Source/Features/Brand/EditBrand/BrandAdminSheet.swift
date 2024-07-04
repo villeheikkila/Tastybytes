@@ -38,6 +38,12 @@ struct BrandAdminSheet: View {
 
     var body: some View {
         Form {
+            Section("brand.admin.section.brand") {
+                HStack {
+                    Text(brand.name)
+                }
+            }
+
             Section("brand.edit.name.title") {
                 TextField("brand.edit.name.placeholder", text: $name)
                 ProgressButton("labels.edit") {
@@ -45,7 +51,9 @@ struct BrandAdminSheet: View {
                         await onUpdate(updatedBrand)
                     }
                 }.disabled(!name.isValidLength(.normal) || brand.name == name)
-            }.headerProminence(.increased)
+            }
+            
+            CreationInfoView(createdBy: brand.createdBy, createdAt: brand.createdAt)
 
             Section("brand.edit.brandOwner.title") {
                 RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
@@ -56,7 +64,7 @@ struct BrandAdminSheet: View {
                         await onUpdate(updatedBrand)
                     }
                 }.disabled(brandOwner.id == initialBrandOwner.id)
-            }.headerProminence(.increased)
+            }
 
             EditLogoSection(logos: brand.logos, onUpload: { imageData in
                 await uploadLogo(data: imageData)
@@ -69,7 +77,7 @@ struct BrandAdminSheet: View {
                     LabeledContent("labels.id", value: "\(brand.id)")
                         .textSelection(.enabled)
                     LabeledContent("verification.verified.label", value: "\(brand.isVerified)".capitalized)
-                }.headerProminence(.increased)
+                }
             }
 
             Section {
@@ -79,6 +87,7 @@ struct BrandAdminSheet: View {
                     role: .destructive,
                     action: { showDeleteBrandConfirmationDialog = true }
                 )
+                .foregroundColor(.red)
                 .disabled(brand.isVerified)
                 .confirmationDialog(
                     "brand.delete.disclaimer",
@@ -97,8 +106,12 @@ struct BrandAdminSheet: View {
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("brand.admin.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
+        }
+        .initialTask {
+           await loadData()
         }
         .task(id: selectedLogo) {
             guard let selectedLogo else { return }
@@ -112,6 +125,16 @@ struct BrandAdminSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
+    }
+    
+    func loadData() async {
+        switch await repository.brand.getDetailed(id: brand.id) {
+        case let .success(brand):
+            self.brand = brand
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Failed to edit brand. Error: \(error) (\(#file):\(#line))")
+        }
     }
 
     func editBrand(onSuccess: @escaping BrandUpdateCallback) async {
