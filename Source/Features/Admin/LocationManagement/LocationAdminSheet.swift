@@ -93,10 +93,17 @@ struct LocationAdminSheet: View {
                     showDeleteConfirmation = true
                 }
                 .tint(.red)
-                .confirmationDialog("labels.delete", isPresented: $showDeleteConfirmation, presenting: location) { location in
-                    ProgressButton("labels.delete", role: .destructive, action: {
-                        await deleteLocation(location)
-                    })
+                .confirmationDialog(
+                    "location.delete.confirmation.description",
+                    isPresented: $showDeleteConfirmation,
+                    titleVisibility: .visible,
+                    presenting: location
+                ) { presenting in
+                    ProgressButton(
+                        "location.delete.confirmation.label \(presenting.name)",
+                        role: .destructive,
+                        action: { await deleteLocation(presenting) }
+                    )
                 }
             }
         }

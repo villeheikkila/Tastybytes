@@ -25,18 +25,14 @@ struct LocationInnerScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var summary: Summary?
-    @State private var showDeleteLocationConfirmation = false
-    @State private var isSuccess = false
-
+    @State private var location: Location
     @State private var checkInLoader: CheckInListLoader
-
-    let location: Location
 
     init(repository: Repository, location: Location) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
             await repository.checkIn.getByLocation(locationId: location.id, segment: segment, from: from, to: to)
         }, id: "LocationScreen"))
-        self.location = location
+        _location = State(initialValue: location)
     }
 
     var body: some View {
@@ -64,7 +60,6 @@ struct LocationInnerScreen: View {
         .toolbar {
             toolbarContent
         }
-        .sensoryFeedback(.success, trigger: isSuccess)
         .initialTask {
             await getLocationData()
         }
@@ -79,18 +74,16 @@ struct LocationInnerScreen: View {
 
                 if profileEnvironmentModel.hasRole(.admin) {
                     Menu {
-                        if profileEnvironmentModel.hasPermission(.canMergeLocations) {
-                            RouterLink(open: .sheet(.mergeLocationSheet(location: location)), label: {
-                                Label("location.mergeTo.label", systemImage: "doc.on.doc")
+                        if profileEnvironmentModel.hasPermission(.canUpdateLocations) {
+                            RouterLink(open: .sheet(.locationAdmin(location: location, onEdit: { location in
+                                withAnimation {
+                                    self.location = location
+                                }
+                            }, onDelete: { location in
+                                router.removeLast()
+                            })), label: {
+                                Label("location.admin.manageLocation.label", systemImage: "doc.on.doc")
                             })
-                        }
-                        if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
-                            Button(
-                                "labels.delete",
-                                systemImage: "trash.fill",
-                                role: .destructive,
-                                action: { showDeleteLocationConfirmation.toggle() }
-                            )
                         }
                     } label: {
                         Label("labels.admin", systemImage: "gear")
@@ -100,18 +93,6 @@ struct LocationInnerScreen: View {
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
-            }
-            .confirmationDialog(
-                "location.delete.confirmation.description",
-                isPresented: $showDeleteLocationConfirmation,
-                titleVisibility: .visible,
-                presenting: location
-            ) { presenting in
-                ProgressButton(
-                    "location.delete.confirmation.label \(presenting.name)",
-                    role: .destructive,
-                    action: { await deleteLocation(presenting) }
-                )
             }
         }
     }
@@ -134,18 +115,6 @@ struct LocationInnerScreen: View {
                 state = .error([error])
             }
             logger.error("Failed to get summary. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func deleteLocation(_ location: Location) async {
-        switch await repository.location.delete(id: location.id) {
-        case .success:
-            router.removeLast()
-            isSuccess = true
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

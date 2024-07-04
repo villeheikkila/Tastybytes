@@ -2730,6 +2730,9 @@
         }
       }
     },
+    "location.admin.manageLocation.label" : {
+
+    },
     "location.admin.merge.label" : {
       "localizations" : {
         "en" : {
@@ -2841,6 +2844,7 @@
       }
     },
     "location.mergeTo.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
