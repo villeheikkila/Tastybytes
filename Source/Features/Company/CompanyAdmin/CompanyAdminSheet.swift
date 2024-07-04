@@ -212,7 +212,7 @@ struct CompanyEditSuggestionScreen: View {
         }
         .overlay {
             if company.editSuggestions.isEmpty {
-                ContentUnavailableView("No Edit Suggestions", systemImage: "tray")
+                ContentUnavailableView("admin.noEditSuggestions.title", systemImage: "tray")
             }
         }
         .listStyle(.plain)

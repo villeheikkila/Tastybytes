@@ -310,6 +310,16 @@
         }
       }
     },
+    "admin.noEditSuggestions.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Edit Suggestions"
+          }
+        }
+      }
+    },
     "admin.section.data.title" : {
       "localizations" : {
         "en" : {
@@ -1717,7 +1727,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit Suggestion"
+            "value" : "Contribute"
           }
         }
       }
@@ -3097,9 +3107,6 @@
           }
         }
       }
-    },
-    "No Edit Suggestions" : {
-
     },
     "notification.checkInComment.label" : {
       "localizations" : {
