@@ -5,12 +5,25 @@ internal import Supabase
 struct SupabaseReportRepository: ReportRepository {
     let client: SupabaseClient
 
-    func getAll() async -> Result<[Report], Error> {
+    func getAll(_ filter: ReportFilter? = nil) async -> Result<[Report], Error> {
         do {
-            let response: [Report] = try await client
+            let query = client
                 .from(.reports)
                 .select(Report.getQuery(.joined(false)))
                 .is("resolved_at", value: nil)
+
+            let filtered = if let filter {
+                switch filter {
+                case let .brand(id), let .checkIn(id), let .checkInImage(id), let .comment(id), let .company(id), let .product(id), let .subBrand(id):
+                    query.eq(filter.column, value: id)
+                case let .profile(id):
+                    query.eq(filter.column, value: id)
+                }
+            } else {
+                query
+            }
+
+            let response: [Report] = try await filtered
                 .order("created_at", ascending: false)
                 .execute()
                 .value

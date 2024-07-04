@@ -17,7 +17,6 @@ struct CompanyScreen: View {
     @State private var company: Company.Joined
     @State private var summary: Summary?
     @State private var showUnverifyCompanyConfirmation = false
-    @State private var showDeleteCompanyConfirmationDialog = false
 
     init(company: Company) {
         _company = State(wrappedValue: .init(company: company))
@@ -120,15 +119,6 @@ struct CompanyScreen: View {
                             router.open(.toast(.success("company.update.success.toast")))
                         })))
                     }
-                    if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
-                        Button(
-                            "labels.delete",
-                            systemImage: "trash.fill",
-                            role: .destructive,
-                            action: { showDeleteCompanyConfirmationDialog = true }
-                        )
-                        .disabled(company.isVerified)
-                    }
                 } label: {
                     Label("labels.admin", systemImage: "gear")
                         .labelStyle(.iconOnly)
@@ -144,14 +134,6 @@ struct CompanyScreen: View {
         { presenting in
             ProgressButton("company.unverify.confirmationDialog.label \(presenting.name)", action: {
                 await verifyCompany(isVerified: false)
-            })
-        }
-        .confirmationDialog("company.delete.confirmationDialog.title",
-                            isPresented: $showDeleteCompanyConfirmationDialog,
-                            presenting: company)
-        { presenting in
-            ProgressButton("company.delete.confirmationDialog.label \(presenting.name)", role: .destructive, action: {
-                await deleteCompany(presenting)
             })
         }
     }
@@ -189,18 +171,6 @@ struct CompanyScreen: View {
         }
 
         state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
-    }
-
-    func deleteCompany(_ company: Company.Joined) async {
-        switch await repository.company.delete(id: company.id) {
-        case .success:
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            router.removeLast()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
-        }
     }
 
     func verifyCompany(isVerified: Bool) async {

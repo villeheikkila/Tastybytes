@@ -2563,6 +2563,16 @@
         }
       }
     },
+    "labels.name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
     "labels.none" : {
       "localizations" : {
         "en" : {

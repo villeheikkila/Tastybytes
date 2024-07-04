@@ -12,6 +12,7 @@ struct CompanyAdminSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
+    @State private var showDeleteCompanyConfirmationDialog = false
     @State private var company: Company
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
@@ -27,18 +28,33 @@ struct CompanyAdminSheet: View {
     var body: some View {
         Form {
             Section("company.admin.section.details") {
-                LabeledTextField(title: "company.edit.name.placeholder", text: $newCompanyName)
+                LabeledTextField(title: "labels.name", text: $newCompanyName)
                 LabeledContent("labels.id", value: "\(company.id)")
                     .textSelection(.enabled)
                 LabeledContent("verification.verified.label", value: "\(company.isVerified)".capitalized)
             }
-            .customListRowBackground()
 
-            EditLogoSection(logos: company.logos, onUpload: { imageData in
-                await uploadLogo(data: imageData)
-            }, onDelete: { imageEntity in
-                await deleteLogo(entity: imageEntity)
-            })
+            EditLogoSection(logos: company.logos, onUpload: uploadLogo, onDelete: deleteLogo)
+
+            Section {
+                RouterLink("admin.section.reports.title", open: .screen(.reports(.company(company.id))))
+                Button(
+                    "labels.delete",
+                    systemImage: "trash.fill",
+                    role: .destructive,
+                    action: { showDeleteCompanyConfirmationDialog = true }
+                )
+                .foregroundColor(.red)
+                .disabled(company.isVerified)
+                .confirmationDialog("company.delete.confirmationDialog.title",
+                                    isPresented: $showDeleteCompanyConfirmationDialog,
+                                    presenting: company)
+                { presenting in
+                    ProgressButton("company.delete.confirmationDialog.label \(presenting.name)", role: .destructive, action: {
+                        await deleteCompany(presenting)
+                    })
+                }
+            }
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("company.admin.navigationTitle")
@@ -52,7 +68,7 @@ struct CompanyAdminSheet: View {
                 logger.error("Failed to convert image to JPEG")
                 return
             }
-            await uploadLogo(data: data)
+            await uploadLogo(data)
         }
     }
 
@@ -81,7 +97,18 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func uploadLogo(data: Data) async {
+    func deleteCompany(_ company: Company) async {
+        switch await repository.company.delete(id: company.id) {
+        case .success:
+            router.open(.toast(.success()))
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func uploadLogo(_ data: Data) async {
         switch await repository.company.uploadLogo(companyId: company.id, data: data) {
         case let .success(imageEntity):
             company = company.copyWith(logos: company.logos + [imageEntity])
@@ -93,7 +120,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func deleteLogo(entity: ImageEntity) async {
+    func deleteLogo(_ entity: ImageEntity) async {
         switch await repository.imageEntity.delete(from: .companyLogos, entity: entity) {
         case .success:
             withAnimation {

@@ -10,7 +10,7 @@ struct AdminScreen: View {
             }
             Section("admin.section.reports.title") {
                 RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts))
-                RouterLink("report.admin.navigationTitle", systemImage: "exclamationmark.bubble", open: .screen(.reports))
+                RouterLink("report.admin.navigationTitle", systemImage: "exclamationmark.bubble", open: .screen(.reports(nil)))
             }
             Section("admin.section.management.title") {
                 RouterLink("admin.verification.title", systemImage: "checkmark.seal", open: .screen(.verification))

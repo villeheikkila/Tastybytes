@@ -12,6 +12,7 @@ struct ReportScreen: View {
     @Environment(Router.self) private var router
     @State private var state: ScreenState = .loading
     @State private var reports = [Report]()
+    let filter: ReportFilter?
 
     var body: some View {
         List(reports) { report in
@@ -33,7 +34,7 @@ struct ReportScreen: View {
     }
 
     func loadInitialData() async {
-        switch await repository.report.getAll() {
+        switch await repository.report.getAll(filter) {
         case let .success(reports):
             withAnimation {
                 self.reports = reports

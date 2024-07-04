@@ -1,4 +1,5 @@
 import Models
+import Repositories
 import SwiftUI
 
 enum Screen: Hashable, Codable, Sendable {
@@ -37,7 +38,7 @@ enum Screen: Hashable, Codable, Sendable {
     case blockedUsers
     case contributions
     case about
-    case reports
+    case reports(ReportFilter? = nil)
     case locationManagement
     case error(reason: String)
 
@@ -115,8 +116,8 @@ enum Screen: Hashable, Codable, Sendable {
             ContributionsScreen()
         case .about:
             AboutScreen()
-        case .reports:
-            ReportScreen()
+        case let .reports(filter):
+            ReportScreen(filter: filter)
         case let .error(reason):
             ErrorScreen(reason: reason)
         case .locationManagement:
