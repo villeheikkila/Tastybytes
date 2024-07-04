@@ -48,7 +48,7 @@ enum Sheet: Identifiable, Equatable {
     case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) async -> Void)
     case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case addCategory(onSubmit: (_ newCategoryName: String) async -> Void)
-    case editCompany(company: Company, onSuccess: () async -> Void)
+    case companyAdmin(company: Company, onSuccess: () async -> Void)
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
     case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
@@ -113,10 +113,10 @@ enum Sheet: Identifiable, Equatable {
             AddSubcategorySheet(category: category, onSubmit: onSubmit)
         case let .addCategory(onSubmit: onSubmit):
             AddCategorySheet(onSubmit: onSubmit)
-        case let .editCompany(company: company, onSuccess: onSuccess):
-            EditCompanySheet(company: company, onSuccess: onSuccess, mode: .edit)
+        case let .companyAdmin(company: company, onSuccess: onSuccess):
+            CompanyAdminSheet(company: company, onSuccess: onSuccess)
         case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
-            EditCompanySheet(company: company, onSuccess: onSuccess, mode: .editSuggestion)
+            CompanyEditSuggestionSheet(company: company, onSuccess: onSuccess)
         case let .userSheet(mode: mode, onSubmit: onSubmit):
             UserSheet(mode: mode, onSubmit: onSubmit)
         case let .checkInDatePicker(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic):
@@ -227,7 +227,7 @@ enum Sheet: Identifiable, Equatable {
             "add_subcategory"
         case let .editSubcategory(subcategory, _):
             "edit_subcategory_\(subcategory.hashValue)"
-        case let .editCompany(company, _):
+        case let .companyAdmin(company, _):
             "edit_company_\(company.hashValue)"
         case .companyEditSuggestion:
             "company_edit_suggestion"

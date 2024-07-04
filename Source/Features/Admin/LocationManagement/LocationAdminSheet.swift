@@ -25,10 +25,21 @@ struct LocationAdminSheet: View {
     var body: some View {
         Form {
             Section("location.admin.section.location") {
-                HStack {
-                    if let coordinate = location.location?.coordinate {
-                        MapThumbnail(location: location, coordinate: coordinate, distance: nil)
+                if let coordinate = location.location?.coordinate {
+                    Map(initialPosition: MapCameraPosition
+                        .camera(.init(centerCoordinate: coordinate, distance: 200)))
+                    {
+                        Marker(location.name, coordinate: coordinate)
+                        UserAnnotation()
                     }
+                    .mapControls {
+                        MapUserLocationButton()
+                        MapCompass()
+                    }
+                    .frame(height: 150)
+                    .listRowSeparator(.hidden)
+                }
+                HStack {
                     VStack(alignment: .leading) {
                         Text(location.name)
                         if let title = location.title {
@@ -37,6 +48,7 @@ struct LocationAdminSheet: View {
                         }
                     }
                 }
+                .contentShape(.rect)
                 .openOnTap(.screen(.location(location)))
             }
 
@@ -75,7 +87,7 @@ struct LocationAdminSheet: View {
             }
 
             Section {
-                RouterLink("location.admin.changeLocation.label", systemImage: "map.circle", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
+                RouterLink("location.admin.changeLocation.label", systemImage: "map", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
                     Task {
                         await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
                     }
@@ -93,6 +105,7 @@ struct LocationAdminSheet: View {
                     showDeleteConfirmation = true
                 }
                 .tint(.red)
+                .foregroundColor(.red)
                 .confirmationDialog(
                     "location.delete.confirmation.description",
                     isPresented: $showDeleteConfirmation,

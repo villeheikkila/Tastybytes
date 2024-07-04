@@ -1518,6 +1518,26 @@
         }
       }
     },
+    "company.admin.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Company"
+          }
+        }
+      }
+    },
+    "company.admin.section.details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        }
+      }
+    },
     "company.create.label" : {
       "localizations" : {
         "en" : {
@@ -1579,6 +1599,7 @@
       }
     },
     "company.edit.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1599,6 +1620,7 @@
       }
     },
     "company.edit.section.name.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1649,6 +1671,7 @@
       }
     },
     "company.logo.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2731,7 +2754,15 @@
       }
     },
     "location.admin.manageLocation.label" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage"
+          }
+        }
+      }
     },
     "location.admin.merge.label" : {
       "localizations" : {
@@ -2839,17 +2870,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Merge %1$@ to %2$@"
-          }
-        }
-      }
-    },
-    "location.mergeTo.label" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Merge to..."
           }
         }
       }

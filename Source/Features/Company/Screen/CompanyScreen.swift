@@ -97,20 +97,13 @@ struct CompanyScreen: View {
                         open: .sheet(.addBrand(brandOwner: company.saved, mode: .new))
                     )
                 }
-                if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.editCompany(company: company.saved, onSuccess: {
-                        await getCompanyData(withHaptics: true)
-                        router.open(.toast(.success("company.update.success.toast")))
-                    })))
-                } else {
-                    RouterLink(
-                        "company.editSuggestion.title",
-                        systemImage: "pencil",
-                        open: .sheet(.companyEditSuggestion(company: company.saved, onSuccess: {
-                            router.open(.toast(.success("company.editSuggestion.success.toast")))
-                        }))
-                    )
-                }
+                RouterLink(
+                    "company.editSuggestion.title",
+                    systemImage: "pencil",
+                    open: .sheet(.companyEditSuggestion(company: company.saved, onSuccess: {
+                        router.open(.toast(.success("company.editSuggestion.success.toast")))
+                    }))
+                )
             }
             VerificationButton(isVerified: company.isVerified, verify: {
                 await verifyCompany(isVerified: true)
@@ -119,14 +112,27 @@ struct CompanyScreen: View {
             })
             Divider()
             ReportButton(entity: .company(company.saved))
-            if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
-                Button(
-                    "labels.delete",
-                    systemImage: "trash.fill",
-                    role: .destructive,
-                    action: { showDeleteCompanyConfirmationDialog = true }
-                )
-                .disabled(company.isVerified)
+            if profileEnvironmentModel.hasRole(.admin) {
+                Menu {
+                    if profileEnvironmentModel.hasPermission(.canEditCompanies) {
+                        RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.companyAdmin(company: company.saved, onSuccess: {
+                            await getCompanyData(withHaptics: true)
+                            router.open(.toast(.success("company.update.success.toast")))
+                        })))
+                    }
+                    if profileEnvironmentModel.hasPermission(.canDeleteCompanies) {
+                        Button(
+                            "labels.delete",
+                            systemImage: "trash.fill",
+                            role: .destructive,
+                            action: { showDeleteCompanyConfirmationDialog = true }
+                        )
+                        .disabled(company.isVerified)
+                    }
+                } label: {
+                    Label("labels.admin", systemImage: "gear")
+                        .labelStyle(.iconOnly)
+                }
             }
         } label: {
             Label("labels.menu", systemImage: "ellipsis")

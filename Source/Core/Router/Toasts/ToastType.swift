@@ -2,8 +2,8 @@ import EnvironmentModels
 import SwiftUI
 
 enum ToastType {
-    case success(_ title: LocalizedStringKey)
-    case warning(_ title: LocalizedStringKey)
+    case success(_ title: LocalizedStringKey? = nil)
+    case warning(_ title: LocalizedStringKey? = nil)
 
     var toastEvent: ToastEvent {
         switch self {

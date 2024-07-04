@@ -79,10 +79,10 @@ struct LocationInnerScreen: View {
                                 withAnimation {
                                     self.location = location
                                 }
-                            }, onDelete: { location in
+                            }, onDelete: { _ in
                                 router.removeLast()
                             })), label: {
-                                Label("location.admin.manageLocation.label", systemImage: "doc.on.doc")
+                                Label("location.admin.manageLocation.label", systemImage: "slider.horizontal.3")
                             })
                         }
                     } label: {

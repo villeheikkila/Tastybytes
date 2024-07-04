@@ -21,7 +21,6 @@ struct DiscoverLocationResults: View {
                     .contentShape(.rect)
                     .accessibilityAddTraits(.isButton)
                 }
-
             }
             .listRowBackground(Color.clear)
             .id(location.id)
