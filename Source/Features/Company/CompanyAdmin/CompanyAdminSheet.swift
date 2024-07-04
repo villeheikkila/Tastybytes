@@ -98,7 +98,7 @@ struct CompanyAdminSheet: View {
 
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
-            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", open: .screen(.companyEditSuggestion(company: company, callbacks: .init(onApply: { _ in }))))
+            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", open: .screen(.companyEditSuggestion(company: $company)))
             Button(
                 "labels.delete",
                 systemImage: "trash.fill",
@@ -195,44 +195,26 @@ struct CompanyAdminSheet: View {
 }
 
 struct CompanyEditSuggestionScreen: View {
-    struct Callbacks: Hashable, Sendable, Codable {
-        let onApply: @Sendable (_ updatedCompany: Company) async -> Void
-
-        init(onApply: @escaping @Sendable (_ updatedCompany: Company) async -> Void) {
-            self.onApply = onApply
-        }
-
-        static func == (_: Callbacks, _: Callbacks) -> Bool {
-            true
-        }
-
-        func hash(into _: inout Hasher) {}
-
-        init(from _: Decoder) throws {
-            onApply = { _ in }
-        }
-
-        func encode(to _: Encoder) throws {}
-    }
-
-    let company: Company.Management
-    let callbacks: Callbacks
+    @Binding var company: Company.Management
 
     var body: some View {
         List(company.editSuggestions) { editSuggestion in
-            CompanyEditSuggestionRow(company: company, editSuggestion: editSuggestion)
+            CompanyEditSuggestionRow(company: $company, editSuggestion: editSuggestion)
         }
+        .listStyle(.plain)
         .navigationTitle("company.admin.editSuggestion.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 struct CompanyEditSuggestionRow: View {
-    let company: Company.Management
+    @Environment(Router.self) private var router
+    @State private var showApplyConfirmationDialog = false
+    @Binding var company: Company.Management
     let editSuggestion: Company.EditSuggestion
 
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             if let profile = editSuggestion.createdBy {
                 Avatar(profile: profile)
                     .avatarSize(.medium)
@@ -256,6 +238,28 @@ struct CompanyEditSuggestionRow: View {
             Spacer()
         }
         .padding(.vertical, 2)
+        .swipeActions {
+            Button("company.admin.editSuggestion.apply.label", systemImage: "checkmark") {
+                showApplyConfirmationDialog = true
+            }
+        }
+        .confirmationDialog(
+            "company.admin.editSuggestion.apply.description",
+            isPresented: $showApplyConfirmationDialog,
+            titleVisibility: .visible,
+            presenting: editSuggestion
+        ) { presenting in
+            Button(
+                "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name)",
+                action: {
+                    withAnimation {
+                        company = company.copyWith(name: presenting.name)
+                    }
+                    router.removeLast()
+                }
+            )
+            .tint(.green)
+        }
         .listRowBackground(Color.clear)
     }
 }

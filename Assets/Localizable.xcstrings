@@ -1532,6 +1532,22 @@
         }
       }
     },
+    "company.admin.editSuggestion.apply.description" : {
+
+    },
+    "company.admin.editSuggestion.apply.label" : {
+
+    },
+    "company.admin.editSuggestion.apply.label %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "company.admin.editSuggestion.apply.label %1$@ %2$@"
+          }
+        }
+      }
+    },
     "company.admin.editSuggestion.changeNameTo.label %@ %@" : {
       "localizations" : {
         "en" : {
