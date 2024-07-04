@@ -98,7 +98,16 @@ struct CompanyAdminSheet: View {
 
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
-            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", open: .screen(.companyEditSuggestion(company: $company)))
+            RouterLink(open: .screen(.companyEditSuggestion(company: $company))) {
+                HStack {
+                    Label("admin.section.editSuggestions.title", systemImage: "square.and.pencil")
+                    Spacer()
+                    Text("(\(company.editSuggestions.count.formatted()))")
+                }
+            }
+        }
+
+        Section {
             Button(
                 "labels.delete",
                 systemImage: "trash.fill",

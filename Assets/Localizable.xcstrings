@@ -321,7 +321,14 @@
       }
     },
     "admin.section.editSuggestions.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Suggestions"
+          }
+        }
+      }
     },
     "admin.section.management.title" : {
       "localizations" : {
@@ -1533,10 +1540,24 @@
       }
     },
     "company.admin.editSuggestion.apply.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to apply the edit suggestion? You must also confirm the change on the Admin sheet"
+          }
+        }
+      }
     },
     "company.admin.editSuggestion.apply.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
+        }
+      }
     },
     "company.admin.editSuggestion.apply.label %@ %@" : {
       "localizations" : {
@@ -1559,16 +1580,37 @@
       }
     },
     "company.admin.editSuggestion.delete.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the edit suggestion? The data will be lost"
+          }
+        }
+      }
     },
     "company.admin.editSuggestion.delete.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "company.admin.editSuggestion.delete.label %@" : {
 
     },
     "company.admin.editSuggestion.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Suggestions"
+          }
+        }
+      }
     },
     "company.admin.navigationTitle" : {
       "localizations" : {
