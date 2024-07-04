@@ -40,9 +40,9 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    func getDetailId(id: Int) async -> Result<Company, Error> {
+    func getManagementDataById(id: Int) async -> Result<Company.Management, Error> {
         do {
-            let response: Company = try await client
+            let response: Company.Management = try await client
                 .from(.companies)
                 .select(Company.getQuery(.management(false)))
                 .eq("id", value: id)
@@ -104,13 +104,13 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error> {
+    func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Management, Error> {
         do {
-            let response: Company.Joined = try await client
+            let response: Company.Management = try await client
                 .from(.companies)
                 .update(updateRequest)
                 .eq("id", value: updateRequest.id)
-                .select(Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
+                .select(Company.getQuery(.management(false)))
                 .single()
                 .execute()
                 .value

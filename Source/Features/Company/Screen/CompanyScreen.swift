@@ -18,7 +18,7 @@ struct CompanyScreen: View {
     @State private var summary: Summary?
     @State private var showUnverifyCompanyConfirmation = false
 
-    init(company: Company) {
+    init(company: any CompanyProtocol) {
         _company = State(wrappedValue: .init(company: company))
     }
 

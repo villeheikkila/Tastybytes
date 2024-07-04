@@ -41,6 +41,7 @@ enum Screen: Hashable, Codable, Sendable {
     case reports(ReportFilter? = nil)
     case locationManagement
     case error(reason: String)
+    case companyEditSuggestion(company: Company.Management, callbacks: CompanyEditSuggestionScreen.Callbacks)
 
     @MainActor
     @ViewBuilder
@@ -122,6 +123,8 @@ enum Screen: Hashable, Codable, Sendable {
             ErrorScreen(reason: reason)
         case .locationManagement:
             LocationManagementScreen()
+        case let .companyEditSuggestion(company, callbacks):
+            CompanyEditSuggestionScreen(company: company, callbacks: callbacks)
         }
     }
 }

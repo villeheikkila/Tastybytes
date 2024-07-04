@@ -13,14 +13,14 @@ struct CompanyAdminSheet: View {
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var showDeleteCompanyConfirmationDialog = false
-    @State private var company: Company
+    @State private var company: Company.Management
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
 
     let onSuccess: () async -> Void
 
     init(company: Company, onSuccess: @escaping () async -> Void) {
-        _company = State(initialValue: company)
+        _company = State(initialValue: .init(company: company))
         _newCompanyName = State(initialValue: company.name)
         self.onSuccess = onSuccess
     }
@@ -28,7 +28,7 @@ struct CompanyAdminSheet: View {
     var body: some View {
         Form {
             Section("company.admin.section.company") {
-                RouterLink(open: .screen(.company(company))) {
+                RouterLink(open: .screen(.company(.init(company: company)))) {
                     CompanyResultInnerView(company: company)
                 }
             }
@@ -68,6 +68,7 @@ struct CompanyAdminSheet: View {
 
             Section {
                 RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
+                RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", open: .screen(.companyEditSuggestion(company: company, callbacks: .init(onApply: { _ in }))))
                 Button(
                     "labels.delete",
                     systemImage: "trash.fill",
@@ -116,7 +117,7 @@ struct CompanyAdminSheet: View {
     }
 
     func loadData() async {
-        switch await repository.company.getDetailId(id: company.id) {
+        switch await repository.company.getManagementDataById(id: company.id) {
         case let .success(company):
             withAnimation {
                 self.company = company
@@ -131,7 +132,7 @@ struct CompanyAdminSheet: View {
         switch await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName)) {
         case let .success(company):
             withAnimation {
-                self.company = .init(company: company)
+                self.company = .init(company: .init(company: company))
             }
             router.open(.toast(.success()))
             await onSuccess()
@@ -142,7 +143,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func deleteCompany(_ company: Company) async {
+    func deleteCompany(_ company: Company.Management) async {
         switch await repository.company.delete(id: company.id) {
         case .success:
             router.open(.toast(.success()))
@@ -180,7 +181,67 @@ struct CompanyAdminSheet: View {
 }
 
 struct CompanyEditSuggestionScreen: View {
+    struct Callbacks: Hashable, Sendable, Codable {
+        let onApply: @Sendable (_ updatedCompany: Company) async -> Void
+
+        init(onApply: @escaping @Sendable (_ updatedCompany: Company) async -> Void) {
+            self.onApply = onApply
+        }
+
+        static func == (_: Callbacks, _: Callbacks) -> Bool {
+            true
+        }
+
+        func hash(into _: inout Hasher) {}
+
+        init(from _: Decoder) throws {
+            onApply = { _ in }
+        }
+
+        func encode(to _: Encoder) throws {}
+    }
+
+    let company: Company.Management
+    let callbacks: Callbacks
+
     var body: some View {
-        HStack {}
+        List(company.editSuggestions) { editSuggestion in
+            CompanyEditSuggestionRow(company: company, editSuggestion: editSuggestion)
+        }
+        .navigationTitle("company.admin.editSuggestion.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+struct CompanyEditSuggestionRow: View {
+    let company: Company.Management
+    let editSuggestion: Company.EditSuggestion
+
+    var body: some View {
+        HStack {
+            if let profile = editSuggestion.createdBy {
+                Avatar(profile: profile)
+                    .avatarSize(.medium)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                HStack {
+                    Group {
+                        if let profile = editSuggestion.createdBy {
+                            Text(profile.preferredName)
+                        } else {
+                            Text("-")
+                        }
+                    }
+                    .font(.caption)
+                    Spacer()
+                    Text(editSuggestion.createdAt.formatted(.customRelativetime)).font(.caption2)
+                }
+                Text("company.admin.editSuggestion.changeNameTo.label \(company.name) \(editSuggestion.name)")
+                    .font(.callout)
+            }
+            Spacer()
+        }
+        .padding(.vertical, 2)
+        .listRowBackground(Color.clear)
     }
 }

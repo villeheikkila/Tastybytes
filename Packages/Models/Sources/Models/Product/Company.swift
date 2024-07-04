@@ -4,21 +4,24 @@ public protocol CompanyLogoProtocol {
     var logos: [ImageEntity] { get }
 }
 
-public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol {
+public protocol CompanyProtocol: Hashable, Codable, Sendable, CompanyLogoProtocol {
+    var id: Int { get }
+    var name: String { get }
+    var isVerified: Bool { get }
+    var logos: [ImageEntity] { get }
+}
+
+public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtocol, CompanyLogoProtocol {
     public let id: Int
     public let name: String
     public let isVerified: Bool
     public let logos: [ImageEntity]
-    public let createdBy: Profile?
-    public let createdAt: Date?
 
     public init(id: Int, name: String, logos: [ImageEntity] = [], isVerified: Bool) {
         self.id = id
         self.name = name
         self.isVerified = isVerified
         self.logos = logos
-        createdBy = nil
-        createdAt = nil
     }
 
     public init(company: Company.Joined) {
@@ -26,8 +29,13 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogoPro
         name = company.name
         isVerified = company.isVerified
         logos = company.logos
-        createdBy = nil
-        createdAt = nil
+    }
+
+    public init(company: Company.Management) {
+        id = company.id
+        name = company.name
+        isVerified = company.isVerified
+        logos = company.logos
     }
 
     enum CodingKeys: String, CodingKey {
@@ -35,8 +43,6 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogoPro
         case name
         case logos = "company_logos"
         case isVerified = "is_verified"
-        case createdBy = "profiles"
-        case createdAt = "created_at"
     }
 
     public func copyWith(name: String? = nil, logos: [ImageEntity]? = nil, isVerified: Bool? = nil) -> Self {
@@ -50,6 +56,66 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyLogoPro
 }
 
 public extension Company {
+    struct Management: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol {
+        public let id: Int
+        public let name: String
+        public let isVerified: Bool
+        public let logos: [ImageEntity]
+        public let createdBy: Profile?
+        public let createdAt: Date?
+        public let editSuggestions: [EditSuggestion]
+
+        public init(company: Company) {
+            id = company.id
+            name = company.name
+            isVerified = company.isVerified
+            logos = company.logos
+            createdBy = nil
+            createdAt = nil
+            editSuggestions = []
+        }
+
+        init(id: Int, name: String, isVerified: Bool, logos: [ImageEntity], createdBy: Profile? = nil, createdAt: Date? = nil, editSuggestions: [Company.EditSuggestion]) {
+            self.id = id
+            self.name = name
+            self.isVerified = isVerified
+            self.logos = logos
+            self.createdBy = createdBy
+            self.createdAt = createdAt
+            self.editSuggestions = editSuggestions
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case logos = "company_logos"
+            case isVerified = "is_verified"
+            case createdBy = "profiles"
+            case createdAt = "created_at"
+            case editSuggestions = "company_edit_suggestions"
+        }
+
+        public func copyWith(
+            id: Int? = nil,
+            name: String? = nil,
+            isVerified: Bool? = nil,
+            logos: [ImageEntity]? = nil,
+            createdBy: Profile?? = nil,
+            createdAt: Date?? = nil,
+            editSuggestions: [EditSuggestion]? = nil
+        ) -> Self {
+            .init(
+                id: id ?? self.id,
+                name: name ?? self.name,
+                isVerified: isVerified ?? self.isVerified,
+                logos: logos ?? self.logos,
+                createdBy: createdBy ?? self.createdBy,
+                createdAt: createdAt ?? self.createdAt,
+                editSuggestions: editSuggestions ?? self.editSuggestions
+            )
+        }
+    }
+
     struct NewRequest: Codable, Sendable {
         public init(name: String) {
             self.name = name
@@ -151,7 +217,7 @@ public extension Company {
 }
 
 public extension Company.Joined {
-    init(company: Company) {
+    init(company: any CompanyProtocol) {
         id = company.id
         name = company.name
         isVerified = company.isVerified
@@ -165,5 +231,21 @@ public extension CompanyLogoProtocol {
     func getLogoUrl(baseUrl: URL) -> URL? {
         guard let logo = logos.first else { return nil }
         return logo.getLogoUrl(baseUrl: baseUrl)
+    }
+}
+
+public extension Company {
+    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable {
+        public let id: Int
+        public let name: String
+        public let createdBy: Profile?
+        public let createdAt: Date
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case createdBy = "profiles"
+            case createdAt = "created_at"
+        }
     }
 }

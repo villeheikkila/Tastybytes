@@ -320,6 +320,9 @@
         }
       }
     },
+    "admin.section.editSuggestions.title" : {
+
+    },
     "admin.section.management.title" : {
       "localizations" : {
         "en" : {
@@ -1528,6 +1531,19 @@
           }
         }
       }
+    },
+    "company.admin.editSuggestion.changeNameTo.label %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "company.admin.editSuggestion.changeNameTo.label %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "company.admin.editSuggestion.navigationTitle" : {
+
     },
     "company.admin.navigationTitle" : {
       "localizations" : {

@@ -14,7 +14,7 @@ struct CompanyResultRow: View {
 }
 
 struct CompanyResultInnerView: View {
-    let company: Company
+    let company: any CompanyProtocol
 
     var body: some View {
         HStack {
