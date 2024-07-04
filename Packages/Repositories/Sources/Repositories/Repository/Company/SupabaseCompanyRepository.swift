@@ -121,6 +121,20 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
+    func deleteEditSuggestion(editSuggestion: Company.EditSuggestion) async -> Result<Void, Error> {
+        do {
+            try await client
+                .from(.companyEditSuggestions)
+                .delete()
+                .eq("id", value: editSuggestion.id)
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error> {
         do {
             try await client

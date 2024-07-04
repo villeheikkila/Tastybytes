@@ -127,55 +127,55 @@ enum Screen: Hashable, Sendable {
             CompanyEditSuggestionScreen(company: company)
         }
     }
-    
+
     static func == (lhs: Screen, rhs: Screen) -> Bool {
         switch (lhs, rhs) {
-        case (.product(let lhsProduct), .product(let rhsProduct)):
-            return lhsProduct == rhsProduct
-        case (.productFromBarcode(let lhsProduct, let lhsBarcode), .productFromBarcode(let rhsProduct, let rhsBarcode)):
-            return lhsProduct == rhsProduct && lhsBarcode == rhsBarcode
-        case (.profile(let lhsProfile), .profile(let rhsProfile)):
-            return lhsProfile == rhsProfile
-        case (.checkIn(let lhsCheckIn), .checkIn(let rhsCheckIn)):
-            return lhsCheckIn == rhsCheckIn
-        case (.location(let lhsLocation), .location(let rhsLocation)):
-            return lhsLocation == rhsLocation
-        case (.company(let lhsCompany), .company(let rhsCompany)):
-            return lhsCompany == rhsCompany
-        case (.brand(let lhsBrand), .brand(let rhsBrand)):
-            return lhsBrand == rhsBrand
-        case (.fetchBrand(let lhsBrand), .fetchBrand(let rhsBrand)):
-            return lhsBrand == rhsBrand
-        case (.fetchSubBrand(let lhsSubBrand), .fetchSubBrand(let rhsSubBrand)):
-            return lhsSubBrand == rhsSubBrand
-        case (.profileProducts(let lhsProfile), .profileProducts(let rhsProfile)):
-            return lhsProfile == rhsProfile
-        case (.profileWishlist(let lhsProfile), .profileWishlist(let rhsProfile)):
-            return lhsProfile == rhsProfile
-        case (.profileProductsByFilter(let lhsProfile, let lhsFilter), .profileProductsByFilter(let rhsProfile, let rhsFilter)):
-            return lhsProfile == rhsProfile && lhsFilter == rhsFilter
-        case (.profileStatistics(let lhsProfile), .profileStatistics(let rhsProfile)):
-            return lhsProfile == rhsProfile
-        case (.profileStatisticsUniqueProducts(let lhsProfile), .profileStatisticsUniqueProducts(let rhsProfile)):
-            return lhsProfile == rhsProfile
-        case (.profileStatisticsTopLocations(let lhsProfile), .profileStatisticsTopLocations(let rhsProfile)):
-            return lhsProfile == rhsProfile
-        case (.profileLocations(let lhsProfile), .profileLocations(let rhsProfile)):
-            return lhsProfile == rhsProfile
-        case (.profileCheckIns(let lhsProfile, let lhsFilter), .profileCheckIns(let rhsProfile, let rhsFilter)):
-            return lhsProfile == rhsProfile && lhsFilter == rhsFilter
-        case (.friends(let lhsProfile), .friends(let rhsProfile)):
-            return lhsProfile == rhsProfile
-        case (.addProduct(let lhsBarcode), .addProduct(let rhsBarcode)):
-            return lhsBarcode == rhsBarcode
-        case (.productFeed(let lhsFeed), .productFeed(let rhsFeed)):
-            return lhsFeed == rhsFeed
-        case (.reports(let lhsFilter), .reports(let rhsFilter)):
-            return lhsFilter == rhsFilter
-        case (.error(let lhsReason), .error(let rhsReason)):
-            return lhsReason == rhsReason
-        case (.companyEditSuggestion(let lhsCompany), .companyEditSuggestion(let rhsCompany)):
-            return lhsCompany.wrappedValue == rhsCompany.wrappedValue
+        case let (.product(lhsProduct), .product(rhsProduct)):
+            lhsProduct == rhsProduct
+        case let (.productFromBarcode(lhsProduct, lhsBarcode), .productFromBarcode(rhsProduct, rhsBarcode)):
+            lhsProduct == rhsProduct && lhsBarcode == rhsBarcode
+        case let (.profile(lhsProfile), .profile(rhsProfile)):
+            lhsProfile == rhsProfile
+        case let (.checkIn(lhsCheckIn), .checkIn(rhsCheckIn)):
+            lhsCheckIn == rhsCheckIn
+        case let (.location(lhsLocation), .location(rhsLocation)):
+            lhsLocation == rhsLocation
+        case let (.company(lhsCompany), .company(rhsCompany)):
+            lhsCompany == rhsCompany
+        case let (.brand(lhsBrand), .brand(rhsBrand)):
+            lhsBrand == rhsBrand
+        case let (.fetchBrand(lhsBrand), .fetchBrand(rhsBrand)):
+            lhsBrand == rhsBrand
+        case let (.fetchSubBrand(lhsSubBrand), .fetchSubBrand(rhsSubBrand)):
+            lhsSubBrand == rhsSubBrand
+        case let (.profileProducts(lhsProfile), .profileProducts(rhsProfile)):
+            lhsProfile == rhsProfile
+        case let (.profileWishlist(lhsProfile), .profileWishlist(rhsProfile)):
+            lhsProfile == rhsProfile
+        case let (.profileProductsByFilter(lhsProfile, lhsFilter), .profileProductsByFilter(rhsProfile, rhsFilter)):
+            lhsProfile == rhsProfile && lhsFilter == rhsFilter
+        case let (.profileStatistics(lhsProfile), .profileStatistics(rhsProfile)):
+            lhsProfile == rhsProfile
+        case let (.profileStatisticsUniqueProducts(lhsProfile), .profileStatisticsUniqueProducts(rhsProfile)):
+            lhsProfile == rhsProfile
+        case let (.profileStatisticsTopLocations(lhsProfile), .profileStatisticsTopLocations(rhsProfile)):
+            lhsProfile == rhsProfile
+        case let (.profileLocations(lhsProfile), .profileLocations(rhsProfile)):
+            lhsProfile == rhsProfile
+        case let (.profileCheckIns(lhsProfile, lhsFilter), .profileCheckIns(rhsProfile, rhsFilter)):
+            lhsProfile == rhsProfile && lhsFilter == rhsFilter
+        case let (.friends(lhsProfile), .friends(rhsProfile)):
+            lhsProfile == rhsProfile
+        case let (.addProduct(lhsBarcode), .addProduct(rhsBarcode)):
+            lhsBarcode == rhsBarcode
+        case let (.productFeed(lhsFeed), .productFeed(rhsFeed)):
+            lhsFeed == rhsFeed
+        case let (.reports(lhsFilter), .reports(rhsFilter)):
+            lhsFilter == rhsFilter
+        case let (.error(lhsReason), .error(rhsReason)):
+            lhsReason == rhsReason
+        case let (.companyEditSuggestion(lhsCompany), .companyEditSuggestion(rhsCompany)):
+            lhsCompany.wrappedValue == rhsCompany.wrappedValue
         case (.settings, .settings),
              (.currentUserFriends, .currentUserFriends),
              (.flavorManagement, .flavorManagement),
@@ -192,65 +192,65 @@ enum Screen: Hashable, Sendable {
              (.contributions, .contributions),
              (.about, .about),
              (.locationManagement, .locationManagement):
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .product(let product):
+        case let .product(product):
             hasher.combine("product")
             hasher.combine(product)
-        case .productFromBarcode(let product, let barcode):
+        case let .productFromBarcode(product, barcode):
             hasher.combine("productFromBarcode")
             hasher.combine(product)
             hasher.combine(barcode)
-        case .profile(let profile):
+        case let .profile(profile):
             hasher.combine("profile")
             hasher.combine(profile)
-        case .checkIn(let checkIn):
+        case let .checkIn(checkIn):
             hasher.combine("checkIn")
             hasher.combine(checkIn)
-        case .location(let location):
+        case let .location(location):
             hasher.combine("location")
             hasher.combine(location)
-        case .company(let company):
+        case let .company(company):
             hasher.combine("company")
             hasher.combine(company)
-        case .brand(let brand):
+        case let .brand(brand):
             hasher.combine("brand")
             hasher.combine(brand)
-        case .fetchBrand(let brand):
+        case let .fetchBrand(brand):
             hasher.combine("fetchBrand")
             hasher.combine(brand)
-        case .fetchSubBrand(let subBrand):
+        case let .fetchSubBrand(subBrand):
             hasher.combine("fetchSubBrand")
             hasher.combine(subBrand)
-        case .profileProducts(let profile):
+        case let .profileProducts(profile):
             hasher.combine("profileProducts")
             hasher.combine(profile)
-        case .profileWishlist(let profile):
+        case let .profileWishlist(profile):
             hasher.combine("profileWishlist")
             hasher.combine(profile)
-        case .profileProductsByFilter(let profile, let filter):
+        case let .profileProductsByFilter(profile, filter):
             hasher.combine("profileProductsByFilter")
             hasher.combine(profile)
             hasher.combine(filter)
-        case .profileStatistics(let profile):
+        case let .profileStatistics(profile):
             hasher.combine("profileStatistics")
             hasher.combine(profile)
-        case .profileStatisticsUniqueProducts(let profile):
+        case let .profileStatisticsUniqueProducts(profile):
             hasher.combine("profileStatisticsUniqueProducts")
             hasher.combine(profile)
-        case .profileStatisticsTopLocations(let profile):
+        case let .profileStatisticsTopLocations(profile):
             hasher.combine("profileStatisticsTopLocations")
             hasher.combine(profile)
-        case .profileLocations(let profile):
+        case let .profileLocations(profile):
             hasher.combine("profileLocations")
             hasher.combine(profile)
-        case .profileCheckIns(let profile, let filter):
+        case let .profileCheckIns(profile, filter):
             hasher.combine("profileCheckIns")
             hasher.combine(profile)
             hasher.combine(filter)
@@ -258,13 +258,13 @@ enum Screen: Hashable, Sendable {
             hasher.combine("settings")
         case .currentUserFriends:
             hasher.combine("currentUserFriends")
-        case .friends(let profile):
+        case let .friends(profile):
             hasher.combine("friends")
             hasher.combine(profile)
-        case .addProduct(let barcode):
+        case let .addProduct(barcode):
             hasher.combine("addProduct")
             hasher.combine(barcode)
-        case .productFeed(let feedType):
+        case let .productFeed(feedType):
             hasher.combine("productFeed")
             hasher.combine(feedType)
         case .flavorManagement:
@@ -293,15 +293,15 @@ enum Screen: Hashable, Sendable {
             hasher.combine("contributions")
         case .about:
             hasher.combine("about")
-        case .reports(let filter):
+        case let .reports(filter):
             hasher.combine("reports")
             hasher.combine(filter)
         case .locationManagement:
             hasher.combine("locationManagement")
-        case .error(let reason):
+        case let .error(reason):
             hasher.combine("error")
             hasher.combine(reason)
-        case .companyEditSuggestion(let company):
+        case let .companyEditSuggestion(company):
             hasher.combine("companyEditSuggestion")
             hasher.combine(company.wrappedValue)
         }

@@ -201,6 +201,11 @@ struct CompanyEditSuggestionScreen: View {
         List(company.editSuggestions) { editSuggestion in
             CompanyEditSuggestionRow(company: $company, editSuggestion: editSuggestion)
         }
+        .overlay {
+            if company.editSuggestions.isEmpty {
+                ContentUnavailableView("No Edit Suggestions", systemImage: "tray")
+            }
+        }
         .listStyle(.plain)
         .navigationTitle("company.admin.editSuggestion.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
@@ -208,8 +213,11 @@ struct CompanyEditSuggestionScreen: View {
 }
 
 struct CompanyEditSuggestionRow: View {
+    private let logger = Logger(category: "CompanyEditSuggestionRow")
+    @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var showApplyConfirmationDialog = false
+    @State private var showDeleteConfirmationDialog = false
     @Binding var company: Company.Management
     let editSuggestion: Company.EditSuggestion
 
@@ -239,9 +247,14 @@ struct CompanyEditSuggestionRow: View {
         }
         .padding(.vertical, 2)
         .swipeActions {
+            Button("company.admin.editSuggestion.delete.label", systemImage: "trash") {
+                showDeleteConfirmationDialog = true
+            }
+            .tint(.red)
             Button("company.admin.editSuggestion.apply.label", systemImage: "checkmark") {
                 showApplyConfirmationDialog = true
             }
+            .tint(.green)
         }
         .confirmationDialog(
             "company.admin.editSuggestion.apply.description",
@@ -260,6 +273,33 @@ struct CompanyEditSuggestionRow: View {
             )
             .tint(.green)
         }
+        .confirmationDialog(
+            "company.admin.editSuggestion.delete.description",
+            isPresented: $showDeleteConfirmationDialog,
+            titleVisibility: .visible,
+            presenting: editSuggestion
+        ) { presenting in
+            ProgressButton(
+                "company.admin.editSuggestion.delete.label \(presenting.name)",
+                action: {
+                  await  deleteEditSuggestion(presenting)
+                }
+            )
+            .tint(.green)
+        }
         .listRowBackground(Color.clear)
+    }
+
+    func deleteEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
+        switch await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion) {
+        case .success:
+            withAnimation {
+                company = company.copyWith(editSuggestions: company.editSuggestions.removing(editSuggestion))
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
+        }
     }
 }

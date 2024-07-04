@@ -1558,6 +1558,15 @@
         }
       }
     },
+    "company.admin.editSuggestion.delete.description" : {
+
+    },
+    "company.admin.editSuggestion.delete.label" : {
+
+    },
+    "company.admin.editSuggestion.delete.label %@" : {
+
+    },
     "company.admin.editSuggestion.navigationTitle" : {
 
     },
@@ -3046,6 +3055,9 @@
           }
         }
       }
+    },
+    "No Edit Suggestions" : {
+
     },
     "notification.checkInComment.label" : {
       "localizations" : {
