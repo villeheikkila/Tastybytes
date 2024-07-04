@@ -112,17 +112,10 @@ struct CompanyScreen: View {
             Divider()
             ReportButton(entity: .company(company.saved))
             if profileEnvironmentModel.hasRole(.admin) {
-                Menu {
-                    if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                        RouterLink("admin.manage.label", systemImage: "pencil", open: .sheet(.companyAdmin(company: company.saved, onSuccess: {
-                            await getCompanyData(withHaptics: true)
-                            router.open(.toast(.success("company.update.success.toast")))
-                        })))
-                    }
-                } label: {
-                    Label("labels.admin", systemImage: "gear")
-                        .labelStyle(.iconOnly)
-                }
+                RouterLink("labels.admin", systemImage: "wrench.and.screwdriver", open: .sheet(.companyAdmin(company: company.saved, onSuccess: {
+                    await getCompanyData(withHaptics: true)
+                    router.open(.toast(.success("company.update.success.toast")))
+                })))
             }
         } label: {
             Label("labels.menu", systemImage: "ellipsis")

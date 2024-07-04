@@ -131,7 +131,7 @@ struct CompanyAdminSheet: View {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
             ProgressButton("labels.edit", action: {
-                await editCompany(onSuccess: onSuccess)
+                await editCompany()
             })
             .disabled(!newCompanyName.isValidLength(.normal) || newCompanyName == company.name)
         }
@@ -151,7 +151,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func editCompany(onSuccess: () async -> Void) async {
+    func editCompany() async {
         switch await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName)) {
         case let .success(company):
             withAnimation {

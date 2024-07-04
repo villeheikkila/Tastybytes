@@ -73,22 +73,15 @@ struct LocationInnerScreen: View {
                 Divider()
 
                 if profileEnvironmentModel.hasRole(.admin) {
-                    Menu {
-                        if profileEnvironmentModel.hasPermission(.canUpdateLocations) {
-                            RouterLink(open: .sheet(.locationAdmin(location: location, onEdit: { location in
-                                withAnimation {
-                                    self.location = location
-                                }
-                            }, onDelete: { _ in
-                                router.removeLast()
-                            })), label: {
-                                Label("admin.manage.label", systemImage: "slider.horizontal.3")
-                            })
+                    RouterLink(open: .sheet(.locationAdmin(location: location, onEdit: { location in
+                        withAnimation {
+                            self.location = location
                         }
-                    } label: {
-                        Label("labels.admin", systemImage: "gear")
-                            .labelStyle(.iconOnly)
-                    }
+                    }, onDelete: { _ in
+                        router.removeLast()
+                    })), label: {
+                        Label("labels.admin", systemImage: "wrench.and.screwdriver")
+                    })
                 }
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
