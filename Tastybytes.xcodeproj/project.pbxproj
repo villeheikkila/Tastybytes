@@ -116,11 +116,11 @@
 		5C90580A2B2894BE00EC157B /* BarcodeManagementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90576E2B2894BE00EC157B /* BarcodeManagementSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90580B2B2894BE00EC157B /* ReportButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057702B2894BE00EC157B /* ReportButtonView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90580C2B2894BE00EC157B /* ReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057712B2894BE00EC157B /* ReportSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C90580D2B2894BE00EC157B /* EditBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057732B2894BE00EC157B /* EditBrandSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C90580D2B2894BE00EC157B /* BrandAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057732B2894BE00EC157B /* BrandAdminSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90580E2B2894BE00EC157B /* SubBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057752B2894BE00EC157B /* SubBrandSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90580F2B2894BE00EC157B /* CheckInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057772B2894BE00EC157B /* CheckInSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058102B2894BE00EC157B /* FlavorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057792B2894BE00EC157B /* FlavorSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058112B2894BE00EC157B /* EditSubBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577B2B2894BE00EC157B /* EditSubBrandSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C9058112B2894BE00EC157B /* SubBrandAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577B2B2894BE00EC157B /* SubBrandAdminSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058122B2894BE00EC157B /* CheckInLocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90577D2B2894BE00EC157B /* CheckInLocationSearchSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058142B2894BE00EC157B /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057812B2894BE00EC157B /* SettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058152B2894BE00EC157B /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057822B2894BE00EC157B /* AboutScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -243,6 +243,8 @@
 		5CD2EE1B2C356DB2009AA949 /* LocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE1A2C356DB2009AA949 /* LocationSearchSheet.swift */; };
 		5CD2EE1E2C367768009AA949 /* CompanyEditSuggestionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE1D2C367768009AA949 /* CompanyEditSuggestionSheet.swift */; };
 		5CD2EE212C36D947009AA949 /* ProfileAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE202C36D947009AA949 /* ProfileAdminSheet.swift */; };
+		5CD2EE232C3733EE009AA949 /* EditLogoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */; };
+		5CD2EE252C3733FB009AA949 /* AdminRouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */; };
 		5CD3C0CE2B81384A0049E563 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0CD2B81384A0049E563 /* Date+Extension.swift */; };
 		5CD3C0D72B814B400049E563 /* CreateQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D62B814B400049E563 /* CreateQRCodeView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0DB2B814B790049E563 /* RatingPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0DA2B814B790049E563 /* RatingPickerView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -416,11 +418,11 @@
 		5C90576E2B2894BE00EC157B /* BarcodeManagementSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeManagementSheet.swift; sourceTree = "<group>"; };
 		5C9057702B2894BE00EC157B /* ReportButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportButtonView.swift; sourceTree = "<group>"; };
 		5C9057712B2894BE00EC157B /* ReportSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportSheet.swift; sourceTree = "<group>"; };
-		5C9057732B2894BE00EC157B /* EditBrandSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditBrandSheet.swift; sourceTree = "<group>"; };
+		5C9057732B2894BE00EC157B /* BrandAdminSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrandAdminSheet.swift; sourceTree = "<group>"; };
 		5C9057752B2894BE00EC157B /* SubBrandSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubBrandSheet.swift; sourceTree = "<group>"; };
 		5C9057772B2894BE00EC157B /* CheckInSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInSheet.swift; sourceTree = "<group>"; };
 		5C9057792B2894BE00EC157B /* FlavorSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlavorSheet.swift; sourceTree = "<group>"; };
-		5C90577B2B2894BE00EC157B /* EditSubBrandSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSubBrandSheet.swift; sourceTree = "<group>"; };
+		5C90577B2B2894BE00EC157B /* SubBrandAdminSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubBrandAdminSheet.swift; sourceTree = "<group>"; };
 		5C90577D2B2894BE00EC157B /* CheckInLocationSearchSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInLocationSearchSheet.swift; sourceTree = "<group>"; };
 		5C9057812B2894BE00EC157B /* SettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		5C9057822B2894BE00EC157B /* AboutScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
@@ -542,6 +544,8 @@
 		5CD2EE1A2C356DB2009AA949 /* LocationSearchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSheet.swift; sourceTree = "<group>"; };
 		5CD2EE1D2C367768009AA949 /* CompanyEditSuggestionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyEditSuggestionSheet.swift; sourceTree = "<group>"; };
 		5CD2EE202C36D947009AA949 /* ProfileAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAdminSheet.swift; sourceTree = "<group>"; };
+		5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogoSection.swift; sourceTree = "<group>"; };
+		5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminRouterLink.swift; sourceTree = "<group>"; };
 		5CD3C0CD2B81384A0049E563 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		5CD3C0D02B814ACD0049E563 /* EmptyActivityFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyActivityFeedView.swift; sourceTree = "<group>"; };
 		5CD3C0D22B814ACD0049E563 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
@@ -1031,7 +1035,7 @@
 		5C9057722B2894BE00EC157B /* EditBrand */ = {
 			isa = PBXGroup;
 			children = (
-				5C9057732B2894BE00EC157B /* EditBrandSheet.swift */,
+				5C9057732B2894BE00EC157B /* BrandAdminSheet.swift */,
 			);
 			path = EditBrand;
 			sourceTree = "<group>";
@@ -1069,7 +1073,7 @@
 		5C90577A2B2894BE00EC157B /* EditSubBrand */ = {
 			isa = PBXGroup;
 			children = (
-				5C90577B2B2894BE00EC157B /* EditSubBrandSheet.swift */,
+				5C90577B2B2894BE00EC157B /* SubBrandAdminSheet.swift */,
 			);
 			path = EditSubBrand;
 			sourceTree = "<group>";
@@ -1263,6 +1267,8 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */,
+				5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */,
 				5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */,
 				5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */,
 				5CD3C0DC2B814B910049E563 /* RatingView.swift */,
@@ -1761,7 +1767,7 @@
 				5C90AF712C15C41D00BA3202 /* ScreenStateOverlayView.swift in Sources */,
 				5C90582F2B2894BE00EC157B /* ProfileScreen.swift in Sources */,
 				5CD2EE192C35538A009AA949 /* ToastType.swift in Sources */,
-				5C90580D2B2894BE00EC157B /* EditBrandSheet.swift in Sources */,
+				5C90580D2B2894BE00EC157B /* BrandAdminSheet.swift in Sources */,
 				5C9058322B2894BE00EC157B /* ScalingButton.swift in Sources */,
 				5C90582A2B2894BE00EC157B /* ProductScreen.swift in Sources */,
 				5C9058252B2894BE00EC157B /* CheckInReactionNotificationView.swift in Sources */,
@@ -1885,6 +1891,7 @@
 				5C511D7D2BA78E5800F95290 /* AuthenticationScreenWatchOSContent.swift in Sources */,
 				5C9058332B2894BE00EC157B /* ProfileProductListView.swift in Sources */,
 				5C82E8A22B2F7C2A00F2B369 /* ProfileJoinedAtSection.swift in Sources */,
+				5CD2EE252C3733FB009AA949 /* AdminRouterLink.swift in Sources */,
 				5CD3C0DB2B814B790049E563 /* RatingPickerView.swift in Sources */,
 				5C90585A2B2894BE00EC157B /* PathIdentifier.swift in Sources */,
 				5CAADEF62B5C23C700D956C1 /* CompanyRow.swift in Sources */,
@@ -1939,7 +1946,8 @@
 				5CD2EE122C349ACA009AA949 /* View+OpenOnTap.swift in Sources */,
 				5C07F27A2B51EBB800D8740B /* CompanyShareLinkView.swift in Sources */,
 				5CAADF012B5C4EED00D956C1 /* DiscoverProductRow.swift in Sources */,
-				5C9058112B2894BE00EC157B /* EditSubBrandSheet.swift in Sources */,
+				5CD2EE232C3733EE009AA949 /* EditLogoSection.swift in Sources */,
+				5C9058112B2894BE00EC157B /* SubBrandAdminSheet.swift in Sources */,
 				5C9058082B2894BE00EC157B /* CheckInDatePickerSheet.swift in Sources */,
 				5CCEE27D2B2CA34800F276DF /* CheckInCardImage.swift in Sources */,
 				5C511D792BA78DCE00F95290 /* PrivacyPolicyView.swift in Sources */,

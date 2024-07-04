@@ -19,7 +19,6 @@ struct BrandScreen: View {
     @State private var showProductGroupingPicker = false
 
     @State private var showBrandUnverificationConfirmation = false
-    @State private var showDeleteBrandConfirmationDialog = false
     @State private var state: ScreenState = .loading
 
     let initialScrollPosition: SubBrand.JoinedBrand?
@@ -117,7 +116,7 @@ struct BrandScreen: View {
                         ))
                 }
             } header: {
-                SubBrandSectionHeader(brand: $brand, subBrand: subBrand, verifySubBrand: verifySubBrand, deleteSubBrand: deleteSubBrand)
+                SubBrandSectionHeader(brand: $brand, subBrand: subBrand, verifySubBrand: verifySubBrand)
             }
             .headerProminence(.increased)
             .id(subBrand.id)
@@ -150,16 +149,8 @@ struct BrandScreen: View {
                             router.open(.screen(.product(product), removeLast: true))
                         }))))
                     }
-                    if profileEnvironmentModel.hasPermission(.canEditBrands) {
-                        RouterLink(
-                            "labels.edit", systemImage: "pencil",
-                            open: .sheet(.editBrand(
-                                brand: brand,
-                                onUpdate: { updatedBrand in
-                                    brand = updatedBrand
-                                }
-                            ))
-                        )
+                    Button("brand.product.groupBy.label", systemImage: "list.bullet.indent") {
+                        showProductGroupingPicker = true
                     }
                 }
                 VerificationButton(
@@ -178,35 +169,11 @@ struct BrandScreen: View {
                     open: .screen(.company(brand.brandOwner))
                 )
                 Divider()
-                Button("brand.product.groupBy.label", systemImage: "list.bullet.indent") {
-                    showProductGroupingPicker = true
-                }
                 ReportButton(entity: .brand(brand))
-                if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
-                    Button(
-                        "labels.delete",
-                        systemImage: "trash.fill",
-                        role: .destructive,
-                        action: { showDeleteBrandConfirmationDialog = true }
-                    )
-                    .disabled(brand.isVerified)
-                }
+                AdminRouterLink(open: .sheet(.brandAdmin(brand: brand, onUpdate: { updatedBrand in brand = updatedBrand })))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
-            }
-            .confirmationDialog(
-                "brand.delete.disclaimer",
-                isPresented: $showDeleteBrandConfirmationDialog,
-                titleVisibility: .visible,
-                presenting: brand
-            ) { presenting in
-                ProgressButton(
-                    "brand.delete.label \(presenting.name)", role: .destructive,
-                    action: {
-                        await deleteBrand(presenting)
-                    }
-                )
             }
             .confirmationDialog(
                 "brandScreen.groupProductsBy",
@@ -344,34 +311,6 @@ struct BrandScreen: View {
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
-
-    func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
-        switch await repository.brand.delete(id: brand.id) {
-        case .success:
-            router.removeLast()
-            feedbackEnvironmentModel.trigger(.notification(.success))
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func deleteSubBrand(_ subBrand: SubBrand.JoinedProduct) async {
-        switch await repository.subBrand.delete(id: subBrand.id) {
-        case .success:
-            let updatedSubBrands = brand.subBrands.removing(subBrand)
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            withAnimation {
-                brand = brand.copyWith(subBrands: updatedSubBrands)
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error(
-                "Failed to delete brand '\(subBrand.id)'. Error: \(error) (\(#file):\(#line))")
-        }
-    }
 }
 
 private struct ProductsByCategory: Identifiable {
@@ -392,11 +331,9 @@ struct SubBrandSectionHeader: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var showUnverifyConfirmation = false
-    @State private var showDeleteConfirmation = false
     let subBrand: SubBrand.JoinedProduct
 
     let verifySubBrand: (_ subBrand: SubBrand.JoinedProduct, _ isVerified: Bool) async -> Void
-    let deleteSubBrand: (_ subBrand: SubBrand.JoinedProduct) async -> Void
 
     var body: some View {
         HStack {
@@ -405,48 +342,40 @@ struct SubBrandSectionHeader: View {
             }
             Spacer()
             Menu {
-                VerificationButton(
-                    isVerified: subBrand.isVerified,
-                    verify: {
-                        await verifySubBrand(subBrand, true)
-                    },
-                    unverify: {
-                        showUnverifyConfirmation = true
+                ControlGroup {
+                    VerificationButton(
+                        isVerified: subBrand.isVerified,
+                        verify: {
+                            await verifySubBrand(subBrand, true)
+                        },
+                        unverify: {
+                            showUnverifyConfirmation = true
+                        }
+                    )
+                    if profileEnvironmentModel.hasPermission(.canCreateProducts) {
+                        RouterLink(
+                            "brand.createProduct.label",
+                            systemImage: "plus",
+                            open: .sheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
+                                router.open(.screen(.product(newProduct), removeLast: true))
+                            })))
+                        )
                     }
-                )
-                Divider()
-                if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                    RouterLink(
-                        "brand.createProduct.label",
-                        systemImage: "plus",
-                        open: .sheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
-                            router.open(.screen(.product(newProduct), removeLast: true))
-                        })))
-                    )
-                }
-                if profileEnvironmentModel.hasPermission(.canEditBrands), subBrand.name != nil {
-                    RouterLink(
-                        "labels.edit",
-                        systemImage: "pencil",
-                        open: .sheet(.editSubBrand(
-                            brand: brand, subBrand: subBrand,
-                            onUpdate: { updatedSubBrand in
-                                let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
-                                brand = brand.copyWith(subBrands: updatedSubBrands)
-                            }
-                        ))
-                    )
                 }
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))
-                if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
-                    Button(
-                        "labels.delete",
-                        systemImage: "trash.fill",
-                        role: .destructive,
-                        action: { showDeleteConfirmation = true }
-                    )
-                    .disabled(subBrand.isVerified)
-                }
+                AdminRouterLink(open: .sheet(.subBrandAdmin(
+                    brand: brand, subBrand: subBrand,
+                    onUpdate: { updatedSubBrand in
+                        let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
+                        brand = brand.copyWith(subBrands: updatedSubBrands)
+                    },
+                    onDelete: { subBrand in
+                        withAnimation {
+                            brand = brand.copyWith(subBrands: brand.subBrands.removing(subBrand))
+                        }
+                    }
+                ))
+                )
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
@@ -462,20 +391,6 @@ struct SubBrandSectionHeader: View {
                 "subBrand.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
                 action: {
                     await verifySubBrand(presenting, false)
-                }
-            )
-        }
-        .confirmationDialog(
-            "subBrand.delete.disclaimer",
-            isPresented: $showDeleteConfirmation,
-            titleVisibility: .visible,
-            presenting: subBrand
-        ) { presenting in
-            ProgressButton(
-                "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
-                role: .destructive,
-                action: {
-                    await deleteSubBrand(presenting)
                 }
             )
         }

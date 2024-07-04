@@ -26,11 +26,12 @@ enum Sheet: Identifiable, Equatable {
     case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
     case barcodeManagement(product: Product.Joined)
-    case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: EditBrandSheet.BrandUpdateCallback)
-    case editSubBrand(
+    case brandAdmin(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: BrandAdminSheet.BrandUpdateCallback)
+    case subBrandAdmin(
         brand: Brand.JoinedSubBrandsProductsCompany,
         subBrand: SubBrand.JoinedProduct,
-        onUpdate: EditSubBrandSheet.UpdateSubBrandCallback
+        onUpdate: SubBrandAdminSheet.UpdateSubBrandCallback,
+        onDelete: SubBrandAdminSheet.UpdateSubBrandCallback
     )
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)
@@ -92,10 +93,10 @@ enum Sheet: Identifiable, Equatable {
             ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):
             DuplicateProductSheet(mode: mode, product: product)
-        case let .editBrand(brand: brand, onUpdate):
-            EditBrandSheet(brand: brand, onUpdate: onUpdate)
-        case let .editSubBrand(brand: brand, subBrand: subBrand, onUpdate):
-            EditSubBrandSheet(brand: brand, subBrand: subBrand, onUpdate: onUpdate)
+        case let .brandAdmin(brand: brand, onUpdate):
+            BrandAdminSheet(brand: brand, onUpdate: onUpdate)
+        case let .subBrandAdmin(brand: brand, subBrand: subBrand, onUpdate, onDelete: onDelete):
+            SubBrandAdminSheet(brand: brand, subBrand: subBrand, onUpdate: onUpdate, onDelete: onDelete)
         case let .friends(taggedFriends: taggedFriends):
             FriendSheet(taggedFriends: taggedFriends)
         case let .flavors(pickedFlavors: pickedFlavors):
@@ -208,10 +209,10 @@ enum Sheet: Identifiable, Equatable {
             "duplicate_product"
         case .barcodeManagement:
             "barcode_management"
-        case let .editBrand(brand, _):
-            "edit_brand_\(brand.hashValue)"
-        case let .editSubBrand(brand, subBrand, _):
-            "edit_sub_brand_\(brand.hashValue)_\(subBrand.hashValue)"
+        case let .brandAdmin(brand, _):
+            "brand_admin_\(brand.hashValue)"
+        case let .subBrandAdmin(brand, subBrand, _, _):
+            "sub_brand_admin_\(brand.hashValue)_\(subBrand.hashValue)"
         case .friends:
             "friends"
         case .flavors:

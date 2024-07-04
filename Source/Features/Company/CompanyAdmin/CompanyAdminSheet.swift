@@ -8,7 +8,7 @@ import Repositories
 import SwiftUI
 
 struct CompanyAdminSheet: View {
-    private let logger = Logger(category: "EditCompanySheet")
+    private let logger = Logger(category: "CompanyAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss

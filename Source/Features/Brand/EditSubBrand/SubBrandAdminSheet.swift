@@ -7,30 +7,34 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-struct EditSubBrandSheet: View {
+struct SubBrandAdminSheet: View {
     typealias UpdateSubBrandCallback = (_ subBrand: SubBrand.JoinedProduct) async -> Void
 
-    private let logger = Logger(category: "EditSubBrandSheet")
+    private let logger = Logger(category: "SubBrandAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showDeleteConfirmation = false
     @State private var newSubBrandName: String
     @State private var subBrand: SubBrand.JoinedProduct
 
     let onUpdate: UpdateSubBrandCallback
+    let onDelete: UpdateSubBrandCallback
     let brand: Brand.JoinedSubBrandsProductsCompany
 
     init(
         brand: Brand.JoinedSubBrandsProductsCompany,
         subBrand: SubBrand.JoinedProduct,
-        onUpdate: @escaping UpdateSubBrandCallback
+        onUpdate: @escaping UpdateSubBrandCallback,
+        onDelete: @escaping UpdateSubBrandCallback
     ) {
         self.brand = brand
         _subBrand = State(wrappedValue: subBrand)
         _newSubBrandName = State(wrappedValue: subBrand.name ?? "")
         self.onUpdate = onUpdate
+        self.onDelete = onDelete
     }
 
     var invalidNewName: Bool {
@@ -69,9 +73,35 @@ struct EditSubBrandSheet: View {
                     LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
                 }.headerProminence(.increased)
             }
+
+            if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
+                Section {
+                    Button(
+                        "labels.delete",
+                        systemImage: "trash.fill",
+                        role: .destructive,
+                        action: { showDeleteConfirmation = true }
+                    )
+                    .disabled(subBrand.isVerified)
+                }
+                .confirmationDialog(
+                    "subBrand.delete.disclaimer",
+                    isPresented: $showDeleteConfirmation,
+                    titleVisibility: .visible,
+                    presenting: subBrand
+                ) { presenting in
+                    ProgressButton(
+                        "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
+                        role: .destructive,
+                        action: {
+                            await deleteSubBrand(presenting)
+                        }
+                    )
+                }
+            }
         }
         .scrollContentBackground(.hidden)
-        .navigationTitle("labels.edit \(subBrand.name.orEmpty)")
+        .navigationTitle("subBrand.admin.navigationTitle")
         .toolbar {
             toolbarContent
         }
@@ -105,6 +135,20 @@ struct EditSubBrandSheet: View {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func deleteSubBrand(_ subBrand: SubBrand.JoinedProduct) async {
+        switch await repository.subBrand.delete(id: subBrand.id) {
+        case .success:
+            feedbackEnvironmentModel.trigger(.notification(.success))
+            await onDelete(subBrand)
+            dismiss()
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error(
+                "Failed to delete brand '\(subBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

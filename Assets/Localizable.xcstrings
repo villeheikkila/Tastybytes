@@ -652,6 +652,9 @@
         }
       }
     },
+    "brand.admin.navigationTitle" : {
+
+    },
     "brand.created.toast" : {
       "localizations" : {
         "en" : {
@@ -726,6 +729,7 @@
       }
     },
     "brand.edit.navigationTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2585,6 +2589,7 @@
       }
     },
     "labels.edit %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4749,6 +4754,9 @@
           }
         }
       }
+    },
+    "subBrand.admin.navigationTitle" : {
+
     },
     "subBrand.create.success.toast" : {
       "localizations" : {

@@ -7,14 +7,15 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-struct EditBrandSheet: View {
+struct BrandAdminSheet: View {
     typealias BrandUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
-    private let logger = Logger(category: "EditBrandSheet")
+    private let logger = Logger(category: "BrandAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showDeleteBrandConfirmationDialog = false
     @State private var name: String
     @State private var brandOwner: Company
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
@@ -70,9 +71,32 @@ struct EditBrandSheet: View {
                     LabeledContent("verification.verified.label", value: "\(brand.isVerified)".capitalized)
                 }.headerProminence(.increased)
             }
+
+            Section {
+                Button(
+                    "labels.delete",
+                    systemImage: "trash.fill",
+                    role: .destructive,
+                    action: { showDeleteBrandConfirmationDialog = true }
+                )
+                .disabled(brand.isVerified)
+                .confirmationDialog(
+                    "brand.delete.disclaimer",
+                    isPresented: $showDeleteBrandConfirmationDialog,
+                    titleVisibility: .visible,
+                    presenting: brand
+                ) { presenting in
+                    ProgressButton(
+                        "brand.delete.label \(presenting.name)", role: .destructive,
+                        action: {
+                            await deleteBrand(presenting)
+                        }
+                    )
+                }
+            }
         }
         .scrollContentBackground(.hidden)
-        .navigationTitle("brand.edit.navigationTitle")
+        .navigationTitle("brand.admin.navigationTitle")
         .toolbar {
             toolbarContent
         }
@@ -130,59 +154,15 @@ struct EditBrandSheet: View {
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }
-}
 
-struct EditLogoSection: View {
-    private let logger = Logger(category: "EditLogoSection")
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @State private var selectedLogo: PhotosPickerItem?
-
-    let logos: [ImageEntity]
-    let onUpload: (Data) async -> Void
-    let onDelete: (ImageEntity) async -> Void
-
-    var body: some View {
-        Section {
-            ForEach(logos) { logo in
-                RemoteImage(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
-                    image.resizable()
-                }, progress: {
-                    ProgressView()
-                })
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 120, height: 120)
-                .accessibility(hidden: true)
-                .contextMenu {
-                    ProgressButton("labels.delete") {
-                        await onDelete(logo)
-                    }
-                }
-            }
-        } header: {
-            HStack {
-                Text("logos.edit.title")
-                Spacer()
-                if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
-                    PhotosPicker(
-                        selection: $selectedLogo,
-                        matching: .images,
-                        photoLibrary: .shared()
-                    ) {
-                        Label("labels.add", systemImage: "plus")
-                            .labelStyle(.iconOnly)
-                    }
-                }
-            }
-        }
-        .customListRowBackground()
-        .task(id: selectedLogo) {
-            guard let selectedLogo else { return }
-            guard let data = await selectedLogo.getJPEG() else {
-                logger.error("Failed to convert image to JPEG")
-                return
-            }
-            await onUpload(data)
+    func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
+        switch await repository.brand.delete(id: brand.id) {
+        case .success:
+            dismiss()
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

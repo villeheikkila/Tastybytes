@@ -6,7 +6,7 @@ import Repositories
 import SwiftUI
 
 struct LocationAdminSheet: View {
-    let logger = Logger(category: "LocationEditSheet")
+    let logger = Logger(category: "LocationAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
