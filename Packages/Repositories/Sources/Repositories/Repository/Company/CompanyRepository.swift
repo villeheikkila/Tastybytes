@@ -10,6 +10,7 @@ public protocol CompanyRepository: Sendable {
     func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Management, Error>
     func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error>
     func deleteEditSuggestion(editSuggestion: Company.EditSuggestion) async -> Result<Void, Error>
+    func resolveEditSuggestion(editSuggestion: Company.EditSuggestion) async -> Result<Void, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
     func search(searchTerm: String) async -> Result<[Company], Error>

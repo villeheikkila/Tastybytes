@@ -240,12 +240,18 @@ public extension Company {
         public let name: String
         public let createdBy: Profile?
         public let createdAt: Date
+        public let resolvedAt: Date?
 
         enum CodingKeys: String, CodingKey {
             case id
             case name
             case createdBy = "profiles"
             case createdAt = "created_at"
+            case resolvedAt = "resolved_at"
+        }
+
+        public func copyWith(resolvedAt: Date?) -> Self {
+            .init(id: id, name: name, createdBy: createdBy, createdAt: createdAt, resolvedAt: resolvedAt)
         }
     }
 }

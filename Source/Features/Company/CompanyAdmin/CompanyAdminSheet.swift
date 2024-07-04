@@ -228,7 +228,7 @@ struct CompanyEditSuggestionRow: View {
                     .avatarSize(.medium)
             }
             VStack(alignment: .leading, spacing: 2) {
-                HStack {
+                HStack(alignment: .top) {
                     Group {
                         if let profile = editSuggestion.createdBy {
                             Text(profile.preferredName)
@@ -238,7 +238,12 @@ struct CompanyEditSuggestionRow: View {
                     }
                     .font(.caption)
                     Spacer()
-                    Text(editSuggestion.createdAt.formatted(.customRelativetime)).font(.caption2)
+                    VStack(alignment: .leading) {
+                        Text("\(Image(systemName: "calendar.badge.plus")) \(editSuggestion.createdAt.formatted(.customRelativetime))").font(.caption2)
+                        if let resolvedAt = editSuggestion.resolvedAt {
+                            Text("\(Image(systemName: "calendar.badge.checkmark")) \(resolvedAt.formatted(.customRelativetime))").font(.caption2)
+                        }
+                    }
                 }
                 Text("company.admin.editSuggestion.changeNameTo.label \(company.name) \(editSuggestion.name)")
                     .font(.callout)
@@ -262,13 +267,10 @@ struct CompanyEditSuggestionRow: View {
             titleVisibility: .visible,
             presenting: editSuggestion
         ) { presenting in
-            Button(
+            ProgressButton(
                 "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name)",
                 action: {
-                    withAnimation {
-                        company = company.copyWith(name: presenting.name)
-                    }
-                    router.removeLast()
+                    await resolveEditSuggestion(presenting)
                 }
             )
             .tint(.green)
@@ -282,7 +284,7 @@ struct CompanyEditSuggestionRow: View {
             ProgressButton(
                 "company.admin.editSuggestion.delete.label \(presenting.name)",
                 action: {
-                  await  deleteEditSuggestion(presenting)
+                    await deleteEditSuggestion(presenting)
                 }
             )
             .tint(.green)
@@ -296,6 +298,20 @@ struct CompanyEditSuggestionRow: View {
             withAnimation {
                 company = company.copyWith(editSuggestions: company.editSuggestions.removing(editSuggestion))
             }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func resolveEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
+        switch await repository.company.resolveEditSuggestion(editSuggestion: editSuggestion) {
+        case .success:
+            withAnimation {
+                company = company.copyWith(name: editSuggestion.name, editSuggestions: company.editSuggestions.replacing(editSuggestion, with: editSuggestion.copyWith(resolvedAt: Date.now)))
+            }
+            router.removeLast()
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

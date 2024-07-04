@@ -135,6 +135,20 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
+    func resolveEditSuggestion(editSuggestion: Company.EditSuggestion) async -> Result<Void, Error> {
+        do {
+            try await client
+                .from(.companyEditSuggestions)
+                .update(Report.ResolveRequest(resolvedAt: Date.now))
+                .eq("id", value: editSuggestion.id)
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error> {
         do {
             try await client
