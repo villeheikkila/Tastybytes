@@ -61,6 +61,7 @@ enum Sheet: Identifiable, Equatable {
     case profileDeleteConfirmation
     case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case webView(link: WebViewLink)
+    case profileAdmin(profile: Profile)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -142,6 +143,8 @@ enum Sheet: Identifiable, Equatable {
             WebViewSheet(link: link)
         case let .locationSearch(initialLocation, initialSearchTerm, onSelect):
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
+        case let .profileAdmin(profile):
+            ProfileAdminSheet(profile: profile)
         }
     }
 
@@ -255,6 +258,8 @@ enum Sheet: Identifiable, Equatable {
             "webview_\(link)"
         case let .locationSearch(initialLocation, initialSearchTerm, _):
             "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
+        case let .profileAdmin(profile):
+            "profile_admin_sheet_\(profile)"
         }
     }
 

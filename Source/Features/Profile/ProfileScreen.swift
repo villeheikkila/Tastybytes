@@ -25,7 +25,6 @@ struct ProfileScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 ProfileShareLinkView(profile: profile)
-                ReportButton(entity: .profile(profile))
                 if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
                     ProgressButton(
                         "friend.friendRequest.send.label",
@@ -40,10 +39,25 @@ struct ProfileScreen: View {
                         }
                     )
                 }
+                Divider()
+                ReportButton(entity: .profile(profile))
+                AdminRouterLink(open: .sheet(.profileAdmin(profile: profile)))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
             }
+        }
+    }
+}
+
+struct AdminRouterLink: View {
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+
+    let open: Router.Open
+
+    var body: some View {
+        if profileEnvironmentModel.hasRole(.admin) {
+            RouterLink("labels.admin", systemImage: "wrench.and.screwdriver", open: open)
         }
     }
 }
