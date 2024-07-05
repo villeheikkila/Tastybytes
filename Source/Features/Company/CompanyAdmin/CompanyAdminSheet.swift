@@ -59,11 +59,11 @@ struct CompanyAdminSheet: View {
     @ViewBuilder private var populatedContent: some View {
         Section("company.admin.section.company") {
             RouterLink(open: .screen(.company(.init(company: company)))) {
-                CompanyResultInnerView(company: company)
+                CompanyEntityView(company: company)
             }
         }
 
-        CreationInfoView(createdBy: company.createdBy, createdAt: company.createdAt)
+        CreationInfoSection(createdBy: company.createdBy, createdAt: company.createdAt)
 
         Section("company.admin.section.details") {
             LabeledTextField(title: "labels.name", text: $newCompanyName)
@@ -307,7 +307,7 @@ struct CompanyEditSuggestionRow: View {
     }
 }
 
-struct CreationInfoView: View {
+struct CreationInfoSection: View {
     let createdBy: Profile?
     let createdAt: Date?
 

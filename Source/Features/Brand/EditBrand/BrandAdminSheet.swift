@@ -7,6 +7,20 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
+struct BrandEntityView: View {
+    let brand: Brand.JoinedSubBrandsProductsCompany
+    
+    var body: some View {
+        HStack {
+            BrandLogo(brand: brand, size: 40)
+            VStack(alignment: .leading) {
+                Text(brand.brandOwner.name)
+                Text(brand.name)
+            }
+        }
+    }
+}
+
 struct BrandAdminSheet: View {
     typealias BrandUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
     private let logger = Logger(category: "BrandAdminSheet")
@@ -39,38 +53,23 @@ struct BrandAdminSheet: View {
     var body: some View {
         Form {
             Section("brand.admin.section.brand") {
-                HStack {
-                    Text(brand.name)
+                RouterLink(open: .screen(.brand(brand))) {
+                    BrandEntityView(brand: brand)
                 }
             }
+            
+            CreationInfoSection(createdBy: brand.createdBy, createdAt: brand.createdAt)
 
-            Section("brand.edit.name.title") {
-                TextField("brand.edit.name.placeholder", text: $name)
-                ProgressButton("labels.edit") {
-                    await editBrand { updatedBrand in
-                        await onUpdate(updatedBrand)
-                    }
-                }.disabled(!name.isValidLength(.normal) || brand.name == name)
+            Section("brand.admin.section.details") {
+                LabeledTextField(title: "brand.admin.changeName.label", text: $name)
+                LabeledContent("brand.admin.changeBrandOwner.label") {
+                    RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
+                        brandOwner = company
+                    })))
+                }
             }
             
-            CreationInfoView(createdBy: brand.createdBy, createdAt: brand.createdAt)
-
-            Section("brand.edit.brandOwner.title") {
-                RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
-                    brandOwner = company
-                })))
-                ProgressButton("brand.edit.brandOwner.label") {
-                    await editBrand { updatedBrand in
-                        await onUpdate(updatedBrand)
-                    }
-                }.disabled(brandOwner.id == initialBrandOwner.id)
-            }
-
-            EditLogoSection(logos: brand.logos, onUpload: { imageData in
-                await uploadLogo(data: imageData)
-            }, onDelete: { imageEntity in
-                await deleteLogo(entity: imageEntity)
-            })
+            EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
 
             if profileEnvironmentModel.hasRole(.admin) {
                 Section("labels.info") {
@@ -78,6 +77,10 @@ struct BrandAdminSheet: View {
                         .textSelection(.enabled)
                     LabeledContent("verification.verified.label", value: "\(brand.isVerified)".capitalized)
                 }
+            }
+            
+            Section {
+                RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
             }
 
             Section {
@@ -125,24 +128,30 @@ struct BrandAdminSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
+        ToolbarItem(placement: .primaryAction) {
+            ProgressButton("labels.edit") {
+                await editBrand()
+            }.disabled((!name.isValidLength(.normal) || brand.name == name) && brandOwner.id == initialBrandOwner.id)
+        }
     }
     
     func loadData() async {
         switch await repository.brand.getDetailed(id: brand.id) {
         case let .success(brand):
+            print(brand)
             self.brand = brand
         case let .failure(error):
             guard !error.isCancelled else { return }
-            logger.error("Failed to edit brand. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load detailed brand info. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    func editBrand(onSuccess: @escaping BrandUpdateCallback) async {
+    func editBrand() async {
         switch await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id)) {
         case let .success(brand):
             router.open(.toast(.success("brand.edit.success.toast")))
             self.brand = brand
-            await onSuccess(brand)
+            await onUpdate(brand)
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

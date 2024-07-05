@@ -7,13 +7,13 @@ struct CompanyResultRow: View {
 
     var body: some View {
         Button(action: action) {
-            CompanyResultInnerView(company: company)
+            CompanyEntityView(company: company)
         }
         .listRowBackground(Color.clear)
     }
 }
 
-struct CompanyResultInnerView: View {
+struct CompanyEntityView: View {
     let company: any CompanyProtocol
 
     var body: some View {

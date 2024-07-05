@@ -19,7 +19,7 @@ struct BrandScreenProductRow: View {
 
     var body: some View {
         RouterLink(open: .screen(.product(product))) {
-            ProductItemView(product: product, extras: [.logoOnLeft])
+            ProductEntityView(product: product, extras: [.logoOnLeft])
                 .padding(2)
                 .contextMenu {
                     RouterLink(open: .sheet(.duplicateProduct(

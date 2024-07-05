@@ -652,6 +652,26 @@
         }
       }
     },
+    "brand.admin.changeBrandOwner.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand Owner"
+          }
+        }
+      }
+    },
+    "brand.admin.changeName.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
     "brand.admin.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -663,6 +683,9 @@
       }
     },
     "brand.admin.section.brand" : {
+
+    },
+    "brand.admin.section.details" : {
 
     },
     "brand.created.toast" : {
@@ -699,6 +722,7 @@
       }
     },
     "brand.edit.brandOwner.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -709,6 +733,7 @@
       }
     },
     "brand.edit.brandOwner.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -719,6 +744,7 @@
       }
     },
     "brand.edit.name.placeholder" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -729,6 +755,7 @@
       }
     },
     "brand.edit.name.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4351,6 +4378,7 @@
       }
     },
     "report.subBrand %@ from %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

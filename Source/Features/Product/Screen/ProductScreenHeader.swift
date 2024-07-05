@@ -14,12 +14,12 @@ struct ProductScreenHeader: View {
     let loadMoreImages: () -> Void
     let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
 
-    var productItemViewExtras: Set<ProductItemView.Extra> {
+    var productItemViewExtras: Set<ProductEntityView.Extra> {
         product.logos.isEmpty ? [.companyLink] : [.companyLink, .logoOnRight]
     }
 
     var body: some View {
-        ProductItemView(product: product, extras: productItemViewExtras)
+        ProductEntityView(product: product, extras: productItemViewExtras)
         CreateCheckInButtonView(
             product: product,
             onCreateCheckIn: onCreateCheckIn

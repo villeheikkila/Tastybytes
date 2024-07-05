@@ -277,7 +277,7 @@ struct VerificationScreenProductRowView: View {
                     }
                 }
             }
-            ProductItemView(product: product)
+            ProductEntityView(product: product)
                 .contentShape(.rect)
                 .accessibilityAddTraits(.isLink)
                 .openOnTap(.screen(.product(product)))

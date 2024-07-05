@@ -15,7 +15,7 @@ struct DiscoverProductRow: View {
     @Binding var barcode: Barcode?
 
     var body: some View {
-        ProductItemView(product: product, extras: [.checkInCheck, .rating, .logoOnLeft])
+        ProductEntityView(product: product, extras: [.checkInCheck, .rating, .logoOnLeft])
             .swipeActions {
                 RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIn in
                     router.open(.screen(.checkIn(checkIn)))

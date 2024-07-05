@@ -53,7 +53,7 @@ struct LocationAdminSheet: View {
                 .openOnTap(.screen(.location(location)))
             }
 
-            CreationInfoView(createdBy: location.createdBy, createdAt: location.createdAt)
+            CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)
 
             Section("location.admin.section.details") {
                 VStack {

@@ -19,7 +19,7 @@ struct CheckInCommentRow: View {
     @Binding var checkInComments: [CheckInComment]
 
     var body: some View {
-        CheckInCommentView(comment: comment)
+        CheckInCommentEntityView(comment: comment)
             .confirmationDialog(
                 "comment.deleteAsModerator.confirmation.description",
                 isPresented: $showDeleteAsModeratorConfirmationDialog,

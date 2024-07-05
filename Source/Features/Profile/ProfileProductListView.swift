@@ -155,7 +155,7 @@ struct ProfileProductListRow: View {
 
     var body: some View {
         RouterLink(open: .screen(.product(product))) {
-            ProductItemView(product: product, extras: [.rating])
+            ProductEntityView(product: product, extras: [.rating])
         }
     }
 }

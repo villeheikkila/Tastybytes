@@ -11,7 +11,7 @@ struct DuplicateProductSheetRow: View {
     var body: some View {
         Button(action: { showMergeToProductConfirmationDialog = true }, label: {
             HStack {
-                ProductItemView(product: product)
+                ProductEntityView(product: product)
                 Spacer()
             }
             .contentShape(.rect)

@@ -32,21 +32,15 @@ extension Report.Entity {
     var view: some View {
         switch self {
         case let .product(product):
-            ProductItemView(product: product, extras: [.companyLink, .logoOnRight])
+            ProductEntityView(product: product, extras: [.companyLink, .logoOnRight])
         case let .company(company):
-            HStack {
-                Text(company.name)
-            }
+            CompanyEntityView(company: company)
         case let .brand(brand):
-            HStack {
-                Text(brand.name)
-            }
+            BrandEntityView(brand: brand)
         case let .subBrand(subBrand):
-            HStack {
-                Text("report.subBrand \(subBrand.name ?? "Default") from \(subBrand.brand.name)")
-            }
+            SubBrandEntityView(subBrand: subBrand)
         case let .comment(comment):
-            CheckInCommentView(comment: comment)
+            CheckInCommentEntityView(comment: comment)
         case let .checkIn(checkIn):
             CheckInEntityView(checkIn: checkIn)
         case let .checkInImage(imageEntity):

@@ -4,7 +4,7 @@ import Models
 import Repositories
 import SwiftUI
 
-struct ProductItemView: View {
+struct ProductEntityView: View {
     enum Extra {
         case checkInCheck, rating, companyLink, logoOnLeft, logoOnRight
     }

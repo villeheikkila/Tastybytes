@@ -1,3 +1,5 @@
+import Foundation
+
 public protocol SubBrandProtocol {
     var id: Int { get }
     var name: String? { get }
@@ -72,6 +74,8 @@ public extension SubBrand {
         public let name: String?
         public let isVerified: Bool
         public let products: [Product.JoinedCategory]
+        public let createdAt: Date?
+        public let createdBy: Profile?
 
         public var subBrand: SubBrand {
             .init(id: id, name: name, isVerified: isVerified)
@@ -82,6 +86,8 @@ public extension SubBrand {
             case name
             case isVerified = "is_verified"
             case products
+            case createdAt = "created_at"
+            case createdBy = "profiles"
         }
 
         public static func < (lhs: JoinedProduct, rhs: JoinedProduct) -> Bool {
@@ -97,7 +103,9 @@ public extension SubBrand {
                 id: id,
                 name: name ?? self.name,
                 isVerified: isVerified ?? self.isVerified,
-                products: products ?? self.products
+                products: products ?? self.products,
+                createdAt: self.createdAt,
+                createdBy: self.createdBy
             )
         }
     }
