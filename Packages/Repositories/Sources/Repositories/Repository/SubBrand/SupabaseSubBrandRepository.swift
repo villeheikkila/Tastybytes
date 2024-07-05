@@ -20,6 +20,23 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
+    func getDetailed(id: Int) async -> Result<SubBrand.JoinedProduct, Error> {
+        do {
+            let response: SubBrand.JoinedProduct = try await client
+                .from(.subBrands)
+                .select(SubBrand.getQuery(.detailed(false)))
+                .eq("id", value: id)
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func update(updateRequest: SubBrand.Update) async -> Result<SubBrand, Error> {
         do {
             let baseQuery = client

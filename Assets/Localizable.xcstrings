@@ -321,7 +321,14 @@
       }
     },
     "admin.section.details" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        }
+      }
     },
     "admin.section.editSuggestions.title" : {
       "localizations" : {
@@ -676,7 +683,14 @@
       }
     },
     "brand.admin.section.brand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand"
+          }
+        }
+      }
     },
     "brand.created.toast" : {
       "localizations" : {
@@ -3397,6 +3411,16 @@
         }
       }
     },
+    "product.admin.section.product" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product"
+          }
+        }
+      }
+    },
     "product.barcode.add.label" : {
       "localizations" : {
         "en" : {
@@ -3795,6 +3819,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manage Profile"
+          }
+        }
+      }
+    },
+    "profile.admin.section.profile" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
           }
         }
       }
@@ -4732,7 +4766,14 @@
       }
     },
     "subBrand.admin.section.subBrand" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brand"
+          }
+        }
+      }
     },
     "subBrand.create.success.toast" : {
       "localizations" : {

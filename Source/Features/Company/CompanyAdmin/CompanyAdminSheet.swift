@@ -69,6 +69,7 @@ struct CompanyAdminSheet: View {
             LabeledTextField(title: "labels.name", text: $newCompanyName)
             LabeledContent("labels.id", value: "\(company.id)")
                 .textSelection(.enabled)
+                .multilineTextAlignment(.trailing)
             LabeledContent("verification.verified.label", value: "\(company.isVerified)".capitalized)
         }
 

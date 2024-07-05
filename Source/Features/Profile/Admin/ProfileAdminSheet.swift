@@ -8,14 +8,16 @@ struct ProfileAdminSheet: View {
 
     var body: some View {
         Form {
-            Section {
+            Section("profile.admin.section.profile") {
                 RouterLink(open: .screen(.profile(profile))) {
                     ProfileEntityView(profile: profile)
                 }
             }
 
-            Section {
+            Section("admin.section.details") {
                 LabeledContent("labels.id", value: profile.id.uuidString)
+                    .textSelection(.enabled)
+                    .multilineTextAlignment(.trailing)
                 LabeledContent("profile.admin.joinedAt.label", value: profile.joinedAt.formatted(.dateTime
                         .year()
                         .month(.wide)

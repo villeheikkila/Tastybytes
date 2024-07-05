@@ -15,7 +15,7 @@ struct ProductAdminSheet: View {
 
     var body: some View {
         List {
-            Section {
+            Section("product.admin.section.product") {
                 RouterLink(open: .screen(.product(product))) {
                     ProductEntityView(product: product)
                 }
@@ -23,8 +23,10 @@ struct ProductAdminSheet: View {
 
             CreationInfoSection(createdBy: product.createdBy, createdAt: product.createdAt)
 
-            Section {
+            Section("admin.section.details") {
                 LabeledContent("labels.id", value: product.id.formatted())
+                    .textSelection(.enabled)
+                    .multilineTextAlignment(.trailing)
                 LabeledContent("verification.verified.label", value: "\(product.isVerified)".capitalized)
             }
 

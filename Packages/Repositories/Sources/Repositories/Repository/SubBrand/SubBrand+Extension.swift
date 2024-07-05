@@ -8,6 +8,12 @@ extension SubBrand: Queryable {
         switch queryType {
         case let .saved(withTableName):
             return buildQuery(.subBrands, [saved], withTableName)
+        case let .detailed(withTableName):
+            return buildQuery(
+                .subBrands,
+                [saved, "created_at", Profile.getQuery(.minimal(true)), Product.getQuery(.joinedBrandSubcategories(true))],
+                withTableName
+            )
         case let .joined(withTableName):
             return buildQuery(
                 .subBrands,
@@ -25,6 +31,7 @@ extension SubBrand: Queryable {
 
     enum QueryType {
         case saved(_ withTableName: Bool)
+        case detailed(_ withTableName: Bool)
         case joined(_ withTableName: Bool)
         case joinedBrand(_ withTableName: Bool)
     }

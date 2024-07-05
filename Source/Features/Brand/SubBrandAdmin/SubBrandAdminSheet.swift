@@ -54,6 +54,8 @@ struct SubBrandAdminSheet: View {
                 }
             }
 
+            CreationInfoSection(createdBy: subBrand.createdBy, createdAt: subBrand.createdAt)
+
             Section("admin.section.details") {
                 LabeledTextField(title: "labels.name", text: $newSubBrandName)
             }
@@ -71,6 +73,7 @@ struct SubBrandAdminSheet: View {
             Section("labels.info") {
                 LabeledContent("labels.id", value: "\(subBrand.id)")
                     .textSelection(.enabled)
+                    .multilineTextAlignment(.trailing)
                 LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
             }
 
@@ -109,6 +112,9 @@ struct SubBrandAdminSheet: View {
         .toolbar {
             toolbarContent
         }
+        .initialTask {
+            await loadData()
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -121,10 +127,20 @@ struct SubBrandAdminSheet: View {
         }
     }
 
+    func loadData() async {
+        switch await repository.subBrand.getDetailed(id: subBrand.id) {
+        case let .success(subBrand):
+            withAnimation {
+                self.subBrand = subBrand
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Failed to load detailed sub-brand information. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
     func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
-        switch await repository.subBrand
-            .update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
-        {
+        switch await repository.subBrand.update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id))) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
             await onUpdate(subBrand)

@@ -75,6 +75,7 @@ struct BrandAdminSheet: View {
                 Section("labels.info") {
                     LabeledContent("labels.id", value: "\(brand.id)")
                         .textSelection(.enabled)
+                        .multilineTextAlignment(.trailing)
                     LabeledContent("verification.verified.label", value: "\(brand.isVerified)".capitalized)
                 }
             }
