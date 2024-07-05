@@ -14,6 +14,8 @@ struct DuplicateProductScreen: View {
     @State private var duplicateProductSuggestions = [ProductDuplicateSuggestion]()
     @State private var deleteProduct: Product.Joined?
 
+    let filter: MarkedAsDuplicateFilter
+
     var body: some View {
         List(duplicateProductSuggestions) { duplicateProductSuggestion in
             DuplicateProductScreeRow(duplicateProductSuggestion: duplicateProductSuggestion)
@@ -32,7 +34,7 @@ struct DuplicateProductScreen: View {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
-        switch await repository.product.getMarkedAsDuplicateProducts() {
+        switch await repository.product.getMarkedAsDuplicateProducts(filter: filter) {
         case let .success(duplicateProductSuggestions):
             withAnimation {
                 self.duplicateProductSuggestions = duplicateProductSuggestions

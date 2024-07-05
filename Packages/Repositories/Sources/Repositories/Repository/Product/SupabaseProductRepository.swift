@@ -313,12 +313,20 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func getMarkedAsDuplicateProducts() async -> Result<[ProductDuplicateSuggestion], Error> {
+    func getMarkedAsDuplicateProducts(filter: MarkedAsDuplicateFilter) async -> Result<[ProductDuplicateSuggestion], Error> {
         do {
-            let response: [ProductDuplicateSuggestion] = try await client
+            let query = client
                 .from(.productDuplicateSuggestions)
                 .select(Product.getQuery(.productDuplicateSuggestion(false)))
-                .order("created_at", ascending: false)
+
+            let filtered = switch filter {
+            case .all:
+                query
+            case let .id(id):
+                query.eq("product_id", value: id)
+            }
+
+            let response: [ProductDuplicateSuggestion] = try await filtered.order("created_at", ascending: false)
                 .execute()
                 .value
 

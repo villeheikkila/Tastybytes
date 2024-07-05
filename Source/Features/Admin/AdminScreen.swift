@@ -9,7 +9,7 @@ struct AdminScreen: View {
                 RouterLink("flavor.navigationTitle", systemImage: "face.smiling", open: .screen(.flavorManagement))
             }
             Section("admin.section.reports.title") {
-                RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts))
+                RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts(filter: .all)))
                 RouterLink("report.admin.navigationTitle", systemImage: "exclamationmark.bubble", open: .screen(.reports(nil)))
             }
             Section("admin.section.management.title") {

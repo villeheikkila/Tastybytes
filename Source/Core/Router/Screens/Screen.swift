@@ -27,7 +27,7 @@ enum Screen: Hashable, Sendable {
     case productFeed(Product.FeedType)
     case flavorManagement
     case verification
-    case duplicateProducts
+    case duplicateProducts(filter: MarkedAsDuplicateFilter)
     case categoryManagement
     case profileSettings
     case privacySettings
@@ -95,8 +95,8 @@ enum Screen: Hashable, Sendable {
             FlavorManagementScreen()
         case .verification:
             VerificationScreen()
-        case .duplicateProducts:
-            DuplicateProductScreen()
+        case let .duplicateProducts(filter):
+            DuplicateProductScreen(filter: filter)
         case .categoryManagement:
             CategoryManagementScreen()
         case .profileSettings:
@@ -271,8 +271,9 @@ enum Screen: Hashable, Sendable {
             hasher.combine("flavorManagement")
         case .verification:
             hasher.combine("verification")
-        case .duplicateProducts:
+        case let .duplicateProducts(filter):
             hasher.combine("duplicateProducts")
+            hasher.combine(filter)
         case .categoryManagement:
             hasher.combine("categoryManagement")
         case .profileSettings:
