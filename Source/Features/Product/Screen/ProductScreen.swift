@@ -31,7 +31,6 @@ struct ProductInnerScreen: View {
     @Environment(Router.self) private var router
     @State private var product: Product.Joined
     @State private var summary: Summary?
-    @State private var showUnverifyProductConfirmation = false
     @State private var loadedWithBarcode: Barcode?
     @State private var showTranslator = false
     // check-in images
@@ -133,11 +132,6 @@ struct ProductInnerScreen: View {
                         )
                     }
                 }
-                VerificationButton(isVerified: product.isVerified, verify: {
-                    await verifyProduct(product: product, isVerified: true)
-                }, unverify: {
-                    showUnverifyProductConfirmation = true
-                })
                 Divider()
                 RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(product)))
                 RouterLink(
@@ -168,14 +162,6 @@ struct ProductInnerScreen: View {
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
-            }
-            .confirmationDialog("product.unverify.confirmation.description",
-                                isPresented: $showUnverifyProductConfirmation,
-                                presenting: product)
-            { presenting in
-                ProgressButton("product.unverify.confirmation.label \(presenting.name)", role: .destructive, action: {
-                    await verifyProduct(product: presenting, isVerified: false)
-                })
             }
         }
     }
@@ -245,18 +231,6 @@ struct ProductInnerScreen: View {
         }
 
         state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
-    }
-
-    func verifyProduct(product: Product.Joined, isVerified: Bool) async {
-        switch await repository.product.verification(id: product.id, isVerified: isVerified) {
-        case .success:
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            self.product = product.copyWith(isVerified: isVerified)
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
-        }
     }
 
     func addBarcodeToProduct(_ barcode: Barcode) async {

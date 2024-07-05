@@ -116,7 +116,7 @@ struct BrandScreen: View {
                         ))
                 }
             } header: {
-                SubBrandSectionHeader(brand: $brand, subBrand: subBrand, verifySubBrand: verifySubBrand)
+                SubBrandSectionHeader(brand: $brand, subBrand: subBrand)
             }
             .headerProminence(.increased)
             .id(subBrand.id)
@@ -153,15 +153,6 @@ struct BrandScreen: View {
                         showProductGroupingPicker = true
                     }
                 }
-                VerificationButton(
-                    isVerified: brand.isVerified,
-                    verify: {
-                        await verifyBrand(brand: brand, isVerified: true)
-                    },
-                    unverify: {
-                        showBrandUnverificationConfirmation = true
-                    }
-                )
                 Divider()
                 RouterLink(
                     "company.screen.open",
@@ -188,18 +179,6 @@ struct BrandScreen: View {
                     productGrouping = .category
                 }
                 .disabled(productGrouping == .category)
-            }
-            .confirmationDialog(
-                "brand.unverify.confirmation.title",
-                isPresented: $showBrandUnverificationConfirmation,
-                presenting: brand
-            ) { presenting in
-                ProgressButton(
-                    "brand.unverify.confirmation.label \(presenting.name)",
-                    action: {
-                        await verifyBrand(brand: presenting, isVerified: false)
-                    }
-                )
             }
         }
     }
@@ -255,24 +234,6 @@ struct BrandScreen: View {
         }
     }
 
-    func verifyBrand(brand: Brand.JoinedSubBrandsProductsCompany, isVerified: Bool) async {
-        switch await repository.brand.verification(id: brand.id, isVerified: isVerified) {
-        case .success:
-            self.brand = Brand.JoinedSubBrandsProductsCompany(
-                id: brand.id,
-                name: brand.name,
-                isVerified: isVerified,
-                brandOwner: brand.brandOwner,
-                subBrands: brand.subBrands
-            )
-            feedbackEnvironmentModel.trigger(.notification(.success))
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
     func toggleLike() async {
         if isLikedByCurrentUser {
             switch await repository.brand.unlikeBrand(brandId: brand.id) {
@@ -298,19 +259,6 @@ struct BrandScreen: View {
             }
         }
     }
-
-    func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, _ isVerified: Bool) async {
-        switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
-        case .success:
-            let updatedSubBrands = brand.subBrands.replacing(subBrand, with: subBrand.copyWith(isVerified: isVerified))
-            brand = brand.copyWith(subBrands: updatedSubBrands)
-            feedbackEnvironmentModel.trigger(.notification(.success))
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
-        }
-    }
 }
 
 private struct ProductsByCategory: Identifiable {
@@ -330,10 +278,7 @@ struct SubBrandSectionHeader: View {
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
-    @State private var showUnverifyConfirmation = false
     let subBrand: SubBrand.JoinedProduct
-
-    let verifySubBrand: (_ subBrand: SubBrand.JoinedProduct, _ isVerified: Bool) async -> Void
 
     var body: some View {
         HStack {
@@ -343,15 +288,6 @@ struct SubBrandSectionHeader: View {
             Spacer()
             Menu {
                 ControlGroup {
-                    VerificationButton(
-                        isVerified: subBrand.isVerified,
-                        verify: {
-                            await verifySubBrand(subBrand, true)
-                        },
-                        unverify: {
-                            showUnverifyConfirmation = true
-                        }
-                    )
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
                         RouterLink(
                             "brand.createProduct.label",
@@ -364,7 +300,7 @@ struct SubBrandSectionHeader: View {
                 }
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))
                 AdminRouterLink(open: .sheet(.subBrandAdmin(
-                    brand: brand, subBrand: subBrand,
+                    brand: $brand, subBrand: subBrand,
                     onUpdate: { updatedSubBrand in
                         let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
                         brand = brand.copyWith(subBrands: updatedSubBrands)
@@ -381,18 +317,6 @@ struct SubBrandSectionHeader: View {
                     .labelStyle(.iconOnly)
                     .frame(width: 24, height: 24)
             }
-        }
-        .confirmationDialog(
-            "subBrand.unverify",
-            isPresented: $showUnverifyConfirmation,
-            presenting: subBrand
-        ) { presenting in
-            ProgressButton(
-                "subBrand.unverify.disclaimer \(presenting.name ?? "subBrand.default.label")",
-                action: {
-                    await verifySubBrand(presenting, false)
-                }
-            )
         }
     }
 }

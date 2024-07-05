@@ -28,7 +28,7 @@ enum Sheet: Identifiable, Equatable {
     case barcodeManagement(product: Product.Joined)
     case brandAdmin(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: BrandAdminSheet.BrandUpdateCallback)
     case subBrandAdmin(
-        brand: Brand.JoinedSubBrandsProductsCompany,
+        brand: Binding<Brand.JoinedSubBrandsProductsCompany>,
         subBrand: SubBrand.JoinedProduct,
         onUpdate: SubBrandAdminSheet.UpdateSubBrandCallback,
         onDelete: SubBrandAdminSheet.UpdateSubBrandCallback
@@ -214,8 +214,8 @@ enum Sheet: Identifiable, Equatable {
             "barcode_management"
         case let .brandAdmin(brand, _):
             "brand_admin_\(brand.hashValue)"
-        case let .subBrandAdmin(brand, subBrand, _, _):
-            "sub_brand_admin_\(brand.hashValue)_\(subBrand.hashValue)"
+        case let .subBrandAdmin(_, subBrand, _, _):
+            "sub_brand_admin_\(subBrand.hashValue)"
         case .friends:
             "friends"
         case .flavors:

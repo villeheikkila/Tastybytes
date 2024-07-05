@@ -22,15 +22,15 @@ struct SubBrandAdminSheet: View {
 
     let onUpdate: UpdateSubBrandCallback
     let onDelete: UpdateSubBrandCallback
-    let brand: Brand.JoinedSubBrandsProductsCompany
+    @Binding var brand: Brand.JoinedSubBrandsProductsCompany
 
     init(
-        brand: Brand.JoinedSubBrandsProductsCompany,
+        brand: Binding<Brand.JoinedSubBrandsProductsCompany>,
         subBrand: SubBrand.JoinedProduct,
         onUpdate: @escaping UpdateSubBrandCallback,
         onDelete: @escaping UpdateSubBrandCallback
     ) {
-        self.brand = brand
+        _brand = brand
         _subBrand = State(wrappedValue: subBrand)
         _newSubBrandName = State(wrappedValue: subBrand.name ?? "")
         self.onUpdate = onUpdate
@@ -74,7 +74,9 @@ struct SubBrandAdminSheet: View {
                 LabeledContent("labels.id", value: "\(subBrand.id)")
                     .textSelection(.enabled)
                     .multilineTextAlignment(.trailing)
-                LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
+                VerificationAdminToggleView(isVerified: subBrand.isVerified) { isVerified in
+                    await verifySubBrand(isVerified: isVerified)
+                }
             }
 
             Section {
@@ -119,6 +121,21 @@ struct SubBrandAdminSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Failed to load detailed sub-brand information. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func verifySubBrand(isVerified: Bool) async {
+        switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
+        case .success:
+            let updatedSubBrand = subBrand.copyWith(isVerified: isVerified)
+            let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
+            brand = brand.copyWith(subBrands: updatedSubBrands)
+            subBrand = updatedSubBrand
+            feedbackEnvironmentModel.trigger(.notification(.success))
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
 

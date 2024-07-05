@@ -54,7 +54,6 @@
 		5C64E7E72B70122F006FC2C3 /* Product+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */; };
 		5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E892B504DD80048605B /* ProfileStateObserver.swift */; };
-		5C672E972B51DE2A0048605B /* VerificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E962B51DE2A0048605B /* VerificationButton.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C672E9B2B51DE4F0048605B /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E9A2B51DE4F0048605B /* Avatar.swift */; };
 		5C68D76B2B965FBE00D88229 /* ReportEntity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C68D76D2B978EF700D88229 /* CopyToClipboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -269,6 +268,7 @@
 		5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CEEA2F62C3804510009B3F5 /* ConfirmedDeleteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */; };
+		5CEEA2F82C380B2E0009B3F5 /* VerificationAdminToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -359,7 +359,6 @@
 		5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+Extension.swift"; sourceTree = "<group>"; };
 		5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
 		5C672E892B504DD80048605B /* ProfileStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStateObserver.swift; sourceTree = "<group>"; };
-		5C672E962B51DE2A0048605B /* VerificationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationButton.swift; sourceTree = "<group>"; };
 		5C672E9A2B51DE4F0048605B /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReportEntity+Extension.swift"; sourceTree = "<group>"; };
 		5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyToClipboardButton.swift; sourceTree = "<group>"; };
@@ -577,6 +576,7 @@
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
 		5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsUniqueByCategoryScreen.swift; sourceTree = "<group>"; };
 		5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmedDeleteButtonView.swift; sourceTree = "<group>"; };
+		5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationAdminToggleView.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1278,6 +1278,7 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */,
 				5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */,
 				5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */,
 				5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */,
@@ -1299,7 +1300,6 @@
 				5C07F2762B51EBB700D8740B /* ProfileShareLinkView.swift */,
 				5C9057C22B2894BE00EC157B /* AppNameView.swift */,
 				5C9057C42B2894BE00EC157B /* AppLogoView.swift */,
-				5C672E962B51DE2A0048605B /* VerificationButton.swift */,
 				5CAB45DB2BA8A8CF0017E71A /* AvatarView.swift */,
 				5C672E9A2B51DE4F0048605B /* Avatar.swift */,
 				5C68D76C2B978EF700D88229 /* CopyToClipboardButton.swift */,
@@ -1972,6 +1972,7 @@
 				5CD2EE232C3733EE009AA949 /* EditLogoSection.swift in Sources */,
 				5C9058112B2894BE00EC157B /* SubBrandAdminSheet.swift in Sources */,
 				5C9058082B2894BE00EC157B /* CheckInDatePickerSheet.swift in Sources */,
+				5CEEA2F82C380B2E0009B3F5 /* VerificationAdminToggleView.swift in Sources */,
 				5CCEE27D2B2CA34800F276DF /* CheckInCardImage.swift in Sources */,
 				5CD2EE292C37DA58009AA949 /* ProfileEntityView.swift in Sources */,
 				5C511D792BA78DCE00F95290 /* PrivacyPolicyView.swift in Sources */,
@@ -2003,7 +2004,6 @@
 				5C9058292B2894BE00EC157B /* CurrentProfileScreen.swift in Sources */,
 				5CD3C0E22B814C680049E563 /* CloseButton.swift in Sources */,
 				5C9057FF2B2894BE00EC157B /* SubscriptionSheet.swift in Sources */,
-				5C672E972B51DE2A0048605B /* VerificationButton.swift in Sources */,
 				5C82E88B2B2F678500F2B369 /* SubscriptionProvider.swift in Sources */,
 				5C9058162B2894BE00EC157B /* PrivacySettingsPage.swift in Sources */,
 				5C82E8A42B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift in Sources */,

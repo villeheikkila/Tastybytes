@@ -799,6 +799,7 @@
       }
     },
     "brand.unverify.confirmation.label %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -809,6 +810,7 @@
       }
     },
     "brand.unverify.confirmation.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1819,6 +1821,7 @@
       }
     },
     "company.unverify.confirmationDialog.label %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1829,6 +1832,7 @@
       }
     },
     "company.unverify.confirmationDialog.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3773,6 +3777,7 @@
       }
     },
     "product.unverify.confirmation.description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3783,6 +3788,7 @@
       }
     },
     "product.unverify.confirmation.label %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4879,6 +4885,7 @@
       }
     },
     "subBrand.unverify" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4889,6 +4896,7 @@
       }
     },
     "subBrand.unverify.disclaimer %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5227,6 +5235,7 @@
       }
     },
     "verification.waitingForVerification.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

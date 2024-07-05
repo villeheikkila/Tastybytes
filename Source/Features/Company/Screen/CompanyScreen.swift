@@ -16,7 +16,6 @@ struct CompanyScreen: View {
     @State private var state: ScreenState = .loading
     @State private var company: Company.Joined
     @State private var summary: Summary?
-    @State private var showUnverifyCompanyConfirmation = false
 
     init(company: any CompanyProtocol) {
         _company = State(wrappedValue: .init(company: company))
@@ -104,11 +103,6 @@ struct CompanyScreen: View {
                     }))
                 )
             }
-            VerificationButton(isVerified: company.isVerified, verify: {
-                await verifyCompany(isVerified: true)
-            }, unverify: {
-                showUnverifyCompanyConfirmation = true
-            })
             Divider()
             ReportButton(entity: .company(company.saved))
             AdminRouterLink(open: .sheet(.companyAdmin(company: company.saved, onSuccess: {
@@ -118,14 +112,6 @@ struct CompanyScreen: View {
         } label: {
             Label("labels.menu", systemImage: "ellipsis")
                 .labelStyle(.iconOnly)
-        }
-        .confirmationDialog("company.unverify.confirmationDialog.title",
-                            isPresented: $showUnverifyCompanyConfirmation,
-                            presenting: company)
-        { presenting in
-            ProgressButton("company.unverify.confirmationDialog.label \(presenting.name)", action: {
-                await verifyCompany(isVerified: false)
-            })
         }
     }
 
@@ -162,16 +148,5 @@ struct CompanyScreen: View {
         }
 
         state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
-    }
-
-    func verifyCompany(isVerified: Bool) async {
-        switch await repository.company.verification(id: company.id, isVerified: isVerified) {
-        case .success:
-            company = company.copyWith(isVerified: isVerified)
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
-        }
     }
 }

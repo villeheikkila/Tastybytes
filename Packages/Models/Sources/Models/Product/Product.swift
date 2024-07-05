@@ -361,7 +361,9 @@ public extension Product {
             subcategories: [Subcategory.JoinedCategory],
             barcodes: [ProductBarcode],
             isDiscontinued: Bool,
-            logos: [ImageEntity]
+            logos: [ImageEntity],
+            createdBy: Profile? = nil,
+            createdAt: Date? = nil
         ) {
             self.id = id
             self.name = name
@@ -375,8 +377,8 @@ public extension Product {
             self.logos = logos
             currentUserCheckIns = nil
             averageRating = nil
-            createdBy = nil
-            createdAt = nil
+            self.createdBy = createdBy
+            self.createdAt = createdAt
         }
 
         public init(
@@ -453,7 +455,9 @@ public extension Product {
             subcategories: [Subcategory.JoinedCategory]? = nil,
             barcodes: [ProductBarcode]? = nil,
             isDiscontinued: Bool? = nil,
-            logos: [ImageEntity]? = nil
+            logos: [ImageEntity]? = nil,
+            createdBy: Profile? = nil,
+            createdAt: Date? = nil
         ) -> Self {
             .init(
                 id: id,
@@ -465,7 +469,9 @@ public extension Product {
                 subcategories: subcategories ?? self.subcategories,
                 barcodes: barcodes ?? self.barcodes,
                 isDiscontinued: isDiscontinued ?? self.isDiscontinued,
-                logos: logos ?? self.logos
+                logos: logos ?? self.logos,
+                createdBy: createdBy ?? self.createdBy,
+                createdAt: createdAt ?? self.createdAt
             )
         }
     }

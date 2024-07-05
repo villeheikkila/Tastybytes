@@ -71,12 +71,12 @@ struct BrandAdminSheet: View {
 
             EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
 
-            if profileEnvironmentModel.hasRole(.admin) {
-                Section("labels.info") {
-                    LabeledContent("labels.id", value: "\(brand.id)")
-                        .textSelection(.enabled)
-                        .multilineTextAlignment(.trailing)
-                    LabeledContent("verification.verified.label", value: "\(brand.isVerified)".capitalized)
+            Section("labels.info") {
+                LabeledContent("labels.id", value: "\(brand.id)")
+                    .textSelection(.enabled)
+                    .multilineTextAlignment(.trailing)
+                VerificationAdminToggleView(isVerified: brand.isVerified) { isVerified in
+                    await verifyBrand(isVerified: isVerified)
                 }
             }
 
@@ -128,6 +128,17 @@ struct BrandAdminSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Failed to load detailed brand info. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func verifyBrand(isVerified: Bool) async {
+        switch await repository.brand.verification(id: brand.id, isVerified: isVerified) {
+        case .success:
+            brand = brand.copyWith(isVerified: isVerified)
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
         }
     }
 

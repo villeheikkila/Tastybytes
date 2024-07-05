@@ -27,7 +27,9 @@ struct ProductAdminSheet: View {
                 LabeledContent("labels.id", value: product.id.formatted())
                     .textSelection(.enabled)
                     .multilineTextAlignment(.trailing)
-                LabeledContent("verification.verified.label", value: "\(product.isVerified)".capitalized)
+                VerificationAdminToggleView(isVerified: product.isVerified) { isVerified in
+                    await verifyProduct(isVerified: isVerified)
+                }
             }
 
             Section {
@@ -69,6 +71,18 @@ struct ProductAdminSheet: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Failed to load detailed product. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func verifyProduct(isVerified: Bool) async {
+        switch await repository.product.verification(id: product.id, isVerified: isVerified) {
+        case .success:
+            feedbackEnvironmentModel.trigger(.notification(.success))
+            product = product.copyWith(isVerified: isVerified)
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
 

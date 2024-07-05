@@ -70,7 +70,9 @@ struct CompanyAdminSheet: View {
             LabeledContent("labels.id", value: "\(company.id)")
                 .textSelection(.enabled)
                 .multilineTextAlignment(.trailing)
-            LabeledContent("verification.verified.label", value: "\(company.isVerified)".capitalized)
+            VerificationAdminToggleView(isVerified: company.isVerified) { isVerified in
+                await verifyCompany(isVerified: isVerified)
+            }
         }
 
         EditLogoSection(logos: company.logos, onUpload: uploadLogo, onDelete: deleteLogo)
@@ -110,6 +112,17 @@ struct CompanyAdminSheet: View {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func verifyCompany(isVerified: Bool) async {
+        switch await repository.company.verification(id: company.id, isVerified: isVerified) {
+        case .success:
+            company = company.copyWith(isVerified: isVerified)
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }
 
