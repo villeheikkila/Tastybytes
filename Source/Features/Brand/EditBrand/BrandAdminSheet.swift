@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BrandEntityView: View {
     let brand: Brand.JoinedSubBrandsProductsCompany
-    
+
     var body: some View {
         HStack {
             BrandLogo(brand: brand, size: 40)
@@ -57,7 +57,7 @@ struct BrandAdminSheet: View {
                     BrandEntityView(brand: brand)
                 }
             }
-            
+
             CreationInfoSection(createdBy: brand.createdBy, createdAt: brand.createdAt)
 
             Section("brand.admin.section.details") {
@@ -68,7 +68,7 @@ struct BrandAdminSheet: View {
                     })))
                 }
             }
-            
+
             EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
 
             if profileEnvironmentModel.hasRole(.admin) {
@@ -78,7 +78,7 @@ struct BrandAdminSheet: View {
                     LabeledContent("verification.verified.label", value: "\(brand.isVerified)".capitalized)
                 }
             }
-            
+
             Section {
                 RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
             }
@@ -114,7 +114,7 @@ struct BrandAdminSheet: View {
             toolbarContent
         }
         .initialTask {
-           await loadData()
+            await loadData()
         }
         .task(id: selectedLogo) {
             guard let selectedLogo else { return }
@@ -134,7 +134,7 @@ struct BrandAdminSheet: View {
             }.disabled((!name.isValidLength(.normal) || brand.name == name) && brandOwner.id == initialBrandOwner.id)
         }
     }
-    
+
     func loadData() async {
         switch await repository.brand.getDetailed(id: brand.id) {
         case let .success(brand):

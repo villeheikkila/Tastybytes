@@ -144,7 +144,7 @@ struct ProductInnerScreen: View {
                 RouterLink(
                     "subBrand.screen.open",
                     systemImage: "cart",
-                    open: .screen(.fetchSubBrand(product.subBrand))
+                    open: .screen(.subBrand(product.subBrand))
                 )
                 RouterLink("brand.screen.open", systemImage: "cart", open: .screen(.fetchBrand(product.subBrand.brand)))
                 RouterLink(

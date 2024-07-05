@@ -11,7 +11,7 @@ enum Screen: Hashable, Sendable {
     case company(Company)
     case brand(Brand.JoinedSubBrandsProductsCompany)
     case fetchBrand(Brand.JoinedCompany)
-    case fetchSubBrand(SubBrand.JoinedBrand)
+    case subBrand(SubBrand.JoinedBrand)
     case profileProducts(Profile)
     case profileWishlist(Profile)
     case profileProductsByFilter(Profile, Product.Filter)
@@ -49,7 +49,7 @@ enum Screen: Hashable, Sendable {
         switch self {
         case let .company(company):
             CompanyScreen(company: company)
-        case let .fetchSubBrand(subBrand):
+        case let .subBrand(subBrand):
             BrandScreen(brand: .init(subBrand: subBrand), initialScrollPosition: subBrand)
         case let .brand(brand):
             BrandScreen(brand: brand)
@@ -146,7 +146,7 @@ enum Screen: Hashable, Sendable {
             lhsBrand == rhsBrand
         case let (.fetchBrand(lhsBrand), .fetchBrand(rhsBrand)):
             lhsBrand == rhsBrand
-        case let (.fetchSubBrand(lhsSubBrand), .fetchSubBrand(rhsSubBrand)):
+        case let (.subBrand(lhsSubBrand), .subBrand(rhsSubBrand)):
             lhsSubBrand == rhsSubBrand
         case let (.profileProducts(lhsProfile), .profileProducts(rhsProfile)):
             lhsProfile == rhsProfile
@@ -225,7 +225,7 @@ enum Screen: Hashable, Sendable {
         case let .fetchBrand(brand):
             hasher.combine("fetchBrand")
             hasher.combine(brand)
-        case let .fetchSubBrand(subBrand):
+        case let .subBrand(subBrand):
             hasher.combine("fetchSubBrand")
             hasher.combine(subBrand)
         case let .profileProducts(profile):

@@ -321,11 +321,11 @@ struct CreationInfoSection: View {
                             Text(createdBy.preferredName)
                             if let createdAt {
                                 Text(createdAt, format:
-                                        .dateTime
-                                    .year()
-                                    .month(.wide)
-                                    .day())
-                                .foregroundColor(.secondary)
+                                    .dateTime
+                                        .year()
+                                        .month(.wide)
+                                        .day())
+                                    .foregroundColor(.secondary)
                             }
                         }
                         Spacer()

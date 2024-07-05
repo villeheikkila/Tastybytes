@@ -61,7 +61,7 @@ struct CheckInListCard: View {
             RouterLink(
                 "subBrand.screen.open",
                 systemImage: "cart",
-                open: .screen(.fetchSubBrand(checkIn.product.subBrand))
+                open: .screen(.subBrand(checkIn.product.subBrand))
             )
             if let location = checkIn.location {
                 RouterLink(

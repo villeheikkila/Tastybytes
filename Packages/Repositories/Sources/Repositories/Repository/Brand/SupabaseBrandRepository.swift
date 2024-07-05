@@ -39,7 +39,7 @@ struct SupabaseBrandRepository: BrandRepository {
             return .failure(error)
         }
     }
-    
+
     func getDetailed(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error> {
         do {
             let response: Brand.JoinedSubBrandsProductsCompany = try await client

@@ -36,12 +36,12 @@ struct SupabaseLocationRepository: LocationRepository {
             return .failure(error)
         }
     }
-    
+
     func getDetailed(id: UUID) async -> Result<Location, Error> {
         do {
             let response: Location = try await client
                 .from(.locations)
-                .select(Location.getQuery(.management(false)))
+                .select(Location.getQuery(.detailed(false)))
                 .eq("id", value: id)
                 .limit(1)
                 .single()
@@ -178,7 +178,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: [Location] = try await client
                 .from(.locations)
-                .select(Location.getQuery(.management(false)))
+                .select(Location.getQuery(.detailed(false)))
                 .order("created_at", ascending: false)
                 .execute()
                 .value
@@ -193,7 +193,7 @@ struct SupabaseLocationRepository: LocationRepository {
         do {
             let response: Location = try await client
                 .rpc(fn: .updateLocation, params: request)
-                .select(Location.getQuery(.management(false)))
+                .select(Location.getQuery(.detailed(false)))
                 .limit(1)
                 .single()
                 .execute()

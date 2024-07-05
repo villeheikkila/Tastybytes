@@ -1,12 +1,13 @@
-import SwiftUI
 import Models
+import SwiftUI
 
 struct SubBrandEntityView: View {
-    let subBrand: SubBrand.JoinedBrand
-    
+    let brand: BrandProtocol
+    let subBrand: SubBrandProtocol
+
     var body: some View {
         VStack(alignment: .leading) {
-            Text(subBrand.brand.name)
+            Text(brand.name)
             Text(subBrand.name ?? "-")
         }
     }

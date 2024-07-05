@@ -22,8 +22,7 @@ extension Brand: Queryable {
             return buildQuery(
                 .brands,
                 [saved, "created_at", SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.brandLogos)),
-                 buildQuery(name: "profiles", foreignKey: "created_by", [Profile.getQuery(.minimal(false))])
-                ],
+                 buildQuery(name: "profiles", foreignKey: "created_by", [Profile.getQuery(.minimal(false))])],
                 withTableName
             )
         }

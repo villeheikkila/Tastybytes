@@ -104,8 +104,8 @@ public extension SubBrand {
                 name: name ?? self.name,
                 isVerified: isVerified ?? self.isVerified,
                 products: products ?? self.products,
-                createdAt: self.createdAt,
-                createdBy: self.createdBy
+                createdAt: createdAt,
+                createdBy: createdBy
             )
         }
     }

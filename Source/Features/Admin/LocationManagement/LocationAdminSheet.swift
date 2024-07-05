@@ -112,18 +112,18 @@ struct LocationAdminSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
     }
-    
+
     func loadData() async {
-        switch await repository.location.getDetailed(id: location.id){
+        switch await repository.location.getDetailed(id: location.id) {
         case let .success(location):
             withAnimation {
                 self.location = location
-                self.state = .populated
+                state = .populated
             }
             await onEdit(location)
         case let .failure(error):
             guard !error.isCancelled else { return }
-            self.state = .error([error])
+            state = .error([error])
             logger.error("Failed to update location: '\(location.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

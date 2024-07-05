@@ -48,12 +48,14 @@ struct SubBrandAdminSheet: View {
 
     var body: some View {
         Form {
+            Section {
+                RouterLink(open: .screen(.subBrand(.init(brand: brand, subBrand: subBrand)))) {
+                    SubBrandEntityView(brand: brand, subBrand: subBrand)
+                }
+            }
+
             Section("subBrand.name.title") {
                 TextField("subBrand.name.placeholder", text: $newSubBrandName)
-                ProgressButton("labels.edit") {
-                    await editSubBrand()
-                }
-                .disabled(invalidNewName)
             }
 
             if !subBrandsToMergeTo.isEmpty {
@@ -110,7 +112,13 @@ struct SubBrandAdminSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneActionView()
+        ToolbarDismissAction()
+        ToolbarItem(placement: .primaryAction) {
+            ProgressButton("labels.edit") {
+                await editSubBrand()
+            }
+            .disabled(invalidNewName)
+        }
     }
 
     func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {

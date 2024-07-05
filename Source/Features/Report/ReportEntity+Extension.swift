@@ -38,7 +38,7 @@ extension Report.Entity {
         case let .brand(brand):
             BrandEntityView(brand: brand)
         case let .subBrand(subBrand):
-            SubBrandEntityView(subBrand: subBrand)
+            SubBrandEntityView(brand: subBrand.brand, subBrand: subBrand)
         case let .comment(comment):
             CheckInCommentEntityView(comment: comment)
         case let .checkIn(checkIn):

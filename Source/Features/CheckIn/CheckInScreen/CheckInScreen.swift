@@ -128,7 +128,7 @@ struct CheckInScreen: View {
             RouterLink(
                 "subBrand.screen.open",
                 systemImage: "cart",
-                open: .screen(.fetchSubBrand(checkIn.product.subBrand))
+                open: .screen(.subBrand(checkIn.product.subBrand))
             )
             if let location = checkIn.location {
                 RouterLink(
@@ -183,7 +183,7 @@ struct CheckInScreen: View {
                 RouterLink(
                     "subBrand.screen.open",
                     systemImage: "cart",
-                    open: .screen(.fetchSubBrand(checkIn.product.subBrand))
+                    open: .screen(.subBrand(checkIn.product.subBrand))
                 )
                 Divider()
                 if profileEnvironmentModel.id != checkIn.profile.id {

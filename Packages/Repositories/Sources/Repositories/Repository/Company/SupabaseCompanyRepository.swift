@@ -44,7 +44,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response: Company.Management = try await client
                 .from(.companies)
-                .select(Company.getQuery(.management(false)))
+                .select(Company.getQuery(.detailed(false)))
                 .eq("id", value: id)
                 .limit(1)
                 .single()
@@ -110,7 +110,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .from(.companies)
                 .update(updateRequest)
                 .eq("id", value: updateRequest.id)
-                .select(Company.getQuery(.management(false)))
+                .select(Company.getQuery(.detailed(false)))
                 .single()
                 .execute()
                 .value
