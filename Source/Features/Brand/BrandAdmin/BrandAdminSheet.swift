@@ -37,13 +37,16 @@ struct BrandAdminSheet: View {
     @State private var selectedLogo: PhotosPickerItem?
 
     let onUpdate: BrandUpdateCallback
+    let onDelete: BrandUpdateCallback
     let initialBrandOwner: Company
 
     init(
         brand: Brand.JoinedSubBrandsProductsCompany,
-        onUpdate: @escaping BrandUpdateCallback
+        onUpdate: @escaping BrandUpdateCallback,
+        onDelete: @escaping BrandUpdateCallback
     ) {
         self.onUpdate = onUpdate
+        self.onDelete = onDelete
         initialBrandOwner = brand.brandOwner
         _brand = State(wrappedValue: brand)
         _brandOwner = State(wrappedValue: brand.brandOwner)
@@ -123,7 +126,6 @@ struct BrandAdminSheet: View {
     func loadData() async {
         switch await repository.brand.getDetailed(id: brand.id) {
         case let .success(brand):
-            print(brand)
             self.brand = brand
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -186,6 +188,7 @@ struct BrandAdminSheet: View {
     func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
         switch await repository.brand.delete(id: brand.id) {
         case .success:
+            await onDelete(brand)
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }

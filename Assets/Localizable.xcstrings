@@ -3718,7 +3718,14 @@
       }
     },
     "product.mutation.editSuggestion.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggest an Edit"
+          }
+        }
+      }
     },
     "product.mutation.hasSubBrand.label" : {
       "localizations" : {

@@ -10,8 +10,11 @@ struct ProductAdminSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
+    @Environment(\.dismiss) private var dismiss
     @State private var showDeleteProductConfirmationDialog = false
     @Binding var product: Product.Joined
+
+    let onDelete: () -> Void
 
     var body: some View {
         List {
@@ -91,7 +94,8 @@ struct ProductAdminSheet: View {
         switch await repository.product.delete(id: product.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            router.removeLast()
+            onDelete()
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

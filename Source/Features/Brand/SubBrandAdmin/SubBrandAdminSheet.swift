@@ -20,21 +20,15 @@ struct SubBrandAdminSheet: View {
     @State private var newSubBrandName: String
     @State private var subBrand: SubBrand.JoinedProduct
 
-    let onUpdate: UpdateSubBrandCallback
-    let onDelete: UpdateSubBrandCallback
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
 
     init(
         brand: Binding<Brand.JoinedSubBrandsProductsCompany>,
-        subBrand: SubBrand.JoinedProduct,
-        onUpdate: @escaping UpdateSubBrandCallback,
-        onDelete: @escaping UpdateSubBrandCallback
+        subBrand: SubBrand.JoinedProduct
     ) {
         _brand = brand
         _subBrand = State(wrappedValue: subBrand)
         _newSubBrandName = State(wrappedValue: subBrand.name ?? "")
-        self.onUpdate = onUpdate
-        self.onDelete = onDelete
     }
 
     var invalidNewName: Bool {
@@ -143,7 +137,6 @@ struct SubBrandAdminSheet: View {
         switch await repository.subBrand.update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id))) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await onUpdate(subBrand)
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -156,7 +149,9 @@ struct SubBrandAdminSheet: View {
         case let .success(updatedSubBrand):
             router.open(.toast(.success("subBrand.updated.toast")))
             let updatedSubBrand = subBrand.copyWith(name: updatedSubBrand.name)
-            await onUpdate(updatedSubBrand)
+            subBrand = updatedSubBrand
+            let updatedSubBrands = brand.subBrands.replacingWithId(subBrand, with: updatedSubBrand)
+            brand = brand.copyWith(subBrands: updatedSubBrands)
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -168,7 +163,9 @@ struct SubBrandAdminSheet: View {
         switch await repository.subBrand.delete(id: subBrand.id) {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
-            await onDelete(subBrand)
+            withAnimation {
+                brand = brand.copyWith(subBrands: brand.subBrands.removing(subBrand))
+            }
             dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }

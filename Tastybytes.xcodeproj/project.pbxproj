@@ -269,6 +269,8 @@
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CEEA2F62C3804510009B3F5 /* ConfirmedDeleteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */; };
 		5CEEA2F82C380B2E0009B3F5 /* VerificationAdminToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */; };
+		5CEEA2FA2C3814BE0009B3F5 /* CreationInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */; };
+		5CEEA2FC2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FB2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -577,6 +579,8 @@
 		5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsUniqueByCategoryScreen.swift; sourceTree = "<group>"; };
 		5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmedDeleteButtonView.swift; sourceTree = "<group>"; };
 		5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationAdminToggleView.swift; sourceTree = "<group>"; };
+		5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationInfoSection.swift; sourceTree = "<group>"; };
+		5CEEA2FB2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyEditSuggestionScreen.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -972,6 +976,7 @@
 			isa = PBXGroup;
 			children = (
 				5C9057532B2894BE00EC157B /* CompanyAdminSheet.swift */,
+				5CEEA2FB2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift */,
 			);
 			path = CompanyAdmin;
 			sourceTree = "<group>";
@@ -1278,6 +1283,7 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */,
 				5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */,
 				5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */,
 				5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */,
@@ -1801,6 +1807,7 @@
 				5C9057FD2B2894BE00EC157B /* SubscriptionEnvironmentModel.swift in Sources */,
 				5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */,
 				5C24E1D52B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift in Sources */,
+				5CEEA2FC2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift in Sources */,
 				5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */,
 				5C90AF752C15C44C00BA3202 /* ScreenContentUnavailableView.swift in Sources */,
 				5C4FC6382BA68A130025DB83 /* DataScannerViewRepresentable.swift in Sources */,
@@ -1855,6 +1862,7 @@
 				5CD2EE162C35369B009AA949 /* View+InjectAlerts.swift in Sources */,
 				5C24E1C62B5D1F83003AB7C8 /* CheckInLeaveComment.swift in Sources */,
 				5CAADF052B5C534000D956C1 /* DIscoverScreen+Extension.swift in Sources */,
+				5CEEA2FA2C3814BE0009B3F5 /* CreationInfoSection.swift in Sources */,
 				5C9058182B2894BE00EC157B /* AppIconScreen.swift in Sources */,
 				5C9058522B2894BE00EC157B /* OnboardingScreen.swift in Sources */,
 				5C82E88E2B2F692A00F2B369 /* OnboardingStateObserver.swift in Sources */,

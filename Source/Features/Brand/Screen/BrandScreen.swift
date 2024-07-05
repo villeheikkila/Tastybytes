@@ -162,7 +162,9 @@ struct BrandScreen: View {
                 Divider()
                 ReportButton(entity: .brand(brand))
                 Divider()
-                AdminRouterLink(open: .sheet(.brandAdmin(brand: brand, onUpdate: { updatedBrand in brand = updatedBrand })))
+                AdminRouterLink(open: .sheet(.brandAdmin(brand: brand, onUpdate: { updatedBrand in brand = updatedBrand }, onDelete: { _ in
+                    router.removeLast()
+                })))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
@@ -300,18 +302,7 @@ struct SubBrandSectionHeader: View {
                 Divider()
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))
                 Divider()
-                AdminRouterLink(open: .sheet(.subBrandAdmin(
-                    brand: $brand, subBrand: subBrand,
-                    onUpdate: { updatedSubBrand in
-                        let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
-                        brand = brand.copyWith(subBrands: updatedSubBrands)
-                    },
-                    onDelete: { subBrand in
-                        withAnimation {
-                            brand = brand.copyWith(subBrands: brand.subBrands.removing(subBrand))
-                        }
-                    }
-                ))
+                AdminRouterLink(open: .sheet(.subBrandAdmin(brand: $brand, subBrand: subBrand))
                 )
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")

@@ -26,13 +26,8 @@ enum Sheet: Identifiable, Equatable {
     case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
     case barcodeManagement(product: Product.Joined)
-    case brandAdmin(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: BrandAdminSheet.BrandUpdateCallback)
-    case subBrandAdmin(
-        brand: Binding<Brand.JoinedSubBrandsProductsCompany>,
-        subBrand: SubBrand.JoinedProduct,
-        onUpdate: SubBrandAdminSheet.UpdateSubBrandCallback,
-        onDelete: SubBrandAdminSheet.UpdateSubBrandCallback
-    )
+    case brandAdmin(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: BrandAdminSheet.BrandUpdateCallback, onDelete: BrandAdminSheet.BrandUpdateCallback)
+    case subBrandAdmin(brand: Binding<Brand.JoinedSubBrandsProductsCompany>, subBrand: SubBrand.JoinedProduct)
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)
     case checkInLocationSearch(
@@ -63,7 +58,7 @@ enum Sheet: Identifiable, Equatable {
     case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case webView(link: WebViewLink)
     case profileAdmin(profile: Profile)
-    case productAdmin(product: Binding<Product.Joined>)
+    case productAdmin(product: Binding<Product.Joined>, onDelete: () -> Void)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -94,10 +89,10 @@ enum Sheet: Identifiable, Equatable {
             ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):
             DuplicateProductSheet(mode: mode, product: product)
-        case let .brandAdmin(brand: brand, onUpdate):
-            BrandAdminSheet(brand: brand, onUpdate: onUpdate)
-        case let .subBrandAdmin(brand: brand, subBrand: subBrand, onUpdate, onDelete: onDelete):
-            SubBrandAdminSheet(brand: brand, subBrand: subBrand, onUpdate: onUpdate, onDelete: onDelete)
+        case let .brandAdmin(brand: brand, onUpdate, onDelete: onDelete):
+            BrandAdminSheet(brand: brand, onUpdate: onUpdate, onDelete: onDelete)
+        case let .subBrandAdmin(brand: brand, subBrand: subBrand):
+            SubBrandAdminSheet(brand: brand, subBrand: subBrand)
         case let .friends(taggedFriends: taggedFriends):
             FriendSheet(taggedFriends: taggedFriends)
         case let .flavors(pickedFlavors: pickedFlavors):
@@ -147,8 +142,8 @@ enum Sheet: Identifiable, Equatable {
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
         case let .profileAdmin(profile):
             ProfileAdminSheet(profile: profile)
-        case let .productAdmin(product):
-            ProductAdminSheet(product: product)
+        case let .productAdmin(product, onDelete):
+            ProductAdminSheet(product: product, onDelete: onDelete)
         }
     }
 
@@ -212,9 +207,9 @@ enum Sheet: Identifiable, Equatable {
             "duplicate_product"
         case .barcodeManagement:
             "barcode_management"
-        case let .brandAdmin(brand, _):
+        case let .brandAdmin(brand, _, _):
             "brand_admin_\(brand.hashValue)"
-        case let .subBrandAdmin(_, subBrand, _, _):
+        case let .subBrandAdmin(_, subBrand):
             "sub_brand_admin_\(subBrand.hashValue)"
         case .friends:
             "friends"
