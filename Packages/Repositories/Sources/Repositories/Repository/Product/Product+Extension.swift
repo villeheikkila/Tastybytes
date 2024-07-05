@@ -21,6 +21,7 @@ extension Product: Queryable {
                 [
                     saved,
                     "created_at",
+                    buildQuery(name: "profiles", foreignKey: "created_by", [Profile.getQuery(.minimal(false))]),
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.joinedCategory(true)),

@@ -5,6 +5,7 @@ public protocol ProductRepository: Sendable {
     func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error>
     func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
     func getById(id: Int) async -> Result<Product.Joined, Error>
+    func getDetailed(id: Int) async -> Result<Product.Joined, Error>
     func getByProfile(id: UUID) async -> Result<[Product.Joined], Error>
     func getFeed(_ type: Product.FeedType, from: Int, to: Int, categoryFilterId: Int?) async
         -> Result<[Product.Joined], Error>

@@ -290,17 +290,6 @@
         }
       }
     },
-    "admin.menuSection.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Admin"
-          }
-        }
-      }
-    },
     "admin.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -1629,17 +1618,6 @@
         }
       }
     },
-    "company.admin.section.details" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Details"
-          }
-        }
-      }
-    },
     "company.create.label" : {
       "localizations" : {
         "en" : {
@@ -2572,17 +2550,6 @@
         }
       }
     },
-    "labels.edit %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit"
-          }
-        }
-      }
-    },
     "labels.id" : {
       "localizations" : {
         "en" : {
@@ -2860,17 +2827,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Creation"
-          }
-        }
-      }
-    },
-    "location.admin.section.details" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Details"
           }
         }
       }
@@ -3822,6 +3778,17 @@
         }
       }
     },
+    "profile.admin.joinedAt.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joined at"
+          }
+        }
+      }
+    },
     "profile.admin.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -4342,17 +4309,6 @@
         }
       }
     },
-    "report.subBrand %@ from %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Report %1$@ from %2$@"
-          }
-        }
-      }
-    },
     "report.submit.success.toast" : {
       "localizations" : {
         "en" : {
@@ -4847,17 +4803,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name of the sub-brand"
-          }
-        }
-      }
-    },
-    "subBrand.name.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name"
           }
         }
       }

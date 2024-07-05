@@ -16,10 +16,10 @@ struct ProfileAdminSheet: View {
 
             Section {
                 LabeledContent("labels.id", value: profile.id.uuidString)
-                LabeledContent("profile.admin.joinedAt.label", value: profile.joinedAt, format: .dateTime
-                    .year()
-                    .month(.wide)
-                    .day())
+                LabeledContent("profile.admin.joinedAt.label", value: profile.joinedAt.formatted(.dateTime
+                        .year()
+                        .month(.wide)
+                        .day()))
             }
 
             Section {

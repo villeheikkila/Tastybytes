@@ -21,6 +21,8 @@ struct ProductAdminSheet: View {
                 }
             }
 
+            CreationInfoSection(createdBy: product.createdBy, createdAt: product.createdAt)
+
             Section {
                 LabeledContent("labels.id", value: product.id.formatted())
                 LabeledContent("verification.verified.label", value: "\(product.isVerified)".capitalized)
@@ -64,6 +66,21 @@ struct ProductAdminSheet: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarDismissAction()
+        }
+        .initialTask {
+            await loadData()
+        }
+    }
+
+    func loadData() async {
+        switch await repository.product.getDetailed(id: product.id) {
+        case let .success(product):
+            withAnimation {
+                self.product = product
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Failed to load detailed product. Error: \(error) (\(#file):\(#line))")
         }
     }
 

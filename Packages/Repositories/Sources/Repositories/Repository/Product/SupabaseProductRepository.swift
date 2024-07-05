@@ -123,6 +123,23 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
+    func getDetailed(id: Int) async -> Result<Product.Joined, Error> {
+        do {
+            let response: Product.Joined = try await client
+                .from(.products)
+                .select(Product.getQuery(.joinedBrandSubcategoriesCreator(false)))
+                .eq("id", value: id)
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func checkIfOnWishlist(id: Int) async -> Result<Bool, Error> {
         do {
             let response: Bool = try await client
