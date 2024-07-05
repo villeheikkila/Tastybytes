@@ -246,6 +246,8 @@
 		5CD2EE232C3733EE009AA949 /* EditLogoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */; };
 		5CD2EE252C3733FB009AA949 /* AdminRouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */; };
 		5CD2EE272C37CE07009AA949 /* SubBrandEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE262C37CE07009AA949 /* SubBrandEntityView.swift */; };
+		5CD2EE292C37DA58009AA949 /* ProfileEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE282C37DA58009AA949 /* ProfileEntityView.swift */; };
+		5CD2EE2C2C37E161009AA949 /* ProductAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE2B2C37E161009AA949 /* ProductAdminSheet.swift */; };
 		5CD3C0CE2B81384A0049E563 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0CD2B81384A0049E563 /* Date+Extension.swift */; };
 		5CD3C0D72B814B400049E563 /* CreateQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0D62B814B400049E563 /* CreateQRCodeView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD3C0DB2B814B790049E563 /* RatingPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD3C0DA2B814B790049E563 /* RatingPickerView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -548,6 +550,8 @@
 		5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogoSection.swift; sourceTree = "<group>"; };
 		5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminRouterLink.swift; sourceTree = "<group>"; };
 		5CD2EE262C37CE07009AA949 /* SubBrandEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandEntityView.swift; sourceTree = "<group>"; };
+		5CD2EE282C37DA58009AA949 /* ProfileEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEntityView.swift; sourceTree = "<group>"; };
+		5CD2EE2B2C37E161009AA949 /* ProductAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductAdminSheet.swift; sourceTree = "<group>"; };
 		5CD3C0CD2B81384A0049E563 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		5CD3C0D02B814ACD0049E563 /* EmptyActivityFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyActivityFeedView.swift; sourceTree = "<group>"; };
 		5CD3C0D22B814ACD0049E563 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
@@ -1034,12 +1038,12 @@
 			path = Report;
 			sourceTree = "<group>";
 		};
-		5C9057722B2894BE00EC157B /* EditBrand */ = {
+		5C9057722B2894BE00EC157B /* BrandAdmin */ = {
 			isa = PBXGroup;
 			children = (
 				5C9057732B2894BE00EC157B /* BrandAdminSheet.swift */,
 			);
-			path = EditBrand;
+			path = BrandAdmin;
 			sourceTree = "<group>";
 		};
 		5C9057742B2894BE00EC157B /* SubBrand */ = {
@@ -1073,12 +1077,12 @@
 			path = Flavor;
 			sourceTree = "<group>";
 		};
-		5C90577A2B2894BE00EC157B /* EditSubBrand */ = {
+		5C90577A2B2894BE00EC157B /* SubBrandAdmin */ = {
 			isa = PBXGroup;
 			children = (
 				5C90577B2B2894BE00EC157B /* SubBrandAdminSheet.swift */,
 			);
-			path = EditSubBrand;
+			path = SubBrandAdmin;
 			sourceTree = "<group>";
 		};
 		5C90577C2B2894BE00EC157B /* LocationSearch */ = {
@@ -1132,8 +1136,8 @@
 			children = (
 				5CAADF0E2B5C634700D956C1 /* Brand */,
 				5C9057742B2894BE00EC157B /* SubBrand */,
-				5C90577A2B2894BE00EC157B /* EditSubBrand */,
-				5C9057722B2894BE00EC157B /* EditBrand */,
+				5C90577A2B2894BE00EC157B /* SubBrandAdmin */,
+				5C9057722B2894BE00EC157B /* BrandAdmin */,
 				5C90574B2B2894BE00EC157B /* Sheet */,
 				5C3907662B322AE50036253E /* Screen */,
 			);
@@ -1152,6 +1156,7 @@
 		5C90579A2B2894BE00EC157B /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				5CD2EE2A2C37E156009AA949 /* ProductAdmin */,
 				5C64E7E52B701222006FC2C3 /* Helpers */,
 				5C90576B2B2894BE00EC157B /* Subcategory */,
 				5CCEE2542B29AE6900F276DF /* ProductCreation */,
@@ -1203,6 +1208,7 @@
 				5C9057992B2894BE00EC157B /* CurrentProfileScreen.swift */,
 				5C9057A92B2894BE00EC157B /* ProfileLocationsScreen.swift */,
 				5C9057AA2B2894BE00EC157B /* RatingChartView.swift */,
+				5CD2EE282C37DA58009AA949 /* ProfileEntityView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1555,6 +1561,14 @@
 				5CD2EE202C36D947009AA949 /* ProfileAdminSheet.swift */,
 			);
 			path = Admin;
+			sourceTree = "<group>";
+		};
+		5CD2EE2A2C37E156009AA949 /* ProductAdmin */ = {
+			isa = PBXGroup;
+			children = (
+				5CD2EE2B2C37E161009AA949 /* ProductAdminSheet.swift */,
+			);
+			path = ProductAdmin;
 			sourceTree = "<group>";
 		};
 		5CD3C0CC2B8138420049E563 /* Extensions */ = {
@@ -1917,6 +1931,7 @@
 				5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */,
 				5C90582B2B2894BE00EC157B /* CategoryManagementScreen.swift in Sources */,
 				5CAADF092B5C548700D956C1 /* DiscoverProductAssignBarcode.swift in Sources */,
+				5CD2EE2C2C37E161009AA949 /* ProductAdminSheet.swift in Sources */,
 				5C07F2792B51EBB800D8740B /* BrandShareLinkView.swift in Sources */,
 				5C9058022B2894BE00EC157B /* SubscriptionStoreContent.swift in Sources */,
 				5C4FC63C2BA6EC030025DB83 /* ZoomableRemoteImage.swift in Sources */,
@@ -1954,6 +1969,7 @@
 				5C9058112B2894BE00EC157B /* SubBrandAdminSheet.swift in Sources */,
 				5C9058082B2894BE00EC157B /* CheckInDatePickerSheet.swift in Sources */,
 				5CCEE27D2B2CA34800F276DF /* CheckInCardImage.swift in Sources */,
+				5CD2EE292C37DA58009AA949 /* ProfileEntityView.swift in Sources */,
 				5C511D792BA78DCE00F95290 /* PrivacyPolicyView.swift in Sources */,
 				5CD3C0D72B814B400049E563 /* CreateQRCodeView.swift in Sources */,
 				5CAADF102B5C634E00D956C1 /* BrandLogo.swift in Sources */,

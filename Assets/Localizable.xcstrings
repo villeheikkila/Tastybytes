@@ -291,6 +291,7 @@
       }
     },
     "admin.menuSection.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -717,39 +718,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete %@"
-          }
-        }
-      }
-    },
-    "brand.edit.brandOwner.label" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Change brand owner"
-          }
-        }
-      }
-    },
-    "brand.edit.brandOwner.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Owner"
-          }
-        }
-      }
-    },
-    "brand.edit.navigationTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit Brand"
           }
         }
       }
@@ -3463,6 +3431,16 @@
     "Pick an unique username" : {
 
     },
+    "product.admin.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Product"
+          }
+        }
+      }
+    },
     "product.barcode.add.label" : {
       "localizations" : {
         "en" : {
@@ -3554,7 +3532,14 @@
       }
     },
     "product.editSuggestion.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggest an Edit"
+          }
+        }
+      }
     },
     "product.editSuggestion.nothingToEdit.toast" : {
 

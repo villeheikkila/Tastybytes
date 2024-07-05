@@ -73,7 +73,7 @@ struct SubBrandAdminSheet: View {
                     .textSelection(.enabled)
                 LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
             }
-            
+
             Section {
                 RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
             }

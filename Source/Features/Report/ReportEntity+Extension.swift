@@ -46,10 +46,7 @@ extension Report.Entity {
         case let .checkInImage(imageEntity):
             ReportCheckInImageEntityView(imageEntity: imageEntity)
         case let .profile(profile):
-            HStack {
-                Text(profile.preferredName)
-                Spacer()
-            }
+            ProfileEntityView(profile: profile)
         }
     }
 }

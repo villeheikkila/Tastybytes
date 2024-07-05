@@ -31,7 +31,6 @@ struct ProductInnerScreen: View {
     @Environment(Router.self) private var router
     @State private var product: Product.Joined
     @State private var summary: Summary?
-    @State private var showDeleteProductConfirmationDialog = false
     @State private var showUnverifyProductConfirmation = false
     @State private var loadedWithBarcode: Barcode?
     @State private var showTranslator = false
@@ -153,55 +152,19 @@ struct ProductInnerScreen: View {
                     open: .screen(.company(product.subBrand.brand.brandOwner))
                 )
                 Divider()
-                if profileEnvironmentModel.hasPermission(.canEditCompanies) {
-                    RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: { updatedProduct in
-                        withAnimation {
-                            product = updatedProduct
-                            checkInLoader.onUpdateProduct(updatedProduct)
-                        }
-                    }))))
-                } else {
-                    RouterLink(
-                        "product.editSuggestion.label",
-                        systemImage: "pencil",
-                        open: .sheet(.product(.editSuggestion(product)))
-                    )
-                }
-
-                RouterLink(open: .sheet(.duplicateProduct(
-                    mode: profileEnvironmentModel.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
-                    product: product
-                )), label: {
-                    if profileEnvironmentModel.hasPermission(.canMergeProducts) {
-                        Label("product.mergeTo.label", systemImage: "doc.on.doc")
-                    } else {
-                        Label("product.markAsDuplicate.label", systemImage: "doc.on.doc")
-                    }
-                })
-
-                Menu {
-                    if profileEnvironmentModel.hasPermission(.canDeleteBarcodes) {
-                        RouterLink("barcode.management.open", systemImage: "barcode", open: .sheet(.barcodeManagement(product: product)))
-                    }
-
-                    if profileEnvironmentModel.hasPermission(.canDeleteProducts) {
-                        Button(
-                            "labels.delete",
-                            systemImage: "trash.fill",
-                            role: .destructive,
-                            action: { showDeleteProductConfirmationDialog = true }
-                        )
-                        .disabled(product.isVerified)
-                    }
-                } label: {
-                    Label("admin.menuSection.title", systemImage: "gear")
-                        .labelStyle(.iconOnly)
-                }
 
                 Button("labels.translate", systemImage: "bubble.left.and.text.bubble.right") {
                     showTranslator = true
                 }
+                RouterLink(
+                    "product.editSuggestion.label",
+                    systemImage: "pencil",
+                    open: .sheet(.product(.editSuggestion(product)))
+                )
+                Divider()
                 ReportButton(entity: .product(product))
+                RouterLink("product.markAsDuplicate.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .reportDuplicate, product: product)))
+                AdminRouterLink(open: .sheet(.productAdmin(product: $product)))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
@@ -213,17 +176,6 @@ struct ProductInnerScreen: View {
                 ProgressButton("product.unverify.confirmation.label \(presenting.name)", role: .destructive, action: {
                     await verifyProduct(product: presenting, isVerified: false)
                 })
-            }
-            .confirmationDialog("product.delete.confirmation.description",
-                                isPresented: $showDeleteProductConfirmationDialog,
-                                titleVisibility: .visible,
-                                presenting: product)
-            { presenting in
-                ProgressButton(
-                    "product.delete.confirmation.label \(presenting.formatted(.fullName))",
-                    role: .destructive,
-                    action: { await deleteProduct(presenting) }
-                )
             }
         }
     }
@@ -304,18 +256,6 @@ struct ProductInnerScreen: View {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func deleteProduct(_ product: Product.Joined) async {
-        switch await repository.product.delete(id: product.id) {
-        case .success:
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            router.removeLast()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
 
