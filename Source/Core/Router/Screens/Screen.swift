@@ -36,7 +36,7 @@ enum Screen: Hashable, Sendable {
     case notificationSettingsScreen
     case appIcon
     case blockedUsers
-    case contributions
+    case contributions(Profile)
     case about
     case reports(ReportFilter? = nil)
     case locationManagement
@@ -113,8 +113,8 @@ enum Screen: Hashable, Sendable {
             AppIconScreen()
         case .blockedUsers:
             BlockedUsersScreen()
-        case .contributions:
-            ContributionsScreen()
+        case let .contributions(profile):
+            ContributionsScreen(profile: profile)
         case .about:
             AboutScreen()
         case let .reports(filter):

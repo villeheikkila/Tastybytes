@@ -8,9 +8,10 @@ import SwiftUI
 struct ContributionsScreen: View {
     private let logger = Logger(category: "ContributionsScreen")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var contributions: Contributions?
+
+    let profile: Profile
 
     var body: some View {
         List {
@@ -28,22 +29,22 @@ struct ContributionsScreen: View {
         }
         .listStyle(.insetGrouped)
         .refreshable {
-            await loadContributions(userId: profileEnvironmentModel.id)
+            await loadContributions()
         }
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "") {
-                await loadContributions(userId: profileEnvironmentModel.id)
+                await loadContributions()
             }
         }
         .navigationTitle("settings.contributions.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .initialTask {
-            await loadContributions(userId: profileEnvironmentModel.id)
+            await loadContributions()
         }
     }
 
-    func loadContributions(userId: UUID) async {
-        switch await repository.profile.getContributions(userId: userId) {
+    func loadContributions() async {
+        switch await repository.profile.getContributions(userId: profile.id) {
         case let .success(contributions):
             withAnimation {
                 self.contributions = contributions

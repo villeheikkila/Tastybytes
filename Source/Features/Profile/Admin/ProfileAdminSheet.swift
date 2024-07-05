@@ -24,6 +24,7 @@ struct ProfileAdminSheet: View {
 
             Section {
                 RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.profile(profile.id))))
+                RouterLink("contributions.title", systemImage: "plus", open: .screen(.contributions(profile)))
             }
         }
         .navigationTitle("profile.admin.navigationTitle")
