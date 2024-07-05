@@ -17,6 +17,16 @@ public extension Array where Element: Equatable {
     }
 }
 
+public extension Array where Element: Identifiable {
+    func removingWithId(_ item: Element) -> [Element] {
+        var newArray = self
+        if let toReplace = newArray.firstIndex(where: { $0.id == item.id }) {
+            newArray.remove(at: toReplace)
+        }
+        return newArray
+    }
+}
+
 public extension Array {
     subscript(safe index: Int) -> Element? {
         indices.contains(index) ? self[index] : nil

@@ -136,6 +136,10 @@ struct SubBrandAdminSheet: View {
     func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
         switch await repository.subBrand.update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id))) {
         case .success:
+            withAnimation {
+                brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand))
+            }
+            subBrand = mergeTo
             feedbackEnvironmentModel.trigger(.notification(.success))
         case let .failure(error):
             guard !error.isCancelled else { return }
@@ -164,7 +168,7 @@ struct SubBrandAdminSheet: View {
         case .success:
             feedbackEnvironmentModel.trigger(.notification(.success))
             withAnimation {
-                brand = brand.copyWith(subBrands: brand.subBrands.removing(subBrand))
+                brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand))
             }
             dismiss()
         case let .failure(error):

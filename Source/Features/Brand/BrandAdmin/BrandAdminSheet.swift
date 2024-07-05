@@ -7,20 +7,6 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-struct BrandEntityView: View {
-    let brand: Brand.JoinedSubBrandsProductsCompany
-
-    var body: some View {
-        HStack {
-            BrandLogo(brand: brand, size: 40)
-            VStack(alignment: .leading) {
-                Text(brand.brandOwner.name)
-                Text(brand.name)
-            }
-        }
-    }
-}
-
 struct BrandAdminSheet: View {
     typealias BrandUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
     private let logger = Logger(category: "BrandAdminSheet")

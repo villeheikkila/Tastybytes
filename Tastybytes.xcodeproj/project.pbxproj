@@ -271,6 +271,7 @@
 		5CEEA2F82C380B2E0009B3F5 /* VerificationAdminToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */; };
 		5CEEA2FA2C3814BE0009B3F5 /* CreationInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */; };
 		5CEEA2FC2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FB2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift */; };
+		5CEEA2FE2C381AE40009B3F5 /* BrandEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FD2C381AE40009B3F5 /* BrandEntityView.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -581,6 +582,7 @@
 		5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationAdminToggleView.swift; sourceTree = "<group>"; };
 		5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationInfoSection.swift; sourceTree = "<group>"; };
 		5CEEA2FB2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyEditSuggestionScreen.swift; sourceTree = "<group>"; };
+		5CEEA2FD2C381AE40009B3F5 /* BrandEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEntityView.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1439,6 +1441,7 @@
 		5CAADF0E2B5C634700D956C1 /* Brand */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA2FD2C381AE40009B3F5 /* BrandEntityView.swift */,
 				5CAADF0F2B5C634E00D956C1 /* BrandLogo.swift */,
 			);
 			path = Brand;
@@ -1886,6 +1889,7 @@
 				5C9057EF2B2894BE00EC157B /* Sheet.swift in Sources */,
 				5C90585C2B2894BE00EC157B /* TabIdentifier.swift in Sources */,
 				5C9057E62B2894BE00EC157B /* Utils.swift in Sources */,
+				5CEEA2FE2C381AE40009B3F5 /* BrandEntityView.swift in Sources */,
 				5C511D7B2BA78E2A00F95290 /* AuthenticationScreenContent.swift in Sources */,
 				5C9058042B2894BE00EC157B /* AddCategorySheet.swift in Sources */,
 				5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */,
