@@ -11,6 +11,7 @@ struct DuplicateProductScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @State private var state: ScreenState = .loading
     @State private var duplicateProductSuggestions = [ProductDuplicateSuggestion]()
     @State private var deleteProduct: Product.Joined?
 
@@ -21,6 +22,15 @@ struct DuplicateProductScreen: View {
             DuplicateProductScreeRow(duplicateProductSuggestion: duplicateProductSuggestion)
         }
         .listStyle(.plain)
+        .overlay {
+            if state == .populated, duplicateProductSuggestions.isEmpty {
+                ContentUnavailableView("admin.duplicates.empty.title", systemImage: "tray")
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "") {
+                    await loadDuplicateProducts()
+                }
+            }
+        }
         .refreshable {
             await loadDuplicateProducts(withHaptics: true)
         }
@@ -37,6 +47,7 @@ struct DuplicateProductScreen: View {
         switch await repository.product.getMarkedAsDuplicateProducts(filter: filter) {
         case let .success(duplicateProductSuggestions):
             withAnimation {
+                state = .populated
                 self.duplicateProductSuggestions = duplicateProductSuggestions
             }
             if withHaptics {
@@ -45,7 +56,7 @@ struct DuplicateProductScreen: View {
 
         case let .failure(error):
             guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
+            state = .error([error])
             logger.error("Fetching duplicate products failed. Error: \(error) (\(#file):\(#line))")
         }
     }
