@@ -268,6 +268,7 @@
 		5CE10CDB2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE10CDA2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift */; };
 		5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5CEEA2F62C3804510009B3F5 /* ConfirmedDeleteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -575,6 +576,7 @@
 		5CE10CDA2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsPresentedInsideSheet.swift"; sourceTree = "<group>"; };
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
 		5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsUniqueByCategoryScreen.swift; sourceTree = "<group>"; };
+		5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmedDeleteButtonView.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1276,6 +1278,7 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */,
 				5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */,
 				5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */,
 				5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */,
@@ -1845,6 +1848,7 @@
 				5C187E4D2B8B33FD0007AD17 /* CheckInListLoader.swift in Sources */,
 				5C02A73B2B4F28B700B497FA /* AppErrorStateView.swift in Sources */,
 				5C82E8A62B2F7FE000F2B369 /* CheckInImagesSection.swift in Sources */,
+				5CEEA2F62C3804510009B3F5 /* ConfirmedDeleteButtonView.swift in Sources */,
 				5C90583A2B2894BE00EC157B /* ProductFeedScreen.swift in Sources */,
 				5C2B25D62C3467AD00CFDAFB /* WebViewSheet.swift in Sources */,
 				5C68D76B2B965FBE00D88229 /* ReportEntity+Extension.swift in Sources */,

@@ -42,27 +42,13 @@ struct ProductAdminSheet: View {
                     .foregroundColor(.accent)
             }
 
-            Section {
-                Button(
-                    "labels.delete",
-                    systemImage: "trash.fill",
-                    role: .destructive,
-                    action: { showDeleteProductConfirmationDialog = true }
-                )
-                .foregroundColor(.red)
-                .disabled(product.isVerified)
-                .confirmationDialog("product.delete.confirmation.description",
-                                    isPresented: $showDeleteProductConfirmationDialog,
-                                    titleVisibility: .visible,
-                                    presenting: product)
-                { presenting in
-                    ProgressButton(
-                        "product.delete.confirmation.label \(presenting.formatted(.fullName))",
-                        role: .destructive,
-                        action: { await deleteProduct(presenting) }
-                    )
-                }
-            }
+            ConfirmedDeleteButtonView(
+                presenting: product,
+                action: deleteProduct,
+                description: "product.delete.confirmation.description",
+                label: "product.delete.confirmation.label \(product.formatted(.fullName))",
+                isDisabled: product.isVerified
+            )
         }
         .navigationTitle("product.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)

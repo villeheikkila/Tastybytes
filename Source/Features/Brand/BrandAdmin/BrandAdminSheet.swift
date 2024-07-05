@@ -84,29 +84,13 @@ struct BrandAdminSheet: View {
                 RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
             }
 
-            Section {
-                Button(
-                    "labels.delete",
-                    systemImage: "trash.fill",
-                    role: .destructive,
-                    action: { showDeleteBrandConfirmationDialog = true }
-                )
-                .foregroundColor(.red)
-                .disabled(brand.isVerified)
-                .confirmationDialog(
-                    "brand.delete.disclaimer",
-                    isPresented: $showDeleteBrandConfirmationDialog,
-                    titleVisibility: .visible,
-                    presenting: brand
-                ) { presenting in
-                    ProgressButton(
-                        "brand.delete.label \(presenting.name)", role: .destructive,
-                        action: {
-                            await deleteBrand(presenting)
-                        }
-                    )
-                }
-            }
+            ConfirmedDeleteButtonView(
+                presenting: brand,
+                action: deleteBrand,
+                description: "brand.delete.disclaimer",
+                label: "brand.delete.label \(brand.name)",
+                isDisabled: brand.isVerified
+            )
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("brand.admin.navigationTitle")

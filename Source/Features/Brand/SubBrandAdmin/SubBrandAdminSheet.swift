@@ -81,30 +81,13 @@ struct SubBrandAdminSheet: View {
                 RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
             }
 
-            Section {
-                Button(
-                    "labels.delete",
-                    systemImage: "trash.fill",
-                    role: .destructive,
-                    action: { showDeleteConfirmation = true }
-                )
-                .foregroundColor(.red)
-                .disabled(subBrand.isVerified)
-            }
-            .confirmationDialog(
-                "subBrand.delete.disclaimer",
-                isPresented: $showDeleteConfirmation,
-                titleVisibility: .visible,
-                presenting: subBrand
-            ) { presenting in
-                ProgressButton(
-                    "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
-                    role: .destructive,
-                    action: {
-                        await deleteSubBrand(presenting)
-                    }
-                )
-            }
+            ConfirmedDeleteButtonView(
+                presenting: subBrand,
+                action: deleteSubBrand,
+                description: "subBrand.delete.disclaimer",
+                label: "subBrand.delete \(subBrand.name ?? "subBrand.default.label")",
+                isDisabled: subBrand.isVerified
+            )
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("subBrand.admin.navigationTitle")

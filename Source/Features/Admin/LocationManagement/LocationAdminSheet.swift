@@ -79,25 +79,13 @@ struct LocationAdminSheet: View {
                 })))
             }
 
-            Section {
-                Button("labels.delete", systemImage: "trash", role: .destructive) {
-                    showDeleteConfirmation = true
-                }
-                .tint(.red)
-                .foregroundColor(.red)
-                .confirmationDialog(
-                    "location.delete.confirmation.description",
-                    isPresented: $showDeleteConfirmation,
-                    titleVisibility: .visible,
-                    presenting: location
-                ) { presenting in
-                    ProgressButton(
-                        "location.delete.confirmation.label \(presenting.name)",
-                        role: .destructive,
-                        action: { await deleteLocation(presenting) }
-                    )
-                }
-            }
+            ConfirmedDeleteButtonView(
+                presenting: location,
+                action: deleteLocation,
+                description: "location.delete.confirmation.description",
+                label: "location.delete.confirmation.label \(location.name)",
+                isDisabled: false
+            )
         }
         .navigationTitle("location.admin.location.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)

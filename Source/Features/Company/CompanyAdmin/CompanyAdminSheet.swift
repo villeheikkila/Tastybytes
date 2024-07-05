@@ -86,24 +86,7 @@ struct CompanyAdminSheet: View {
             }
         }
 
-        Section {
-            Button(
-                "labels.delete",
-                systemImage: "trash.fill",
-                role: .destructive,
-                action: { showDeleteCompanyConfirmationDialog = true }
-            )
-            .foregroundColor(.red)
-            .disabled(company.isVerified)
-            .confirmationDialog("company.delete.confirmationDialog.title",
-                                isPresented: $showDeleteCompanyConfirmationDialog,
-                                presenting: company)
-            { presenting in
-                ProgressButton("company.delete.confirmationDialog.label \(presenting.name)", role: .destructive, action: {
-                    await deleteCompany(presenting)
-                })
-            }
-        }
+        ConfirmedDeleteButtonView(presenting: company, action: deleteCompany, description: "company.delete.confirmationDialog.title", label: "company.delete.confirmationDialog.label \(company.name)", isDisabled: company.isVerified)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
