@@ -65,7 +65,7 @@ struct CompanyAdminSheet: View {
 
         CreationInfoSection(createdBy: company.createdBy, createdAt: company.createdAt)
 
-        Section("company.admin.section.details") {
+        Section("admin.section.details") {
             LabeledTextField(title: "labels.name", text: $newCompanyName)
             LabeledContent("labels.id", value: "\(company.id)")
                 .textSelection(.enabled)

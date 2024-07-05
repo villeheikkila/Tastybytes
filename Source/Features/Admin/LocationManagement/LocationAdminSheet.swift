@@ -55,7 +55,7 @@ struct LocationAdminSheet: View {
 
             CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)
 
-            Section("location.admin.section.details") {
+            Section("admin.section.details") {
                 VStack {
                     LabeledContent("labels.id", value: "\(location.id)")
                         .textSelection(.enabled)

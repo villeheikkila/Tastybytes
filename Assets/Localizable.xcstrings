@@ -330,6 +330,9 @@
         }
       }
     },
+    "admin.section.details" : {
+
+    },
     "admin.section.editSuggestions.title" : {
       "localizations" : {
         "en" : {
@@ -685,9 +688,6 @@
     "brand.admin.section.brand" : {
 
     },
-    "brand.admin.section.details" : {
-
-    },
     "brand.created.toast" : {
       "localizations" : {
         "en" : {
@@ -739,28 +739,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Owner"
-          }
-        }
-      }
-    },
-    "brand.edit.name.placeholder" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name of the brand"
-          }
-        }
-      }
-    },
-    "brand.edit.name.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name"
           }
         }
       }
@@ -1684,6 +1662,7 @@
       }
     },
     "company.admin.section.details" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2918,6 +2897,7 @@
       }
     },
     "location.admin.section.details" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4810,6 +4790,9 @@
         }
       }
     },
+    "subBrand.admin.section.subBrand" : {
+
+    },
     "subBrand.create.success.toast" : {
       "localizations" : {
         "en" : {
@@ -4884,6 +4867,7 @@
       }
     },
     "subBrand.name.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

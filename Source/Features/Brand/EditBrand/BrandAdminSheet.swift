@@ -60,7 +60,7 @@ struct BrandAdminSheet: View {
 
             CreationInfoSection(createdBy: brand.createdBy, createdAt: brand.createdAt)
 
-            Section("brand.admin.section.details") {
+            Section("admin.section.details") {
                 LabeledTextField(title: "brand.admin.changeName.label", text: $name)
                 LabeledContent("brand.admin.changeBrandOwner.label") {
                     RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in

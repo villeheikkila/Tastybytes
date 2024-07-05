@@ -48,14 +48,14 @@ struct SubBrandAdminSheet: View {
 
     var body: some View {
         Form {
-            Section {
+            Section("subBrand.admin.section.subBrand") {
                 RouterLink(open: .screen(.subBrand(.init(brand: brand, subBrand: subBrand)))) {
                     SubBrandEntityView(brand: brand, subBrand: subBrand)
                 }
             }
 
-            Section("subBrand.name.title") {
-                TextField("subBrand.name.placeholder", text: $newSubBrandName)
+            Section("admin.section.details") {
+                LabeledTextField(title: "labels.name", text: $newSubBrandName)
             }
 
             if !subBrandsToMergeTo.isEmpty {
@@ -68,39 +68,39 @@ struct SubBrandAdminSheet: View {
                 }
             }
 
-            if profileEnvironmentModel.hasRole(.admin) {
-                Section("labels.info") {
-                    LabeledContent("labels.id", value: "\(subBrand.id)")
-                        .textSelection(.enabled)
-                    LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
-                }
+            Section("labels.info") {
+                LabeledContent("labels.id", value: "\(subBrand.id)")
+                    .textSelection(.enabled)
+                LabeledContent("verification.verified.label", value: "\(subBrand.isVerified)".capitalized)
+            }
+            
+            Section {
+                RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
             }
 
-            if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
-                Section {
-                    Button(
-                        "labels.delete",
-                        systemImage: "trash.fill",
-                        role: .destructive,
-                        action: { showDeleteConfirmation = true }
-                    )
-                    .foregroundColor(.red)
-                    .disabled(subBrand.isVerified)
-                }
-                .confirmationDialog(
-                    "subBrand.delete.disclaimer",
-                    isPresented: $showDeleteConfirmation,
-                    titleVisibility: .visible,
-                    presenting: subBrand
-                ) { presenting in
-                    ProgressButton(
-                        "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
-                        role: .destructive,
-                        action: {
-                            await deleteSubBrand(presenting)
-                        }
-                    )
-                }
+            Section {
+                Button(
+                    "labels.delete",
+                    systemImage: "trash.fill",
+                    role: .destructive,
+                    action: { showDeleteConfirmation = true }
+                )
+                .foregroundColor(.red)
+                .disabled(subBrand.isVerified)
+            }
+            .confirmationDialog(
+                "subBrand.delete.disclaimer",
+                isPresented: $showDeleteConfirmation,
+                titleVisibility: .visible,
+                presenting: subBrand
+            ) { presenting in
+                ProgressButton(
+                    "subBrand.delete \(presenting.name ?? "subBrand.default.label")",
+                    role: .destructive,
+                    action: {
+                        await deleteSubBrand(presenting)
+                    }
+                )
             }
         }
         .scrollContentBackground(.hidden)
