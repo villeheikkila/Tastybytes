@@ -43,7 +43,6 @@ struct CheckInListCard: View {
                         systemImage: "pencil",
                         open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: onCreate)))
                     )
-                    ReportButton(entity: .checkIn(checkIn))
                 }
             }
             Divider()
@@ -78,6 +77,7 @@ struct CheckInListCard: View {
                 )
             }
             Divider()
+            ReportButton(entity: .checkIn(checkIn))
         }
         .confirmationDialog(
             "checkIn.delete.confirmation.title",

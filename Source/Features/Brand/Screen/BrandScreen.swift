@@ -161,6 +161,7 @@ struct BrandScreen: View {
                 )
                 Divider()
                 ReportButton(entity: .brand(brand))
+                Divider()
                 AdminRouterLink(open: .sheet(.brandAdmin(brand: brand, onUpdate: { updatedBrand in brand = updatedBrand })))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
@@ -287,18 +288,18 @@ struct SubBrandSectionHeader: View {
             }
             Spacer()
             Menu {
-                ControlGroup {
-                    if profileEnvironmentModel.hasPermission(.canCreateProducts) {
-                        RouterLink(
-                            "brand.createProduct.label",
-                            systemImage: "plus",
-                            open: .sheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
-                                router.open(.screen(.product(newProduct), removeLast: true))
-                            })))
-                        )
-                    }
+                if profileEnvironmentModel.hasPermission(.canCreateProducts) {
+                    RouterLink(
+                        "brand.createProduct.label",
+                        systemImage: "plus",
+                        open: .sheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
+                            router.open(.screen(.product(newProduct), removeLast: true))
+                        })))
+                    )
                 }
+                Divider()
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))
+                Divider()
                 AdminRouterLink(open: .sheet(.subBrandAdmin(
                     brand: $brand, subBrand: subBrand,
                     onUpdate: { updatedSubBrand in

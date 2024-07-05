@@ -150,14 +150,16 @@ struct ProductInnerScreen: View {
                 Button("labels.translate", systemImage: "bubble.left.and.text.bubble.right") {
                     showTranslator = true
                 }
+
+                Divider()
+                RouterLink("product.markAsDuplicate.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .reportDuplicate, product: product)))
                 RouterLink(
                     "product.editSuggestion.label",
                     systemImage: "pencil",
                     open: .sheet(.product(.editSuggestion(product)))
                 )
-                Divider()
                 ReportButton(entity: .product(product))
-                RouterLink("product.markAsDuplicate.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .reportDuplicate, product: product)))
+                Divider()
                 AdminRouterLink(open: .sheet(.productAdmin(product: $product)))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")

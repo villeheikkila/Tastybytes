@@ -110,7 +110,6 @@ struct CheckInScreen: View {
                             router.open(.screen(.checkIn(checkIn)))
                         })))
                     )
-                    ReportButton(entity: .checkIn(checkIn))
                 }
             }
             Divider()
@@ -144,6 +143,8 @@ struct CheckInScreen: View {
                     open: .screen(.location(purchaseLocation))
                 )
             }
+            Divider()
+            ReportButton(entity: .checkIn(checkIn))
         }
     }
 
@@ -186,9 +187,8 @@ struct CheckInScreen: View {
                     open: .screen(.subBrand(checkIn.product.subBrand))
                 )
                 Divider()
-                if profileEnvironmentModel.id != checkIn.profile.id {
-                    ReportButton(entity: .checkIn(checkIn))
-                }
+                ReportButton(entity: .checkIn(checkIn))
+                Divider()
                 if profileEnvironmentModel.hasRole(.moderator) {
                     Menu {
                         if profileEnvironmentModel.hasPermission(.canDeleteCheckInsAsModerator) {

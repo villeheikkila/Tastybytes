@@ -71,7 +71,6 @@ struct LocationInnerScreen: View {
             Menu {
                 LocationShareLinkView(location: location)
                 Divider()
-
                 AdminRouterLink(open: .sheet(.locationAdmin(location: location, onEdit: { location in
                     withAnimation {
                         self.location = location

@@ -95,16 +95,17 @@ struct CompanyScreen: View {
                         open: .sheet(.addBrand(brandOwner: company.saved, mode: .new))
                     )
                 }
-                RouterLink(
-                    "company.editSuggestion.title",
-                    systemImage: "pencil",
-                    open: .sheet(.companyEditSuggestion(company: company.saved, onSuccess: {
-                        router.open(.toast(.success("company.editSuggestion.success.toast")))
-                    }))
-                )
             }
             Divider()
+            RouterLink(
+                "company.editSuggestion.title",
+                systemImage: "pencil",
+                open: .sheet(.companyEditSuggestion(company: company.saved, onSuccess: {
+                    router.open(.toast(.success("company.editSuggestion.success.toast")))
+                }))
+            )
             ReportButton(entity: .company(company.saved))
+            Divider()
             AdminRouterLink(open: .sheet(.companyAdmin(company: company.saved, onSuccess: {
                 await getCompanyData(withHaptics: true)
                 router.open(.toast(.success("company.update.success.toast")))

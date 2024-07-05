@@ -58,11 +58,11 @@ struct CheckInImageSheet: View {
                 if let imageUrl = currentImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                     SaveToPhotoGalleryButton(imageUrl: imageUrl)
                 }
-                ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
                 if profileEnvironmentModel.profile.id == checkIn.profile.id {
                     Button("labels.delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = currentImage })
                 }
-
+                Divider()
+                ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)

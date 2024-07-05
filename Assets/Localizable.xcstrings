@@ -1709,7 +1709,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contribute"
+            "value" : "Suggest and Edit"
           }
         }
       }
@@ -1739,7 +1739,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit Suggestion"
+            "value" : "Suggest an Edit"
           }
         }
       }

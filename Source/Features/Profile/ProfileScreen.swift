@@ -41,6 +41,7 @@ struct ProfileScreen: View {
                 }
                 Divider()
                 ReportButton(entity: .profile(profile))
+                Divider()
                 AdminRouterLink(open: .sheet(.profileAdmin(profile: profile)))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
