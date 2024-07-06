@@ -30,16 +30,20 @@ struct CheckInAdminSheet: View {
                 CheckInEntityView(checkIn: checkIn, hideHeader: true)
             }
         }
+        .customListRowBackground()
         CreationInfoSection(createdBy: checkIn.profile, createdAt: checkIn.createdAt)
         Section("admin.section.details") {
             LabeledIdView(id: checkIn.id.formatted())
         }
+        .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.checkIn(checkIn.id))))
         }
+        .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(presenting: checkIn, action: deleteCheckInAsModerator, description: "checkIn.delete.asModerator.title", label: "checkIn.delete.asModerator.label \(checkIn.profile.preferredName)", isDisabled: false)
         }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

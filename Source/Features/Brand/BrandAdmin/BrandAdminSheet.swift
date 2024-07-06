@@ -68,6 +68,7 @@ struct BrandAdminSheet: View {
                 BrandEntityView(brand: brand)
             }
         }
+        .customListRowBackground()
         CreationInfoSection(createdBy: brand.createdBy, createdAt: brand.createdAt)
         Section("admin.section.details") {
             LabeledTextField(title: "brand.admin.changeName.label", text: $name)
@@ -77,6 +78,7 @@ struct BrandAdminSheet: View {
                 })))
             }
         }
+        .customListRowBackground()
         EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
         Section("labels.info") {
             LabeledIdView(id: brand.id.formatted())
@@ -86,9 +88,11 @@ struct BrandAdminSheet: View {
             }.formatted())
             VerificationAdminToggleView(isVerified: brand.isVerified, action: verifyBrand)
         }
+        .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
         }
+        .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(
                 presenting: brand,
@@ -98,6 +102,7 @@ struct BrandAdminSheet: View {
                 isDisabled: brand.isVerified
             )
         }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

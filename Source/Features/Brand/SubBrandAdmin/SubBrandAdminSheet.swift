@@ -61,10 +61,12 @@ struct SubBrandAdminSheet: View {
                 SubBrandEntityView(brand: brand, subBrand: subBrand)
             }
         }
+        .customListRowBackground()
         CreationInfoSection(createdBy: subBrand.createdBy, createdAt: subBrand.createdAt)
         Section("admin.section.details") {
             LabeledTextField(title: "labels.name", text: $newSubBrandName)
         }
+        .customListRowBackground()
         if !subBrandsToMergeTo.isEmpty {
             Section("subBrand.mergeToAnotherSubBrand.title") {
                 ForEach(subBrandsToMergeTo) { subBrand in
@@ -73,15 +75,18 @@ struct SubBrandAdminSheet: View {
                     }
                 }
             }
+            .customListRowBackground()
         }
         Section("labels.info") {
             LabeledIdView(id: subBrand.id.formatted())
             LabeledContent("brand.admin.product.count", value: subBrand.products.count.formatted())
             VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
         }
+        .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
         }
+        .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(
                 presenting: subBrand,
@@ -91,6 +96,7 @@ struct SubBrandAdminSheet: View {
                 isDisabled: subBrand.isVerified
             )
         }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

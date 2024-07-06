@@ -32,16 +32,20 @@ struct CheckInCommentAdminSheet: View {
                 CheckInCommentEntityView(comment: comment)
             }
         }
+        .customListRowBackground()
         CreationInfoSection(createdBy: comment.profile, createdAt: comment.createdAt)
         Section("admin.section.details") {
             LabeledIdView(id: comment.id.formatted())
         }
+        .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.comment(comment.id))))
         }
+        .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(presenting: comment, action: deleteCommentAsModerator, description: "comment.deleteAsModerator.confirmation.description", label: "comment.deleteAsModerator.confirmation.label \(comment.profile.preferredName)", isDisabled: false)
         }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

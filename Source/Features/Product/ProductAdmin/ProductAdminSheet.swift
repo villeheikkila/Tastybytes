@@ -24,6 +24,7 @@ struct ProductAdminSheet: View {
                 content
             }
         }
+        .scrollContentBackground(.hidden)
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "", errorAction: loadData)
         }
@@ -43,11 +44,13 @@ struct ProductAdminSheet: View {
                 ProductEntityView(product: product)
             }
         }
+        .customListRowBackground()
         CreationInfoSection(createdBy: product.createdBy, createdAt: product.createdAt)
         Section("admin.section.details") {
             LabeledIdView(id: product.id.formatted())
             VerificationAdminToggleView(isVerified: product.isVerified, action: verifyProduct)
         }
+        .customListRowBackground()
         EditLogoSection(logos: logos, onUpload: uploadData, onDelete: deleteLogo)
         Section {
             RouterLink("barcode.management.open", systemImage: "barcode", open: .sheet(.barcodeManagement(product: product)))
@@ -61,6 +64,7 @@ struct ProductAdminSheet: View {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.product(product.id))))
         }
         .foregroundColor(.accent)
+        .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(
                 presenting: product,
@@ -70,6 +74,7 @@ struct ProductAdminSheet: View {
                 isDisabled: product.isVerified
             )
         }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

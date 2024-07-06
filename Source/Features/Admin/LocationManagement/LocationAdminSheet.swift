@@ -27,6 +27,7 @@ struct LocationAdminSheet: View {
         Form {
             content
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("location.admin.location.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -65,12 +66,14 @@ struct LocationAdminSheet: View {
             .contentShape(.rect)
             .openOnTap(.screen(.location(location)))
         }
+        .customListRowBackground()
         CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)
         Section("admin.section.details") {
             LabeledIdView(id: location.id.uuidString)
             LabeledContent("location.mapKitIdentifier.label", value: "\(location.mapKitIdentifier ?? "-")")
                 .textSelection(.enabled)
         }
+        .customListRowBackground()
         Section {
             RouterLink("location.admin.changeLocation.label", systemImage: "map", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
                 Task {
@@ -84,6 +87,7 @@ struct LocationAdminSheet: View {
                 }
             })))
         }
+        .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(
                 presenting: location,
@@ -93,6 +97,7 @@ struct LocationAdminSheet: View {
                 isDisabled: false
             )
         }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

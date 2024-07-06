@@ -34,5 +34,6 @@ struct CreationInfoSection: View {
                     .foregroundColor(.secondary)
             }
         }
+        .customListRowBackground()
     }
 }

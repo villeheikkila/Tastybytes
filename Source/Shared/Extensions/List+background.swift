@@ -7,7 +7,7 @@ struct ListRowBackgroundModifier: ViewModifier {
     var color: Color {
         switch colorScheme {
         case .light:
-            .white
+            Color(uiColor: .systemGroupedBackground)
         case .dark:
             .black
         @unknown default:
@@ -17,7 +17,7 @@ struct ListRowBackgroundModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .listRowBackground(color.opacity(isPresentedInSheet ? 0.3 : 1))
+            .listRowBackground(color.opacity(isPresentedInSheet && colorScheme == .dark ? 0.3 : 1))
     }
 }
 

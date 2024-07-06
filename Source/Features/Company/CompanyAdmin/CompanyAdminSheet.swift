@@ -64,12 +64,14 @@ struct CompanyAdminSheet: View {
                 CompanyEntityView(company: company)
             }
         }
+        .customListRowBackground()
         CreationInfoSection(createdBy: company.createdBy, createdAt: company.createdAt)
         Section("admin.section.details") {
             LabeledTextField(title: "labels.name", text: $newCompanyName)
             LabeledIdView(id: company.id.formatted())
             VerificationAdminToggleView(isVerified: company.isVerified, action: verifyCompany)
         }
+        .customListRowBackground()
         EditLogoSection(logos: company.logos, onUpload: uploadLogo, onDelete: deleteLogo)
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
@@ -81,9 +83,11 @@ struct CompanyAdminSheet: View {
                 }
             }
         }
+        .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(presenting: company, action: deleteCompany, description: "company.delete.confirmationDialog.title", label: "company.delete.confirmationDialog.label \(company.name)", isDisabled: company.isVerified)
         }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

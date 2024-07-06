@@ -686,10 +686,24 @@
       }
     },
     "brand.admin.product.count" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products"
+          }
+        }
+      }
     },
     "brand.admin.products.count" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products"
+          }
+        }
+      }
     },
     "brand.admin.section.brand" : {
       "localizations" : {
@@ -702,7 +716,14 @@
       }
     },
     "brand.admin.subBrand.count" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brands"
+          }
+        }
+      }
     },
     "brand.created.toast" : {
       "localizations" : {

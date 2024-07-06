@@ -39,6 +39,7 @@ struct CheckInImageAdminSheet: View {
         Section("checkInImage.admin.section.checkIn") {
             CheckInImageEntityView(imageEntity: .init(checkIn: checkIn, imageEntity: imageEntity))
         }
+        .customListRowBackground()
         CreationInfoSection(createdBy: checkIn.profile, createdAt: imageEntity.createdAt)
         Section("admin.section.details") {
             LabeledIdView(id: imageEntity.id.formatted())
@@ -48,6 +49,7 @@ struct CheckInImageAdminSheet: View {
                 LabeledContent("labels.megaBytes", value: imageDetails.fileSize.formatted(.byteCount(style: .file)))
             }
         }
+        .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.checkInImage(imageEntity.id))))
             if let imageUrl {
@@ -56,9 +58,11 @@ struct CheckInImageAdminSheet: View {
                 }
             }
         }
+        .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(presenting: imageEntity, action: deleteImage, description: "checkInImage.deleteAsModerator.confirmation.description", label: "checkInImage.deleteAsModerator.confirmation.label", isDisabled: false)
         }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
