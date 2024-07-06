@@ -76,6 +76,7 @@ struct SubBrandAdminSheet: View {
         }
         Section("labels.info") {
             LabeledIdView(id: subBrand.id.formatted())
+            LabeledContent("brand.admin.product.count", value: subBrand.products.count.formatted())
             VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
         }
         Section {

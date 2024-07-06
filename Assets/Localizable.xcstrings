@@ -685,6 +685,12 @@
         }
       }
     },
+    "brand.admin.product.count" : {
+
+    },
+    "brand.admin.products.count" : {
+
+    },
     "brand.admin.section.brand" : {
       "localizations" : {
         "en" : {
@@ -694,6 +700,9 @@
           }
         }
       }
+    },
+    "brand.admin.subBrand.count" : {
+
     },
     "brand.created.toast" : {
       "localizations" : {
