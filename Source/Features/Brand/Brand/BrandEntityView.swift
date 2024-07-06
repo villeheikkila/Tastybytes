@@ -1,5 +1,5 @@
-import SwiftUI
 import Models
+import SwiftUI
 
 struct BrandEntityView: View {
     let brand: Brand.JoinedSubBrandsProductsCompany

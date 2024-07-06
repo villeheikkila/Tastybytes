@@ -58,7 +58,6 @@ struct ProductMutationView: View {
     @State private var description: String = ""
     @State private var isDiscontinued = false
     @State private var barcode: Barcode?
-    @State private var logos: [ImageEntity] = []
 
     let mode: Mode
 
@@ -118,13 +117,6 @@ struct ProductMutationView: View {
         categorySection
         brandSection
         productSection
-        if case .edit = mode {
-            EditLogoSection(logos: logos, onUpload: { imageData in
-                await uploadData(data: imageData)
-            }, onDelete: { imageEntity in
-                await deleteLogo(entity: imageEntity)
-            })
-        }
     }
 
     private var categorySection: some View {
@@ -346,7 +338,6 @@ struct ProductMutationView: View {
                 name = initialProduct.name
                 description = initialProduct.description.orEmpty
                 isDiscontinued = initialProduct.isDiscontinued
-                logos = initialProduct.logos
                 state = .populated
             case let .failure(error):
                 guard !error.isCancelled else { return }
@@ -367,30 +358,6 @@ struct ProductMutationView: View {
             state = .populated
         case .new:
             state = .populated
-        }
-    }
-
-    func deleteLogo(entity: ImageEntity) async {
-        switch await repository.imageEntity.delete(from: .productLogos, entity: entity) {
-        case .success:
-            withAnimation {
-                logos.remove(object: entity)
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func uploadData(data: Data) async {
-        guard case let .edit(product, _) = mode else { return }
-        switch await repository.product.uploadLogo(productId: product.id, data: data) {
-        case let .success(imageEntity):
-            logos.append(imageEntity)
-            logger.info("Succesfully uploaded logo \(imageEntity.file)")
-        case let .failure(error):
-            logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

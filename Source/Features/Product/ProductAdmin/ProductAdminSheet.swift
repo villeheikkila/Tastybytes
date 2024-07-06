@@ -12,6 +12,7 @@ struct ProductAdminSheet: View {
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var showDeleteProductConfirmationDialog = false
+    @State private var logos: [ImageEntity] = []
     @Binding var product: Product.Joined
 
     let onDelete: () -> Void
@@ -34,6 +35,12 @@ struct ProductAdminSheet: View {
                     await verifyProduct(isVerified: isVerified)
                 }
             }
+
+            EditLogoSection(logos: logos, onUpload: { imageData in
+                await uploadData(data: imageData)
+            }, onDelete: { imageEntity in
+                await deleteLogo(entity: imageEntity)
+            })
 
             Section {
                 RouterLink("barcode.management.open", systemImage: "barcode", open: .sheet(.barcodeManagement(product: product)))
@@ -100,6 +107,29 @@ struct ProductAdminSheet: View {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func deleteLogo(entity: ImageEntity) async {
+        switch await repository.imageEntity.delete(from: .productLogos, entity: entity) {
+        case .success:
+            withAnimation {
+                logos.remove(object: entity)
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func uploadData(data: Data) async {
+        switch await repository.product.uploadLogo(productId: product.id, data: data) {
+        case let .success(imageEntity):
+            logos.append(imageEntity)
+            logger.info("Succesfully uploaded logo \(imageEntity.file)")
+        case let .failure(error):
+            logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }
