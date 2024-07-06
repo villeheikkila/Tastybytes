@@ -1,8 +1,8 @@
-import SwiftUI
-import Models
 import EnvironmentModels
-import Repositories
+import Models
 import OSLog
+import Repositories
+import SwiftUI
 
 struct CheckInCommentAdminSheet: View {
     private let logger = Logger(category: "CheckInCommentAdminSheet")
@@ -16,7 +16,7 @@ struct CheckInCommentAdminSheet: View {
 
     var body: some View {
         Form {
-            populatedContent
+            content
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("checkIn.admin.navigationTitle")
@@ -26,23 +26,19 @@ struct CheckInCommentAdminSheet: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         Section("checkIn.admin.section.checkIn") {
             RouterLink(open: .screen(.checkIn(checkIn))) {
                 CheckInCommentEntityView(comment: comment)
             }
         }
-
         CreationInfoSection(createdBy: comment.profile, createdAt: comment.createdAt)
-
         Section("admin.section.details") {
             LabeledIdView(id: comment.id.formatted())
         }
-
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.comment(comment.id))))
         }
-
         Section {
             ConfirmedDeleteButtonView(presenting: comment, action: deleteCommentAsModerator, description: "comment.deleteAsModerator.confirmation.description", label: "comment.deleteAsModerator.confirmation.label \(comment.profile.preferredName)", isDisabled: false)
         }
@@ -51,7 +47,6 @@ struct CheckInCommentAdminSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
     }
-
 
     func deleteCommentAsModerator(_ comment: CheckInComment) async {
         switch await repository.checkInComment.deleteAsModerator(comment: comment) {

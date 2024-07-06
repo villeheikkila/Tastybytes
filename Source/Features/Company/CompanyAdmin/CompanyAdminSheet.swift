@@ -29,7 +29,7 @@ struct CompanyAdminSheet: View {
     var body: some View {
         Form {
             if state == .populated {
-                populatedContent
+                content
             }
         }
         .scrollContentBackground(.hidden)
@@ -56,7 +56,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         Section("company.admin.section.company") {
             RouterLink(open: .screen(.company(.init(company: company)))) {
                 CompanyEntityView(company: company)

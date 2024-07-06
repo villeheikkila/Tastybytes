@@ -25,65 +25,7 @@ struct LocationAdminSheet: View {
 
     var body: some View {
         Form {
-            Section("location.admin.section.location") {
-                if let coordinate = location.location?.coordinate {
-                    Map(initialPosition: MapCameraPosition
-                        .camera(.init(centerCoordinate: coordinate, distance: 200)))
-                    {
-                        Marker(location.name, coordinate: coordinate)
-                        UserAnnotation()
-                    }
-                    .mapControls {
-                        MapUserLocationButton()
-                        MapCompass()
-                    }
-                    .frame(height: 150)
-                    .listRowSeparator(.hidden)
-                }
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(location.name)
-                        if let title = location.title {
-                            Text(title)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                }
-                .contentShape(.rect)
-                .openOnTap(.screen(.location(location)))
-            }
-
-            CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)
-
-            Section("admin.section.details") {
-                LabeledIdView(id: location.id.uuidString)
-                LabeledContent("location.mapKitIdentifier.label", value: "\(location.mapKitIdentifier ?? "-")")
-                    .textSelection(.enabled)
-            }
-
-            Section {
-                RouterLink("location.admin.changeLocation.label", systemImage: "map", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
-                    Task {
-                        await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
-                    }
-                })))
-                RouterLink("location.admin.merge.label", systemImage: "arrow.triangle.merge", open: .sheet(.mergeLocationSheet(location: location, onMerge: { newLocation in
-                    await onDelete(location)
-                    withAnimation {
-                        location = newLocation
-                    }
-                })))
-            }
-
-            Section {
-                ConfirmedDeleteButtonView(
-                    presenting: location,
-                    action: deleteLocation,
-                    description: "location.delete.confirmation.description",
-                    label: "location.delete.confirmation.label \(location.name)",
-                    isDisabled: false
-                )
-            }
+            content
         }
         .navigationTitle("location.admin.location.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
@@ -92,6 +34,64 @@ struct LocationAdminSheet: View {
         }
         .task {
             await loadData()
+        }
+    }
+
+    @ViewBuilder private var content: some View {
+        Section("location.admin.section.location") {
+            if let coordinate = location.location?.coordinate {
+                Map(initialPosition: MapCameraPosition
+                    .camera(.init(centerCoordinate: coordinate, distance: 200)))
+                {
+                    Marker(location.name, coordinate: coordinate)
+                    UserAnnotation()
+                }
+                .mapControls {
+                    MapUserLocationButton()
+                    MapCompass()
+                }
+                .frame(height: 150)
+                .listRowSeparator(.hidden)
+            }
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(location.name)
+                    if let title = location.title {
+                        Text(title)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            .contentShape(.rect)
+            .openOnTap(.screen(.location(location)))
+        }
+        CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)
+        Section("admin.section.details") {
+            LabeledIdView(id: location.id.uuidString)
+            LabeledContent("location.mapKitIdentifier.label", value: "\(location.mapKitIdentifier ?? "-")")
+                .textSelection(.enabled)
+        }
+        Section {
+            RouterLink("location.admin.changeLocation.label", systemImage: "map", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
+                Task {
+                    await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
+                }
+            })))
+            RouterLink("location.admin.merge.label", systemImage: "arrow.triangle.merge", open: .sheet(.mergeLocationSheet(location: location, onMerge: { newLocation in
+                await onDelete(location)
+                withAnimation {
+                    location = newLocation
+                }
+            })))
+        }
+        Section {
+            ConfirmedDeleteButtonView(
+                presenting: location,
+                action: deleteLocation,
+                description: "location.delete.confirmation.description",
+                label: "location.delete.confirmation.label \(location.name)",
+                isDisabled: false
+            )
         }
     }
 

@@ -21,7 +21,7 @@ struct ProductAdminSheet: View {
     var body: some View {
         List {
             if state == .populated {
-                populatedContent
+                content
             }
         }
         .overlay {
@@ -30,14 +30,14 @@ struct ProductAdminSheet: View {
         .navigationTitle("product.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarDismissAction()
+            toolbarContent
         }
         .initialTask {
             await loadData()
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         Section("product.admin.section.product") {
             RouterLink(open: .screen(.product(product))) {
                 ProductEntityView(product: product)
@@ -70,6 +70,10 @@ struct ProductAdminSheet: View {
                 isDisabled: product.isVerified
             )
         }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarDismissAction()
     }
 
     func loadData() async {

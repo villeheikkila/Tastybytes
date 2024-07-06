@@ -42,45 +42,7 @@ struct SubBrandAdminSheet: View {
 
     var body: some View {
         Form {
-            Section("subBrand.admin.section.subBrand") {
-                RouterLink(open: .screen(.subBrand(.init(brand: brand, subBrand: subBrand)))) {
-                    SubBrandEntityView(brand: brand, subBrand: subBrand)
-                }
-            }
-
-            CreationInfoSection(createdBy: subBrand.createdBy, createdAt: subBrand.createdAt)
-
-            Section("admin.section.details") {
-                LabeledTextField(title: "labels.name", text: $newSubBrandName)
-            }
-
-            if !subBrandsToMergeTo.isEmpty {
-                Section("subBrand.mergeToAnotherSubBrand.title") {
-                    ForEach(subBrandsToMergeTo) { subBrand in
-                        EditSubBrandMergeToRowView(subBrand: subBrand) { mergeTo in
-                            await mergeToSubBrand(mergeTo: mergeTo)
-                        }
-                    }
-                }
-            }
-
-            Section("labels.info") {
-                LabeledIdView(id: subBrand.id.formatted())
-                VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
-            }
-
-            Section {
-                RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
-            }
-            Section {
-                ConfirmedDeleteButtonView(
-                    presenting: subBrand,
-                    action: deleteSubBrand,
-                    description: "subBrand.delete.disclaimer",
-                    label: "subBrand.delete \(subBrand.name ?? "subBrand.default.label")",
-                    isDisabled: subBrand.isVerified
-                )
-            }
+            content
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("subBrand.admin.navigationTitle")
@@ -90,6 +52,43 @@ struct SubBrandAdminSheet: View {
         }
         .initialTask {
             await loadData()
+        }
+    }
+
+    @ViewBuilder private var content: some View {
+        Section("subBrand.admin.section.subBrand") {
+            RouterLink(open: .screen(.subBrand(.init(brand: brand, subBrand: subBrand)))) {
+                SubBrandEntityView(brand: brand, subBrand: subBrand)
+            }
+        }
+        CreationInfoSection(createdBy: subBrand.createdBy, createdAt: subBrand.createdAt)
+        Section("admin.section.details") {
+            LabeledTextField(title: "labels.name", text: $newSubBrandName)
+        }
+        if !subBrandsToMergeTo.isEmpty {
+            Section("subBrand.mergeToAnotherSubBrand.title") {
+                ForEach(subBrandsToMergeTo) { subBrand in
+                    EditSubBrandMergeToRowView(subBrand: subBrand) { mergeTo in
+                        await mergeToSubBrand(mergeTo: mergeTo)
+                    }
+                }
+            }
+        }
+        Section("labels.info") {
+            LabeledIdView(id: subBrand.id.formatted())
+            VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
+        }
+        Section {
+            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
+        }
+        Section {
+            ConfirmedDeleteButtonView(
+                presenting: subBrand,
+                action: deleteSubBrand,
+                description: "subBrand.delete.disclaimer",
+                label: "subBrand.delete \(subBrand.name ?? "subBrand.default.label")",
+                isDisabled: subBrand.isVerified
+            )
         }
     }
 

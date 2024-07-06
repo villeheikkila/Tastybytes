@@ -41,42 +41,7 @@ struct BrandAdminSheet: View {
 
     var body: some View {
         Form {
-            Section("brand.admin.section.brand") {
-                RouterLink(open: .screen(.brand(brand))) {
-                    BrandEntityView(brand: brand)
-                }
-            }
-
-            CreationInfoSection(createdBy: brand.createdBy, createdAt: brand.createdAt)
-
-            Section("admin.section.details") {
-                LabeledTextField(title: "brand.admin.changeName.label", text: $name)
-                LabeledContent("brand.admin.changeBrandOwner.label") {
-                    RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
-                        brandOwner = company
-                    })))
-                }
-            }
-
-            EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
-
-            Section("labels.info") {
-                LabeledIdView(id: brand.id.formatted())
-                VerificationAdminToggleView(isVerified: brand.isVerified, action: verifyBrand)
-            }
-
-            Section {
-                RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
-            }
-            Section {
-                ConfirmedDeleteButtonView(
-                    presenting: brand,
-                    action: deleteBrand,
-                    description: "brand.delete.disclaimer",
-                    label: "brand.delete.label \(brand.name)",
-                    isDisabled: brand.isVerified
-                )
-            }
+            content
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("brand.admin.navigationTitle")
@@ -94,6 +59,40 @@ struct BrandAdminSheet: View {
                 return
             }
             await uploadLogo(data: data)
+        }
+    }
+
+    @ViewBuilder private var content: some View {
+        Section("brand.admin.section.brand") {
+            RouterLink(open: .screen(.brand(brand))) {
+                BrandEntityView(brand: brand)
+            }
+        }
+        CreationInfoSection(createdBy: brand.createdBy, createdAt: brand.createdAt)
+        Section("admin.section.details") {
+            LabeledTextField(title: "brand.admin.changeName.label", text: $name)
+            LabeledContent("brand.admin.changeBrandOwner.label") {
+                RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
+                    brandOwner = company
+                })))
+            }
+        }
+        EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
+        Section("labels.info") {
+            LabeledIdView(id: brand.id.formatted())
+            VerificationAdminToggleView(isVerified: brand.isVerified, action: verifyBrand)
+        }
+        Section {
+            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
+        }
+        Section {
+            ConfirmedDeleteButtonView(
+                presenting: brand,
+                action: deleteBrand,
+                description: "brand.delete.disclaimer",
+                label: "brand.delete.label \(brand.name)",
+                isDisabled: brand.isVerified
+            )
         }
     }
 
