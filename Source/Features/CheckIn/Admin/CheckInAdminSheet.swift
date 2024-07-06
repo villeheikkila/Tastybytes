@@ -14,7 +14,7 @@ struct CheckInAdminSheet: View {
 
     var body: some View {
         Form {
-            populatedContent
+            content
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("checkIn.admin.navigationTitle")
@@ -24,7 +24,7 @@ struct CheckInAdminSheet: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         Section("checkIn.admin.section.checkIn") {
             RouterLink(open: .screen(.checkIn(checkIn))) {
                 CheckInEntityView(checkIn: checkIn, hideHeader: true)

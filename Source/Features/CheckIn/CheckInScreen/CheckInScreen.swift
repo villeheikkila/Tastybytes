@@ -28,7 +28,7 @@ struct CheckInScreen: View {
         ScrollViewReader { scrollProxy in
             List {
                 if state == .populated {
-                    populatedContent
+                    content
                 }
             }
             .listStyle(.plain)
@@ -59,7 +59,7 @@ struct CheckInScreen: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         header
             .id(0)
             .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))

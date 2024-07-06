@@ -72,11 +72,12 @@ struct ProductMutationView: View {
     var body: some View {
         Form {
             if state == .populated {
-                populatedContent
+                content
             }
         }
         .scrollContentBackground(isPresentedInSheet ? .hidden : .visible)
         .navigationTitle(mode.navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
         .foregroundColor(.primary)
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
@@ -108,7 +109,7 @@ struct ProductMutationView: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         categorySection
         brandSection
         productSection

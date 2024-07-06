@@ -34,6 +34,7 @@ struct CompanyEditSuggestionSheet: View {
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("company.editSuggestion.label")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }

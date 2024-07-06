@@ -28,7 +28,7 @@ struct CompanyScreen: View {
     var body: some View {
         List {
             if state == .populated {
-                populatedContent
+                content
             }
         }
         .listStyle(.plain)
@@ -69,7 +69,7 @@ struct CompanyScreen: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         if let summary, summary.averageRating != nil {
             SummaryView(summary: summary)
         }

@@ -56,7 +56,7 @@ struct ProductInnerScreen: View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         List {
             if state == .populated {
-                populatedContent
+                content
             }
         }
         .listStyle(.plain)
@@ -93,8 +93,7 @@ struct ProductInnerScreen: View {
         }
     }
 
-    @ViewBuilder
-    var populatedContent: some View {
+    @ViewBuilder var content: some View {
         ProductScreenHeader(
             product: product,
             summary: summary,

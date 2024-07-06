@@ -17,25 +17,29 @@ struct ReportSheet: View {
 
     var body: some View {
         Form {
-            Group {
-                Section("report.section.content.title") {
-                    entity.view
-                }
-                Section("report.section.report.title") {
-                    TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)
-                        .lineLimit(8, reservesSpace: true)
-                    ProgressButton("labels.submit", action: {
-                        await submitReport()
-                    }).bold()
-                }
-            }
-            .customListRowBackground()
+            content
         }
         .scrollContentBackground(.hidden)
         .navigationTitle(entity.navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
+    }
+
+    @ViewBuilder private var content: some View {
+        Section("report.section.content.title") {
+            entity.view
+        }
+        .customListRowBackground()
+        Section("report.section.report.title") {
+            TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)
+                .lineLimit(8, reservesSpace: true)
+            ProgressButton("labels.submit", action: {
+                await submitReport()
+            }).bold()
+        }
+        .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

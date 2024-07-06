@@ -11,12 +11,12 @@ struct CompanyEditSuggestionScreen: View {
         List(company.editSuggestions) { editSuggestion in
             CompanyEditSuggestionRow(company: $company, editSuggestion: editSuggestion)
         }
+        .listStyle(.plain)
         .overlay {
             if company.editSuggestions.isEmpty {
                 ContentUnavailableView("admin.noEditSuggestions.title", systemImage: "tray")
             }
         }
-        .listStyle(.plain)
         .navigationTitle("company.admin.editSuggestion.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
     }

@@ -60,7 +60,7 @@ struct BrandScreen: View {
         ScrollViewReader { proxy in
             List {
                 if state == .populated {
-                    populatedContent
+                    content
                 }
             }
             .listStyle(.plain)
@@ -87,7 +87,7 @@ struct BrandScreen: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         SummaryView(summary: summary)
         switch productGrouping {
         case .subBrand:

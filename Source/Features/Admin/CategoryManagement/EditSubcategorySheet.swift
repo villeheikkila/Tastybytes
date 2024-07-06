@@ -24,6 +24,7 @@ struct EditSubcategorySheet: View {
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("subcategory.edit.navigationTitle \(subcategory.name)")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }

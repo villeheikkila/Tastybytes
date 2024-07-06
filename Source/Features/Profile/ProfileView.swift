@@ -56,7 +56,7 @@ struct ProfileInnerView: View {
     var body: some View {
         List {
             if state == .populated {
-                populatedContent
+                content
             }
         }
         .listStyle(.plain)
@@ -82,7 +82,7 @@ struct ProfileInnerView: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         Group {
             ProfileHeaderAvatarSection(
                 showPicker: $showPicker, profile: $profile,

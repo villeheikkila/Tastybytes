@@ -49,7 +49,7 @@ struct CheckInLocationSearchSheet: View {
     var body: some View {
         List {
             if state == .populated {
-                populatedContent
+                content
             }
         }
         .scrollContentBackground(.hidden)
@@ -82,7 +82,7 @@ struct CheckInLocationSearchSheet: View {
         }
     }
 
-    @ViewBuilder private var populatedContent: some View {
+    @ViewBuilder private var content: some View {
         if hasSearched {
             ForEach(searchResults) { location in
                 LocationRow(location: location, currentLocation: currentLocation, onSelect: storeLocation)

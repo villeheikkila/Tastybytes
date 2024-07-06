@@ -34,7 +34,7 @@ struct DuplicateProductSheet: View {
             }
         }
         .listStyle(.plain)
-        .background {
+        .overlay {
             if products.isEmpty, mode != .reportDuplicate {
                 DuplicateProductContentUnavailableView(productName: product.formatted(.fullName))
             }
@@ -43,6 +43,7 @@ struct DuplicateProductSheet: View {
                     prompt: "duplicateProduct.search.prompt")
         .disableAutocorrection(true)
         .navigationTitle(mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.navigationTitle" : "duplicateProduct.markAsDuplicate.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
