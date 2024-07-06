@@ -23,7 +23,6 @@ enum Screen: Hashable, Sendable {
     case settings
     case currentUserFriends
     case friends(Profile)
-    case addProduct(Barcode?)
     case productFeed(Product.FeedType)
     case flavorManagement
     case verification
@@ -75,8 +74,6 @@ enum Screen: Hashable, Sendable {
             ProfileCheckInsList(profile: profile, filter: filter)
         case let .profileStatisticsTopLocations(profile):
             ProfileTopLocationsScreen(profile: profile)
-        case let .addProduct(initialBarcode):
-            ProductMutationView(mode: .new(onCreate: nil), initialBarcode: initialBarcode)
         case let .checkIn(checkIn):
             CheckInScreen(checkIn: checkIn)
         case let .profile(profile):
@@ -166,8 +163,6 @@ enum Screen: Hashable, Sendable {
             lhsProfile == rhsProfile && lhsFilter == rhsFilter
         case let (.friends(lhsProfile), .friends(rhsProfile)):
             lhsProfile == rhsProfile
-        case let (.addProduct(lhsBarcode), .addProduct(rhsBarcode)):
-            lhsBarcode == rhsBarcode
         case let (.productFeed(lhsFeed), .productFeed(rhsFeed)):
             lhsFeed == rhsFeed
         case let (.reports(lhsFilter), .reports(rhsFilter)):
@@ -261,9 +256,6 @@ enum Screen: Hashable, Sendable {
         case let .friends(profile):
             hasher.combine("friends")
             hasher.combine(profile)
-        case let .addProduct(barcode):
-            hasher.combine("addProduct")
-            hasher.combine(barcode)
         case let .productFeed(feedType):
             hasher.combine("productFeed")
             hasher.combine(feedType)

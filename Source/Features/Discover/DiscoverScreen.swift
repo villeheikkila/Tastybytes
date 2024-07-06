@@ -167,12 +167,7 @@ struct DiscoverScreen: View {
             ContentUnavailableView {
                 Label("discover.barcode.notFound.title", systemImage: "bubbles.and.sparkles")
             } actions: {
-                Button("checkIn.action.createNew") {
-                    router.open(.screen(.addProduct(barcode)))
-                }
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
+                createProductButton
             }
         case let .text(searchTerm, searchScope):
             switch searchScope {
@@ -194,14 +189,7 @@ struct DiscoverScreen: View {
                 } description: {
                     Text("discover.products.notFound.description")
                 } actions: {
-                    Button("checkIn.action.createNew") {
-                        let barcodeCopy = barcode
-                        barcode = nil
-                        router.open(.screen(.addProduct(barcodeCopy)))
-                    }
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.capsule)
-                    .controlSize(.large)
+                    createProductButton
                 }
             case .users:
                 ContentUnavailableView {
@@ -316,5 +304,16 @@ struct DiscoverScreen: View {
                 }
             }
         }
+    }
+
+    @ViewBuilder private var createProductButton: some View {
+        Button("checkIn.action.createNew") {
+            router.open(.sheet(.product(.new(barcode: barcode, onCreate: { product in
+                router.open(.screen(.product(product)))
+            }))))
+        }
+        .buttonStyle(.bordered)
+        .buttonBorderShape(.capsule)
+        .controlSize(.large)
     }
 }

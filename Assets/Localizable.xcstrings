@@ -5170,10 +5170,24 @@
       }
     },
     "timePeriod.next" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        }
+      }
     },
     "timePeriod.previous" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previous"
+          }
+        }
+      }
     },
     "torch.off.label" : {
       "localizations" : {

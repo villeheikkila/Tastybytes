@@ -61,11 +61,6 @@ struct ProductMutationView: View {
 
     let mode: Mode
 
-    init(mode: Mode, initialBarcode: Barcode? = nil) {
-        self.mode = mode
-        _barcode = State(initialValue: initialBarcode)
-    }
-
     private var selectedCategory: Models.Category.JoinedSubcategoriesServingStyles? {
         appEnvironmentModel.categories.first(where: { $0.id == category })
     }
@@ -290,7 +285,7 @@ struct ProductMutationView: View {
                 })))
                 logger.error("Failed to edit product '\(product.id)'. Error: \(error) (\(#file):\(#line))")
             }
-        case let .new(onCreate), let .addToBrand(_, onCreate), let .addToSubBrand(_, _, onCreate):
+        case let .new(_, onCreate), let .addToBrand(_, onCreate), let .addToSubBrand(_, _, onCreate):
             guard let category, let brandId = brand?.id else { return }
             switch await repository.product.create(newProductParams: .init(
                 name: name,
@@ -356,7 +351,8 @@ struct ProductMutationView: View {
             }
             self.subBrand = brand.subBrands.map(\.subBrand).first(where: { $0.id == subBrand.id })
             state = .populated
-        case .new:
+        case let .new(barcode, _):
+            self.barcode = barcode
             state = .populated
         }
     }
@@ -364,14 +360,14 @@ struct ProductMutationView: View {
 
 extension ProductMutationView {
     enum Mode: Equatable {
-        case new(onCreate: ProductCallback? = nil), edit(Product.Joined, onEdit: ProductCallback?), editSuggestion(Product.Joined),
+        case new(barcode: Barcode?, onCreate: ProductCallback? = nil), edit(Product.Joined, onEdit: ProductCallback?), editSuggestion(Product.Joined),
              addToBrand(Brand.JoinedSubBrandsProductsCompany, onCreate: ProductCallback?),
              addToSubBrand(Brand.JoinedSubBrandsProductsCompany, SubBrand.JoinedProduct, onCreate: ProductCallback?)
 
         static func == (lhs: Mode, rhs: Mode) -> Bool {
             switch (lhs, rhs) {
-            case (.new(_), .new(_)):
-                false
+            case let (.new(lhsBarcode, _), .new(rhsBarcode, _)):
+                lhsBarcode == rhsBarcode
             case let (.edit(lhsProduct, _), .edit(rhsProduct, _)):
                 lhsProduct == rhsProduct
             case let (.editSuggestion(lhsProduct), .editSuggestion(rhsProduct)):
