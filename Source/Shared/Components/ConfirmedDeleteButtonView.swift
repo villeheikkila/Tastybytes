@@ -11,16 +11,14 @@ struct ConfirmedDeleteButtonView<Presenting>: View {
     let isDisabled: Bool
 
     var body: some View {
-        Section {
-            Button(
-                "labels.delete",
-                systemImage: "trash.fill",
-                role: .destructive,
-                action: { showDeleteConfirmation = true }
-            )
-            .foregroundColor(.red)
-            .disabled(isDisabled)
-        }
+        Button(
+            "labels.delete",
+            systemImage: "trash.fill",
+            role: .destructive,
+            action: { showDeleteConfirmation = true }
+        )
+        .foregroundColor(.red)
+        .disabled(isDisabled)
         .confirmationDialog(
             description,
             isPresented: $showDeleteConfirmation,

@@ -11,6 +11,7 @@ struct ProductAdminSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
+    @State private var state: ScreenState = .loading
     @State private var showDeleteProductConfirmationDialog = false
     @State private var logos: [ImageEntity] = []
     @Binding var product: Product.Joined
@@ -19,49 +20,12 @@ struct ProductAdminSheet: View {
 
     var body: some View {
         List {
-            Section("product.admin.section.product") {
-                RouterLink(open: .screen(.product(product))) {
-                    ProductEntityView(product: product)
-                }
+            if state == .populated {
+                populatedContent
             }
-
-            CreationInfoSection(createdBy: product.createdBy, createdAt: product.createdAt)
-
-            Section("admin.section.details") {
-                LabeledContent("labels.id", value: product.id.formatted())
-                    .textSelection(.enabled)
-                    .multilineTextAlignment(.trailing)
-                VerificationAdminToggleView(isVerified: product.isVerified) { isVerified in
-                    await verifyProduct(isVerified: isVerified)
-                }
-            }
-
-            EditLogoSection(logos: logos, onUpload: { imageData in
-                await uploadData(data: imageData)
-            }, onDelete: { imageEntity in
-                await deleteLogo(entity: imageEntity)
-            })
-
-            Section {
-                RouterLink("barcode.management.open", systemImage: "barcode", open: .sheet(.barcodeManagement(product: product)))
-                RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: { updatedProduct in
-                    withAnimation {
-                        product = updatedProduct
-                    }
-                }))))
-                RouterLink("product.mergeTo.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .mergeDuplicate, product: product)))
-                RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts(filter: .id(product.id))))
-                RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.product(product.id))))
-                    .foregroundColor(.accent)
-            }
-
-            ConfirmedDeleteButtonView(
-                presenting: product,
-                action: deleteProduct,
-                description: "product.delete.confirmation.description",
-                label: "product.delete.confirmation.label \(product.formatted(.fullName))",
-                isDisabled: product.isVerified
-            )
+        }
+        .overlay {
+            ScreenStateOverlayView(state: state, errorDescription: "", errorAction: loadData)
         }
         .navigationTitle("product.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
@@ -73,14 +37,51 @@ struct ProductAdminSheet: View {
         }
     }
 
+    @ViewBuilder private var populatedContent: some View {
+        Section("product.admin.section.product") {
+            RouterLink(open: .screen(.product(product))) {
+                ProductEntityView(product: product)
+            }
+        }
+        CreationInfoSection(createdBy: product.createdBy, createdAt: product.createdAt)
+        Section("admin.section.details") {
+            LabeledIdView(id: product.id.formatted())
+            VerificationAdminToggleView(isVerified: product.isVerified, action: verifyProduct)
+        }
+        EditLogoSection(logos: logos, onUpload: uploadData, onDelete: deleteLogo)
+        Section {
+            RouterLink("barcode.management.open", systemImage: "barcode", open: .sheet(.barcodeManagement(product: product)))
+            RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: { updatedProduct in
+                withAnimation {
+                    product = updatedProduct
+                }
+            }))))
+            RouterLink("product.mergeTo.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .mergeDuplicate, product: product)))
+            RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts(filter: .id(product.id))))
+            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.product(product.id))))
+        }
+        .foregroundColor(.accent)
+        Section {
+            ConfirmedDeleteButtonView(
+                presenting: product,
+                action: deleteProduct,
+                description: "product.delete.confirmation.description",
+                label: "product.delete.confirmation.label \(product.formatted(.fullName))",
+                isDisabled: product.isVerified
+            )
+        }
+    }
+
     func loadData() async {
         switch await repository.product.getDetailed(id: product.id) {
         case let .success(product):
             withAnimation {
                 self.product = product
+                state = .populated
             }
         case let .failure(error):
             guard !error.isCancelled else { return }
+            state = .error([error])
             logger.error("Failed to load detailed product. Error: \(error) (\(#file):\(#line))")
         }
     }

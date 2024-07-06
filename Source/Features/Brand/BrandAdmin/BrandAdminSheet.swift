@@ -61,25 +61,22 @@ struct BrandAdminSheet: View {
             EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
 
             Section("labels.info") {
-                LabeledContent("labels.id", value: "\(brand.id)")
-                    .textSelection(.enabled)
-                    .multilineTextAlignment(.trailing)
-                VerificationAdminToggleView(isVerified: brand.isVerified) { isVerified in
-                    await verifyBrand(isVerified: isVerified)
-                }
+                LabeledIdView(id: brand.id.formatted())
+                VerificationAdminToggleView(isVerified: brand.isVerified, action: verifyBrand)
             }
 
             Section {
                 RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
             }
-
-            ConfirmedDeleteButtonView(
-                presenting: brand,
-                action: deleteBrand,
-                description: "brand.delete.disclaimer",
-                label: "brand.delete.label \(brand.name)",
-                isDisabled: brand.isVerified
-            )
+            Section {
+                ConfirmedDeleteButtonView(
+                    presenting: brand,
+                    action: deleteBrand,
+                    description: "brand.delete.disclaimer",
+                    label: "brand.delete.label \(brand.name)",
+                    isDisabled: brand.isVerified
+                )
+            }
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("brand.admin.navigationTitle")

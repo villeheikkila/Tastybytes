@@ -6,6 +6,12 @@ import SwiftUI
 public struct CheckInEntityView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let checkIn: CheckIn
+    let hideHeader: Bool
+
+    init(checkIn: CheckIn, hideHeader: Bool = false) {
+        self.checkIn = checkIn
+        self.hideHeader = hideHeader
+    }
 
     var baseUrl: URL {
         appEnvironmentModel.infoPlist.supabaseUrl
@@ -14,7 +20,9 @@ public struct CheckInEntityView: View {
     public var body: some View {
         VStack {
             VStack {
-                header
+                if !hideHeader {
+                    header
+                }
                 productSection
             }
             checkInImage
@@ -24,6 +32,7 @@ public struct CheckInEntityView: View {
                 footer
             }
         }
+        .padding(.vertical, 4)
     }
 
     private var header: some View {

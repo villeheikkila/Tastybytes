@@ -62,21 +62,13 @@ struct CompanyAdminSheet: View {
                 CompanyEntityView(company: company)
             }
         }
-
         CreationInfoSection(createdBy: company.createdBy, createdAt: company.createdAt)
-
         Section("admin.section.details") {
             LabeledTextField(title: "labels.name", text: $newCompanyName)
-            LabeledContent("labels.id", value: "\(company.id)")
-                .textSelection(.enabled)
-                .multilineTextAlignment(.trailing)
-            VerificationAdminToggleView(isVerified: company.isVerified) { isVerified in
-                await verifyCompany(isVerified: isVerified)
-            }
+            LabeledIdView(id: company.id.formatted())
+            VerificationAdminToggleView(isVerified: company.isVerified, action: verifyCompany)
         }
-
         EditLogoSection(logos: company.logos, onUpload: uploadLogo, onDelete: deleteLogo)
-
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
             RouterLink(open: .screen(.companyEditSuggestion(company: $company))) {
@@ -87,8 +79,9 @@ struct CompanyAdminSheet: View {
                 }
             }
         }
-
-        ConfirmedDeleteButtonView(presenting: company, action: deleteCompany, description: "company.delete.confirmationDialog.title", label: "company.delete.confirmationDialog.label \(company.name)", isDisabled: company.isVerified)
+        Section {
+            ConfirmedDeleteButtonView(presenting: company, action: deleteCompany, description: "company.delete.confirmationDialog.title", label: "company.delete.confirmationDialog.label \(company.name)", isDisabled: company.isVerified)
+        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

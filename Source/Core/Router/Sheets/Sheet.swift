@@ -59,6 +59,7 @@ enum Sheet: Identifiable, Equatable {
     case webView(link: WebViewLink)
     case profileAdmin(profile: Profile)
     case productAdmin(product: Binding<Product.Joined>, onDelete: () -> Void)
+    case checkInAdmin(checkIn: CheckIn)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -144,6 +145,8 @@ enum Sheet: Identifiable, Equatable {
             ProfileAdminSheet(profile: profile)
         case let .productAdmin(product, onDelete):
             ProductAdminSheet(product: product, onDelete: onDelete)
+        case let .checkInAdmin(checkIn):
+            CheckInAdminSheet(checkIn: checkIn)
         }
     }
 
@@ -259,8 +262,10 @@ enum Sheet: Identifiable, Equatable {
             "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
         case let .profileAdmin(profile):
             "profile_admin_sheet_\(profile)"
-        case let .productAdmin(product):
+        case let .productAdmin(product, _):
             "product_admin_\(product)"
+        case let .checkInAdmin(checkIn):
+            "check_in_\(checkIn)"
         }
     }
 

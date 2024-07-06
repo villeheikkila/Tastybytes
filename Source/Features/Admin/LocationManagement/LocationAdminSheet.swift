@@ -56,13 +56,9 @@ struct LocationAdminSheet: View {
             CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)
 
             Section("admin.section.details") {
-                VStack {
-                    LabeledContent("labels.id", value: "\(location.id)")
-                        .textSelection(.enabled)
-                        .multilineTextAlignment(.trailing)
-                    LabeledContent("location.mapKitIdentifier.label", value: "\(location.mapKitIdentifier ?? "-")")
-                        .textSelection(.enabled)
-                }
+                LabeledIdView(id: location.id.uuidString)
+                LabeledContent("location.mapKitIdentifier.label", value: "\(location.mapKitIdentifier ?? "-")")
+                    .textSelection(.enabled)
             }
 
             Section {
@@ -79,13 +75,15 @@ struct LocationAdminSheet: View {
                 })))
             }
 
-            ConfirmedDeleteButtonView(
-                presenting: location,
-                action: deleteLocation,
-                description: "location.delete.confirmation.description",
-                label: "location.delete.confirmation.label \(location.name)",
-                isDisabled: false
-            )
+            Section {
+                ConfirmedDeleteButtonView(
+                    presenting: location,
+                    action: deleteLocation,
+                    description: "location.delete.confirmation.description",
+                    label: "location.delete.confirmation.label \(location.name)",
+                    isDisabled: false
+                )
+            }
         }
         .navigationTitle("location.admin.location.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)

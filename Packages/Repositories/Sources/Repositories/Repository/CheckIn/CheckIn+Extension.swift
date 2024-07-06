@@ -3,7 +3,7 @@ import Models
 
 extension CheckIn: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, rating, review, check_in_at, is_nostalgic"
+        let saved = "id, rating, review, check_in_at, is_nostalgic, created_at"
 
         switch queryType {
         case let .joined(withTableName):

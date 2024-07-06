@@ -272,6 +272,8 @@
 		5CEEA2FA2C3814BE0009B3F5 /* CreationInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */; };
 		5CEEA2FC2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FB2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift */; };
 		5CEEA2FE2C381AE40009B3F5 /* BrandEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FD2C381AE40009B3F5 /* BrandEntityView.swift */; };
+		5CEEA3002C3985370009B3F5 /* LabeledIdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */; };
+		5CEEA3032C39904B0009B3F5 /* CheckInAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -583,6 +585,8 @@
 		5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationInfoSection.swift; sourceTree = "<group>"; };
 		5CEEA2FB2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyEditSuggestionScreen.swift; sourceTree = "<group>"; };
 		5CEEA2FD2C381AE40009B3F5 /* BrandEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEntityView.swift; sourceTree = "<group>"; };
+		5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledIdView.swift; sourceTree = "<group>"; };
+		5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInAdminSheet.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1285,6 +1289,7 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */,
 				5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */,
 				5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */,
 				5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */,
@@ -1467,6 +1472,7 @@
 		5CC276322B31F07C001032CE /* CheckIn */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA3012C39903A0009B3F5 /* Admin */,
 				5CA065E22B6C2DA700588194 /* Helpers */,
 				5C9057762B2894BE00EC157B /* Sheet */,
 				5C9057B62B2894BE00EC157B /* CheckInScreen */,
@@ -1624,6 +1630,14 @@
 				5CD9B18B2BDFFC0800A86387 /* ProfileTopLocationsScreen.swift */,
 			);
 			path = Statistics;
+			sourceTree = "<group>";
+		};
+		5CEEA3012C39903A0009B3F5 /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */,
+			);
+			path = Admin;
 			sourceTree = "<group>";
 		};
 		C923F3602AD2E95B0041D01D /* Frameworks */ = {
@@ -1990,6 +2004,7 @@
 				5C511D792BA78DCE00F95290 /* PrivacyPolicyView.swift in Sources */,
 				5CD3C0D72B814B400049E563 /* CreateQRCodeView.swift in Sources */,
 				5CAADF102B5C634E00D956C1 /* BrandLogo.swift in Sources */,
+				5CEEA3002C3985370009B3F5 /* LabeledIdView.swift in Sources */,
 				5C974CCF2C04E9E600CFE98A /* LocationInputButton.swift in Sources */,
 				5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */,
 				5C2B25D22C33CC5D00CFDAFB /* LocationAdminSheet.swift in Sources */,
@@ -2020,6 +2035,7 @@
 				5C9058162B2894BE00EC157B /* PrivacySettingsPage.swift in Sources */,
 				5C82E8A42B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift in Sources */,
 				5C9057F22B2894BE00EC157B /* CompanySearchSheet.swift in Sources */,
+				5CEEA3032C39904B0009B3F5 /* CheckInAdminSheet.swift in Sources */,
 				5C9058382B2894BE00EC157B /* ActivityScreen.swift in Sources */,
 				5CD9B1862BDEA9C600A86387 /* DateRangePicker.swift in Sources */,
 				5C9058312B2894BE00EC157B /* CheckInImagesView.swift in Sources */,

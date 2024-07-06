@@ -189,18 +189,7 @@ struct CheckInScreen: View {
                 Divider()
                 ReportButton(entity: .checkIn(checkIn))
                 Divider()
-                if profileEnvironmentModel.hasRole(.moderator) {
-                    Menu {
-                        if profileEnvironmentModel.hasPermission(.canDeleteCheckInsAsModerator) {
-                            Button("labels.delete.asModerator", systemImage: "trash.fill", role: .destructive) {
-                                toDeleteCheckInAsModerator = checkIn
-                            }
-                        }
-                    } label: {
-                        Label("labels.moderation", systemImage: "gear")
-                            .labelStyle(.iconOnly)
-                    }
-                }
+                AdminRouterLink(open: .sheet(.checkInAdmin(checkIn: checkIn)))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
@@ -215,18 +204,6 @@ struct CheckInScreen: View {
                     "checkIn.delete.confirmation.label \(presenting.product.formatted(.fullName))",
                     role: .destructive,
                     action: { await deleteCheckIn(presenting) }
-                )
-            }
-            .confirmationDialog(
-                "checkIn.delete.asModerator.title",
-                isPresented: $toDeleteCheckInAsModerator.isNotNull(),
-                titleVisibility: .visible,
-                presenting: toDeleteCheckInAsModerator
-            ) { presenting in
-                ProgressButton(
-                    "checkIn.delete.asModerator.label \(presenting.profile.preferredName)",
-                    role: .destructive,
-                    action: { await deleteCheckInAsModerator(presenting) }
                 )
             }
         }
@@ -279,17 +256,6 @@ struct CheckInScreen: View {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func deleteCheckInAsModerator(_ checkIn: CheckIn) async {
-        switch await repository.checkIn.deleteAsModerator(checkIn: checkIn) {
-        case .success:
-            router.removeLast()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

@@ -17,6 +17,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let purchaseLocation: Location?
     public let images: [ImageEntity]
     public let isNostalgic: Bool
+    public let createdAt: Date
 
     public var isEmpty: Bool {
         [rating == nil, review.isNilOrEmpty, flavors.isEmpty, purchaseLocation == nil].allSatisfy { $0 }
@@ -37,7 +38,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         location: Location? = nil,
         purchaseLocation: Location? = nil,
         images: [ImageEntity],
-        isNostalgic: Bool = false
+        isNostalgic: Bool = false,
+        createdAt: Date
     ) {
         self.id = id
         self.rating = rating
@@ -54,6 +56,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         self.purchaseLocation = purchaseLocation
         self.images = images
         self.isNostalgic = isNostalgic
+        self.createdAt = createdAt
     }
 
     public func copyWith(
@@ -87,7 +90,8 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
             location: location ?? self.location,
             purchaseLocation: purchaseLocation ?? self.purchaseLocation,
             images: images ?? self.images,
-            isNostalgic: isNostalgic ?? self.isNostalgic
+            isNostalgic: isNostalgic ?? self.isNostalgic,
+            createdAt: createdAt
         )
     }
 
@@ -107,6 +111,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         case purchaseLocation = "purchase_location"
         case images = "check_in_images"
         case isNostalgic = "is_nostalgic"
+        case createdAt = "created_at"
     }
 }
 

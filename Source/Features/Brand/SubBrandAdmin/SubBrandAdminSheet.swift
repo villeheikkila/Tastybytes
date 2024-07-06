@@ -65,25 +65,22 @@ struct SubBrandAdminSheet: View {
             }
 
             Section("labels.info") {
-                LabeledContent("labels.id", value: "\(subBrand.id)")
-                    .textSelection(.enabled)
-                    .multilineTextAlignment(.trailing)
-                VerificationAdminToggleView(isVerified: subBrand.isVerified) { isVerified in
-                    await verifySubBrand(isVerified: isVerified)
-                }
+                LabeledIdView(id: subBrand.id.formatted())
+                VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
             }
 
             Section {
                 RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
             }
-
-            ConfirmedDeleteButtonView(
-                presenting: subBrand,
-                action: deleteSubBrand,
-                description: "subBrand.delete.disclaimer",
-                label: "subBrand.delete \(subBrand.name ?? "subBrand.default.label")",
-                isDisabled: subBrand.isVerified
-            )
+            Section {
+                ConfirmedDeleteButtonView(
+                    presenting: subBrand,
+                    action: deleteSubBrand,
+                    description: "subBrand.delete.disclaimer",
+                    label: "subBrand.delete \(subBrand.name ?? "subBrand.default.label")",
+                    isDisabled: subBrand.isVerified
+                )
+            }
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("subBrand.admin.navigationTitle")
