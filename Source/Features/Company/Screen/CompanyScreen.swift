@@ -36,8 +36,12 @@ struct CompanyScreen: View {
             await getCompanyData(withHaptics: true)
         }
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "company.screen.failedToLoad \(company.name)") {
-                await getCompanyData(withHaptics: true)
+            if state == .populated, company.brands.isEmpty {
+                ContentUnavailableView("company.screen.empty.title", systemImage: "tray")
+            } else {
+                ScreenStateOverlayView(state: state, errorDescription: "company.screen.failedToLoad \(company.name)") {
+                    await getCompanyData(withHaptics: true)
+                }
             }
         }
         .navigationTitle(company.name)
@@ -69,19 +73,21 @@ struct CompanyScreen: View {
         if let summary, summary.averageRating != nil {
             SummaryView(summary: summary)
         }
-        Section("brand.title") {
-            ForEach(sortedBrands) { brand in
-                RouterLink(
-                    open: .screen(.brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
-                    )) {
-                        CompanyBrandRow(brand: brand)
-                    }
-                    .alignmentGuide(.listRowSeparatorLeading) { _ in
-                        0
-                    }
+        if !sortedBrands.isEmpty {
+            Section("brand.title") {
+                ForEach(sortedBrands) { brand in
+                    RouterLink(
+                        open: .screen(.brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
+                                     )) {
+                                         CompanyBrandRow(brand: brand)
+                                     }
+                                     .alignmentGuide(.listRowSeparatorLeading) { _ in
+                                         0
+                                     }
+                }
             }
+            .headerProminence(.increased)
         }
-        .headerProminence(.increased)
     }
 
     private var navigationBarMenu: some View {

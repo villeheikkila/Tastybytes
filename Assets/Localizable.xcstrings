@@ -777,6 +777,9 @@
         }
       }
     },
+    "brand.screen.empty.title" : {
+
+    },
     "brand.screen.failedToLoad %@" : {
 
     },
@@ -806,28 +809,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brand"
-          }
-        }
-      }
-    },
-    "brand.unverify.confirmation.label %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify %@ brand"
-          }
-        }
-      }
-    },
-    "brand.unverify.confirmation.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify Brand"
           }
         }
       }
@@ -1561,7 +1542,14 @@
 
     },
     "comment.admin.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Comment"
+          }
+        }
+      }
     },
     "comment.deleteAsModerator.confirmation.description" : {
       "localizations" : {
@@ -1836,6 +1824,9 @@
         }
       }
     },
+    "company.screen.empty.title" : {
+
+    },
     "company.screen.failedToLoad %@" : {
 
     },
@@ -1898,28 +1889,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Companies"
-          }
-        }
-      }
-    },
-    "company.unverify.confirmationDialog.label %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify %@ company"
-          }
-        }
-      }
-    },
-    "company.unverify.confirmationDialog.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify Company"
           }
         }
       }
@@ -3124,28 +3093,6 @@
         }
       }
     },
-    "moderation.deleteAsModerator.label" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete as Moderator"
-          }
-        }
-      }
-    },
-    "moderation.section.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moderation"
-          }
-        }
-      }
-    },
     "nameTag.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -3883,28 +3830,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Products"
-          }
-        }
-      }
-    },
-    "product.unverify.confirmation.description" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to unverify the product"
-          }
-        }
-      }
-    },
-    "product.unverify.confirmation.label %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify %@ product"
           }
         }
       }
@@ -4995,28 +4920,6 @@
         }
       }
     },
-    "subBrand.unverify" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify Sub-brand"
-          }
-        }
-      }
-    },
-    "subBrand.unverify.disclaimer %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverify %@ sub-brand"
-          }
-        }
-      }
-    },
     "subBrand.updated.toast" : {
       "localizations" : {
         "en" : {
@@ -5341,17 +5244,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verified"
-          }
-        }
-      }
-    },
-    "verification.waitingForVerification.label" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Waiting for verification"
           }
         }
       }

@@ -68,9 +68,13 @@ struct BrandScreen: View {
                 await getBrandData(withHaptics: true)
             }
             .overlay {
-                ScreenStateOverlayView(state: state, errorDescription: "brand.screen.failedToLoad \(brand.name)", errorAction: {
-                    await getBrandData(withHaptics: true)
-                })
+                if state == .populated, brand.subBrands.isEmpty {
+                    ContentUnavailableView("brand.screen.empty.title", systemImage: "tray")
+                } else {
+                    ScreenStateOverlayView(state: state, errorDescription: "brand.screen.failedToLoad \(brand.name)", errorAction: {
+                        await getBrandData(withHaptics: true)
+                    })
+                }
             }
             .initialTask {
                 await getBrandData(proxy: proxy)

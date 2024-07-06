@@ -238,7 +238,7 @@ enum Sheet: Identifiable, Equatable {
             "add_subcategory"
         case let .editSubcategory(subcategory, _):
             "edit_subcategory_\(subcategory.hashValue)"
-        case let .companyAdmin(company, _):
+        case let .companyAdmin(company, _, _):
             "edit_company_\(company.hashValue)"
         case .companyEditSuggestion:
             "company_edit_suggestion"

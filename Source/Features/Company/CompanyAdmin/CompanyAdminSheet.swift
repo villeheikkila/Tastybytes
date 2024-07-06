@@ -140,6 +140,7 @@ struct CompanyAdminSheet: View {
         switch await repository.company.delete(id: company.id) {
         case .success:
             onDelete()
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
