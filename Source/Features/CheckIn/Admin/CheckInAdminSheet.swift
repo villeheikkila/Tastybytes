@@ -5,10 +5,12 @@ import SwiftUI
 
 struct CheckInAdminSheet: View {
     private let logger = Logger(category: "CheckInAdminSheet")
+    @Environment(\.dismiss) private var dismiss
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
 
     let checkIn: CheckIn
+    let onDelete: () -> Void
 
     var body: some View {
         Form {
@@ -52,6 +54,8 @@ struct CheckInAdminSheet: View {
         switch await repository.checkIn.deleteAsModerator(checkIn: checkIn) {
         case .success:
             router.removeLast()
+            onDelete()
+            dismiss()
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

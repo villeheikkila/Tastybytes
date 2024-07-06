@@ -274,6 +274,7 @@
 		5CEEA2FE2C381AE40009B3F5 /* BrandEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FD2C381AE40009B3F5 /* BrandEntityView.swift */; };
 		5CEEA3002C3985370009B3F5 /* LabeledIdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */; };
 		5CEEA3032C39904B0009B3F5 /* CheckInAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */; };
+		5CEEA3052C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3042C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -587,6 +588,7 @@
 		5CEEA2FD2C381AE40009B3F5 /* BrandEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEntityView.swift; sourceTree = "<group>"; };
 		5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledIdView.swift; sourceTree = "<group>"; };
 		5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInAdminSheet.swift; sourceTree = "<group>"; };
+		5CEEA3042C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentAdminSheet.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1636,6 +1638,7 @@
 			isa = PBXGroup;
 			children = (
 				5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */,
+				5CEEA3042C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -2005,6 +2008,7 @@
 				5CD3C0D72B814B400049E563 /* CreateQRCodeView.swift in Sources */,
 				5CAADF102B5C634E00D956C1 /* BrandLogo.swift in Sources */,
 				5CEEA3002C3985370009B3F5 /* LabeledIdView.swift in Sources */,
+				5CEEA3052C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift in Sources */,
 				5C974CCF2C04E9E600CFE98A /* LocationInputButton.swift in Sources */,
 				5C9058622B2894BE00EC157B /* AuthStateObserver.swift in Sources */,
 				5C2B25D22C33CC5D00CFDAFB /* LocationAdminSheet.swift in Sources */,

@@ -20,18 +20,6 @@ struct CheckInCommentRow: View {
 
     var body: some View {
         CheckInCommentEntityView(comment: comment)
-            .confirmationDialog(
-                "comment.deleteAsModerator.confirmation.description",
-                isPresented: $showDeleteAsModeratorConfirmationDialog,
-                titleVisibility: .visible,
-                presenting: comment
-            ) { presenting in
-                ProgressButton(
-                    "comment.deleteAsModerator.confirmation.label \(presenting.profile.preferredName)",
-                    role: .destructive,
-                    action: { await deleteCommentAsModerator(presenting) }
-                )
-            }
             .translationPresentation(isPresented: $showTranslator, text: comment.content)
             .contextMenu {
                 if comment.profile == profileEnvironmentModel.profile {
@@ -46,18 +34,11 @@ struct CheckInCommentRow: View {
                     showTranslator = true
                 }
                 Divider()
-                if profileEnvironmentModel.hasRole(.moderator) {
-                    Menu {
-                        if profileEnvironmentModel.hasPermission(.canDeleteComments) {
-                            Button("moderation.deleteAsModerator.label", systemImage: "trash.fill", role: .destructive) {
-                                showDeleteAsModeratorConfirmationDialog = true
-                            }
-                        }
-                    } label: {
-                        Label("moderation.section.title", systemImage: "gear")
-                            .labelStyle(.iconOnly)
+                AdminRouterLink(open: .sheet(.checkInCommentAdmin(checkIn: checkIn, checkInComment: comment, onDelete: { comment in
+                    withAnimation {
+                        checkInComments.remove(object: comment)
                     }
-                }
+                })))
             }
     }
 
@@ -70,18 +51,6 @@ struct CheckInCommentRow: View {
         case let .failure(error):
             guard !error.isCancelled else { return }
             logger.error("Failed to delete comment '\(comment.id)'. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    func deleteCommentAsModerator(_ comment: CheckInComment) async {
-        switch await repository.checkInComment.deleteAsModerator(comment: comment) {
-        case .success:
-            withAnimation {
-                checkInComments.remove(object: comment)
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            logger.error("Failed to delete comment as moderator'\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

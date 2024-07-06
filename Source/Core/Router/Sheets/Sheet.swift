@@ -59,7 +59,8 @@ enum Sheet: Identifiable, Equatable {
     case webView(link: WebViewLink)
     case profileAdmin(profile: Profile)
     case productAdmin(product: Binding<Product.Joined>, onDelete: () -> Void)
-    case checkInAdmin(checkIn: CheckIn)
+    case checkInAdmin(checkIn: CheckIn, onDelete: () -> Void)
+    case checkInCommentAdmin(checkIn: CheckIn, checkInComment: CheckInComment, onDelete: (_ comment: CheckInComment) -> Void)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -145,8 +146,10 @@ enum Sheet: Identifiable, Equatable {
             ProfileAdminSheet(profile: profile)
         case let .productAdmin(product, onDelete):
             ProductAdminSheet(product: product, onDelete: onDelete)
-        case let .checkInAdmin(checkIn):
-            CheckInAdminSheet(checkIn: checkIn)
+        case let .checkInAdmin(checkIn, onDelete):
+            CheckInAdminSheet(checkIn: checkIn, onDelete: onDelete)
+        case let .checkInCommentAdmin(checkIn, checkInComment, onDelete):
+            CheckInCommentAdminSheet(checkIn: checkIn, comment: checkInComment, onDelete: onDelete)
         }
     }
 
@@ -159,7 +162,7 @@ enum Sheet: Identifiable, Equatable {
         case .checkInDatePicker:
             [.height(500)]
         case .editComment:
-            [.height(120)]
+            [.height(200)]
         default:
             [.large]
         }
@@ -264,8 +267,10 @@ enum Sheet: Identifiable, Equatable {
             "profile_admin_sheet_\(profile)"
         case let .productAdmin(product, _):
             "product_admin_\(product)"
-        case let .checkInAdmin(checkIn):
-            "check_in_\(checkIn)"
+        case let .checkInAdmin(checkIn, _):
+            "check_in_admin_\(checkIn)"
+        case let .checkInCommentAdmin(checkIn, checkInComment, _):
+            "check_in_comment_admin_\(checkIn)_\(checkInComment)"
         }
     }
 

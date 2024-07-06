@@ -3048,6 +3048,7 @@
       }
     },
     "moderation.deleteAsModerator.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3058,6 +3059,7 @@
       }
     },
     "moderation.section.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

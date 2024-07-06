@@ -74,7 +74,7 @@ struct CheckInScreen: View {
         ForEach(checkInComments) { comment in
             CheckInCommentRow(checkIn: checkIn, comment: comment, checkInComments: $checkInComments)
                 .listRowSeparator(.hidden)
-                .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+                .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
                 .id(comment.id)
         }
     }
@@ -189,7 +189,9 @@ struct CheckInScreen: View {
                 Divider()
                 ReportButton(entity: .checkIn(checkIn))
                 Divider()
-                AdminRouterLink(open: .sheet(.checkInAdmin(checkIn: checkIn)))
+                AdminRouterLink(open: .sheet(.checkInAdmin(checkIn: checkIn, onDelete: {
+                    router.removeLast()
+                })))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)
