@@ -18,12 +18,14 @@ struct CompanyAdminSheet: View {
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
 
-    let onSuccess: () async -> Void
+    let onUpdate: () async -> Void
+    let onDelete: () -> Void
 
-    init(company: Company, onSuccess: @escaping () async -> Void) {
+    init(company: Company, onUpdate: @escaping () async -> Void, onDelete: @escaping () -> Void) {
         _company = State(initialValue: .init(company: company))
         _newCompanyName = State(initialValue: company.name)
-        self.onSuccess = onSuccess
+        self.onUpdate = onUpdate
+        self.onDelete = onDelete
     }
 
     var body: some View {
@@ -126,7 +128,7 @@ struct CompanyAdminSheet: View {
                 self.company = .init(company: .init(company: company))
             }
             router.open(.toast(.success()))
-            await onSuccess()
+            await onUpdate()
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -137,7 +139,7 @@ struct CompanyAdminSheet: View {
     func deleteCompany(_ company: Company.Management) async {
         switch await repository.company.delete(id: company.id) {
         case .success:
-            router.open(.toast(.success()))
+            onDelete()
         case let .failure(error):
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

@@ -106,9 +106,11 @@ struct CompanyScreen: View {
             )
             ReportButton(entity: .company(company.saved))
             Divider()
-            AdminRouterLink(open: .sheet(.companyAdmin(company: company.saved, onSuccess: {
+            AdminRouterLink(open: .sheet(.companyAdmin(company: company.saved, onUpdate: {
                 await getCompanyData(withHaptics: true)
                 router.open(.toast(.success("company.update.success.toast")))
+            }, onDelete: {
+                router.removeLast()
             })))
         } label: {
             Label("labels.menu", systemImage: "ellipsis")

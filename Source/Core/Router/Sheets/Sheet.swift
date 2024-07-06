@@ -55,7 +55,7 @@ enum Sheet: Identifiable, Equatable {
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
     case webView(link: WebViewLink)
-    case companyAdmin(company: Company, onSuccess: () async -> Void)
+    case companyAdmin(company: Company, onUpdate: () async -> Void, onDelete: () -> Void)
     case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case profileAdmin(profile: Profile)
     case productAdmin(product: Binding<Product.Joined>, onDelete: () -> Void)
@@ -114,8 +114,8 @@ enum Sheet: Identifiable, Equatable {
             AddSubcategorySheet(category: category, onSubmit: onSubmit)
         case let .addCategory(onSubmit: onSubmit):
             AddCategorySheet(onSubmit: onSubmit)
-        case let .companyAdmin(company: company, onSuccess: onSuccess):
-            CompanyAdminSheet(company: company, onSuccess: onSuccess)
+        case let .companyAdmin(company, onUpdate, onDelete):
+            CompanyAdminSheet(company: company, onUpdate: onUpdate, onDelete: onDelete)
         case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
             CompanyEditSuggestionSheet(company: company, onSuccess: onSuccess)
         case let .userSheet(mode: mode, onSubmit: onSubmit):
