@@ -1493,19 +1493,54 @@
       }
     },
     "checkInImage.admin.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Image"
+          }
+        }
+      }
     },
     "checkInImage.admin.section.checkIn" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image"
+          }
+        }
+      }
     },
     "checkInImage.deleteAsModerator.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the image? It will be permanently lost"
+          }
+        }
+      }
     },
     "checkInImage.deleteAsModerator.confirmation.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "checkInImage.deleteConfirmation.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "checkInList.error.failedToLoad.alert" : {
 
@@ -2576,17 +2611,6 @@
         }
       }
     },
-    "labels.delete.asModerator" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete as a moderator"
-          }
-        }
-      }
-    },
     "labels.done" : {
       "localizations" : {
         "en" : {
@@ -2603,6 +2627,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Edit"
+          }
+        }
+      }
+    },
+    "labels.height" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Height"
           }
         }
       }
@@ -2637,23 +2671,22 @@
         }
       }
     },
+    "labels.megaBytes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MB"
+          }
+        }
+      }
+    },
     "labels.menu" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Menu"
-          }
-        }
-      }
-    },
-    "labels.moderation" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moderation"
           }
         }
       }
@@ -2798,12 +2831,32 @@
         }
       }
     },
+    "labels.url" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
+          }
+        }
+      }
+    },
     "labels.verify" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verify"
+          }
+        }
+      }
+    },
+    "labels.width" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Width"
           }
         }
       }

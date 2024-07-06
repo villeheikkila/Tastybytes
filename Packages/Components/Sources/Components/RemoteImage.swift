@@ -1,5 +1,6 @@
 import Models
 internal import NukeUI
+internal import Nuke
 import SwiftUI
 
 public struct RemoteImage<Content: View, LoadingContent: View>: View {

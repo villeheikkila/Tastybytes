@@ -16,11 +16,13 @@ struct CheckInImageSheet: View {
     @State private var currentImage: ImageEntity
     @State private var showDeleteConfirmationFor: ImageEntity?
     let checkIn: CheckIn
+    @State private var images: [ImageEntity]
 
     let onDeleteImage: OnDeleteImageCallback?
 
     init(checkIn: CheckIn, onDeleteImage: OnDeleteImageCallback?) {
         self.checkIn = checkIn
+        _images = State(initialValue: checkIn.images)
         currentImage = if let firstImage = checkIn.images.first {
             firstImage
         } else {
@@ -31,7 +33,7 @@ struct CheckInImageSheet: View {
 
     var body: some View {
         TabView(selection: $currentImage) {
-            ForEach(checkIn.images) { image in
+            ForEach(images) { image in
                 VStack(alignment: .center) {
                     if let imageUrl = image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                         ZoomableRemoteImage(imageUrl: imageUrl, blurHash: image.blurHash)
@@ -65,6 +67,9 @@ struct CheckInImageSheet: View {
                 ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
                 Divider()
                 AdminRouterLink(open: .sheet(.checkInImageAdmin(checkIn: checkIn, imageEntity: currentImage, onDelete: { imageEntity in
+                    withAnimation {
+                        images = images.removing(imageEntity)
+                    }
                     await onDeleteImage?(imageEntity)
                 })))
             } label: {
@@ -90,6 +95,9 @@ struct CheckInImageSheet: View {
     func deleteImage(_ imageEntity: ImageEntity) async {
         switch await repository.imageEntity.delete(from: .checkInImages, entity: imageEntity) {
         case .success:
+            withAnimation {
+                images = images.removing(imageEntity)
+            }
             await onDeleteImage?(imageEntity)
             dismiss()
         case let .failure(error):

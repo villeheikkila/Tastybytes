@@ -1,3 +1,4 @@
+import EnvironmentModels
 import Models
 import OSLog
 import Repositories
@@ -6,12 +7,18 @@ import SwiftUI
 struct CheckInImageAdminSheet: View {
     private let logger = Logger(category: "CheckInImageAdminSheet")
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
+    @State private var imageDetails: ImageDetails?
 
     let checkIn: CheckIn
     let imageEntity: ImageEntity
     let onDelete: (_ comment: ImageEntity) async -> Void
+
+    private var imageUrl: URL? {
+        imageEntity.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
+    }
 
     var body: some View {
         Form {
@@ -23,6 +30,9 @@ struct CheckInImageAdminSheet: View {
         .toolbar {
             toolbarContent
         }
+        .initialTask {
+            await loadImageAndDetails()
+        }
     }
 
     @ViewBuilder private var content: some View {
@@ -32,9 +42,19 @@ struct CheckInImageAdminSheet: View {
         CreationInfoSection(createdBy: checkIn.profile, createdAt: imageEntity.createdAt)
         Section("admin.section.details") {
             LabeledIdView(id: imageEntity.id.formatted())
+            if let imageDetails {
+                LabeledContent("labels.width", value: imageDetails.size.width.formatted())
+                LabeledContent("labels.height", value: imageDetails.size.height.formatted())
+                LabeledContent("labels.megaBytes", value: imageDetails.fileSize.formatted(.byteCount(style: .file)))
+            }
         }
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.checkInImage(imageEntity.id))))
+            if let imageUrl {
+                Link(destination: imageUrl) {
+                    Label("labels.url", systemImage: "arrow.up.forward")
+                }
+            }
         }
         Section {
             ConfirmedDeleteButtonView(presenting: imageEntity, action: deleteImage, description: "checkInImage.deleteAsModerator.confirmation.description", label: "checkInImage.deleteAsModerator.confirmation.label", isDisabled: false)
@@ -43,6 +63,26 @@ struct CheckInImageAdminSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
+    }
+
+    private func loadImageAndDetails() async {
+        guard let imageUrl else { return }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: imageUrl)
+
+            guard let image = UIImage(data: data) else {
+                throw NSError(domain: "ImageLoading", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to create image from data"])
+            }
+
+            let size = image.size
+            let resolution = CGSize(width: image.scale * size.width, height: image.scale * size.height)
+            let fileSize = data.count
+
+            imageDetails = ImageDetails(size: size, resolution: resolution, fileSize: fileSize)
+
+        } catch {
+            logger.error("Failed to get image metadata'. Error: \(error) (\(#file):\(#line))")
+        }
     }
 
     func deleteImage(_ imageEntity: ImageEntity) async {
@@ -54,5 +94,11 @@ struct CheckInImageAdminSheet: View {
             guard !error.isCancelled else { return }
             logger.error("Failed to delete image'. Error: \(error) (\(#file):\(#line))")
         }
+    }
+
+    struct ImageDetails {
+        let size: CGSize
+        let resolution: CGSize
+        let fileSize: Int
     }
 }
