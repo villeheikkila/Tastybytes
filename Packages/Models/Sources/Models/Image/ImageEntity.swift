@@ -5,12 +5,14 @@ public struct ImageEntity: Codable, Hashable, Sendable, Identifiable {
     public let file: String
     public let bucket: String
     public let blurHash: BlurHash?
+    public let createdAt: Date
 
-    public init(id: Int, file: String, bucket: String, blurHash: BlurHash?) {
+    public init(id: Int, file: String, bucket: String, blurHash: BlurHash?, createdAt: Date) {
         self.id = id
         self.file = file
         self.bucket = bucket
         self.blurHash = blurHash
+        self.createdAt = createdAt
     }
 
     enum CodingKeys: String, CodingKey {
@@ -18,6 +20,7 @@ public struct ImageEntity: Codable, Hashable, Sendable, Identifiable {
         case file
         case bucket
         case blurHash = "blur_hash"
+        case createdAt = "created_at"
     }
 
     public func getLogoUrl(baseUrl: URL) -> URL? {

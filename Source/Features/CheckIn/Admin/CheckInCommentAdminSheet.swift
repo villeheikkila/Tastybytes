@@ -19,7 +19,7 @@ struct CheckInCommentAdminSheet: View {
             content
         }
         .scrollContentBackground(.hidden)
-        .navigationTitle("checkIn.admin.navigationTitle")
+        .navigationTitle("comment.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent

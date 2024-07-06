@@ -24,7 +24,7 @@ struct CheckInImageSheet: View {
         currentImage = if let firstImage = checkIn.images.first {
             firstImage
         } else {
-            .init(id: 0, file: "", bucket: "", blurHash: nil)
+            .init(id: 0, file: "", bucket: "", blurHash: nil, createdAt: Date.now)
         }
         self.onDeleteImage = onDeleteImage
     }
@@ -63,6 +63,10 @@ struct CheckInImageSheet: View {
                 }
                 Divider()
                 ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
+                Divider()
+                AdminRouterLink(open: .sheet(.checkInImageAdmin(checkIn: checkIn, imageEntity: currentImage, onDelete: { imageEntity in
+                    await onDeleteImage?(imageEntity)
+                })))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)

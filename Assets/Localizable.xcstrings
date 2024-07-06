@@ -1492,6 +1492,18 @@
         }
       }
     },
+    "checkInImage.admin.navigationTitle" : {
+
+    },
+    "checkInImage.admin.section.checkIn" : {
+
+    },
+    "checkInImage.deleteAsModerator.confirmation.description" : {
+
+    },
+    "checkInImage.deleteAsModerator.confirmation.label" : {
+
+    },
     "checkInImage.deleteConfirmation.title" : {
 
     },
@@ -1502,6 +1514,9 @@
 
     },
     "checkInsByDayChart.axisLabel.date" : {
+
+    },
+    "comment.admin.navigationTitle" : {
 
     },
     "comment.deleteAsModerator.confirmation.description" : {

@@ -44,7 +44,6 @@ enum Sheet: Identifiable, Equatable {
     case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) async -> Void)
     case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case addCategory(onSubmit: (_ newCategoryName: String) async -> Void)
-    case companyAdmin(company: Company, onSuccess: () async -> Void)
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
     case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
@@ -55,12 +54,14 @@ enum Sheet: Identifiable, Equatable {
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
-    case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case webView(link: WebViewLink)
+    case companyAdmin(company: Company, onSuccess: () async -> Void)
+    case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case profileAdmin(profile: Profile)
     case productAdmin(product: Binding<Product.Joined>, onDelete: () -> Void)
     case checkInAdmin(checkIn: CheckIn, onDelete: () -> Void)
     case checkInCommentAdmin(checkIn: CheckIn, checkInComment: CheckInComment, onDelete: (_ comment: CheckInComment) -> Void)
+    case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: (_ comment: ImageEntity) async -> Void)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -150,6 +151,8 @@ enum Sheet: Identifiable, Equatable {
             CheckInAdminSheet(checkIn: checkIn, onDelete: onDelete)
         case let .checkInCommentAdmin(checkIn, checkInComment, onDelete):
             CheckInCommentAdminSheet(checkIn: checkIn, comment: checkInComment, onDelete: onDelete)
+        case let .checkInImageAdmin(checkIn, imageEntity, onDelete):
+            CheckInImageAdminSheet(checkIn: checkIn, imageEntity: imageEntity, onDelete: onDelete)
         }
     }
 
@@ -271,6 +274,8 @@ enum Sheet: Identifiable, Equatable {
             "check_in_admin_\(checkIn)"
         case let .checkInCommentAdmin(checkIn, checkInComment, _):
             "check_in_comment_admin_\(checkIn)_\(checkInComment)"
+        case let .checkInImageAdmin(checkIn, imageEntity, _):
+            "check_in_image_admin_\(checkIn)_\(imageEntity)"
         }
     }
 

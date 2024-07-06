@@ -2,7 +2,7 @@ import Models
 
 extension ImageEntity: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, file, bucket, blur_hash"
+        let saved = "id, file, bucket, blur_hash, created_at"
 
         switch queryType {
         case let .saved(tableName):

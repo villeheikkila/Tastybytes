@@ -275,6 +275,8 @@
 		5CEEA3002C3985370009B3F5 /* LabeledIdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */; };
 		5CEEA3032C39904B0009B3F5 /* CheckInAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */; };
 		5CEEA3052C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3042C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift */; };
+		5CEEA3072C39B4380009B3F5 /* CheckInImageAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3062C39B4380009B3F5 /* CheckInImageAdminSheet.swift */; };
+		5CEEA3092C39BB6B0009B3F5 /* CheckInImageEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3082C39BB6B0009B3F5 /* CheckInImageEntityView.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -589,6 +591,8 @@
 		5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledIdView.swift; sourceTree = "<group>"; };
 		5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInAdminSheet.swift; sourceTree = "<group>"; };
 		5CEEA3042C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentAdminSheet.swift; sourceTree = "<group>"; };
+		5CEEA3062C39B4380009B3F5 /* CheckInImageAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageAdminSheet.swift; sourceTree = "<group>"; };
+		5CEEA3082C39BB6B0009B3F5 /* CheckInImageEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageEntityView.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1474,6 +1478,7 @@
 		5CC276322B31F07C001032CE /* CheckIn */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA3082C39BB6B0009B3F5 /* CheckInImageEntityView.swift */,
 				5CEEA3012C39903A0009B3F5 /* Admin */,
 				5CA065E22B6C2DA700588194 /* Helpers */,
 				5C9057762B2894BE00EC157B /* Sheet */,
@@ -1639,6 +1644,7 @@
 			children = (
 				5CEEA3022C39904B0009B3F5 /* CheckInAdminSheet.swift */,
 				5CEEA3042C39AA7E0009B3F5 /* CheckInCommentAdminSheet.swift */,
+				5CEEA3062C39B4380009B3F5 /* CheckInImageAdminSheet.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -1875,6 +1881,7 @@
 				5C187E4D2B8B33FD0007AD17 /* CheckInListLoader.swift in Sources */,
 				5C02A73B2B4F28B700B497FA /* AppErrorStateView.swift in Sources */,
 				5C82E8A62B2F7FE000F2B369 /* CheckInImagesSection.swift in Sources */,
+				5CEEA3092C39BB6B0009B3F5 /* CheckInImageEntityView.swift in Sources */,
 				5CEEA2F62C3804510009B3F5 /* ConfirmedDeleteButtonView.swift in Sources */,
 				5C90583A2B2894BE00EC157B /* ProductFeedScreen.swift in Sources */,
 				5C2B25D62C3467AD00CFDAFB /* WebViewSheet.swift in Sources */,
@@ -1928,6 +1935,7 @@
 				5C9058222B2894BE00EC157B /* MessageNotificationView.swift in Sources */,
 				5C9058342B2894BE00EC157B /* ProfileWishlistScreen.swift in Sources */,
 				5C9057F72B2894BE00EC157B /* BarcodeScannerSheet.swift in Sources */,
+				5CEEA3072C39B4380009B3F5 /* CheckInImageAdminSheet.swift in Sources */,
 				5C90581C2B2894BE00EC157B /* AppearanceSettingsScreen.swift in Sources */,
 				5C90582E2B2894BE00EC157B /* TimePeriodStatisticView.swift in Sources */,
 				5CD1F0B42B9E4FD100C76F0C /* ToastView.swift in Sources */,
