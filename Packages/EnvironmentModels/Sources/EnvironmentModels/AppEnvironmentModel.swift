@@ -324,6 +324,16 @@ public final class AppEnvironmentModel {
         }
     }
 
+    public func editSubcategory(_ updateRequest: Subcategory.UpdateRequest) async {
+        switch await repository.subcategory.update(updateRequest: updateRequest) {
+        case .success:
+            await loadCategories()
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            alertError = .init()
+        }
+    }
+
     public func deleteSubcategory(_ deleteSubcategory: SubcategoryProtocol) async {
         switch await repository.subcategory.delete(id: deleteSubcategory.id) {
         case .success:
@@ -368,6 +378,17 @@ public final class AppEnvironmentModel {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func deleteCategory(_ category: Models.Category.JoinedSubcategoriesServingStyles, onDelete: () -> Void) async {
+        switch await repository.category.deleteCategory(id: category.id) {
+        case .success:
+            categories = categories.removing(category)
+            onDelete()
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            logger.error("Failed to delete category. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

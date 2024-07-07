@@ -15,15 +15,21 @@ public extension CategoryProtocol {
 }
 
 public struct Category: Identifiable, Codable, Hashable, Sendable, CategoryProtocol {
+    public let id: Int
+    public let name: String
+    public let icon: String?
+
     public init(id: Int, name: String, icon: String?) {
         self.id = id
         self.name = name
         self.icon = icon
     }
 
-    public let id: Int
-    public let name: String
-    public let icon: String?
+    public init(category: JoinedSubcategoriesServingStyles) {
+        id = category.id
+        name = category.name
+        icon = category.icon
+    }
 }
 
 public extension Category {

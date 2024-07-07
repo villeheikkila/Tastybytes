@@ -874,6 +874,56 @@
         }
       }
     },
+    "category.admin.delete.confirmationDialog.label %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@ category"
+          }
+        }
+      }
+    },
+    "category.admin.delete.confirmationDialog.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete a category and all its products? The data will be permanently lost"
+          }
+        }
+      }
+    },
+    "category.admin.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category Management"
+          }
+        }
+      }
+    },
+    "category.admin.section.category" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
+    },
+    "category.admin.section.subcategory" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subcategories"
+          }
+        }
+      }
+    },
     "category.name.placeholder" : {
       "localizations" : {
         "en" : {
@@ -4972,7 +5022,14 @@
       }
     },
     "subcategory.add.openSheet.label" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "subcategory.addTo.category.navigationTitle %@" : {
       "localizations" : {
@@ -4994,6 +5051,36 @@
         }
       }
     },
+    "subcategory.admin.category" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
+    },
+    "subcategory.admin.name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "subcategory.admin.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Subcategory"
+          }
+        }
+      }
+    },
     "subcategory.delete.confirmation.description" : {
       "localizations" : {
         "en" : {
@@ -5010,16 +5097,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete %@"
-          }
-        }
-      }
-    },
-    "subcategory.edit.navigationTitle %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit %@"
           }
         }
       }

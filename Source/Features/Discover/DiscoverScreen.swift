@@ -163,7 +163,7 @@ struct DiscoverScreen: View {
     @ViewBuilder
     var contentUnavailableView: some View {
         switch searchResultKey {
-        case let .barcode(barcode):
+        case .barcode:
             ContentUnavailableView {
                 Label("discover.barcode.notFound.title", systemImage: "bubbles.and.sparkles")
             } actions: {

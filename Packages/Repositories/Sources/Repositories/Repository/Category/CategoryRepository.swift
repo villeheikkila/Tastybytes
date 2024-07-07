@@ -5,5 +5,6 @@ public protocol CategoryRepository: Sendable {
         -> Result<[Models.Category.JoinedSubcategoriesServingStyles], Error>
     func insert(newCategory: Category.NewRequest) async -> Result<Models.Category.JoinedSubcategoriesServingStyles, Error>
     func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error>
+    func deleteCategory(id: Int) async -> Result<Void, Error>
     func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error>
 }

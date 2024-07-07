@@ -81,7 +81,7 @@ struct CurrentUserFriendsScreen: View {
 
             RouterLink(
                 "friends.add.label", systemImage: "plus",
-                open: .sheet(.userSheet(
+                open: .sheet(.user(
                     mode: .add,
                     onSubmit: {
                         router.open(.toast(.success("friends.add.success")))

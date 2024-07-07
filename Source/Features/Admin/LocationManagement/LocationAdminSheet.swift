@@ -80,7 +80,7 @@ struct LocationAdminSheet: View {
                     await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
                 }
             })))
-            RouterLink("location.admin.merge.label", systemImage: "arrow.triangle.merge", open: .sheet(.mergeLocationSheet(location: location, onMerge: { newLocation in
+            RouterLink("location.admin.merge.label", systemImage: "arrow.triangle.merge", open: .sheet(.mergeLocation(location: location, onMerge: { newLocation in
                 await onDelete(location)
                 withAnimation {
                     location = newLocation

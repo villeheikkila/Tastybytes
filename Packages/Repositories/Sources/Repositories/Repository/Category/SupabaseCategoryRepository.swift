@@ -50,6 +50,20 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
+    func deleteCategory(id: Int) async -> Result<Void, Error> {
+        do {
+            try await client
+                .from(.categories)
+                .delete()
+                .eq("id", value: id)
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error> {
         do {
             try await client

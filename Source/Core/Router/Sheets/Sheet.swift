@@ -26,14 +26,14 @@ enum Sheet: Identifiable, Equatable {
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>, onSelect: (_ servingStyle: ServingStyle) async -> Void)
     case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
-    case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) async -> Void)
-    case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
-    case addCategory(onSubmit: (_ newCategoryName: String) async -> Void)
+    case subcategoryAdmin(subcategory: Subcategory.JoinedCategory, onSubmit: (_ subcategoryName: String) async -> Void)
+    case subcategoryCreation(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
+    case categoryCreation(onSubmit: (_ newCategoryName: String) async -> Void)
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
-    case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
+    case user(mode: UserSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
-    case categoryPickerSheet(category: Binding<Int?>)
-    case mergeLocationSheet(location: Location, onMerge: ((_ newLocation: Location) async -> Void)? = nil)
+    case categoryPicker(category: Binding<Models.Category.JoinedSubcategoriesServingStyles?>)
+    case mergeLocation(location: Location, onMerge: ((_ newLocation: Location) async -> Void)? = nil)
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
@@ -47,6 +47,7 @@ enum Sheet: Identifiable, Equatable {
     case checkInAdmin(checkIn: CheckIn, onDelete: () -> Void)
     case checkInCommentAdmin(checkIn: CheckIn, checkInComment: CheckInComment, onDelete: (_ comment: CheckInComment) -> Void)
     case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: (_ comment: ImageEntity) async -> Void)
+    case categoryAdmin(category: Models.Category.JoinedSubcategoriesServingStyles)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -92,26 +93,26 @@ enum Sheet: Identifiable, Equatable {
         case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):
             ServingStyleManagementSheet(pickedServingStyles: pickedServingStyles, onSelect: onSelect)
         case let .categoryServingStyle(category: category):
-            CategoryServingStyleSheet(category: category)
-        case let .editSubcategory(subcategory: subcategory, onSubmit: onSubmit):
-            EditSubcategorySheet(subcategory: subcategory, onSubmit: onSubmit)
-        case let .addSubcategory(category: category, onSubmit: onSubmit):
-            AddSubcategorySheet(category: category, onSubmit: onSubmit)
-        case let .addCategory(onSubmit: onSubmit):
-            AddCategorySheet(onSubmit: onSubmit)
+            CategoryServingStyleAdminSheet(category: category)
+        case let .subcategoryAdmin(subcategory: subcategory, onSubmit: onSubmit):
+            SubcategoryAdminSheet(subcategory: subcategory, onSubmit: onSubmit)
+        case let .subcategoryCreation(category: category, onSubmit: onSubmit):
+            SubcategoryCreationSheet(category: category, onSubmit: onSubmit)
+        case let .categoryCreation(onSubmit: onSubmit):
+            CategoryCreationSheet(onSubmit: onSubmit)
         case let .companyAdmin(company, onUpdate, onDelete):
             CompanyAdminSheet(company: company, onUpdate: onUpdate, onDelete: onDelete)
         case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
             CompanyEditSuggestionSheet(company: company, onSuccess: onSuccess)
-        case let .userSheet(mode: mode, onSubmit: onSubmit):
+        case let .user(mode: mode, onSubmit: onSubmit):
             UserSheet(mode: mode, onSubmit: onSubmit)
         case let .checkInDatePicker(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic):
             CheckInDatePickerSheet(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic)
-        case let .categoryPickerSheet(category: category):
+        case let .categoryPicker(category: category):
             CategoryPickerSheet(category: category)
         case .subscribe:
             SubscriptionSheet()
-        case let .mergeLocationSheet(location, onMerge):
+        case let .mergeLocation(location, onMerge):
             MergeLocationSheet(location: location, onMerge: onMerge)
         case let .sendEmail(email, callback):
             SendEmailView(email: email, callback: callback)
@@ -138,12 +139,14 @@ enum Sheet: Identifiable, Equatable {
             CheckInCommentAdminSheet(checkIn: checkIn, comment: checkInComment, onDelete: onDelete)
         case let .checkInImageAdmin(checkIn, imageEntity, onDelete):
             CheckInImageAdminSheet(checkIn: checkIn, imageEntity: imageEntity, onDelete: onDelete)
+        case let .categoryAdmin(category):
+            CategoryAdminSheet(category: category)
         }
     }
 
     var detents: Set<PresentationDetent> {
         switch self {
-        case .barcodeScanner, .productFilter, .newFlavor, .editSubcategory, .addCategory, .addSubcategory, .userSheet:
+        case .barcodeScanner, .productFilter, .newFlavor, .subcategoryAdmin, .categoryCreation, .subcategoryCreation, .user:
             [.medium]
         case .nameTag:
             [.height(320)]
@@ -217,25 +220,25 @@ enum Sheet: Identifiable, Equatable {
             "serving_style_management"
         case .categoryServingStyle:
             "category_serving_style"
-        case .addCategory:
+        case .categoryCreation:
             "add_category"
-        case .addSubcategory:
+        case .subcategoryCreation:
             "add_subcategory"
-        case let .editSubcategory(subcategory, _):
+        case let .subcategoryAdmin(subcategory, _):
             "edit_subcategory_\(subcategory.hashValue)"
         case let .companyAdmin(company, _, _):
             "edit_company_\(company.hashValue)"
         case .companyEditSuggestion:
             "company_edit_suggestion"
-        case .userSheet:
+        case .user:
             "user"
         case .checkInDatePicker:
             "check_in_date_picker"
-        case .categoryPickerSheet:
+        case .categoryPicker:
             "category_picker"
         case .subscribe:
             "support"
-        case let .mergeLocationSheet(location, _):
+        case let .mergeLocation(location, _):
             "location_management_\(location.hashValue)"
         case .sendEmail:
             "send_email"
@@ -261,6 +264,8 @@ enum Sheet: Identifiable, Equatable {
             "check_in_comment_admin_\(checkIn)_\(checkInComment)"
         case let .checkInImageAdmin(checkIn, imageEntity, _):
             "check_in_image_admin_\(checkIn)_\(imageEntity)"
+        case let .categoryAdmin(category):
+            "category_admin_\(category)"
         }
     }
 

@@ -6,8 +6,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct CategoryServingStyleSheet: View {
-    private let logger = Logger(category: "CategoryServingStyleSheet")
+struct CategoryServingStyleAdminSheet: View {
+    private let logger = Logger(category: "CategoryServingStyleAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -50,10 +50,7 @@ struct CategoryServingStyleSheet: View {
     }
 
     func addServingStyleToCategory(_ servingStyle: ServingStyle) async {
-        switch await repository.category.addServingStyle(
-            categoryId: category.id,
-            servingStyleId: servingStyle.id
-        ) {
+        switch await repository.category.addServingStyle(categoryId: category.id, servingStyleId: servingStyle.id) {
         case .success:
             withAnimation {
                 servingStyles.append(servingStyle)

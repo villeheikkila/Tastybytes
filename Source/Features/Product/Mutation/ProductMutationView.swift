@@ -22,7 +22,7 @@ struct ProductMutationView: View {
     @State private var state: ScreenState = .loading
     // Product details
     @State private var subcategories = [Subcategory]()
-    @State private var category: Int? {
+    @State private var category: Models.Category.JoinedSubcategoriesServingStyles? {
         didSet {
             subcategories = []
         }
@@ -60,10 +60,6 @@ struct ProductMutationView: View {
     @State private var barcode: Barcode?
 
     let mode: Mode
-
-    private var selectedCategory: Models.Category.JoinedSubcategoriesServingStyles? {
-        appEnvironmentModel.categories.first(where: { $0.id == category })
-    }
 
     private var isValid: Bool {
         category != nil && brandOwner != nil && brand != nil && name.isValidLength(.normal)
@@ -118,13 +114,13 @@ struct ProductMutationView: View {
     private var categorySection: some View {
         Section {
             RouterLink(
-                selectedCategory?.name ?? String(localized: "product.mutation.pickCategory.label"),
-                open: .sheet(.categoryPickerSheet(category: $category))
+                category?.name ?? String(localized: "product.mutation.pickCategory.label"),
+                open: .sheet(.categoryPicker(category: $category))
             )
 
             Button(action: {
-                if let selectedCategory {
-                    router.open(.sheet(.subcategory(subcategories: $subcategories, category: selectedCategory)))
+                if let category {
+                    router.open(.sheet(.subcategory(subcategories: $subcategories, category: category)))
                 }
             }, label: {
                 HStack {
@@ -232,13 +228,13 @@ struct ProductMutationView: View {
         defer { primaryActionTask = nil }
         switch mode {
         case let .editSuggestion(product):
-            guard let subBrand, let selectedCategory else { return }
+            guard let subBrand, let category else { return }
             let diffFromCurrent = Product.EditSuggestionRequest(
                 id: product.id,
                 name: name,
                 description: description,
                 subBrand: subBrand,
-                category: selectedCategory,
+                category: category,
                 isDiscontinued: isDiscontinued
             ).diff(from: product)
             guard let diffFromCurrent else {
@@ -266,7 +262,7 @@ struct ProductMutationView: View {
                 productId: product.id,
                 name: name,
                 description: description,
-                categoryId: category,
+                categoryId: category.id,
                 subBrandId: subBrandWithNil.id,
                 subcategories: Array(subcategories),
                 isDiscontinued: isDiscontinued
@@ -291,7 +287,7 @@ struct ProductMutationView: View {
             switch await repository.product.create(newProductParams: .init(
                 name: name,
                 description: description,
-                categoryId: category,
+                categoryId: category.id,
                 brandId: brandId,
                 subBrandId: subBrand?.id,
                 subcategories: Array(subcategories),
@@ -323,7 +319,9 @@ struct ProductMutationView: View {
         case let .edit(initialProduct, _), let .editSuggestion(initialProduct):
             switch await repository.brand.getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id) {
             case let .success(brandsWithSubBrands):
-                category = initialProduct.category.id
+                category = appEnvironmentModel.categories.first(where: { category in
+                    category.id == initialProduct.category.id
+                })
                 subcategories = initialProduct.subcategories.map { .init(subcategory: $0) }
                 brandOwner = initialProduct.subBrand.brand.brandOwner
                 brand = brandsWithSubBrands.first(where: { $0.id == initialProduct.subBrand.brand.id })

@@ -27,7 +27,7 @@ struct BlockedUsersScreen: View {
             } description: {
                 Text("blockedUsers.empty.description")
             } actions: {
-                RouterLink("blockedUsers.empty.block.label", open: .sheet(.userSheet(mode: .block, onSubmit: {
+                RouterLink("blockedUsers.empty.block.label", open: .sheet(.user(mode: .block, onSubmit: {
                     router.open(.toast(.success("blockedUsers.block.success")))
                 })))
             }
@@ -44,7 +44,7 @@ struct BlockedUsersScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             HStack {
-                RouterLink("blockedUsers.block.label", systemImage: "plus", open: .sheet(.userSheet(mode: .block, onSubmit: {
+                RouterLink("blockedUsers.block.label", systemImage: "plus", open: .sheet(.user(mode: .block, onSubmit: {
                     router.open(.toast(.success("blockedUsers.block.success")))
                 })))
                 .labelStyle(.iconOnly)

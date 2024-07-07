@@ -49,6 +49,20 @@ public extension Subcategory {
         public let isVerified: Bool
         public let category: Category
 
+        public init(id: Int, name: String, isVerified: Bool, category: Category) {
+            self.id = id
+            self.name = name
+            self.isVerified = isVerified
+            self.category = category
+        }
+
+        public init(category: Category, subcategory: Subcategory) {
+            id = subcategory.id
+            name = subcategory.name
+            isVerified = subcategory.isVerified
+            self.category = category
+        }
+
         public func getSubcategory() -> Subcategory {
             Subcategory(id: id, name: name, isVerified: isVerified)
         }
@@ -58,6 +72,19 @@ public extension Subcategory {
             case name
             case isVerified = "is_verified"
             case category = "categories"
+        }
+
+        public func copyWith(
+            name: String? = nil,
+            isVerified: Bool? = nil,
+            category: Category? = nil
+        ) -> Self {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                isVerified: isVerified ?? self.isVerified,
+                category: category ?? self.category
+            )
         }
     }
 }

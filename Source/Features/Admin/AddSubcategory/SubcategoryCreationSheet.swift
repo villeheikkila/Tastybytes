@@ -2,7 +2,7 @@ import Components
 import Models
 import SwiftUI
 
-struct AddSubcategorySheet: View {
+struct SubcategoryCreationSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var newSubcategoryName = ""
     let category: CategoryProtocol
