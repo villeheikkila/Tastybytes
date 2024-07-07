@@ -8,25 +8,25 @@ struct SubcategoryAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var subcategoryName = ""
     @State private var category: Models.Category.JoinedSubcategoriesServingStyles?
-    let subcategory: Subcategory.JoinedCategory
+    @State private var subcategory: Subcategory.JoinedCategory
     let onSubmit: (_ subcategoryName: String) async -> Void
 
     init(subcategory: Subcategory.JoinedCategory, onSubmit: @escaping (_ subcategoryName: String) async -> Void) {
         _subcategoryName = State(wrappedValue: subcategory.name)
-        self.subcategory = subcategory
+        _subcategory = State(initialValue: subcategory)
         self.onSubmit = onSubmit
     }
 
     var body: some View {
         Form {
-            Section {
+            Section("subcategory.admin.subcategory") {
                 VStack {
                     Text(subcategory.name)
                 }
             }
             .customListRowBackground()
 
-            Section {
+            Section("admin.section.details") {
                 LabeledTextField(title: "subcategory.admin.name", text: $subcategoryName)
                 LabeledContent("subcategory.admin.category") {
                     RouterLink(category?.name ?? subcategory.category.name, open: .sheet(.categoryPicker(category: $category)))
@@ -34,10 +34,14 @@ struct SubcategoryAdminSheet: View {
             }
             .customListRowBackground()
 
-            Section {
+            Section("labels.info") {
                 LabeledIdView(id: subcategory.id.formatted())
                 VerificationAdminToggleView(isVerified: subcategory.isVerified) { isVerified in
-                    await appEnvironmentModel.verifySubcategory(.init(subcategory: subcategory), isVerified: isVerified)
+                    await appEnvironmentModel.verifySubcategory(subcategory, isVerified: isVerified) {
+                        withAnimation {
+                            subcategory = subcategory.copyWith(isVerified: isVerified)
+                        }
+                    }
                 }
             }
             .customListRowBackground()
@@ -60,7 +64,7 @@ struct SubcategoryAdminSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
-            ProgressButton("labels.saveChanges", action: {
+            ProgressButton("labels.edit", action: {
                 await appEnvironmentModel.editSubcategory(.init(id: subcategory.id, name: subcategory.name))
                 await onSubmit(subcategoryName)
             })

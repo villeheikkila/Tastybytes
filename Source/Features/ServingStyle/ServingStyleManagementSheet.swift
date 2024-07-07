@@ -11,7 +11,6 @@ struct ServingStyleManagementSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(\.dismiss) private var dismiss
     @State private var servingStyles = [ServingStyle]()
     @State private var newServingStyleName = ""
     @Binding var pickedServingStyles: [ServingStyle]

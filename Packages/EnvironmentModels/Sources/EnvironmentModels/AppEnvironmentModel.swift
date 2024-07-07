@@ -313,10 +313,11 @@ public final class AppEnvironmentModel {
     }
 
     // Categories
-    public func verifySubcategory(_ subcategory: Subcategory, isVerified: Bool) async {
+    public func verifySubcategory(_ subcategory: Subcategory.JoinedCategory, isVerified: Bool, onSuccess: () -> Void) async {
         switch await repository.subcategory.verification(id: subcategory.id, isVerified: isVerified) {
         case .success:
             await loadCategories()
+            onSuccess()
         case let .failure(error):
             guard !error.isCancelled else { return }
             alertError = .init()

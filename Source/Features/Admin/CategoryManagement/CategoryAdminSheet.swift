@@ -19,6 +19,9 @@ struct CategoryAdminSheet: View {
         .scrollContentBackground(.hidden)
         .navigationTitle("category.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            toolbarContent
+        }
     }
 
     @ViewBuilder private var content: some View {
@@ -40,7 +43,7 @@ struct CategoryAdminSheet: View {
             RouterLink(
                 "servingStyle.edit.menu.label",
                 systemImage: "pencil",
-                open: .sheet(.categoryServingStyle(category: category))
+                open: .screen(.categoryServingStyle(category: category))
             )
             RouterLink(
                 "subcategory.add",
@@ -60,6 +63,10 @@ struct CategoryAdminSheet: View {
             }, description: "category.admin.delete.confirmationDialog.title", label: "category.admin.delete.confirmationDialog.label \(category.name)", isDisabled: false)
         }
         .customListRowBackground()
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarDismissAction()
     }
 }
 

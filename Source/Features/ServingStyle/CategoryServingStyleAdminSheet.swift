@@ -33,7 +33,6 @@ struct CategoryServingStyleAdminSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneActionView()
         ToolbarItemGroup(placement: .primaryAction) {
             RouterLink(
                 "servingStyle.create.label",

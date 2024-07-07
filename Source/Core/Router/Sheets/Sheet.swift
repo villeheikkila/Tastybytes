@@ -25,7 +25,6 @@ enum Sheet: Identifiable, Equatable {
     case locationSearch(initialLocation: Location?, initialSearchTerm: String?, onSelect: (_ location: Location) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>, onSelect: (_ servingStyle: ServingStyle) async -> Void)
-    case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
     case subcategoryAdmin(subcategory: Subcategory.JoinedCategory, onSubmit: (_ subcategoryName: String) async -> Void)
     case subcategoryCreation(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case categoryCreation(onSubmit: (_ newCategoryName: String) async -> Void)
@@ -92,8 +91,6 @@ enum Sheet: Identifiable, Equatable {
             NewFlavorSheet(onSubmit: onSubmit)
         case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):
             ServingStyleManagementSheet(pickedServingStyles: pickedServingStyles, onSelect: onSelect)
-        case let .categoryServingStyle(category: category):
-            CategoryServingStyleAdminSheet(category: category)
         case let .subcategoryAdmin(subcategory: subcategory, onSubmit: onSubmit):
             SubcategoryAdminSheet(subcategory: subcategory, onSubmit: onSubmit)
         case let .subcategoryCreation(category: category, onSubmit: onSubmit):
@@ -146,7 +143,7 @@ enum Sheet: Identifiable, Equatable {
 
     var detents: Set<PresentationDetent> {
         switch self {
-        case .barcodeScanner, .productFilter, .newFlavor, .subcategoryAdmin, .categoryCreation, .subcategoryCreation, .user:
+        case .barcodeScanner, .productFilter, .newFlavor, .categoryCreation, .subcategoryCreation, .user:
             [.medium]
         case .nameTag:
             [.height(320)]
@@ -218,8 +215,6 @@ enum Sheet: Identifiable, Equatable {
             "new_flavor"
         case .servingStyleManagement:
             "serving_style_management"
-        case .categoryServingStyle:
-            "category_serving_style"
         case .categoryCreation:
             "add_category"
         case .subcategoryCreation:

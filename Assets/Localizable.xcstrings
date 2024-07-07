@@ -2781,6 +2781,7 @@
       }
     },
     "labels.saveChanges" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5077,6 +5078,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manage Subcategory"
+          }
+        }
+      }
+    },
+    "subcategory.admin.subcategory" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subcategory"
           }
         }
       }
