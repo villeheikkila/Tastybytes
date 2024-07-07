@@ -60,7 +60,7 @@ struct BarcodeManagementScreen: View {
                 "discover.barcode.scan",
                 systemImage: "barcode.viewfinder",
                 open: .sheet(.barcodeScanner(onComplete: { _ in
-                   await getBarcodes()
+                    await getBarcodes()
                 }))
             )
         }

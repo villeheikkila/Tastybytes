@@ -10,7 +10,7 @@ public protocol ProfileRepository: Sendable {
     func uploadAvatar(userId: UUID, data: Data) async -> Result<ImageEntity, Error>
     func deleteCurrentAccount() async -> Result<Void, Error>
     func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
-    func getContributions(userId: UUID) async -> Result<Contributions, Error>
+    func getContributions(id: UUID) async -> Result<Profile.Contributions, Error>
     func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error>
     func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
     func getTimePeriodStatistics(userId: UUID, timePeriod: StatisticsTimePeriod) async

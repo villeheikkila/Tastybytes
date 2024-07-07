@@ -6,6 +6,8 @@ extension Brand: Queryable {
         let saved = "id, name, is_verified"
 
         switch queryType {
+        case let .saved(withTableName):
+            return buildQuery(.brands, [saved, ImageEntity.getQuery(.saved(.brandLogos))], withTableName)
         case let .joinedSubBrands(withTableName):
             return buildQuery(.brands, [saved, SubBrand.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.brandLogos))], withTableName)
         case let .joined(withTableName):
@@ -29,6 +31,7 @@ extension Brand: Queryable {
     }
 
     enum QueryType {
+        case saved(_ withTableName: Bool)
         case joined(_ withTableName: Bool)
         case joinedSubBrands(_ withTableName: Bool)
         case joinedCompany(_ withTableName: Bool)

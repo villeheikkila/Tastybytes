@@ -9,7 +9,7 @@ struct ContributionsScreen: View {
     private let logger = Logger(category: "ContributionsScreen")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
-    @State private var contributions: Contributions?
+    @State private var contributions: Profile.Contributions?
 
     let profile: Profile
 
@@ -17,11 +17,11 @@ struct ContributionsScreen: View {
         List {
             if let contributions {
                 Section {
-                    LabeledContent("products.title", value: contributions.products.formatted())
-                    LabeledContent("company.title", value: contributions.companies.formatted())
-                    LabeledContent("brand.title", value: contributions.brands.formatted())
-                    LabeledContent("subBrand.title", value: contributions.subBrands.formatted())
-                    LabeledContent("barcode.title", value: contributions.barcodes.formatted())
+                    LabeledContent("products.title", value: contributions.products.count.formatted())
+                    LabeledContent("company.title", value: contributions.companies.count.formatted())
+                    LabeledContent("brand.title", value: contributions.brands.count.formatted())
+                    LabeledContent("subBrand.title", value: contributions.subBrands.count.formatted())
+                    LabeledContent("barcode.title", value: contributions.barcodes.count.formatted())
                 } footer: {
                     Text("settings.contributions.description")
                 }
@@ -44,7 +44,7 @@ struct ContributionsScreen: View {
     }
 
     func loadContributions() async {
-        switch await repository.profile.getContributions(userId: profile.id) {
+        switch await repository.profile.getContributions(id: profile.id) {
         case let .success(contributions):
             withAnimation {
                 self.contributions = contributions

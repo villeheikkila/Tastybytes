@@ -23,6 +23,23 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
+    func getContributions(id: UUID) async -> Result<Profile.Contributions, Error> {
+        do {
+            let response: Profile.Contributions = try await client
+                .from(.profiles)
+                .select(Profile.getQuery(.contribtions(false)))
+                .eq("id", value: id.uuidString.lowercased())
+                .limit(1)
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func getCurrentUser() async -> Result<Profile.Extended, Error> {
         do {
             let response: Profile.Extended = try await client

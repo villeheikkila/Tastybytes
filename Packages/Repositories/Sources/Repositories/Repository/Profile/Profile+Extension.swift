@@ -16,12 +16,19 @@ extension Profile: Queryable {
                 [saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
                 withTableName
             )
+        case let .contribtions(withTableName):
+            return buildQuery(
+                .profiles,
+                [saved, buildQuery(name: "products", foreignKey: "products!products_created_by_fkey", [Product.getQuery(.joinedBrandSubcategories(false))]), buildQuery(name: "companies", foreignKey: "companies!companies_created_by_fkey", [Company.getQuery(.saved(false))]), buildQuery(name: "brands", foreignKey: "brands!brands_created_by_fkey", [Brand.getQuery(.saved(false))]), buildQuery(name: "sub_brands", foreignKey: "sub_brands!sub_brands_created_by_fkey", [SubBrand.getQuery(.saved(false))]), buildQuery(name: "barcodes", foreignKey: "product_barcodes!product_barcodes_created_by_fkey", [ProductBarcode.getQuery(.joined(false))])],
+                withTableName
+            )
         }
     }
 
     enum QueryType {
         case minimal(_ withTableName: Bool)
         case extended(_ withTableName: Bool)
+        case contribtions(_ withTableName: Bool)
     }
 }
 

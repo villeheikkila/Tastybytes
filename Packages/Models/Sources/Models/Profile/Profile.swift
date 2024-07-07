@@ -448,3 +448,21 @@ public struct ProfileTopLocations: Sendable, Decodable, Identifiable {
         count = try container.decode(Int.self, forKey: .count)
     }
 }
+
+public extension Profile {
+    struct Contributions: Codable, Sendable {
+        public let products: [Product.Joined]
+        public let companies: [Company]
+        public let brands: [Brand]
+        public let subBrands: [SubBrand]
+        public let barcodes: [ProductBarcode.Joined]
+
+        enum CodingKeys: String, CodingKey {
+            case products
+            case companies
+            case brands
+            case subBrands = "sub_brands"
+            case barcodes
+        }
+    }
+}

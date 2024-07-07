@@ -1,12 +1,24 @@
 import Foundation
 
-public enum Brand {}
-
 public protocol BrandProtocol {
     var id: Int { get }
     var name: String { get }
     var logos: [ImageEntity] { get }
     var isVerified: Bool { get }
+}
+
+public struct Brand: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
+    public let id: Int
+    public let name: String
+    public let isVerified: Bool
+    public let logos: [ImageEntity]
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case isVerified = "is_verified"
+        case logos = "brand_logos"
+    }
 }
 
 public extension Brand {
