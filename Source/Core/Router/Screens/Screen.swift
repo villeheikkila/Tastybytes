@@ -42,6 +42,7 @@ enum Screen: Hashable, Sendable {
     case error(reason: String)
     case companyEditSuggestion(company: Binding<Company.Management>)
     case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
+    case barcodeManagement(product: Product.Joined)
 
     @MainActor
     @ViewBuilder
@@ -125,6 +126,8 @@ enum Screen: Hashable, Sendable {
             CompanyEditSuggestionScreen(company: company)
         case let .categoryServingStyle(category: category):
             CategoryServingStyleAdminSheet(category: category)
+        case let .barcodeManagement(product):
+            BarcodeManagementScreen(product: product)
         }
     }
 
@@ -174,6 +177,8 @@ enum Screen: Hashable, Sendable {
             lhsReason == rhsReason
         case let (.companyEditSuggestion(lhsCompany), .companyEditSuggestion(rhsCompany)):
             lhsCompany.wrappedValue == rhsCompany.wrappedValue
+        case let (.barcodeManagement(lhsProduct), .barcodeManagement(rhsProduct)):
+            lhsProduct == rhsProduct
         case (.settings, .settings),
              (.currentUserFriends, .currentUserFriends),
              (.flavorAdmin, .flavorAdmin),
@@ -303,6 +308,9 @@ enum Screen: Hashable, Sendable {
         case let .categoryServingStyle(category):
             hasher.combine("categoryServingStyle")
             hasher.combine(category)
+        case let .barcodeManagement(product):
+            hasher.combine("categoryServingStyle")
+            hasher.combine(product)
         }
     }
 }

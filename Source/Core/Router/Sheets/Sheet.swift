@@ -16,7 +16,6 @@ enum Sheet: Identifiable, Equatable {
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
-    case barcodeManagement(product: Product.Joined)
     case brandAdmin(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: BrandAdminSheet.BrandUpdateCallback, onDelete: BrandAdminSheet.BrandUpdateCallback)
     case subBrandAdmin(brand: Binding<Brand.JoinedSubBrandsProductsCompany>, subBrand: SubBrand.JoinedProduct)
     case friends(taggedFriends: Binding<[Profile]>)
@@ -71,8 +70,6 @@ enum Sheet: Identifiable, Equatable {
             SubcategorySheet(subcategories: subcategories, category: category)
         case let .companySearch(onSelect):
             CompanySearchSheet(onSelect: onSelect)
-        case let .barcodeManagement(product):
-            BarcodeManagementSheet(product: product)
         case let .product(mode):
             ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):
@@ -199,8 +196,6 @@ enum Sheet: Identifiable, Equatable {
             "edit_product_\(mode)"
         case .duplicateProduct:
             "duplicate_product"
-        case .barcodeManagement:
-            "barcode_management"
         case let .brandAdmin(brand, _, _):
             "brand_admin_\(brand.hashValue)"
         case let .subBrandAdmin(_, subBrand):

@@ -6,8 +6,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct BarcodeManagementSheet: View {
-    private let logger = Logger(category: "BarcodeManagementSheet")
+struct BarcodeManagementScreen: View {
+    private let logger = Logger(category: "BarcodeManagementScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -55,7 +55,15 @@ struct BarcodeManagementSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDismissAction()
+        ToolbarItemGroup(placement: .primaryAction) {
+            RouterLink(
+                "discover.barcode.scan",
+                systemImage: "barcode.viewfinder",
+                open: .sheet(.barcodeScanner(onComplete: { _ in
+                   await getBarcodes()
+                }))
+            )
+        }
     }
 
     func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {

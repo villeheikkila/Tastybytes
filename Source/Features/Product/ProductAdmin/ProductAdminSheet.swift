@@ -53,7 +53,7 @@ struct ProductAdminSheet: View {
         .customListRowBackground()
         EditLogoSection(logos: logos, onUpload: uploadData, onDelete: deleteLogo)
         Section {
-            RouterLink("barcode.management.open", systemImage: "barcode", open: .sheet(.barcodeManagement(product: product)))
+            RouterLink("barcode.management.open", systemImage: "barcode", open: .screen(.barcodeManagement(product: product)))
             RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: { updatedProduct in
                 withAnimation {
                     product = updatedProduct

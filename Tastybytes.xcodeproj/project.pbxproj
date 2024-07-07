@@ -112,7 +112,7 @@
 		5C9058072B2894BE00EC157B /* CategoryServingStyleAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057692B2894BE00EC157B /* CategoryServingStyleAdminSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058082B2894BE00EC157B /* CheckInDatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90576A2B2894BE00EC157B /* CheckInDatePickerSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058092B2894BE00EC157B /* SubcategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90576C2B2894BE00EC157B /* SubcategorySheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C90580A2B2894BE00EC157B /* BarcodeManagementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90576E2B2894BE00EC157B /* BarcodeManagementSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C90580A2B2894BE00EC157B /* BarcodeManagementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90576E2B2894BE00EC157B /* BarcodeManagementScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90580B2B2894BE00EC157B /* ReportButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057702B2894BE00EC157B /* ReportButtonView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90580C2B2894BE00EC157B /* ReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057712B2894BE00EC157B /* ReportSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90580D2B2894BE00EC157B /* BrandAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057732B2894BE00EC157B /* BrandAdminSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -427,7 +427,7 @@
 		5C9057692B2894BE00EC157B /* CategoryServingStyleAdminSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryServingStyleAdminSheet.swift; sourceTree = "<group>"; };
 		5C90576A2B2894BE00EC157B /* CheckInDatePickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInDatePickerSheet.swift; sourceTree = "<group>"; };
 		5C90576C2B2894BE00EC157B /* SubcategorySheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubcategorySheet.swift; sourceTree = "<group>"; };
-		5C90576E2B2894BE00EC157B /* BarcodeManagementSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeManagementSheet.swift; sourceTree = "<group>"; };
+		5C90576E2B2894BE00EC157B /* BarcodeManagementScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeManagementScreen.swift; sourceTree = "<group>"; };
 		5C9057702B2894BE00EC157B /* ReportButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportButtonView.swift; sourceTree = "<group>"; };
 		5C9057712B2894BE00EC157B /* ReportSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportSheet.swift; sourceTree = "<group>"; };
 		5C9057732B2894BE00EC157B /* BrandAdminSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrandAdminSheet.swift; sourceTree = "<group>"; };
@@ -1041,7 +1041,7 @@
 		5C90576D2B2894BE00EC157B /* BarcodeManagement */ = {
 			isa = PBXGroup;
 			children = (
-				5C90576E2B2894BE00EC157B /* BarcodeManagementSheet.swift */,
+				5C90576E2B2894BE00EC157B /* BarcodeManagementScreen.swift */,
 				5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */,
 				5CA4AC4E2B5870BB00E17629 /* BarcodeManagementContentUnavailable.swift */,
 			);
@@ -1828,7 +1828,7 @@
 				5C90582A2B2894BE00EC157B /* ProductScreen.swift in Sources */,
 				5C9058252B2894BE00EC157B /* CheckInReactionNotificationView.swift in Sources */,
 				5C9058282B2894BE00EC157B /* FlavorAdminScreen.swift in Sources */,
-				5C90580A2B2894BE00EC157B /* BarcodeManagementSheet.swift in Sources */,
+				5C90580A2B2894BE00EC157B /* BarcodeManagementScreen.swift in Sources */,
 				5C24E1CF2B5D89DD003AB7C8 /* CompanyBrandRow.swift in Sources */,
 				5C4FC6362BA5FC630025DB83 /* ImageShareLink.swift in Sources */,
 				5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */,
