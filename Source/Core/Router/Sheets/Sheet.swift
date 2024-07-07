@@ -7,21 +7,12 @@ enum Sheet: Identifiable, Equatable {
     case report(Report.Entity)
     case checkIn(CheckInSheet.Action)
     case barcodeScanner(onComplete: (_ barcode: Barcode) async -> Void)
-    case productFilter(
-        initialFilter: Product.Filter?,
-        sections: [ProductFilterSheet.Sections],
-        onApply: (_ filter: Product.Filter?) -> Void
-    )
+    case productFilter(initialFilter: Product.Filter?, sections: [ProductFilterSheet.Sections], onApply: (_ filter: Product.Filter?) -> Void)
     case nameTag(onSuccess: (_ profileId: UUID) -> Void)
     case companySearch(onSelect: (_ company: Company) -> Void)
-    case brand(brandOwner: Company,
-               brand: Binding<Brand.JoinedSubBrands?>,
-               mode: BrandSheet.Mode)
+    case brand(brandOwner: Company, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandSheet.Mode)
     case addBrand(brandOwner: Company, mode: BrandSheet.Mode)
-    case subcategory(
-        subcategories: Binding<[Subcategory]>,
-        category: Models.Category.JoinedSubcategoriesServingStyles
-    )
+    case subcategory(subcategories: Binding<[Subcategory]>, category: Models.Category.JoinedSubcategoriesServingStyles)
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
@@ -30,16 +21,10 @@ enum Sheet: Identifiable, Equatable {
     case subBrandAdmin(brand: Binding<Brand.JoinedSubBrandsProductsCompany>, subBrand: SubBrand.JoinedProduct)
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)
-    case checkInLocationSearch(
-        category: Location.RecentLocation,
-        title: LocalizedStringKey,
-        initialLocation: Binding<Location?>,
-        onSelect: (_ location: Location) -> Void
-    )
+    case checkInLocationSearch(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: Binding<Location?>, onSelect: (_ location: Location) -> Void)
     case locationSearch(initialLocation: Location?, initialSearchTerm: String?, onSelect: (_ location: Location) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
-    case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
-                                onSelect: (_ servingStyle: ServingStyle) async -> Void)
+    case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>, onSelect: (_ servingStyle: ServingStyle) async -> Void)
     case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
     case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) async -> Void)
     case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)

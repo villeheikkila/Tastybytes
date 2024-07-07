@@ -2,7 +2,7 @@ import Components
 import EnvironmentModels
 import SwiftUI
 
-struct FlavorManagementScreen: View {
+struct FlavorAdminScreen: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 
     var body: some View {

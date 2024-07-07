@@ -4,8 +4,8 @@ import Models
 import OSLog
 import SwiftUI
 
-struct CategoryManagementScreen: View {
-    private let logger = Logger(category: "CategoryManagementScreen")
+struct CategoryAdminScreen: View {
+    private let logger = Logger(category: "CategoryAdminScreen")
     @Environment(Router.self) private var router
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
 

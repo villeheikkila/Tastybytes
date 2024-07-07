@@ -24,10 +24,10 @@ enum Screen: Hashable, Sendable {
     case currentUserFriends
     case friends(Profile)
     case productFeed(Product.FeedType)
-    case flavorManagement
+    case flavorAdmin
     case verification
     case duplicateProducts(filter: MarkedAsDuplicateFilter)
-    case categoryManagement
+    case categoryAdmin
     case profileSettings
     case privacySettings
     case accountSettings
@@ -38,7 +38,7 @@ enum Screen: Hashable, Sendable {
     case contributions(Profile)
     case about
     case reports(ReportFilter? = nil)
-    case locationManagement
+    case locationAdmin
     case error(reason: String)
     case companyEditSuggestion(company: Binding<Company.Management>)
 
@@ -88,14 +88,14 @@ enum Screen: Hashable, Sendable {
             FriendsScreen(profile: profile)
         case let .productFeed(feed):
             ProductFeedScreen(feed: feed)
-        case .flavorManagement:
-            FlavorManagementScreen()
+        case .flavorAdmin:
+            FlavorAdminScreen()
         case .verification:
             VerificationScreen()
         case let .duplicateProducts(filter):
             DuplicateProductScreen(filter: filter)
-        case .categoryManagement:
-            CategoryManagementScreen()
+        case .categoryAdmin:
+            CategoryAdminScreen()
         case .profileSettings:
             ProfileSettingsScreen()
         case .accountSettings:
@@ -118,8 +118,8 @@ enum Screen: Hashable, Sendable {
             ReportScreen(filter: filter)
         case let .error(reason):
             ErrorScreen(reason: reason)
-        case .locationManagement:
-            LocationManagementScreen()
+        case .locationAdmin:
+            LocationAdminScreen()
         case let .companyEditSuggestion(company):
             CompanyEditSuggestionScreen(company: company)
         }
@@ -173,10 +173,10 @@ enum Screen: Hashable, Sendable {
             lhsCompany.wrappedValue == rhsCompany.wrappedValue
         case (.settings, .settings),
              (.currentUserFriends, .currentUserFriends),
-             (.flavorManagement, .flavorManagement),
+             (.flavorAdmin, .flavorAdmin),
              (.verification, .verification),
              (.duplicateProducts, .duplicateProducts),
-             (.categoryManagement, .categoryManagement),
+             (.categoryAdmin, .categoryAdmin),
              (.profileSettings, .profileSettings),
              (.privacySettings, .privacySettings),
              (.accountSettings, .accountSettings),
@@ -186,7 +186,7 @@ enum Screen: Hashable, Sendable {
              (.blockedUsers, .blockedUsers),
              (.contributions, .contributions),
              (.about, .about),
-             (.locationManagement, .locationManagement):
+             (.locationAdmin, .locationAdmin):
             true
         default:
             false
@@ -259,14 +259,14 @@ enum Screen: Hashable, Sendable {
         case let .productFeed(feedType):
             hasher.combine("productFeed")
             hasher.combine(feedType)
-        case .flavorManagement:
+        case .flavorAdmin:
             hasher.combine("flavorManagement")
         case .verification:
             hasher.combine("verification")
         case let .duplicateProducts(filter):
             hasher.combine("duplicateProducts")
             hasher.combine(filter)
-        case .categoryManagement:
+        case .categoryAdmin:
             hasher.combine("categoryManagement")
         case .profileSettings:
             hasher.combine("profileSettings")
@@ -289,7 +289,7 @@ enum Screen: Hashable, Sendable {
         case let .reports(filter):
             hasher.combine("reports")
             hasher.combine(filter)
-        case .locationManagement:
+        case .locationAdmin:
             hasher.combine("locationManagement")
         case let .error(reason):
             hasher.combine("error")

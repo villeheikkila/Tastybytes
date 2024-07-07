@@ -3,7 +3,7 @@ import Models
 import Repositories
 import SwiftUI
 
-struct LocationManagementScreen: View {
+struct LocationAdminScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -27,7 +27,9 @@ struct LocationManagementScreen: View {
                         locations = locations.replacing(location, with: edited)
                     }
                 }, onDelete: { deleted in
-                    locations = locations.removing(deleted)
+                    withAnimation {
+                        locations = locations.removing(deleted)
+                    }
                 })))
             }
         }
