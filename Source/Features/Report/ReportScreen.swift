@@ -32,6 +32,7 @@ struct ReportScreen: View {
             }
         }
         .navigationTitle("report.admin.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .initialTask {
             await loadInitialData()
         }

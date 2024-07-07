@@ -7,7 +7,7 @@ import Repositories
 import SwiftUI
 
 struct DuplicateProductScreen: View {
-    private let logger = Logger(category: "ProductVerificationScreen")
+    private let logger = Logger(category: "DuplicateProductScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -35,6 +35,7 @@ struct DuplicateProductScreen: View {
             await loadDuplicateProducts(withHaptics: true)
         }
         .navigationBarTitle("admin.duplicates.title")
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             await loadDuplicateProducts()
         }
