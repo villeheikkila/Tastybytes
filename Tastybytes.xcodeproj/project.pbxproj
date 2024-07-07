@@ -278,6 +278,11 @@
 		5CEEA3072C39B4380009B3F5 /* CheckInImageAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3062C39B4380009B3F5 /* CheckInImageAdminSheet.swift */; };
 		5CEEA3092C39BB6B0009B3F5 /* CheckInImageEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3082C39BB6B0009B3F5 /* CheckInImageEntityView.swift */; };
 		5CEEA30B2C3A8B530009B3F5 /* CategoryAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA30A2C3A8B530009B3F5 /* CategoryAdminSheet.swift */; };
+		5CEEA30D2C3B2D540009B3F5 /* ProductListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA30C2C3B2D540009B3F5 /* ProductListScreen.swift */; };
+		5CEEA30F2C3B2E9D0009B3F5 /* CompanyListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA30E2C3B2E9D0009B3F5 /* CompanyListScreen.swift */; };
+		5CEEA3112C3B30050009B3F5 /* BrandListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3102C3B30050009B3F5 /* BrandListScreen.swift */; };
+		5CEEA3132C3B30A60009B3F5 /* SubBrandListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3122C3B30A60009B3F5 /* SubBrandListScreen.swift */; };
+		5CEEA3152C3B31350009B3F5 /* BarcodeListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -595,6 +600,11 @@
 		5CEEA3062C39B4380009B3F5 /* CheckInImageAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageAdminSheet.swift; sourceTree = "<group>"; };
 		5CEEA3082C39BB6B0009B3F5 /* CheckInImageEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageEntityView.swift; sourceTree = "<group>"; };
 		5CEEA30A2C3A8B530009B3F5 /* CategoryAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAdminSheet.swift; sourceTree = "<group>"; };
+		5CEEA30C2C3B2D540009B3F5 /* ProductListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListScreen.swift; sourceTree = "<group>"; };
+		5CEEA30E2C3B2E9D0009B3F5 /* CompanyListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyListScreen.swift; sourceTree = "<group>"; };
+		5CEEA3102C3B30050009B3F5 /* BrandListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandListScreen.swift; sourceTree = "<group>"; };
+		5CEEA3122C3B30A60009B3F5 /* SubBrandListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandListScreen.swift; sourceTree = "<group>"; };
+		5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeListScreen.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1161,6 +1171,8 @@
 				5C9057722B2894BE00EC157B /* BrandAdmin */,
 				5C90574B2B2894BE00EC157B /* Sheet */,
 				5C3907662B322AE50036253E /* Screen */,
+				5CEEA3102C3B30050009B3F5 /* BrandListScreen.swift */,
+				5CEEA3122C3B30A60009B3F5 /* SubBrandListScreen.swift */,
 			);
 			path = Brand;
 			sourceTree = "<group>";
@@ -1190,6 +1202,8 @@
 				5C9057AF2B2894BE00EC157B /* Feed */,
 				5CC276312B31F01B001032CE /* Mutation */,
 				5C82E8AA2B2F95ED00F2B369 /* Screen */,
+				5CEEA30C2C3B2D540009B3F5 /* ProductListScreen.swift */,
+				5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -1291,6 +1305,7 @@
 				5CAADEF22B5C235700D956C1 /* Shared */,
 				5C9057522B2894BE00EC157B /* CompanyAdmin */,
 				5C9057472B2894BE00EC157B /* SearchSheet */,
+				5CEEA30E2C3B2E9D0009B3F5 /* CompanyListScreen.swift */,
 			);
 			path = Company;
 			sourceTree = "<group>";
@@ -1495,27 +1510,27 @@
 		5CCEE2532B29AE4D00F276DF /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				5C2B25D42C3467A400CFDAFB /* WebView */,
-				5C9057672B2894BE00EC157B /* ServingStyle */,
+				5C82E8922B2F71B400F2B369 /* ActivityFeed */,
 				5C3907652B32093D0036253E /* Admin */,
+				5C82E88C2B2F67FA00F2B369 /* Authentication */,
+				5C9057952B2894BE00EC157B /* Brand */,
 				5CC276322B31F07C001032CE /* CheckIn */,
+				5C9057BF2B2894BE00EC157B /* Company */,
+				5C82E8932B2F728C00F2B369 /* Discover */,
 				5C9057782B2894BE00EC157B /* Flavor */,
+				5C9057B12B2894BE00EC157B /* Friends */,
+				5C9057AD2B2894BE00EC157B /* Location */,
+				5C90578E2B2894BE00EC157B /* Notification */,
+				5C9057D12B2894BE00EC157B /* Onboarding */,
 				5C90579A2B2894BE00EC157B /* Product */,
 				5C9057A12B2894BE00EC157B /* Profile */,
-				5C82E8932B2F728C00F2B369 /* Discover */,
-				5C82E8922B2F71B400F2B369 /* ActivityFeed */,
+				5C90576F2B2894BE00EC157B /* Report */,
+				5C9057672B2894BE00EC157B /* ServingStyle */,
 				5C9057802B2894BE00EC157B /* Settings */,
-				5C82E88C2B2F67FA00F2B369 /* Authentication */,
+				5C82E8842B2F637A00F2B369 /* SplashScreen */,
 				5C82E8892B2F677A00F2B369 /* Subscription */,
 				5C9057582B2894BE00EC157B /* User */,
-				5C82E8842B2F637A00F2B369 /* SplashScreen */,
-				5C90578E2B2894BE00EC157B /* Notification */,
-				5C9057952B2894BE00EC157B /* Brand */,
-				5C9057AD2B2894BE00EC157B /* Location */,
-				5C9057B12B2894BE00EC157B /* Friends */,
-				5C9057BF2B2894BE00EC157B /* Company */,
-				5C90576F2B2894BE00EC157B /* Report */,
-				5C9057D12B2894BE00EC157B /* Onboarding */,
+				5C2B25D42C3467A400CFDAFB /* WebView */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1806,6 +1821,7 @@
 			files = (
 				5CD2EE212C36D947009AA949 /* ProfileAdminSheet.swift in Sources */,
 				5C4FC6402BA70C110025DB83 /* WebView.swift in Sources */,
+				5CEEA30F2C3B2E9D0009B3F5 /* CompanyListScreen.swift in Sources */,
 				5C90582D2B2894BE00EC157B /* VerificationScreen.swift in Sources */,
 				5C90583F2B2894BE00EC157B /* CheckInCommentEntityView.swift in Sources */,
 				5CCEE2832B2CA5D600F276DF /* CheckInCardTaggedFriends.swift in Sources */,
@@ -1904,6 +1920,7 @@
 				5C90581B2B2894BE00EC157B /* NotificationSettingsScreen.swift in Sources */,
 				5C90584C2B2894BE00EC157B /* ProductEntityView.swift in Sources */,
 				5C672E9B2B51DE4F0048605B /* Avatar.swift in Sources */,
+				5CEEA3112C3B30050009B3F5 /* BrandListScreen.swift in Sources */,
 				5C9058392B2894BE00EC157B /* LocationScreen.swift in Sources */,
 				5C9057FE2B2894BE00EC157B /* ProductSubscription.swift in Sources */,
 				5C82E89A2B2F799300F2B369 /* PrivateProfileSign.swift in Sources */,
@@ -1924,6 +1941,7 @@
 				5C9058052B2894BE00EC157B /* DuplicateProductSheet.swift in Sources */,
 				5C68D76F2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift in Sources */,
 				5C974CD12C04EA0B00CFE98A /* OverlayButton+View.swift in Sources */,
+				5CEEA3132C3B30A60009B3F5 /* SubBrandListScreen.swift in Sources */,
 				5CAADF0B2B5C566F00D956C1 /* ProductLogo.swift in Sources */,
 				5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */,
 				5C511D802BA78F9600F95290 /* WatchView.swift in Sources */,
@@ -1995,6 +2013,7 @@
 				5C9058352B2894BE00EC157B /* ProfileLocationsScreen.swift in Sources */,
 				5C9058202B2894BE00EC157B /* AccountDeletedScreen.swift in Sources */,
 				5C02A73D2B4F2A7800B497FA /* AppUnsupportedVersionState.swift in Sources */,
+				5CEEA3152C3B31350009B3F5 /* BarcodeListScreen.swift in Sources */,
 				5CD2EE1B2C356DB2009AA949 /* LocationSearchSheet.swift in Sources */,
 				5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */,
 				5C4FC6422BA70C110025DB83 /* SendMailView.swift in Sources */,
@@ -2012,6 +2031,7 @@
 				5CAADF012B5C4EED00D956C1 /* DiscoverProductRow.swift in Sources */,
 				5CD2EE232C3733EE009AA949 /* EditLogoSection.swift in Sources */,
 				5C9058112B2894BE00EC157B /* SubBrandAdminSheet.swift in Sources */,
+				5CEEA30D2C3B2D540009B3F5 /* ProductListScreen.swift in Sources */,
 				5C9058082B2894BE00EC157B /* CheckInDatePickerSheet.swift in Sources */,
 				5CEEA2F82C380B2E0009B3F5 /* VerificationAdminToggleView.swift in Sources */,
 				5CCEE27D2B2CA34800F276DF /* CheckInCardImage.swift in Sources */,

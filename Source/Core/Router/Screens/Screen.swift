@@ -43,6 +43,11 @@ enum Screen: Hashable, Sendable {
     case companyEditSuggestion(company: Binding<Company.Management>)
     case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
     case barcodeManagement(product: Product.Joined)
+    case productList(products: [Product.Joined])
+    case companyList(companies: [Company])
+    case brandList(brands: [Brand])
+    case subBrandList(subBrands: [SubBrand.JoinedBrand])
+    case barcodeList(barcodes: [ProductBarcode.Joined])
 
     @MainActor
     @ViewBuilder
@@ -128,6 +133,16 @@ enum Screen: Hashable, Sendable {
             CategoryServingStyleAdminSheet(category: category)
         case let .barcodeManagement(product):
             BarcodeManagementScreen(product: product)
+        case let .productList(products):
+            ProductListScreen(products: products)
+        case let .companyList(companies):
+            CompanyListScreen(companies: companies)
+        case let .brandList(brands: brands):
+            BrandListScreen(brands: brands)
+        case let .subBrandList(subBrands: subBrands):
+            SubBrandListScreen(subBrands: subBrands)
+        case let .barcodeList(barcodes: barcodes):
+            BarcodeListScreen(barcodes: barcodes)
         }
     }
 
@@ -179,6 +194,16 @@ enum Screen: Hashable, Sendable {
             lhsCompany.wrappedValue == rhsCompany.wrappedValue
         case let (.barcodeManagement(lhsProduct), .barcodeManagement(rhsProduct)):
             lhsProduct == rhsProduct
+        case let (.productList(lhsProduct), .productList(rhsProduct)):
+            lhsProduct == rhsProduct
+        case let (.companyList(lhsProduct), .companyList(rhsProduct)):
+            lhsProduct == rhsProduct
+        case let (.brandList(lhsBrands), .brandList(rhsBrands)):
+            lhsBrands == rhsBrands
+        case let (.subBrandList(lhsSubBrands), .subBrandList(rhsSubBrands)):
+            lhsSubBrands == rhsSubBrands
+        case let (.barcodeList(lhsBarcodes), .barcodeList(rhsBarcodes)):
+            lhsBarcodes == rhsBarcodes
         case (.settings, .settings),
              (.currentUserFriends, .currentUserFriends),
              (.flavorAdmin, .flavorAdmin),
@@ -311,6 +336,21 @@ enum Screen: Hashable, Sendable {
         case let .barcodeManagement(product):
             hasher.combine("categoryServingStyle")
             hasher.combine(product)
+        case let .productList(products):
+            hasher.combine("productList")
+            hasher.combine(products)
+        case let .companyList(companies):
+            hasher.combine("companyList")
+            hasher.combine(companies)
+        case let .brandList(brands: brands):
+            hasher.combine("brandList")
+            hasher.combine(brands)
+        case let .subBrandList(subBrands: subBrands):
+            hasher.combine("subBrandList")
+            hasher.combine(subBrands)
+        case let .barcodeList(barcodes: barcodes):
+            hasher.combine("barcodeList")
+            hasher.combine(barcodes)
         }
     }
 }

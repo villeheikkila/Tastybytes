@@ -492,6 +492,9 @@
     "barcode.error.failedToAdd.title" : {
 
     },
+    "barcode.list.navigationTitle" : {
+
+    },
     "barcode.management.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -767,6 +770,9 @@
           }
         }
       }
+    },
+    "brand.list.navigationTitle" : {
+
     },
     "brand.name.placeholder" : {
       "localizations" : {
@@ -1884,6 +1890,9 @@
           }
         }
       }
+    },
+    "company.list.navigationTitle" : {
+
     },
     "company.name.placeholder" : {
       "localizations" : {
@@ -3760,6 +3769,9 @@
         }
       }
     },
+    "product.list.navigationTitle" : {
+
+    },
     "product.loadedFromBarcode.backToSearch" : {
       "localizations" : {
         "en" : {
@@ -4921,6 +4933,9 @@
           }
         }
       }
+    },
+    "subBrand.list.navigationTitle" : {
+
     },
     "subBrand.mergeTo.confirmation.description" : {
       "localizations" : {

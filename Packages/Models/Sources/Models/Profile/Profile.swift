@@ -454,7 +454,7 @@ public extension Profile {
         public let products: [Product.Joined]
         public let companies: [Company]
         public let brands: [Brand]
-        public let subBrands: [SubBrand]
+        public let subBrands: [SubBrand.JoinedBrand]
         public let barcodes: [ProductBarcode.Joined]
 
         enum CodingKeys: String, CodingKey {
