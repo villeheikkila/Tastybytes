@@ -20,10 +20,13 @@ struct CompanyEntityView: View {
     var body: some View {
         HStack(alignment: .center) {
             CompanyLogo(company: company, size: 40)
-            Text(company.name)
-                .foregroundStyle(.primary)
-            if verificationBadgeVisibility == .visible, company.isVerified {
-                VerifiedBadgeView()
+            HStack {
+                Text(company.name)
+                    .foregroundStyle(.primary)
+                Spacer()
+                if verificationBadgeVisibility == .visible, company.isVerified {
+                    VerifiedBadgeView()
+                }
             }
         }
     }

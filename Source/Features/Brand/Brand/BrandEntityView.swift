@@ -23,9 +23,12 @@ struct BrandEntityView: View {
                 if let brandOwner {
                     Text(brandOwner.name)
                 }
-                Text(brand.name)
-                if verificationBadgeVisibility == .visible, brand.isVerified {
-                    VerifiedBadgeView()
+                HStack {
+                    Text(brand.name)
+                    Spacer()
+                    if verificationBadgeVisibility == .visible, brand.isVerified {
+                        VerifiedBadgeView()
+                    }
                 }
             }
         }

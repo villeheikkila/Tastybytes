@@ -493,7 +493,14 @@
 
     },
     "barcode.list.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barcodes"
+          }
+        }
+      }
     },
     "barcode.management.navigationTitle" : {
       "localizations" : {
@@ -772,7 +779,14 @@
       }
     },
     "brand.list.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brands"
+          }
+        }
+      }
     },
     "brand.name.placeholder" : {
       "localizations" : {
@@ -1892,7 +1906,14 @@
       }
     },
     "company.list.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Companies"
+          }
+        }
+      }
     },
     "company.name.placeholder" : {
       "localizations" : {
@@ -2788,17 +2809,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Retry"
-          }
-        }
-      }
-    },
-    "labels.saveChanges" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save changes"
           }
         }
       }
@@ -3773,7 +3783,14 @@
       }
     },
     "product.list.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products"
+          }
+        }
+      }
     },
     "product.loadedFromBarcode.backToSearch" : {
       "localizations" : {
@@ -4938,7 +4955,14 @@
       }
     },
     "subBrand.list.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brands"
+          }
+        }
+      }
     },
     "subBrand.mergeTo.confirmation.description" : {
       "localizations" : {

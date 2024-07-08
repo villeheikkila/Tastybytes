@@ -31,6 +31,15 @@ struct BrandScreen: View {
         self.initialScrollPosition = initialScrollPosition
     }
 
+    init(
+        brandId: Int,
+        initialScrollPosition: SubBrand.JoinedBrand? = nil
+    ) {
+        // fake data
+        _brand = State(wrappedValue: .init(id: brandId, name: "", isVerified: true, brandOwner: .init(id: 0, name: "", isVerified: true), subBrands: []))
+        self.initialScrollPosition = initialScrollPosition
+    }
+
     private var sortedSubBrands: [SubBrand.JoinedProduct] {
         brand.subBrands
             .filter { !($0.name == nil && $0.products.isEmpty) }

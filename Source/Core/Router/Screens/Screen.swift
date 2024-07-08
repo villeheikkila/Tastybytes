@@ -10,6 +10,7 @@ enum Screen: Hashable, Sendable {
     case location(Location)
     case company(Company)
     case brand(Brand.JoinedSubBrandsProductsCompany)
+    case brandById(id: Int, initialScrollPosition: SubBrand.JoinedBrand? = nil)
     case fetchBrand(Brand.JoinedCompany)
     case subBrand(SubBrand.JoinedBrand)
     case profileProducts(Profile)
@@ -143,6 +144,8 @@ enum Screen: Hashable, Sendable {
             SubBrandListScreen(subBrands: subBrands)
         case let .barcodeList(barcodes: barcodes):
             BarcodeListScreen(barcodes: barcodes)
+        case let .brandById(id, initialScrollPosition):
+            BrandScreen(brandId: id, initialScrollPosition: initialScrollPosition)
         }
     }
 
@@ -351,6 +354,10 @@ enum Screen: Hashable, Sendable {
         case let .barcodeList(barcodes: barcodes):
             hasher.combine("barcodeList")
             hasher.combine(barcodes)
+        case let .brandById(id, initialScrollPosition):
+            hasher.combine("brandById")
+            hasher.combine(id)
+            hasher.combine(initialScrollPosition)
         }
     }
 }

@@ -9,10 +9,9 @@ struct SubBrandListScreen: View {
 
     var body: some View {
         List(subBrands) { subBrand in
-            SubBrandEntityView(brand: subBrand.brand, subBrand: subBrand)
-                .onTapGesture {
-                    router.fetchAndNavigateTo(repository, .brand(id: subBrand.brand.id))
-                }
+            RouterLink(open: .screen(.brandById(id: subBrand.brand.id, initialScrollPosition: subBrand))) {
+                SubBrandEntityView(brand: subBrand.brand, subBrand: subBrand)
+            }
         }
         .listStyle(.plain)
         .verificationBadgeVisibility(.visible)

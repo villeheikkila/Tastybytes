@@ -9,12 +9,12 @@ struct BrandListScreen: View {
 
     var body: some View {
         List(brands) { brand in
-            BrandEntityView(brand: brand)
-                .onTapGesture {
-                    router.fetchAndNavigateTo(repository, .brand(id: brand.id))
-                }
+            RouterLink(open: .screen(.brandById(id: brand.id))) {
+                BrandEntityView(brand: brand)
+            }
         }
         .listStyle(.plain)
+        .verificationBadgeVisibility(.visible)
         .navigationTitle("brand.list.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
     }
