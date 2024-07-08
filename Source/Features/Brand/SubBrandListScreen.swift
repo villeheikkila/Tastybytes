@@ -15,6 +15,7 @@ struct SubBrandListScreen: View {
                 }
         }
         .listStyle(.plain)
+        .verificationBadgeVisibility(.visible)
         .navigationTitle("subBrand.list.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
     }

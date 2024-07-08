@@ -14,14 +14,16 @@ struct CompanyResultRow: View {
 }
 
 struct CompanyEntityView: View {
+    @Environment(\.verificationBadgeVisibility) private var verificationBadgeVisibility
     let company: any CompanyProtocol
 
     var body: some View {
-        HStack {
+        HStack(alignment: .center) {
             CompanyLogo(company: company, size: 40)
-            VStack(alignment: .center) {
-                Text(company.name)
-                    .foregroundStyle(.primary)
+            Text(company.name)
+                .foregroundStyle(.primary)
+            if verificationBadgeVisibility == .visible, company.isVerified {
+                VerifiedBadgeView()
             }
         }
     }

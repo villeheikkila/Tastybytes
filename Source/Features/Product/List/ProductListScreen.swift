@@ -13,6 +13,7 @@ struct ProductListScreen: View {
             ProductListRowView(product: product)
         }
         .listStyle(.plain)
+        .verificationBadgeVisibility(.visible)
         .navigationTitle("product.list.navigationTitle")
     }
 }

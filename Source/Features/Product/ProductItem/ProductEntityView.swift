@@ -5,6 +5,8 @@ import Repositories
 import SwiftUI
 
 struct ProductEntityView: View {
+    @Environment(\.verificationBadgeVisibility) private var verificationBadgeVisibility
+
     enum Extra {
         case checkInCheck, rating, companyLink, logoOnLeft, logoOnRight
     }
@@ -27,6 +29,10 @@ struct ProductEntityView: View {
                     Text(product.formatted(.fullName))
                         .font(.headline)
                         .textSelection(.enabled)
+                    if verificationBadgeVisibility == .visible, product.isVerified {
+                        VerifiedBadgeView()
+                    }
+
                     Spacer()
                     if let currentUserCheckIns = product.currentUserCheckIns, currentUserCheckIns > 0,
                        extras.contains(.checkInCheck)
@@ -71,5 +77,13 @@ struct ProductEntityView: View {
 
     private var productLogo: some View {
         ProductLogo(product: product, size: 48)
+    }
+}
+
+struct VerifiedBadgeView: View {
+    var body: some View {
+        Label("label.isVerified", systemImage: "checkmark.seal")
+            .labelStyle(.iconOnly)
+            .foregroundColor(.green)
     }
 }

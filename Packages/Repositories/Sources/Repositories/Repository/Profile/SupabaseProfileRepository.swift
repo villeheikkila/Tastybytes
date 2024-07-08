@@ -29,6 +29,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .from(.profiles)
                 .select(Profile.getQuery(.contribtions(false)))
                 .eq("id", value: id.uuidString.lowercased())
+                .not("sub_brands.name", operator: .is, value: AnyJSON.null)
                 .limit(1)
                 .single()
                 .execute()

@@ -2,6 +2,7 @@ import Models
 import SwiftUI
 
 struct BrandEntityView: View {
+    @Environment(\.verificationBadgeVisibility) private var verificationBadgeVisibility
     let brandOwner: Company?
     let brand: BrandProtocol
 
@@ -23,6 +24,9 @@ struct BrandEntityView: View {
                     Text(brandOwner.name)
                 }
                 Text(brand.name)
+                if verificationBadgeVisibility == .visible, brand.isVerified {
+                    VerifiedBadgeView()
+                }
             }
         }
     }
