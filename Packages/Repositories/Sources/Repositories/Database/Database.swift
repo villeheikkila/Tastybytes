@@ -78,7 +78,6 @@ enum Database {
         case exportData = "fnc__export_data"
         case getCategoryStats = "fnc__get_category_stats"
         case getCompanySummary = "fnc__get_company_summary"
-        case getContributionsByUser = "fnc__get_contributions_by_user"
         case getCurrentProfile = "fnc__get_current_profile"
         case getLocationInsertIfNotExist = "fnc__get_location_insert_if_not_exist"
         case getLocationSuggestions = "fnc__get_location_suggestions"

@@ -113,19 +113,6 @@ extension CategoryStatistics {
     }
 }
 
-extension Contributions {
-    enum QueryPart {
-        case value
-    }
-
-    static func getQuery(_ queryType: QueryPart) -> String {
-        switch queryType {
-        case .value:
-            "products, companies, brands, sub_brands, barcodes"
-        }
-    }
-}
-
 extension SubcategoryStatistics {
     enum QueryPart {
         case value

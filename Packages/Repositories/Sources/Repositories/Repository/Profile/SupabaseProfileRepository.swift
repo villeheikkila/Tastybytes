@@ -102,22 +102,6 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func getContributions(userId: UUID) async -> Result<Contributions, Error> {
-        do {
-            let response: Contributions = try await client
-                .rpc(fn: .getContributionsByUser, params: Contributions.ContributionsParams(id: userId))
-                .select(Contributions.getQuery(.value))
-                .limit(1)
-                .single()
-                .execute()
-                .value
-
-            return .success(response)
-        } catch {
-            return .failure(error)
-        }
-    }
-
     func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error> {
         do {
             let response: [CategoryStatistics] = try await client

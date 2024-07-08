@@ -245,34 +245,6 @@ public extension ProfileSettings {
     }
 }
 
-public struct Contributions: Codable, Sendable {
-    public let products: Int
-    public let companies: Int
-    public let brands: Int
-    public let subBrands: Int
-    public let barcodes: Int
-
-    enum CodingKeys: String, CodingKey, CaseIterable {
-        case products
-        case companies
-        case brands
-        case subBrands = "sub_brands"
-        case barcodes
-    }
-
-    public struct ContributionsParams: Codable, Sendable {
-        public init(id: UUID) {
-            self.id = id
-        }
-
-        let id: UUID
-
-        enum CodingKeys: String, CodingKey {
-            case id = "p_uid"
-        }
-    }
-}
-
 public struct CategoryStatistics: Identifiable, Codable, Sendable, CategoryProtocol {
     public let id: Int
     public let name: String
