@@ -283,6 +283,7 @@
 		5CEEA3112C3B30050009B3F5 /* BrandListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3102C3B30050009B3F5 /* BrandListScreen.swift */; };
 		5CEEA3132C3B30A60009B3F5 /* SubBrandListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3122C3B30A60009B3F5 /* SubBrandListScreen.swift */; };
 		5CEEA3152C3B31350009B3F5 /* BarcodeListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */; };
+		5CEEA3182C3BCBC70009B3F5 /* ProductListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3172C3BCBC70009B3F5 /* ProductListRowView.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -605,6 +606,7 @@
 		5CEEA3102C3B30050009B3F5 /* BrandListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandListScreen.swift; sourceTree = "<group>"; };
 		5CEEA3122C3B30A60009B3F5 /* SubBrandListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandListScreen.swift; sourceTree = "<group>"; };
 		5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeListScreen.swift; sourceTree = "<group>"; };
+		5CEEA3172C3BCBC70009B3F5 /* ProductListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListRowView.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1189,21 +1191,18 @@
 		5C90579A2B2894BE00EC157B /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA3162C3BCBB70009B3F5 /* List */,
 				5CD2EE2A2C37E156009AA949 /* ProductAdmin */,
 				5C64E7E52B701222006FC2C3 /* Helpers */,
 				5C90576B2B2894BE00EC157B /* Subcategory */,
 				5CCEE2542B29AE6900F276DF /* ProductCreation */,
 				5C9057462B2894BE00EC157B /* CategoryPickerSheet.swift */,
 				5C9057652B2894BE00EC157B /* DuplicateProduct */,
-				5C90574F2B2894BE00EC157B /* BarcodeScanner */,
-				5C90576D2B2894BE00EC157B /* BarcodeManagement */,
 				5C9057402B2894BE00EC157B /* ProductFilter */,
 				5C3907642B3208D10036253E /* ProductItem */,
 				5C9057AF2B2894BE00EC157B /* Feed */,
 				5CC276312B31F01B001032CE /* Mutation */,
 				5C82E8AA2B2F95ED00F2B369 /* Screen */,
-				5CEEA30C2C3B2D540009B3F5 /* ProductListScreen.swift */,
-				5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -1510,6 +1509,7 @@
 		5CCEE2532B29AE4D00F276DF /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEA3192C3BCBEB0009B3F5 /* Barcode */,
 				5C82E8922B2F71B400F2B369 /* ActivityFeed */,
 				5C3907652B32093D0036253E /* Admin */,
 				5C82E88C2B2F67FA00F2B369 /* Authentication */,
@@ -1665,6 +1665,33 @@
 				5CEEA3062C39B4380009B3F5 /* CheckInImageAdminSheet.swift */,
 			);
 			path = Admin;
+			sourceTree = "<group>";
+		};
+		5CEEA3162C3BCBB70009B3F5 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				5CEEA3172C3BCBC70009B3F5 /* ProductListRowView.swift */,
+				5CEEA30C2C3B2D540009B3F5 /* ProductListScreen.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		5CEEA3192C3BCBEB0009B3F5 /* Barcode */ = {
+			isa = PBXGroup;
+			children = (
+				5CEEA31A2C3BCBFB0009B3F5 /* List */,
+				5C90574F2B2894BE00EC157B /* BarcodeScanner */,
+				5C90576D2B2894BE00EC157B /* BarcodeManagement */,
+			);
+			path = Barcode;
+			sourceTree = "<group>";
+		};
+		5CEEA31A2C3BCBFB0009B3F5 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */,
+			);
+			path = List;
 			sourceTree = "<group>";
 		};
 		C923F3602AD2E95B0041D01D /* Frameworks */ = {
@@ -2078,6 +2105,7 @@
 				5C90580E2B2894BE00EC157B /* SubBrandSheet.swift in Sources */,
 				5C9057F32B2894BE00EC157B /* NewFlavorSheet.swift in Sources */,
 				5C90584F2B2894BE00EC157B /* CheckInList.swift in Sources */,
+				5CEEA3182C3BCBC70009B3F5 /* ProductListRowView.swift in Sources */,
 				5C9058402B2894BE00EC157B /* CheckInScreen.swift in Sources */,
 				5C82E8B12B2F996400F2B369 /* ProductScreenHeader.swift in Sources */,
 				5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */,

@@ -6,7 +6,9 @@ struct CompanyListScreen: View {
 
     var body: some View {
         List(companies) { company in
-            CompanyEntityView(company: company)
+            RouterLink(open: .screen(.company(company))) {
+                CompanyEntityView(company: company)
+            }
         }
         .listStyle(.plain)
         .navigationTitle("company.list.navigationTitle")

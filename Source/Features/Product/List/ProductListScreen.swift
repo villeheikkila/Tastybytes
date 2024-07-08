@@ -10,7 +10,7 @@ struct ProductListScreen: View {
 
     var body: some View {
         List(products) { product in
-            ProfileProductListRow(product: product)
+            ProductListRowView(product: product)
         }
         .listStyle(.plain)
         .navigationTitle("product.list.navigationTitle")

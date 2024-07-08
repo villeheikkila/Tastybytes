@@ -62,7 +62,7 @@ struct ProfileProductListView: View {
 
     var body: some View {
         List(filteredProducts) { product in
-            ProfileProductListRow(product: product)
+            ProductListRowView(product: product)
         }
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
@@ -146,16 +146,6 @@ struct ProfileProductListView: View {
                 state = .error([error])
             }
             logger.error("Error occured while loading products. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-}
-
-struct ProfileProductListRow: View {
-    let product: Product.Joined
-
-    var body: some View {
-        RouterLink(open: .screen(.product(product))) {
-            ProductEntityView(product: product, extras: [.rating])
         }
     }
 }
