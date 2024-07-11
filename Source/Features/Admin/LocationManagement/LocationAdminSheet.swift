@@ -54,17 +54,18 @@ struct LocationAdminSheet: View {
                 .frame(height: 150)
                 .listRowSeparator(.hidden)
             }
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(location.name)
-                    if let title = location.title {
-                        Text(title)
-                            .foregroundColor(.secondary)
+            RouterLink(open: .screen(.location(location))) {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(location.name)
+                        if let title = location.title {
+                            Text(title)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
+                .contentShape(.rect)
             }
-            .contentShape(.rect)
-            .openOnTap(.screen(.location(location)))
         }
         .customListRowBackground()
         CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)

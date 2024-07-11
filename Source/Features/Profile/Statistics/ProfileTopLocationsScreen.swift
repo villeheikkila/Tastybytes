@@ -51,24 +51,25 @@ struct TopLocationRow: View {
     let profile: Profile
 
     var body: some View {
-        HStack {
-            if let coordinate = location.location?.coordinate {
-                MapThumbnail(location: location.loc, coordinate: coordinate, distance: nil)
-            }
-            HStack(alignment: .center) {
-                VStack(alignment: .leading) {
-                    Text(location.name)
-                    if let title = location.title {
-                        Text(title)
-                            .foregroundColor(.secondary)
-                    }
+        RouterLink(open: .screen(.profileCheckIns(profile, .location(location.loc)))) {
+            HStack {
+                if let coordinate = location.location?.coordinate {
+                    MapThumbnail(location: location.loc, coordinate: coordinate, distance: nil)
                 }
-                .contentShape(.rect)
-                .accessibilityAddTraits(.isButton)
-                Spacer()
-                Text("(\(location.count.formatted()))")
+                HStack(alignment: .center) {
+                    VStack(alignment: .leading) {
+                        Text(location.name)
+                        if let title = location.title {
+                            Text(title)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .contentShape(.rect)
+                    .accessibilityAddTraits(.isButton)
+                    Spacer()
+                    Text("(\(location.count.formatted()))")
+                }
             }
-            .openOnTap(.screen(.profileCheckIns(profile, .location(location.loc))))
         }
         .listRowBackground(Color.clear)
     }

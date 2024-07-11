@@ -265,31 +265,32 @@ struct VerificationScreenProductRowView: View {
     let onDelete: () async -> Void
 
     var body: some View {
-        VStack {
-            if let createdBy = product.createdBy {
-                HStack {
-                    Avatar(profile: createdBy)
-                        .avatarSize(.small)
-                    Text(createdBy.preferredName).font(.caption).bold()
-                    Spacer()
-                    if let createdAt = product.createdAt {
-                        Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
+        RouterLink(open: .screen(.product(product))) {
+            VStack {
+                if let createdBy = product.createdBy {
+                    HStack {
+                        Avatar(profile: createdBy)
+                            .avatarSize(.small)
+                        Text(createdBy.preferredName).font(.caption).bold()
+                        Spacer()
+                        if let createdAt = product.createdAt {
+                            Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
+                        }
                     }
                 }
+                ProductEntityView(product: product)
+                    .contentShape(.rect)
+                    .accessibilityAddTraits(.isLink)
             }
-            ProductEntityView(product: product)
-                .contentShape(.rect)
-                .accessibilityAddTraits(.isLink)
-                .openOnTap(.screen(.product(product)))
-                .swipeActions {
-                    ProgressButton("labels.verify", systemImage: "checkmark", action: onVerify)
-                        .tint(.green)
-                    RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: onEdit)))).tint(.yellow)
-                    ProgressButton("labels.delete", systemImage: "trash", action: {
-                        showDeleteProductConfirmationDialog = true
-                    })
-                    .tint(.red)
-                }
+        }
+        .swipeActions {
+            ProgressButton("labels.verify", systemImage: "checkmark", action: onVerify)
+                .tint(.green)
+            RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: onEdit)))).tint(.yellow)
+            ProgressButton("labels.delete", systemImage: "trash", action: {
+                showDeleteProductConfirmationDialog = true
+            })
+            .tint(.red)
         }
         .confirmationDialog("product.delete.confirmation.title",
                             isPresented: $showDeleteProductConfirmationDialog,
