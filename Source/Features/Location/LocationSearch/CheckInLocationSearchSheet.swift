@@ -21,7 +21,7 @@ struct CheckInLocationSearchSheet: View {
     @State private var searchResults = [Location]()
     @State private var recentLocations = [Location]()
     @State private var nearbyLocations = [Location]()
-    @State private var searchText = ""
+    @State private var searchTerm = ""
     @Binding private var initialLocation: Location?
     @State private var currentLocation: CLLocation?
 
@@ -37,7 +37,7 @@ struct CheckInLocationSearchSheet: View {
     }
 
     var hasSearched: Bool {
-        !searchText.isEmpty || initialLocation != nil
+        !searchTerm.isEmpty || initialLocation != nil
     }
 
     private var centerCoordinate: CLLocationCoordinate2D {
@@ -53,7 +53,7 @@ struct CheckInLocationSearchSheet: View {
             }
         }
         .scrollContentBackground(.hidden)
-        .searchable(text: $searchText)
+        .searchable(text: $searchTerm)
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "") {
                 await loadInitialData()
@@ -69,13 +69,13 @@ struct CheckInLocationSearchSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task(id: searchText, milliseconds: 500) { [searchText] in
+        .task(id: searchTerm, milliseconds: 500) { [searchTerm] in
             guard initialLocation == nil else { return }
-            guard !searchText.isEmpty else {
+            guard !searchTerm.isEmpty else {
                 searchResults = []
                 return
             }
-            await search(for: searchText, centerCoordinate: centerCoordinate)
+            await search(for: searchTerm, centerCoordinate: centerCoordinate)
         }
         .task {
             await loadInitialData()

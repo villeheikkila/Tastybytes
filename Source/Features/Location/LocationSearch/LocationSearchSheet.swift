@@ -11,19 +11,19 @@ struct LocationSearchSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var searchResults = [Location]()
-    @State private var searchText: String
+    @State private var searchTerm: String
     @State private var initialLocation: Location?
 
     let onSelect: (_ location: Location) -> Void
 
     init(initialLocation: Location?, initialSearchTerm: String?, onSelect: @escaping (_ location: Location) -> Void) {
         self.onSelect = onSelect
-        searchText = initialSearchTerm ?? ""
+        searchTerm = initialSearchTerm ?? ""
         _initialLocation = State(initialValue: initialLocation)
     }
 
     var hasSearched: Bool {
-        !searchText.isEmpty || initialLocation != nil
+        !searchTerm.isEmpty || initialLocation != nil
     }
 
     private var centerCoordinate: CLLocationCoordinate2D {
@@ -44,7 +44,7 @@ struct LocationSearchSheet: View {
             }
         }
         .scrollContentBackground(.hidden)
-        .searchable(text: $searchText)
+        .searchable(text: $searchTerm)
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "") {
                 await loadInitialData()
@@ -55,12 +55,12 @@ struct LocationSearchSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task(id: searchText, milliseconds: 500) { [searchText] in
-            guard !searchText.isEmpty else {
+        .task(id: searchTerm, milliseconds: 500) { [searchTerm] in
+            guard !searchTerm.isEmpty else {
                 searchResults = []
                 return
             }
-            await search(for: searchText, centerCoordinate: centerCoordinate)
+            await search(for: searchTerm, centerCoordinate: centerCoordinate)
         }
         .task {
             await loadInitialData()
@@ -97,7 +97,7 @@ struct LocationSearchSheet: View {
 
     func loadInitialData() async {
         if initialLocation != nil {
-            await search(for: searchText, centerCoordinate: centerCoordinate)
+            await search(for: searchTerm, centerCoordinate: centerCoordinate)
         }
     }
 }

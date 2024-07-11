@@ -94,9 +94,9 @@ struct CompanySearchSheet: View {
             toolbarContent
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
-        .onSubmit(of: .search) { Task { await searchCompanies(searchTerm: searchTerm) } }
+        .onSubmit(of: .search) { Task { await search(searchTerm: searchTerm) } }
         .onChange(of: searchTerm, debounceTime: 0.5, perform: { newValue in
-            Task { await searchCompanies(searchTerm: newValue) }
+            Task { await search(searchTerm: newValue) }
         })
     }
 
@@ -109,7 +109,7 @@ struct CompanySearchSheet: View {
         status = .add
     }
 
-    func searchCompanies(searchTerm: String) async {
+    func search(searchTerm: String) async {
         guard searchTerm.count > 1 else { return }
         switch await repository.company.search(searchTerm: searchTerm) {
         case let .success(searchResults):
