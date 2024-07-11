@@ -14,6 +14,7 @@ struct MapThumbnail: View {
         HStack {
             if let image {
                 Image(uiImage: image)
+                    .clipShape(.rect(cornerRadius: 4))
             } else {
                 ProgressView()
             }
@@ -22,7 +23,6 @@ struct MapThumbnail: View {
         .task {
             image = try? await generateSnapshot(width: 60, height: 60)
         }
-        .cornerRadius(4, corners: .allCorners)
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
             showFullSizedMap = true

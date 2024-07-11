@@ -32,18 +32,19 @@ struct ProductFeedScreen: View {
     var body: some View {
         List {
             ForEach(products) { product in
-                ProductEntityView(product: product, extras: [.checkInCheck, .rating])
-                    .contentShape(.rect)
-                    .accessibilityAddTraits(.isLink)
-                    .openOnTap(.screen(.product(product)))
-                    .onAppear {
-                        if product == products.last, isLoading != true {
-                            loadingAdditionalItemsTask = Task {
-                                defer { loadingAdditionalItemsTask = nil }
-                                await loadFeedItems()
-                            }
+                RouterLink(open: .screen(.product(product))) {
+                    ProductEntityView(product: product, extras: [.checkInCheck, .rating])
+                        .contentShape(.rect)
+                        .accessibilityAddTraits(.isLink)
+                }
+                .onAppear {
+                    if product == products.last, isLoading != true {
+                        loadingAdditionalItemsTask = Task {
+                            defer { loadingAdditionalItemsTask = nil }
+                            await loadFeedItems()
                         }
                     }
+                }
             }
             if isLoading, !isRefreshing {
                 ProgressView()

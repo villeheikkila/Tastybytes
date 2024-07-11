@@ -28,26 +28,6 @@ public extension View {
     }
 }
 
-public struct RoundedCorner: Shape {
-    var radius: Double = .infinity
-    var corners: UIRectCorner = .allCorners
-
-    public func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
-    }
-}
-
-public extension View {
-    func cornerRadius(_ radius: Double, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
 public extension View {
     func onChange<Value>(
         of value: Value,
