@@ -49,7 +49,7 @@ struct EditLogoSection: View {
             }
         }
         .customListRowBackground()
-        .task(id: selectedLogo) {
+        .task(id: selectedLogo) { @MainActor in
             guard let selectedLogo else { return }
             guard let data = await selectedLogo.getJPEG() else {
                 logger.error("Failed to convert image to JPEG")

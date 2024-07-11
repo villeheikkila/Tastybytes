@@ -3550,6 +3550,12 @@
     "Pick an unique username" : {
 
     },
+    "product.admin.editSuggestion.delete.description" : {
+
+    },
+    "product.admin.editSuggestion.delete.label" : {
+
+    },
     "product.admin.navigationTitle" : {
       "localizations" : {
         "en" : {

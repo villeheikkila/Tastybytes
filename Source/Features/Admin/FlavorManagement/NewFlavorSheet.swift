@@ -10,7 +10,7 @@ struct NewFlavorSheet: View {
     var body: some View {
         Form {
             TextField("flavor.name.placeholder", text: $name)
-            ProgressButton("labels.add", action: {
+            ProgressButton("labels.add", action: { [name] in
                 await onSubmit(name)
                 dismiss()
             })

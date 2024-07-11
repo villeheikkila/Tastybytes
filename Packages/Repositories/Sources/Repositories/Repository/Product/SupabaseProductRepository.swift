@@ -336,9 +336,24 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func createUpdateSuggestion(productEditSuggestionParams: Product
-        .EditSuggestionRequest) async -> Result<Void, Error>
-    {
+    func deleteProductDuplicateSuggestion(_ duplicateSuggestion: ProductDuplicateSuggestion) async -> Result<Void, Error> {
+        do {
+            try await client
+                .from(.productDuplicateSuggestions)
+                .delete()
+                .eq("product_id", value: duplicateSuggestion.product.id)
+                .eq("duplicate_of_product_id", value: duplicateSuggestion.duplicate.id)
+                .select()
+                .single()
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<Void, Error> {
         do {
             try await client
                 .from(.productEditSuggestions)

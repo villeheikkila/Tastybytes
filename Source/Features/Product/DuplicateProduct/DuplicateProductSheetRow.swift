@@ -5,7 +5,7 @@ import SwiftUI
 struct DuplicateProductSheetRow: View {
     @State private var showMergeToProductConfirmationDialog = false
     let product: Product.Joined
-    let mode: DuplicateProductSheet.Mode
+    let mode: ProductDuplicateScreen.Mode
     let onAction: (_ product: Product.Joined) async -> Void
 
     var body: some View {

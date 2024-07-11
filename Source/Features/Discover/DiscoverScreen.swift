@@ -71,7 +71,7 @@ struct DiscoverScreen: View {
         .overlay {
             if let error, currentScopeIsEmpty {
                 ScreenContentUnavailableView(errors: [error], description: nil) {
-                    await loadData(searchKey: searchKey)
+                    await loadData(searchKey: searchKey, productFilter: productFilter)
                 }
             }
         }
@@ -110,7 +110,7 @@ struct DiscoverScreen: View {
             }
         }
         .task(id: searchKey, milliseconds: 200) { [searchKey] in
-            await loadData(searchKey: searchKey)
+            await loadData(searchKey: searchKey, productFilter: productFilter)
         }
         .onChange(of: searchScope) {
             searchKey = .text(searchTerm: searchTerm, searchScope: searchScope)
@@ -206,7 +206,7 @@ struct DiscoverScreen: View {
         }
     }
 
-    func loadData(searchKey: SearchKey?) async {
+    func loadData(searchKey: SearchKey?, productFilter: Product.Filter?) async {
         guard let searchKey else {
             logger.info("Empty search key. Reset.")
             withAnimation {

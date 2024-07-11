@@ -92,7 +92,7 @@ public extension ProgressButton where LabelView == Text {
     init(_ label: LocalizedStringKey,
          role: ButtonRole? = nil,
          actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
-         action: @escaping () async -> Void)
+         action: @MainActor @escaping () async -> Void)
     {
         self.init(role: role, action: action, actionOptions: actionOptions) {
             Text(label)

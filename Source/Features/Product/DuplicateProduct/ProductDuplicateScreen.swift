@@ -6,8 +6,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct DuplicateProductSheet: View {
-    private let logger = Logger(category: "DuplicateProductSheet")
+struct ProductDuplicateScreen: View {
+    private let logger = Logger(category: "ProductDuplicateScreen")
     enum Mode {
         case mergeDuplicate, reportDuplicate
     }

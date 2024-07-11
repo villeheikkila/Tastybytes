@@ -42,7 +42,7 @@ struct ActivityWatchTabContent: View {
         }
         .listStyle(.plain)
         .refreshable {
-            await checkInLoader.fetchFeedItems(reset: true)
+            await checkInLoader.fetchFeedItems(reset: true, showCheckInsFrom: .everyone)
         }
         .overlay {
             if checkInLoader.errorContentUnavailable != nil {

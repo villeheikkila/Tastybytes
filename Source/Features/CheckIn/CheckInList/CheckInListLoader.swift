@@ -45,11 +45,11 @@ final class CheckInListLoader {
         if isRefresh {
             logger.info("Refreshing check-in feed data")
             isRefreshing = true
-            await fetchFeedItems(reset: true)
+            await fetchFeedItems(reset: true, showCheckInsFrom: showCheckInsFrom)
             isRefreshing = false
             return
         }
-        await fetchFeedItems()
+        await fetchFeedItems(showCheckInsFrom: showCheckInsFrom)
     }
 
     func onCreateCheckIn(_ checkIn: CheckIn) {
@@ -80,7 +80,7 @@ final class CheckInListLoader {
         loadingCheckInsOnAppearTask = Task {
             defer { loadingCheckInsOnAppearTask = nil }
             logger.info("Loading more items invoked")
-            await fetchFeedItems()
+            await fetchFeedItems(showCheckInsFrom: showCheckInsFrom)
         }
     }
 
@@ -93,7 +93,7 @@ final class CheckInListLoader {
     }
 
     @discardableResult
-    func fetchFeedItems(reset: Bool = false) async -> [CheckIn] {
+    func fetchFeedItems(reset: Bool = false, showCheckInsFrom: CheckInSegment) async -> [CheckIn] {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
         errorContentUnavailable = nil

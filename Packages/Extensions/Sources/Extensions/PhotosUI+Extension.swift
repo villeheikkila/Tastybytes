@@ -1,8 +1,11 @@
 import PhotosUI
 import SwiftUI
 
+// TODO: Get rid of this asap
+extension PhotosPickerItem: @retroactive @unchecked Sendable {}
+
 public extension PhotosPickerItem {
-    @MainActor func getImageData() async -> Data? {
+    func getImageData() async -> sending Data? {
         do {
             guard let imageData = try await loadTransferable(type: Data.self) else { return nil }
             return imageData
@@ -11,14 +14,10 @@ public extension PhotosPickerItem {
         }
     }
 
-    @MainActor func getJPEG() async -> Data? {
-        do {
-            guard let imageData = try await loadTransferable(type: Data.self) else { return nil }
-            guard let image = UIImage(data: imageData) else { return nil }
-            return image.jpegData(compressionQuality: 0.5)
-        } catch {
-            return nil
-        }
+    func getJPEG() async -> sending Data? {
+        guard let imageData = await getImageData() else { return nil }
+        guard let image = UIImage(data: imageData) else { return nil }
+        return image.jpegData(compressionQuality: 0.5)
     }
 }
 

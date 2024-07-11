@@ -64,7 +64,7 @@ struct AccountSettingsScreen: View {
                     "account.email.sendVerificationLink.label",
                     actionOptions: [],
                     action: {
-                        await changeEmail()
+                        await changeEmail(email: email)
                     }
                 )
                 .transition(.slide)
@@ -112,7 +112,7 @@ struct AccountSettingsScreen: View {
         }
     }
 
-    func changeEmail() async {
+    func changeEmail(email: String) async {
         switch await repository.auth.sendEmailVerification(email: email) {
         case .success:
             router.open(.toast(.success("account.feedback.sent.toast")))

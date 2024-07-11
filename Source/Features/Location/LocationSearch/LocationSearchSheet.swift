@@ -60,7 +60,7 @@ struct LocationSearchSheet: View {
                 searchResults = []
                 return
             }
-            await search(for: searchText)
+            await search(for: searchText, centerCoordinate: centerCoordinate)
         }
         .task {
             await loadInitialData()
@@ -71,7 +71,7 @@ struct LocationSearchSheet: View {
         ToolbarDismissAction()
     }
 
-    func search(for query: String?) async {
+    func search(for query: String?, centerCoordinate: CLLocationCoordinate2D) async {
         if let query {
             do {
                 searchResults = try await searchLocationsNatural(query: query, center: centerCoordinate, radius: radius)
@@ -97,7 +97,7 @@ struct LocationSearchSheet: View {
 
     func loadInitialData() async {
         if initialLocation != nil {
-            await search(for: searchText)
+            await search(for: searchText, centerCoordinate: centerCoordinate)
         }
     }
 }

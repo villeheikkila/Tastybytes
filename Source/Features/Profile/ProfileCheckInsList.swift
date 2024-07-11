@@ -89,7 +89,7 @@ struct ProfileCheckInsListInnerView: View {
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .refreshable {
-            await checkInLoader.fetchFeedItems(reset: true)
+            await checkInLoader.fetchFeedItems(reset: true, showCheckInsFrom: .you)
         }
         .overlay {
             if checkInLoader.errorContentUnavailable != nil {
@@ -97,7 +97,7 @@ struct ProfileCheckInsListInnerView: View {
                     Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
                 } actions: {
                     ProgressButton("labels.reload") {
-                        await checkInLoader.fetchFeedItems(reset: true)
+                        await checkInLoader.fetchFeedItems(reset: true, showCheckInsFrom: .you)
                     }
                 }
             } else if state == .populated, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {

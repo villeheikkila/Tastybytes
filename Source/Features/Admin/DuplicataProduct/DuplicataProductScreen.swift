@@ -19,7 +19,7 @@ struct DuplicateProductScreen: View {
 
     var body: some View {
         List(duplicateProductSuggestions) { duplicateProductSuggestion in
-            DuplicateProductScreeRow(duplicateProductSuggestion: duplicateProductSuggestion)
+            DuplicateProductScreeRow(duplicateProductSuggestion: duplicateProductSuggestion, onDelete: deleteProductSuggestion)
         }
         .listStyle(.plain)
         .overlay {
@@ -61,11 +61,26 @@ struct DuplicateProductScreen: View {
             logger.error("Fetching duplicate products failed. Error: \(error) (\(#file):\(#line))")
         }
     }
+
+    func deleteProductSuggestion(_ duplicateProductSuggestion: ProductDuplicateSuggestion) async {
+        switch await repository.product.deleteProductDuplicateSuggestion(duplicateProductSuggestion) {
+        case .success:
+            withAnimation {
+                duplicateProductSuggestions = duplicateProductSuggestions.removing(duplicateProductSuggestion)
+            }
+        case let .failure(error):
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Delete product duplicate suggestion. Error: \(error) (\(#file):\(#line))")
+        }
+    }
 }
 
 struct DuplicateProductScreeRow: View {
-    @State private var showDeleteProductConfirmation = false
+    @State private var showDeleteSuggestionConfirmation = false
     let duplicateProductSuggestion: ProductDuplicateSuggestion
+
+    let onDelete: (_ suggestion: ProductDuplicateSuggestion) async -> Void
 
     var body: some View {
         VStack {
@@ -84,6 +99,26 @@ struct DuplicateProductScreeRow: View {
                 .contentShape(.rect)
                 .accessibilityAddTraits(.isLink)
                 .openOnTap(.screen(.product(duplicateProductSuggestion.duplicate)))
+        }
+        .swipeActions {
+            Button("labels.delete", systemImage: "trash") {
+                showDeleteSuggestionConfirmation = true
+            }
+            .tint(.red)
+        }
+        .confirmationDialog(
+            "product.admin.editSuggestion.delete.description",
+            isPresented: $showDeleteSuggestionConfirmation,
+            titleVisibility: .visible,
+            presenting: duplicateProductSuggestion
+        ) { presenting in
+            ProgressButton(
+                "product.admin.editSuggestion.delete.label",
+                action: {
+                    await onDelete(presenting)
+                }
+            )
+            .tint(.green)
         }
     }
 }

@@ -19,18 +19,18 @@ class SubscriptionEnvironmentModel {
 
     var subscriptionStatus: SubscriptionStatus = .notSubscribed
 
-    func onTaskStatusChange(taskStatus: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions: [SubscriptionProduct]) async {
-        let status = await productSubscription.getStatusFromTaskStatus(taskStatuses: taskStatus, productSubscriptions: productSubscriptions)
-        switch status {
-        case let .success(status):
-            subscriptionStatus = status
-            logger.info("Subscription status: \(status.description)")
-        case let .failure(error):
-            subscriptionStatus = .notSubscribed
-            logger.error("Failed to check subscription status: \(error)")
-        case .loading: break
-        @unknown default: break
-        }
+    func onTaskStatusChange(taskStatus _: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions _: [SubscriptionProduct]) async {
+//        let status = await productSubscription.getStatusFromTaskStatus(taskStatuses: taskStatus, productSubscriptions: productSubscriptions)
+//        switch status {
+//        case let .success(status):
+//            subscriptionStatus = status
+//            logger.info("Subscription status: \(status.description)")
+//        case let .failure(error):
+//            subscriptionStatus = .notSubscribed
+//            logger.error("Failed to check subscription status: \(error)")
+//        case .loading: break
+//        @unknown default: break
+//        }
     }
 
     func onInAppPurchaseCompletion(product: StoreKit.Product, result: Result<StoreKit.Product.PurchaseResult, Error>) async {

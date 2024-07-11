@@ -107,7 +107,7 @@
 		5C9058022B2894BE00EC157B /* SubscriptionStoreContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057602B2894BE00EC157B /* SubscriptionStoreContent.swift */; };
 		5C9058032B2894BE00EC157B /* SubcategoryAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057622B2894BE00EC157B /* SubcategoryAdminSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058042B2894BE00EC157B /* CategoryCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057642B2894BE00EC157B /* CategoryCreationSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058052B2894BE00EC157B /* DuplicateProductSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057662B2894BE00EC157B /* DuplicateProductSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C9058052B2894BE00EC157B /* ProductDuplicateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057662B2894BE00EC157B /* ProductDuplicateScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058062B2894BE00EC157B /* ServingStyleManagementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057682B2894BE00EC157B /* ServingStyleManagementSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058072B2894BE00EC157B /* CategoryServingStyleAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057692B2894BE00EC157B /* CategoryServingStyleAdminSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058082B2894BE00EC157B /* CheckInDatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90576A2B2894BE00EC157B /* CheckInDatePickerSheet.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -428,7 +428,7 @@
 		5C9057602B2894BE00EC157B /* SubscriptionStoreContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionStoreContent.swift; sourceTree = "<group>"; };
 		5C9057622B2894BE00EC157B /* SubcategoryAdminSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubcategoryAdminSheet.swift; sourceTree = "<group>"; };
 		5C9057642B2894BE00EC157B /* CategoryCreationSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCreationSheet.swift; sourceTree = "<group>"; };
-		5C9057662B2894BE00EC157B /* DuplicateProductSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheet.swift; sourceTree = "<group>"; };
+		5C9057662B2894BE00EC157B /* ProductDuplicateScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDuplicateScreen.swift; sourceTree = "<group>"; };
 		5C9057682B2894BE00EC157B /* ServingStyleManagementSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServingStyleManagementSheet.swift; sourceTree = "<group>"; };
 		5C9057692B2894BE00EC157B /* CategoryServingStyleAdminSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryServingStyleAdminSheet.swift; sourceTree = "<group>"; };
 		5C90576A2B2894BE00EC157B /* CheckInDatePickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInDatePickerSheet.swift; sourceTree = "<group>"; };
@@ -1026,7 +1026,7 @@
 		5C9057652B2894BE00EC157B /* DuplicateProduct */ = {
 			isa = PBXGroup;
 			children = (
-				5C9057662B2894BE00EC157B /* DuplicateProductSheet.swift */,
+				5C9057662B2894BE00EC157B /* ProductDuplicateScreen.swift */,
 				5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */,
 				5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */,
 			);
@@ -1965,7 +1965,7 @@
 				5C511D7B2BA78E2A00F95290 /* AuthenticationScreenContent.swift in Sources */,
 				5C9058042B2894BE00EC157B /* CategoryCreationSheet.swift in Sources */,
 				5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */,
-				5C9058052B2894BE00EC157B /* DuplicateProductSheet.swift in Sources */,
+				5C9058052B2894BE00EC157B /* ProductDuplicateScreen.swift in Sources */,
 				5C68D76F2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift in Sources */,
 				5C974CD12C04EA0B00CFE98A /* OverlayButton+View.swift in Sources */,
 				5CEEA3132C3B30A60009B3F5 /* SubBrandListScreen.swift in Sources */,

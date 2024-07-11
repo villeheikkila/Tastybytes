@@ -15,7 +15,7 @@ enum Sheet: Identifiable, Equatable {
     case subcategory(subcategories: Binding<[Subcategory]>, category: Models.Category.JoinedSubcategoriesServingStyles)
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
-    case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
+    case duplicateProduct(mode: ProductDuplicateScreen.Mode, product: Product.Joined)
     case brandAdmin(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: BrandAdminSheet.BrandUpdateCallback, onDelete: BrandAdminSheet.BrandUpdateCallback)
     case subBrandAdmin(brand: Binding<Brand.JoinedSubBrandsProductsCompany>, subBrand: SubBrand.JoinedProduct)
     case friends(taggedFriends: Binding<[Profile]>)
@@ -73,7 +73,7 @@ enum Sheet: Identifiable, Equatable {
         case let .product(mode):
             ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):
-            DuplicateProductSheet(mode: mode, product: product)
+            ProductDuplicateScreen(mode: mode, product: product)
         case let .brandAdmin(brand: brand, onUpdate, onDelete: onDelete):
             BrandAdminSheet(brand: brand, onUpdate: onUpdate, onDelete: onDelete)
         case let .subBrandAdmin(brand: brand, subBrand: subBrand):

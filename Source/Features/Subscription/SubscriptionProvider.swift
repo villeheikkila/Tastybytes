@@ -18,12 +18,12 @@ struct SubscriptionProvider<Content: View>: View {
                     .task {
                         await subscriptionEnvironmentModel.initializeActiveTransactions()
                     }
-                    .task {
-                        await subscriptionEnvironmentModel.productSubscription.observeTransactionUpdates()
-                    }
-                    .task {
-                        await subscriptionEnvironmentModel.productSubscription.checkForUnfinishedTransactions()
-                    }
+//                    .task {
+//                        await subscriptionEnvironmentModel.productSubscription.observeTransactionUpdates()
+//                    }
+//                    .task {
+//                        await subscriptionEnvironmentModel.productSubscription.checkForUnfinishedTransactions()
+//                    }
             }
         }
     }

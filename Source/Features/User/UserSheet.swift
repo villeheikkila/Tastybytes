@@ -77,7 +77,7 @@ struct UserSheet: View {
         .overlay {
             if state != .populated {
                 ScreenStateOverlayView(state: state, errorDescription: "") {
-                    await searchUsers()
+                    await searchUsers(searchTerm: searchTerm)
                 }
             } else if searchResults.isEmpty, let searchedFor {
                 ContentUnavailableView.search(text: searchedFor)
@@ -91,7 +91,7 @@ struct UserSheet: View {
         }
         .searchable(text: $searchTerm)
         .disableAutocorrection(true)
-        .onSubmit(of: .search) { Task { await searchUsers() }
+        .onSubmit(of: .search) { Task { await searchUsers(searchTerm: searchTerm) }
         }
     }
 
@@ -99,7 +99,7 @@ struct UserSheet: View {
         ToolbarDismissAction()
     }
 
-    func searchUsers() async {
+    func searchUsers(searchTerm: String) async {
         state = .loading
         switch await repository.profile.search(searchTerm: searchTerm, currentUserId: profileEnvironmentModel.id) {
         case let .success(searchResults):

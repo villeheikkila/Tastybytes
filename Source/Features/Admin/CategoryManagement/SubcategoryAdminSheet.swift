@@ -63,7 +63,7 @@ struct SubcategoryAdminSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
-        ToolbarItem(placement: .primaryAction) {
+        ToolbarItem(placement: .primaryAction) { [subcategoryName] in
             ProgressButton("labels.edit", action: {
                 await appEnvironmentModel.editSubcategory(.init(id: subcategory.id, name: subcategory.name))
                 await onSubmit(subcategoryName)
