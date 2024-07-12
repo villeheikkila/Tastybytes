@@ -17,10 +17,7 @@ struct ProductMutationView: View {
     @Environment(\.isPresentedInSheet) private var isPresentedInSheet
     @FocusState private var focusedField: Focusable?
     @State private var primaryActionTask: Task<Void, Never>?
-    // Sheet status
-    @State private var isSuccess = false
     @State private var state: ScreenState = .loading
-    // Product details
     @State private var subcategories = [Subcategory]()
     @State private var category: Models.Category.JoinedSubcategoriesServingStyles? {
         didSet {
@@ -86,7 +83,12 @@ struct ProductMutationView: View {
         .task {
             await initialize()
         }
-        .sensoryFeedback(.success, trigger: isSuccess)
+    }
+
+    @ViewBuilder private var content: some View {
+        categorySection
+        brandSection
+        productSection
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -103,12 +105,6 @@ struct ProductMutationView: View {
             .fontWeight(.medium)
             .disabled(!isValid || primaryActionTask != nil)
         }
-    }
-
-    @ViewBuilder private var content: some View {
-        categorySection
-        brandSection
-        productSection
     }
 
     private var categorySection: some View {
@@ -268,7 +264,6 @@ struct ProductMutationView: View {
                 isDiscontinued: isDiscontinued
             )) {
             case let .success(updatedProduct):
-                isSuccess = true
                 if let onEdit {
                     await onEdit(updatedProduct)
                 }
@@ -295,7 +290,6 @@ struct ProductMutationView: View {
                 barcode: barcode
             )) {
             case let .success(newProduct):
-                isSuccess = true
                 if isPresentedInSheet {
                     dismiss()
                 }
