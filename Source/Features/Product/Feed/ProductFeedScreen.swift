@@ -32,7 +32,7 @@ struct ProductFeedScreen: View {
     var body: some View {
         List {
             ForEach(products) { product in
-                RouterLink(open: .screen(.product(product))) {
+                RouterLink(open: .screen(.product(product)), asTapGesture: true) {
                     ProductEntityView(product: product, extras: [.checkInCheck, .rating])
                         .contentShape(.rect)
                         .accessibilityAddTraits(.isLink)

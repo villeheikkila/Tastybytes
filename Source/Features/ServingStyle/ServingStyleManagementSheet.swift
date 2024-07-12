@@ -27,7 +27,7 @@ struct ServingStyleManagementSheet: View {
                 ProgressButton("labels.create") {
                     await createServingStyle()
                 }
-                .disabled(!newServingStyleName.isValidLength(.normal))
+                .disabled(!newServingStyleName.isValidLength(.normal(allowEmpty: false)))
             }
         }
         .navigationBarTitle("servingStyle.picker.navigationTitle")

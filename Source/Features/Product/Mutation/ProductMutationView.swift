@@ -62,7 +62,7 @@ struct ProductMutationView: View {
     let mode: Mode
 
     private var isValid: Bool {
-        category != nil && brandOwner != nil && brand != nil && name.isValidLength(.normal)
+        category != nil && brandOwner != nil && brand != nil && name.isValidLength(.normal(allowEmpty: true))
     }
 
     var body: some View {

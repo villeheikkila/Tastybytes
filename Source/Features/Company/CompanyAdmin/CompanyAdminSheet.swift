@@ -96,7 +96,7 @@ struct CompanyAdminSheet: View {
             ProgressButton("labels.edit", action: {
                 await editCompany()
             })
-            .disabled(!newCompanyName.isValidLength(.normal) || newCompanyName == company.name)
+            .disabled(!newCompanyName.isValidLength(.normal(allowEmpty: false)) || newCompanyName == company.name)
         }
     }
 

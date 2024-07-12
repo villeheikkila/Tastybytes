@@ -32,7 +32,7 @@ struct SubBrandAdminSheet: View {
     }
 
     var invalidNewName: Bool {
-        !newSubBrandName.isValidLength(.normal) || subBrand
+        !newSubBrandName.isValidLength(.normal(allowEmpty: false)) || subBrand
             .name == newSubBrandName
     }
 

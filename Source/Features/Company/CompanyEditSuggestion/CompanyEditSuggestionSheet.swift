@@ -27,7 +27,7 @@ struct CompanyEditSuggestionSheet: View {
                 ProgressButton("labels.send", action: {
                     await sendCompanyEditSuggestion()
                 })
-                .disabled(!newCompanyName.isValidLength(.normal))
+                .disabled(!newCompanyName.isValidLength(.normal(allowEmpty: true)))
             }
             .headerProminence(.increased)
             .customListRowBackground()

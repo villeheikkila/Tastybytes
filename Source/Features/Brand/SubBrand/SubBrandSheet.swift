@@ -43,7 +43,7 @@ struct SubBrandSheet: View {
                 Section("subBrand.addSubBrandFor.title \(brandWithSubBrands.name)") {
                     ScanTextField(title: "subBrand.name.placeholder", text: $subBrandName)
                     ProgressButton("labels.create", action: { await createNewSubBrand() })
-                        .disabled(!subBrandName.isValidLength(.normal))
+                        .disabled(!subBrandName.isValidLength(.normal(allowEmpty: false)))
                 }
             }
         }

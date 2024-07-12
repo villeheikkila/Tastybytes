@@ -53,7 +53,6 @@ enum Database {
         case viewActivityFeed = "view__activity_feed"
         case viewCheckInsFromFriends = "view__check_ins_from_friends"
         case viewCheckInsFromCurrentUser = "view__check_ins_from_current_user"
-        case viewSearchProductRatings = "view__search_product_ratings"
         case viewProfileProductRatings = "view__profile_product_ratings"
         case viewBrandRatings = "view__brand_ratings"
         case viewCurrentUserFriends = "view__current_user_friends"

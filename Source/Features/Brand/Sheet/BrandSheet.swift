@@ -44,7 +44,7 @@ struct BrandSheet: View {
                 Section("brand.addBrandForCompany.title \(brandOwner.name)") {
                     ScanTextField(title: "brand.name.placeholder", text: $brandName)
                     ProgressButton("labels.create", action: { await createNewBrand() })
-                        .disabled(!brandName.isValidLength(.normal))
+                        .disabled(!brandName.isValidLength(.normal(allowEmpty: false)))
                 }
             }
         }

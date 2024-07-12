@@ -48,7 +48,7 @@ struct ProductDuplicateScreen: View {
             toolbarContent
         }
         .task(id: searchTerm, milliseconds: 200) {
-            await searchProducts(name: searchTerm)
+            await search(searchTerm: searchTerm)
         }
     }
 
@@ -83,9 +83,9 @@ struct ProductDuplicateScreen: View {
         }
     }
 
-    func searchProducts(name: String) async {
-        guard name.count > 1 else { return }
-        switch await repository.product.search(searchTerm: name, filter: nil) {
+    func search(searchTerm: String) async {
+        guard searchTerm.count > 1 else { return }
+        switch await repository.product.search(searchTerm: searchTerm, filter: nil) {
         case let .success(searchResults):
             products = searchResults.filter { $0.id != product.id }
         case let .failure(error):

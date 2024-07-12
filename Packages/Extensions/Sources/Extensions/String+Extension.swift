@@ -8,14 +8,14 @@ public extension String? {
 
 public extension String {
     enum StrinLengthType {
-        case normal
+        case normal(allowEmpty: Bool = false)
         case long
     }
 
     func isValidLength(_ type: StrinLengthType) -> Bool {
         switch type {
-        case .normal:
-            isValidLength(minLength: 1, maxLength: 100)
+        case let .normal(allowEmpty):
+            isValidLength(minLength: allowEmpty ? 0 : 1, maxLength: 100)
         case .long:
             isValidLength(minLength: 1, maxLength: 1024)
         }

@@ -110,7 +110,7 @@ struct BrandAdminSheet: View {
         ToolbarItem(placement: .primaryAction) {
             ProgressButton("labels.edit") {
                 await editBrand()
-            }.disabled((!name.isValidLength(.normal) || brand.name == name) && brandOwner.id == initialBrandOwner.id)
+            }.disabled((!name.isValidLength(.normal(allowEmpty: false)) || brand.name == name) && brandOwner.id == initialBrandOwner.id)
         }
     }
 

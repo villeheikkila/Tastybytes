@@ -59,7 +59,7 @@ struct CompanySearchSheet: View {
                                 dismiss()
                             })
                         }
-                        .disabled(!companyName.isValidLength(.normal))
+                        .disabled(!companyName.isValidLength(.normal(allowEmpty: false)))
                         .buttonStyle(.borderedProminent)
                         .foregroundStyle(.black)
                         .controlSize(.large)
