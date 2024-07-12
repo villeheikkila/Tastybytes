@@ -584,12 +584,6 @@ public extension Product {
     }
 }
 
-extension CaseIterable where Self: RawRepresentable, Self.RawValue == String {
-    static var allValues: [String] {
-        allCases.map(\.rawValue)
-    }
-}
-
 public extension Product.Joined {
     func getLogoUrl(baseUrl: URL) -> URL? {
         guard let logo = logos.first else { return nil }
