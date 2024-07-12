@@ -3,26 +3,23 @@ import SwiftUI
 
 struct RouterLink<LabelView: View>: View {
     @Environment(Router.self) private var router
+    @Environment(\.routerLinkMode) private var routerLinkMode
 
     let open: Router.Open
-    let asTapGesture: Bool
     let label: LabelView
 
-    init(open: Router.Open, asTapGesture: Bool = false, @ViewBuilder label: () -> LabelView) {
+    init(open: Router.Open, @ViewBuilder label: () -> LabelView) {
         self.open = open
-        self.asTapGesture = asTapGesture
         self.label = label()
     }
 
     var body: some View {
-        if asTapGesture {
-            label
-                .accessibilityAddTraits(.isLink)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .contentShape(.rect)
-                .onTapGesture {
-                    router.open(open)
-                }
+        if routerLinkMode == .button {
+            Button(action: { router.open(open) }, label: {
+                label
+            })
+            .buttonStyle(.plain)
+            .accessibilityAddTraits(.isLink)
         } else if case let .screen(screen, resetStack, removeLast) = open {
             if UIDevice.isMac || resetStack || removeLast {
                 Button(action: { router.open(open) }, label: {
@@ -50,9 +47,24 @@ struct RouterLink<LabelView: View>: View {
     }
 }
 
+enum RouterLinkMode {
+    case button
+    case preferNavigationLink
+}
+
+extension EnvironmentValues {
+    @Entry var routerLinkMode: RouterLinkMode = .preferNavigationLink
+}
+
+extension View {
+    func routerLinkMode(_ mode: RouterLinkMode) -> some View {
+        environment(\.routerLinkMode, mode)
+    }
+}
+
 extension RouterLink where LabelView == Text {
-    init(_ label: LocalizedStringKey, open: Router.Open, asTapGesture: Bool = false) {
-        self.init(open: open, asTapGesture: asTapGesture) {
+    init(_ label: LocalizedStringKey, open: Router.Open) {
+        self.init(open: open) {
             Text(label)
         }
     }
@@ -60,8 +72,8 @@ extension RouterLink where LabelView == Text {
 
 extension RouterLink where LabelView == Text {
     @_disfavoredOverload
-    init(_ label: String, open: Router.Open, asTapGesture: Bool = false) {
-        self.init(open: open, asTapGesture: asTapGesture) {
+    init(_ label: String, open: Router.Open) {
+        self.init(open: open) {
             Text(label)
         }
     }
@@ -69,24 +81,24 @@ extension RouterLink where LabelView == Text {
 
 extension RouterLink where LabelView == Label<Text, Image> {
     @_disfavoredOverload
-    init(_ titleKey: String, systemImage: String, open: Router.Open, asTapGesture: Bool = false) {
-        self.init(open: open, asTapGesture: asTapGesture, label: {
+    init(_ titleKey: String, systemImage: String, open: Router.Open) {
+        self.init(open: open, label: {
             Label(titleKey, systemImage: systemImage)
         })
     }
 }
 
 extension RouterLink where LabelView == Label<Text, Image> {
-    init(_ titleKey: LocalizedStringKey, systemImage: String, open: Router.Open, asTapGesture: Bool = false) {
-        self.init(open: open, asTapGesture: asTapGesture, label: {
+    init(_ titleKey: LocalizedStringKey, systemImage: String, open: Router.Open) {
+        self.init(open: open, label: {
             Label(titleKey, systemImage: systemImage)
         })
     }
 }
 
 extension RouterLink where LabelView == LinkIconLabel {
-    init(_ titleKey: LocalizedStringKey, systemName: String, color: Color, open: Router.Open, asTapGesture: Bool = false) {
-        self.init(open: open, asTapGesture: asTapGesture, label: {
+    init(_ titleKey: LocalizedStringKey, systemName: String, color: Color, open: Router.Open) {
+        self.init(open: open, label: {
             LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
         })
     }

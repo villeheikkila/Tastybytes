@@ -35,10 +35,8 @@ struct NotificationScreen: View {
     var body: some View {
         List {
             ForEach(filteredNotifications) { notification in
-                HStack {
-                    notification.view
-                }
-                .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
+                notification.view
+                    .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
             }
             .onDelete { index in
                 Task {
@@ -47,6 +45,7 @@ struct NotificationScreen: View {
             }
         }
         .listStyle(.plain)
+        .routerLinkMode(.button)
         .refreshable {
             notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
         }

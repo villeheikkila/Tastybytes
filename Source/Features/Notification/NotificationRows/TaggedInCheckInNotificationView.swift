@@ -8,7 +8,7 @@ struct TaggedInCheckInNotificationView: View {
     let seenAt: Date?
 
     var body: some View {
-        RouterLink(open: .screen(.checkIn(checkIn)), asTapGesture: true) {
+        RouterLink(open: .screen(.checkIn(checkIn))) {
             NotificationFromUserWrapper(profile: checkIn.profile, createdAt: createdAt) {
                 Text(
                     "notification.taggedCheckIn.userTaggedYou \(checkIn.profile.preferredName) \(checkIn.product.formatted(.full))"
