@@ -2,7 +2,7 @@ import Foundation
 
 public struct Product: Identifiable, Codable, Hashable, Sendable {
     public let id: Int
-    public let name: String
+    public let name: String?
     public let description: String?
     public let isVerified: Bool
     public let isDiscontinued: Bool
@@ -27,6 +27,7 @@ public struct ProductDuplicateSuggestion: Codable, Hashable, Sendable, Identifia
     public let createdBy: Profile
     public let product: Product.Joined
     public let duplicate: Product.Joined
+
     enum CodingKeys: String, CodingKey {
         case createdAt = "created_at"
         case createdBy = "profiles"
@@ -72,7 +73,7 @@ public extension Product {
 
     struct EditRequest: Codable, Sendable {
         let productId: Int
-        let name: String
+        let name: String?
         let description: String?
         let categoryId: Int
         let subcategoryIds: [Int]
@@ -91,7 +92,7 @@ public extension Product {
 
         public init(
             productId: Int,
-            name: String,
+            name: String?,
             description: String?,
             categoryId: Int,
             subBrandId: Int,
@@ -212,7 +213,7 @@ public extension Product {
     }
 
     struct NewRequest: Codable, Sendable {
-        public let name: String
+        public let name: String?
         public let description: String?
         public let categoryId: Int
         public let brandId: Int
@@ -320,7 +321,7 @@ public extension Product {
 
     struct Joined: Identifiable, Hashable, Codable, Sendable {
         public let id: Int
-        public let name: String
+        public let name: String?
         public let description: String?
         public let isVerified: Bool
         public let subBrand: SubBrand.JoinedBrand
@@ -353,7 +354,7 @@ public extension Product {
 
         public init(
             id: Int,
-            name: String,
+            name: String?,
             description: String?,
             isVerified: Bool,
             subBrand: SubBrand.JoinedBrand,
@@ -542,7 +543,7 @@ public extension Product {
 
     struct JoinedCategory: Identifiable, Codable, Hashable, Sendable {
         public let id: Int
-        public let name: String
+        public let name: String?
         public let description: String?
         public let isVerified: Bool
         public let isDiscontinued: Bool
@@ -563,7 +564,7 @@ public extension Product {
 
         public init(
             id: Int,
-            name: String,
+            name: String?,
             description: String?,
             isVerified: Bool,
             isDiscontinued: Bool,

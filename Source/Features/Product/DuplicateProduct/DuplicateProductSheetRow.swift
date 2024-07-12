@@ -23,7 +23,7 @@ struct DuplicateProductSheetRow: View {
                             presenting: product)
         { presenting in
             ProgressButton(
-                mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.label \(product.name) \(presenting.formatted(.fullName))" : "duplicateProduct.markAsDuplicate.label \(product.name) \(presenting.formatted(.fullName))",
+                mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.label \(product.formatted(.fullName)) \(presenting.formatted(.fullName))" : "duplicateProduct.markAsDuplicate.label \(product.formatted(.fullName)) \(presenting.formatted(.fullName))",
                 role: .destructive
             ) {
                 await onAction(product)

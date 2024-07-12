@@ -323,7 +323,7 @@ struct ProductMutationView: View {
                     hasSubBrand = true
                 }
                 subBrand = initialProduct.subBrand
-                name = initialProduct.name
+                name = initialProduct.name ?? ""
                 description = initialProduct.description.orEmpty
                 isDiscontinued = initialProduct.isDiscontinued
                 state = .populated
