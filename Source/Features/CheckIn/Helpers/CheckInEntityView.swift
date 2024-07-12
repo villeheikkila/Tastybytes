@@ -56,27 +56,16 @@ public struct CheckInEntityView: View {
 
     private var productSection: some View {
         HStack(spacing: 12) {
-            if let logoUrl = checkIn.product.getLogoUrl(baseUrl: baseUrl) {
-                AsyncImage(url: logoUrl) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 32, height: 32)
-                        .accessibility(hidden: true)
-                } placeholder: {
-                    ProgressView()
-                }
-                .padding(.leading, 10)
+            if !checkIn.product.logos.isEmpty {
+                ProductLogoView(product: checkIn.product, size: 32)
+                    .padding(.leading, 10)
             }
             VStack(alignment: .leading, spacing: 4) {
-                HStack {
-                    CategoryView(
-                        category: checkIn.product.category,
-                        subcategories: checkIn.product.subcategories,
-                        servingStyle: checkIn.servingStyle
-                    )
-                    Spacer()
-                }
+                CategoryView(
+                    category: checkIn.product.category,
+                    subcategories: checkIn.product.subcategories,
+                    servingStyle: checkIn.servingStyle
+                )
 
                 Text(checkIn.product.formatted(.fullName))
                     .font(.headline)
@@ -89,23 +78,19 @@ public struct CheckInEntityView: View {
                         .textSelection(.enabled)
                 }
 
-                HStack {
-                    Text(checkIn.product.formatted(.brandOwner))
+                Text(checkIn.product.formatted(.brandOwner))
+                    .font(.subheadline)
+                    .textSelection(.enabled)
+                    .foregroundColor(.secondary)
+                    .contentShape(.rect)
+                    .accessibilityAddTraits(.isLink)
+
+                if let manufacturer = checkIn.variant?.manufacturer,
+                   manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id
+                {
+                    Text(manufacturer.name)
                         .font(.subheadline)
-                        .textSelection(.enabled)
                         .foregroundColor(.secondary)
-                        .contentShape(.rect)
-                        .accessibilityAddTraits(.isLink)
-
-                    if let manufacturer = checkIn.variant?.manufacturer,
-                       manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id
-                    {
-                        Text(manufacturer.name)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-
-                    Spacer()
                 }
             }
         }

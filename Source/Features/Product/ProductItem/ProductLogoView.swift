@@ -3,14 +3,19 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-struct ProductLogo: View {
+struct ProductLogoView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let product: Product.Joined
     let size: Double
 
+    var logoUrl: URL? {
+        guard let logo = product.logos.first else { return nil }
+        return logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
+    }
+
     var body: some View {
         Group {
-            if let logoUrl = product.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+            if let logoUrl {
                 RemoteImage(url: logoUrl) { image in
                     image.resizable()
                 } progress: {

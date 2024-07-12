@@ -583,10 +583,3 @@ public extension Product {
         }
     }
 }
-
-public extension Product.Joined {
-    func getLogoUrl(baseUrl: URL) -> URL? {
-        guard let logo = logos.first else { return nil }
-        return logo.getLogoUrl(baseUrl: baseUrl)
-    }
-}

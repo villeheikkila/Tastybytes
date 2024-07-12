@@ -3819,6 +3819,7 @@
       }
     },
     "product.logo.navigationTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3829,6 +3830,7 @@
       }
     },
     "product.logo.section.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5366,9 +5368,6 @@
           }
         }
       }
-    },
-    "Uploading of a product logo failed." : {
-
     },
     "user.addFriend.label" : {
       "localizations" : {

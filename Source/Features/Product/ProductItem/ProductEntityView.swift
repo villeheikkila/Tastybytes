@@ -76,7 +76,7 @@ struct ProductEntityView: View {
     }
 
     private var productLogo: some View {
-        ProductLogo(product: product, size: 48)
+        ProductLogoView(product: product, size: 48)
     }
 }
 

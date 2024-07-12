@@ -48,7 +48,7 @@ struct CheckInCardProduct: View {
                 }
             }
             if !product.logos.isEmpty {
-                ProductLogo(product: product, size: 48)
+                ProductLogoView(product: product, size: 48)
             }
         }
         .contentShape(.rect)
