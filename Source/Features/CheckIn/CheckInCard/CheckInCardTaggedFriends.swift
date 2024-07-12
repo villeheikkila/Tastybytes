@@ -17,11 +17,12 @@ struct CheckInCardTaggedFriends: View {
                 }
                 HStack(spacing: 4) {
                     ForEach(taggedProfiles) { taggedProfile in
-                        Avatar(profile: taggedProfile)
-                            .contentShape(.rect)
-                            .accessibilityAddTraits(.isLink)
-                            .allowsHitTesting(!loadedFrom.isLoadedFromProfile(taggedProfile))
-                            .openOnTap(.screen(.profile(taggedProfile)))
+                        RouterLink(open: .screen(.profile(taggedProfile))) {
+                            Avatar(profile: taggedProfile)
+                                .contentShape(.rect)
+                                .accessibilityAddTraits(.isLink)
+                        }
+                        .allowsHitTesting(!loadedFrom.isLoadedFromProfile(taggedProfile))
                     }
                     Spacer()
                 }

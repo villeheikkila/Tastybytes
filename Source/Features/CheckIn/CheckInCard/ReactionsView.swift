@@ -30,9 +30,11 @@ struct ReactionsView: View {
         HStack(alignment: .center) {
             Spacer()
             ForEach(checkInReactions) { reaction in
-                Avatar(profile: reaction.profile)
-                    .avatarSize(.medium)
-                    .fixedSize()
+                RouterLink(open: .screen(.profile(reaction.profile))) {
+                    Avatar(profile: reaction.profile)
+                        .avatarSize(.medium)
+                        .fixedSize()
+                }
             }
             Label("checkIn.reaction.react.label", systemImage: "hand.thumbsup")
                 .labelStyle(.iconOnly)

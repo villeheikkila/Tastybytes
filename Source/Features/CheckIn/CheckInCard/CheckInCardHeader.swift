@@ -9,26 +9,28 @@ struct CheckInCardHeader: View {
     let location: Location?
 
     var body: some View {
-        HStack {
-            Avatar(profile: profile)
-                .avatarSize(.large)
-            Text(profile.preferredName)
-                .font(.caption).bold()
-                .foregroundColor(.primary)
-            Spacer()
-            if let location {
-                Text(location.formatted(.withEmoji))
+        RouterLink(open: .screen(.profile(profile))) {
+            HStack {
+                Avatar(profile: profile)
+                    .avatarSize(.large)
+                Text(profile.preferredName)
                     .font(.caption).bold()
                     .foregroundColor(.primary)
-                    .contentShape(.rect)
-                    .accessibilityAddTraits(.isLink)
-                    .allowsHitTesting(!loadedFrom.isLoadedFromLocation(location))
-                    .openOnTap(.screen(.location(location)))
+                Spacer()
+                if let location {
+                    RouterLink(open: .screen(.location(location))) {
+                        Text(location.formatted(.withEmoji))
+                            .font(.caption).bold()
+                            .foregroundColor(.primary)
+                            .contentShape(.rect)
+                            .accessibilityAddTraits(.isLink)
+                            .allowsHitTesting(!loadedFrom.isLoadedFromLocation(location))
+                    }
+                }
             }
+            .contentShape(.rect)
+            .accessibilityAddTraits(.isLink)
+            .allowsHitTesting(!loadedFrom.isLoadedFromProfile(profile))
         }
-        .contentShape(.rect)
-        .accessibilityAddTraits(.isLink)
-        .allowsHitTesting(!loadedFrom.isLoadedFromProfile(profile))
-        .openOnTap(.screen(.profile(profile)))
     }
 }

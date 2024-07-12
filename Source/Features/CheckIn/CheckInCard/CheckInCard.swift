@@ -33,6 +33,7 @@ struct CheckInCard: View {
                 CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
             }.padding(.horizontal, 8)
         }
+        .routerLinkMode(.button)
     }
 }
 

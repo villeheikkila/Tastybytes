@@ -91,14 +91,12 @@ struct DuplicateProductScreeRow: View {
                 Spacer()
                 Text(duplicateProductSuggestion.createdAt.formatted(.customRelativetime)).font(.caption).bold()
             }
-            ProductEntityView(product: duplicateProductSuggestion.product)
-                .contentShape(.rect)
-                .accessibilityAddTraits(.isLink)
-                .openOnTap(.screen(.product(duplicateProductSuggestion.product)))
-            ProductEntityView(product: duplicateProductSuggestion.duplicate)
-                .contentShape(.rect)
-                .accessibilityAddTraits(.isLink)
-                .openOnTap(.screen(.product(duplicateProductSuggestion.duplicate)))
+            RouterLink(open: .screen(.product(duplicateProductSuggestion.product))) {
+                ProductEntityView(product: duplicateProductSuggestion.product)
+            }
+            RouterLink(open: .screen(.product(duplicateProductSuggestion.duplicate))) {
+                ProductEntityView(product: duplicateProductSuggestion.duplicate)
+            }
         }
         .swipeActions {
             Button("labels.delete", systemImage: "trash") {
