@@ -30,8 +30,10 @@ struct SignInWithAppleView: View {
             guard let credential = asAuthorization.credential as? ASAuthorizationAppleIDCredential,
                   let tokenData = credential.identityToken else { return }
             let token = String(decoding: tokenData, as: UTF8.self)
-
-            if let nonce, case let .failure(error) = await repository.auth.signInWithApple(token: token, nonce: nonce) {
+            guard let nonce else { return }
+            do {
+                try await repository.auth.signInWithApple(token: token, nonce: nonce)
+            } catch {
                 router.open(.alert(.init(title: .init(stringLiteral: error.localizedDescription))))
                 logger.error(
                     "Error occured when trying to sign in with Apple. Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))"

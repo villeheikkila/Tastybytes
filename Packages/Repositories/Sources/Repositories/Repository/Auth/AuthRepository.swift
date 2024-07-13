@@ -3,12 +3,12 @@ import Models
 internal import Supabase
 
 public protocol AuthRepository: Sendable {
-    func getUser() async -> Result<Models.User, Error>
-    func signInFromUrl(url: URL) async -> Result<Void, Error>
-    @discardableResult func logOut() async -> Result<Void, Error>
-    func sendEmailVerification(email: String) async -> Result<Void, Error>
-    func sendMagicLink(email: String) async -> Result<Void, Error>
-    func signInWithApple(token: String, nonce: String) async -> Result<Void, Error>
-    func authStateListener() async -> AsyncStream<AuthState>
-    func refreshSession() async -> Result<Void, Error>
+    func getUser() async throws -> Models.User
+    func signInFromUrl(url: URL) async throws
+    func logOut() async throws
+    func sendEmailVerification(email: String) async throws
+    func sendMagicLink(email: String) async throws
+    func signInWithApple(token: String, nonce: String) async throws
+    func authStateListener() async throws -> AsyncStream<AuthState>
+    func refreshSession() async throws
 }

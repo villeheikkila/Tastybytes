@@ -5,125 +5,55 @@ internal import Supabase
 struct SupabaseAuthRepository: AuthRepository {
     let client: SupabaseClient
 
-    func getUser() async -> Result<Models.User, Error> {
-        do {
-            let response = try await client.auth.session.user
-            let user = Models.User(id: response.id, email: response.email)
-            return .success(user)
-        } catch {
-            return .failure(error)
-        }
+    func getUser() async throws -> Models.User {
+        let response = try await client.auth.session.user
+        return Models.User(id: response.id, email: response.email)
     }
 
-    @discardableResult
-    func logOut() async -> Result<Void, Error> {
-        do {
-            try await client
-                .auth
-                .signOut()
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func logOut() async throws {
+        try await client
+            .auth
+            .signOut()
     }
 
-    func signInFromUrl(url: URL) async -> Result<Void, Error> {
-        do {
-            try await client
-                .auth
-                .session(from: url)
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func signInFromUrl(url: URL) async throws {
+        try await client
+            .auth
+            .session(from: url)
     }
 
-    func signInWithApple(token: String, nonce: String) async -> Result<Void, Error> {
-        do {
-            try await client.auth.signInWithIdToken(
-                credentials: .init(
-                    provider: .apple,
-                    idToken: token,
-                    nonce: nonce
-                )
+    func signInWithApple(token: String, nonce: String) async throws {
+        try await client.auth.signInWithIdToken(
+            credentials: .init(
+                provider: .apple,
+                idToken: token,
+                nonce: nonce
             )
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+        )
     }
 
-    func sendMagicLink(email: String) async -> Result<Void, Error> {
-        do {
-            try await client
-                .auth
-                .signInWithOTP(email: email, shouldCreateUser: true)
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func sendMagicLink(email: String) async throws {
+        try await client
+            .auth
+            .signInWithOTP(email: email, shouldCreateUser: true)
     }
 
-    func signUp(username: String, email: String, password: String) async -> Result<Void, Error> {
-        do {
-            try await client
-                .auth
-                .signUp(email: email, password: password, data: ["p_username": AnyJSON.string(username)])
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func signUp(username: String, email: String, password: String) async throws {
+        try await client
+            .auth
+            .signUp(email: email, password: password, data: ["p_username": AnyJSON.string(username)])
     }
 
-    func updatePassword(newPassword: String) async -> Result<Void, Error> {
-        do {
-            try await client
-                .auth.update(user: UserAttributes(password: newPassword))
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func signIn(email: String, password: String) async throws {
+        try await client
+            .auth
+            .signIn(email: email, password: password)
     }
 
-    func signIn(email: String, password: String) async -> Result<Void, Error> {
-        do {
-            try await client
-                .auth
-                .signIn(email: email, password: password)
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
-    }
-
-    func sendPasswordResetEmail(email: String) async -> Result<Void, Error> {
-        do {
-            try await client
-                .auth
-                .resetPasswordForEmail(email)
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
-    }
-
-    func sendEmailVerification(email: String) async -> Result<Void, Error> {
-        do {
-            try await client
-                .auth
-                .update(user: UserAttributes(email: email))
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func sendEmailVerification(email: String) async throws {
+        try await client
+            .auth
+            .update(user: UserAttributes(email: email))
     }
 
     func authStateListener() async -> AsyncStream<AuthState> {
@@ -139,13 +69,8 @@ struct SupabaseAuthRepository: AuthRepository {
         .eraseToStream()
     }
 
-    func refreshSession() async -> Result<Void, Error> {
-        do {
-            try await client.auth.refreshSession()
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func refreshSession() async throws {
+        try await client.auth.refreshSession()
     }
 }
 

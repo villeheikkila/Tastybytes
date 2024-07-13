@@ -66,23 +66,28 @@ public final class ProfileEnvironmentModel {
 
     // Session
     public func listenToAuthState() async {
-        for await state in await repository.auth.authStateListener() {
-            let previousState = authState
-            authState = state
-            logger.info("Auth state changed from \(String(describing: previousState)) to \(String(describing: state))")
-            if state == .authenticated {
-                await initialize()
+        do {
+            for await state in try await repository.auth.authStateListener() {
+                let previousState = authState
+                authState = state
+                logger.info("Auth state changed from \(String(describing: previousState)) to \(String(describing: state))")
+                if state == .authenticated {
+                    await initialize()
+                }
+                if Task.isCancelled {
+                    logger.info("Auth state listener cancelled")
+                    return
+                }
             }
-            if Task.isCancelled {
-                logger.info("Auth state listener cancelled")
-                return
-            }
+        } catch {
+            logger.error("Error while listening to auth state. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     public func loadSessionFromURL(url: URL) async {
-        let result = await repository.auth.signInFromUrl(url: url)
-        if case let .failure(error) = result {
+        do {
+            try await repository.auth.signInFromUrl(url: url)
+        } catch {
             logger.error("Failed to load session from url: \(url). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -182,11 +187,9 @@ public final class ProfileEnvironmentModel {
         async let profilePromise = await repository.profile.getCurrentUser()
         async let userPromise = await repository.auth.getUser()
 
-        let (profileResult, userResult) = await (profilePromise, userPromise)
-
         var errors = [Error]()
-        switch profileResult {
-        case let .success(currentUserProfile):
+        do {
+            let (currentUserProfile, userResult) = try await (profilePromise, userPromise)
             extendedProfile = currentUserProfile
             showFullName = currentUserProfile.nameDisplay == Profile.NameDisplay.fullName
             isPrivateProfile = currentUserProfile.isPrivate
@@ -195,17 +198,11 @@ public final class ProfileEnvironmentModel {
             checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
             sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
             appIcon = .currentAppIcon
+            email = userResult.email.orEmpty
             logger.info("User data initialized in \(startTime.elapsedTime())ms")
-        case let .failure(error):
+        } catch {
             errors.append(error)
             logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
-        }
-        switch userResult {
-        case let .success(user):
-            email = user.email.orEmpty
-        case let .failure(error):
-            errors.append(error)
-            logger.error("Failed to get current user data. Error: \(error) (\(#file):\(#line))")
         }
         guard !isPreviouslyLoaded else { return }
         withAnimation {
@@ -249,23 +246,22 @@ public final class ProfileEnvironmentModel {
     }
 
     public func logOut() async {
-        switch await repository.auth.logOut() {
-        case .success:
+        do {
+            try await repository.auth.logOut()
             clearTemporaryData()
             UserDefaults().reset()
-        case let .failure(error):
-            guard !error.isCancelled else { return }
+        } catch {
             alertError = .init()
             logger.error("Failed to log out. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     public func deleteCurrentAccount() async {
-        switch await repository.profile.deleteCurrentAccount() {
-        case .success:
+        do {
+            try await repository.profile.deleteCurrentAccount()
             logger.info("User succesfully deleted")
-            await repository.auth.logOut()
-        case let .failure(error):
+            try await repository.auth.logOut()
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete current account. Error: \(error) (\(#file):\(#line))")

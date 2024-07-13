@@ -41,20 +41,14 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func getCurrentUser() async -> Result<Profile.Extended, Error> {
-        do {
-            let response: Profile.Extended = try await client
-                .rpc(fn: .getCurrentProfile)
-                .select(Profile.getQuery(.extended(false)))
-                .limit(1)
-                .single()
-                .execute()
-                .value
-
-            return .success(response)
-        } catch {
-            return .failure(error)
-        }
+    func getCurrentUser() async throws -> Profile.Extended {
+        try await client
+            .rpc(fn: .getCurrentProfile)
+            .select(Profile.getQuery(.extended(false)))
+            .limit(1)
+            .single()
+            .execute()
+            .value
     }
 
     func update(update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error> {
@@ -193,16 +187,10 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func deleteCurrentAccount() async -> Result<Void, Error> {
-        do {
-            try await client
-                .rpc(fn: .deleteCurrentUser)
-                .execute()
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func deleteCurrentAccount() async throws {
+        try await client
+            .rpc(fn: .deleteCurrentUser)
+            .execute()
     }
 
     func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error> {

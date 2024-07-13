@@ -113,10 +113,10 @@ struct AccountSettingsScreen: View {
     }
 
     func changeEmail(email: String) async {
-        switch await repository.auth.sendEmailVerification(email: email) {
-        case .success:
+        do {
+            try await repository.auth.sendEmailVerification(email: email)
             router.open(.toast(.success("account.feedback.sent.toast")))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to change email. Error: \(error) (\(#file):\(#line))")
