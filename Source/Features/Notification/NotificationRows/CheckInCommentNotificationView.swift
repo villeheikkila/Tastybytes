@@ -13,6 +13,5 @@ struct CheckInCommentNotificationView: View {
                 Text("notification.checkInComment.userCommentedOnYourCheckIn \(checkInComment.profile.preferredName) \(checkInComment.checkIn.product.formatted(.full))")
             }
         }
-        .buttonStyle(.plain)
     }
 }

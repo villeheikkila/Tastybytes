@@ -15,6 +15,5 @@ struct FriendRequestNotificationView: View {
                 Spacer()
             }
         }
-        .buttonStyle(.plain)
     }
 }

@@ -7,44 +7,24 @@ struct RouterLink<LabelView: View>: View {
     @Environment(\.routerLinkDisabled) private var routerLinkDisabled
 
     let open: Router.Open
-    let label: LabelView
-
-    init(open: Router.Open, @ViewBuilder label: () -> LabelView) {
-        self.open = open
-        self.label = label()
-    }
+    @ViewBuilder let label: () -> LabelView
 
     var body: some View {
-        if routerLinkDisabled {
-            label
-        } else if routerLinkMode == .button {
-            Button(action: { router.open(open) }, label: {
-                label
-            })
-            .buttonStyle(.plain)
-            .accessibilityAddTraits(.isLink)
-        } else if case let .screen(screen, resetStack, removeLast) = open {
-            if UIDevice.isMac || resetStack || removeLast {
-                Button(action: { router.open(open) }, label: {
-                    HStack {
-                        label
-                        Spacer()
-                    }
-                    .contentShape(.rect)
-                })
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(.isLink)
+        Group {
+            if routerLinkDisabled {
+                label()
             } else {
-                NavigationLink(value: screen, label: {
-                    label
-                    Spacer()
-                })
-                .contentShape(.rect)
+                content
             }
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if routerLinkMode == .preferNavigationLink, case let .screen(screen, resetStack, removeLast) = open, !resetStack || !removeLast {
+            NavigationLink(value: screen, label: label)
         } else {
-            Button(action: {
-                router.open(open)
-            }, label: { label })
+            Button(action: { router.open(open) }, label: label)
                 .accessibilityAddTraits(.isLink)
         }
     }
@@ -74,7 +54,6 @@ extension View {
         environment(\.routerLinkDisabled, enabled)
     }
 }
-
 
 extension RouterLink where LabelView == Text {
     init(_ label: LocalizedStringKey, open: Router.Open) {

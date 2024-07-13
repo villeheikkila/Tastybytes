@@ -18,8 +18,6 @@ struct DiscoverLocationResults: View {
                                 .foregroundColor(.secondary)
                         }
                     }
-                    .contentShape(.rect)
-                    .accessibilityAddTraits(.isButton)
                 }
             }
             .listRowBackground(Color.clear)

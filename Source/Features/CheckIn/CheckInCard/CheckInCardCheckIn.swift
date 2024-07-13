@@ -32,14 +32,13 @@ struct CheckInCardCheckIn: View {
                     RouterLink(open: .screen(.location(purchaseLocation))) {
                         HStack {
                             Text("checkIn.location.purchasedFrom __\(purchaseLocation.name)__")
-                                .accessibilityAddTraits(.isLink)
                             Spacer()
                         }
                     }
-                    .allowsHitTesting(!loadedFrom.isLoadedFromLocation(purchaseLocation))
+                    .routerLinkDisabled(loadedFrom.isLoadedFromLocation(purchaseLocation))
                 }
             }
         }
-        .allowsHitTesting(loadedFrom != .checkIn)
+        .routerLinkDisabled(loadedFrom == .checkIn)
     }
 }

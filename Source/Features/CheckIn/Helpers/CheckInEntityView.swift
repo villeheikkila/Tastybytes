@@ -83,7 +83,6 @@ public struct CheckInEntityView: View {
                     .textSelection(.enabled)
                     .foregroundColor(.secondary)
                     .contentShape(.rect)
-                    .accessibilityAddTraits(.isLink)
 
                 if let manufacturer = checkIn.variant?.manufacturer,
                    manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id

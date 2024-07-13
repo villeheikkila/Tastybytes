@@ -12,34 +12,35 @@ struct CheckInCard: View {
     var body: some View {
         RouterLink(open: .screen(.checkIn(checkIn))) {
             VStack(spacing: 4) {
-                    Group {
-                        CheckInCardHeader(
-                            profile: checkIn.profile,
-                            loadedFrom: loadedFrom,
-                            location: checkIn.location
-                        )
-                        CheckInCardProduct(
-                            product: checkIn.product,
-                            loadedFrom: loadedFrom,
-                            productVariant: checkIn.variant,
-                            servingStyle: checkIn.servingStyle
-                        )
-                    }
-                    .padding(.horizontal, 8)
-                    if !checkIn.images.isEmpty {
-                        CheckInImageReelView(checkIn: checkIn, onDeleteImage: onDeleteImage)
-                    }
-                    Group {
-                        CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
-                        CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
-                        CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
-                    }
-                    .padding(.horizontal, 8)
+                Group {
+                    CheckInCardHeader(
+                        profile: checkIn.profile,
+                        loadedFrom: loadedFrom,
+                        location: checkIn.location
+                    )
+                    CheckInCardProduct(
+                        product: checkIn.product,
+                        loadedFrom: loadedFrom,
+                        productVariant: checkIn.variant,
+                        servingStyle: checkIn.servingStyle
+                    )
+                }
+                .padding(.horizontal, 8)
+                if !checkIn.images.isEmpty {
+                    CheckInImageReelView(checkIn: checkIn, onDeleteImage: onDeleteImage)
+                }
+                Group {
+                    CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
+                    CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
+                    CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
+                }
+                .padding(.horizontal, 8)
             }
             .routerLinkDisabled(false)
         }
         .routerLinkDisabled(loadedFrom == .checkIn)
         .routerLinkMode(.button)
+        .buttonStyle(.plain)
     }
 }
 

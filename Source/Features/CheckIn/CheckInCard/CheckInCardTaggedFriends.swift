@@ -19,10 +19,8 @@ struct CheckInCardTaggedFriends: View {
                     ForEach(taggedProfiles) { taggedProfile in
                         RouterLink(open: .screen(.profile(taggedProfile))) {
                             Avatar(profile: taggedProfile)
-                                .contentShape(.rect)
-                                .accessibilityAddTraits(.isLink)
                         }
-                        .allowsHitTesting(!loadedFrom.isLoadedFromProfile(taggedProfile))
+                        .routerLinkDisabled(loadedFrom.isLoadedFromProfile(taggedProfile))
                     }
                     Spacer()
                 }

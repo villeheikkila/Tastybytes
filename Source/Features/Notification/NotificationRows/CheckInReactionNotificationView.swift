@@ -13,6 +13,5 @@ struct CheckInReactionNotificationView: View {
                 Text("checkIn.notifications.userReactedToYourCheckIn.body \(checkInReaction.profile.preferredName) \(checkInReaction.checkIn.product.formatted(.full))")
             }
         }
-        .buttonStyle(.plain)
     }
 }

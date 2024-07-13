@@ -124,7 +124,6 @@ struct CheckInImageCheckInSection: View {
                 servingStyle: checkIn.servingStyle
             )
         }
-        .allowsHitTesting(false)
         .padding()
         .background(.ultraThinMaterial)
     }

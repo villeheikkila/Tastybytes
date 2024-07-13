@@ -135,7 +135,6 @@ struct AddPhotoButtonView: View {
             .frame(width: 110, height: 150)
             .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
             .shadow(radius: 1)
-            .accessibilityAddTraits(.isButton)
             .padding(.vertical, 1)
         }
     }

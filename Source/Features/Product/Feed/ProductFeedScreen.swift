@@ -34,8 +34,6 @@ struct ProductFeedScreen: View {
             ForEach(products) { product in
                 RouterLink(open: .screen(.product(product))) {
                     ProductEntityView(product: product, extras: [.checkInCheck, .rating])
-                        .contentShape(.rect)
-                        .accessibilityAddTraits(.isLink)
                 }
                 .onAppear {
                     if product == products.last, isLoading != true {

@@ -36,6 +36,7 @@ struct NotificationScreen: View {
         List {
             ForEach(filteredNotifications) { notification in
                 notification.view
+                    .buttonStyle(.plain)
                     .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
             }
             .onDelete { index in

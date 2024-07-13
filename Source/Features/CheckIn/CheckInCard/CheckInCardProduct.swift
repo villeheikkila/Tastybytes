@@ -34,8 +34,6 @@ struct CheckInCardProduct: View {
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                                 .textSelection(.enabled)
-                                .contentShape(.rect)
-                                .accessibilityAddTraits(.isLink)
                         }
 
                         if let manufacturer = productVariant?.manufacturer,
@@ -56,8 +54,7 @@ struct CheckInCardProduct: View {
                 }
             }
             .contentShape(.rect)
-            .accessibilityAddTraits(.isLink)
         }
-        .allowsHitTesting(loadedFrom != .product)
+        .routerLinkDisabled(loadedFrom == .product)
     }
 }

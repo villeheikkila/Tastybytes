@@ -15,8 +15,6 @@ struct CheckInCardFooter: View {
                     CheckInDateView(checkInAt: checkIn.checkInAt)
                     Spacer()
                 }
-                .contentShape(.rect)
-                .accessibilityAddTraits(.isLink)
             }
             .routerLinkDisabled(loadedFrom == .checkIn)
             ReactionsView(checkIn: checkIn)

@@ -15,6 +15,5 @@ struct TaggedInCheckInNotificationView: View {
                 )
             }
         }
-        .buttonStyle(.plain)
     }
 }

@@ -23,14 +23,12 @@ struct CheckInCardHeader: View {
                             .font(.caption).bold()
                             .foregroundColor(.primary)
                             .contentShape(.rect)
-                            .accessibilityAddTraits(.isLink)
-                            .allowsHitTesting(!loadedFrom.isLoadedFromLocation(location))
                     }
+                    .routerLinkDisabled(loadedFrom.isLoadedFromLocation(location))
                 }
             }
             .contentShape(.rect)
-            .accessibilityAddTraits(.isLink)
-            .allowsHitTesting(!loadedFrom.isLoadedFromProfile(profile))
         }
+        .routerLinkDisabled(loadedFrom.isLoadedFromProfile(profile))
     }
 }

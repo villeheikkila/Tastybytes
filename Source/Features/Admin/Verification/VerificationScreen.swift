@@ -279,8 +279,6 @@ struct VerificationScreenProductRowView: View {
                     }
                 }
                 ProductEntityView(product: product)
-                    .contentShape(.rect)
-                    .accessibilityAddTraits(.isLink)
             }
         }
         .swipeActions {

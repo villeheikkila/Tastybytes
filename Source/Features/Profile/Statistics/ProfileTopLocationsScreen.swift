@@ -64,8 +64,6 @@ struct TopLocationRow: View {
                                 .foregroundColor(.secondary)
                         }
                     }
-                    .contentShape(.rect)
-                    .accessibilityAddTraits(.isButton)
                     Spacer()
                     Text("(\(location.count.formatted()))")
                 }
