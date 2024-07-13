@@ -227,15 +227,13 @@
 		5CCEE2772B2C6AAF00F276DF /* CheckInCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE2792B2C6CEA00F276DF /* CheckInCardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE27B2B2C770A00F276DF /* CheckInCardProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE27A2B2C770A00F276DF /* CheckInCardProduct.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5CCEE27D2B2CA34800F276DF /* CheckInCardImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE27C2B2CA34800F276DF /* CheckInCardImage.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5CCEE27D2B2CA34800F276DF /* CheckInImageReelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE27C2B2CA34800F276DF /* CheckInImageReelView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE27F2B2CA4DC00F276DF /* CheckInCardCheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE27E2B2CA4DC00F276DF /* CheckInCardCheckIn.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE2812B2CA57700F276DF /* CheckInCardFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2802B2CA57700F276DF /* CheckInCardFooter.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE2832B2CA5D600F276DF /* CheckInCardTaggedFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE2892B2D0C0100F276DF /* CheckInListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD1F0B32B9E4FD000C76F0C /* View+InjectToasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE030E02B9E4E9200E119E4 /* View+InjectToasts.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD1F0B42B9E4FD100C76F0C /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE030DF2B9E4E9200E119E4 /* ToastView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5CD2EE122C349ACA009AA949 /* View+OpenOnTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE112C349ACA009AA949 /* View+OpenOnTap.swift */; };
 		5CD2EE162C35369B009AA949 /* View+InjectAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE152C35369B009AA949 /* View+InjectAlerts.swift */; };
 		5CD2EE192C35538A009AA949 /* ToastType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE182C35538A009AA949 /* ToastType.swift */; };
 		5CD2EE1B2C356DB2009AA949 /* LocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE1A2C356DB2009AA949 /* LocationSearchSheet.swift */; };
@@ -548,13 +546,11 @@
 		5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCard.swift; sourceTree = "<group>"; };
 		5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardHeader.swift; sourceTree = "<group>"; };
 		5CCEE27A2B2C770A00F276DF /* CheckInCardProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardProduct.swift; sourceTree = "<group>"; };
-		5CCEE27C2B2CA34800F276DF /* CheckInCardImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardImage.swift; sourceTree = "<group>"; };
+		5CCEE27C2B2CA34800F276DF /* CheckInImageReelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageReelView.swift; sourceTree = "<group>"; };
 		5CCEE27E2B2CA4DC00F276DF /* CheckInCardCheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardCheckIn.swift; sourceTree = "<group>"; };
 		5CCEE2802B2CA57700F276DF /* CheckInCardFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardFooter.swift; sourceTree = "<group>"; };
 		5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardTaggedFriends.swift; sourceTree = "<group>"; };
-		5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardContainer.swift; sourceTree = "<group>"; };
 		5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListCard.swift; sourceTree = "<group>"; };
-		5CD2EE112C349ACA009AA949 /* View+OpenOnTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OpenOnTap.swift"; sourceTree = "<group>"; };
 		5CD2EE152C35369B009AA949 /* View+InjectAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+InjectAlerts.swift"; sourceTree = "<group>"; };
 		5CD2EE182C35538A009AA949 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
 		5CD2EE1A2C356DB2009AA949 /* LocationSearchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSheet.swift; sourceTree = "<group>"; };
@@ -1384,7 +1380,6 @@
 				5C9057DC2B2894BE00EC157B /* Router.swift */,
 				5C9057DD2B2894BE00EC157B /* TabIdentifier.swift */,
 				5C9057DE2B2894BE00EC157B /* RouterProvider.swift */,
-				5CD2EE112C349ACA009AA949 /* View+OpenOnTap.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1539,11 +1534,10 @@
 				5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */,
 				5CCEE2782B2C6CEA00F276DF /* CheckInCardHeader.swift */,
 				5CCEE27A2B2C770A00F276DF /* CheckInCardProduct.swift */,
-				5CCEE27C2B2CA34800F276DF /* CheckInCardImage.swift */,
+				5CCEE27C2B2CA34800F276DF /* CheckInImageReelView.swift */,
 				5CCEE27E2B2CA4DC00F276DF /* CheckInCardCheckIn.swift */,
 				5CCEE2802B2CA57700F276DF /* CheckInCardFooter.swift */,
 				5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */,
-				5CCEE2852B2CA71600F276DF /* CheckInCardContainer.swift */,
 				5C2899DC2BA8ACA50099C976 /* CheckInDateView.swift */,
 			);
 			path = CheckInCard;
@@ -2031,7 +2025,6 @@
 				5C02A73D2B4F2A7800B497FA /* AppUnsupportedVersionState.swift in Sources */,
 				5CEEA3152C3B31350009B3F5 /* BarcodeListScreen.swift in Sources */,
 				5CD2EE1B2C356DB2009AA949 /* LocationSearchSheet.swift in Sources */,
-				5CCEE2862B2CA71600F276DF /* CheckInCardContainer.swift in Sources */,
 				5C4FC6422BA70C110025DB83 /* SendMailView.swift in Sources */,
 				5CCEE27B2B2C770A00F276DF /* CheckInCardProduct.swift in Sources */,
 				5CCEE2812B2CA57700F276DF /* CheckInCardFooter.swift in Sources */,
@@ -2042,7 +2035,6 @@
 				5C9058122B2894BE00EC157B /* CheckInLocationSearchSheet.swift in Sources */,
 				5CAADEF42B5C235D00D956C1 /* CompanyLogo.swift in Sources */,
 				5C07F2782B51EBB800D8740B /* ProfileShareLinkView.swift in Sources */,
-				5CD2EE122C349ACA009AA949 /* View+OpenOnTap.swift in Sources */,
 				5C07F27A2B51EBB800D8740B /* CompanyShareLinkView.swift in Sources */,
 				5CAADF012B5C4EED00D956C1 /* DiscoverProductRow.swift in Sources */,
 				5CD2EE232C3733EE009AA949 /* EditLogoSection.swift in Sources */,
@@ -2050,7 +2042,7 @@
 				5CEEA30D2C3B2D540009B3F5 /* ProductListScreen.swift in Sources */,
 				5C9058082B2894BE00EC157B /* CheckInDatePickerSheet.swift in Sources */,
 				5CEEA2F82C380B2E0009B3F5 /* VerificationAdminToggleView.swift in Sources */,
-				5CCEE27D2B2CA34800F276DF /* CheckInCardImage.swift in Sources */,
+				5CCEE27D2B2CA34800F276DF /* CheckInImageReelView.swift in Sources */,
 				5CD2EE292C37DA58009AA949 /* ProfileEntityView.swift in Sources */,
 				5C511D792BA78DCE00F95290 /* PrivacyPolicyView.swift in Sources */,
 				5CD3C0D72B814B400049E563 /* CreateQRCodeView.swift in Sources */,

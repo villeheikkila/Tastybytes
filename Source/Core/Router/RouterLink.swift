@@ -4,6 +4,7 @@ import SwiftUI
 struct RouterLink<LabelView: View>: View {
     @Environment(Router.self) private var router
     @Environment(\.routerLinkMode) private var routerLinkMode
+    @Environment(\.routerLinkDisabled) private var routerLinkDisabled
 
     let open: Router.Open
     let label: LabelView
@@ -14,7 +15,9 @@ struct RouterLink<LabelView: View>: View {
     }
 
     var body: some View {
-        if routerLinkMode == .button {
+        if routerLinkDisabled {
+            label
+        } else if routerLinkMode == .button {
             Button(action: { router.open(open) }, label: {
                 label
             })
@@ -61,6 +64,17 @@ extension View {
         environment(\.routerLinkMode, mode)
     }
 }
+
+extension EnvironmentValues {
+    @Entry var routerLinkDisabled: Bool = false
+}
+
+extension View {
+    func routerLinkDisabled(_ enabled: Bool) -> some View {
+        environment(\.routerLinkDisabled, enabled)
+    }
+}
+
 
 extension RouterLink where LabelView == Text {
     init(_ label: LocalizedStringKey, open: Router.Open) {

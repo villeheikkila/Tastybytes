@@ -112,26 +112,16 @@ struct CurrentUserFriendListRow: View {
                 Spacer()
                 if friend.isPending(userId: profileEnvironmentModel.profile.id) {
                     HStack(alignment: .center) {
-                        Label("friends.action.removeFriendRequest.label", systemImage: "person.fill.xmark")
-                            .imageScale(.large)
-                            .labelStyle(.iconOnly)
-                            .accessibilityAddTraits(.isButton)
-                            .onTapGesture {
-                                showFriendDeleteConfirmation = true
-                            }
-                        Label("friends.acceptRequest.label", systemImage: "person.badge.plus")
-                            .imageScale(.large)
-                            .labelStyle(.iconOnly)
-                            .accessibilityAddTraits(.isButton)
-                            .onTapGesture {
-                                Task {
-                                    await friendEnvironmentModel.updateFriendRequest(
-                                        friend: friend,
-                                        newStatus: .accepted
-                                    )
-                                }
-                            }
+                        Button("friends.action.removeFriendRequest.label", systemImage: "person.fill.xmark", action: {
+                            showFriendDeleteConfirmation = true
+                        })
+                        ProgressButton("friends.acceptRequest.label", systemImage: "person.badge.plus", action: {
+                            await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                        })
                     }
+                    .buttonStyle(.plain)
+                    .imageScale(.large)
+                    .labelStyle(.iconOnly)
                 }
             }
         }

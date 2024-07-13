@@ -212,23 +212,23 @@ struct LocationRow: View {
             if let coordinate = location.location?.coordinate {
                 MapThumbnail(location: location, coordinate: coordinate, distance: distance)
             }
-            VStack(alignment: .leading) {
-                Text(location.name)
-                if let title = location.title {
-                    Text(title)
-                        .foregroundColor(.secondary)
-                }
-                if let distance {
-                    Text(distance, format: .measurement(width: .narrow))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-            }
-            .contentShape(.rect)
-            .accessibilityAddTraits(.isButton)
-            .onTapGesture {
+            Button(action: {
                 onSelect(location)
+            }) {
+                VStack(alignment: .leading) {
+                    Text(location.name)
+                    if let title = location.title {
+                        Text(title)
+                            .foregroundColor(.secondary)
+                    }
+                    if let distance {
+                        Text(distance, format: .measurement(width: .narrow))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
+            .buttonStyle(.plain)
         }
         .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
         .listRowBackground(Color.clear)

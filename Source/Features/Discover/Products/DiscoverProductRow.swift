@@ -9,7 +9,7 @@ struct DiscoverProductRow: View {
     private let logger = Logger(category: "DiscoverProductRow")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @State private var addBarcodeTo: Product.Joined?
+    @State private var showAddBarcodeToConfirmationDialog = false
 
     let product: Product.Joined
     @Binding var barcode: Barcode?
@@ -27,13 +27,13 @@ struct DiscoverProductRow: View {
                 if barcode == nil || product.barcodes.contains(where: { $0.isBarcode(barcode) }) {
                     router.open(.screen(.product(product)))
                 } else {
-                    addBarcodeTo = product
+                    showAddBarcodeToConfirmationDialog = true
                 }
             }
             .confirmationDialog(
                 "checkIn.addBarcode.confirmation.title",
-                isPresented: $addBarcodeTo.isNotNull(),
-                presenting: addBarcodeTo
+                isPresented: $showAddBarcodeToConfirmationDialog,
+                presenting: product
             ) { presenting in
                 ProgressButton(
                     "checkIn.addBarcode.label \(presenting.formatted(.fullName))",
@@ -56,7 +56,6 @@ struct DiscoverProductRow: View {
         switch await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
         case .success:
             self.barcode = nil
-            self.addBarcodeTo = nil
             router.open(.toast(.success("checkIn.addBarcode.success.toast")))
             router.open(.screen(.product(addBarcodeTo)))
         case let .failure(error):

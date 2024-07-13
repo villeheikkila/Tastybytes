@@ -94,7 +94,7 @@ struct CheckInWatchListItem: View {
                 .font(.headline)
                 .foregroundColor(.primary)
 
-            CheckInImageScrollView(checkIn: checkIn)
+            CheckInImageReelView(checkIn: checkIn, onDeleteImage: { _ in })
 
             if let rating = checkIn.rating {
                 RatingView(rating: rating)

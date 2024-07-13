@@ -124,20 +124,19 @@ struct AddPhotoButtonView: View {
     let action: () -> Void
 
     var body: some View {
-        VStack(alignment: .center) {
-            Spacer()
-            Label("checkIn.image.add", systemImage: "camera")
-                .font(.system(size: 24))
-            Spacer()
+        Button(action: action) {
+            VStack(alignment: .center) {
+                Spacer()
+                Label("checkIn.image.add", systemImage: "camera")
+                    .font(.system(size: 24))
+                Spacer()
+            }
+            .labelStyle(.iconOnly)
+            .frame(width: 110, height: 150)
+            .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
+            .shadow(radius: 1)
+            .accessibilityAddTraits(.isButton)
+            .padding(.vertical, 1)
         }
-        .labelStyle(.iconOnly)
-        .frame(width: 110, height: 150)
-        .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-        .shadow(radius: 1)
-        .accessibilityAddTraits(.isButton)
-        .onTapGesture {
-            action()
-        }
-        .padding(.vertical, 1)
     }
 }

@@ -10,18 +10,15 @@ struct CheckInCardFooter: View {
 
     var body: some View {
         HStack {
-            HStack {
-                CheckInDateView(checkInAt: checkIn.checkInAt)
-                Spacer()
-            }
-            .allowsHitTesting(loadedFrom != .checkIn)
-            .contentShape(.rect)
-            .accessibilityAddTraits(.isLink)
-            .onTapGesture {
-                if loadedFrom != .checkIn {
-                    router.open(.screen(.checkIn(checkIn)))
+            RouterLink(open: .screen(.checkIn(checkIn))) {
+                HStack {
+                    CheckInDateView(checkInAt: checkIn.checkInAt)
+                    Spacer()
                 }
+                .contentShape(.rect)
+                .accessibilityAddTraits(.isLink)
             }
+            .routerLinkDisabled(loadedFrom == .checkIn)
             ReactionsView(checkIn: checkIn)
         }
     }

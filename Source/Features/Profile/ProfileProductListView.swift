@@ -80,6 +80,7 @@ struct ProfileProductListView: View {
             }
         }
         .navigationTitle(navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }

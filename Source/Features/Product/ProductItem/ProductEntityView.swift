@@ -50,15 +50,13 @@ struct ProductEntityView: View {
                         .textSelection(.enabled)
                 }
 
-                Text(product.formatted(.brandOwner))
-                    .font(.subheadline)
-                    .textSelection(.enabled)
-                    .foregroundColor(.secondary)
-                    .if(extras.contains(.companyLink), transform: { view in
-                        view.contentShape(.rect)
-                            .accessibilityAddTraits(.isLink)
-                            .openOnTap(.screen(.company(product.subBrand.brand.brandOwner)))
-                    })
+                RouterLink(open: .screen(.company(product.subBrand.brand.brandOwner))) {
+                    Text(product.formatted(.brandOwner))
+                        .font(.subheadline)
+                        .textSelection(.enabled)
+                        .foregroundColor(.secondary)
+                }
+                .routerLinkDisabled(!extras.contains(.companyLink))
 
                 HStack {
                     CategoryView(category: product.category, subcategories: product.subcategories)

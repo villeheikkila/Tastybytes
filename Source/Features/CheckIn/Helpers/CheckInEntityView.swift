@@ -51,7 +51,7 @@ public struct CheckInEntityView: View {
     }
 
     @ViewBuilder private var checkInImage: some View {
-        CheckInCardImage(checkIn: checkIn, onDeleteImage: nil)
+        CheckInImageReelView(checkIn: checkIn, onDeleteImage: nil)
     }
 
     private var productSection: some View {
