@@ -79,11 +79,3 @@ struct ProductEntityView: View {
         ProductLogoView(product: product, size: 48)
     }
 }
-
-struct VerifiedBadgeView: View {
-    var body: some View {
-        Label("label.isVerified", systemImage: "checkmark.seal")
-            .labelStyle(.iconOnly)
-            .foregroundColor(.green)
-    }
-}
