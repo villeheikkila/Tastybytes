@@ -36,11 +36,11 @@ struct ActivityScreen: View {
                 }
             }
             .listStyle(.plain)
-            .checkInCardLoadedFrom(.activity(profileEnvironmentModel.profile))
             .scrollIndicators(.hidden)
             .refreshable {
                 await fetchFeedItems(reset: true)
             }
+            .checkInCardLoadedFrom(.activity(profileEnvironmentModel.profile))
             .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }

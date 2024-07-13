@@ -83,15 +83,15 @@ struct ProfileCheckInsListInnerView: View {
         List {
             filter.header
             CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn,
-                               onLoadMore: checkInLoader.onLoadMore)
+                                   onLoadMore: checkInLoader.onLoadMore)
             CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
         }
         .listStyle(.plain)
-        .checkInCardLoadedFrom(.activity(profileEnvironmentModel.profile))
         .scrollIndicators(.hidden)
         .refreshable {
             await checkInLoader.fetchFeedItems(reset: true, showCheckInsFrom: .you)
         }
+        .checkInCardLoadedFrom(.activity(profileEnvironmentModel.profile))
         .overlay {
             if checkInLoader.errorContentUnavailable != nil {
                 ContentUnavailableView {

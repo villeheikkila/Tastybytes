@@ -35,17 +35,15 @@ struct CheckInCard: View {
     }
 }
 
-
 extension EnvironmentValues {
     @Entry var checkInCardLoadedFrom: CheckInCard.LoadedFrom = .checkIn
 }
 
 extension View {
-    func checkInCardLoadedFrom(_  checkInCardLoadedFrom: CheckInCard.LoadedFrom) -> some View {
+    func checkInCardLoadedFrom(_ checkInCardLoadedFrom: CheckInCard.LoadedFrom) -> some View {
         environment(\.checkInCardLoadedFrom, checkInCardLoadedFrom)
     }
 }
-
 
 extension CheckInCard {
     enum LoadedFrom: Equatable {

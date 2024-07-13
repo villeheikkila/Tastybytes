@@ -33,6 +33,7 @@ struct CheckInScreen: View {
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
+            .checkInCardLoadedFrom(.checkIn)
             .overlay {
                 ScreenStateOverlayView(state: state, errorDescription: "checkIn.screen.failedToLoad \(checkIn.product.formatted(.fullName)) \(checkIn.profile.preferredName)", errorAction: {
                     await loadCheckInData(withHaptics: true)
@@ -83,7 +84,6 @@ struct CheckInScreen: View {
         CheckInCard(checkIn: checkIn, onDeleteImage: { deletedImageEntity in
             checkIn = checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity))
         })
-        .checkInCardLoadedFrom(.checkIn)
         .contextMenu {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)

@@ -31,7 +31,8 @@ struct CheckInListContentView: View {
             .id(checkIn.id)
             .onAppear {
                 if let index = checkIns.firstIndex(of: checkIn),
-                   index == checkIns.count - 8 {
+                   index == checkIns.count - 8
+                {
                     onLoadMore()
                 }
             }

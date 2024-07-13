@@ -47,10 +47,10 @@ struct LocationInnerScreen: View {
             }
         }
         .listStyle(.plain)
-        .checkInCardLoadedFrom(.location(location))
         .refreshable {
             await getLocationData(isRefresh: true)
         }
+        .checkInCardLoadedFrom(.location(location))
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "") {
                 await getLocationData(isRefresh: true)

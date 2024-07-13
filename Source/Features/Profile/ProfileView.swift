@@ -63,6 +63,7 @@ struct ProfileInnerView: View {
         .refreshable {
             await getProfileData(isRefresh: true)
         }
+        .checkInCardLoadedFrom(.profile(profile))
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
                 await getProfileData(isRefresh: true)
@@ -113,7 +114,6 @@ struct ProfileInnerView: View {
         CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
             checkInLoader.onLoadMore()
         })
-        .checkInCardLoadedFrom(.profile(profile))
         CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
     }
 
