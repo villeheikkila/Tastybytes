@@ -3,8 +3,8 @@ import Models
 import SwiftUI
 
 struct CheckInCardCheckIn: View {
+    @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
     let checkIn: CheckIn
-    let loadedFrom: CheckInCard.LoadedFrom
 
     var body: some View {
         RouterLink(open: .screen(.checkIn(checkIn))) {
@@ -35,10 +35,10 @@ struct CheckInCardCheckIn: View {
                             Spacer()
                         }
                     }
-                    .routerLinkDisabled(loadedFrom.isLoadedFromLocation(purchaseLocation))
+                    .routerLinkDisabled(checkInCardLoadedFrom.isLoadedFromLocation(purchaseLocation))
                 }
             }
         }
-        .routerLinkDisabled(loadedFrom == .checkIn)
+        .routerLinkDisabled(checkInCardLoadedFrom == .checkIn)
     }
 }

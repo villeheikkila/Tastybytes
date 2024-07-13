@@ -40,13 +40,14 @@ struct LocationInnerScreen: View {
             if state == .populated {
                 LocationScreenHeader(location: location, summary: summary)
                 CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-                CheckInListContent(checkIns: $checkInLoader.checkIns, loadedFrom: .location(location), onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+                CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
                     checkInLoader.onLoadMore()
                 })
                 CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
             }
         }
         .listStyle(.plain)
+        .checkInCardLoadedFrom(.location(location))
         .refreshable {
             await getLocationData(isRefresh: true)
         }

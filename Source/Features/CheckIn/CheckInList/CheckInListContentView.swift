@@ -6,12 +6,11 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct CheckInListContent: View {
+struct CheckInListContentView: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Binding var checkIns: [CheckIn]
-    let loadedFrom: CheckInCard.LoadedFrom
     let onCheckInUpdate: (_ checkIn: CheckIn) async -> Void
     let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
     let onLoadMore: () -> Void
@@ -20,7 +19,6 @@ struct CheckInListContent: View {
         ForEach(checkIns) { checkIn in
             CheckInListCard(
                 checkIn: checkIn,
-                loadedFrom: loadedFrom,
                 onUpdate: onCheckInUpdate,
                 onDelete: deleteCheckIn,
                 onCreate: onCreateCheckIn

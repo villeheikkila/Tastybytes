@@ -203,7 +203,7 @@
 		5C997C162BE2DCBF00B9504F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5C997C152BE2DCBF00B9504F /* PrivacyInfo.xcprivacy */; };
 		5C9990A52B8A24F5002BD3F7 /* NotificationFromUserWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9990A42B8A24F5002BD3F7 /* NotificationFromUserWrapper.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CA065E42B6C2DAE00588194 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA065E32B6C2DAE00588194 /* Localization.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC442B5707C400E17629 /* CheckInListContent.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5CA4AC452B5707C400E17629 /* CheckInListContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC442B5707C400E17629 /* CheckInListContentView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CA4AC492B586DF800E17629 /* DuplicateProductContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CA4AC4D2B586FDF00E17629 /* BarcodeManagementRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -521,7 +521,7 @@
 		5C997C152BE2DCBF00B9504F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5C9990A42B8A24F5002BD3F7 /* NotificationFromUserWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFromUserWrapper.swift; sourceTree = "<group>"; };
 		5CA065E32B6C2DAE00588194 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
-		5CA4AC442B5707C400E17629 /* CheckInListContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListContent.swift; sourceTree = "<group>"; };
+		5CA4AC442B5707C400E17629 /* CheckInListContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListContentView.swift; sourceTree = "<group>"; };
 		5CA4AC482B586DF800E17629 /* DuplicateProductContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductContentUnavailableView.swift; sourceTree = "<group>"; };
 		5CA4AC4A2B586E1200E17629 /* DuplicateProductSheetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheetRow.swift; sourceTree = "<group>"; };
 		5CA4AC4C2B586FDF00E17629 /* BarcodeManagementRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementRow.swift; sourceTree = "<group>"; };
@@ -1548,7 +1548,7 @@
 			children = (
 				5C9057CD2B2894BE00EC157B /* CheckInList.swift */,
 				5CCEE2882B2D0C0100F276DF /* CheckInListCard.swift */,
-				5CA4AC442B5707C400E17629 /* CheckInListContent.swift */,
+				5CA4AC442B5707C400E17629 /* CheckInListContentView.swift */,
 				5C187E4C2B8B33FD0007AD17 /* CheckInListLoader.swift */,
 				5C511D842BA792DF00F95290 /* CheckInListLoadingIndicator.swift */,
 			);
@@ -1864,7 +1864,7 @@
 				5CA4AC4B2B586E1200E17629 /* DuplicateProductSheetRow.swift in Sources */,
 				5C24E1D52B5E4480003AB7C8 /* SubBrandSheetCreateSection.swift in Sources */,
 				5CEEA2FC2C3814E50009B3F5 /* CompanyEditSuggestionScreen.swift in Sources */,
-				5CA4AC452B5707C400E17629 /* CheckInListContent.swift in Sources */,
+				5CA4AC452B5707C400E17629 /* CheckInListContentView.swift in Sources */,
 				5C90AF752C15C44C00BA3202 /* ScreenContentUnavailableView.swift in Sources */,
 				5C4FC6382BA68A130025DB83 /* DataScannerViewRepresentable.swift in Sources */,
 				5C9057F12B2894BE00EC157B /* CategoryPickerSheet.swift in Sources */,

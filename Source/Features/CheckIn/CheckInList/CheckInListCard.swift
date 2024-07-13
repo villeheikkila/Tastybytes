@@ -11,13 +11,12 @@ struct CheckInListCard: View {
     @State private var showDeleteConfirmation = false
 
     let checkIn: CheckIn
-    let loadedFrom: CheckInCard.LoadedFrom
     let onUpdate: (_ checkIn: CheckIn) async -> Void
     let onDelete: (_ checkIn: CheckIn) async -> Void
     let onCreate: (_ checkIn: CheckIn) async -> Void
 
     var body: some View {
-        CheckInCard(checkIn: checkIn, loadedFrom: loadedFrom, onDeleteImage: { deletedImageEntity in
+        CheckInCard(checkIn: checkIn, onDeleteImage: { deletedImageEntity in
             await onUpdate(checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity)))
         })
         .contextMenu {

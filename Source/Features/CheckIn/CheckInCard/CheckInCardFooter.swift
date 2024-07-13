@@ -3,10 +3,10 @@ import Models
 import SwiftUI
 
 struct CheckInCardFooter: View {
+    @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
     @Environment(Router.self) private var router
 
     let checkIn: CheckIn
-    let loadedFrom: CheckInCard.LoadedFrom
 
     var body: some View {
         HStack {
@@ -16,7 +16,7 @@ struct CheckInCardFooter: View {
                     Spacer()
                 }
             }
-            .routerLinkDisabled(loadedFrom == .checkIn)
+            .routerLinkDisabled(checkInCardLoadedFrom == .checkIn)
             ReactionsView(checkIn: checkIn)
         }
     }

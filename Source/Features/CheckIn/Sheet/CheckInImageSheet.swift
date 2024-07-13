@@ -114,12 +114,10 @@ struct CheckInImageCheckInSection: View {
         VStack {
             CheckInCardHeader(
                 profile: checkIn.profile,
-                loadedFrom: .checkIn,
                 location: checkIn.location
             )
             CheckInCardProduct(
                 product: checkIn.product,
-                loadedFrom: .checkIn,
                 productVariant: checkIn.variant,
                 servingStyle: checkIn.servingStyle
             )

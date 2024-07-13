@@ -3,8 +3,8 @@ import Models
 import SwiftUI
 
 struct CheckInCardProduct: View {
+    @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
     let product: Product.Joined
-    let loadedFrom: CheckInCard.LoadedFrom
     let productVariant: ProductVariant?
     let servingStyle: ServingStyle?
 
@@ -55,6 +55,6 @@ struct CheckInCardProduct: View {
             }
             .contentShape(.rect)
         }
-        .routerLinkDisabled(loadedFrom == .product)
+        .routerLinkDisabled(checkInCardLoadedFrom == .product)
     }
 }

@@ -5,44 +5,47 @@ import Repositories
 import SwiftUI
 
 struct CheckInCard: View {
+    @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
     let checkIn: CheckIn
-    let loadedFrom: CheckInCard.LoadedFrom
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
 
     var body: some View {
         RouterLink(open: .screen(.checkIn(checkIn))) {
             VStack(spacing: 4) {
                 Group {
-                    CheckInCardHeader(
-                        profile: checkIn.profile,
-                        loadedFrom: loadedFrom,
-                        location: checkIn.location
-                    )
-                    CheckInCardProduct(
-                        product: checkIn.product,
-                        loadedFrom: loadedFrom,
-                        productVariant: checkIn.variant,
-                        servingStyle: checkIn.servingStyle
-                    )
+                    CheckInCardHeader(profile: checkIn.profile, location: checkIn.location)
+                    CheckInCardProduct(product: checkIn.product, productVariant: checkIn.variant, servingStyle: checkIn.servingStyle)
                 }
                 .padding(.horizontal, 8)
                 if !checkIn.images.isEmpty {
                     CheckInImageReelView(checkIn: checkIn, onDeleteImage: onDeleteImage)
                 }
                 Group {
-                    CheckInCardCheckIn(checkIn: checkIn, loadedFrom: loadedFrom)
-                    CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile), loadedFrom: loadedFrom)
-                    CheckInCardFooter(checkIn: checkIn, loadedFrom: loadedFrom)
+                    CheckInCardCheckIn(checkIn: checkIn)
+                    CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile))
+                    CheckInCardFooter(checkIn: checkIn)
                 }
                 .padding(.horizontal, 8)
             }
             .routerLinkDisabled(false)
         }
-        .routerLinkDisabled(loadedFrom == .checkIn)
+        .routerLinkDisabled(checkInCardLoadedFrom == .checkIn)
         .routerLinkMode(.button)
         .buttonStyle(.plain)
     }
 }
+
+
+extension EnvironmentValues {
+    @Entry var checkInCardLoadedFrom: CheckInCard.LoadedFrom = .checkIn
+}
+
+extension View {
+    func checkInCardLoadedFrom(_  checkInCardLoadedFrom: CheckInCard.LoadedFrom) -> some View {
+        environment(\.checkInCardLoadedFrom, checkInCardLoadedFrom)
+    }
+}
+
 
 extension CheckInCard {
     enum LoadedFrom: Equatable {

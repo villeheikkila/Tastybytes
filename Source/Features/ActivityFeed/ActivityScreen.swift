@@ -27,7 +27,7 @@ struct ActivityScreen: View {
         ScrollViewReader { proxy in
             List {
                 if state == .populated {
-                    CheckInListContent(checkIns: $checkIns, loadedFrom: .activity(profileEnvironmentModel.profile), onCheckInUpdate: onCheckInUpdate, onCreateCheckIn: { checkIn in
+                    CheckInListContentView(checkIns: $checkIns, onCheckInUpdate: onCheckInUpdate, onCreateCheckIn: { checkIn in
                         onCreateCheckIn(checkIn)
                         try? await Task.sleep(nanoseconds: 100_000_000)
                         proxy.scrollTo(checkIn.id, anchor: .top)
@@ -36,6 +36,7 @@ struct ActivityScreen: View {
                 }
             }
             .listStyle(.plain)
+            .checkInCardLoadedFrom(.activity(profileEnvironmentModel.profile))
             .scrollIndicators(.hidden)
             .refreshable {
                 await fetchFeedItems(reset: true)
