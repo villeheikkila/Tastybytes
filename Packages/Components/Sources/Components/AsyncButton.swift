@@ -1,7 +1,7 @@
 import OSLog
 import SwiftUI
 
-public struct ProgressButton<LabelView: View>: View {
+public struct AsyncButton<LabelView: View>: View {
     @Environment(\.asyncButtonLoadingStyle) private var asyncButtonLoadingStyle
     @State private var task: Task<Void, Never>?
     @State private var isDisabled = false
@@ -54,7 +54,7 @@ public extension View {
     }
 }
 
-public extension ProgressButton where LabelView == Text {
+public extension AsyncButton where LabelView == Text {
     @_disfavoredOverload
     init(_ label: String,
          role: ButtonRole? = nil,
@@ -66,7 +66,7 @@ public extension ProgressButton where LabelView == Text {
     }
 }
 
-public extension ProgressButton where LabelView == Text {
+public extension AsyncButton where LabelView == Text {
     init(_ label: LocalizedStringKey,
          role: ButtonRole? = nil,
          action: @MainActor @escaping () async -> Void)
@@ -77,7 +77,7 @@ public extension ProgressButton where LabelView == Text {
     }
 }
 
-public extension ProgressButton where LabelView == Label<Text, Image> {
+public extension AsyncButton where LabelView == Label<Text, Image> {
     @_disfavoredOverload
     init(_ title: String, systemImage: String,
          role: ButtonRole? = nil,
@@ -89,7 +89,7 @@ public extension ProgressButton where LabelView == Label<Text, Image> {
     }
 }
 
-public extension ProgressButton where LabelView == Label<Text, Image> {
+public extension AsyncButton where LabelView == Label<Text, Image> {
     init(_ title: LocalizedStringKey, systemImage: String,
          role: ButtonRole? = nil,
          action: @escaping () async -> Void)
@@ -100,7 +100,7 @@ public extension ProgressButton where LabelView == Label<Text, Image> {
     }
 }
 
-public extension ProgressButton where LabelView == LinkIconLabelView {
+public extension AsyncButton where LabelView == LinkIconLabelView {
     init(
         _ titleKey: LocalizedStringKey,
         systemName: String,

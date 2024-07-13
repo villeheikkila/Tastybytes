@@ -97,7 +97,7 @@ struct ProfileCheckInsListInnerView: View {
                 ContentUnavailableView {
                     Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
                 } actions: {
-                    ProgressButton("labels.reload") {
+                    AsyncButton("labels.reload") {
                         await checkInLoader.fetchFeedItems(reset: true, showCheckInsFrom: .you)
                     }
                 }

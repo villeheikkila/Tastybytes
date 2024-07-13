@@ -53,7 +53,7 @@ struct CompanySearchSheet: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("company.create.section.title")
                         ScanTextFieldView(title: "company.name.placeholder", text: $companyName)
-                        ProgressButton("company.create.label") {
+                        AsyncButton("company.create.label") {
                             await createNewCompany(onSuccess: { company in
                                 onSelect(company)
                                 dismiss()

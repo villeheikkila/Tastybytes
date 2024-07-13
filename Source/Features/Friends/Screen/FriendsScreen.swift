@@ -72,7 +72,7 @@ struct FriendsScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
-                ProgressButton(
+                AsyncButton(
                     "friends.add.label",
                     systemImage: "person.fill.badge.plus",
                     action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }

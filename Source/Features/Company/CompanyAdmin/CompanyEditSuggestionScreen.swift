@@ -77,7 +77,7 @@ struct CompanyEditSuggestionRow: View {
             titleVisibility: .visible,
             presenting: editSuggestion
         ) { presenting in
-            ProgressButton(
+            AsyncButton(
                 "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name)",
                 action: {
                     await resolveEditSuggestion(presenting)
@@ -91,7 +91,7 @@ struct CompanyEditSuggestionRow: View {
             titleVisibility: .visible,
             presenting: editSuggestion
         ) { presenting in
-            ProgressButton(
+            AsyncButton(
                 "company.admin.editSuggestion.delete.label \(presenting.name)",
                 action: {
                     await deleteEditSuggestion(presenting)

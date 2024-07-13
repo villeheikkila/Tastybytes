@@ -27,7 +27,7 @@ struct EditLogoSection: View {
                 .frame(width: 120, height: 120)
                 .accessibility(hidden: true)
                 .contextMenu {
-                    ProgressButton("labels.delete") {
+                    AsyncButton("labels.delete") {
                         await onDelete(logo)
                     }
                 }

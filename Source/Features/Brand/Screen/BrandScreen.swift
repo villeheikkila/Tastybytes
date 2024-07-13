@@ -147,7 +147,7 @@ struct BrandScreen: View {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ProgressButton(
+            AsyncButton(
                 isLikedByCurrentUser ? "labels.unlike" : "labels.like", systemImage: "heart",
                 action: {
                     await toggleLike()

@@ -24,7 +24,7 @@ struct ServingStyleManagementSheet: View {
             }
             Section("servingStyle.name.add.title") {
                 TextField("servingStyle.name.placeholder", text: $newServingStyleName)
-                ProgressButton("labels.create") {
+                AsyncButton("labels.create") {
                     await createServingStyle()
                 }
                 .disabled(!newServingStyleName.isValidLength(.normal(allowEmpty: false)))
@@ -116,7 +116,7 @@ struct ServingStyleManagementRow: View {
     let onSelect: (_ servingStyle: ServingStyle) async -> Void
 
     var body: some View {
-        ProgressButton(
+        AsyncButton(
             action: { await onSelect(servingStyle) },
             label: {
                 HStack {
@@ -145,7 +145,7 @@ struct ServingStyleManagementRow: View {
             titleVisibility: .visible,
             presenting: servingStyle
         ) { presenting in
-            ProgressButton(
+            AsyncButton(
                 "servingStyle.deleteConfirmation.label \(presenting.name)",
                 role: .destructive,
                 action: { await deleteServingStyle(presenting) }
@@ -156,7 +156,7 @@ struct ServingStyleManagementRow: View {
             actions: {
                 TextField("servingStyle.name.placeholder", text: $servingStyleName)
                 Button("labels.cancel", role: .cancel, action: {})
-                ProgressButton(
+                AsyncButton(
                     "labels.edit",
                     action: {
                         await editServingStyle(servingStyle, servingStyle.copyWith(name: $servingStyleName.wrappedValue))

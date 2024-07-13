@@ -18,7 +18,7 @@ struct CheckInLeaveComment: View {
         HStack(alignment: .center) {
             TextField("comment.textField.placeholder", text: $commentText, axis: .vertical)
                 .focused($focusedField, equals: .checkInComment)
-            ProgressButton(
+            AsyncButton(
                 "comment.textField.send.label", systemImage: "paperplane.fill", action: { await sendComment() }
             )
             .labelStyle(.iconOnly)

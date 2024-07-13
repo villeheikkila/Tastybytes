@@ -93,7 +93,7 @@ struct CompanyAdminSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
-            ProgressButton("labels.edit", action: {
+            AsyncButton("labels.edit", action: {
                 await editCompany()
             })
             .disabled(!newCompanyName.isValidLength(.normal(allowEmpty: false)) || newCompanyName == company.name)

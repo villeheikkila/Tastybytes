@@ -52,7 +52,7 @@ struct ProfileSettingsScreen: View {
             LabeledTextFieldView(title: "settings.profile.lastName", text: $lastName)
 
             if profileEnvironmentModel.hasChanged(username: username, firstName: firstName, lastName: lastName) {
-                ProgressButton(
+                AsyncButton(
                     "settings.profile.update",
                     action: { await profileEnvironmentModel.updateProfile(update: Profile.UpdateRequest(
                         username: username,

@@ -43,7 +43,7 @@ struct BrandSheet: View {
             if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                 Section("brand.addBrandForCompany.title \(brandOwner.name)") {
                     ScanTextFieldView(title: "brand.name.placeholder", text: $brandName)
-                    ProgressButton("labels.create", action: { await createNewBrand() })
+                    AsyncButton("labels.create", action: { await createNewBrand() })
                         .disabled(!brandName.isValidLength(.normal(allowEmpty: false)))
                 }
             }

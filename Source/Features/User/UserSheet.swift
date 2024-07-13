@@ -41,7 +41,7 @@ struct UserSheet: View {
                             if !friendEnvironmentModel.friends
                                 .contains(where: { $0.containsUser(userId: profile.id) })
                             {
-                                ProgressButton("user.addFriend.label", systemImage: "person.badge.plus", action: {
+                                AsyncButton("user.addFriend.label", systemImage: "person.badge.plus", action: {
                                     await friendEnvironmentModel.sendFriendRequest(
                                         receiver: profile.id,
                                         onSuccess: {
@@ -59,7 +59,7 @@ struct UserSheet: View {
                         if !friendEnvironmentModel.blockedUsers
                             .contains(where: { $0.containsUser(userId: profile.id) })
                         {
-                            ProgressButton(
+                            AsyncButton(
                                 "user.block.label",
                                 systemImage: "person.fill.xmark",
                                 action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: {

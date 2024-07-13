@@ -25,7 +25,7 @@ struct ConfirmedDeleteButtonView<Presenting>: View {
             titleVisibility: .visible,
             presenting: presenting
         ) { presenting in
-            ProgressButton(
+            AsyncButton(
                 label,
                 role: .destructive,
                 action: {

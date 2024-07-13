@@ -67,7 +67,7 @@ struct VerificationScreen: View {
         ForEach(companies) { company in
             RouterLink(company.name, open: .screen(.company(company)))
                 .swipeActions {
-                    ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifyCompany(company) })
+                    AsyncButton("labels.verify", systemImage: "checkmark", action: { await verifyCompany(company) })
                         .tint(.green)
                 }
         }
@@ -84,7 +84,7 @@ struct VerificationScreen: View {
             }
             .accessibilityAddTraits(.isButton)
             .swipeActions {
-                ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifySubBrand(subBrand) })
+                AsyncButton("labels.verify", systemImage: "checkmark", action: { await verifySubBrand(subBrand) })
                     .tint(.green)
             }
         }
@@ -100,7 +100,7 @@ struct VerificationScreen: View {
                 }
             }
             .swipeActions {
-                ProgressButton("labels.verify", systemImage: "checkmark", action: { await verifyBrand(brand) }).tint(.green)
+                AsyncButton("labels.verify", systemImage: "checkmark", action: { await verifyBrand(brand) }).tint(.green)
             }
         }
     }
@@ -280,10 +280,10 @@ struct VerificationScreenProductRowView: View {
             }
         }
         .swipeActions {
-            ProgressButton("labels.verify", systemImage: "checkmark", action: onVerify)
+            AsyncButton("labels.verify", systemImage: "checkmark", action: onVerify)
                 .tint(.green)
             RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: onEdit)))).tint(.yellow)
-            ProgressButton("labels.delete", systemImage: "trash", action: {
+            AsyncButton("labels.delete", systemImage: "trash", action: {
                 showDeleteProductConfirmationDialog = true
             })
             .tint(.red)
@@ -293,7 +293,7 @@ struct VerificationScreenProductRowView: View {
                             titleVisibility: .visible,
                             presenting: product)
         { presenting in
-            ProgressButton(
+            AsyncButton(
                 "product.delete.confirmation.label \(presenting.formatted(.fullName))",
                 role: .destructive,
                 action: onDelete

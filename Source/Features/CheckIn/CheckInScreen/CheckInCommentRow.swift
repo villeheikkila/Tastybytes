@@ -24,7 +24,7 @@ struct CheckInCommentRowView: View {
             .contextMenu {
                 if comment.profile == profileEnvironmentModel.profile {
                     RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.editComment(checkInComment: comment, checkInComments: $checkInComments)))
-                    ProgressButton("labels.delete", systemImage: "trash.fill", role: .destructive) {
+                    AsyncButton("labels.delete", systemImage: "trash.fill", role: .destructive) {
                         await deleteComment(comment)
                     }
                 } else {

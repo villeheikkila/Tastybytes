@@ -26,12 +26,12 @@ struct ProfileScreen: View {
             Menu {
                 ProfileShareLinkView(profile: profile)
                 if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
-                    ProgressButton(
+                    AsyncButton(
                         "friend.friendRequest.send.label",
                         action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
                     )
                 } else if let friend = friendEnvironmentModel.isPendingCurrentUserApproval(profile) {
-                    ProgressButton(
+                    AsyncButton(
                         "friend.friendRequest.accept.label",
 
                         action: {

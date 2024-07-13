@@ -9,7 +9,7 @@ struct FlavorAdminScreen: View {
         List(appEnvironmentModel.flavors) { flavor in
             Text(flavor.label)
                 .swipeActions {
-                    ProgressButton("labels.delete", systemImage: "trash", role: .destructive, action: {
+                    AsyncButton("labels.delete", systemImage: "trash", role: .destructive, action: {
                         await appEnvironmentModel.deleteFlavor(flavor)
                     })
                 }

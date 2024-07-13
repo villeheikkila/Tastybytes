@@ -17,7 +17,7 @@ struct BarcodeScannerSheet: View {
                 Form {
                     TextField("barcode.scanner.textInput.placeholder", text: $barcodeInput)
                         .keyboardType(.decimalPad)
-                    ProgressButton("labels.submit", action: {
+                    AsyncButton("labels.submit", action: {
                         await onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13.rawValue))
                         dismiss()
                     })

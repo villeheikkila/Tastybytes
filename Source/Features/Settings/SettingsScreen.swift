@@ -79,7 +79,7 @@ struct SettingsScreen: View {
 
     @ViewBuilder private var logOutSection: some View {
         Section {
-            ProgressButton(action: {
+            AsyncButton(action: {
                 await profileEnvironmentModel.logOut()
             }, label: {
                 Spacer()

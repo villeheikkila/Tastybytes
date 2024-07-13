@@ -102,7 +102,7 @@ struct SubBrandAdminSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
-            ProgressButton("labels.edit") {
+            AsyncButton("labels.edit") {
                 await editSubBrand()
             }
             .disabled(invalidNewName)
@@ -197,7 +197,7 @@ struct EditSubBrandMergeToRowView: View {
                     titleVisibility: .visible,
                     presenting: subBrand
                 ) { presenting in
-                    ProgressButton(
+                    AsyncButton(
                         "subBrand.mergeTo.confirmation.label \(subBrand.label) \(presenting.label)",
                         role: .destructive,
                         action: {

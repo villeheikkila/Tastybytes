@@ -26,7 +26,7 @@ struct CategoryCreationSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
-            ProgressButton("labels.add", action: {
+            AsyncButton("labels.add", action: {
                 await appEnvironmentModel.addCategory(name: newCategoryName)
                 dismiss()
             }).disabled(newCategoryName.isEmpty)

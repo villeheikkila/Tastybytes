@@ -138,10 +138,10 @@ struct ReportScreenRow: View {
             }
         }
         .swipeActions {
-            ProgressButton("report.admin.resolve.label", systemImage: "checkmark", action: {
+            AsyncButton("report.admin.resolve.label", systemImage: "checkmark", action: {
                 await resolveReport(report)
             })
-            ProgressButton(
+            AsyncButton(
                 "labels.delete",
                 systemImage: "trash",
                 role: .destructive,

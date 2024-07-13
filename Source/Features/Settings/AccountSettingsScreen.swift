@@ -60,7 +60,7 @@ struct AccountSettingsScreen: View {
                 .disableAutocorrection(true)
 
             if showEmailConfirmation {
-                ProgressButton(
+                AsyncButton(
                     "account.email.sendVerificationLink.label",
                     action: {
                         await changeEmail(email: email)
@@ -80,7 +80,7 @@ struct AccountSettingsScreen: View {
     private var deleteAccount: some View {
         Section {
             Group {
-                ProgressButton(
+                AsyncButton(
                     "account.export.label",
                     systemImage: "square.and.arrow.up",
                     action: { await exportData() }
@@ -97,7 +97,7 @@ struct AccountSettingsScreen: View {
                     isPresented: $showDeleteConfirmation,
                     titleVisibility: .visible
                 ) {
-                    ProgressButton(
+                    AsyncButton(
                         "account.delete.label",
                         role: .destructive,
                         action: {

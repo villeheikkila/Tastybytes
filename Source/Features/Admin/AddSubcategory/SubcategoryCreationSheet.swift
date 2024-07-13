@@ -12,7 +12,7 @@ struct SubcategoryCreationSheet: View {
         Form {
             Section("subcategory.addTo.category.title") {
                 TextField("subcategory.name.placeholder", text: $newSubcategoryName)
-                ProgressButton("labels.add", action: { [newSubcategoryName] in
+                AsyncButton("labels.add", action: { [newSubcategoryName] in
                     await onSubmit(newSubcategoryName)
                     dismiss()
                 }).disabled(newSubcategoryName.isEmpty)

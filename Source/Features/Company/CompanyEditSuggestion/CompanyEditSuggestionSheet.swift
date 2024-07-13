@@ -24,7 +24,7 @@ struct CompanyEditSuggestionSheet: View {
         Form {
             Section("company.editSuggestion.section.name.title") {
                 TextField("company.edit.name.placeholder", text: $newCompanyName)
-                ProgressButton("labels.send", action: {
+                AsyncButton("labels.send", action: {
                     await sendCompanyEditSuggestion()
                 })
                 .disabled(!newCompanyName.isValidLength(.normal(allowEmpty: true)))

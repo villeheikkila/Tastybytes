@@ -82,7 +82,7 @@ struct CheckInImageSheet: View {
                 titleVisibility: .visible,
                 presenting: showDeleteConfirmationFor
             ) { presenting in
-                ProgressButton(
+                AsyncButton(
                     "checkIn.image.deleteConfirmation.label",
                     role: .destructive,
                     action: { await deleteImage(presenting) }

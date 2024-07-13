@@ -115,7 +115,7 @@ struct CurrentUserFriendListRow: View {
                         Button("friends.action.removeFriendRequest.label", systemImage: "person.fill.xmark", action: {
                             showFriendDeleteConfirmation = true
                         })
-                        ProgressButton("friends.acceptRequest.label", systemImage: "person.badge.plus", action: {
+                        AsyncButton("friends.acceptRequest.label", systemImage: "person.badge.plus", action: {
                             await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
                         })
                     }
@@ -128,7 +128,7 @@ struct CurrentUserFriendListRow: View {
         .swipeActions {
             Group {
                 if friend.isPending(userId: profileEnvironmentModel.profile.id) {
-                    ProgressButton(
+                    AsyncButton(
                         "friends.acceptRequest.label",
                         systemImage: "person.badge.plus",
                         action: {
@@ -153,7 +153,7 @@ struct CurrentUserFriendListRow: View {
                             titleVisibility: .visible,
                             presenting: friend)
         { presenting in
-            ProgressButton(
+            AsyncButton(
                 "friend.delete.confirmation.label \(presenting.getFriend(userId: profileEnvironmentModel.id).preferredName)",
                 role: .destructive,
                 action: {
@@ -173,7 +173,7 @@ struct CurrentUserFriendListRow: View {
     }
 
     private var blockFriendButton: some View {
-        ProgressButton(
+        AsyncButton(
             "friends.block.label",
             systemImage: "person.2.slash",
             action: {

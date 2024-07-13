@@ -34,7 +34,7 @@ struct OnboardingProfileSection: View {
             optionalSection
         }
         .safeAreaInset(edge: .bottom) {
-            ProgressButton(action: {
+            AsyncButton(action: {
                 await profileEnvironmentModel.updateProfile(update: .init(username: username, firstName: firstName, lastName: lastName))
                 await profileEnvironmentModel.onboardingUpdate()
             }, label: {

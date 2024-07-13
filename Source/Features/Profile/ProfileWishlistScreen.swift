@@ -22,7 +22,7 @@ struct ProfileWishlistScreen: View {
                 ProductEntityView(product: product, extras: [.rating])
             }
             .swipeActions(allowsFullSwipe: true) {
-                ProgressButton(
+                AsyncButton(
                     "labels.delete",
                     systemImage: "xmark",
                     role: .destructive,

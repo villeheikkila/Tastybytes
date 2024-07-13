@@ -35,7 +35,7 @@ struct ReportSheet: View {
         Section("report.section.report.title") {
             TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)
                 .lineLimit(8, reservesSpace: true)
-            ProgressButton("labels.submit", action: {
+            AsyncButton("labels.submit", action: {
                 await submitReport()
             }).bold()
         }

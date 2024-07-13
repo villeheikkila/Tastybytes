@@ -95,7 +95,7 @@ struct MergeLocationSheetRow: View {
                 titleVisibility: .visible,
                 presenting: location
             ) { presenting in
-                ProgressButton(
+                AsyncButton(
                     "location.merge.confirmation.label \(mergeToLocation.name) \(presenting.name)",
                     role: .destructive
                 ) {

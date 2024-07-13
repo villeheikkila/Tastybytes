@@ -86,11 +86,11 @@ struct NotificationScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
-                ProgressButton("notifications.markAsRead.label", systemImage: "envelope.open", action: {
+                AsyncButton("notifications.markAsRead.label", systemImage: "envelope.open", action: {
                     feedbackEnvironmentModel.trigger(.impact(intensity: .low))
                     await notificationEnvironmentModel.markAllAsRead()
                 })
-                ProgressButton("notifications.deleteAll.label", systemImage: "trash", action: {
+                AsyncButton("notifications.deleteAll.label", systemImage: "trash", action: {
                     feedbackEnvironmentModel.trigger(.impact(intensity: .low))
                     await notificationEnvironmentModel.deleteAll()
                 })

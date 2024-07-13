@@ -35,7 +35,7 @@ struct DiscoverProductRow: View {
                 isPresented: $showAddBarcodeToConfirmationDialog,
                 presenting: product
             ) { presenting in
-                ProgressButton(
+                AsyncButton(
                     "checkIn.addBarcode.label \(presenting.formatted(.fullName))",
                     action: {
                         await addBarcodeToProduct(presenting)

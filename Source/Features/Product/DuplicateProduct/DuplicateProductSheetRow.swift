@@ -22,7 +22,7 @@ struct DuplicateProductSheetRow: View {
                             isPresented: $showMergeToProductConfirmationDialog,
                             presenting: product)
         { presenting in
-            ProgressButton(
+            AsyncButton(
                 mode == .mergeDuplicate ? "duplicateProduct.mergeDuplicates.label \(product.formatted(.fullName)) \(presenting.formatted(.fullName))" : "duplicateProduct.markAsDuplicate.label \(product.formatted(.fullName)) \(presenting.formatted(.fullName))",
                 role: .destructive
             ) {

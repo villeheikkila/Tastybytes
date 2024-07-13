@@ -108,7 +108,7 @@ struct BrandAdminSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
-            ProgressButton("labels.edit") {
+            AsyncButton("labels.edit") {
                 await editBrand()
             }.disabled((!name.isValidLength(.normal(allowEmpty: false)) || brand.name == name) && brandOwner.id == initialBrandOwner.id)
         }

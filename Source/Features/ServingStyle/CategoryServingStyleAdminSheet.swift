@@ -101,7 +101,7 @@ struct CategoryServingStyleRow: View {
             titleVisibility: .visible,
             presenting: servingStyle
         ) { presenting in
-            ProgressButton(
+            AsyncButton(
                 "servingStyle.deleteWarning.label \(presenting.name) from \(category.name)",
                 role: .destructive,
                 action: {

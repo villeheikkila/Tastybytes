@@ -42,7 +42,7 @@ struct SubBrandSheet: View {
             if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                 Section("subBrand.addSubBrandFor.title \(brandWithSubBrands.name)") {
                     ScanTextFieldView(title: "subBrand.name.placeholder", text: $subBrandName)
-                    ProgressButton("labels.create", action: { await createNewSubBrand() })
+                    AsyncButton("labels.create", action: { await createNewSubBrand() })
                         .disabled(!subBrandName.isValidLength(.normal(allowEmpty: false)))
                 }
             }

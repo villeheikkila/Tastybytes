@@ -84,7 +84,7 @@ struct CheckInListCardView: View {
             titleVisibility: .visible,
             presenting: checkIn
         ) { presenting in
-            ProgressButton(
+            AsyncButton(
                 "checkIn.delete.confirmation.label \(presenting.product.formatted(.fullName))",
                 role: .destructive,
                 action: { await onDelete(checkIn) }

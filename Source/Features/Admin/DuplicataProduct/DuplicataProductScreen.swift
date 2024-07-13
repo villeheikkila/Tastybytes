@@ -108,7 +108,7 @@ struct DuplicateProductScreeRowView: View {
             titleVisibility: .visible,
             presenting: duplicateProductSuggestion
         ) { presenting in
-            ProgressButton(
+            AsyncButton(
                 "product.admin.editSuggestion.delete.label",
                 action: {
                     await onDelete(presenting)

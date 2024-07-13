@@ -51,7 +51,7 @@ struct BrandScreenProductRowView: View {
                             titleVisibility: .visible,
                             presenting: productToDelete)
         { presenting in
-            ProgressButton(
+            AsyncButton(
                 "product.delete.confirmation.label \(presenting.formatted(.fullName))",
                 role: .destructive,
                 action: { await deleteProduct(presenting) }
