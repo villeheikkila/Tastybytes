@@ -85,7 +85,7 @@ struct BrandScreen: View {
                     })
                 }
             }
-            .initialTask {
+            .task {
                 await getBrandData(proxy: proxy)
             }
             .navigationTitle(brand.name)

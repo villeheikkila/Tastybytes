@@ -38,7 +38,7 @@ struct ActivityScreen: View {
             .listStyle(.plain)
             .scrollIndicators(.hidden)
             .refreshable {
-                await fetchFeedItems(reset: true)
+                await fetchFeedItems(reset: true, onPageLoad: false)
             }
             .checkInCardLoadedFrom(.activity(profileEnvironmentModel.profile))
             .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
@@ -51,7 +51,7 @@ struct ActivityScreen: View {
                     }
                 } else {
                     ScreenStateOverlayView(state: state, errorDescription: "") {
-                        await fetchFeedItems(reset: true)
+                        await fetchFeedItems(reset: true, onPageLoad: false)
                     }
                 }
             }
@@ -60,8 +60,8 @@ struct ActivityScreen: View {
             }
             .navigationTitle("tab.activity")
             .navigationBarTitleDisplayMode(.inline)
-            .initialTask {
-                await fetchFeedItems()
+            .task {
+                await fetchFeedItems(onPageLoad: true)
             }
             .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
                 if let updatedCheckIn = newValue {
@@ -109,20 +109,27 @@ struct ActivityScreen: View {
         }
     }
 
-    private func fetchFeedItems(reset: Bool = false) async {
+    private func fetchFeedItems(reset: Bool = false, onPageLoad: Bool = false) async {
         if reset {
             isRefreshing = true
         } else {
             isLoading = true
         }
         let (from, to) = getPagination(page: reset ? 0 : page, size: 10)
+        let queryType: ActivityFeedQueryType = if !reset, onPageLoad, let id = checkIns.last?.id {
+            .afterId(id)
+        } else {
+            .paginated(from, to)
+        }
         do {
-            let fetchedCheckIns = try await repository.checkIn.getActivityFeed(query: .paginated(from, to))
+            let fetchedCheckIns = try await repository.checkIn.getActivityFeed(query: queryType)
             guard !Task.isCancelled else { return }
             logger.info("Succesfully loaded check-ins from \(from) to \(to)")
             withAnimation {
                 if reset {
                     checkIns = fetchedCheckIns
+                } else if case .afterId = queryType {
+                    checkIns.insert(contentsOf: fetchedCheckIns, at: 0)
                 } else {
                     checkIns.append(contentsOf: fetchedCheckIns)
                 }

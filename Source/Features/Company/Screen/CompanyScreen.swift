@@ -49,7 +49,7 @@ struct CompanyScreen: View {
         .toolbar {
             toolbarContent
         }
-        .initialTask {
+        .task {
             await getCompanyData()
         }
     }
