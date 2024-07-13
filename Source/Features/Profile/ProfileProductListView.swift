@@ -22,7 +22,7 @@ struct ProfileProductListView: View {
         _productFilter = State(initialValue: productFilter)
     }
 
-    var navigationTitle: LocalizedStringKey {
+    private var navigationTitle: LocalizedStringKey {
         if locked {
             let subcategoryName = productFilter?.subcategory?.name
             let categoryName = productFilter?.category?.name
@@ -41,7 +41,7 @@ struct ProfileProductListView: View {
         return state == .populated ? "profileProductList.navigationTitle \(filteredProducts.count.formatted())" : "profileProductList.navigationTitle"
     }
 
-    var filteredProducts: [Product.Joined] {
+    private var filteredProducts: [Product.Joined] {
         let filtered = products
             .filter { filterProduct($0) }
 
@@ -52,7 +52,7 @@ struct ProfileProductListView: View {
         }
     }
 
-    func sortProducts(_ sortBy: Product.Filter.SortBy, _ lhs: Product.Joined, _ rhs: Product.Joined) -> Bool {
+    private func sortProducts(_ sortBy: Product.Filter.SortBy, _ lhs: Product.Joined, _ rhs: Product.Joined) -> Bool {
         switch (lhs.averageRating, rhs.averageRating) {
         case let (lhs?, rhs?): sortBy == .lowestRated ? lhs < rhs : lhs > rhs
         case (nil, _): false

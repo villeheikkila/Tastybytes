@@ -10,11 +10,11 @@ public struct CheckInShareLinkView: View {
         self.checkIn = checkIn
     }
 
-    public var link: URL {
+    private var link: URL {
         NavigatablePath.checkIn(id: checkIn.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl)
     }
 
-    private var title: String {
+    private var title: LocalizedStringKey {
         "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))"
     }
 

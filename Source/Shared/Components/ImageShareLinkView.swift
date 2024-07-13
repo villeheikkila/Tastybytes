@@ -4,7 +4,7 @@ struct ImageShareLinkView: View {
     let url: URL
     let title: String
 
-    var transferable: ImageTransferable {
+    private var transferable: ImageTransferable {
         ImageTransferable(url: url)
     }
 
@@ -16,7 +16,7 @@ struct ImageShareLinkView: View {
 struct ImageTransferable: Codable, Transferable {
     let url: URL
 
-    func fetchImageData() async -> Data {
+    private func fetchImageData() async -> Data {
         do {
             let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
             return data

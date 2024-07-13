@@ -93,7 +93,7 @@ struct ProductInnerScreen: View {
         }
     }
 
-    @ViewBuilder var content: some View {
+    @ViewBuilder private var content: some View {
         ProductScreenHeader(
             product: product,
             summary: summary,

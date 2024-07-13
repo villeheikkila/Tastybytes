@@ -32,7 +32,7 @@ struct AboutScreen: View {
         }
     }
 
-    var header: some View {
+    private var header: some View {
         Section {
             HStack {
                 Spacer()
@@ -47,7 +47,7 @@ struct AboutScreen: View {
         .listRowBackground(Color.clear)
     }
 
-    @ViewBuilder var support: some View {
+    @ViewBuilder private var support: some View {
         RouterLink(
             "about.sendFeedback.label",
             systemName: "envelope",
@@ -68,7 +68,7 @@ struct AboutScreen: View {
         })
     }
 
-    @ViewBuilder var aboutSection: some View {
+    @ViewBuilder private var aboutSection: some View {
         if let aboutPage = appEnvironmentModel.aboutPage {
             Section {
                 Text(aboutPage.summary)
@@ -121,7 +121,7 @@ struct AboutScreen: View {
         }
     }
 
-    @ViewBuilder var footer: some View {
+    @ViewBuilder private var footer: some View {
         Section {
             VStack {
                 Text("\(appEnvironmentModel.infoPlist.appName) \(appEnvironmentModel.infoPlist.appVersion.prettyString) (\(appEnvironmentModel.infoPlist.bundleVersion))")

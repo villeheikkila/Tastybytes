@@ -10,7 +10,7 @@ struct ZoomableRemoteImageView: View {
 
     private let minScaleFactor = 0.8
 
-    var dragGesture: some Gesture {
+    private var dragGesture: some Gesture {
         DragGesture()
             .onChanged { value in
                 guard scale != 1.0 else { return }
@@ -18,7 +18,7 @@ struct ZoomableRemoteImageView: View {
             }
     }
 
-    var zoomGesture: some Gesture {
+    private var zoomGesture: some Gesture {
         MagnificationGesture()
             .onChanged { scaleFactor in
                 guard scaleFactor > minScaleFactor else { return }

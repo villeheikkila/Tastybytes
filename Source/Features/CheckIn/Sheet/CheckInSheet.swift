@@ -175,7 +175,7 @@ struct CheckInSheet: View {
         .customListRowBackground()
     }
 
-    var primaryActionLabel: LocalizedStringKey {
+    private var primaryActionLabel: LocalizedStringKey {
         switch action {
         case .create:
             "checkIn.create.label"

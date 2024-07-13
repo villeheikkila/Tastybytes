@@ -1523,6 +1523,16 @@
     "checkIn.shareLink.subject" : {
 
     },
+    "checkIn.shareLink.title %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "checkIn.shareLink.title %1$@ %2$@"
+          }
+        }
+      }
+    },
     "checkIn.statistics.checkIns.label" : {
       "localizations" : {
         "en" : {

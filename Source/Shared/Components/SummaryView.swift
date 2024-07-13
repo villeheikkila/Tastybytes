@@ -4,7 +4,7 @@ import SwiftUI
 struct SummaryView: View {
     let summary: Summary?
 
-    var isEmpty: Bool {
+    private var isEmpty: Bool {
         summary?.isEmpty == true
     }
 
@@ -57,7 +57,7 @@ struct RatingSummaryItem: View {
     let count: Int?
     let rating: Double?
 
-    var formattedRating: String {
+    private var formattedRating: String {
         rating?.formatted(.number.precision(.fractionLength(1))) ?? "-"
     }
 
@@ -78,8 +78,8 @@ struct RatingSummaryItem: View {
 
 struct SummaryItem<Content: View, SubContent: View>: View {
     let title: LocalizedStringKey
-    @ViewBuilder var content: () -> Content
-    @ViewBuilder var subContent: () -> SubContent
+    @ViewBuilder let content: () -> Content
+    @ViewBuilder let subContent: () -> SubContent
 
     var body: some View {
         VStack(alignment: .center, spacing: 4) {

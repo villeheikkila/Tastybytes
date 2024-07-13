@@ -25,7 +25,7 @@ struct ProfileErrorStateView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     let errors: [Error]
 
-    var title: LocalizedStringKey {
+    private var title: LocalizedStringKey {
         if errors.isNetworkUnavailable {
             "app.error.networkUnavailable.title"
         } else {
@@ -33,7 +33,7 @@ struct ProfileErrorStateView: View {
         }
     }
 
-    var description: Text {
+    private var description: Text {
         if errors.isNetworkUnavailable {
             Text("app.error.networkUnavailable.description")
         } else {
@@ -41,7 +41,7 @@ struct ProfileErrorStateView: View {
         }
     }
 
-    var systemImage: String {
+    private var systemImage: String {
         if errors.isNetworkUnavailable {
             "wifi.slash"
         } else {

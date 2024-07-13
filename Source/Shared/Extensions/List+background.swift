@@ -4,7 +4,7 @@ struct ListRowBackgroundModifier: ViewModifier {
     @Environment(\.isPresentedInSheet) private var isPresentedInSheet
     @Environment(\.colorScheme) private var colorScheme
 
-    var color: Color {
+    private var color: Color {
         switch colorScheme {
         case .light:
             Color(uiColor: .systemGroupedBackground)

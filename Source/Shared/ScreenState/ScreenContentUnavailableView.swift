@@ -4,10 +4,10 @@ struct ScreenContentUnavailableView: View {
     @State private var isTaskRunning = false
 
     let errors: [Error]
-    var description: LocalizedStringKey?
+    let description: LocalizedStringKey?
     let action: () async -> Void
 
-    var label: some View {
+    private var label: some View {
         if errors.isNetworkUnavailable {
             Label("screen.error.networkUnavailable", systemImage: "wifi.slash")
         } else {
@@ -15,7 +15,7 @@ struct ScreenContentUnavailableView: View {
         }
     }
 
-    var descriptionText: Text? {
+    private var descriptionText: Text? {
         if let description {
             Text(description)
         } else {

@@ -12,7 +12,7 @@ struct ProfileSettingsScreen: View {
     @State private var usernameIsAvailable = false
     @State private var isLoading = false
 
-    var canUpdateUsername: Bool {
+    private var canUpdateUsername: Bool {
         username.count >= 3 && usernameIsAvailable && !username.isEmpty && !isLoading
     }
 

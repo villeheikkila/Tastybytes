@@ -4,7 +4,6 @@ import SwiftUI
 public struct ScanTextFieldView: View {
     let title: LocalizedStringKey
     @State private var scannedText: String = ""
-
     @Binding var text: String
 
     public init(title: LocalizedStringKey, text: Binding<String>) {

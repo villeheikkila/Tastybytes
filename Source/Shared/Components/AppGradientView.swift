@@ -15,7 +15,7 @@ public struct AppGradientView: View {
         )
     }
 
-    var backgroundGradient: Gradient {
+    private var backgroundGradient: Gradient {
         let data = [
             (opacity: 0.0, location: 0.0),
             (opacity: 0.014, location: 0.03),

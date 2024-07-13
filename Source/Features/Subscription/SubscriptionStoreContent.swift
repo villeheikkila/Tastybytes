@@ -20,7 +20,7 @@ struct SubscriptionStoreContentView: View {
         .padding(.top, 40)
     }
 
-    var image: some View {
+    private var image: some View {
         Image(.projectLogo)
             .resizable()
             .accessibilityHidden(true)
@@ -28,12 +28,12 @@ struct SubscriptionStoreContentView: View {
             .frame(width: 100)
     }
 
-    var title: some View {
+    private var title: some View {
         Text("\(appEnvironmentModel.infoPlist.appName) \(subscriptionGroupName)")
             .font(.largeTitle.bold())
     }
 
-    var desctiption: some View {
+    private var desctiption: some View {
         Text("subscription.callToAction.description")
             .fixedSize(horizontal: false, vertical: true)
             .font(.title3.weight(.medium))

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct OverlayDeleteButtonModifier: ViewModifier {
     @State private var submitting = false
-    var action: () async -> Void
+    let action: () async -> Void
 
     func body(content: Content) -> some View {
         content

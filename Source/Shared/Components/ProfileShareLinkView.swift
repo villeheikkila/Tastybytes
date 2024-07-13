@@ -4,7 +4,6 @@ import SwiftUI
 
 public struct ProfileShareLinkView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-
     let profile: Profile
 
     public init(profile: Profile) {

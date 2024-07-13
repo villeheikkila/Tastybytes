@@ -6,7 +6,7 @@ struct AppErrorStateView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let errors: [Error]
 
-    var title: LocalizedStringKey {
+    private var title: LocalizedStringKey {
         if errors.isNetworkUnavailable {
             "app.error.networkUnavailable.title"
         } else {
@@ -14,7 +14,7 @@ struct AppErrorStateView: View {
         }
     }
 
-    var description: Text {
+    private var description: Text {
         if errors.isNetworkUnavailable {
             Text("app.error.networkUnavailable.description")
         } else {
@@ -22,7 +22,7 @@ struct AppErrorStateView: View {
         }
     }
 
-    var systemImage: String {
+    private var systemImage: String {
         if errors.isNetworkUnavailable {
             "wifi.slash"
         } else {

@@ -48,7 +48,7 @@ struct SparkleView: View {
             }
     }
 
-    var image: some View {
+    private var image: some View {
         Image(systemName: sparkle.systemName)
             .resizable()
             .scaledToFit()
@@ -57,7 +57,7 @@ struct SparkleView: View {
             .accessibility(hidden: true)
     }
 
-    func moveSparkles() {
+    private func moveSparkles() {
         withAnimation(.easeInOut(duration: duration)) {
             direction.toggle()
             offset = CGFloat.random(in: 8 ... 16)
