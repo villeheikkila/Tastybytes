@@ -7,7 +7,7 @@ import Repositories
 import SwiftUI
 
 struct CheckInListContentView: View {
-    private let logger = Logger(category: "CheckInList")
+    private let logger = Logger(category: "CheckInListContentView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Binding var checkIns: [CheckIn]
@@ -30,7 +30,8 @@ struct CheckInListContentView: View {
             .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
             .id(checkIn.id)
             .onAppear {
-                if checkIn == checkIns.last {
+                if let index = checkIns.firstIndex(of: checkIn),
+                   index == checkIns.count - 8 {
                     onLoadMore()
                 }
             }
