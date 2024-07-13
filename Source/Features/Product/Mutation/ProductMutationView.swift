@@ -237,11 +237,11 @@ struct ProductMutationView: View {
                 router.open(.toast(.warning("product.editSuggestion.nothingToEdit.toast")))
                 return
             }
-            switch await repository.product.createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent) {
-            case .success:
+            do {
+                try await repository.product.createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent)
                 dismiss()
                 router.open(.toast(.success("product.editSuggestion.success.toast")))
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init(title: "product.error.failedToCreateEditSuggestion.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
@@ -254,21 +254,21 @@ struct ProductMutationView: View {
             guard let category, let brand else { return }
             let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
             guard let subBrandWithNil else { return }
-            switch await repository.product.editProduct(productEditParams: .init(
-                productId: product.id,
-                name: name,
-                description: description,
-                categoryId: category.id,
-                subBrandId: subBrandWithNil.id,
-                subcategories: Array(subcategories),
-                isDiscontinued: isDiscontinued
-            )) {
-            case let .success(updatedProduct):
+            do {
+                let updatedProduct = try await repository.product.editProduct(productEditParams: .init(
+                    productId: product.id,
+                    name: name,
+                    description: description,
+                    categoryId: category.id,
+                    subBrandId: subBrandWithNil.id,
+                    subcategories: Array(subcategories),
+                    isDiscontinued: isDiscontinued
+                ))
                 if let onEdit {
                     await onEdit(updatedProduct)
                 }
                 dismiss()
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init(title: "product.error.failedToUpdate.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
@@ -279,24 +279,24 @@ struct ProductMutationView: View {
             }
         case let .new(_, onCreate), let .addToBrand(_, onCreate), let .addToSubBrand(_, _, onCreate):
             guard let category, let brandId = brand?.id else { return }
-            switch await repository.product.create(newProductParams: .init(
-                name: name,
-                description: description,
-                categoryId: category.id,
-                brandId: brandId,
-                subBrandId: subBrand?.id,
-                subcategories: Array(subcategories),
-                isDiscontinued: isDiscontinued,
-                barcode: barcode
-            )) {
-            case let .success(newProduct):
+            do {
+                let newProduct = try await repository.product.create(newProductParams: .init(
+                    name: name,
+                    description: description,
+                    categoryId: category.id,
+                    brandId: brandId,
+                    subBrandId: subBrand?.id,
+                    subcategories: Array(subcategories),
+                    isDiscontinued: isDiscontinued,
+                    barcode: barcode
+                ))
                 if isPresentedInSheet {
                     dismiss()
                 }
                 if let onCreate {
                     await onCreate(newProduct)
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init(title: "product.error.failedToCreate.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
@@ -311,8 +311,8 @@ struct ProductMutationView: View {
     func initialize() async {
         switch mode {
         case let .edit(initialProduct, _), let .editSuggestion(initialProduct):
-            switch await repository.brand.getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id) {
-            case let .success(brandsWithSubBrands):
+            do {
+                let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
                 category = appEnvironmentModel.categories.first(where: { category in
                     category.id == initialProduct.category.id
                 })
@@ -327,7 +327,7 @@ struct ProductMutationView: View {
                 description = initialProduct.description.orEmpty
                 isDiscontinued = initialProduct.isDiscontinued
                 state = .populated
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 state = .error([error])
                 logger.error("Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))")

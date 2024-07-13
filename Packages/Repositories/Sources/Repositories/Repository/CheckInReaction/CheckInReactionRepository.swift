@@ -1,6 +1,6 @@
 import Models
 
 public protocol CheckInReactionsRepository: Sendable {
-    func insert(newCheckInReaction: CheckInReaction.NewRequest) async -> Result<CheckInReaction, Error>
-    func delete(id: Int) async -> Result<Void, Error>
+    func insert(newCheckInReaction: CheckInReaction.NewRequest) async throws -> CheckInReaction
+    func delete(id: Int) async throws
 }

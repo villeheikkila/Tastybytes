@@ -44,12 +44,12 @@ struct ServingStyleManagementSheet: View {
     }
 
     func getAllServingStyles() async {
-        switch await repository.servingStyle.getAll() {
-        case let .success(servingStyles):
+        do {
+            let servingStyles = try await repository.servingStyle.getAll()
             withAnimation {
                 self.servingStyles = servingStyles
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to load all serving styles. Error: \(error) (\(#file):\(#line))")
@@ -57,15 +57,14 @@ struct ServingStyleManagementSheet: View {
     }
 
     func createServingStyle() async {
-        switch await repository.servingStyle.insert(
-            servingStyle: ServingStyle.NewRequest(name: newServingStyleName))
-        {
-        case let .success(servingStyle):
+        do {
+            let servingStyle = try await repository.servingStyle.insert(
+                servingStyle: ServingStyle.NewRequest(name: newServingStyleName))
             withAnimation {
                 servingStyles.append(servingStyle)
                 newServingStyleName = ""
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to create new serving style. Error: \(error) (\(#file):\(#line))")
@@ -73,13 +72,13 @@ struct ServingStyleManagementSheet: View {
     }
 
     func deleteServingStyle(_ servingStyle: ServingStyle) async {
-        switch await repository.servingStyle.delete(id: servingStyle.id) {
-        case .success:
+        do {
+            try await repository.servingStyle.delete(id: servingStyle.id)
             withAnimation {
                 servingStyles.remove(object: servingStyle)
             }
             feedbackEnvironmentModel.trigger(.notification(.success))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")
@@ -87,14 +86,13 @@ struct ServingStyleManagementSheet: View {
     }
 
     func editServingStyle(_ servingStyle: ServingStyle, _ updatedServingStyle: ServingStyle) async {
-        switch await repository.servingStyle
-            .update(update: ServingStyle.UpdateRequest(id: updatedServingStyle.id, name: updatedServingStyle.name))
-        {
-        case let .success(servingStyle):
+        do {
+            let servingStyle = try await repository.servingStyle
+                .update(update: ServingStyle.UpdateRequest(id: updatedServingStyle.id, name: updatedServingStyle.name))
             withAnimation {
                 servingStyles.replace(servingStyle, with: updatedServingStyle)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to edit serving style '\(servingStyle.name)'. Error: \(error) (\(#file):\(#line))")

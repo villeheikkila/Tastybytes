@@ -106,14 +106,14 @@ struct LocationAdminSheet: View {
     }
 
     func loadData() async {
-        switch await repository.location.getDetailed(id: location.id) {
-        case let .success(location):
+        do {
+            let location = try await repository.location.getDetailed(id: location.id)
             withAnimation {
                 self.location = location
                 state = .populated
             }
             await onEdit(location)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed to update location: '\(location.id)'. Error: \(error) (\(#file):\(#line))")
@@ -121,24 +121,23 @@ struct LocationAdminSheet: View {
     }
 
     func updateLocation(_ location: Location) async {
-        switch await repository.location.update(request: .init(id: location.id, mapKitIdentifier: location.mapKitIdentifier)) {
-        case let .success(location):
+        do { let location = try await repository.location.update(request: .init(id: location.id, mapKitIdentifier: location.mapKitIdentifier))
             withAnimation {
                 self.location = location
             }
             await onEdit(location)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to update location: '\(location.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     func deleteLocation(_ location: Location) async {
-        switch await repository.location.delete(id: location.id) {
-        case .success:
+        do {
+            try await repository.location.delete(id: location.id)
             await onDelete(location)
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")

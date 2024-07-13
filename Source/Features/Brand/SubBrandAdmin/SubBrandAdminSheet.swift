@@ -110,26 +110,26 @@ struct SubBrandAdminSheet: View {
     }
 
     func loadData() async {
-        switch await repository.subBrand.getDetailed(id: subBrand.id) {
-        case let .success(subBrand):
+        do {
+            let subBrand = try await repository.subBrand.getDetailed(id: subBrand.id)
             withAnimation {
                 self.subBrand = subBrand
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to load detailed sub-brand information. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     func verifySubBrand(isVerified: Bool) async {
-        switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
-        case .success:
+        do {
+            try await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified)
             let updatedSubBrand = subBrand.copyWith(isVerified: isVerified)
             let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
             brand = brand.copyWith(subBrands: updatedSubBrands)
             subBrand = updatedSubBrand
             feedbackEnvironmentModel.trigger(.notification(.success))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
@@ -137,14 +137,14 @@ struct SubBrandAdminSheet: View {
     }
 
     func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
-        switch await repository.subBrand.update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id))) {
-        case .success:
+        do {
+            try await repository.subBrand.update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
             withAnimation {
                 brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand))
             }
             subBrand = mergeTo
             feedbackEnvironmentModel.trigger(.notification(.success))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))")
@@ -152,14 +152,14 @@ struct SubBrandAdminSheet: View {
     }
 
     func editSubBrand() async {
-        switch await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName))) {
-        case let .success(updatedSubBrand):
+        do {
+            let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName)))
             router.open(.toast(.success("subBrand.updated.toast")))
-            let updatedSubBrand = subBrand.copyWith(name: updatedSubBrand.name)
+            let updatedSubBrand = subBrand.copyWith(name: updated.name)
             subBrand = updatedSubBrand
             let updatedSubBrands = brand.subBrands.replacingWithId(subBrand, with: updatedSubBrand)
             brand = brand.copyWith(subBrands: updatedSubBrands)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to edit sub-brand'. Error: \(error) (\(#file):\(#line))")
@@ -167,14 +167,14 @@ struct SubBrandAdminSheet: View {
     }
 
     func deleteSubBrand(_ subBrand: SubBrand.JoinedProduct) async {
-        switch await repository.subBrand.delete(id: subBrand.id) {
-        case .success:
+        do {
+            try await repository.subBrand.delete(id: subBrand.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             withAnimation {
                 brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand))
             }
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error(

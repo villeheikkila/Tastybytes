@@ -69,10 +69,10 @@ struct BrandSheet: View {
     }
 
     func loadBrands(_ brandOwner: Company) async {
-        switch await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id) {
-        case let .success(brandsWithSubBrands):
+        do {
+            let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id)
             self.brandsWithSubBrands = brandsWithSubBrands
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to load brands for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")
@@ -80,15 +80,15 @@ struct BrandSheet: View {
     }
 
     func createNewBrand() async {
-        switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
-        case let .success(brandWithSubBrands):
+        do {
+            let brandWithSubBrands = try await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id))
             router.open(.toast(.success("brand.created.toast")))
             if mode == .new {
                 router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
             }
             brand = brandWithSubBrands
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to create new brand for \(brandOwner.id). Error: \(error) (\(#file):\(#line))")

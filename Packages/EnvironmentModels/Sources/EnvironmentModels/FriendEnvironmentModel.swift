@@ -39,15 +39,15 @@ public final class FriendEnvironmentModel {
     }
 
     public func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
-        switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
-        case let .success(newFriend):
+        do {
+            let newFriend = try await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending))
             withAnimation {
                 self.friends.append(newFriend)
             }
             if let onSuccess {
                 onSuccess()
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed add new friend '\(receiver)'. Error: \(error) (\(#file):\(#line))")
@@ -55,20 +55,16 @@ public final class FriendEnvironmentModel {
     }
 
     public func updateFriendRequest(friend: Friend, newStatus: Friend.Status) async {
-        let friendUpdate = Friend.UpdateRequest(
-            sender: friend.sender,
-            receiver: friend.receiver,
-            status: newStatus
-        )
-
-        switch await repository.friend.update(id: friend.id, friendUpdate: friendUpdate) {
-        case let .success(updatedFriend):
+        do {
+            let updatedFriend = try await repository.friend.update(id: friend.id, friendUpdate: .init(
+                sender: friend.sender,
+                receiver: friend.receiver,
+                status: newStatus
+            ))
             withAnimation {
-                withAnimation {
-                    self.friends.replace(friend, with: updatedFriend)
-                }
+                self.friends.replace(friend, with: updatedFriend)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error(
@@ -78,12 +74,12 @@ public final class FriendEnvironmentModel {
     }
 
     public func removeFriendRequest(_ friend: Friend) async {
-        switch await repository.friend.delete(id: friend.id) {
-        case .success:
+        do {
+            try await repository.friend.delete(id: friend.id)
             withAnimation {
                 self.friends.remove(object: friend)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to remove friend request '\(friend.id)'. Error: \(error) (\(#file):\(#line))")
@@ -115,11 +111,11 @@ public final class FriendEnvironmentModel {
         if withHaptics {
             isRefreshing = true
         }
-        switch await repository.friend.getByUserId(userId: profile.id, status: .none) {
-        case let .success(friends):
+        do {
+            let friends = try await repository.friend.getByUserId(userId: profile.id, status: .none)
             self.friends = friends
             state = .populated
-        case let .failure(error):
+        } catch {
             if state != .populated {
                 state = .error([error])
             }
@@ -137,13 +133,13 @@ public final class FriendEnvironmentModel {
     }
 
     public func unblockUser(_ friend: Friend) async {
-        switch await repository.friend.delete(id: friend.id) {
-        case .success:
+        do {
+            try await repository.friend.delete(id: friend.id)
             withAnimation {
                 self.friends.remove(object: friend)
             }
             logger.notice("\(friend.id) unblocked")
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to unblock user \(friend.id). Error: \(error) (\(#file):\(#line))")
@@ -155,13 +151,13 @@ public final class FriendEnvironmentModel {
         if let friend = friends.first(where: { $0.getFriend(userId: profile.id) == user }) {
             await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)
         } else {
-            switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
-            case let .success(blockedUser):
+            do {
+                let blockedUser = try await repository.friend.insert(newFriend: .init(receiver: user.id, status: .blocked))
                 withAnimation {
                     self.friends.append(blockedUser)
                 }
                 onSuccess()
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 alertError = .init()
                 logger.error("Failed to block user \(user.id). Error: \(error) (\(#file):\(#line))")

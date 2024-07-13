@@ -52,13 +52,13 @@ struct ProfileLocationsScreen: View {
     }
 
     func loadCheckInlocations() async {
-        switch await repository.location.getCheckInLocations(userId: profile.id) {
-        case let .success(checkInLocations):
+        do {
+            let checkInLocations = try await repository.location.getCheckInLocations(userId: profile.id)
             withAnimation {
                 self.checkInLocations = checkInLocations
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed loading check-in locations statistics. Error: \(error) (\(#file):\(#line))")

@@ -45,8 +45,8 @@ struct DuplicateProductScreen: View {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
-        switch await repository.product.getMarkedAsDuplicateProducts(filter: filter) {
-        case let .success(duplicateProductSuggestions):
+        do {
+            let duplicateProductSuggestions = try await repository.product.getMarkedAsDuplicateProducts(filter: filter)
             withAnimation {
                 state = .populated
                 self.duplicateProductSuggestions = duplicateProductSuggestions
@@ -54,8 +54,7 @@ struct DuplicateProductScreen: View {
             if withHaptics {
                 feedbackEnvironmentModel.trigger(.notification(.success))
             }
-
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Fetching duplicate products failed. Error: \(error) (\(#file):\(#line))")
@@ -63,12 +62,11 @@ struct DuplicateProductScreen: View {
     }
 
     func deleteProductSuggestion(_ duplicateProductSuggestion: ProductDuplicateSuggestion) async {
-        switch await repository.product.deleteProductDuplicateSuggestion(duplicateProductSuggestion) {
-        case .success:
+        do { try await repository.product.deleteProductDuplicateSuggestion(duplicateProductSuggestion)
             withAnimation {
                 duplicateProductSuggestions = duplicateProductSuggestions.removing(duplicateProductSuggestion)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Delete product duplicate suggestion. Error: \(error) (\(#file):\(#line))")

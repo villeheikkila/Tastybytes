@@ -57,26 +57,26 @@ struct ProfileWishlistScreen: View {
     }
 
     func removeFromWishlist(product: Product.Joined) async {
-        switch await repository.product.removeFromWishlist(productId: product.id) {
-        case .success:
+        do {
+            try await repository.product.removeFromWishlist(productId: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             withAnimation {
                 products.remove(object: product)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     func loadProducts() async {
-        switch await repository.product.getWishlistItems(profileId: profile.id) {
-        case let .success(wishlist):
+        do {
+            let wishlist = try await repository.product.getWishlistItems(profileId: profile.id)
             withAnimation {
                 products = wishlist.map(\.product)
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             if state != .populated {
                 state = .error([error])

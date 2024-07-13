@@ -66,67 +66,63 @@ final class Router {
         Task {
             switch destination {
             case let .product(id):
-                switch await repository.product.getById(id: id) {
-                case let .success(product):
+                do {
+                    let product = try await repository.product.getById(id: id)
                     self.open(.screen(.product(product), resetStack: resetStack))
-                case let .failure(error):
+                } catch {
                     self.open(.screen(.error(reason: "Failed to load requested product page"),
                                       resetStack: resetStack))
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .productWithBarcode(id, barcode):
-                switch await repository.product.getById(id: id) {
-                case let .success(product):
+                do {
+                    let product = try await repository.product.getById(id: id)
                     self.open(.screen(.productFromBarcode(product, barcode)))
-                case let .failure(error):
+                } catch {
                     self.open(.screen(.error(reason: "Failed to load requested product page"),
                                       resetStack: resetStack))
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .checkIn(id):
-                switch await repository.checkIn.getById(id: id) {
-                case let .success(checkIn):
+                do {
+                    let checkIn = try await repository.checkIn.getById(id: id)
                     self.open(.screen(.checkIn(checkIn), resetStack: resetStack))
-                case let .failure(error):
+                } catch {
                     self.open(.screen(.error(reason: "Failed to load requested check-in page"),
                                       resetStack: resetStack))
                     logger.error("Request for check-in with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .company(id):
-                switch await repository.company.getById(id: id) {
-                case let .success(company):
+                do {
+                    let company = try await repository.company.getById(id: id)
                     self.open(.screen(.company(company), resetStack: resetStack))
-                case let .failure(error):
+                } catch {
                     self.open(.screen(.error(reason: "Failed to load requested company page"),
                                       resetStack: resetStack))
                     logger.error("Request for company with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .brand(id):
-                switch await repository.brand.getJoinedById(id: id) {
-                case let .success(brand):
+                do {
+                    let brand = try await repository.brand.getJoinedById(id: id)
                     self.open(.screen(.brand(brand), resetStack: resetStack))
-                case let .failure(error):
+                } catch {
                     self.open(.screen(.error(reason: "Failed to load requested company page"),
                                       resetStack: resetStack))
                     logger.error("Request for brand with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .profile(id):
-                switch await repository.profile.getById(id: id) {
-                case let .success(profile):
+                do {
+                    let profile = try await repository.profile.getById(id: id)
                     self.open(.screen(.profile(profile), resetStack: resetStack))
-                case let .failure(error):
-                    self.open(.screen(.error(reason: "Failed to load requested profile page"),
-                                      resetStack: resetStack))
-                    logger
-                        .error(
-                            "request for profile with \(id.uuidString.lowercased()) failed. error: \(error)"
-                        )
+                } catch {
+                    self.open(.screen(.error(reason: "Failed to load requested profile page"), resetStack: resetStack))
+                    logger.error("Request for profile with \(id.uuidString.lowercased()) failed. error: \(error)")
                 }
             case let .location(id):
-                switch await repository.location.getById(id: id) {
-                case let .success(location):
+                do {
+                    let location = try await repository.location.getById(id: id)
                     self.open(.screen(.location(location), resetStack: resetStack))
-                case let .failure(error):
+                } catch {
                     self.open(.screen(.error(reason: "Failed to load requested location page"),
                                       resetStack: resetStack))
                     logger.error("Request for location with \(id) failed. Error: \(error) (\(#file):\(#line))")

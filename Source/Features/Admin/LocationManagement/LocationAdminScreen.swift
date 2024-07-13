@@ -50,13 +50,13 @@ struct LocationAdminScreen: View {
     }
 
     private func loadData() async {
-        switch await repository.location.getLocations() {
-        case let .success(locations):
+        do {
+            let locations = try await repository.location.getLocations()
             withAnimation {
                 self.locations = locations
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             withAnimation {
                 state = .getState(errors: [error], withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
             }

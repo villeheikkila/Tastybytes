@@ -44,7 +44,7 @@ struct ProfileInnerView: View {
         _profile = State(initialValue: profile)
         self.isCurrentUser = isCurrentUser
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in
-            await repository.checkIn.getByProfileId(id: profile.id, queryType: .paginated(from, to))
+            try await repository.checkIn.getByProfileId(id: profile.id, queryType: .paginated(from, to))
         }, id: "ProfileView"))
         isShownInFull = isCurrentUser || !profile.isPrivate
     }
@@ -127,38 +127,24 @@ struct ProfileInnerView: View {
         async let productPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
         async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile), from: 0, to: pageSize)
-        let (summaryResult, imagesResult) = await (summaryPromise, imagesPromise)
-
         var errors = [Error]()
-        switch summaryResult {
-        case let .success(summary):
+        do {
+            let (summaryResult, imagesResult) = try await (summaryPromise, imagesPromise)
             withAnimation {
-                profileSummary = summary
+                profileSummary = summaryResult
             }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            errors.append(error)
-            logger.error("Fetching profile data failed. Error: \(error) (\(#file):\(#line))")
-        }
-
-        switch imagesResult {
-        case let .success(images):
             withAnimation {
                 if isRefresh {
-                    checkInImages = images
+                    checkInImages = imagesResult
                 } else {
-                    checkInImages.append(contentsOf: images)
+                    checkInImages.append(contentsOf: imagesResult)
                 }
             }
             page += 1
             isLoading = false
-        case let .failure(error):
-            guard !error.isCancelled else { return }
+        } catch {
             errors.append(error)
-            logger
-                .error(
-                    "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
-                )
+            logger.error("Fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
         if state != .populated {
             state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
@@ -170,24 +156,24 @@ struct ProfileInnerView: View {
         let (from, to) = getPagination(page: page, size: pageSize)
         isLoading = true
 
-        switch await repository.checkIn.getCheckInImages(by: .profile(profile), from: from, to: to) {
-        case let .success(checkIns):
+        do {
+            let checkIns = try await repository.checkIn.getCheckInImages(by: .profile(profile), from: from, to: to)
             withAnimation {
                 checkInImages.append(contentsOf: checkIns)
             }
             page += 1
             isLoading = false
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
         }
     }
 
     func uploadAvatar(userId: UUID, data: Data) async {
-        switch await repository.profile.uploadAvatar(userId: userId, data: data) {
-        case let .success(imageEntity):
+        do {
+            let imageEntity = try await repository.profile.uploadAvatar(userId: userId, data: data)
             profile = profile.copyWith(avatars: [imageEntity])
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Uploading of a avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
         }

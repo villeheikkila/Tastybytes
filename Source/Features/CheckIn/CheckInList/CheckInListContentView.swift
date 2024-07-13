@@ -40,12 +40,12 @@ struct CheckInListContentView: View {
     }
 
     func deleteCheckIn(_ checkIn: CheckIn) async {
-        switch await repository.checkIn.delete(id: checkIn.id) {
-        case .success:
+        do {
+            try await repository.checkIn.delete(id: checkIn.id)
             withAnimation {
                 checkIns.remove(object: checkIn)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init(title: "checkIn.delete.failure.alert")))
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")

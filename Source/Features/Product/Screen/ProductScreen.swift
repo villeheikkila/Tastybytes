@@ -46,7 +46,7 @@ struct ProductInnerScreen: View {
 
     init(repository: Repository, product: Product.Joined, loadedWithBarcode: Barcode? = nil) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
-            await repository.checkIn.getByProductId(id: product.id, segment: segment, from: from, to: to)
+            try await repository.checkIn.getByProductId(id: product.id, segment: segment, from: from, to: to)
         }, id: "ProductScreen"))
         _product = State(initialValue: product)
         _loadedWithBarcode = State(initialValue: loadedWithBarcode)
@@ -179,10 +179,10 @@ struct ProductInnerScreen: View {
 
     func onCreateCheckIn(checkIn: CheckIn) async {
         checkInLoader.onCreateCheckIn(checkIn)
-        switch await repository.product.getSummaryById(id: product.id) {
-        case let .success(summary):
+        do {
+            let summary = try await repository.product.getSummaryById(id: product.id)
             self.summary = summary
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
@@ -195,53 +195,32 @@ struct ProductInnerScreen: View {
         async let summaryPromise = repository.product.getSummaryById(id: product.id)
         async let wishlistPromise = repository.product.checkIfOnWishlist(id: product.id)
         async let fetchImagePromise: Void = fetchImages(reset: true)
-
-        let (_, productResult, summaryResult, wishlistResult, _) = await (loadInitialCheckInsPromise,
-                                                                          productPromise,
-                                                                          summaryPromise,
-                                                                          wishlistPromise,
-                                                                          fetchImagePromise)
-
         var errors: [Error] = []
-        switch productResult {
-        case let .success(refreshedProduct):
+        do {
+            let (_, productResult, summaryResult, wishlistResult, _) = try await (loadInitialCheckInsPromise,
+                                                                                  productPromise,
+                                                                                  summaryPromise,
+                                                                                  wishlistPromise,
+                                                                                  fetchImagePromise)
             withAnimation {
-                product = refreshedProduct
+                product = productResult
+                summary = summaryResult
+                isOnWishlist = wishlistResult
             }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            errors.append(error)
-            logger.error("Failed to refresh product by id. Error: \(error) (\(#file):\(#line))")
-        }
-
-        switch summaryResult {
-        case let .success(summary):
-            self.summary = summary
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             errors.append(error)
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
-        }
-
-        switch wishlistResult {
-        case let .success(isOnWishlist):
-            withAnimation {
-                self.isOnWishlist = isOnWishlist
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            errors.append(error)
-            logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
         }
 
         state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     func addBarcodeToProduct(_ barcode: Barcode) async {
-        switch await repository.productBarcode.addToProduct(product: product, barcode: barcode) {
-        case .success:
+        do {
+            try await repository.productBarcode.addToProduct(product: product, barcode: barcode)
             router.open(.toast(.success("bracode.add.success.toast")))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init(title: "barcode.error.failedToAdd.title", retryLabel: "labels.retry", retry: {
                 Task { await addBarcodeToProduct(barcode) }
@@ -263,14 +242,14 @@ struct ProductInnerScreen: View {
         let (from, to) = getPagination(page: checkInImagesPage, size: 10)
         isLoadingCheckInImages = true
 
-        switch await repository.checkIn.getCheckInImages(by: .product(product), from: from, to: to) {
-        case let .success(checkIns):
+        do {
+            let checkIns = try await repository.checkIn.getCheckInImages(by: .product(product), from: from, to: to)
             withAnimation {
                 checkInImages.append(contentsOf: checkIns)
             }
             checkInImagesPage += 1
             isLoadingCheckInImages = false
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
         }
@@ -278,24 +257,23 @@ struct ProductInnerScreen: View {
 
     func toggleWishlist() async {
         if isOnWishlist {
-            switch await repository.product.removeFromWishlist(productId: product.id) {
-            case .success:
+            do {
+                try await repository.product.removeFromWishlist(productId: product.id)
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 withAnimation {
                     isOnWishlist = false
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 logger.error("Removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
-            switch await repository.product.addToWishlist(productId: product.id) {
-            case .success:
+            do { try await repository.product.addToWishlist(productId: product.id)
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 withAnimation {
                     isOnWishlist = true
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 logger.error("Adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
             }

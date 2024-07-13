@@ -61,12 +61,12 @@ struct ProfileHeaderAvatarSection: View {
     }
 
     func deleteAvatar(entity: ImageEntity) async {
-        switch await repository.imageEntity.delete(from: .avatars, entity: entity) {
-        case .success:
+        do {
+            try await repository.imageEntity.delete(from: .avatars, entity: entity)
             withAnimation {
                 profile = profile.copyWith(avatars: profile.avatars.removing(entity))
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }

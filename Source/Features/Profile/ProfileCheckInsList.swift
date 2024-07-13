@@ -25,11 +25,11 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
         switch self {
         case let .dateRange(dateRange):
             { from, to, _ in
-                await repository.checkIn.getByProfileId(id: profile.id, queryType: .dateRange(from, to, dateRange))
+                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .dateRange(from, to, dateRange))
             }
         case let .location(location):
             { from, to, _ in
-                await repository.checkIn.getByProfileId(id: profile.id, queryType: .location(from, to, location))
+                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .location(from, to, location))
             }
         }
     }

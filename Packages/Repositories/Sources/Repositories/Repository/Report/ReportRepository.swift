@@ -34,8 +34,8 @@ public enum ReportFilter: Sendable, Codable, Hashable {
 }
 
 public protocol ReportRepository: Sendable {
-    func getAll(_ filter: ReportFilter?) async -> Result<[Report], Error>
-    func insert(report: Report.NewRequest) async -> Result<Void, Error>
-    func delete(id: Int) async -> Result<Void, Error>
-    func resolve(id: Int) async -> Result<Report, Error>
+    func getAll(_ filter: ReportFilter?) async throws -> [Report]
+    func insert(report: Report.NewRequest) async throws
+    func delete(id: Int) async throws
+    @discardableResult func resolve(id: Int) async throws -> Report
 }

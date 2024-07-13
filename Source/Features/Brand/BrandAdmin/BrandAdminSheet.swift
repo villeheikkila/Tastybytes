@@ -115,20 +115,20 @@ struct BrandAdminSheet: View {
     }
 
     func loadData() async {
-        switch await repository.brand.getDetailed(id: brand.id) {
-        case let .success(brand):
+        do {
+            let brand = try await repository.brand.getDetailed(id: brand.id)
             self.brand = brand
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to load detailed brand info. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     func verifyBrand(isVerified: Bool) async {
-        switch await repository.brand.verification(id: brand.id, isVerified: isVerified) {
-        case .success:
+        do {
+            try await repository.brand.verification(id: brand.id, isVerified: isVerified)
             brand = brand.copyWith(isVerified: isVerified)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
@@ -136,12 +136,12 @@ struct BrandAdminSheet: View {
     }
 
     func editBrand() async {
-        switch await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id)) {
-        case let .success(brand):
+        do {
+            let brand = try await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id))
             router.open(.toast(.success("brand.edit.success.toast")))
             self.brand = brand
             await onUpdate(brand)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to edit brand. Error: \(error) (\(#file):\(#line))")
@@ -149,14 +149,14 @@ struct BrandAdminSheet: View {
     }
 
     func uploadLogo(data: Data) async {
-        switch await repository.brand.uploadLogo(brandId: brand.id, data: data) {
-        case let .success(imageEntity):
+        do {
+            let imageEntity = try await repository.brand.uploadLogo(brandId: brand.id, data: data)
             withAnimation {
                 brand = brand.copyWith(logos: brand.logos + [imageEntity])
             }
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
             await onUpdate(brand)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Uploading of a brand logo failed. Error: \(error) (\(#file):\(#line))")
@@ -164,12 +164,12 @@ struct BrandAdminSheet: View {
     }
 
     func deleteLogo(entity: ImageEntity) async {
-        switch await repository.imageEntity.delete(from: .brandLogos, entity: entity) {
-        case .success:
+        do {
+            try await repository.imageEntity.delete(from: .brandLogos, entity: entity)
             withAnimation {
                 brand = brand.copyWith(logos: brand.logos.removing(entity))
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
@@ -177,11 +177,11 @@ struct BrandAdminSheet: View {
     }
 
     func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
-        switch await repository.brand.delete(id: brand.id) {
-        case .success:
+        do {
+            try await repository.brand.delete(id: brand.id)
             await onDelete(brand)
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")

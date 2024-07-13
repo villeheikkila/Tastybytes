@@ -38,13 +38,12 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
     }
 
     func loadStatistics() async {
-        switch await repository.profile.getCategoryStatistics(userId: profile.id) {
-        case let .success(categoryStatistics):
+        do { let categoryStatistics = try await repository.profile.getCategoryStatistics(userId: profile.id)
             withAnimation {
                 self.categoryStatistics = categoryStatistics
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed loading category statistics. Error: \(error) (\(#file):\(#line))")
@@ -98,13 +97,13 @@ struct SubcategoryStatisticsView: View {
 
     func loadSubcategoryStatistics() async {
         guard state != .loading, subcategoryStatistics.isEmpty else { return }
-        switch await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id) {
-        case let .success(subcategoryStatistics):
+        do {
+            let subcategoryStatistics = try await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id)
             withAnimation {
                 self.subcategoryStatistics = subcategoryStatistics
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed loading subcategory statistics. Error: \(error) (\(#file):\(#line))")

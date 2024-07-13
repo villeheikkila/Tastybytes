@@ -29,17 +29,14 @@ struct CheckInLeaveComment: View {
     }
 
     func sendComment() async {
-        let newCheckInComment = CheckInComment.NewRequest(content: commentText, checkInId: checkIn.id)
-
-        let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
-        switch result {
-        case let .success(newCheckInComment):
+        do {
+            let newCheckInComment = try await repository.checkInComment.insert(newCheckInComment: .init(content: commentText, checkInId: checkIn.id))
             withAnimation {
                 checkInComments.insert(newCheckInComment, at: 0)
                 commentText = ""
             }
             await onSubmitted(newCheckInComment)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to send comment. Error: \(error) (\(#file):\(#line))")
         }

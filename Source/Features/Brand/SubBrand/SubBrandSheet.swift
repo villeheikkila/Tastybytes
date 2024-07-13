@@ -64,14 +64,12 @@ struct SubBrandSheet: View {
     }
 
     func createNewSubBrand() async {
-        switch await repository.subBrand
-            .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
-        {
-        case let .success(newSubBrand):
+        do {
+            let newSubBrand = try await repository.subBrand.insert(newSubBrand: .init(name: subBrandName, brandId: brandWithSubBrands.id))
             router.open(.toast(.success("subBrand.create.success.toast")))
             subBrand = newSubBrand
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Saving sub-brand failed. Error: \(error) (\(#file):\(#line))")

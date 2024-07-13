@@ -53,11 +53,11 @@ struct CheckInCommentAdminSheet: View {
     }
 
     func deleteCommentAsModerator(_ comment: CheckInComment) async {
-        switch await repository.checkInComment.deleteAsModerator(comment: comment) {
-        case .success:
+        do {
+            try await repository.checkInComment.deleteAsModerator(comment: comment)
             onDelete(comment)
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to delete comment as moderator'\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }

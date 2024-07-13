@@ -82,13 +82,13 @@ struct ProductAdminSheet: View {
     }
 
     func loadData() async {
-        switch await repository.product.getDetailed(id: product.id) {
-        case let .success(product):
+        do {
+            let product = try await repository.product.getDetailed(id: product.id)
             withAnimation {
                 self.product = product
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed to load detailed product. Error: \(error) (\(#file):\(#line))")
@@ -96,11 +96,11 @@ struct ProductAdminSheet: View {
     }
 
     func verifyProduct(isVerified: Bool) async {
-        switch await repository.product.verification(id: product.id, isVerified: isVerified) {
-        case .success:
+        do {
+            try await repository.product.verification(id: product.id, isVerified: isVerified)
             feedbackEnvironmentModel.trigger(.notification(.success))
             product = product.copyWith(isVerified: isVerified)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
@@ -108,12 +108,12 @@ struct ProductAdminSheet: View {
     }
 
     func deleteProduct(_ product: Product.Joined) async {
-        switch await repository.product.delete(id: product.id) {
-        case .success:
+        do {
+            try await repository.product.delete(id: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             onDelete()
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
@@ -121,12 +121,12 @@ struct ProductAdminSheet: View {
     }
 
     func deleteLogo(entity: ImageEntity) async {
-        switch await repository.imageEntity.delete(from: .productLogos, entity: entity) {
-        case .success:
+        do {
+            try await repository.imageEntity.delete(from: .productLogos, entity: entity)
             withAnimation {
                 logos.remove(object: entity)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
@@ -134,11 +134,11 @@ struct ProductAdminSheet: View {
     }
 
     func uploadData(data: Data) async {
-        switch await repository.product.uploadLogo(productId: product.id, data: data) {
-        case let .success(imageEntity):
+        do {
+            let imageEntity = try await repository.product.uploadLogo(productId: product.id, data: data)
             logos.append(imageEntity)
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
-        case let .failure(error):
+        } catch {
             logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }

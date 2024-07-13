@@ -40,8 +40,8 @@ struct CheckInCommentEditSheet: View {
     }
 
     func updateComment() async {
-        switch await repository.checkInComment.update(updateCheckInComment: .init(id: checkInComment.id, content: editCommentText)) {
-        case let .success(updatedComment):
+        do {
+            let updatedComment = try await repository.checkInComment.update(updateCheckInComment: .init(id: checkInComment.id, content: editCommentText))
             guard let index = checkInComments.firstIndex(where: { $0.id == updatedComment.id }) else {
                 return
             }
@@ -49,7 +49,7 @@ struct CheckInCommentEditSheet: View {
                 checkInComments[index] = updatedComment
                 dismiss()
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to update comment \(checkInComment.id)'. Error: \(error) (\(#file):\(#line))")
         }

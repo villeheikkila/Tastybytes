@@ -1,10 +1,10 @@
 import Models
 
 public protocol SubBrandRepository: Sendable {
-    func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error>
-    func getDetailed(id: Int) async -> Result<SubBrand.JoinedProduct, Error>
-    func update(updateRequest: SubBrand.Update) async -> Result<SubBrand, Error>
-    func delete(id: Int) async -> Result<Void, Error>
-    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
-    func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error>
+    func insert(newSubBrand: SubBrand.NewRequest) async throws -> SubBrand
+    func getDetailed(id: Int) async throws -> SubBrand.JoinedProduct
+    @discardableResult func update(updateRequest: SubBrand.Update) async throws -> SubBrand
+    func delete(id: Int) async throws
+    func verification(id: Int, isVerified: Bool) async throws
+    func getUnverified() async throws -> [SubBrand.JoinedBrand]
 }

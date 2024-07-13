@@ -39,13 +39,13 @@ struct ReportScreen: View {
     }
 
     func loadInitialData() async {
-        switch await repository.report.getAll(filter) {
-        case let .success(reports):
+        do {
+            let reports = try await repository.report.getAll(filter)
             withAnimation {
                 self.reports = reports
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Loading reports failed. Error: \(error) (\(#file):\(#line))")
@@ -53,12 +53,12 @@ struct ReportScreen: View {
     }
 
     public func deleteReport(_ report: Report) async {
-        switch await repository.report.delete(id: report.id) {
-        case .success:
+        do {
+            try await repository.report.delete(id: report.id)
             withAnimation {
                 reports = reports.removing(report)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
@@ -66,12 +66,12 @@ struct ReportScreen: View {
     }
 
     public func resolveReport(_ report: Report) async {
-        switch await repository.report.resolve(id: report.id) {
-        case .success:
+        do {
+            try await repository.report.resolve(id: report.id)
             withAnimation {
                 reports = reports.removing(report)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to resolve report \(report.id). Error: \(error) (\(#file):\(#line))")

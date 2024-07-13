@@ -57,14 +57,11 @@ struct ProductDuplicateScreen: View {
     }
 
     func reportDuplicate(_ to: Product.Joined) async {
-        switch await repository.product.markAsDuplicate(
-            productId: product.id,
-            duplicateOfProductId: to.id
-        ) {
-        case .success:
+        do {
+            try await repository.product.markAsDuplicate(productId: product.id, duplicateOfProductId: to.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("reporting duplicate product \(product.id) of \(to.id) failed. error: \(error)")
@@ -72,11 +69,11 @@ struct ProductDuplicateScreen: View {
     }
 
     func mergeProducts(_ to: Product.Joined) async {
-        switch await repository.product.mergeProducts(productId: product.id, toProductId: to.id) {
-        case .success:
+        do {
+            try await repository.product.mergeProducts(productId: product.id, toProductId: to.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
@@ -85,10 +82,10 @@ struct ProductDuplicateScreen: View {
 
     func search(searchTerm: String) async {
         guard searchTerm.count > 1 else { return }
-        switch await repository.product.search(searchTerm: searchTerm, filter: nil) {
-        case let .success(searchResults):
+        do {
+            let searchResults = try await repository.product.search(searchTerm: searchTerm, filter: nil)
             products = searchResults.filter { $0.id != product.id }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")

@@ -202,18 +202,10 @@ public final class AppEnvironmentModel {
         async let countryPromise = repository.location.getAllCountries()
         async let subscriptionGroupPromise = repository.subscription.getActiveGroup()
 
-        let (appConfigResponse, flavorResponse, categoryResponse, aboutPageResponse, countryResponse, subscriptionGroup) = await (
-            appConfigPromise,
-            flavorPromise,
-            categoryPromise,
-            aboutPagePromise,
-            countryPromise,
-            subscriptionGroupPromise
-        )
-
         var errors: [Error] = []
-        switch appConfigResponse {
-        case let .success(appConfig):
+
+        do {
+            let appConfig = try await appConfigPromise
             self.appConfig = appConfig
             if appConfig.minimumSupportedVersion > infoPlist.appVersion {
                 let config = infoPlist.appVersion.prettyString
@@ -221,45 +213,26 @@ public final class AppEnvironmentModel {
                 state = .tooOldAppVersion
                 return
             }
-        case let .failure(error):
+        } catch {
             errors.append(error)
             logger.error("Failed to load app config. Error: \(error) (\(#file):\(#line))")
         }
-        switch subscriptionGroup {
-        case let .success(subscriptionGroup):
+        do {
+            let (flavorResponse, categoryResponse, aboutPageResponse, countryResponse, subscriptionGroup) = try await (
+                flavorPromise,
+                categoryPromise,
+                aboutPagePromise,
+                countryPromise,
+                subscriptionGroupPromise
+            )
             self.subscriptionGroup = subscriptionGroup
-        case let .failure(error):
-            logger.error("Failed to load subscription group. Error: \(error) (\(#file):\(#line))")
-        }
-        switch flavorResponse {
-        case let .success(flavors):
-            self.flavors = flavors
-        case let .failure(error):
+            flavors = flavorResponse
+            categories = categoryResponse
+            aboutPage = aboutPageResponse
+            countries = countryResponse
+        } catch {
             errors.append(error)
-            logger.error("Failed to load flavors. Error: \(error) (\(#file):\(#line))")
         }
-        switch categoryResponse {
-        case let .success(categories):
-            self.categories = categories
-        case let .failure(error):
-            errors.append(error)
-            logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
-        }
-        switch aboutPageResponse {
-        case let .success(aboutPage):
-            self.aboutPage = aboutPage
-        case let .failure(error):
-            errors.append(error)
-            logger.error("Failed to load about page data. Error: \(error) (\(#file):\(#line))")
-        }
-        switch countryResponse {
-        case let .success(countries):
-            self.countries = countries
-        case let .failure(error):
-            errors.append(error)
-            logger.error("Failed to load countries. Error: \(error) (\(#file):\(#line))")
-        }
-
         guard !isPreviouslyInitialied else { return }
 
         withAnimation {
@@ -274,12 +247,12 @@ public final class AppEnvironmentModel {
 
     // Flavors
     public func addFlavor(name: String) async {
-        switch await repository.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
-        case let .success(newFlavor):
+        do {
+            let newFlavor = try await repository.flavor.insert(newFlavor: Flavor.NewRequest(name: name))
             withAnimation {
                 flavors.append(newFlavor)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete flavor. Error: \(error) (\(#file):\(#line))")
@@ -287,12 +260,12 @@ public final class AppEnvironmentModel {
     }
 
     public func deleteFlavor(_ flavor: Flavor) async {
-        switch await repository.flavor.delete(id: flavor.id) {
-        case .success:
+        do {
+            try await repository.flavor.delete(id: flavor.id)
             withAnimation {
                 flavors.remove(object: flavor)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete flavor: '\(flavor.id)'. Error: \(error) (\(#file):\(#line))")
@@ -300,12 +273,12 @@ public final class AppEnvironmentModel {
     }
 
     public func refreshFlavors() async {
-        switch await repository.flavor.getAll() {
-        case let .success(flavors):
+        do {
+            let flavors = try await repository.flavor.getAll()
             withAnimation {
                 self.flavors = flavors
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Fetching flavors failed. Error: \(error) (\(#file):\(#line))")
@@ -314,11 +287,11 @@ public final class AppEnvironmentModel {
 
     // Categories
     public func verifySubcategory(_ subcategory: Subcategory.JoinedCategory, isVerified: Bool, onSuccess: () -> Void) async {
-        switch await repository.subcategory.verification(id: subcategory.id, isVerified: isVerified) {
-        case .success:
+        do {
+            try await repository.subcategory.verification(id: subcategory.id, isVerified: isVerified)
             await loadCategories()
             onSuccess()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to \(isVerified ? "unverify" : "labels.verify") subcategory \(subcategory.id). error: \(error)")
@@ -326,20 +299,20 @@ public final class AppEnvironmentModel {
     }
 
     public func editSubcategory(_ updateRequest: Subcategory.UpdateRequest) async {
-        switch await repository.subcategory.update(updateRequest: updateRequest) {
-        case .success:
+        do {
+            try await repository.subcategory.update(updateRequest: updateRequest)
             await loadCategories()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
         }
     }
 
     public func deleteSubcategory(_ deleteSubcategory: SubcategoryProtocol) async {
-        switch await repository.subcategory.delete(id: deleteSubcategory.id) {
-        case .success:
+        do {
+            try await repository.subcategory.delete(id: deleteSubcategory.id)
             await loadCategories()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete subcategory \(deleteSubcategory.name). Error: \(error) (\(#file):\(#line))")
@@ -347,10 +320,10 @@ public final class AppEnvironmentModel {
     }
 
     public func addCategory(name: String) async {
-        switch await repository.category.insert(newCategory: Models.Category.NewRequest(name: name)) {
-        case let .success(category):
+        do {
+            let category = try await repository.category.insert(newCategory: Models.Category.NewRequest(name: name))
             categories.append(category)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to add new category with name \(name). Error: \(error) (\(#file):\(#line))")
@@ -358,13 +331,12 @@ public final class AppEnvironmentModel {
     }
 
     public func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String) async {
-        switch await repository.subcategory
-            .insert(newSubcategory: Subcategory.NewRequest(name: name, category: category))
-        {
-        case let .success(newSubcategory):
+        do {
+            let newSubcategory = try await repository.subcategory
+                .insert(newSubcategory: Subcategory.NewRequest(name: name, category: category))
             let updatedCategory = category.appending(subcategory: newSubcategory)
             categories.replace(category, with: updatedCategory)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to create subcategory '\(name)' to category \(category.name). Error: \(error) (\(#file):\(#line))")
@@ -372,10 +344,10 @@ public final class AppEnvironmentModel {
     }
 
     public func loadCategories() async {
-        switch await repository.category.getAllWithSubcategoriesServingStyles() {
-        case let .success(categories):
+        do {
+            let categories = try await repository.category.getAllWithSubcategoriesServingStyles()
             self.categories = categories
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
@@ -383,11 +355,11 @@ public final class AppEnvironmentModel {
     }
 
     public func deleteCategory(_ category: Models.Category.JoinedSubcategoriesServingStyles, onDelete: () -> Void) async {
-        switch await repository.category.deleteCategory(id: category.id) {
-        case .success:
+        do {
+            try await repository.category.deleteCategory(id: category.id)
             categories = categories.removing(category)
             onDelete()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to delete category. Error: \(error) (\(#file):\(#line))")
         }

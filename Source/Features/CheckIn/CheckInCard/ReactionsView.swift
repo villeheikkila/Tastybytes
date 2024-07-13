@@ -63,24 +63,23 @@ struct ReactionsView: View {
     func toggleReaction() async {
         isLoading = true
         if let reaction = checkInReactions.first(where: { $0.profile.id == profileEnvironmentModel.id }) {
-            switch await repository.checkInReactions.delete(id: reaction.id) {
-            case .success:
+            do {
+                try await repository.checkInReactions.delete(id: reaction.id)
                 withAnimation {
                     checkInReactions.remove(object: reaction)
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 logger.error("Removing check-in reaction \(reaction.id) failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
-            switch await repository.checkInReactions
-                .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
-            {
-            case let .success(checkInReaction):
+            do {
+                let checkInReaction = try await repository.checkInReactions
+                    .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
                 withAnimation {
                     checkInReactions.append(checkInReaction)
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init()))
                 logger.error("Adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed: \(error.localizedDescription)")

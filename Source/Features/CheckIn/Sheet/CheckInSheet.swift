@@ -206,27 +206,27 @@ struct CheckInSheet: View {
         defer { primaryActionTask = nil }
         switch action {
         case let .create(product, onCreation):
-            switch await repository.checkIn.create(newCheckInParams: .init(
-                product: product,
-                review: review,
-                taggedFriends: taggedFriends,
-                servingStyle: servingStyle,
-                manufacturer: manufacturer,
-                flavors: pickedFlavors,
-                rating: rating,
-                location: location,
-                purchaseLocation: purchaseLocation,
-                checkInAt: isLegacyCheckIn ? nil : checkInAt,
-                isNostalgic: isNostalgic
-            )) {
-            case let .success(newCheckIn):
+            do {
+                let newCheckIn = try await repository.checkIn.create(newCheckInParams: .init(
+                    product: product,
+                    review: review,
+                    taggedFriends: taggedFriends,
+                    servingStyle: servingStyle,
+                    manufacturer: manufacturer,
+                    flavors: pickedFlavors,
+                    rating: rating,
+                    location: location,
+                    purchaseLocation: purchaseLocation,
+                    checkInAt: isLegacyCheckIn ? nil : checkInAt,
+                    isNostalgic: isNostalgic
+                ))
                 imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
                 if let onCreation {
                     await onCreation(newCheckIn)
                 }
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 dismiss()
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init(title: "checkIn.errors.failedToCreateCheckIn.title", retryLabel: "labels.retry", retry: {
                     primaryActionTask = Task {
@@ -237,7 +237,7 @@ struct CheckInSheet: View {
                 return
             }
         case let .update(checkIn, onUpdate):
-            switch await repository.checkIn.update(updateCheckInParams: .init(
+            do { let updatedCheckIn = try await repository.checkIn.update(updateCheckInParams: .init(
                 checkIn: checkIn,
                 product: product,
                 review: review,
@@ -250,15 +250,14 @@ struct CheckInSheet: View {
                 purchaseLocation: purchaseLocation,
                 checkInAt: isLegacyCheckIn ? nil : checkInAt,
                 isNostalgic: isNostalgic
-            )) {
-            case let .success(updatedCheckIn):
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
-                if let onUpdate {
-                    await onUpdate(updatedCheckIn.copyWith(images: images))
-                }
-                feedbackEnvironmentModel.trigger(.notification(.success))
-                dismiss()
-            case let .failure(error):
+            ))
+            imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
+            if let onUpdate {
+                await onUpdate(updatedCheckIn.copyWith(images: images))
+            }
+            feedbackEnvironmentModel.trigger(.notification(.success))
+            dismiss()
+            } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init(title: "checkIn.errors.failedToUpdateCheckIn.title", retry: {
                     primaryActionTask = Task {

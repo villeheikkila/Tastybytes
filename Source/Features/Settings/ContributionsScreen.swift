@@ -54,13 +54,13 @@ struct ContributionsScreen: View {
     }
 
     func loadContributions() async {
-        switch await repository.profile.getContributions(id: profile.id) {
-        case let .success(contributions):
+        do {
+            let contributions = try await repository.profile.getContributions(id: profile.id)
             withAnimation {
                 self.contributions = contributions
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed to load contributions. Error: \(error) (\(#file):\(#line))")

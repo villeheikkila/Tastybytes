@@ -130,12 +130,12 @@ struct VerificationScreen: View {
     }
 
     func verifyBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
-        switch await repository.brand.verification(id: brand.id, isVerified: true) {
-        case .success:
+        do {
+            try await repository.brand.verification(id: brand.id, isVerified: true)
             withAnimation {
                 brands.remove(object: brand)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify brand \(brand.id). Error: \(error) (\(#file):\(#line))")
@@ -143,12 +143,12 @@ struct VerificationScreen: View {
     }
 
     func verifySubBrand(_ subBrand: SubBrand.JoinedBrand) async {
-        switch await repository.subBrand.verification(id: subBrand.id, isVerified: true) {
-        case .success:
+        do {
+            try await repository.subBrand.verification(id: subBrand.id, isVerified: true)
             withAnimation {
                 subBrands.remove(object: subBrand)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify brand \(subBrand.id). Error: \(error) (\(#file):\(#line))")
@@ -156,12 +156,12 @@ struct VerificationScreen: View {
     }
 
     func verifyCompany(_ company: Company) async {
-        switch await repository.company.verification(id: company.id, isVerified: true) {
-        case .success:
+        do {
+            try await repository.company.verification(id: company.id, isVerified: true)
             withAnimation {
                 companies.remove(object: company)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
@@ -169,12 +169,12 @@ struct VerificationScreen: View {
     }
 
     func verifyProduct(_ product: Product.Joined) async {
-        switch await repository.product.verification(id: product.id, isVerified: true) {
-        case .success:
+        do {
+            try await repository.product.verification(id: product.id, isVerified: true)
             withAnimation {
                 products.remove(object: product)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
@@ -182,13 +182,13 @@ struct VerificationScreen: View {
     }
 
     func deleteProduct(_ product: Product.Joined) async {
-        switch await repository.product.delete(id: product.id) {
-        case .success:
+        do {
+            try await repository.product.delete(id: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             withAnimation {
                 products = products.removing(product)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
@@ -199,15 +199,14 @@ struct VerificationScreen: View {
         switch verificationType {
         case .products:
             if refresh || products.isEmpty {
-                switch await repository.product.getUnverified() {
-                case let .success(products):
+                do { let products = try await repository.product.getUnverified()
                     withAnimation {
                         self.products = products
                     }
                     if refresh {
                         feedbackEnvironmentModel.trigger(.notification(.success))
                     }
-                case let .failure(error):
+                } catch {
                     guard !error.isCancelled else { return }
                     router.open(.alert(.init()))
                     logger.error("Loading unverfied products failed. Error: \(error) (\(#file):\(#line))")
@@ -215,12 +214,11 @@ struct VerificationScreen: View {
             }
         case .companies:
             if refresh || companies.isEmpty {
-                switch await repository.company.getUnverified() {
-                case let .success(companies):
+                do { let companies = try await repository.company.getUnverified()
                     withAnimation {
                         self.companies = companies
                     }
-                case let .failure(error):
+                } catch {
                     guard !error.isCancelled else { return }
                     router.open(.alert(.init()))
                     logger.error("Loading unverfied companies failed. Error: \(error) (\(#file):\(#line))")
@@ -228,12 +226,12 @@ struct VerificationScreen: View {
             }
         case .brands:
             if refresh || brands.isEmpty {
-                switch await repository.brand.getUnverified() {
-                case let .success(brands):
+                do {
+                    let brands = try await repository.brand.getUnverified()
                     withAnimation {
                         self.brands = brands
                     }
-                case let .failure(error):
+                } catch {
                     guard !error.isCancelled else { return }
                     router.open(.alert(.init()))
                     logger.error("Loading unverfied brands failed. Error: \(error) (\(#file):\(#line))")
@@ -241,12 +239,12 @@ struct VerificationScreen: View {
             }
         case .subBrands:
             if refresh || subBrands.isEmpty {
-                switch await repository.subBrand.getUnverified() {
-                case let .success(subBrands):
+                do {
+                    let subBrands = try await repository.subBrand.getUnverified()
                     withAnimation {
                         self.subBrands = subBrands
                     }
-                case let .failure(error):
+                } catch {
                     guard !error.isCancelled else { return }
                     router.open(.alert(.init()))
                     logger.error("Loading unverfied sub-brands failed. Error: \(error) (\(#file):\(#line))")

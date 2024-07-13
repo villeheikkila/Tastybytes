@@ -30,7 +30,7 @@ struct LocationInnerScreen: View {
 
     init(repository: Repository, location: Location) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
-            await repository.checkIn.getByLocation(locationId: location.id, segment: segment, from: from, to: to)
+            try await repository.checkIn.getByLocation(locationId: location.id, segment: segment, from: from, to: to)
         }, id: "LocationScreen"))
         _location = State(initialValue: location)
     }
@@ -90,15 +90,13 @@ struct LocationInnerScreen: View {
         async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let summaryPromise = repository.location.getSummaryById(id: location.id)
 
-        let (_, summaryResult) = await (loadInitialCheckInsPromise, summaryPromise)
-
-        switch summaryResult {
-        case let .success(summary):
+        do {
+            let (_, summaryResult) = try await (loadInitialCheckInsPromise, summaryPromise)
             withAnimation {
-                self.summary = summary
+                summary = summaryResult
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             if state != .populated {
                 state = .error([error])

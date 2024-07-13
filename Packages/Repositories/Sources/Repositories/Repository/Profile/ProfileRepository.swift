@@ -2,20 +2,19 @@ import Foundation
 import Models
 
 public protocol ProfileRepository: Sendable {
-    func getById(id: UUID) async -> Result<Profile, Error>
+    func getById(id: UUID) async throws -> Profile
     func getCurrentUser() async throws -> Profile.Extended
-    func update(update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error>
-    func currentUserExport() async -> Result<String, Error>
-    func search(searchTerm: String, currentUserId: UUID?) async -> Result<[Profile], Error>
-    func uploadAvatar(userId: UUID, data: Data) async -> Result<ImageEntity, Error>
+    func update(update: Profile.UpdateRequest) async throws -> Profile.Extended
+    func currentUserExport() async throws -> String
+    func search(searchTerm: String, currentUserId: UUID?) async throws -> [Profile]
+    func uploadAvatar(userId: UUID, data: Data) async throws -> ImageEntity
     func deleteCurrentAccount() async throws
-    func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
-    func getContributions(id: UUID) async -> Result<Profile.Contributions, Error>
-    func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error>
-    func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
-    func getTimePeriodStatistics(userId: UUID, timePeriod: StatisticsTimePeriod) async
-        -> Result<TimePeriodStatistic, Error>
-    func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error>
-    func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async -> Result<[CheckInsPerDay], Error>
-    func getNumberOfCheckInsByLocation(userId: UUID) async -> Result<[ProfileTopLocations], Error>
+    func updateSettings(update: ProfileSettings.UpdateRequest) async throws -> ProfileSettings
+    func getContributions(id: UUID) async throws -> Profile.Contributions
+    func getCategoryStatistics(userId: UUID) async throws -> [CategoryStatistics]
+    func getSubcategoryStatistics(userId: UUID, categoryId: Int) async throws -> [SubcategoryStatistics]
+    func getTimePeriodStatistics(userId: UUID, timePeriod: StatisticsTimePeriod) async throws -> TimePeriodStatistic
+    func checkIfUsernameIsAvailable(username: String) async throws -> Bool
+    func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async throws -> [CheckInsPerDay]
+    func getNumberOfCheckInsByLocation(userId: UUID) async throws -> [ProfileTopLocations]
 }

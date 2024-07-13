@@ -37,12 +37,12 @@ public final class NotificationEnvironmentModel {
     }
 
     public func getUnreadCount() async {
-        switch await repository.notification.getUnreadCount() {
-        case let .success(count):
+        do {
+            let count = try await repository.notification.getUnreadCount()
             withAnimation {
                 self.unreadCount = count
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to get all unread notifications. Error: \(error) (\(#file):\(#line))")
@@ -59,8 +59,8 @@ public final class NotificationEnvironmentModel {
             if withHaptics {
                 isRefreshing = true
             }
-            switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
-            case let .success(newNotifications):
+            do {
+                let newNotifications = try await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id)
                 if reset {
                     notifications = newNotifications
                     unreadCount = newNotifications
@@ -70,7 +70,7 @@ public final class NotificationEnvironmentModel {
                     notifications.insert(contentsOf: newNotifications, at: 0)
                 }
                 self.state = .populated
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 if state != .populated {
                     self.state = .error([error])
@@ -84,12 +84,12 @@ public final class NotificationEnvironmentModel {
     }
 
     public func deleteAll() async {
-        switch await repository.notification.deleteAll() {
-        case .success:
+        do {
+            try await repository.notification.deleteAll()
             withAnimation {
                 self.notifications = [Models.Notification]()
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete all notifications. Error: \(error) (\(#file):\(#line))")
@@ -97,8 +97,8 @@ public final class NotificationEnvironmentModel {
     }
 
     public func markAllAsRead() async {
-        switch await repository.notification.markAllRead() {
-        case let .success(readNotifications):
+        do {
+            let readNotifications = try await repository.notification.markAllRead()
             let markedAsSeenNotifications = notifications.map { notification in
                 let readNotification = readNotifications.first(where: { rn in rn.id == notification.id })
                 return readNotification ?? notification
@@ -107,7 +107,7 @@ public final class NotificationEnvironmentModel {
             withAnimation {
                 notifications = markedAsSeenNotifications
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to mark all notifications as read. Error: \(error) (\(#file):\(#line))")
@@ -118,8 +118,8 @@ public final class NotificationEnvironmentModel {
         let containsFriendRequests = notifications.contains(where: \.isFriendRequest)
 
         if containsFriendRequests {
-            switch await repository.notification.markAllFriendRequestsAsRead() {
-            case let .success(updatedNotifications):
+            do {
+                let updatedNotifications = try await repository.notification.markAllFriendRequestsAsRead()
                 notifications = notifications.map { notification in
                     if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
                         updatedNotification
@@ -127,7 +127,7 @@ public final class NotificationEnvironmentModel {
                         notification
                     }
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 logger.error("Failed to mark all friend requests as read. Error: \(error) (\(#file):\(#line))")
             }
@@ -149,8 +149,8 @@ public final class NotificationEnvironmentModel {
         })
 
         if containsCheckIn {
-            switch await repository.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
-            case let .success(updatedNotifications):
+            do {
+                let updatedNotifications = try await repository.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id)
                 notifications = notifications.map { notification in
                     if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
                         updatedNotification
@@ -158,7 +158,7 @@ public final class NotificationEnvironmentModel {
                         notification
                     }
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 alertError = .init()
                 logger.error("Failed to mark check-in as read \(checkIn.id). Error: \(error) (\(#file):\(#line))")
@@ -167,10 +167,10 @@ public final class NotificationEnvironmentModel {
     }
 
     public func markAsRead(_ notification: Models.Notification) async {
-        switch await repository.notification.markRead(id: notification.id) {
-        case let .success(updatedNotification):
+        do {
+            let updatedNotification = try await repository.notification.markRead(id: notification.id)
             notifications.replace(notification, with: updatedNotification)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to mark '\(notification.id)' as read. Error: \(error) (\(#file):\(#line))")
@@ -179,12 +179,12 @@ public final class NotificationEnvironmentModel {
 
     public func deleteFromIndex(at: IndexSet) async {
         guard let index = at.first, let notification = notifications[safe: index] else { return }
-        switch await repository.notification.delete(id: notification.id) {
-        case .success:
+        do {
+            try await repository.notification.delete(id: notification.id)
             withAnimation {
                 self.notifications = notifications.removing(notification)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete notification. Error: \(error) (\(#file):\(#line))")
@@ -192,12 +192,12 @@ public final class NotificationEnvironmentModel {
     }
 
     public func deleteNotification(notification: Models.Notification) async {
-        switch await repository.notification.delete(id: notification.id) {
-        case .success:
+        do {
+            try await repository.notification.delete(id: notification.id)
             withAnimation {
                 self.notifications = notifications.removing(notification)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete notification '\(notification.id)'. Error: \(error) (\(#file):\(#line))")
@@ -215,10 +215,10 @@ public final class NotificationEnvironmentModel {
             sendFriendRequestNotifications: sendFriendRequestNotifications,
             sendCheckInCommentNotifications: sendCheckInCommentNotifications
         ) else { return }
-        switch await repository.notification.updatePushNotificationSettingsForDevice(updateRequest: updateRequest) {
-        case let .success(pushNotificationSettings):
+        do {
+            let pushNotificationSettings = try await repository.notification.updatePushNotificationSettingsForDevice(updateRequest: updateRequest)
             self.pushNotificationSettings = pushNotificationSettings
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update push notification settings for device. Error: \(error) (\(#file):\(#line))")
@@ -226,17 +226,12 @@ public final class NotificationEnvironmentModel {
     }
 
     public func refreshDeviceToken(deviceToken: String) async {
-        switch await repository.notification
-            .refreshPushNotificationToken(deviceToken: deviceToken)
-        {
-        case let .success(pushNotificationSettings):
+        do {
+            let pushNotificationSettings = try await repository.notification.refreshPushNotificationToken(deviceToken: deviceToken)
             logger.notice("Device token refreshed: \(deviceToken)")
             self.pushNotificationSettings = pushNotificationSettings
-        case let .failure(error):
-            logger
-                .error(
-                    "Failed to save device token (\(String(describing: deviceToken))). Error: \(error) (\(#file):\(#line))"
-                )
+        } catch {
+            logger.error("Failed to save device token (\(String(describing: deviceToken))). Error: \(error) (\(#file):\(#line))")
         }
     }
 }

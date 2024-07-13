@@ -215,47 +215,32 @@ struct CheckInScreen: View {
     func loadCheckInData(withHaptics: Bool = false) async {
         async let checkInPromise = repository.checkIn.getById(id: checkIn.id)
         async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: checkIn.id)
-        async let summaryPromise: Void = notificationEnvironmentModel.markCheckInAsRead(
+        async let markCheckInAsReadPromise: Void = notificationEnvironmentModel.markCheckInAsRead(
             checkIn: checkIn)
-
-        let (checkInResult, checkInCommentResult, _) = await (
-            checkInPromise,
-            checkInCommentPromise,
-            summaryPromise
-        )
-
         var errors = [Error]()
-        switch checkInResult {
-        case let .success(checkIn):
+        do {
+            let (checkInResult, checkInCommentResult, _) = try await (
+                checkInPromise,
+                checkInCommentPromise,
+                markCheckInAsReadPromise
+            )
             withAnimation {
-                self.checkIn = checkIn
+                checkIn = checkInResult
+                checkInComments = checkInCommentResult
             }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
+        } catch {
             errors.append(error)
-            logger.error("Failed to load check-in. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load check-in screen. Error: \(error) (\(#file):\(#line))")
         }
-
-        switch checkInCommentResult {
-        case let .success(checkInComments):
-            withAnimation {
-                self.checkInComments = checkInComments
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            errors.append(error)
-            logger.error("Failed to load check-in comments. Error: \(error) (\(#file):\(#line))")
-        }
-
         state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     func deleteCheckIn(_ checkIn: CheckIn) async {
-        switch await repository.checkIn.delete(id: checkIn.id) {
-        case .success:
+        do {
+            try await repository.checkIn.delete(id: checkIn.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             router.removeLast()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")

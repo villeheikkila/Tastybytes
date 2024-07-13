@@ -51,12 +51,12 @@ struct CheckInAdminSheet: View {
     }
 
     func deleteCheckInAsModerator(_ checkIn: CheckIn) async {
-        switch await repository.checkIn.deleteAsModerator(checkIn: checkIn) {
-        case .success:
+        do {
+            try await repository.checkIn.deleteAsModerator(checkIn: checkIn)
             router.removeLast()
             onDelete()
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")

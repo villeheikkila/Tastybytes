@@ -111,11 +111,11 @@ struct CompanySearchSheet: View {
 
     func search(searchTerm: String) async {
         guard searchTerm.count > 1 else { return }
-        switch await repository.company.search(searchTerm: searchTerm) {
-        case let .success(searchResults):
+        do {
+            let searchResults = try await repository.company.search(searchTerm: searchTerm)
             self.searchResults = searchResults
             status = .searched
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to search companies. Error: \(error) (\(#file):\(#line))")
@@ -123,12 +123,11 @@ struct CompanySearchSheet: View {
     }
 
     func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) async {
-        let newCompany = Company.NewRequest(name: companyName)
-        switch await repository.company.insert(newCompany: newCompany) {
-        case let .success(newCompany):
+        do {
+            let newCompany = try await repository.company.insert(newCompany: .init(name: companyName))
             router.open(.toast(.success("company.create.success.toast")))
             onSuccess(newCompany)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to create new company'. Error: \(error) (\(#file):\(#line))")

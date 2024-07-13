@@ -90,11 +90,11 @@ struct CheckInImageAdminSheet: View {
     }
 
     func deleteImage(_ imageEntity: ImageEntity) async {
-        switch await repository.imageEntity.delete(from: .checkInImages, entity: imageEntity) {
-        case .success:
+        do {
+            try await repository.imageEntity.delete(from: .checkInImages, entity: imageEntity)
             await onDelete(imageEntity)
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to delete image'. Error: \(error) (\(#file):\(#line))")
         }

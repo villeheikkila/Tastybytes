@@ -35,8 +35,7 @@ struct SignInWithAppleView: View {
                 try await repository.auth.signInWithApple(token: token, nonce: nonce)
             } catch {
                 router.open(.alert(.init(title: .init(stringLiteral: error.localizedDescription))))
-                logger.error(
-                    "Error occured when trying to sign in with Apple. Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))"
+                logger.error("Error occured when trying to sign in with Apple. Localized: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
                 )
             }
         }

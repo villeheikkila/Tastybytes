@@ -215,12 +215,11 @@ public final class ProfileEnvironmentModel {
     }
 
     public func checkIfUsernameIsAvailable(username: String) async -> Bool {
-        switch await repository.profile.checkIfUsernameIsAvailable(username: username) {
-        case let .success(isAvailable):
-            return isAvailable
-        case let .failure(error):
+        do {
+            return try await repository.profile.checkIfUsernameIsAvailable(username: username)
+        } catch {
             logger.error("Failed to check if username is available. Error: \(error) (\(#file):\(#line))")
-            return true
+            return false
         }
     }
 
@@ -229,16 +228,17 @@ public final class ProfileEnvironmentModel {
                                            sendFriendRequestNotifications: Bool? = nil,
                                            sendCheckInCommentNotifications: Bool? = nil) async
     {
-        let update = ProfileSettings.UpdateRequest(
-            sendReactionNotifications: sendReactionNotifications,
-            sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
-            sendFriendRequestNotifications: sendFriendRequestNotifications,
-            sendCommentNotifications: sendCheckInCommentNotifications
-        )
-
-        if case let .failure(error) = await repository.profile.updateSettings(
-            update: update
-        ) {
+        do {
+            let updatedSettings = try await repository.profile.updateSettings(update: .init(
+                sendReactionNotifications: sendReactionNotifications,
+                sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
+                sendFriendRequestNotifications: sendFriendRequestNotifications,
+                sendCommentNotifications: sendCheckInCommentNotifications
+            ))
+            withAnimation {
+                extendedProfile = extendedProfile?.copyWith(settings: updatedSettings)
+            }
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update notification settings. Error: \(error) (\(#file):\(#line))")
@@ -270,10 +270,10 @@ public final class ProfileEnvironmentModel {
 
     public func uploadAvatar(data: Data) async {
         guard let extendedProfile else { return }
-        switch await repository.profile.uploadAvatar(userId: extendedProfile.id, data: data) {
-        case let .success(imageEntity):
+        do {
+            let imageEntity = try await repository.profile.uploadAvatar(userId: extendedProfile.id, data: data)
             self.extendedProfile = extendedProfile.copyWith(avatars: [imageEntity])
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Uploading avatar failed. Error: \(error) (\(#file):\(#line))")
@@ -281,14 +281,10 @@ public final class ProfileEnvironmentModel {
     }
 
     public func updateProfile(update: Profile.UpdateRequest) async {
-        switch await repository.profile.update(update: update) {
-        case .success:
-            extendedProfile = extendedProfile?.copyWith(
-                username: update.username,
-                firstName: update.firstName,
-                lastName: update.lastName
-            )
-        case let .failure(error):
+        do {
+            let updatedProfile = try await repository.profile.update(update: update)
+            extendedProfile = updatedProfile
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
@@ -296,10 +292,10 @@ public final class ProfileEnvironmentModel {
     }
 
     public func onboardingUpdate() async {
-        switch await repository.profile.update(update: .init(isOnboarded: true)) {
-        case .success:
-            extendedProfile = extendedProfile?.copyWith(isOnboarded: true)
-        case let .failure(error):
+        do {
+            let updatedProfile = try await repository.profile.update(update: .init(isOnboarded: true))
+            extendedProfile = updatedProfile
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
@@ -307,10 +303,11 @@ public final class ProfileEnvironmentModel {
     }
 
     public func updatePrivacySettings() async {
-        switch await repository.profile.update(update: .init(isPrivate: isPrivateProfile)) {
-        case .success:
-            logger.log("updated privacy settings")
-        case let .failure(error):
+        do {
+            let updatedProfile = try await repository.profile.update(update: .init(isPrivate: isPrivateProfile))
+            extendedProfile = updatedProfile
+            logger.log("Updated privacy settings")
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update settings. Error: \(error) (\(#file):\(#line))")
@@ -318,10 +315,11 @@ public final class ProfileEnvironmentModel {
     }
 
     public func updateDisplaySettings() async {
-        switch await repository.profile.update(update: .init(showFullName: showFullName)) {
-        case .success:
+        do {
+            let updatedProfile = try await repository.profile.update(update: .init(showFullName: showFullName))
+            extendedProfile = updatedProfile
             logger.log("updated display settings")
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")

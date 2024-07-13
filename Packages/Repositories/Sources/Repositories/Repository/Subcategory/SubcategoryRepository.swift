@@ -1,8 +1,8 @@
 import Models
 
 public protocol SubcategoryRepository: Sendable {
-    func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error>
-    func delete(id: Int) async -> Result<Void, Error>
-    func update(updateRequest: Subcategory.UpdateRequest) async -> Result<Void, Error>
-    func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
+    func insert(newSubcategory: Subcategory.NewRequest) async throws -> Subcategory
+    func delete(id: Int) async throws
+    func update(updateRequest: Subcategory.UpdateRequest) async throws
+    func verification(id: Int, isVerified: Bool) async throws
 }

@@ -75,10 +75,10 @@ class SubscriptionEnvironmentModel {
     }
 
     func insertTransactionIntoDatabase(transaction: StoreKit.Transaction) async {
-        switch await repository.subscription.syncSubscriptionTransaction(transactionInfo: .init(transaction: transaction)) {
-        case .success:
+        do {
+            try await repository.subscription.syncSubscriptionTransaction(transactionInfo: .init(transaction: transaction))
             logger.info("Synced transaction to the server")
-        case let .failure(error):
+        } catch {
             logger.error("Failed to sync transaction. Error: \(error) (\(#file):\(#line))")
         }
     }

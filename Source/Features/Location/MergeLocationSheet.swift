@@ -53,14 +53,14 @@ struct MergeLocationSheet: View {
     }
 
     func mergeLocation(_ to: Location) async {
-        switch await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id) {
-        case .success:
+        do {
+            try await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             if let onMerge {
                 await onMerge(to)
             }
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Merging location failed. Error: \(error) (\(#file):\(#line))")
@@ -69,10 +69,10 @@ struct MergeLocationSheet: View {
 
     func searchLocations(name: String) async {
         guard name.count > 1 else { return }
-        switch await repository.location.search(searchTerm: name) {
-        case let .success(searchResults):
+        do {
+            let searchResults = try await repository.location.search(searchTerm: name)
             locations = searchResults
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")

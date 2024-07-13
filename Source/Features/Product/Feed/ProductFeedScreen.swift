@@ -90,8 +90,7 @@ struct ProductFeedScreen: View {
         }
         let (from, to) = getPagination(page: page, size: pageSize)
         isLoading = true
-        switch await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
-        case let .success(additionalProducts):
+        do { let additionalProducts = try await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id)
             guard !Task.isCancelled else { return }
             withAnimation {
                 if refresh {
@@ -102,7 +101,7 @@ struct ProductFeedScreen: View {
             }
             page += 1
             state = .populated
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             if refresh || state != .populated {
                 state = .error([error])

@@ -124,11 +124,11 @@ struct AccountSettingsScreen: View {
     }
 
     func exportData() async {
-        switch await repository.profile.currentUserExport() {
-        case let .success(csvText):
+        do {
+            let csvText = try await repository.profile.currentUserExport()
             csvExport = CSVFile(content: csvText)
             showingExporter = true
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to export check-in csv. Error: \(error) (\(#file):\(#line))")

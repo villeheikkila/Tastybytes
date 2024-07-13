@@ -84,13 +84,12 @@ struct FriendsScreen: View {
     }
 
     func loadFriends() async {
-        switch await repository.friend.getByUserId(userId: profile.id, status: .accepted) {
-        case let .success(friends):
+        do { let friends = try await repository.friend.getByUserId(userId: profile.id, status: .accepted)
             withAnimation {
                 self.friends = friends
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             if state != .populated {
                 state = .error([error])

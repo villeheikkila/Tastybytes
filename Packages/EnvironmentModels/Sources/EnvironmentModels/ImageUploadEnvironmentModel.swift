@@ -28,10 +28,10 @@ public class ImageUploadEnvironmentModel {
                     nil
                 }
                 guard let data = image.jpegData(compressionQuality: 0.7) else { return }
-                switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id, blurHash: blurHash) {
-                case let .success(imageEntity):
+                do {
+                    let imageEntity = try await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id, blurHash: blurHash)
                     uploadedImages.append(imageEntity)
-                case let .failure(error):
+                } catch {
                     guard !error.isCancelled else { return }
                     alertError = .init()
                     logger.error("Failed to upload image to check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")

@@ -135,13 +135,13 @@ struct ProfileProductListView: View {
     }
 
     func loadProducts() async {
-        switch await repository.product.getByProfile(id: profile.id) {
-        case let .success(products):
+        do {
+            let products = try await repository.product.getByProfile(id: profile.id)
             withAnimation {
                 self.products = products
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             if state != .populated {
                 state = .error([error])

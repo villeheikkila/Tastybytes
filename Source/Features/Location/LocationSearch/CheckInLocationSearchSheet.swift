@@ -131,11 +131,10 @@ struct CheckInLocationSearchSheet: View {
         guard storeLocationTask == nil else { return }
         defer { storeLocationTask = nil }
         storeLocationTask = Task {
-            switch await repository.location.insert(location: location) {
-            case let .success(savedLocation):
+            do { let savedLocation = try await repository.location.insert(location: location)
                 onSelect(savedLocation)
                 dismiss()
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init()))
                 logger.error("Saving location \(location.name) failed. Error: \(error) (\(#file):\(#line))")
@@ -172,25 +171,14 @@ struct CheckInLocationSearchSheet: View {
         let coordinate = currentLocation?.coordinate ?? centerCoordinate
         async let recentLocationsPromise = repository.location.getRecentLocations(category: category)
         async let suggestionsPromise = repository.location.getSuggestions(location: .init(coordinate: coordinate))
-
-        let (recentLocationsResult, suggestionResult) = await (recentLocationsPromise, suggestionsPromise)
-
         var errors = [Error]()
-        switch suggestionResult {
-        case let .success(nearbyLocations):
+        do {
+            let (recentLocations, nearbyLocations) = try await (recentLocationsPromise, suggestionsPromise)
+            self.recentLocations = recentLocations
             self.nearbyLocations = nearbyLocations
-        case let .failure(error):
-            guard !error.isCancelled else { return }
+        } catch {
             errors.append(error)
             logger.error("Failed to load location suggestions. Error: \(error) (\(#file):\(#line))")
-        }
-        switch recentLocationsResult {
-        case let .success(recentLocations):
-            self.recentLocations = recentLocations
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            errors.append(error)
-            logger.error("Failed to load recent locations. Error: \(error) (\(#file):\(#line))")
         }
         state = .getState(errors: errors, withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }

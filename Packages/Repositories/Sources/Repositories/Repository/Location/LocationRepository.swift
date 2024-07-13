@@ -2,17 +2,17 @@ import Foundation
 import Models
 
 public protocol LocationRepository: Sendable {
-    func insert(location: Location) async -> Result<Location, Error>
-    func getById(id: UUID) async -> Result<Location, Error>
-    func getDetailed(id: UUID) async -> Result<Location, Error>
-    func delete(id: UUID) async -> Result<Void, Error>
-    func search(searchTerm: String) async -> Result<[Location], Error>
-    func getCheckInLocations(userId: UUID) async -> Result<[Location], Error>
-    func getSummaryById(id: UUID) async -> Result<Summary, Error>
-    func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error>
-    func getRecentLocations(category: Location.RecentLocation) async -> Result<[Location], Error>
-    func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error>
-    func getAllCountries() async -> Result<[Country], Error>
-    func getLocations() async -> Result<[Location], Error>
-    func update(request: Location.UpdateLocationRequest) async -> Result<Location, Error>
+    func insert(location: Location) async throws -> Location
+    func getById(id: UUID) async throws -> Location
+    func getDetailed(id: UUID) async throws -> Location
+    func delete(id: UUID) async throws
+    func search(searchTerm: String) async throws -> [Location]
+    func getCheckInLocations(userId: UUID) async throws -> [Location]
+    func getSummaryById(id: UUID) async throws -> Summary
+    func getSuggestions(location: Location.SuggestionParams) async throws -> [Location]
+    func getRecentLocations(category: Location.RecentLocation) async throws -> [Location]
+    func mergeLocations(locationId: UUID, toLocationId: UUID) async throws
+    func getAllCountries() async throws -> [Country]
+    func getLocations() async throws -> [Location]
+    func update(request: Location.UpdateLocationRequest) async throws -> Location
 }

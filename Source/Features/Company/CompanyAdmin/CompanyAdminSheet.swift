@@ -101,13 +101,13 @@ struct CompanyAdminSheet: View {
     }
 
     func loadData() async {
-        switch await repository.company.getManagementDataById(id: company.id) {
-        case let .success(company):
+        do {
+            let company = try await repository.company.getManagementDataById(id: company.id)
             withAnimation {
                 self.company = company
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
@@ -115,10 +115,10 @@ struct CompanyAdminSheet: View {
     }
 
     func verifyCompany(isVerified: Bool) async {
-        switch await repository.company.verification(id: company.id, isVerified: isVerified) {
-        case .success:
+        do {
+            try await repository.company.verification(id: company.id, isVerified: isVerified)
             company = company.copyWith(isVerified: isVerified)
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
@@ -126,14 +126,14 @@ struct CompanyAdminSheet: View {
     }
 
     func editCompany() async {
-        switch await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName)) {
-        case let .success(company):
+        do {
+            let company = try await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
             withAnimation {
                 self.company = .init(company: .init(company: company))
             }
             router.open(.toast(.success()))
             await onUpdate()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
@@ -141,11 +141,10 @@ struct CompanyAdminSheet: View {
     }
 
     func deleteCompany(_ company: Company.Management) async {
-        switch await repository.company.delete(id: company.id) {
-        case .success:
+        do { try await repository.company.delete(id: company.id)
             onDelete()
             dismiss()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
@@ -153,11 +152,11 @@ struct CompanyAdminSheet: View {
     }
 
     func uploadLogo(_ data: Data) async {
-        switch await repository.company.uploadLogo(companyId: company.id, data: data) {
-        case let .success(imageEntity):
+        do {
+            let imageEntity = try await repository.company.uploadLogo(companyId: company.id, data: data)
             company = company.copyWith(logos: company.logos + [imageEntity])
             logger.info("Succesfully uploaded company logo: \(imageEntity.file)")
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Uploading company logo failed. Error: \(error) (\(#file):\(#line))")
@@ -165,12 +164,12 @@ struct CompanyAdminSheet: View {
     }
 
     func deleteLogo(_ entity: ImageEntity) async {
-        switch await repository.imageEntity.delete(from: .companyLogos, entity: entity) {
-        case .success:
+        do {
+            try await repository.imageEntity.delete(from: .companyLogos, entity: entity)
             withAnimation {
                 company = company.copyWith(logos: company.logos.removing(entity))
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")

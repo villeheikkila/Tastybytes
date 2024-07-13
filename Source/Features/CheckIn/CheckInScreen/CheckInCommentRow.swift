@@ -43,12 +43,12 @@ struct CheckInCommentRow: View {
     }
 
     func deleteComment(_ comment: CheckInComment) async {
-        switch await repository.checkInComment.deleteById(id: comment.id) {
-        case .success:
+        do {
+            try await repository.checkInComment.deleteById(id: comment.id)
             withAnimation {
                 checkInComments.remove(object: comment)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to delete comment '\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }

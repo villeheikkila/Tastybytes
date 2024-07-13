@@ -1,7 +1,7 @@
 import Models
 
 public protocol ProductBarcodeRepository: Sendable {
-    func getByProductId(id: Int) async -> Result<[ProductBarcode.JoinedWithCreator], Error>
-    func addToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
-    func delete(id: Int) async -> Result<Void, Error>
+    func getByProductId(id: Int) async throws -> [ProductBarcode.JoinedWithCreator]
+    @discardableResult func addToProduct(product: Product.Joined, barcode: Barcode) async throws -> Barcode
+    func delete(id: Int) async throws
 }

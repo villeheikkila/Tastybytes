@@ -1,7 +1,7 @@
 import Models
 
 public protocol FlavorRepository: Sendable {
-    func getAll() async -> Result<[Flavor], Error>
-    func insert(newFlavor: Flavor.NewRequest) async -> Result<Flavor, Error>
-    func delete(id: Int) async -> Result<Void, Error>
+    func getAll() async throws -> [Flavor]
+    func insert(newFlavor: Flavor.NewRequest) async throws -> Flavor
+    func delete(id: Int) async throws
 }

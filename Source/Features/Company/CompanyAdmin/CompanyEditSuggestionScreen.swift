@@ -103,12 +103,12 @@ struct CompanyEditSuggestionRow: View {
     }
 
     func deleteEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
-        switch await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion) {
-        case .success:
+        do {
+            try await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion)
             withAnimation {
                 company = company.copyWith(editSuggestions: company.editSuggestions.removing(editSuggestion))
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
@@ -116,13 +116,13 @@ struct CompanyEditSuggestionRow: View {
     }
 
     func resolveEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
-        switch await repository.company.resolveEditSuggestion(editSuggestion: editSuggestion) {
-        case .success:
+        do {
+            try await repository.company.resolveEditSuggestion(editSuggestion: editSuggestion)
             withAnimation {
                 company = company.copyWith(name: editSuggestion.name, editSuggestions: company.editSuggestions.replacing(editSuggestion, with: editSuggestion.copyWith(resolvedAt: Date.now)))
             }
             router.removeLast()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")

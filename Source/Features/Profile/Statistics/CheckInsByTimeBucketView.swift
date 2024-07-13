@@ -46,10 +46,10 @@ struct CheckInsByTimeBucketView: View {
     func loadStatisticsForTimePeriod() async {
         guard isLoading == false else { return }
         isLoading = true
-        switch await repository.profile.getNumberOfCheckInsByDay(.init(profileId: profile.id)) {
-        case let .success(checkInsPerDay):
+        do {
+            let checkInsPerDay = try await repository.profile.getNumberOfCheckInsByDay(.init(profileId: profile.id))
             self.checkInsPerDay = checkInsPerDay
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed loading time period statistics. Error: \(error) (\(#file):\(#line))")
         }

@@ -5,81 +5,57 @@ internal import Supabase
 struct SupabaseFriendsRepository: FriendRepository {
     let client: SupabaseClient
 
-    func getByUserId(userId: UUID, status: Friend.Status?) async -> Result<[Friend], Error> {
-        do {
-            var queryBuilder = client
-                .from(.friends)
-                .select(Friend.getQuery(.joined(false)))
-                .or("user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
+    func getByUserId(userId: UUID, status: Friend.Status?) async throws -> [Friend] {
+        var queryBuilder = client
+            .from(.friends)
+            .select(Friend.getQuery(.joined(false)))
+            .or("user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
 
-            if let status {
-                switch status {
-                case .blocked:
-                    queryBuilder = queryBuilder.eq("status", value: status.rawValue)
-                        .eq("blocked_by", value: userId)
-                case .accepted:
-                    queryBuilder = queryBuilder.eq("status", value: status.rawValue)
-                default:
-                    ()
-                }
+        if let status {
+            switch status {
+            case .blocked:
+                queryBuilder = queryBuilder.eq("status", value: status.rawValue)
+                    .eq("blocked_by", value: userId)
+            case .accepted:
+                queryBuilder = queryBuilder.eq("status", value: status.rawValue)
+            default:
+                ()
             }
-
-            let response: [Friend] = try await queryBuilder
-                .execute()
-                .value
-
-            return .success(response)
-        } catch {
-            return .failure(error)
         }
+
+        return try await queryBuilder
+            .execute()
+            .value
     }
 
-    func insert(newFriend: Friend.NewRequest) async -> Result<Friend, Error> {
-        do {
-            let response: Friend = try await client
-                .from(.friends)
-                .insert(newFriend, returning: .representation)
-                .select(Friend.getQuery(.joined(false)))
-                .single()
-                .execute()
-                .value
-
-            return .success(response)
-        } catch {
-            return .failure(error)
-        }
+    func insert(newFriend: Friend.NewRequest) async throws -> Friend {
+        try await client
+            .from(.friends)
+            .insert(newFriend, returning: .representation)
+            .select(Friend.getQuery(.joined(false)))
+            .single()
+            .execute()
+            .value
     }
 
-    func update(id: Int, friendUpdate: Friend.UpdateRequest) async -> Result<Friend, Error> {
-        do {
-            let response: Friend = try await client
-                .from(.friends)
-                .update(friendUpdate, returning: .representation)
-                .eq("id", value: id)
-                .select(Friend.getQuery(.joined(false)))
-                .single()
-                .execute()
-                .value
-
-            return .success(response)
-        } catch {
-            return .failure(error)
-        }
+    func update(id: Int, friendUpdate: Friend.UpdateRequest) async throws -> Friend {
+        try await client
+            .from(.friends)
+            .update(friendUpdate, returning: .representation)
+            .eq("id", value: id)
+            .select(Friend.getQuery(.joined(false)))
+            .single()
+            .execute()
+            .value
     }
 
-    func delete(id: Int) async -> Result<Void, Error> {
-        do {
-            try await client
-                .from(.friends)
-                .delete()
-                .eq("id", value: id)
-                .select()
-                .single()
-                .execute()
-
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+    func delete(id: Int) async throws {
+        try await client
+            .from(.friends)
+            .delete()
+            .eq("id", value: id)
+            .select()
+            .single()
+            .execute()
     }
 }

@@ -101,14 +101,14 @@ struct UserSheet: View {
 
     func searchUsers(searchTerm: String) async {
         state = .loading
-        switch await repository.profile.search(searchTerm: searchTerm, currentUserId: profileEnvironmentModel.id) {
-        case let .success(searchResults):
+        do {
+            let searchResults = try await repository.profile.search(searchTerm: searchTerm, currentUserId: profileEnvironmentModel.id)
             withAnimation {
                 searchedFor = searchTerm
                 self.searchResults = searchResults
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed searching users. Error: \(error) (\(#file):\(#line))")

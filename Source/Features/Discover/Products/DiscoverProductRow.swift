@@ -53,12 +53,12 @@ struct DiscoverProductRow: View {
 
     func addBarcodeToProduct(_ addBarcodeTo: Product.Joined) async {
         guard let barcode else { return }
-        switch await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
-        case .success:
+        do {
+            try await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode)
             self.barcode = nil
             router.open(.toast(.success("checkIn.addBarcode.success.toast")))
             router.open(.screen(.product(addBarcodeTo)))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             logger.error("Adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed. error: \(error)")
         }

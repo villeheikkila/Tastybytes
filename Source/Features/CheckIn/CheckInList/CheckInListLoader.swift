@@ -9,7 +9,7 @@ import SwiftUI
 @Observable
 final class CheckInListLoader {
     typealias OnLoadComplete = (_ checkIns: [CheckIn]) async -> Void
-    typealias Fetcher = (_ from: Int, _ to: Int, _ segment: CheckInSegment) async -> Result<[CheckIn], Error>
+    typealias Fetcher = (_ from: Int, _ to: Int, _ segment: CheckInSegment) async throws -> [CheckIn]
     private let logger = Logger(category: "CheckInLoader")
 
     var loadingCheckInsOnAppearTask: Task<Void, Error>?
@@ -92,13 +92,12 @@ final class CheckInListLoader {
         }
     }
 
-    @discardableResult
-    func fetchFeedItems(reset: Bool = false, showCheckInsFrom: CheckInSegment) async -> [CheckIn] {
+    func fetchFeedItems(reset: Bool = false, showCheckInsFrom: CheckInSegment) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
         errorContentUnavailable = nil
-        switch await fetcher(from, to, showCheckInsFrom) {
-        case let .success(fetchedCheckIns):
+        do {
+            let fetchedCheckIns = try await fetcher(from, to, showCheckInsFrom)
             logger.info("Succesfully loaded check-ins from \(from) to \(to)")
             withAnimation {
                 if reset {
@@ -109,18 +108,16 @@ final class CheckInListLoader {
             }
             page += 1
             isLoading = false
-            return checkIns
-        case let .failure(error):
-            guard !error.isCancelled else { return [] }
+        } catch {
+            guard !error.isCancelled else { return }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
             let e = AlertEvent(title: "checkInList.error.failedToLoad.alert")
             if checkIns.isEmpty {
                 errorContentUnavailable = e
             }
-            guard !error.isNetworkUnavailable else { return [] }
+            guard !error.isNetworkUnavailable else { return }
             alertError = e
             isLoading = false
-            return []
         }
     }
 }

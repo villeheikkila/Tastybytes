@@ -127,35 +127,24 @@ struct CompanyScreen: View {
     func getCompanyData(withHaptics: Bool = false) async {
         async let companyPromise = repository.company.getJoinedById(id: company.id)
         async let summaryPromise = repository.company.getSummaryById(id: company.id)
-
-        let (companyResult, summaryResult) = await (
-            companyPromise,
-            summaryPromise
-        )
-
-        if withHaptics {
-            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
-        }
-
         var errors = [Error]()
-        switch companyResult {
-        case let .success(company):
-            self.company = company
-        case let .failure(error):
+        do {
+            let (companyResult, summaryResult) = try await (
+                companyPromise,
+                summaryPromise
+            )
+            withAnimation {
+                company = companyResult
+                summary = summaryResult
+            }
+        } catch {
             guard !error.isCancelled else { return }
             errors.append(error)
             logger.error("Failed to refresh data for company. Error: \(error) (\(#file):\(#line))")
         }
-
-        switch summaryResult {
-        case let .success(summary):
-            self.summary = summary
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            errors.append(error)
-            logger.error("Failed to load summary for company. Error: \(error) (\(#file):\(#line))")
+        if withHaptics {
+            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
-
         state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 }

@@ -67,13 +67,13 @@ struct BarcodeManagementScreen: View {
     }
 
     func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {
-        switch await repository.productBarcode.delete(id: barcode.id) {
-        case .success:
+        do {
+            try await repository.productBarcode.delete(id: barcode.id)
             withAnimation {
                 barcodes.remove(object: barcode)
             }
             feedbackEnvironmentModel.trigger(.notification(.success))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
@@ -81,13 +81,13 @@ struct BarcodeManagementScreen: View {
     }
 
     func getBarcodes() async {
-        switch await repository.productBarcode.getByProductId(id: product.id) {
-        case let .success(barcodes):
+        do {
+            let barcodes = try await repository.productBarcode.getByProductId(id: product.id)
             withAnimation {
                 self.barcodes = barcodes
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")

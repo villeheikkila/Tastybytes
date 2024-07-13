@@ -225,8 +225,8 @@ struct DiscoverScreen: View {
         logger.info("Staring search for id: '\(searchKey.id)'")
         switch searchKey {
         case let .barcode(barcode):
-            switch await repository.product.search(barcode: barcode) {
-            case let .success(searchResults):
+            do {
+                let searchResults = try await repository.product.search(barcode: barcode)
                 withAnimation {
                     products = searchResults
                     searchResultKey = searchKey
@@ -235,7 +235,7 @@ struct DiscoverScreen: View {
                 if searchResults.count == 1, let result = searchResults.first {
                     router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 self.error = error
                 logger.error("Searching products with barcode failed. Error: \(error) (\(#file):\(#line))")
@@ -244,15 +244,15 @@ struct DiscoverScreen: View {
             if searchTerm.count < 2 { return }
             switch searchScope {
             case .products:
-                switch await repository.product.search(searchTerm: searchTerm, filter: productFilter) {
-                case let .success(searchResults):
+                do {
+                    let searchResults = try await repository.product.search(searchTerm: searchTerm, filter: productFilter)
                     withAnimation {
                         products = searchResults
                         searchResultKey = searchKey
                         error = nil
                     }
                     logger.info("Search completed for id: '\(searchKey.id)'")
-                case let .failure(error):
+                } catch {
                     if error.isCancelled {
                         logger.info("Search cancelled for id: '\(searchKey.id)'")
                         return
@@ -261,43 +261,43 @@ struct DiscoverScreen: View {
                     logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .companies:
-                switch await repository.company.search(searchTerm: searchTerm) {
-                case let .success(searchResults):
+                do {
+                    let searchResults = try await repository.company.search(searchTerm: searchTerm)
                     withAnimation {
                         companies = searchResults
                         searchResultKey = searchKey
                         error = nil
                     }
                     logger.info("Search completed for id: '\(searchKey.id)'")
-                case let .failure(error):
+                } catch {
                     guard !error.isCancelled else { return }
                     self.error = error
                     logger.error("Searching companies failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .users:
-                switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
-                case let .success(searchResults):
+                do {
+                    let searchResults = try await repository.profile.search(searchTerm: searchTerm, currentUserId: nil)
                     withAnimation {
                         profiles = searchResults
                         searchResultKey = searchKey
                         error = nil
                     }
                     logger.info("Search completed for id: '\(searchKey.id)'")
-                case let .failure(error):
+                } catch {
                     guard !error.isCancelled else { return }
                     self.error = error
                     logger.error("Searching profiles failed. Error: \(error) (\(#file):\(#line))")
                 }
             case .locations:
-                switch await repository.location.search(searchTerm: searchTerm) {
-                case let .success(searchResults):
+                do {
+                    let searchResults = try await repository.location.search(searchTerm: searchTerm)
                     withAnimation {
                         locations = searchResults
                         searchResultKey = searchKey
                         error = nil
                     }
                     logger.info("Search completed for id: '\(searchKey.id)'")
-                case let .failure(error):
+                } catch {
                     guard !error.isCancelled else { return }
                     self.error = error
                     logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")

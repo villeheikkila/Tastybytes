@@ -49,12 +49,12 @@ struct CategoryServingStyleAdminSheet: View {
     }
 
     func addServingStyleToCategory(_ servingStyle: ServingStyle) async {
-        switch await repository.category.addServingStyle(categoryId: category.id, servingStyleId: servingStyle.id) {
-        case .success:
+        do {
+            try await repository.category.addServingStyle(categoryId: category.id, servingStyleId: servingStyle.id)
             withAnimation {
                 servingStyles.append(servingStyle)
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to add serving style to category'. Error: \(error) (\(#file):\(#line))")
@@ -62,13 +62,13 @@ struct CategoryServingStyleAdminSheet: View {
     }
 
     func deleteServingStyle(_ servingStyle: ServingStyle) async {
-        switch await repository.category.deleteServingStyle(categoryId: category.id, servingStyleId: servingStyle.id) {
-        case .success:
+        do {
+            try await repository.category.deleteServingStyle(categoryId: category.id, servingStyleId: servingStyle.id)
             withAnimation {
                 servingStyles.remove(object: servingStyle)
             }
             feedbackEnvironmentModel.trigger(.notification(.success))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete serving style '\(servingStyle.id)'. Error: \(error) (\(#file):\(#line))")

@@ -1,16 +1,14 @@
 import Models
 
 public protocol NotificationRepository: Sendable {
-    func getAll(afterId: Int?) async -> Result<[Models.Notification], Error>
-    func getUnreadCount() async -> Result<Int, Error>
-    func refreshPushNotificationToken(deviceToken: String) async
-        -> Result<ProfilePushNotification, Error>
-    func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
-        -> Result<ProfilePushNotification, Error>
-    func markRead(id: Int) async -> Result<Notification, Error>
-    func markAllRead() async -> Result<[Models.Notification], Error>
-    func markAllFriendRequestsAsRead() async -> Result<[Models.Notification], Error>
-    func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Models.Notification], Error>
-    func delete(id: Int) async -> Result<Void, Error>
-    func deleteAll() async -> Result<Void, Error>
+    func getAll(afterId: Int?) async throws -> [Models.Notification]
+    func getUnreadCount() async throws -> Int
+    func refreshPushNotificationToken(deviceToken: String) async throws -> ProfilePushNotification
+    func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async throws -> ProfilePushNotification
+    func markRead(id: Int) async throws -> Notification
+    func markAllRead() async throws -> [Models.Notification]
+    func markAllFriendRequestsAsRead() async throws -> [Models.Notification]
+    func markAllCheckInNotificationsAsRead(checkInId: Int) async throws -> [Models.Notification]
+    func delete(id: Int) async throws
+    func deleteAll() async throws
 }

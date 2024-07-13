@@ -207,39 +207,21 @@ struct BrandScreen: View {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
-        let (summaryResult, brandResult, isLikedPromiseResult) = await (
-            summaryPromise,
-            brandPromise,
-            isLikedPromisePromise
-        )
         var errors = [Error]()
-        switch summaryResult {
-        case let .success(summary):
-            self.summary = summary
-        case let .failure(error):
+        do {
+            let (summaryResult, brandResult, isLikedResult) = try await (
+                summaryPromise,
+                brandPromise,
+                isLikedPromisePromise
+            )
+            summary = summaryResult
+            brand = brandResult
+            isLikedByCurrentUser = isLikedResult
+
+        } catch {
             guard !error.isCancelled else { return }
             errors.append(error)
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
-        }
-
-        switch brandResult {
-        case let .success(brand):
-            self.brand = brand
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            errors.append(error)
-            logger.error("Request for brand with \(brandId) failed. Error: \(error) (\(#file):\(#line))")
-        }
-
-        switch isLikedPromiseResult {
-        case let .success(isLikedByCurrentUser):
-            withAnimation {
-                self.isLikedByCurrentUser = isLikedByCurrentUser
-            }
-        case let .failure(error):
-            guard !error.isCancelled else { return }
-            errors.append(error)
-            logger.error("Request to check if brand is liked failed. Error: \(error) (\(#file):\(#line))")
         }
 
         state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
@@ -252,24 +234,24 @@ struct BrandScreen: View {
 
     func toggleLike() async {
         if isLikedByCurrentUser {
-            switch await repository.brand.unlikeBrand(brandId: brand.id) {
-            case .success:
+            do {
+                try await repository.brand.unlikeBrand(brandId: brand.id)
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 withAnimation {
                     isLikedByCurrentUser = false
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 logger.error("Unliking brand failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
-            switch await repository.brand.likeBrand(brandId: brand.id) {
-            case .success:
+            do {
+                try await repository.brand.likeBrand(brandId: brand.id)
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 withAnimation {
                     isLikedByCurrentUser = true
                 }
-            case let .failure(error):
+            } catch {
                 guard !error.isCancelled else { return }
                 logger.error("Liking a brand failed. Error: \(error) (\(#file):\(#line))")
             }

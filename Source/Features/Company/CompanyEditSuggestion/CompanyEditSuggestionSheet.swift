@@ -45,11 +45,11 @@ struct CompanyEditSuggestionSheet: View {
     }
 
     func sendCompanyEditSuggestion() async {
-        switch await repository.company.editSuggestion(updateRequest: Company.EditSuggestionRequest(id: company.id, name: newCompanyName)) {
-        case .success:
+        do {
+            try await repository.company.editSuggestion(updateRequest: Company.EditSuggestionRequest(id: company.id, name: newCompanyName))
             dismiss()
             await onSuccess()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to send company edit suggestion. Error: \(error) (\(#file):\(#line))")

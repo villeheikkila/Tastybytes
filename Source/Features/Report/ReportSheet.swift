@@ -47,11 +47,11 @@ struct ReportSheet: View {
     }
 
     func submitReport() async {
-        switch await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
-        case .success:
+        do {
+            try await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity))
             dismiss()
             router.open(.toast(.success("report.submit.success.toast")))
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Submitting report failed. Error: \(error) (\(#file):\(#line))")

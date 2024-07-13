@@ -63,11 +63,11 @@ struct BrandScreenProductRow: View {
     }
 
     func deleteProduct(_ product: Product.Joined) async {
-        switch await repository.product.delete(id: product.id) {
-        case .success:
+        do {
+            try await repository.product.delete(id: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             router.removeLast()
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")

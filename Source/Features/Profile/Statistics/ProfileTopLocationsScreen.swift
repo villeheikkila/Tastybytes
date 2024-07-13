@@ -32,13 +32,13 @@ struct ProfileTopLocationsScreen: View {
     }
 
     func loadData() async {
-        switch await repository.profile.getNumberOfCheckInsByLocation(userId: profile.id) {
-        case let .success(locations):
+        do {
+            let locations = try await repository.profile.getNumberOfCheckInsByLocation(userId: profile.id)
             withAnimation {
                 self.locations = locations
                 state = .populated
             }
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
             logger.error("Failed loading top location statistics. Error: \(error) (\(#file):\(#line))")

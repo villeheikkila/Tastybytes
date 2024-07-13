@@ -116,8 +116,8 @@ struct ActivityScreen: View {
             isLoading = true
         }
         let (from, to) = getPagination(page: reset ? 0 : page, size: 10)
-        switch await repository.checkIn.getActivityFeed(query: .paginated(from, to)) {
-        case let .success(fetchedCheckIns):
+        do {
+            let fetchedCheckIns = try await repository.checkIn.getActivityFeed(query: .paginated(from, to))
             guard !Task.isCancelled else { return }
             logger.info("Succesfully loaded check-ins from \(from) to \(to)")
             withAnimation {
@@ -129,7 +129,7 @@ struct ActivityScreen: View {
                 state = .populated
             }
             page += 1
-        case let .failure(error):
+        } catch {
             guard !error.isCancelled, !Task.isCancelled else { return }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
             if state != .populated {
