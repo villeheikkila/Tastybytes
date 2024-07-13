@@ -57,6 +57,8 @@ struct ProductEntityView: View {
                         .foregroundColor(.secondary)
                 }
                 .routerLinkDisabled(!extras.contains(.companyLink))
+                .routerLinkMode(.button)
+                .buttonStyle(.plain)
 
                 HStack {
                     CategoryView(category: product.category, subcategories: product.subcategories)
