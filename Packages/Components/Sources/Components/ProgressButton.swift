@@ -2,76 +2,55 @@ import OSLog
 import SwiftUI
 
 public struct ProgressButton<LabelView: View>: View {
-    private let logger = Logger(category: "ProgressButton")
-    public enum ActionOption: CaseIterable {
-        case disableButton
-        case showProgressView
-    }
+    @Environment(\.asyncButtonLoadingStyle) private var asyncButtonLoadingStyle
+    @State private var task: Task<Void, Never>?
+    @State private var isDisabled = false
 
     let role: ButtonRole?
-    var action: () async -> Void
-    var actionOptions: Set<ActionOption> = Set([.disableButton, .showProgressView])
+    let action: () async -> Void
     @ViewBuilder var label: () -> LabelView
-    @State private var task: Task<Void, Never>?
 
     public init(
         role: ButtonRole? = nil,
         action: @escaping () async -> Void,
-        actionOptions: Set<ActionOption> = Set([.disableButton, .showProgressView]),
         @ViewBuilder label: @escaping () -> LabelView
     ) {
         self.role = role
         self.action = action
-        self.actionOptions = actionOptions
         self.label = label
     }
 
-    @State private var isDisabled = false
-    @State private var isLoading = false
-
-    let cancelTaskOnDisappear = false
-
     public var body: some View {
-        Button(role: role, action: { buttonAction() }, label: { buttonLabel })
-            .disabled(isDisabled)
-            .onDisappear {
-                if cancelTaskOnDisappear {
-                    task?.cancel()
+        Button(role: role, action: {
+            task = Task(priority: .userInitiated) {
+                defer { task = nil }
+                await action()
+            }
+        }, label: {
+            HStack {
+                label()
+                if task != nil, asyncButtonLoadingStyle == .spinner {
+                    ProgressView()
+                        .padding(.leading, 10)
                 }
             }
+        })
+        .disabled(task != nil)
     }
+}
 
-    private func buttonAction() {
-        if actionOptions.contains(.disableButton) {
-            isDisabled = true
-        }
+public enum AsyncButtonLoadingStyle: Sendable {
+    case plain
+    case spinner
+}
 
-        task = Task(priority: .userInitiated) {
-            defer { task = nil }
-            var progressViewTask: Task<Void, Error>?
-            if actionOptions.contains(.showProgressView) {
-                progressViewTask = Task {
-                    do {
-                        try await Task.sleep(for: .seconds(1))
-                        isLoading = true
-                    } catch {}
-                }
-            }
-            await action()
-            progressViewTask?.cancel()
-            isDisabled = false
-            isLoading = false
-        }
-    }
+extension EnvironmentValues {
+    @Entry var asyncButtonLoadingStyle: AsyncButtonLoadingStyle = .plain
+}
 
-    private var buttonLabel: some View {
-        HStack {
-            label()
-            if isLoading {
-                ProgressView()
-                    .padding(.leading, 10)
-            }
-        }
+public extension View {
+    func asyncButtonLoadingStyle(_ mode: AsyncButtonLoadingStyle) -> some View {
+        environment(\.asyncButtonLoadingStyle, mode)
     }
 }
 
@@ -79,10 +58,9 @@ public extension ProgressButton where LabelView == Text {
     @_disfavoredOverload
     init(_ label: String,
          role: ButtonRole? = nil,
-         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action, actionOptions: actionOptions) {
+        self.init(role: role, action: action) {
             Text(label)
         }
     }
@@ -91,10 +69,9 @@ public extension ProgressButton where LabelView == Text {
 public extension ProgressButton where LabelView == Text {
     init(_ label: LocalizedStringKey,
          role: ButtonRole? = nil,
-         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
          action: @MainActor @escaping () async -> Void)
     {
-        self.init(role: role, action: action, actionOptions: actionOptions) {
+        self.init(role: role, action: action) {
             Text(label)
         }
     }
@@ -104,10 +81,9 @@ public extension ProgressButton where LabelView == Label<Text, Image> {
     @_disfavoredOverload
     init(_ title: String, systemImage: String,
          role: ButtonRole? = nil,
-         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action, actionOptions: actionOptions) {
+        self.init(role: role, action: action) {
             Label(title, systemImage: systemImage)
         }
     }
@@ -116,10 +92,9 @@ public extension ProgressButton where LabelView == Label<Text, Image> {
 public extension ProgressButton where LabelView == Label<Text, Image> {
     init(_ title: LocalizedStringKey, systemImage: String,
          role: ButtonRole? = nil,
-         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action, actionOptions: actionOptions) {
+        self.init(role: role, action: action) {
             Label(title, systemImage: systemImage)
         }
     }
@@ -130,10 +105,9 @@ public extension ProgressButton where LabelView == LinkIconLabelView {
         _ titleKey: LocalizedStringKey,
         systemName: String,
         color: Color,
-        actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
         action: @escaping () async -> Void
     ) {
-        self.init(action: action, actionOptions: actionOptions) {
+        self.init(action: action) {
             LinkIconLabelView(titleKey: titleKey, systemName: systemName, color: color)
         }
     }

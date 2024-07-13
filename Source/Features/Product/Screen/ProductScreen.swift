@@ -113,9 +113,10 @@ struct ProductInnerScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) { HStack {} }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ProgressButton("wishlist.add.label", systemImage: "star", actionOptions: []) {
+            ProgressButton("wishlist.add.label", systemImage: "star") {
                 await toggleWishlist()
             }
+            .asyncButtonLoadingStyle(.plain)
             .symbolVariant(isOnWishlist ? .fill : .none)
             Menu {
                 ControlGroup {

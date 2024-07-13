@@ -62,7 +62,6 @@ struct AccountSettingsScreen: View {
             if showEmailConfirmation {
                 ProgressButton(
                     "account.email.sendVerificationLink.label",
-                    actionOptions: [],
                     action: {
                         await changeEmail(email: email)
                     }
