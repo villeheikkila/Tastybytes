@@ -85,7 +85,7 @@ struct ServingStyleManagementSheet: View {
         }
     }
 
-   private func editServingStyle(_ servingStyle: ServingStyle, _ updatedServingStyle: ServingStyle) async {
+    private func editServingStyle(_ servingStyle: ServingStyle, _ updatedServingStyle: ServingStyle) async {
         do {
             let servingStyle = try await repository.servingStyle
                 .update(update: ServingStyle.UpdateRequest(id: updatedServingStyle.id, name: updatedServingStyle.name))

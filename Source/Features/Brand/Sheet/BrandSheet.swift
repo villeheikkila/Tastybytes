@@ -31,7 +31,7 @@ struct BrandSheet: View {
 
     var body: some View {
         List {
-            if mode == .select {
+            if case .select = mode {
                 ForEach(filteredBrands) { brand in
                     BrandSheetRowView(brand: brand) { brand in
                         self.brand = brand
@@ -83,8 +83,8 @@ struct BrandSheet: View {
         do {
             let brandWithSubBrands = try await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id))
             router.open(.toast(.success("brand.created.toast")))
-            if mode == .new {
-                router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
+            if case let .new(onCreate) = mode {
+                onCreate(brandWithSubBrands)
             }
             brand = brandWithSubBrands
             dismiss()
@@ -97,8 +97,8 @@ struct BrandSheet: View {
 }
 
 extension BrandSheet {
-    enum Mode: Sendable {
-        case select, new
+    enum Mode: Sendable, Hashable {
+        case select, new(onCreate: @MainActor (_ brand: Brand.JoinedSubBrands) -> Void)
 
         var navigationTitle: LocalizedStringKey {
             switch self {
@@ -106,6 +106,26 @@ extension BrandSheet {
                 "brand.add.navigationTitle"
             case .select:
                 "brand.select.navigationTitle"
+            }
+        }
+
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case .select:
+                hasher.combine("select")
+            case .new:
+                hasher.combine("new")
+            }
+        }
+
+        static func == (lhs: Mode, rhs: Mode) -> Bool {
+            switch (lhs, rhs) {
+            case (.select, .select):
+                true
+            case (.new, .new):
+                true
+            default:
+                false
             }
         }
     }

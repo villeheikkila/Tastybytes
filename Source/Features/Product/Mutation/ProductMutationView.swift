@@ -308,7 +308,7 @@ struct ProductMutationView: View {
         }
     }
 
-   private func initialize() async {
+    private func initialize() async {
         switch mode {
         case let .edit(initialProduct, _), let .editSuggestion(initialProduct):
             do {

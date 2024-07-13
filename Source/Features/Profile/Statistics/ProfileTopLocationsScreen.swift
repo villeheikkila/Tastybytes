@@ -31,7 +31,7 @@ struct ProfileTopLocationsScreen: View {
         }
     }
 
-   private func loadData() async {
+    private func loadData() async {
         do {
             let locations = try await repository.profile.getNumberOfCheckInsByLocation(userId: profile.id)
             withAnimation {

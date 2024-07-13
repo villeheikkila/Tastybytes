@@ -95,6 +95,14 @@ public extension Brand {
         public let subBrands: [SubBrand.JoinedProduct]
         public let logos: [ImageEntity]
 
+        public init(newBrand: JoinedSubBrands) {
+            id = newBrand.id
+            name = newBrand.name
+            isVerified = newBrand.isVerified
+            subBrands = []
+            logos = newBrand.logos
+        }
+
         public var productCount: Int {
             subBrands.flatMap(\.products).count
         }

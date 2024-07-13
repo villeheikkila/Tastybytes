@@ -81,7 +81,7 @@ struct ProductAdminSheet: View {
         ToolbarDismissAction()
     }
 
-   private func loadData() async {
+    private func loadData() async {
         do {
             let product = try await repository.product.getDetailed(id: product.id)
             withAnimation {

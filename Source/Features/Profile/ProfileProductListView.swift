@@ -103,7 +103,7 @@ struct ProfileProductListView: View {
         }
     }
 
-   private func filterProduct(_ product: Product.Joined) -> Bool {
+    private func filterProduct(_ product: Product.Joined) -> Bool {
         let ratingPass = if let ratingFilter = productFilter?.rating {
             if let averageRating = product.averageRating {
                 round(averageRating * 2) / 2 == ratingFilter

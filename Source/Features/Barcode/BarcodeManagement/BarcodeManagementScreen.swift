@@ -59,10 +59,25 @@ struct BarcodeManagementScreen: View {
             RouterLink(
                 "discover.barcode.scan",
                 systemImage: "barcode.viewfinder",
-                open: .sheet(.barcodeScanner(onComplete: { _ in
-                    await getBarcodes()
+                open: .sheet(.barcodeScanner(onComplete: { barcode in
+                    await addBarcodeToProduct(barcode)
                 }))
             )
+        }
+    }
+
+    private func addBarcodeToProduct(_ barcode: Barcode) async {
+        do {
+            let addedBarcode = try await repository.productBarcode.addToProduct(product: product, barcode: barcode)
+            withAnimation {
+                barcodes.append(addedBarcode)
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init(title: "barcode.error.failedToAdd.title", retryLabel: "labels.retry", retry: {
+                Task { await addBarcodeToProduct(barcode) }
+            })))
+            logger.error("Adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 

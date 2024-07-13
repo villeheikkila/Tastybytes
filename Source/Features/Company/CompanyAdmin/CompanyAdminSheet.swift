@@ -125,7 +125,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-   private func editCompany() async {
+    private func editCompany() async {
         do {
             let company = try await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
             withAnimation {

@@ -95,7 +95,7 @@ struct SubcategoryStatisticsView: View {
         }
     }
 
-   private func loadSubcategoryStatistics() async {
+    private func loadSubcategoryStatistics() async {
         guard state != .loading, subcategoryStatistics.isEmpty else { return }
         do {
             let subcategoryStatistics = try await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id)

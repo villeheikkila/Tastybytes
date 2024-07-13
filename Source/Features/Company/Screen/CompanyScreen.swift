@@ -98,7 +98,11 @@ struct CompanyScreen: View {
                     RouterLink(
                         "brand.title",
                         systemImage: "plus",
-                        open: .sheet(.addBrand(brandOwner: company.saved, mode: .new))
+                        open: .sheet(.addBrand(brandOwner: company.saved, mode: .new(onCreate: { brand in
+                            withAnimation {
+                                company = company.copyWith(brands: company.brands + [.init(newBrand: brand)])
+                            }
+                        })))
                     )
                 }
             }

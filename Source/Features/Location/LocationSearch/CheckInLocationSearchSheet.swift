@@ -127,7 +127,7 @@ struct CheckInLocationSearchSheet: View {
         }
     }
 
-   private func storeLocation(_ location: Location) {
+    private func storeLocation(_ location: Location) {
         guard storeLocationTask == nil else { return }
         defer { storeLocationTask = nil }
         storeLocationTask = Task {
