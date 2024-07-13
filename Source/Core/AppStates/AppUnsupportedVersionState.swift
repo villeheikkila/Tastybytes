@@ -24,7 +24,7 @@ struct AppUnsupportedVersionState: View {
                 }
             }
             .background(
-                AppGradient(color: Color(.sRGB, red: 130 / 255, green: 135 / 255, blue: 230 / 255, opacity: 1)),
+                AppGradientView(color: Color(.sRGB, red: 130 / 255, green: 135 / 255, blue: 230 / 255, opacity: 1)),
                 alignment: .bottom
             )
             .ignoresSafeArea()

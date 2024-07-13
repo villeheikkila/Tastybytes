@@ -71,7 +71,7 @@ struct BrandAdminSheet: View {
         .customListRowBackground()
         CreationInfoSection(createdBy: brand.createdBy, createdAt: brand.createdAt)
         Section("admin.section.details") {
-            LabeledTextField(title: "brand.admin.changeName.label", text: $name)
+            LabeledTextFieldView(title: "brand.admin.changeName.label", text: $name)
             LabeledContent("brand.admin.changeBrandOwner.label") {
                 RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
                     brandOwner = company

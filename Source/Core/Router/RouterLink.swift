@@ -89,10 +89,10 @@ extension RouterLink where LabelView == Label<Text, Image> {
     }
 }
 
-extension RouterLink where LabelView == LinkIconLabel {
+extension RouterLink where LabelView == LinkIconLabelView {
     init(_ titleKey: LocalizedStringKey, systemName: String, color: Color, open: Router.Open) {
         self.init(open: open, label: {
-            LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
+            LinkIconLabelView(titleKey: titleKey, systemName: systemName, color: color)
         })
     }
 }

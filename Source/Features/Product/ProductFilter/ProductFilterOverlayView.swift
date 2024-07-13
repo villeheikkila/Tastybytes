@@ -38,7 +38,7 @@ struct ProductFilterOverlayView: View {
                     }
                 }
                 Spacer()
-                CloseButton {
+                CloseButtonView {
                     onReset()
                 }
             }

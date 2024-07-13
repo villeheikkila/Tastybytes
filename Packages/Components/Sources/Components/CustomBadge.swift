@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Badge: View {
+struct BadgeView: View {
     let badgeCount: Int
 
     var body: some View {
@@ -24,7 +24,7 @@ public struct BadgeViewModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content.overlay(alignment: .topTrailing) {
             if badgeCount != 0 {
-                Badge(badgeCount: badgeCount)
+                BadgeView(badgeCount: badgeCount)
             }
         }
     }

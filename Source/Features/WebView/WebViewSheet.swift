@@ -10,7 +10,7 @@ struct WebViewSheet: View {
             .navigationTitle(link.title)
             .toolbar {
                 ToolbarItemGroup(placement: .cancellationAction) {
-                    CloseButton { dismiss() }
+                    CloseButtonView { dismiss() }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)

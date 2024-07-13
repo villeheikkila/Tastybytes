@@ -30,22 +30,22 @@ struct NotificationSettingsScreen: View {
     var body: some View {
         Form {
             Section {
-                NotificationDeliveryTypePicker(
+                NotificationDeliveryTypePickerView(
                     notificationDeliveryType: $reactioNotificationDeliveryType,
                     title: "notifications.settings.reactions.label",
                     subtitle: "notifications.settings.reactions.subtitle"
                 )
-                NotificationDeliveryTypePicker(
+                NotificationDeliveryTypePickerView(
                     notificationDeliveryType: $checkInCommentNotificationsDeliveryType,
                     title: "notifications.settings.comments.label",
                     subtitle: "notifications.settings.comments.subtitle"
                 )
-                NotificationDeliveryTypePicker(
+                NotificationDeliveryTypePickerView(
                     notificationDeliveryType: $checkInNotificationDeliveryType,
                     title: "notifications.settings.checkIns.label",
                     subtitle: "notifications.settings.checkIns.subtitle"
                 )
-                NotificationDeliveryTypePicker(
+                NotificationDeliveryTypePickerView(
                     notificationDeliveryType: $friendRequestNotificationDeliveryType,
                     title: "notifications.settings.friendRequest.label",
                     subtitle: "notifications.settings.friendRequest.subtitle"
@@ -126,7 +126,7 @@ struct NotificationSettingsScreen: View {
     }
 }
 
-struct NotificationDeliveryTypePicker: View {
+struct NotificationDeliveryTypePickerView: View {
     @Binding var notificationDeliveryType: NotificationDeliveryType
 
     let title: LocalizedStringKey

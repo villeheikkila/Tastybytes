@@ -18,7 +18,7 @@ struct EditLogoSection: View {
     var body: some View {
         Section {
             ForEach(logos) { logo in
-                RemoteImage(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
+                RemoteImageView(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
                     image.resizable()
                 }, progress: {
                     ProgressView()

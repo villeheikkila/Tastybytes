@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct BarcodeManagementRow: View {
+struct BarcodeManagementRowView: View {
     let barcode: ProductBarcode.JoinedWithCreator
 
     var body: some View {

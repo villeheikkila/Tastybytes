@@ -33,7 +33,7 @@ struct CategoryAdminSheet: View {
         if !category.subcategories.isEmpty {
             Section("category.admin.section.subcategory") {
                 ForEach(category.subcategories) { subcategory in
-                    CategoryAdminSheetSubcategoryRow(subcategory: .init(category: .init(category: category), subcategory: subcategory))
+                    CategoryAdminSheetSubcategoryRowView(subcategory: .init(category: .init(category: category), subcategory: subcategory))
                 }
             }
             .customListRowBackground()
@@ -70,7 +70,7 @@ struct CategoryAdminSheet: View {
     }
 }
 
-struct CategoryAdminSheetSubcategoryRow: View {
+struct CategoryAdminSheetSubcategoryRowView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @State private var showDeleteConfirmationDialog = false
 

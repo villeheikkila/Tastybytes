@@ -17,7 +17,7 @@ struct CheckInListContentView: View {
 
     var body: some View {
         ForEach(checkIns) { checkIn in
-            CheckInListCard(
+            CheckInListCardView(
                 checkIn: checkIn,
                 onUpdate: onCheckInUpdate,
                 onDelete: deleteCheckIn,

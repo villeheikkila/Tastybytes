@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct SubBrandSheetRow: View {
+struct SubBrandSheetRowView: View {
     let subBrand: SubBrandProtocol
     let onClick: (_ brand: SubBrandProtocol) -> Void
 

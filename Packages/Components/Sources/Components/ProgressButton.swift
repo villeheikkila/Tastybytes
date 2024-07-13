@@ -125,7 +125,7 @@ public extension ProgressButton where LabelView == Label<Text, Image> {
     }
 }
 
-public extension ProgressButton where LabelView == LinkIconLabel {
+public extension ProgressButton where LabelView == LinkIconLabelView {
     init(
         _ titleKey: LocalizedStringKey,
         systemName: String,
@@ -134,12 +134,12 @@ public extension ProgressButton where LabelView == LinkIconLabel {
         action: @escaping () async -> Void
     ) {
         self.init(action: action, actionOptions: actionOptions) {
-            LinkIconLabel(titleKey: titleKey, systemName: systemName, color: color)
+            LinkIconLabelView(titleKey: titleKey, systemName: systemName, color: color)
         }
     }
 }
 
-public struct LinkIconLabel: View {
+public struct LinkIconLabelView: View {
     let titleKey: LocalizedStringKey
     let systemName: String
     let color: Color

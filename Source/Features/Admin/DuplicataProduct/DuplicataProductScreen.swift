@@ -19,7 +19,7 @@ struct DuplicateProductScreen: View {
 
     var body: some View {
         List(duplicateProductSuggestions) { duplicateProductSuggestion in
-            DuplicateProductScreeRow(duplicateProductSuggestion: duplicateProductSuggestion, onDelete: deleteProductSuggestion)
+            DuplicateProductScreeRowView(duplicateProductSuggestion: duplicateProductSuggestion, onDelete: deleteProductSuggestion)
         }
         .listStyle(.plain)
         .overlay {
@@ -74,7 +74,7 @@ struct DuplicateProductScreen: View {
     }
 }
 
-struct DuplicateProductScreeRow: View {
+struct DuplicateProductScreeRowView: View {
     @State private var showDeleteSuggestionConfirmation = false
     let duplicateProductSuggestion: ProductDuplicateSuggestion
 

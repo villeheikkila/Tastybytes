@@ -31,14 +31,14 @@ struct ActivityWatchTabContent: View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         List {
             ForEach(checkInLoader.checkIns) { checkIn in
-                CheckInWatchListItem(checkIn: checkIn)
+                CheckInWatchListItemView(checkIn: checkIn)
                     .onAppear {
                         if checkIn == checkInLoader.checkIns.last {
                             checkInLoader.onLoadMore()
                         }
                     }
             }
-            CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+            CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
         }
         .listStyle(.plain)
         .refreshable {
@@ -62,7 +62,7 @@ struct ActivityWatchTabContent: View {
     }
 }
 
-struct CheckInWatchListItem: View {
+struct CheckInWatchListItemView: View {
     let checkIn: CheckIn
 
     var fullProductName: String {

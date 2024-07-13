@@ -13,7 +13,7 @@ struct CheckInImageEntityView: View {
         HStack {
             Spacer()
             if let imageUrl = imageEntity.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                RemoteImageBlurHash(url: imageUrl, blurHash: imageEntity.blurHash, height: height) { image in
+                RemoteImageBlurHashView(url: imageUrl, blurHash: imageEntity.blurHash, height: height) { image in
                     image
                         .resizable()
                         .scaledToFit()

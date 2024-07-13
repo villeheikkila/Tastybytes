@@ -3,7 +3,7 @@ import Extensions
 import Models
 import SwiftUI
 
-public struct BlurHashPlaceholder: View {
+public struct BlurHashPlaceholderView: View {
     @State private var image: UIImage?
 
     let blurHash: BlurHash
@@ -32,7 +32,7 @@ public struct BlurHashPlaceholder: View {
     }
 }
 
-public struct LegacyBlurHashPlaceholder: View {
+public struct LegacyBlurHashPlaceholderView: View {
     @State private var image: UIImage?
 
     let blurHash: BlurHash?

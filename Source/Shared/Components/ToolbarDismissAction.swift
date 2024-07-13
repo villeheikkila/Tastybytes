@@ -5,7 +5,7 @@ struct ToolbarDismissAction: ToolbarContent {
 
     public var body: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            CloseButton {
+            CloseButtonView {
                 dismiss()
             }
         }

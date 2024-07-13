@@ -33,7 +33,7 @@ struct BrandSheet: View {
         List {
             if mode == .select {
                 ForEach(filteredBrands) { brand in
-                    BrandSheetRow(brand: brand) { brand in
+                    BrandSheetRowView(brand: brand) { brand in
                         self.brand = brand
                         dismiss()
                     }
@@ -42,7 +42,7 @@ struct BrandSheet: View {
 
             if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                 Section("brand.addBrandForCompany.title \(brandOwner.name)") {
-                    ScanTextField(title: "brand.name.placeholder", text: $brandName)
+                    ScanTextFieldView(title: "brand.name.placeholder", text: $brandName)
                     ProgressButton("labels.create", action: { await createNewBrand() })
                         .disabled(!brandName.isValidLength(.normal(allowEmpty: false)))
                 }

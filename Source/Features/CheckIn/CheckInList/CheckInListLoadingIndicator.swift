@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CheckInListLoadingIndicator: View {
+struct CheckInListLoadingIndicatorView: View {
     @Binding var isLoading: Bool
     @Binding var isRefreshing: Bool
 

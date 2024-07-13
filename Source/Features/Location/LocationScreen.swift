@@ -39,11 +39,11 @@ struct LocationInnerScreen: View {
         List {
             if state == .populated {
                 LocationScreenHeader(location: location, summary: summary)
-                CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
+                CheckInListSegmentPickerView(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
                 CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
                     checkInLoader.onLoadMore()
                 })
-                CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+                CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
             }
         }
         .listStyle(.plain)

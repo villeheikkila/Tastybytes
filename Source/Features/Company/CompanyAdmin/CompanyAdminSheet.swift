@@ -67,7 +67,7 @@ struct CompanyAdminSheet: View {
         .customListRowBackground()
         CreationInfoSection(createdBy: company.createdBy, createdAt: company.createdAt)
         Section("admin.section.details") {
-            LabeledTextField(title: "labels.name", text: $newCompanyName)
+            LabeledTextFieldView(title: "labels.name", text: $newCompanyName)
             LabeledIdView(id: company.id.formatted())
             VerificationAdminToggleView(isVerified: company.isVerified, action: verifyCompany)
         }

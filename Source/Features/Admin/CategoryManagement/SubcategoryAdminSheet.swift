@@ -27,7 +27,7 @@ struct SubcategoryAdminSheet: View {
             .customListRowBackground()
 
             Section("admin.section.details") {
-                LabeledTextField(title: "subcategory.admin.name", text: $subcategoryName)
+                LabeledTextFieldView(title: "subcategory.admin.name", text: $subcategoryName)
                 LabeledContent("subcategory.admin.category") {
                     RouterLink(category?.name ?? subcategory.category.name, open: .sheet(.categoryPicker(category: $category)))
                 }

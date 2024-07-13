@@ -15,14 +15,14 @@ struct CheckInImageCellView: View {
 
     var body: some View {
         HStack {
-            RemoteImage(url: checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
+            RemoteImageView(url: checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
             }, progress: {
                 if let blurHash = checkInImage.blurHash {
-                    BlurHashPlaceholder(blurHash: blurHash, height: 100)
+                    BlurHashPlaceholderView(blurHash: blurHash, height: 100)
                 } else {
                     ProgressView()
                 }

@@ -2,7 +2,7 @@ import Components
 import Extensions
 import SwiftUI
 
-struct SaveToPhotoGalleryButton: View {
+struct SaveToPhotoGalleryButtonView: View {
     let imageUrl: URL
 
     var body: some View {

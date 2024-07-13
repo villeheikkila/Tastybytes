@@ -89,7 +89,7 @@ struct MapPopOver: View {
                     }
                 }
                 Spacer()
-                CloseButton {
+                CloseButtonView {
                     dismiss()
                 }
             }

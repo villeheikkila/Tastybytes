@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct AppGradient: View {
+public struct AppGradientView: View {
     let color: Color
 
     public init(color: Color) {

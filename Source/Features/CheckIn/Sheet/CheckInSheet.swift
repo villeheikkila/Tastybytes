@@ -136,11 +136,11 @@ struct CheckInSheet: View {
 
     @ViewBuilder private var locationAndFriendsSection: some View {
         Section("checkIn.section.locationsFriends.title") {
-            LocationInputButton(category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: $locationFromImage, onSelect: { location in
+            LocationInputButtonView(category: .checkIn, title: "checkIn.location.add.label", selection: $location, initialLocation: $locationFromImage, onSelect: { location in
                 self.location = location
             })
 
-            LocationInputButton(
+            LocationInputButtonView(
                 category: .purchase, title: "checkIn.purchaseLocation.add.label",
                 selection: $purchaseLocation,
                 initialLocation: $locationFromImage,

@@ -6,7 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct CheckInListSegmentPicker: View {
+struct CheckInListSegmentPickerView: View {
     @Binding var showCheckInsFrom: CheckInSegment
 
     var body: some View {

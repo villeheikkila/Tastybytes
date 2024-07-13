@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct LocationInputButton: View {
+struct LocationInputButtonView: View {
     let category: Location.RecentLocation
     let title: LocalizedStringKey
     @Binding var selection: Location?

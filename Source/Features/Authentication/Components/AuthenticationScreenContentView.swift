@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct AuthenticationScreenContent: View {
+struct AuthenticationScreenContentView: View {
     @Environment(Router.self) private var router
     @AppStorage(.profileDeleted) private var profileDeleted = false
 

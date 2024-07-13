@@ -11,7 +11,7 @@ struct CompanyLogo: View {
     public var body: some View {
         Group {
             if let logoUrl = company.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                RemoteImage(url: logoUrl, content: { image in
+                RemoteImageView(url: logoUrl, content: { image in
                     image.resizable()
                 }, progress: {
                     ProgressView()

@@ -32,7 +32,7 @@ struct ActivityScreen: View {
                         try? await Task.sleep(nanoseconds: 100_000_000)
                         proxy.scrollTo(checkIn.id, anchor: .top)
                     }, onLoadMore: onLoadMore)
-                    CheckInListLoadingIndicator(isLoading: $isLoading, isRefreshing: $isRefreshing)
+                    CheckInListLoadingIndicatorView(isLoading: $isLoading, isRefreshing: $isRefreshing)
                 }
             }
             .listStyle(.plain)

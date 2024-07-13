@@ -194,9 +194,9 @@ struct ProductMutationView: View {
 
     private var productSection: some View {
         Section {
-            ScanTextField(title: "product.name.placeholder", text: $name)
+            ScanTextFieldView(title: "product.name.placeholder", text: $name)
                 .focused($focusedField, equals: .name)
-            ScanTextField(title: "product.description.placeholder", text: $description)
+            ScanTextFieldView(title: "product.description.placeholder", text: $description)
                 .focused($focusedField, equals: .description)
 
             if mode.showBarcodeSection {

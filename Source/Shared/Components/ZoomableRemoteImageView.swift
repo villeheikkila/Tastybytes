@@ -2,7 +2,7 @@ import Components
 import Models
 import SwiftUI
 
-struct ZoomableRemoteImage: View {
+struct ZoomableRemoteImageView: View {
     @State private var scale: CGFloat = 1.0
     @State private var location: CGPoint?
     let imageUrl: URL
@@ -30,7 +30,7 @@ struct ZoomableRemoteImage: View {
         GeometryReader { geometry in
             let height = geometry.size.height * 0.8
             let width = geometry.size.width * 0.8
-            RemoteImage(url: imageUrl, content: { image in
+            RemoteImageView(url: imageUrl, content: { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -46,7 +46,7 @@ struct ZoomableRemoteImage: View {
                     }
             }, progress: {
                 if let blurHash {
-                    BlurHashPlaceholder(blurHash: blurHash, height: height, width: width)
+                    BlurHashPlaceholderView(blurHash: blurHash, height: height, width: width)
                 } else {
                     ProgressView()
                 }

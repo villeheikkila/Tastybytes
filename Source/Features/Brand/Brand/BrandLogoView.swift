@@ -3,7 +3,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-struct BrandLogo: View {
+struct BrandLogoView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let brand: BrandProtocol
     let size: Double
@@ -11,7 +11,7 @@ struct BrandLogo: View {
     var body: some View {
         Group {
             if let logoUrl = brand.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                RemoteImage(url: logoUrl, content: { image in
+                RemoteImageView(url: logoUrl, content: { image in
                     image.resizable()
                 }, progress: {
                     ProgressView()

@@ -231,7 +231,7 @@ struct InitialLocationOverlay: View {
             HStack {
                 Text("location.initialLocationOverlay.description \(coordinate.latitude.formatted(.number.precision(.fractionLength(2)))) \(coordinate.longitude.formatted(.number.precision(.fractionLength(2))))")
                 Spacer()
-                CloseButton {
+                CloseButtonView {
                     initialLocation = nil
                 }
                 .labelStyle(.iconOnly)

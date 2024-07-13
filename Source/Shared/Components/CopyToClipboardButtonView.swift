@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CopyToClipboardButton: View {
+struct CopyToClipboardButtonView: View {
     let content: String
 
     var body: some View {

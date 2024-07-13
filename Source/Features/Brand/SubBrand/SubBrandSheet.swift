@@ -33,7 +33,7 @@ struct SubBrandSheet: View {
     var body: some View {
         List {
             ForEach(filteredSubBrands) { subBrand in
-                SubBrandSheetRow(subBrand: subBrand) { _ in
+                SubBrandSheetRowView(subBrand: subBrand) { _ in
                     self.subBrand = subBrand
                     dismiss()
                 }
@@ -41,7 +41,7 @@ struct SubBrandSheet: View {
 
             if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                 Section("subBrand.addSubBrandFor.title \(brandWithSubBrands.name)") {
-                    ScanTextField(title: "subBrand.name.placeholder", text: $subBrandName)
+                    ScanTextFieldView(title: "subBrand.name.placeholder", text: $subBrandName)
                     ProgressButton("labels.create", action: { await createNewSubBrand() })
                         .disabled(!subBrandName.isValidLength(.normal(allowEmpty: false)))
                 }

@@ -1,7 +1,7 @@
 import Extensions
 import SwiftUI
 
-public struct ScanTextField: View {
+public struct ScanTextFieldView: View {
     let title: LocalizedStringKey
     @State private var scannedText: String = ""
 

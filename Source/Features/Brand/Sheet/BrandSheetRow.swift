@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct BrandSheetRow: View {
+struct BrandSheetRowView: View {
     let brand: Brand.JoinedSubBrands
     let onClick: (_ brand: Brand.JoinedSubBrands) -> Void
 
@@ -10,7 +10,7 @@ struct BrandSheetRow: View {
             onClick(brand)
         }, label: {
             HStack(alignment: .center) {
-                BrandLogo(brand: brand, size: 42)
+                BrandLogoView(brand: brand, size: 42)
                 Text("\(brand.name)")
                 Spacer()
             }

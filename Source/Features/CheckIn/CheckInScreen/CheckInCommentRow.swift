@@ -7,7 +7,7 @@ import Repositories
 import SwiftUI
 import Translation
 
-struct CheckInCommentRow: View {
+struct CheckInCommentRowView: View {
     private let logger = Logger(category: "CheckInScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

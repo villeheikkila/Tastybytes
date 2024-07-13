@@ -3217,6 +3217,9 @@
         }
       }
     },
+    "No barcodes have been added" : {
+
+    },
     "notification.checkInComment.label" : {
       "localizations" : {
         "en" : {

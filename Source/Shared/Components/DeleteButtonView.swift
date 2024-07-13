@@ -1,7 +1,7 @@
 import Components
 import SwiftUI
 
-struct DeleteButton: View {
+struct DeleteButtonView: View {
     let action: () async -> Void
 
     var body: some View {
@@ -10,5 +10,5 @@ struct DeleteButton: View {
 }
 
 #Preview {
-    DeleteButton(action: {})
+    DeleteButtonView(action: {})
 }

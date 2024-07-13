@@ -84,7 +84,7 @@ struct ProfileCheckInsListInnerView: View {
             filter.header
             CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn,
                                    onLoadMore: checkInLoader.onLoadMore)
-            CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+            CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)

@@ -102,12 +102,12 @@ struct ProductInnerScreen: View {
             onCreateCheckIn: onCreateCheckIn
         )
         .listRowSeparator(.hidden)
-        CheckInListSegmentPicker(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
+        CheckInListSegmentPickerView(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
         CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
             checkInLoader.onLoadMore()
         })
         .checkInCardLoadedFrom(.product)
-        CheckInListLoadingIndicator(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+        CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

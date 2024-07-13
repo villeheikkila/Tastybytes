@@ -1,8 +1,8 @@
 import SwiftUI
 
-public struct Spacing: View {
-    var height: Double?
-    var width: Double?
+public struct SpacingView: View {
+    let height: Double?
+    let width: Double?
 
     public init(height: Double? = nil, width: Double? = nil) {
         self.height = height

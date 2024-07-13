@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SearchGoogleLink: View {
+struct SearchGoogleLinkView: View {
     let searchTerm: String
 
     private let googleUrl = URL(string: "https://www.google.com/search")

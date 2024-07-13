@@ -52,7 +52,7 @@ struct CompanySearchSheet: View {
                 if status == .add {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("company.create.section.title")
-                        ScanTextField(title: "company.name.placeholder", text: $companyName)
+                        ScanTextFieldView(title: "company.name.placeholder", text: $companyName)
                         ProgressButton("company.create.label") {
                             await createNewCompany(onSuccess: { company in
                                 onSelect(company)

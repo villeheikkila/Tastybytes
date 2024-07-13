@@ -36,7 +36,7 @@ struct CheckInImageSheet: View {
             ForEach(images) { image in
                 VStack(alignment: .center) {
                     if let imageUrl = image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                        ZoomableRemoteImage(imageUrl: imageUrl, blurHash: image.blurHash)
+                        ZoomableRemoteImageView(imageUrl: imageUrl, blurHash: image.blurHash)
                     }
                 }
                 .tag(image)
@@ -44,7 +44,7 @@ struct CheckInImageSheet: View {
         }
         .tabViewStyle(.page)
         .safeAreaInset(edge: .bottom, content: {
-            CheckInImageCheckInSection(checkIn: checkIn)
+            CheckInImageCheckInSectionView(checkIn: checkIn)
         })
         .toolbar {
             toolbarContent
@@ -54,11 +54,11 @@ struct CheckInImageSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             if let imageUrl = currentImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                ImageShareLink(url: imageUrl, title: "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))")
+                ImageShareLinkView(url: imageUrl, title: "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))")
             }
             Menu {
                 if let imageUrl = currentImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
-                    SaveToPhotoGalleryButton(imageUrl: imageUrl)
+                    SaveToPhotoGalleryButtonView(imageUrl: imageUrl)
                 }
                 if profileEnvironmentModel.profile.id == checkIn.profile.id {
                     Button("labels.delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = currentImage })
@@ -107,7 +107,7 @@ struct CheckInImageSheet: View {
     }
 }
 
-struct CheckInImageCheckInSection: View {
+struct CheckInImageCheckInSectionView: View {
     let checkIn: CheckIn
 
     var body: some View {

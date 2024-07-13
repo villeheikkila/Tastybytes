@@ -110,7 +110,7 @@ struct BrandScreen: View {
         ForEach(productsByCategory) { category in
             Section(category.category.label) {
                 ForEach(category.products) { product in
-                    BrandScreenProductRow(product: product)
+                    BrandScreenProductRowView(product: product)
                 }
             }
             .headerProminence(.increased)
@@ -121,7 +121,7 @@ struct BrandScreen: View {
         ForEach(sortedSubBrands) { subBrand in
             Section {
                 ForEach(subBrand.products) { product in
-                    BrandScreenProductRow(
+                    BrandScreenProductRowView(
                         product: .init(
                             product: product,
                             subBrand: subBrand,
@@ -129,7 +129,7 @@ struct BrandScreen: View {
                         ))
                 }
             } header: {
-                SubBrandSectionHeader(brand: $brand, subBrand: subBrand)
+                SubBrandSectionHeaderView(brand: $brand, subBrand: subBrand)
             }
             .headerProminence(.increased)
             .id(subBrand.id)
@@ -140,7 +140,7 @@ struct BrandScreen: View {
         ToolbarItem(placement: .principal) {
             HStack(alignment: .center, spacing: 18) {
                 if !brand.logos.isEmpty {
-                    BrandLogo(brand: brand, size: 32)
+                    BrandLogoView(brand: brand, size: 32)
                 }
                 Text(brand.name)
                     .font(.headline)
@@ -272,7 +272,7 @@ private enum GroupProductsBy: String, CaseIterable {
     case subBrand, category
 }
 
-struct SubBrandSectionHeader: View {
+struct SubBrandSectionHeaderView: View {
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany

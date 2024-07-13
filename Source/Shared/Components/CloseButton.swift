@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct CloseButton: View {
+public struct CloseButtonView: View {
     @State private var isPressed = false
     let action: () -> Void
 
@@ -29,5 +29,5 @@ public struct CloseButton: View {
 }
 
 #Preview {
-    CloseButton(action: {})
+    CloseButtonView(action: {})
 }

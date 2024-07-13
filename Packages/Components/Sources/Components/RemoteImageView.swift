@@ -3,7 +3,7 @@ internal import NukeUI
 internal import Nuke
 import SwiftUI
 
-public struct RemoteImage<Content: View, LoadingContent: View>: View {
+public struct RemoteImageView<Content: View, LoadingContent: View>: View {
     let url: URL?
     let content: (_: Image) -> Content
     let progress: () -> LoadingContent
@@ -25,7 +25,7 @@ public struct RemoteImage<Content: View, LoadingContent: View>: View {
     }
 }
 
-public struct RemoteImageBlurHash<Content: View>: View {
+public struct RemoteImageBlurHashView<Content: View>: View {
     public typealias ImageBuilder = (Image) -> Content
     let url: URL?
     let blurHash: BlurHash?
@@ -44,7 +44,7 @@ public struct RemoteImageBlurHash<Content: View>: View {
             if let image = state.image {
                 content(image)
             } else if let blurHash {
-                BlurHashPlaceholder(blurHash: blurHash, height: height)
+                BlurHashPlaceholderView(blurHash: blurHash, height: height)
             } else {
                 ProgressView()
                     .frame(height: height)

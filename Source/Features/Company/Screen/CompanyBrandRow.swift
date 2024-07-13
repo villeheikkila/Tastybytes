@@ -6,7 +6,7 @@ struct CompanyBrandRow: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            BrandLogo(brand: brand, size: 42)
+            BrandLogoView(brand: brand, size: 42)
             Text(brand.name)
             Spacer()
             Text("(\(brand.productCount.formatted()))")

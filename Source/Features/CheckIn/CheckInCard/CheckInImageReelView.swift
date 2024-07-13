@@ -16,7 +16,7 @@ struct CheckInImageReelView: View {
                 ForEach(checkIn.images) { image in
                     if let imageUrl = image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
                         RouterLink(open: .sheet(.checkInImage(checkIn: checkIn, onDeleteImage: onDeleteImage))) {
-                            RemoteImageBlurHash(url: imageUrl, blurHash: image.blurHash, height: imageHeight) { image in
+                            RemoteImageBlurHashView(url: imageUrl, blurHash: image.blurHash, height: imageHeight) { image in
                                 image
                                     .resizable()
                                     .scaledToFill()

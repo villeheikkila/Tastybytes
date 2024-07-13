@@ -6,7 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct CheckInListCard: View {
+struct CheckInListCardView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var showDeleteConfirmation = false
 

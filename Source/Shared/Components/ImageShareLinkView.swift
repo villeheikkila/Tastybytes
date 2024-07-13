@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ImageShareLink: View {
+struct ImageShareLinkView: View {
     let url: URL
     let title: String
 

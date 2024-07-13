@@ -18,7 +18,7 @@ struct BrandEntityView: View {
 
     var body: some View {
         HStack {
-            BrandLogo(brand: brand, size: 40)
+            BrandLogoView(brand: brand, size: 40)
             VStack(alignment: .leading) {
                 if let brandOwner {
                     Text(brandOwner.name)

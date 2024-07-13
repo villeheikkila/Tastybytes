@@ -19,25 +19,25 @@ struct BarcodeManagementScreen: View {
 
     var body: some View {
         List(barcodes) { barcode in
-            BarcodeManagementRow(barcode: barcode)
+            BarcodeManagementRowView(barcode: barcode)
                 .swipeActions {
-                    DeleteButton(action: {
+                    DeleteButtonView(action: {
                         await deleteBarcode(barcode)
                     })
                 }
                 .contextMenu {
-                    DeleteButton(action: {
+                    DeleteButtonView(action: {
                         await deleteBarcode(barcode)
                     })
-                    CopyToClipboardButton(content: barcode.barcode)
-                    SearchGoogleLink(searchTerm: barcode.barcode)
+                    CopyToClipboardButtonView(content: barcode.barcode)
+                    SearchGoogleLinkView(searchTerm: barcode.barcode)
                 }
         }
         .listStyle(.plain)
         .overlay {
             if state == .populated {
                 if barcodes.isEmpty {
-                    BarcodeManagementContentUnavailable()
+                    ContentUnavailableView("No barcodes have been added", systemImage: "barcode")
                 }
             } else {
                 ScreenStateOverlayView(state: state, errorDescription: "") {

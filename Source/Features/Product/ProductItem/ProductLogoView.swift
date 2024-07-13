@@ -16,7 +16,7 @@ struct ProductLogoView: View {
     var body: some View {
         Group {
             if let logoUrl {
-                RemoteImage(url: logoUrl) { image in
+                RemoteImageView(url: logoUrl) { image in
                     image.resizable()
                 } progress: {
                     ProgressView()

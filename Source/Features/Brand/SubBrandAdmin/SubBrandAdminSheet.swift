@@ -64,7 +64,7 @@ struct SubBrandAdminSheet: View {
         .customListRowBackground()
         CreationInfoSection(createdBy: subBrand.createdBy, createdAt: subBrand.createdAt)
         Section("admin.section.details") {
-            LabeledTextField(title: "labels.name", text: $newSubBrandName)
+            LabeledTextFieldView(title: "labels.name", text: $newSubBrandName)
         }
         .customListRowBackground()
         if !subBrandsToMergeTo.isEmpty {

@@ -19,7 +19,7 @@ public struct AvatarView: View {
 
     public var body: some View {
         if let avatarUrl {
-            RemoteImage(url: avatarUrl, content: { image in
+            RemoteImageView(url: avatarUrl, content: { image in
                 image.resizable()
             }, progress: {
                 ProgressView()
