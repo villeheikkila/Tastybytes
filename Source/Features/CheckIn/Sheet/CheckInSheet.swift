@@ -201,7 +201,7 @@ struct CheckInSheet: View {
         }
     }
 
-    func primaryAction() async {
+    private func primaryAction() async {
         guard primaryActionTask != nil else { return }
         defer { primaryActionTask = nil }
         switch action {

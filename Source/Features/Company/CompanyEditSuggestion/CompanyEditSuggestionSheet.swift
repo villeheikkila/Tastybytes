@@ -44,7 +44,7 @@ struct CompanyEditSuggestionSheet: View {
         ToolbarDismissAction()
     }
 
-    func sendCompanyEditSuggestion() async {
+    private func sendCompanyEditSuggestion() async {
         do {
             try await repository.company.editSuggestion(updateRequest: Company.EditSuggestionRequest(id: company.id, name: newCompanyName))
             dismiss()

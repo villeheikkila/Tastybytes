@@ -104,12 +104,12 @@ struct CompanySearchSheet: View {
         ToolbarDismissAction()
     }
 
-    func createNew() {
+    private func createNew() {
         companyName = searchTerm
         status = .add
     }
 
-    func search(searchTerm: String) async {
+    private func search(searchTerm: String) async {
         guard searchTerm.count > 1 else { return }
         do {
             let searchResults = try await repository.company.search(searchTerm: searchTerm)
@@ -122,7 +122,7 @@ struct CompanySearchSheet: View {
         }
     }
 
-    func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) async {
+    private func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) async {
         do {
             let newCompany = try await repository.company.insert(newCompany: .init(name: companyName))
             router.open(.toast(.success("company.create.success.toast")))

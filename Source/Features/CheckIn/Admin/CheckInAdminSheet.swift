@@ -50,7 +50,7 @@ struct CheckInAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    func deleteCheckInAsModerator(_ checkIn: CheckIn) async {
+    private func deleteCheckInAsModerator(_ checkIn: CheckIn) async {
         do {
             try await repository.checkIn.deleteAsModerator(checkIn: checkIn)
             router.removeLast()

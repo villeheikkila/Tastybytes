@@ -56,7 +56,7 @@ struct ProductDuplicateScreen: View {
         ToolbarDismissAction()
     }
 
-    func reportDuplicate(_ to: Product.Joined) async {
+    private func reportDuplicate(_ to: Product.Joined) async {
         do {
             try await repository.product.markAsDuplicate(productId: product.id, duplicateOfProductId: to.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -68,7 +68,7 @@ struct ProductDuplicateScreen: View {
         }
     }
 
-    func mergeProducts(_ to: Product.Joined) async {
+    private func mergeProducts(_ to: Product.Joined) async {
         do {
             try await repository.product.mergeProducts(productId: product.id, toProductId: to.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -80,7 +80,7 @@ struct ProductDuplicateScreen: View {
         }
     }
 
-    func search(searchTerm: String) async {
+    private func search(searchTerm: String) async {
         guard searchTerm.count > 1 else { return }
         do {
             let searchResults = try await repository.product.search(searchTerm: searchTerm, filter: nil)

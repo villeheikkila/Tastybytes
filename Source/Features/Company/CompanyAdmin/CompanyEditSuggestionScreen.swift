@@ -102,7 +102,7 @@ struct CompanyEditSuggestionRow: View {
         .listRowBackground(Color.clear)
     }
 
-    func deleteEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
+    private func deleteEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
         do {
             try await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion)
             withAnimation {
@@ -115,7 +115,7 @@ struct CompanyEditSuggestionRow: View {
         }
     }
 
-    func resolveEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
+    private func resolveEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
         do {
             try await repository.company.resolveEditSuggestion(editSuggestion: editSuggestion)
             withAnimation {

@@ -127,7 +127,7 @@ struct CheckInLocationSearchSheet: View {
         }
     }
 
-    func storeLocation(_ location: Location) {
+   private func storeLocation(_ location: Location) {
         guard storeLocationTask == nil else { return }
         defer { storeLocationTask = nil }
         storeLocationTask = Task {
@@ -163,7 +163,7 @@ struct CheckInLocationSearchSheet: View {
         return response.mapItems.map { Location(mapItem: $0) }
     }
 
-    func loadInitialData() async {
+    private func loadInitialData() async {
         if initialLocation != nil {
             await search(for: nil, centerCoordinate: centerCoordinate)
         }

@@ -161,7 +161,7 @@ struct DiscoverScreen: View {
     }
 
     @ViewBuilder
-    var contentUnavailableView: some View {
+    private var contentUnavailableView: some View {
         switch searchResultKey {
         case .barcode:
             ContentUnavailableView {
@@ -206,7 +206,7 @@ struct DiscoverScreen: View {
         }
     }
 
-    func loadData(searchKey: SearchKey?, productFilter: Product.Filter?) async {
+    private func loadData(searchKey: SearchKey?, productFilter: Product.Filter?) async {
         guard let searchKey else {
             logger.info("Empty search key. Reset.")
             withAnimation {

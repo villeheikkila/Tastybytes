@@ -81,7 +81,7 @@ struct ProductAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    func loadData() async {
+   private func loadData() async {
         do {
             let product = try await repository.product.getDetailed(id: product.id)
             withAnimation {
@@ -95,7 +95,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    func verifyProduct(isVerified: Bool) async {
+    private func verifyProduct(isVerified: Bool) async {
         do {
             try await repository.product.verification(id: product.id, isVerified: isVerified)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -107,7 +107,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    func deleteProduct(_ product: Product.Joined) async {
+    private func deleteProduct(_ product: Product.Joined) async {
         do {
             try await repository.product.delete(id: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -120,7 +120,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    func deleteLogo(entity: ImageEntity) async {
+    private func deleteLogo(entity: ImageEntity) async {
         do {
             try await repository.imageEntity.delete(from: .productLogos, entity: entity)
             withAnimation {
@@ -133,7 +133,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    func uploadData(data: Data) async {
+    private func uploadData(data: Data) async {
         do {
             let imageEntity = try await repository.product.uploadLogo(productId: product.id, data: data)
             logos.append(imageEntity)

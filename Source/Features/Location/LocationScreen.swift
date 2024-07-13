@@ -86,7 +86,7 @@ struct LocationInnerScreen: View {
         }
     }
 
-    func getLocationData(isRefresh: Bool = false) async {
+    private func getLocationData(isRefresh: Bool = false) async {
         async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let summaryPromise = repository.location.getSummaryById(id: location.id)
 

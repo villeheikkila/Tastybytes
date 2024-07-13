@@ -52,7 +52,7 @@ struct CheckInCommentAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    func deleteCommentAsModerator(_ comment: CheckInComment) async {
+    private func deleteCommentAsModerator(_ comment: CheckInComment) async {
         do {
             try await repository.checkInComment.deleteAsModerator(comment: comment)
             onDelete(comment)

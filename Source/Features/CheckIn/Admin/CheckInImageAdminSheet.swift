@@ -89,7 +89,7 @@ struct CheckInImageAdminSheet: View {
         }
     }
 
-    func deleteImage(_ imageEntity: ImageEntity) async {
+    private func deleteImage(_ imageEntity: ImageEntity) async {
         do {
             try await repository.imageEntity.delete(from: .checkInImages, entity: imageEntity)
             await onDelete(imageEntity)

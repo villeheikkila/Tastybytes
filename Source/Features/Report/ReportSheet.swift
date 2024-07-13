@@ -46,7 +46,7 @@ struct ReportSheet: View {
         ToolbarDismissAction()
     }
 
-    func submitReport() async {
+    private func submitReport() async {
         do {
             try await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity))
             dismiss()

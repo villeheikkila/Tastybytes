@@ -28,7 +28,7 @@ struct CheckInLeaveComment: View {
         .background(.ultraThinMaterial)
     }
 
-    func sendComment() async {
+    private func sendComment() async {
         do {
             let newCheckInComment = try await repository.checkInComment.insert(newCheckInComment: .init(content: commentText, checkInId: checkIn.id))
             withAnimation {

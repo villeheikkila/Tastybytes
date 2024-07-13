@@ -107,7 +107,7 @@ struct CheckInImageManagementView: View {
         locationFromImage = Location(coordinate: coordinate, countryCode: countryCode, country: country)
     }
 
-    func deleteImage(_ entity: ImageEntity) async {
+    private func deleteImage(_ entity: ImageEntity) async {
         do {
             try await repository.imageEntity.delete(from: .checkInImages, entity: entity)
             withAnimation {

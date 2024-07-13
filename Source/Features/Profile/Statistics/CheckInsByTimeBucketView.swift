@@ -19,13 +19,13 @@ struct CheckInsByTimeBucketView: View {
 
     let profile: Profile
 
-    var checkInsInRange: [CheckInsPerDay] {
+    private var checkInsInRange: [CheckInsPerDay] {
         checkInsPerDay.filter { checkIn in
             dateRange.contains(checkIn.checkInDate)
         }
     }
 
-    var checkInsTimeBuckets: [CheckInsTimeBucket] {
+    private var checkInsTimeBuckets: [CheckInsTimeBucket] {
         CheckInsTimeBucket.getBuckets(checkInsPerDay: checkInsPerDay, timePeriod: timePeriod, dateRange: dateRange)
     }
 
@@ -43,7 +43,7 @@ struct CheckInsByTimeBucketView: View {
         }
     }
 
-    func loadStatisticsForTimePeriod() async {
+    private func loadStatisticsForTimePeriod() async {
         guard isLoading == false else { return }
         isLoading = true
         do {

@@ -178,7 +178,7 @@ struct ProductInnerScreen: View {
         }
     }
 
-    func onCreateCheckIn(checkIn: CheckIn) async {
+    private func onCreateCheckIn(checkIn: CheckIn) async {
         checkInLoader.onCreateCheckIn(checkIn)
         do {
             let summary = try await repository.product.getSummaryById(id: product.id)
@@ -190,7 +190,7 @@ struct ProductInnerScreen: View {
         }
     }
 
-    func getProductData(isRefresh: Bool = false) async {
+    private func getProductData(isRefresh: Bool = false) async {
         async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let productPromise = repository.product.getById(id: product.id)
         async let summaryPromise = repository.product.getSummaryById(id: product.id)
@@ -217,7 +217,7 @@ struct ProductInnerScreen: View {
         state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
-    func addBarcodeToProduct(_ barcode: Barcode) async {
+    private func addBarcodeToProduct(_ barcode: Barcode) async {
         do {
             try await repository.productBarcode.addToProduct(product: product, barcode: barcode)
             router.open(.toast(.success("bracode.add.success.toast")))
@@ -230,7 +230,7 @@ struct ProductInnerScreen: View {
         }
     }
 
-    func fetchImages(reset: Bool) async {
+    private func fetchImages(reset: Bool) async {
         if reset {
             withAnimation {
                 checkInImageTask?.cancel()
@@ -256,7 +256,7 @@ struct ProductInnerScreen: View {
         }
     }
 
-    func toggleWishlist() async {
+    private func toggleWishlist() async {
         if isOnWishlist {
             do {
                 try await repository.product.removeFromWishlist(productId: product.id)

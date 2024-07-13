@@ -114,7 +114,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    func loadData() async {
+    private func loadData() async {
         do {
             let brand = try await repository.brand.getDetailed(id: brand.id)
             self.brand = brand
@@ -124,7 +124,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    func verifyBrand(isVerified: Bool) async {
+    private func verifyBrand(isVerified: Bool) async {
         do {
             try await repository.brand.verification(id: brand.id, isVerified: isVerified)
             brand = brand.copyWith(isVerified: isVerified)
@@ -135,7 +135,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    func editBrand() async {
+    private func editBrand() async {
         do {
             let brand = try await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id))
             router.open(.toast(.success("brand.edit.success.toast")))
@@ -148,7 +148,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    func uploadLogo(data: Data) async {
+    private func uploadLogo(data: Data) async {
         do {
             let imageEntity = try await repository.brand.uploadLogo(brandId: brand.id, data: data)
             withAnimation {
@@ -163,7 +163,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    func deleteLogo(entity: ImageEntity) async {
+    private func deleteLogo(entity: ImageEntity) async {
         do {
             try await repository.imageEntity.delete(from: .brandLogos, entity: entity)
             withAnimation {
@@ -176,7 +176,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
+    private func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
         do {
             try await repository.brand.delete(id: brand.id)
             await onDelete(brand)

@@ -87,20 +87,20 @@ struct ActivityScreen: View {
         }
     }
 
-    func onCreateCheckIn(_ checkIn: CheckIn) {
+    private func onCreateCheckIn(_ checkIn: CheckIn) {
         withAnimation {
             checkIns.insert(checkIn, at: 0)
         }
     }
 
-    func onCheckInUpdate(_ checkIn: CheckIn) {
+    private func onCheckInUpdate(_ checkIn: CheckIn) {
         guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
         withAnimation {
             checkIns[index] = checkIn
         }
     }
 
-    func onLoadMore() {
+    private func onLoadMore() {
         guard loadingCheckInsOnAppearTask == nil else { return }
         loadingCheckInsOnAppearTask = Task {
             defer { loadingCheckInsOnAppearTask = nil }
@@ -109,7 +109,7 @@ struct ActivityScreen: View {
         }
     }
 
-    func fetchFeedItems(reset: Bool = false) async {
+    private func fetchFeedItems(reset: Bool = false) async {
         if reset {
             isRefreshing = true
         } else {

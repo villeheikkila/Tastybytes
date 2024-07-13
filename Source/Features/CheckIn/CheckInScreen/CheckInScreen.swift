@@ -212,7 +212,7 @@ struct CheckInScreen: View {
         }
     }
 
-    func loadCheckInData(withHaptics: Bool = false) async {
+    private func loadCheckInData(withHaptics: Bool = false) async {
         async let checkInPromise = repository.checkIn.getById(id: checkIn.id)
         async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: checkIn.id)
         async let markCheckInAsReadPromise: Void = notificationEnvironmentModel.markCheckInAsRead(
@@ -235,7 +235,7 @@ struct CheckInScreen: View {
         state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
-    func deleteCheckIn(_ checkIn: CheckIn) async {
+    private func deleteCheckIn(_ checkIn: CheckIn) async {
         do {
             try await repository.checkIn.delete(id: checkIn.id)
             feedbackEnvironmentModel.trigger(.notification(.success))

@@ -56,7 +56,7 @@ struct ServingStyleManagementSheet: View {
         }
     }
 
-    func createServingStyle() async {
+    private func createServingStyle() async {
         do {
             let servingStyle = try await repository.servingStyle.insert(
                 servingStyle: ServingStyle.NewRequest(name: newServingStyleName))
@@ -71,7 +71,7 @@ struct ServingStyleManagementSheet: View {
         }
     }
 
-    func deleteServingStyle(_ servingStyle: ServingStyle) async {
+    private func deleteServingStyle(_ servingStyle: ServingStyle) async {
         do {
             try await repository.servingStyle.delete(id: servingStyle.id)
             withAnimation {
@@ -85,7 +85,7 @@ struct ServingStyleManagementSheet: View {
         }
     }
 
-    func editServingStyle(_ servingStyle: ServingStyle, _ updatedServingStyle: ServingStyle) async {
+   private func editServingStyle(_ servingStyle: ServingStyle, _ updatedServingStyle: ServingStyle) async {
         do {
             let servingStyle = try await repository.servingStyle
                 .update(update: ServingStyle.UpdateRequest(id: updatedServingStyle.id, name: updatedServingStyle.name))

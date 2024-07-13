@@ -39,7 +39,7 @@ struct CheckInListContentView: View {
         }
     }
 
-    func deleteCheckIn(_ checkIn: CheckIn) async {
+    private func deleteCheckIn(_ checkIn: CheckIn) async {
         do {
             try await repository.checkIn.delete(id: checkIn.id)
             withAnimation {

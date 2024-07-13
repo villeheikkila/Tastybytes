@@ -100,7 +100,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func loadData() async {
+    private func loadData() async {
         do {
             let company = try await repository.company.getManagementDataById(id: company.id)
             withAnimation {
@@ -114,7 +114,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func verifyCompany(isVerified: Bool) async {
+    private func verifyCompany(isVerified: Bool) async {
         do {
             try await repository.company.verification(id: company.id, isVerified: isVerified)
             company = company.copyWith(isVerified: isVerified)
@@ -125,7 +125,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func editCompany() async {
+   private func editCompany() async {
         do {
             let company = try await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
             withAnimation {
@@ -140,7 +140,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func deleteCompany(_ company: Company.Management) async {
+    private func deleteCompany(_ company: Company.Management) async {
         do { try await repository.company.delete(id: company.id)
             onDelete()
             dismiss()
@@ -151,7 +151,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func uploadLogo(_ data: Data) async {
+    private func uploadLogo(_ data: Data) async {
         do {
             let imageEntity = try await repository.company.uploadLogo(companyId: company.id, data: data)
             company = company.copyWith(logos: company.logos + [imageEntity])
@@ -163,7 +163,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    func deleteLogo(_ entity: ImageEntity) async {
+    private func deleteLogo(_ entity: ImageEntity) async {
         do {
             try await repository.imageEntity.delete(from: .companyLogos, entity: entity)
             withAnimation {

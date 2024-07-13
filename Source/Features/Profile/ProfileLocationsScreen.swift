@@ -51,7 +51,7 @@ struct ProfileLocationsScreen: View {
         }
     }
 
-    func loadCheckInlocations() async {
+    private func loadCheckInlocations() async {
         do {
             let checkInLocations = try await repository.location.getCheckInLocations(userId: profile.id)
             withAnimation {

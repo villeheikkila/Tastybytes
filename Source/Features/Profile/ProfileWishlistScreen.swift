@@ -56,7 +56,7 @@ struct ProfileWishlistScreen: View {
         }
     }
 
-    func removeFromWishlist(product: Product.Joined) async {
+    private func removeFromWishlist(product: Product.Joined) async {
         do {
             try await repository.product.removeFromWishlist(productId: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -69,7 +69,7 @@ struct ProfileWishlistScreen: View {
         }
     }
 
-    func loadProducts() async {
+    private func loadProducts() async {
         do {
             let wishlist = try await repository.product.getWishlistItems(profileId: profile.id)
             withAnimation {

@@ -68,7 +68,7 @@ struct BrandSheet: View {
         ToolbarDismissAction()
     }
 
-    func loadBrands(_ brandOwner: Company) async {
+    private func loadBrands(_ brandOwner: Company) async {
         do {
             let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id)
             self.brandsWithSubBrands = brandsWithSubBrands
@@ -79,7 +79,7 @@ struct BrandSheet: View {
         }
     }
 
-    func createNewBrand() async {
+    private func createNewBrand() async {
         do {
             let brandWithSubBrands = try await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id))
             router.open(.toast(.success("brand.created.toast")))

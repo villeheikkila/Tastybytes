@@ -49,7 +49,7 @@ struct ProfileInnerView: View {
         isShownInFull = isCurrentUser || !profile.isPrivate
     }
 
-    var showInFull: Bool {
+    private var showInFull: Bool {
         isShownInFull || friendEnvironmentModel.isFriend(profile)
     }
 
@@ -123,7 +123,7 @@ struct ProfileInnerView: View {
         }
     }
 
-    func getProfileData(isRefresh: Bool = false) async {
+    private func getProfileData(isRefresh: Bool = false) async {
         async let productPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
         async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile), from: 0, to: pageSize)
@@ -152,7 +152,7 @@ struct ProfileInnerView: View {
         await productPromise
     }
 
-    func fetchImages() async {
+    private func fetchImages() async {
         let (from, to) = getPagination(page: page, size: pageSize)
         isLoading = true
 
@@ -169,7 +169,7 @@ struct ProfileInnerView: View {
         }
     }
 
-    func uploadAvatar(userId: UUID, data: Data) async {
+    private func uploadAvatar(userId: UUID, data: Data) async {
         do {
             let imageEntity = try await repository.profile.uploadAvatar(userId: userId, data: data)
             profile = profile.copyWith(avatars: [imageEntity])

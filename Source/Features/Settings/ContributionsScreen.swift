@@ -53,7 +53,7 @@ struct ContributionsScreen: View {
         }
     }
 
-    func loadContributions() async {
+    private func loadContributions() async {
         do {
             let contributions = try await repository.profile.getContributions(id: profile.id)
             withAnimation {

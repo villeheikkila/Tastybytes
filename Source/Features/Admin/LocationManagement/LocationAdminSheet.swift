@@ -105,7 +105,7 @@ struct LocationAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    func loadData() async {
+    private func loadData() async {
         do {
             let location = try await repository.location.getDetailed(id: location.id)
             withAnimation {
@@ -120,7 +120,7 @@ struct LocationAdminSheet: View {
         }
     }
 
-    func updateLocation(_ location: Location) async {
+    private func updateLocation(_ location: Location) async {
         do { let location = try await repository.location.update(request: .init(id: location.id, mapKitIdentifier: location.mapKitIdentifier))
             withAnimation {
                 self.location = location
@@ -132,7 +132,7 @@ struct LocationAdminSheet: View {
         }
     }
 
-    func deleteLocation(_ location: Location) async {
+    private func deleteLocation(_ location: Location) async {
         do {
             try await repository.location.delete(id: location.id)
             await onDelete(location)

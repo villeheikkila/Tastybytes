@@ -37,7 +37,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
         }
     }
 
-    func loadStatistics() async {
+    private func loadStatistics() async {
         do { let categoryStatistics = try await repository.profile.getCategoryStatistics(userId: profile.id)
             withAnimation {
                 self.categoryStatistics = categoryStatistics
@@ -95,7 +95,7 @@ struct SubcategoryStatisticsView: View {
         }
     }
 
-    func loadSubcategoryStatistics() async {
+   private func loadSubcategoryStatistics() async {
         guard state != .loading, subcategoryStatistics.isEmpty else { return }
         do {
             let subcategoryStatistics = try await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id)

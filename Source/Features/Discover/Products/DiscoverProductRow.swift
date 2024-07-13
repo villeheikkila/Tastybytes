@@ -51,7 +51,7 @@ struct DiscoverProductRow: View {
             }
     }
 
-    func addBarcodeToProduct(_ addBarcodeTo: Product.Joined) async {
+    private func addBarcodeToProduct(_ addBarcodeTo: Product.Joined) async {
         guard let barcode else { return }
         do {
             try await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode)

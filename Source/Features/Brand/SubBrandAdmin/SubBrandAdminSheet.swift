@@ -109,7 +109,7 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    func loadData() async {
+    private func loadData() async {
         do {
             let subBrand = try await repository.subBrand.getDetailed(id: subBrand.id)
             withAnimation {
@@ -121,7 +121,7 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    func verifySubBrand(isVerified: Bool) async {
+    private func verifySubBrand(isVerified: Bool) async {
         do {
             try await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified)
             let updatedSubBrand = subBrand.copyWith(isVerified: isVerified)
@@ -136,7 +136,7 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
+    private func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
         do {
             try await repository.subBrand.update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
             withAnimation {
@@ -151,7 +151,7 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    func editSubBrand() async {
+    private func editSubBrand() async {
         do {
             let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName)))
             router.open(.toast(.success("subBrand.updated.toast")))
@@ -166,7 +166,7 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    func deleteSubBrand(_ subBrand: SubBrand.JoinedProduct) async {
+    private func deleteSubBrand(_ subBrand: SubBrand.JoinedProduct) async {
         do {
             try await repository.subBrand.delete(id: subBrand.id)
             feedbackEnvironmentModel.trigger(.notification(.success))

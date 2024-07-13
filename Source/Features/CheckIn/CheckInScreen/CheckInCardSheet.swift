@@ -39,7 +39,7 @@ struct CheckInCommentEditSheet: View {
         }
     }
 
-    func updateComment() async {
+    private func updateComment() async {
         do {
             let updatedComment = try await repository.checkInComment.update(updateCheckInComment: .init(id: checkInComment.id, content: editCommentText))
             guard let index = checkInComments.firstIndex(where: { $0.id == updatedComment.id }) else {

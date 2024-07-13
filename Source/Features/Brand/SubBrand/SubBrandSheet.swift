@@ -63,7 +63,7 @@ struct SubBrandSheet: View {
         ToolbarDismissAction()
     }
 
-    func createNewSubBrand() async {
+    private func createNewSubBrand() async {
         do {
             let newSubBrand = try await repository.subBrand.insert(newSubBrand: .init(name: subBrandName, brandId: brandWithSubBrands.id))
             router.open(.toast(.success("subBrand.create.success.toast")))

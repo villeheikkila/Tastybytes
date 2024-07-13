@@ -60,7 +60,7 @@ struct ProfileHeaderAvatarSection: View {
         }
     }
 
-    func deleteAvatar(entity: ImageEntity) async {
+    private func deleteAvatar(entity: ImageEntity) async {
         do {
             try await repository.imageEntity.delete(from: .avatars, entity: entity)
             withAnimation {

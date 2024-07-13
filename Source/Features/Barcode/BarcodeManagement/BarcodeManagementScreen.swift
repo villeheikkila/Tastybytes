@@ -66,7 +66,7 @@ struct BarcodeManagementScreen: View {
         }
     }
 
-    func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {
+    private func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {
         do {
             try await repository.productBarcode.delete(id: barcode.id)
             withAnimation {
@@ -80,7 +80,7 @@ struct BarcodeManagementScreen: View {
         }
     }
 
-    func getBarcodes() async {
+    private func getBarcodes() async {
         do {
             let barcodes = try await repository.productBarcode.getByProductId(id: product.id)
             withAnimation {

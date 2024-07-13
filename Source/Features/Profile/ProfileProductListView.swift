@@ -103,7 +103,7 @@ struct ProfileProductListView: View {
         }
     }
 
-    func filterProduct(_ product: Product.Joined) -> Bool {
+   private func filterProduct(_ product: Product.Joined) -> Bool {
         let ratingPass = if let ratingFilter = productFilter?.rating {
             if let averageRating = product.averageRating {
                 round(averageRating * 2) / 2 == ratingFilter
@@ -134,7 +134,7 @@ struct ProfileProductListView: View {
         return onlyUnratedPass && ratingPass && namePass && categoryPass && subcategoryPass
     }
 
-    func loadProducts() async {
+    private func loadProducts() async {
         do {
             let products = try await repository.product.getByProfile(id: profile.id)
             withAnimation {

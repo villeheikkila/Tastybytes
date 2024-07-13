@@ -62,7 +62,7 @@ struct BrandScreenProductRowView: View {
         }
     }
 
-    func deleteProduct(_ product: Product.Joined) async {
+    private func deleteProduct(_ product: Product.Joined) async {
         do {
             try await repository.product.delete(id: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))

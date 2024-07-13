@@ -60,7 +60,7 @@ struct ReactionsView: View {
         }
     }
 
-    func toggleReaction() async {
+   private func toggleReaction() async {
         isLoading = true
         if let reaction = checkInReactions.first(where: { $0.profile.id == profileEnvironmentModel.id }) {
             do {

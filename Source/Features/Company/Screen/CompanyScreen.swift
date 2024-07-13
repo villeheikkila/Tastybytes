@@ -124,7 +124,7 @@ struct CompanyScreen: View {
         }
     }
 
-    func getCompanyData(withHaptics: Bool = false) async {
+    private func getCompanyData(withHaptics: Bool = false) async {
         async let companyPromise = repository.company.getJoinedById(id: company.id)
         async let summaryPromise = repository.company.getSummaryById(id: company.id)
         var errors = [Error]()

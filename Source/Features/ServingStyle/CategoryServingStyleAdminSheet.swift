@@ -48,7 +48,7 @@ struct CategoryServingStyleAdminSheet: View {
         }
     }
 
-    func addServingStyleToCategory(_ servingStyle: ServingStyle) async {
+   private func addServingStyleToCategory(_ servingStyle: ServingStyle) async {
         do {
             try await repository.category.addServingStyle(categoryId: category.id, servingStyleId: servingStyle.id)
             withAnimation {
@@ -61,7 +61,7 @@ struct CategoryServingStyleAdminSheet: View {
         }
     }
 
-    func deleteServingStyle(_ servingStyle: ServingStyle) async {
+   private func deleteServingStyle(_ servingStyle: ServingStyle) async {
         do {
             try await repository.category.deleteServingStyle(categoryId: category.id, servingStyleId: servingStyle.id)
             withAnimation {

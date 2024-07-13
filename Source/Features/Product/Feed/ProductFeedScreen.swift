@@ -81,7 +81,7 @@ struct ProductFeedScreen: View {
         }
     }
 
-    func loadFeedItems(refresh: Bool = false) async {
+    private func loadFeedItems(refresh: Bool = false) async {
         guard isLoading == false else { return }
         if refresh {
             loadingAdditionalItemsTask?.cancel()

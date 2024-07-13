@@ -52,7 +52,7 @@ struct MergeLocationSheet: View {
         ToolbarDismissAction()
     }
 
-    func mergeLocation(_ to: Location) async {
+    private func mergeLocation(_ to: Location) async {
         do {
             try await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -67,7 +67,7 @@ struct MergeLocationSheet: View {
         }
     }
 
-    func searchLocations(name: String) async {
+    private func searchLocations(name: String) async {
         guard name.count > 1 else { return }
         do {
             let searchResults = try await repository.location.search(searchTerm: name)

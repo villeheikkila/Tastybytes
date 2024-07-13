@@ -199,7 +199,7 @@ struct BrandScreen: View {
         }
     }
 
-    func getBrandData(withHaptics: Bool = false, proxy: ScrollViewProxy? = nil) async {
+    private func getBrandData(withHaptics: Bool = false, proxy: ScrollViewProxy? = nil) async {
         let brandId = brand.id
         async let summaryPromise = repository.brand.getSummaryById(id: brandId)
         async let brandPromise = repository.brand.getJoinedById(id: brandId)
@@ -232,7 +232,7 @@ struct BrandScreen: View {
         }
     }
 
-    func toggleLike() async {
+    private func toggleLike() async {
         if isLikedByCurrentUser {
             do {
                 try await repository.brand.unlikeBrand(brandId: brand.id)

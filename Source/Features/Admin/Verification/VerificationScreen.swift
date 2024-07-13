@@ -129,7 +129,7 @@ struct VerificationScreen: View {
         }
     }
 
-    func verifyBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
+    private func verifyBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
         do {
             try await repository.brand.verification(id: brand.id, isVerified: true)
             withAnimation {
@@ -142,7 +142,7 @@ struct VerificationScreen: View {
         }
     }
 
-    func verifySubBrand(_ subBrand: SubBrand.JoinedBrand) async {
+    private func verifySubBrand(_ subBrand: SubBrand.JoinedBrand) async {
         do {
             try await repository.subBrand.verification(id: subBrand.id, isVerified: true)
             withAnimation {
@@ -155,7 +155,7 @@ struct VerificationScreen: View {
         }
     }
 
-    func verifyCompany(_ company: Company) async {
+    private func verifyCompany(_ company: Company) async {
         do {
             try await repository.company.verification(id: company.id, isVerified: true)
             withAnimation {
@@ -168,7 +168,7 @@ struct VerificationScreen: View {
         }
     }
 
-    func verifyProduct(_ product: Product.Joined) async {
+    private func verifyProduct(_ product: Product.Joined) async {
         do {
             try await repository.product.verification(id: product.id, isVerified: true)
             withAnimation {
@@ -181,7 +181,7 @@ struct VerificationScreen: View {
         }
     }
 
-    func deleteProduct(_ product: Product.Joined) async {
+    private func deleteProduct(_ product: Product.Joined) async {
         do {
             try await repository.product.delete(id: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -195,7 +195,7 @@ struct VerificationScreen: View {
         }
     }
 
-    func loadData(refresh: Bool = false) async {
+    private func loadData(refresh: Bool = false) async {
         switch verificationType {
         case .products:
             if refresh || products.isEmpty {

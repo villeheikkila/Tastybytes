@@ -99,7 +99,7 @@ struct UserSheet: View {
         ToolbarDismissAction()
     }
 
-    func searchUsers(searchTerm: String) async {
+    private func searchUsers(searchTerm: String) async {
         state = .loading
         do {
             let searchResults = try await repository.profile.search(searchTerm: searchTerm, currentUserId: profileEnvironmentModel.id)

@@ -219,7 +219,7 @@ struct ProductMutationView: View {
         .customListRowBackground()
     }
 
-    func primaryAction() async {
+    private func primaryAction() async {
         guard primaryActionTask != nil else { return }
         defer { primaryActionTask = nil }
         switch mode {
@@ -308,7 +308,7 @@ struct ProductMutationView: View {
         }
     }
 
-    func initialize() async {
+   private func initialize() async {
         switch mode {
         case let .edit(initialProduct, _), let .editSuggestion(initialProduct):
             do {

@@ -42,7 +42,7 @@ struct CheckInCommentRowView: View {
             }
     }
 
-    func deleteComment(_ comment: CheckInComment) async {
+    private func deleteComment(_ comment: CheckInComment) async {
         do {
             try await repository.checkInComment.deleteById(id: comment.id)
             withAnimation {

@@ -83,7 +83,7 @@ struct FriendsScreen: View {
         }
     }
 
-    func loadFriends() async {
+    private func loadFriends() async {
         do { let friends = try await repository.friend.getByUserId(userId: profile.id, status: .accepted)
             withAnimation {
                 self.friends = friends

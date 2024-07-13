@@ -38,7 +38,7 @@ struct ReportScreen: View {
         }
     }
 
-    func loadInitialData() async {
+    private func loadInitialData() async {
         do {
             let reports = try await repository.report.getAll(filter)
             withAnimation {
@@ -52,7 +52,7 @@ struct ReportScreen: View {
         }
     }
 
-    public func deleteReport(_ report: Report) async {
+    private func deleteReport(_ report: Report) async {
         do {
             try await repository.report.delete(id: report.id)
             withAnimation {
@@ -65,7 +65,7 @@ struct ReportScreen: View {
         }
     }
 
-    public func resolveReport(_ report: Report) async {
+    private func resolveReport(_ report: Report) async {
         do {
             try await repository.report.resolve(id: report.id)
             withAnimation {

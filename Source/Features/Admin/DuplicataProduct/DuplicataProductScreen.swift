@@ -41,7 +41,7 @@ struct DuplicateProductScreen: View {
         }
     }
 
-    func loadDuplicateProducts(withHaptics: Bool = false) async {
+    private func loadDuplicateProducts(withHaptics: Bool = false) async {
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
@@ -61,7 +61,7 @@ struct DuplicateProductScreen: View {
         }
     }
 
-    func deleteProductSuggestion(_ duplicateProductSuggestion: ProductDuplicateSuggestion) async {
+    private func deleteProductSuggestion(_ duplicateProductSuggestion: ProductDuplicateSuggestion) async {
         do { try await repository.product.deleteProductDuplicateSuggestion(duplicateProductSuggestion)
             withAnimation {
                 duplicateProductSuggestions = duplicateProductSuggestions.removing(duplicateProductSuggestion)

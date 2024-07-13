@@ -111,7 +111,7 @@ struct AccountSettingsScreen: View {
         }
     }
 
-    func changeEmail(email: String) async {
+    private func changeEmail(email: String) async {
         do {
             try await repository.auth.sendEmailVerification(email: email)
             router.open(.toast(.success("account.feedback.sent.toast")))
@@ -122,7 +122,7 @@ struct AccountSettingsScreen: View {
         }
     }
 
-    func exportData() async {
+    private func exportData() async {
         do {
             let csvText = try await repository.profile.currentUserExport()
             csvExport = CSVFile(content: csvText)
