@@ -75,6 +75,8 @@
 		5C82E8AE2B2F97E400F2B369 /* CreateCheckInButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8AD2B2F97E400F2B369 /* CreateCheckInButtonView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C82E8B12B2F996400F2B369 /* ProductScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C87DA432C42C87F00711393 /* VerifiedBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C87DA422C42C87F00711393 /* VerifiedBadgeView.swift */; };
+		5C87DA452C43F5E900711393 /* ProfileInfoSettingSectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C87DA442C43F5E900711393 /* ProfileInfoSettingSectionsView.swift */; };
+		5C87DA472C43F60900711393 /* ProfileAvatarPickerSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C87DA462C43F60900711393 /* ProfileAvatarPickerSectionView.swift */; };
 		5C885F002B2873A900F17C78 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885EFF2B2873A900F17C78 /* Models */; };
 		5C885F032B2873B400F17C78 /* Extensions in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F022B2873B400F17C78 /* Extensions */; };
 		5C885F062B2873C300F17C78 /* Repositories in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F052B2873C300F17C78 /* Repositories */; };
@@ -392,6 +394,8 @@
 		5C82E8AD2B2F97E400F2B369 /* CreateCheckInButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckInButtonView.swift; sourceTree = "<group>"; };
 		5C82E8B02B2F996400F2B369 /* ProductScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreenHeader.swift; sourceTree = "<group>"; };
 		5C87DA422C42C87F00711393 /* VerifiedBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedBadgeView.swift; sourceTree = "<group>"; };
+		5C87DA442C43F5E900711393 /* ProfileInfoSettingSectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoSettingSectionsView.swift; sourceTree = "<group>"; };
+		5C87DA462C43F60900711393 /* ProfileAvatarPickerSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAvatarPickerSectionView.swift; sourceTree = "<group>"; };
 		5C885F122B28740800F17C78 /* EnvironmentModels */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EnvironmentModels; sourceTree = "<group>"; };
 		5C885F132B28740800F17C78 /* Repositories */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Repositories; sourceTree = "<group>"; };
 		5C885F142B28740800F17C78 /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Models; sourceTree = "<group>"; };
@@ -1218,6 +1222,8 @@
 		5C9057A12B2894BE00EC157B /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				5C87DA462C43F60900711393 /* ProfileAvatarPickerSectionView.swift */,
+				5C87DA442C43F5E900711393 /* ProfileInfoSettingSectionsView.swift */,
 				5CD2EE1F2C36D93F009AA949 /* Admin */,
 				5CEC64062B854B20008050B4 /* Statistics */,
 				5C90574D2B2894BE00EC157B /* NameTag */,
@@ -1898,6 +1904,7 @@
 				5C90582C2B2894BE00EC157B /* Screen.swift in Sources */,
 				5C9058142B2894BE00EC157B /* SettingsScreen.swift in Sources */,
 				5C9058262B2894BE00EC157B /* CheckInCommentNotificationView.swift in Sources */,
+				5C87DA452C43F5E900711393 /* ProfileInfoSettingSectionsView.swift in Sources */,
 				5C9058452B2894BE00EC157B /* AppNameView.swift in Sources */,
 				5CD2EE272C37CE07009AA949 /* SubBrandEntityView.swift in Sources */,
 				5CD3C0E12B814BFB0049E563 /* ToolbarDoneActionView.swift in Sources */,
@@ -2084,6 +2091,7 @@
 				5CEEA3182C3BCBC70009B3F5 /* ProductListRowView.swift in Sources */,
 				5C9058402B2894BE00EC157B /* CheckInScreen.swift in Sources */,
 				5C82E8B12B2F996400F2B369 /* ProductScreenHeader.swift in Sources */,
+				5C87DA472C43F60900711393 /* ProfileAvatarPickerSectionView.swift in Sources */,
 				5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */,
 				5CD3C0DF2B814B9A0049E563 /* SummaryView.swift in Sources */,
 				5C90584A2B2894BE00EC157B /* SignInWithAppleView.swift in Sources */,
