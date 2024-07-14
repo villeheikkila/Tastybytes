@@ -12,12 +12,13 @@ struct CreateCheckInButtonView: View {
     var body: some View {
         RouterLink(
             "checkIn.create.label.prominent",
-            systemImage: "checkmark.circle",
             open: .sheet(.checkIn(.create(product: product, onCreation: onCreateCheckIn)))
         )
         .buttonStyle(.borderedProminent)
-        .buttonBorderShape(.capsule)
+        .buttonBorderShape(.roundedRectangle)
+        .controlSize(.large)
         .foregroundColor(.black)
-        .controlSize(.regular)
+        .font(.title3)
+        .fontWeight(.medium)
     }
 }

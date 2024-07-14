@@ -15,7 +15,7 @@ public struct SubcategoryLabelView: View {
             .padding(.vertical, 6)
             .foregroundColor(.white)
             .background(Color(seed: subcategory.name))
-            .clipShape(.capsule)
+            .clipShape(.rect(cornerRadius: 4))
     }
 }
 

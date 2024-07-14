@@ -27,7 +27,7 @@ public struct CategoryNameView: View {
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
                 .overlay(
-                    Capsule()
+                    RoundedRectangle(cornerRadius: 4)
                         .stroke(lineWidth: 1)
                 )
         })
