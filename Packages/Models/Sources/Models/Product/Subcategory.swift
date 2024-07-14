@@ -1,4 +1,5 @@
 import Extensions
+import Foundation
 
 public protocol SubcategoryProtocol {
     var id: Int { get }
@@ -11,17 +12,23 @@ public struct Subcategory: Identifiable, Codable, Hashable, Sendable, Subcategor
         self.id = id
         self.name = name
         self.isVerified = isVerified
+        createdAt = nil
+        createdBy = nil
     }
 
     public init(subcategory: Subcategory.JoinedCategory) {
         id = subcategory.id
         name = subcategory.name
         isVerified = subcategory.isVerified
+        createdAt = nil
+        createdBy = nil
     }
 
     public let id: Int
     public let name: String
     public let isVerified: Bool
+    public let createdAt: Date?
+    public let createdBy: Profile?
 
     public static func < (lhs: Subcategory, rhs: Subcategory) -> Bool {
         lhs.name < rhs.name
@@ -31,6 +38,8 @@ public struct Subcategory: Identifiable, Codable, Hashable, Sendable, Subcategor
         case id
         case name
         case isVerified = "is_verified"
+        case createdAt = "created_at"
+        case createdBy = "profiles"
     }
 
     public func copyWith(name: String? = nil, isVerified: Bool? = nil) -> Self {
@@ -48,12 +57,16 @@ public extension Subcategory {
         public let name: String
         public let isVerified: Bool
         public let category: Category
+        public let createdAt: Date?
+        public let createdBy: Profile?
 
         public init(id: Int, name: String, isVerified: Bool, category: Category) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
             self.category = category
+            createdAt = nil
+            createdBy = nil
         }
 
         public init(category: Category, subcategory: Subcategory) {
@@ -61,6 +74,8 @@ public extension Subcategory {
             name = subcategory.name
             isVerified = subcategory.isVerified
             self.category = category
+            createdAt = subcategory.createdAt
+            createdBy = subcategory.createdBy
         }
 
         public func getSubcategory() -> Subcategory {
@@ -72,6 +87,8 @@ public extension Subcategory {
             case name
             case isVerified = "is_verified"
             case category = "categories"
+            case createdAt = "created_at"
+            case createdBy = "profiles"
         }
 
         public func copyWith(

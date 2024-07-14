@@ -26,6 +26,8 @@ struct SubcategoryAdminSheet: View {
             }
             .customListRowBackground()
 
+            CreationInfoSection(createdBy: subcategory.createdBy, createdAt: subcategory.createdAt)
+
             Section("admin.section.details") {
                 LabeledTextFieldView(title: "subcategory.admin.name", text: $subcategoryName)
                 LabeledContent("subcategory.admin.category") {

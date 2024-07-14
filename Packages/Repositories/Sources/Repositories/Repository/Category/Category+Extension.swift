@@ -11,7 +11,7 @@ extension Models.Category: Queryable {
         case let .joinedSubcaategoriesServingStyles(withTableName):
             return buildQuery(
                 .categories,
-                [saved, Subcategory.getQuery(.saved(true)), ServingStyle.getQuery(.saved(true))],
+                [saved, "created_at", Subcategory.getQuery(.detailed(true)), ServingStyle.getQuery(.saved(true)), Profile.getQuery(.minimal(true))],
                 withTableName
             )
         }

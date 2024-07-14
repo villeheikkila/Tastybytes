@@ -169,7 +169,9 @@ public extension Product {
                     name: category.name,
                     icon: category.icon,
                     subcategories: [],
-                    servingStyles: []
+                    servingStyles: [],
+                    createdAt: nil,
+                    createdBy: nil
                 )
             } else {
                 self.category = nil

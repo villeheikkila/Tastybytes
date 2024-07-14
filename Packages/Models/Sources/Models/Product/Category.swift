@@ -1,3 +1,5 @@
+import Foundation
+
 public protocol CategoryProtocol: Sendable {
     var id: Int { get }
     var name: String { get }
@@ -39,6 +41,8 @@ public extension Category {
         public let icon: String?
         public let subcategories: [Subcategory]
         public let servingStyles: [ServingStyle]
+        public let createdAt: Date?
+        public let createdBy: Profile?
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -46,6 +50,8 @@ public extension Category {
             case icon
             case subcategories
             case servingStyles = "serving_styles"
+            case createdAt = "created_at"
+            case createdBy = "profiles"
         }
 
         public func copyWith(
@@ -60,7 +66,9 @@ public extension Category {
                 name: name ?? self.name,
                 icon: icon ?? self.icon,
                 subcategories: subcategories ?? self.subcategories,
-                servingStyles: servingStyles ?? self.servingStyles
+                servingStyles: servingStyles ?? self.servingStyles,
+                createdAt: createdAt,
+                createdBy: createdBy
             )
         }
 

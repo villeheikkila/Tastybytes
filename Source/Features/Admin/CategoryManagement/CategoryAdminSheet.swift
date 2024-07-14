@@ -30,6 +30,8 @@ struct CategoryAdminSheet: View {
         }
         .customListRowBackground()
 
+        CreationInfoSection(createdBy: category.createdBy, createdAt: category.createdAt)
+
         if !category.subcategories.isEmpty {
             Section("category.admin.section.subcategory") {
                 ForEach(category.subcategories) { subcategory in
