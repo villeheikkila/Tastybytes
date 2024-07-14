@@ -79,7 +79,10 @@ struct ProfileInnerView: View {
         }
         .task(id: selectedItem) {
             guard let data = await selectedItem?.getJPEG() else { return }
-            await uploadAvatar(userId: profileEnvironmentModel.id, data: data)
+            await profileEnvironmentModel.uploadAvatar(data: data)
+            withAnimation {
+                profile = profileEnvironmentModel.profile
+            }
         }
     }
 
@@ -166,16 +169,6 @@ struct ProfileInnerView: View {
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    private func uploadAvatar(userId: UUID, data: Data) async {
-        do {
-            let imageEntity = try await repository.profile.uploadAvatar(userId: userId, data: data)
-            profile = profile.copyWith(avatars: [imageEntity])
-        } catch {
-            guard !error.isCancelled else { return }
-            logger.error("Uploading of a avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

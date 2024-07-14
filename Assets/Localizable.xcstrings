@@ -4833,6 +4833,7 @@
       }
     },
     "settings.profile.section.identity.description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4843,6 +4844,7 @@
       }
     },
     "settings.profile.section.identity.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4867,7 +4869,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use your real name instead of username in the app"
+            "value" : "Use your full name instead of the username in check-ins and comments."
           }
         }
       }
@@ -4877,7 +4879,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show full name"
+            "value" : "Show Full Name"
           }
         }
       }
@@ -4891,6 +4893,9 @@
           }
         }
       }
+    },
+    "settings.profile.username.description" : {
+
     },
     "settings.signOut" : {
       "localizations" : {

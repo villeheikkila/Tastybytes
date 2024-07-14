@@ -21,8 +21,6 @@ struct PrivacySettingsScreen: View {
                 profileEnvironmentModel.isPrivateProfile = newValue
                 Task { await profileEnvironmentModel.updatePrivacySettings() }
             }))
-        } header: {
-            Text("profile.title")
         } footer: {
             Text("settings.privacy.privateProfile.description")
         }

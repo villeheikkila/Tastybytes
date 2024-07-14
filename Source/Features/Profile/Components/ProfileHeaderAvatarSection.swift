@@ -27,21 +27,8 @@ struct ProfileHeaderAvatarSection: View {
             }
             Spacer()
             VStack(alignment: .center) {
-                Avatar(profile: profile)
+                ProfileAvatarPickerView(showAvatarPicker: $showPicker, profile: profile, allowEdit: isCurrentUser)
                     .avatarSize(.custom(90))
-                    .overlay(alignment: .bottomTrailing) {
-                        if isCurrentUser {
-                            Button(action: {
-                                showPicker = true
-                            }, label: {
-                                Label("profile.avatar.actions.change", systemImage: "pencil.circle.fill")
-                                    .labelStyle(.iconOnly)
-                                    .symbolRenderingMode(.multicolor)
-                                    .foregroundStyle(.thinMaterial)
-                                    .font(.system(size: 24))
-                            })
-                        }
-                    }
             }
             Spacer()
             if showInFull {
