@@ -18,6 +18,7 @@ struct ActivityScreen: View {
     // Feed state
     @State private var isRefreshing = false
     @State private var isLoading = false
+    @State private var isInitialLoad = true
     @State private var page = 0
     // Check-ins
     @State private var checkIns = [CheckIn]()
@@ -116,7 +117,7 @@ struct ActivityScreen: View {
             isLoading = true
         }
         let (from, to) = getPagination(page: reset ? 0 : page, size: 10)
-        let queryType: ActivityFeedQueryType = if !reset, onPageLoad, let id = checkIns.last?.id {
+        let queryType: ActivityFeedQueryType = if !reset, !isInitialLoad, onPageLoad, let id = checkIns.last?.id {
             .afterId(id)
         } else {
             .paginated(from, to)
@@ -125,6 +126,7 @@ struct ActivityScreen: View {
             let fetchedCheckIns = try await repository.checkIn.getActivityFeed(query: queryType)
             guard !Task.isCancelled else { return }
             logger.info("Succesfully loaded check-ins from \(from) to \(to)")
+            isInitialLoad = false
             withAnimation {
                 if reset {
                     checkIns = fetchedCheckIns
