@@ -28,22 +28,26 @@ struct ReportSheet: View {
     }
 
     @ViewBuilder private var content: some View {
-        Section("report.section.content.title") {
-            entity.view
-        }
-        .customListRowBackground()
-        Section("report.section.report.title") {
-            TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)
-                .lineLimit(8, reservesSpace: true)
-            AsyncButton("labels.submit", action: {
-                await submitReport()
-            }).bold()
+        Group {
+            Section("report.section.content.title") {
+                entity.view
+            }
+            Section("report.section.report.title") {
+                TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)
+                    .lineLimit(8, reservesSpace: true)
+            }
         }
         .customListRowBackground()
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
+        ToolbarItem(placement: .primaryAction) {
+            AsyncButton("labels.submit", action: {
+                await submitReport()
+            })
+            .bold()
+        }
     }
 
     private func submitReport() async {

@@ -92,6 +92,7 @@ public struct CheckInEntityView: View {
                         .foregroundColor(.secondary)
                 }
             }
+            Spacer()
         }
     }
 
