@@ -40,7 +40,7 @@ enum Sheet: Identifiable, Equatable {
     case webView(link: WebViewLink)
     case companyAdmin(company: Company, onUpdate: () async -> Void, onDelete: () -> Void)
     case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
-    case profileAdmin(profile: Profile)
+    case profileAdmin(profile: Profile, onDelete: (_ profile: Profile) -> Void)
     case productAdmin(product: Binding<Product.Joined>, onDelete: () -> Void)
     case checkInAdmin(checkIn: CheckIn, onDelete: () -> Void)
     case checkInCommentAdmin(checkIn: CheckIn, checkInComment: CheckInComment, onDelete: (_ comment: CheckInComment) -> Void)
@@ -123,8 +123,8 @@ enum Sheet: Identifiable, Equatable {
             WebViewSheet(link: link)
         case let .locationSearch(initialLocation, initialSearchTerm, onSelect):
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
-        case let .profileAdmin(profile):
-            ProfileAdminSheet(profile: profile)
+        case let .profileAdmin(profile, onDelete):
+            ProfileAdminSheet(profile: profile, onDelete: onDelete)
         case let .productAdmin(product, onDelete):
             ProductAdminSheet(product: product, onDelete: onDelete)
         case let .checkInAdmin(checkIn, onDelete):
@@ -244,7 +244,7 @@ enum Sheet: Identifiable, Equatable {
             "webview_\(link)"
         case let .locationSearch(initialLocation, initialSearchTerm, _):
             "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
-        case let .profileAdmin(profile):
+        case let .profileAdmin(profile, _):
             "profile_admin_sheet_\(profile)"
         case let .productAdmin(product, _):
             "product_admin_\(product)"

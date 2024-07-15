@@ -104,7 +104,7 @@ struct ProductInnerScreen: View {
         .listRowSeparator(.hidden)
         CheckInListSegmentPickerView(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
         CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: checkInLoader.onLoadMore)
-        .checkInCardLoadedFrom(.product)
+            .checkInCardLoadedFrom(.product)
         CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
     }
 

@@ -17,6 +17,15 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
+    func getAll() async throws -> [Profile] {
+        try await client
+            .from(.profiles)
+            .select(Profile.getQuery(.minimal(false)))
+            .order("joined_at", ascending: false)
+            .execute()
+            .value
+    }
+
     func getContributions(id: UUID) async throws -> Profile.Contributions {
         try await client
             .from(.profiles)
@@ -95,6 +104,44 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
 
         return string
+    }
+
+    func getRoles() async throws -> [Role] {
+        try await client
+            .from(.roles)
+            .select(Role.getQuery(.joined(false)))
+            .execute()
+            .value
+    }
+
+    func getRolesForProfile(id: UUID) async throws -> [Role] {
+        let response: [RolesPermissions] = try await client
+            .from(.profilesRoles)
+            .select(RolesPermissions.getQuery(.joined(false)))
+            .eq("profile_id", value: id)
+            .execute()
+            .value
+        
+        return response.flatMap(\.roles)
+        
+    }
+
+    func deleteUserAsSuperAdmin(_ profile: Profile) async throws {
+        struct DeleteRequestParam: Encodable {
+            let id: UUID
+
+            public init(profile: Profile) {
+                id = profile.id
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case id = "p_id"
+            }
+        }
+
+        try await client
+            .rpc(fn: .deleteUserAsSuperAdmin, params: DeleteRequestParam(profile: profile))
+            .execute()
     }
 
     func search(searchTerm: String, currentUserId: UUID? = nil) async throws -> [Profile] {

@@ -34,6 +34,7 @@ struct ProductDuplicateScreen: View {
             }
         }
         .listStyle(.plain)
+        .animation(.default, value: products)
         .overlay {
             if products.isEmpty, mode != .reportDuplicate {
                 DuplicateProductContentUnavailableView(productName: product.formatted(.fullName))

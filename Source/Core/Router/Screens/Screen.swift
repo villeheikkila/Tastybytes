@@ -49,6 +49,8 @@ enum Screen: Hashable, Sendable {
     case brandList(brands: [Brand])
     case subBrandList(subBrands: [SubBrand.JoinedBrand])
     case barcodeList(barcodes: [ProductBarcode.Joined])
+    case profilesAdmin
+    case roleSuperAdminPicker(profile: Profile)
 
     @MainActor
     @ViewBuilder
@@ -146,6 +148,10 @@ enum Screen: Hashable, Sendable {
             BarcodeListScreen(barcodes: barcodes)
         case let .brandById(id, initialScrollPosition):
             BrandScreen(brandId: id, initialScrollPosition: initialScrollPosition)
+        case .profilesAdmin:
+            ProfilesAdminScreen()
+        case let .roleSuperAdminPicker(profile):
+            RoleSuperAdminPickerScreen(profile: profile)
         }
     }
 
@@ -207,6 +213,8 @@ enum Screen: Hashable, Sendable {
             lhsSubBrands == rhsSubBrands
         case let (.barcodeList(lhsBarcodes), .barcodeList(rhsBarcodes)):
             lhsBarcodes == rhsBarcodes
+        case let (.roleSuperAdminPicker(lhsProfile), .roleSuperAdminPicker(rhsProfile)):
+            lhsProfile == rhsProfile
         case (.settings, .settings),
              (.currentUserFriends, .currentUserFriends),
              (.flavorAdmin, .flavorAdmin),
@@ -222,7 +230,7 @@ enum Screen: Hashable, Sendable {
              (.blockedUsers, .blockedUsers),
              (.contributions, .contributions),
              (.about, .about),
-             (.locationAdmin, .locationAdmin):
+             (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin):
             true
         default:
             false
@@ -358,6 +366,11 @@ enum Screen: Hashable, Sendable {
             hasher.combine("brandById")
             hasher.combine(id)
             hasher.combine(initialScrollPosition)
+        case .profilesAdmin:
+            hasher.combine("profilesAdmin")
+        case let .roleSuperAdminPicker(profile):
+            hasher.combine("roleSuperAdminPicker")
+            hasher.combine(profile)
         }
     }
 }

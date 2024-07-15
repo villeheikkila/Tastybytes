@@ -77,6 +77,7 @@
 		5C87DA432C42C87F00711393 /* VerifiedBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C87DA422C42C87F00711393 /* VerifiedBadgeView.swift */; };
 		5C87DA452C43F5E900711393 /* ProfileInfoSettingSectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C87DA442C43F5E900711393 /* ProfileInfoSettingSectionsView.swift */; };
 		5C87DA472C43F60900711393 /* ProfileAvatarPickerSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C87DA462C43F60900711393 /* ProfileAvatarPickerSectionView.swift */; };
+		5C87DA4C2C457E3000711393 /* ProfileAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C87DA4B2C457E3000711393 /* ProfileAdminScreen.swift */; };
 		5C885F002B2873A900F17C78 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885EFF2B2873A900F17C78 /* Models */; };
 		5C885F032B2873B400F17C78 /* Extensions in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F022B2873B400F17C78 /* Extensions */; };
 		5C885F062B2873C300F17C78 /* Repositories in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F052B2873C300F17C78 /* Repositories */; };
@@ -396,6 +397,7 @@
 		5C87DA422C42C87F00711393 /* VerifiedBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedBadgeView.swift; sourceTree = "<group>"; };
 		5C87DA442C43F5E900711393 /* ProfileInfoSettingSectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoSettingSectionsView.swift; sourceTree = "<group>"; };
 		5C87DA462C43F60900711393 /* ProfileAvatarPickerSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAvatarPickerSectionView.swift; sourceTree = "<group>"; };
+		5C87DA4B2C457E3000711393 /* ProfileAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAdminScreen.swift; sourceTree = "<group>"; };
 		5C885F122B28740800F17C78 /* EnvironmentModels */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = EnvironmentModels; sourceTree = "<group>"; };
 		5C885F132B28740800F17C78 /* Repositories */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Repositories; sourceTree = "<group>"; };
 		5C885F142B28740800F17C78 /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Models; sourceTree = "<group>"; };
@@ -707,6 +709,7 @@
 		5C3907652B32093D0036253E /* Admin */ = {
 			isa = PBXGroup;
 			children = (
+				5C87DA482C457E0800711393 /* Profile */,
 				5C2B25CE2C33C91D00CFDAFB /* LocationManagement */,
 				5C9057552B2894BE00EC157B /* AddSubcategory */,
 				5C9057B92B2894BE00EC157B /* DuplicataProduct */,
@@ -899,6 +902,14 @@
 				5C90579B2B2894BE00EC157B /* ProductScreen.swift */,
 			);
 			path = Screen;
+			sourceTree = "<group>";
+		};
+		5C87DA482C457E0800711393 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5C87DA4B2C457E3000711393 /* ProfileAdminScreen.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		5C885F102B28740800F17C78 /* Packages */ = {
@@ -1956,6 +1967,7 @@
 				5C974CD12C04EA0B00CFE98A /* OverlayButton+View.swift in Sources */,
 				5CEEA3132C3B30A60009B3F5 /* SubBrandListScreen.swift in Sources */,
 				5CAADF0B2B5C566F00D956C1 /* ProductLogoView.swift in Sources */,
+				5C87DA4C2C457E3000711393 /* ProfileAdminScreen.swift in Sources */,
 				5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */,
 				5C511D802BA78F9600F95290 /* WatchView.swift in Sources */,
 				5C0F3D8A2B9511D100307648 /* ReportScreen.swift in Sources */,

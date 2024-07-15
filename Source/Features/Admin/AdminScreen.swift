@@ -15,6 +15,7 @@ struct AdminScreen: View {
             Section("admin.section.management.title") {
                 RouterLink("admin.verification.title", systemImage: "checkmark.seal", open: .screen(.verification))
                 RouterLink("admin.locations.title", systemImage: "mappin.square", open: .screen(.locationAdmin))
+                RouterLink("admin.profiles.title", systemImage: "person.3", open: .screen(.profilesAdmin))
             }
         }
         .listStyle(.insetGrouped)

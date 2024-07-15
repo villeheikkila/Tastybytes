@@ -4,6 +4,7 @@ import Models
 import SwiftUI
 
 struct ProfileScreen: View {
+    @Environment(Router.self) private var router
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 
@@ -42,7 +43,9 @@ struct ProfileScreen: View {
                 Divider()
                 ReportButton(entity: .profile(profile))
                 Divider()
-                AdminRouterLink(open: .sheet(.profileAdmin(profile: profile)))
+                AdminRouterLink(open: .sheet(.profileAdmin(profile: profile, onDelete: { _ in
+                    router.removeLast()
+                })))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)

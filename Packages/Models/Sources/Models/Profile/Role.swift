@@ -15,4 +15,5 @@ public enum RoleName: String {
     case user
     case moderator
     case pro
+    case superAdmin = "super_admin"
 }

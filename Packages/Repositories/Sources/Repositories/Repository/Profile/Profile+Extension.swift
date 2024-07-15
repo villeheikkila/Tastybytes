@@ -47,6 +47,25 @@ extension Role: Queryable {
     }
 }
 
+struct RolesPermissions: Sendable, Codable {
+    let roles: [Role]
+}
+
+extension RolesPermissions: Queryable {
+    static func getQuery(_ queryType: QueryType) -> String {
+
+        switch queryType {
+        case let .joined(withTableName):
+            return buildQuery(.rolesPermissions, [Role.getQuery(.joined(true))], withTableName)
+        }
+    }
+
+    enum QueryType {
+        case joined(_ withTableName: Bool)
+    }
+}
+
+
 extension Permission: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name"

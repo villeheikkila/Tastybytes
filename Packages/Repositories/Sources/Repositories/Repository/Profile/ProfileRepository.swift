@@ -3,6 +3,7 @@ import Models
 
 public protocol ProfileRepository: Sendable {
     func getById(id: UUID) async throws -> Profile
+    func getAll() async throws -> [Profile]
     func getCurrentUser() async throws -> Profile.Extended
     func update(update: Profile.UpdateRequest) async throws -> Profile.Extended
     func currentUserExport() async throws -> String
@@ -17,4 +18,7 @@ public protocol ProfileRepository: Sendable {
     func checkIfUsernameIsAvailable(username: String) async throws -> Bool
     func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async throws -> [CheckInsPerDay]
     func getNumberOfCheckInsByLocation(userId: UUID) async throws -> [ProfileTopLocations]
+    func deleteUserAsSuperAdmin(_ profile: Profile) async throws
+    func getRoles() async throws -> [Role]
+    func getRolesForProfile(id: UUID) async throws -> [Role]
 }
