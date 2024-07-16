@@ -397,6 +397,7 @@ public extension Product {
             self.subBrand = SubBrand.JoinedBrand(
                 id: subBrand.id,
                 name: subBrand.name,
+                includesBrandName: subBrand.includesBrandName,
                 isVerified: subBrand.isVerified,
                 brand: Brand.JoinedCompany(
                     id: brand.id,
@@ -429,6 +430,7 @@ public extension Product {
             self.subBrand = SubBrand.JoinedBrand(
                 id: subBrand.id,
                 name: subBrand.name,
+                includesBrandName: subBrand.includesBrandName,
                 isVerified: subBrand.isVerified,
                 brand: Brand.JoinedCompany(
                     id: brand.id,

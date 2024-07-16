@@ -18,6 +18,7 @@ struct SubBrandAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showDeleteConfirmation = false
     @State private var newSubBrandName: String
+    @State private var includesBrandName: Bool
     @State private var subBrand: SubBrand.JoinedProduct
 
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
@@ -29,14 +30,16 @@ struct SubBrandAdminSheet: View {
         _brand = brand
         _subBrand = State(wrappedValue: subBrand)
         _newSubBrandName = State(wrappedValue: subBrand.name ?? "")
+        _includesBrandName = State(wrappedValue: subBrand.includesBrandName)
     }
 
-    var invalidNewName: Bool {
-        !newSubBrandName.isValidLength(.normal(allowEmpty: false)) || subBrand
-            .name == newSubBrandName
+    private var canUpdate: Bool {
+        (subBrand
+            .name != newSubBrandName && newSubBrandName
+            .isValidLength(.normal(allowEmpty: false))) || includesBrandName != subBrand.includesBrandName
     }
 
-    var subBrandsToMergeTo: [SubBrand.JoinedProduct] {
+    private var subBrandsToMergeTo: [SubBrand.JoinedProduct] {
         brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }
     }
 
@@ -81,6 +84,7 @@ struct SubBrandAdminSheet: View {
             LabeledIdView(id: subBrand.id.formatted())
             LabeledContent("brand.admin.product.count", value: subBrand.products.count.formatted())
             VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
+            Toggle("brand.includesBrandName.toggle.label", isOn: $includesBrandName)
         }
         .customListRowBackground()
         Section {
@@ -105,7 +109,7 @@ struct SubBrandAdminSheet: View {
             AsyncButton("labels.edit") {
                 await editSubBrand()
             }
-            .disabled(invalidNewName)
+            .disabled(!canUpdate)
         }
     }
 
@@ -138,7 +142,8 @@ struct SubBrandAdminSheet: View {
 
     private func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
         do {
-            try await repository.subBrand.update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
+            try await repository.subBrand
+                .update(updateRequest: .brand(.init(id: subBrand.id, brandId: mergeTo.id)))
             withAnimation {
                 brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand))
             }
@@ -153,9 +158,9 @@ struct SubBrandAdminSheet: View {
 
     private func editSubBrand() async {
         do {
-            let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName)))
+            let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName, includesBrandName: includesBrandName)))
             router.open(.toast(.success("subBrand.updated.toast")))
-            let updatedSubBrand = subBrand.copyWith(name: updated.name)
+            let updatedSubBrand = subBrand.copyWith(name: updated.name, includesBrandName: includesBrandName)
             subBrand = updatedSubBrand
             let updatedSubBrands = brand.subBrands.replacingWithId(subBrand, with: updatedSubBrand)
             brand = brand.copyWith(subBrands: updatedSubBrands)

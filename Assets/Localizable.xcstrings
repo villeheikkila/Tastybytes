@@ -825,6 +825,16 @@
         }
       }
     },
+    "brand.includesBrandName.toggle.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name includes brand name"
+          }
+        }
+      }
+    },
     "brand.list.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -860,7 +870,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Group Products By"
+            "value" : "Group By"
           }
         }
       }

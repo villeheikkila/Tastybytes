@@ -7,12 +7,10 @@ import Repositories
 import SwiftUI
 
 struct SubBrandSheet: View {
-    private let logger = Logger(category: "SubBrandSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var subBrandName = ""
     @State private var searchTerm: String = ""
     @Binding var subBrand: SubBrandProtocol?
 
@@ -38,17 +36,18 @@ struct SubBrandSheet: View {
                     dismiss()
                 }
             }
-
-            if profileEnvironmentModel.hasPermission(.canCreateBrands) {
-                Section("subBrand.addSubBrandFor.title \(brandWithSubBrands.name)") {
-                    ScanTextFieldView(title: "subBrand.name.placeholder", text: $subBrandName)
-                    AsyncButton("labels.create", action: { await createNewSubBrand() })
-                        .disabled(!subBrandName.isValidLength(.normal(allowEmpty: false)))
-                }
-            }
         }
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .safeAreaInset(edge: .bottom, content: {
+            if profileEnvironmentModel.hasPermission(.canCreateBrands) {
+                CreateSubBrandView(brandWithSubBrands: brandWithSubBrands) { subBrand in
+                    self.subBrand = subBrand
+                    dismiss()
+                }
+                .background(.ultraThinMaterial)
+            }
+        })
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
@@ -62,13 +61,50 @@ struct SubBrandSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
     }
+}
+
+struct CreateSubBrandView: View {
+    private let logger = Logger(category: "CreateSubBrandView")
+    @Environment(Repository.self) private var repository
+    @State private var subBrandName = ""
+    @State private var includesBrandName = false
+    @Environment(Router.self) private var router
+
+    let brandWithSubBrands: Brand.JoinedSubBrands
+    let onCreate: (_: SubBrand) -> Void
+
+    private var isValidName: Bool {
+        subBrandName.isValidLength(.normal(allowEmpty: false))
+    }
+
+    var body: some View {
+        Form {
+            Section("subBrand.addSubBrandFor.title \(brandWithSubBrands.name)") {
+                ScanTextFieldView(title: "subBrand.name.placeholder", text: $subBrandName)
+                Toggle("brand.includesBrandName.toggle.label", isOn: $includesBrandName)
+                    .disabled(!isValidName)
+                AsyncButton("labels.create", action: { await createNewSubBrand() })
+                    .disabled(!isValidName)
+            }
+            .customListRowBackground()
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .scrollContentBackground(.hidden)
+        .background(.ultraThinMaterial)
+        .frame(height: 200)
+    }
 
     private func createNewSubBrand() async {
         do {
-            let newSubBrand = try await repository.subBrand.insert(newSubBrand: .init(name: subBrandName, brandId: brandWithSubBrands.id))
+            let newSubBrand = try await repository.subBrand.insert(
+                newSubBrand: .init(
+                    name: subBrandName,
+                    brandId: brandWithSubBrands.id,
+                    includesBrandName: includesBrandName
+                )
+            )
             router.open(.toast(.success("subBrand.create.success.toast")))
-            subBrand = newSubBrand
-            dismiss()
+            onCreate(newSubBrand)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

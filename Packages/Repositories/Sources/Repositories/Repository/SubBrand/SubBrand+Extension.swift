@@ -3,25 +3,25 @@ import Models
 
 extension SubBrand: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name, is_verified"
+        let saved = "id, name, includes_brand_name, is_verified"
 
-        switch queryType {
+        return switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.subBrands, [saved], withTableName)
+            buildQuery(.subBrands, [saved], withTableName)
         case let .detailed(withTableName):
-            return buildQuery(
+            buildQuery(
                 .subBrands,
                 [saved, "created_at", Profile.getQuery(.minimal(true)), Product.getQuery(.joinedBrandSubcategories(true))],
                 withTableName
             )
         case let .joined(withTableName):
-            return buildQuery(
+            buildQuery(
                 .subBrands,
                 [saved, Product.getQuery(.joinedBrandSubcategories(true))],
                 withTableName
             )
         case let .joinedBrand(withTableName):
-            return buildQuery(
+            buildQuery(
                 .subBrands,
                 [saved, Brand.getQuery(.joinedCompany(true))],
                 withTableName

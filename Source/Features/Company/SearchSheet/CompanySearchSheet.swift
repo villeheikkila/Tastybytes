@@ -39,35 +39,33 @@ struct CompanySearchSheet: View {
         }
         .listStyle(.plain)
         .safeAreaInset(edge: .bottom) {
-            if profileEnvironmentModel.hasPermission(.canCreateCompanies), !showEmptyResults {
-                if status == .searched {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("company.create.notFound.section.title")
-                        Button("company.create.label", action: { createNew() })
-                    }
-                    .padding()
-                    .frame(width: .infinity)
-                    .background(.ultraThinMaterial)
-                }
-                if status == .add {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("company.create.section.title")
-                        ScanTextFieldView(title: "company.name.placeholder", text: $companyName)
-                        AsyncButton("company.create.label") {
-                            await createNewCompany(onSuccess: { company in
-                                onSelect(company)
-                                dismiss()
-                            })
+            if status != nil, profileEnvironmentModel.hasPermission(.canCreateCompanies), !showEmptyResults {
+                Form {
+                    if status == .searched {
+                        Section("company.create.notFound.section.title") {
+                            Button("company.create.label", action: { createNew() })
                         }
-                        .disabled(!companyName.isValidLength(.normal(allowEmpty: false)))
-                        .buttonStyle(.borderedProminent)
-                        .foregroundStyle(.black)
-                        .controlSize(.large)
+                        .customListRowBackground()
                     }
-                    .padding()
-                    .frame(width: .infinity)
-                    .background(.ultraThinMaterial)
+                    if status == .add {
+                        Section("company.create.section.title") {
+                            ScanTextFieldView(title: "company.name.placeholder", text: $companyName)
+                            AsyncButton("company.create.label") {
+                                await createNewCompany(onSuccess: { company in
+                                    onSelect(company)
+                                    dismiss()
+                                })
+                            }
+                            .disabled(!companyName.isValidLength(.normal(allowEmpty: false)))
+                        }
+                        .customListRowBackground()
+                    }
                 }
+                .scrollBounceBehavior(.basedOnSize)
+                .scrollContentBackground(.hidden)
+                .background(.ultraThinMaterial)
+                .animation(.default, value: status)
+                .frame(height: status == .add ? 150 : 100)
             }
         }
         .overlay {

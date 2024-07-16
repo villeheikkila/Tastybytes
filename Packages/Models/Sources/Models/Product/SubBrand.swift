@@ -3,23 +3,27 @@ import Foundation
 public protocol SubBrandProtocol {
     var id: Int { get }
     var name: String? { get }
+    var includesBrandName: Bool { get }
     var isVerified: Bool { get }
 }
 
 public struct SubBrand: Identifiable, Hashable, Codable, Sendable, Comparable, SubBrandProtocol {
     public let id: Int
     public let name: String?
+    public let includesBrandName: Bool
     public let isVerified: Bool
 
-    public init(id: Int, name: String?, isVerified: Bool) {
+    public init(id: Int, name: String?, includesBrandName: Bool, isVerified: Bool) {
         self.id = id
         self.name = name
+        self.includesBrandName = includesBrandName
         self.isVerified = isVerified
     }
 
     enum CodingKeys: String, CodingKey {
         case id
         case name
+        case includesBrandName = "includes_brand_name"
         case isVerified = "is_verified"
     }
 
@@ -36,12 +40,14 @@ public extension SubBrand {
     struct JoinedBrand: Identifiable, Hashable, Codable, Sendable, Comparable, SubBrandProtocol {
         public let id: Int
         public let name: String?
+        public let includesBrandName: Bool
         public let isVerified: Bool
         public let brand: Brand.JoinedCompany
 
-        public init(id: Int, name: String?, isVerified: Bool, brand: Brand.JoinedCompany) {
+        public init(id: Int, name: String?, includesBrandName: Bool, isVerified: Bool, brand: Brand.JoinedCompany) {
             self.id = id
             self.name = name
+            self.includesBrandName = includesBrandName
             self.brand = brand
             self.isVerified = isVerified
         }
@@ -50,6 +56,7 @@ public extension SubBrand {
             id = subBrand.id
             name = subBrand.name
             isVerified = subBrand.isVerified
+            includesBrandName = subBrand.includesBrandName
             self.brand = .init(brand: brand)
         }
 
@@ -57,6 +64,7 @@ public extension SubBrand {
             case id
             case name
             case brand = "brands"
+            case includesBrandName = "includes_brand_name"
             case isVerified = "is_verified"
         }
 
@@ -72,19 +80,21 @@ public extension SubBrand {
     struct JoinedProduct: Identifiable, Hashable, Codable, Sendable, Comparable, SubBrandProtocol {
         public let id: Int
         public let name: String?
+        public let includesBrandName: Bool
         public let isVerified: Bool
         public let products: [Product.JoinedCategory]
         public let createdAt: Date?
         public let createdBy: Profile?
 
         public var subBrand: SubBrand {
-            .init(id: id, name: name, isVerified: isVerified)
+            .init(id: id, name: name, includesBrandName: includesBrandName, isVerified: isVerified)
         }
 
         enum CodingKeys: String, CodingKey {
             case id
             case name
             case isVerified = "is_verified"
+            case includesBrandName = "includes_brand_name"
             case products
             case createdAt = "created_at"
             case createdBy = "profiles"
@@ -98,10 +108,11 @@ public extension SubBrand {
             }
         }
 
-        public func copyWith(name: String? = nil, isVerified: Bool? = nil, products: [Product.JoinedCategory]? = nil) -> Self {
+        public func copyWith(name: String? = nil, includesBrandName: Bool? = nil, isVerified: Bool? = nil, products: [Product.JoinedCategory]? = nil) -> Self {
             .init(
                 id: id,
                 name: name ?? self.name,
+                includesBrandName: includesBrandName ?? self.includesBrandName,
                 isVerified: isVerified ?? self.isVerified,
                 products: products ?? self.products,
                 createdAt: createdAt,
@@ -113,27 +124,36 @@ public extension SubBrand {
 
 public extension SubBrand {
     struct NewRequest: Codable, Sendable {
-        public let name: String
-        public let brandId: Int
+        let name: String
+        let brandId: Int
+        let includesBrandName: Bool
 
         enum CodingKeys: String, CodingKey, Sendable {
             case name
             case brandId = "brand_id"
+            case includesBrandName = "includes_brand_name"
         }
 
-        public init(name: String, brandId: Int) {
+        public init(name: String, brandId: Int, includesBrandName: Bool) {
             self.name = name
             self.brandId = brandId
+            self.includesBrandName = includesBrandName
         }
     }
 
     struct UpdateNameRequest: Codable, Sendable {
         public let id: Int
         public let name: String
+        public let includesBrandName: Bool
 
-        public init(id: Int, name: String) {
+        public init(id: Int, name: String, includesBrandName: Bool) {
             self.id = id
             self.name = name
+            self.includesBrandName = includesBrandName
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id, name, includesBrandName = "includes_brand_name"
         }
     }
 

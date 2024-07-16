@@ -14,8 +14,12 @@ public extension Product.Joined {
 public extension Product.Joined.Formatter where Output == String {
     static var fullName: Self {
         .init { value in
-            [value.subBrand.brand.name, value.subBrand.name, value.name, value.isDiscontinued ? String(localized: "product.discontinued.label") : nil]
-                .joinOptionalSpace()
+            [
+                value.subBrand.includesBrandName ? nil : value.subBrand.brand.name,
+                value.subBrand.name,
+                value.name, value.isDiscontinued ? String(localized: "product.discontinued.label") : nil,
+            ]
+            .joinOptionalSpace()
         }
     }
 
@@ -23,7 +27,7 @@ public extension Product.Joined.Formatter where Output == String {
         .init { value in
             [
                 value.subBrand.brand.brandOwner.name,
-                value.subBrand.brand.name,
+                value.subBrand.includesBrandName ? nil : value.subBrand.brand.name,
                 value.subBrand.name,
                 value.name,
                 value.isDiscontinued ? String(localized: "product.discontinued.label") : nil,
