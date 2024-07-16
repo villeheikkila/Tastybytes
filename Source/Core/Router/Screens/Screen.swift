@@ -49,7 +49,7 @@ enum Screen: Hashable, Sendable {
     case subBrandList(subBrands: [SubBrand.JoinedBrand])
     case barcodeList(barcodes: [ProductBarcode.Joined])
     case profilesAdmin
-    case roleSuperAdminPicker(profile: Profile, roles: [Role])
+    case roleSuperAdminPicker(profile: Binding<Profile.Detailed?>, roles: [Role])
 
     @MainActor
     @ViewBuilder
@@ -211,7 +211,7 @@ enum Screen: Hashable, Sendable {
         case let (.barcodeList(lhsBarcodes), .barcodeList(rhsBarcodes)):
             lhsBarcodes == rhsBarcodes
         case let (.roleSuperAdminPicker(lhsProfile, lhsRoles), .roleSuperAdminPicker(rhsProfile, rhsRoles)):
-            lhsProfile == rhsProfile && lhsRoles == rhsRoles
+            lhsProfile.wrappedValue == rhsProfile.wrappedValue && lhsRoles == rhsRoles
         case (.settings, .settings),
              (.currentUserFriends, .currentUserFriends),
              (.flavorAdmin, .flavorAdmin),
@@ -364,7 +364,9 @@ enum Screen: Hashable, Sendable {
             hasher.combine("profilesAdmin")
         case let .roleSuperAdminPicker(profile, roles):
             hasher.combine("roleSuperAdminPicker")
-            hasher.combine(profile)
+            if let profile = profile.wrappedValue {
+                hasher.combine(profile)
+            }
             hasher.combine(roles)
         }
     }

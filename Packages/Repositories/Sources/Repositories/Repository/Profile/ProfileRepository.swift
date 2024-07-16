@@ -20,6 +20,4 @@ public protocol ProfileRepository: Sendable {
     func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async throws -> [CheckInsPerDay]
     func getNumberOfCheckInsByLocation(userId: UUID) async throws -> [ProfileTopLocations]
     func deleteUserAsSuperAdmin(_ profile: Profile) async throws
-    func getRoles() async throws -> [Role]
-    func getRolesForProfile(id: UUID) async throws -> [Role]
 }

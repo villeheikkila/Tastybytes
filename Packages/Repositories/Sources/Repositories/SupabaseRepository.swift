@@ -6,6 +6,7 @@ internal import Supabase
 public final class Repository: RepositoryProtocol {
     public let appConfig: AppConfigRepository
     public let profile: ProfileRepository
+    public let role: RoleRepository
     public let checkIn: CheckInRepository
     public let checkInComment: CheckInCommentRepository
     public let checkInReactions: CheckInReactionsRepository
@@ -36,6 +37,7 @@ public final class Repository: RepositoryProtocol {
         appConfig = SupabaseAppConfigRepository(client: client)
         imageEntity = SupabaseImageEntityRepository(client: client)
         profile = SupabaseProfileRepository(client: client, imageEntityRepository: imageEntity)
+        role = SupabaseRoleRepository(client: client)
         checkIn = SupabaseCheckInRepository(client: client, imageEntityRepository: imageEntity)
         checkInComment = SupabaseCheckInCommentRepository(client: client)
         checkInReactions = SupabaseCheckInReactionsRepository(client: client)

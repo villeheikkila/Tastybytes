@@ -5,6 +5,7 @@ internal import Supabase
 public protocol RepositoryProtocol: Sendable {
     var appConfig: AppConfigRepository { get }
     var profile: ProfileRepository { get }
+    var role: RoleRepository { get }
     var checkIn: CheckInRepository { get }
     var checkInComment: CheckInCommentRepository { get }
     var checkInReactions: CheckInReactionsRepository { get }

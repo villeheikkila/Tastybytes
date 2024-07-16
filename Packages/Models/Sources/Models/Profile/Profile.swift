@@ -149,7 +149,7 @@ public extension Profile {
 }
 
 public extension Profile {
-    struct Detailed: Identifiable, Codable, Sendable, AvatarURL {
+    struct Detailed: Identifiable, Codable, Sendable, Hashable, AvatarURL {
         public let id: UUID
         public let username: String?
         public let firstName: String?

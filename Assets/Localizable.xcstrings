@@ -496,6 +496,26 @@
         }
       }
     },
+    "Are you sure you want to give %@ the %@. Giving user access to destructive features can be dangerous" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Are you sure you want to give %1$@ the %2$@. Giving user access to destructive features can be dangerous"
+          }
+        }
+      }
+    },
+    "Are you sure you want to remove %@ role from %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Are you sure you want to remove %1$@ role from %2$@"
+          }
+        }
+      }
+    },
     "authentication.welcomeAndPrivacyPolicy %@ [Privacy Policy](%@)" : {
       "localizations" : {
         "en" : {
@@ -2840,6 +2860,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "None"
+          }
+        }
+      }
+    },
+    "labels.ok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
           }
         }
       }
