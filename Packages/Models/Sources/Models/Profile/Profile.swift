@@ -251,7 +251,8 @@ public extension Profile {
         case fullName = "full_name"
     }
 
-    struct UpdateRequest: Codable, Sendable {
+    struct UpdateRequest: Encodable, Sendable {
+        public let id: UUID
         public var username: String?
         public var firstName: String?
         public var lastName: String?
@@ -268,29 +269,35 @@ public extension Profile {
             case isOnboarded = "is_onboarded"
         }
 
-        public init(showFullName: Bool) {
+        public init(id: UUID, showFullName: Bool) {
             nameDisplay = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
+            self.id = id
         }
 
-        public init(isPrivate: Bool) {
+        public init(id: UUID,isPrivate: Bool) {
             self.isPrivate = isPrivate
+            self.id = id
         }
 
-        public init(isOnboarded: Bool) {
+        public init(id: UUID,isOnboarded: Bool) {
             self.isOnboarded = isOnboarded
+            self.id = id
         }
 
-        public init(username: String?, firstName: String?, lastName: String?) {
+        public init(id: UUID, username: String?, firstName: String?, lastName: String?) {
             self.username = username
             self.firstName = firstName
             self.lastName = lastName
+            self.id = id
         }
 
         init(
+            id: UUID,
             isPrivate: Bool,
             showFullName: Bool,
             isOnboarded: Bool
         ) {
+            self.id = id
             self.isPrivate = isPrivate
             nameDisplay = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
             self.isOnboarded = isOnboarded
@@ -315,7 +322,8 @@ public struct ProfileSettings: Identifiable, Codable, Hashable, Sendable {
 }
 
 public extension ProfileSettings {
-    struct UpdateRequest: Codable, Sendable {
+    struct UpdateRequest: Encodable, Sendable {
+        public let id: UUID
         var sendReactionNotifications: Bool?
         var sendTaggedCheckInNotifications: Bool?
         var sendFriendRequestNotifications: Bool?
@@ -329,11 +337,13 @@ public extension ProfileSettings {
         }
 
         public init(
+            id: UUID,
             sendReactionNotifications: Bool? = nil,
             sendTaggedCheckInNotifications: Bool? = nil,
             sendFriendRequestNotifications: Bool? = nil,
             sendCommentNotifications: Bool? = nil
         ) {
+            self.id = id
             self.sendReactionNotifications = sendReactionNotifications
             self.sendTaggedCheckInNotifications = sendTaggedCheckInNotifications
             self.sendFriendRequestNotifications = sendFriendRequestNotifications
@@ -507,7 +517,7 @@ public struct ProfileTopLocations: Sendable, Decodable, Identifiable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        id = try container.decode(UUID.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         title = try container.decodeIfPresent(String.self, forKey: .title)
         let longitude = try container.decode(Double.self, forKey: .longitude)

@@ -63,7 +63,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         try await client
             .from(.profiles)
             .update(update, returning: .representation)
-            .notEquals("id", value: UUID().uuidString)
+            .eq("id", value: update.id)
             .select(Profile.getQuery(.extended(false)))
             .single()
             .execute()
@@ -74,7 +74,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         try await client
             .from(.profileSettings)
             .update(update, returning: .representation)
-            .notEquals("id", value: UUID().uuidString)
+            .eq("id", value: update.id)
             .select(ProfileSettings.getQuery(.saved(false)))
             .single()
             .execute()

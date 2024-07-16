@@ -230,6 +230,7 @@ public final class ProfileEnvironmentModel {
     {
         do {
             let updatedSettings = try await repository.profile.updateSettings(update: .init(
+                id: id,
                 sendReactionNotifications: sendReactionNotifications,
                 sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
                 sendFriendRequestNotifications: sendFriendRequestNotifications,
@@ -280,9 +281,11 @@ public final class ProfileEnvironmentModel {
         }
     }
 
-    public func updateProfile(update: Profile.UpdateRequest) async {
+    public func updateProfile(username: String?, firstName: String?, lastName: String?) async {
         do {
-            let updatedProfile = try await repository.profile.update(update: update)
+            let updatedProfile = try await repository.profile.update(
+                update: .init(id: id, username: username, firstName: firstName, lastName: lastName)
+            )
             extendedProfile = updatedProfile
         } catch {
             guard !error.isCancelled else { return }
@@ -293,7 +296,7 @@ public final class ProfileEnvironmentModel {
 
     public func onboardingUpdate() async {
         do {
-            let updatedProfile = try await repository.profile.update(update: .init(isOnboarded: true))
+            let updatedProfile = try await repository.profile.update(update: .init(id: id, isOnboarded: true))
             extendedProfile = updatedProfile
         } catch {
             guard !error.isCancelled else { return }
@@ -304,7 +307,7 @@ public final class ProfileEnvironmentModel {
 
     public func updatePrivacySettings() async {
         do {
-            let updatedProfile = try await repository.profile.update(update: .init(isPrivate: isPrivateProfile))
+            let updatedProfile = try await repository.profile.update(update: .init(id: id, isPrivate: isPrivateProfile))
             extendedProfile = updatedProfile
             logger.log("Updated privacy settings")
         } catch {
@@ -316,7 +319,7 @@ public final class ProfileEnvironmentModel {
 
     public func updateDisplaySettings() async {
         do {
-            let updatedProfile = try await repository.profile.update(update: .init(showFullName: showFullName))
+            let updatedProfile = try await repository.profile.update(update: .init(id: id, showFullName: showFullName))
             extendedProfile = updatedProfile
             logger.log("updated display settings")
         } catch {

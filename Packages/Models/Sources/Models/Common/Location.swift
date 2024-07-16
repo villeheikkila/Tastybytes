@@ -70,7 +70,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        id = try container.decode(UUID.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         title = try container.decodeIfPresent(String.self, forKey: .title)
         mapKitIdentifier = try container.decodeIfPresent(String.self, forKey: .mapKitIdentifier)
@@ -123,8 +123,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
 }
 
 public extension Location {
-    struct NewLocationRequest: Identifiable, Encodable, Hashable, Sendable {
-        public let id: UUID
+    struct NewLocationRequest: Encodable, Hashable, Sendable {
         public let name: String
         public let title: String?
         public let location: CLLocation?
@@ -133,7 +132,6 @@ public extension Location {
         public let mapKitIdentifier: String?
 
         public init(location: Location) {
-            id = location.id
             name = location.name
             title = location.title
             self.location = location.location

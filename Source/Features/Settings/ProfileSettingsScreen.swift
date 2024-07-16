@@ -30,11 +30,7 @@ struct ProfileSettingsScreen: View {
                 AsyncButton(
                     "settings.profile.update",
                     action: {
-                        await profileEnvironmentModel.updateProfile(update: .init(
-                            username: username,
-                            firstName: firstName,
-                            lastName: lastName
-                        ))
+                        await profileEnvironmentModel.updateProfile(username: username, firstName: firstName, lastName: lastName)
                     }
                 ).disabled(!canUpdate)
             }
