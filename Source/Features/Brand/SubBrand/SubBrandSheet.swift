@@ -6,7 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct SubBrandSheet: View {
+struct SubBrandPickerSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel

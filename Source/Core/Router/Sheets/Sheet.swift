@@ -10,8 +10,8 @@ enum Sheet: Identifiable, Equatable {
     case productFilter(initialFilter: Product.Filter?, sections: [ProductFilterSheet.Sections], onApply: (_ filter: Product.Filter?) -> Void)
     case nameTag(onSuccess: (_ profileId: UUID) -> Void)
     case companySearch(onSelect: (_ company: Company) -> Void)
-    case brand(brandOwner: Company, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandSheet.Mode)
-    case addBrand(brandOwner: Company, mode: BrandSheet.Mode)
+    case brand(brandOwner: Company, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandPickerSheet.Mode)
+    case addBrand(brandOwner: Company, mode: BrandPickerSheet.Mode)
     case subcategory(subcategories: Binding<[Subcategory]>, category: Models.Category.JoinedSubcategoriesServingStyles)
     case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
@@ -28,7 +28,7 @@ enum Sheet: Identifiable, Equatable {
     case subcategoryCreation(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case categoryCreation(onSubmit: (_ newCategoryName: String) async -> Void)
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
-    case user(mode: UserSheet.Mode, onSubmit: () -> Void)
+    case user(mode: UserPickerSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
     case categoryPicker(category: Binding<Models.Category.JoinedSubcategoriesServingStyles?>)
     case mergeLocation(location: Location, onMerge: ((_ newLocation: Location) async -> Void)? = nil)
@@ -61,15 +61,15 @@ enum Sheet: Identifiable, Equatable {
         case let .nameTag(onSuccess):
             NameTagSheet(onSuccess: onSuccess)
         case let .addBrand(brandOwner: brandOwner, mode: mode):
-            BrandSheet(brand: .constant(nil), brandOwner: brandOwner, mode: mode)
+            BrandPickerSheet(brand: .constant(nil), brandOwner: brandOwner, mode: mode)
         case let .brand(brandOwner, brand: brand, mode: mode):
-            BrandSheet(brand: brand, brandOwner: brandOwner, mode: mode)
+            BrandPickerSheet(brand: brand, brandOwner: brandOwner, mode: mode)
         case let .subBrand(brandWithSubBrands, subBrand: subBrand):
-            SubBrandSheet(subBrand: subBrand, brandWithSubBrands: brandWithSubBrands)
+            SubBrandPickerSheet(subBrand: subBrand, brandWithSubBrands: brandWithSubBrands)
         case let .subcategory(subcategories, category):
             SubcategorySheet(subcategories: subcategories, category: category)
         case let .companySearch(onSelect):
-            CompanySearchSheet(onSelect: onSelect)
+            CompanyPickerSheet(onSelect: onSelect)
         case let .product(mode):
             ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):
@@ -79,9 +79,9 @@ enum Sheet: Identifiable, Equatable {
         case let .subBrandAdmin(brand: brand, subBrand: subBrand):
             SubBrandAdminSheet(brand: brand, subBrand: subBrand)
         case let .friends(taggedFriends: taggedFriends):
-            FriendSheet(taggedFriends: taggedFriends)
+            FriendPickerSheet(taggedFriends: taggedFriends)
         case let .flavors(pickedFlavors: pickedFlavors):
-            FlavorSheet(pickedFlavors: pickedFlavors)
+            FlavorPickerSheet(pickedFlavors: pickedFlavors)
         case let .checkInLocationSearch(category: category, title: title, initialLocation, onSelect: onSelect):
             CheckInLocationSearchSheet(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect)
         case let .newFlavor(onSubmit: onSubmit):
@@ -99,7 +99,7 @@ enum Sheet: Identifiable, Equatable {
         case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
             CompanyEditSuggestionSheet(company: company, onSuccess: onSuccess)
         case let .user(mode: mode, onSubmit: onSubmit):
-            UserSheet(mode: mode, onSubmit: onSubmit)
+            UserPickerSheet(mode: mode, onSubmit: onSubmit)
         case let .checkInDatePicker(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic):
             CheckInDatePickerSheet(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic)
         case let .categoryPicker(category: category):

@@ -6,8 +6,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct BrandSheet: View {
-    private let logger = Logger(category: "BrandSheet")
+struct BrandPickerSheet: View {
+    private let logger = Logger(category: "BrandPickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Router.self) private var router
@@ -31,30 +31,37 @@ struct BrandSheet: View {
 
     var body: some View {
         List {
-            if case .select = mode {
-                ForEach(filteredBrands) { brand in
-                    BrandSheetRowView(brand: brand) { brand in
-                        self.brand = brand
-                        dismiss()
-                    }
-                }
-            }
-
-            if profileEnvironmentModel.hasPermission(.canCreateBrands) {
-                Section("brand.addBrandForCompany.title \(brandOwner.name)") {
-                    ScanTextFieldView(title: "brand.name.placeholder", text: $brandName)
-                    AsyncButton("labels.create", action: { await createNewBrand() })
-                        .disabled(!brandName.isValidLength(.normal(allowEmpty: false)))
+            ForEach(filteredBrands) { brand in
+                BrandSheetRowView(brand: brand) { brand in
+                    self.brand = brand
+                    dismiss()
                 }
             }
         }
         .listStyle(.plain)
         .foregroundColor(.primary)
+        .safeAreaInset(edge: .bottom) {
+            if profileEnvironmentModel.hasPermission(.canCreateBrands) {
+                Form {
+                    Section("brand.addBrandForCompany.title \(brandOwner.name)") {
+                        ScanTextFieldView(title: "brand.name.placeholder", text: $brandName)
+                        AsyncButton("labels.create", action: { await createNewBrand() })
+                            .disabled(!brandName.isValidLength(.normal(allowEmpty: false)))
+                    }
+                    .customListRowBackground()
+                }
+                .scrollBounceBehavior(.basedOnSize)
+                .scrollContentBackground(.hidden)
+                .background(.ultraThinMaterial)
+                .frame(height: 150)
+            }
+        }
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
         .navigationTitle(mode.navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .toolbar {
             toolbarContent
@@ -96,7 +103,7 @@ struct BrandSheet: View {
     }
 }
 
-extension BrandSheet {
+extension BrandPickerSheet {
     enum Mode: Sendable, Hashable {
         case select, new(onCreate: @MainActor (_ brand: Brand.JoinedSubBrands) -> Void)
 

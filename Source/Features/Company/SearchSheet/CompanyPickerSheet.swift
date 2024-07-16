@@ -6,8 +6,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct CompanySearchSheet: View {
-    private let logger = Logger(category: "CompanySearchSheet")
+struct CompanyPickerSheet: View {
+    private let logger = Logger(category: "CompanyPickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
@@ -133,7 +133,7 @@ struct CompanySearchSheet: View {
     }
 }
 
-extension CompanySearchSheet {
+extension CompanyPickerSheet {
     enum Status {
         case add
         case searched

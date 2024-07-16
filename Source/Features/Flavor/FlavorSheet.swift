@@ -4,7 +4,7 @@ import Extensions
 import Models
 import SwiftUI
 
-struct FlavorSheet: View {
+struct FlavorPickerSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss

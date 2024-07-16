@@ -4,7 +4,7 @@ import Extensions
 import Models
 import SwiftUI
 
-struct FriendSheet: View {
+struct FriendPickerSheet: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
