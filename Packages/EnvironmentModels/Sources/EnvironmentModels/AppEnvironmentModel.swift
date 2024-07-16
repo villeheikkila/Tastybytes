@@ -334,8 +334,7 @@ public final class AppEnvironmentModel {
         do {
             let newSubcategory = try await repository.subcategory
                 .insert(newSubcategory: Subcategory.NewRequest(name: name, category: category))
-            let updatedCategory = category.appending(subcategory: newSubcategory)
-            categories.replace(category, with: updatedCategory)
+            categories = categories.replacing(category, with: category.appending(subcategory: newSubcategory))
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()

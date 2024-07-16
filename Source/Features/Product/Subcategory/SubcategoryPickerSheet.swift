@@ -17,23 +17,30 @@ struct SubcategoryPickerSheet: View {
 
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
-    private var shownSubcategories: [Subcategory] {
-        category.subcategories.sorted().filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
+    private var availableSubcategories: [Subcategory] {
+        appEnvironmentModel.categories
+            .first(where: { $0.id == category.id })?
+            .subcategories
+            .sorted() ?? []
+    }
+
+    private var filteredSubcategories: [Subcategory] {
+        availableSubcategories.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
     private var sortedSubcategories: [Subcategory] {
-        shownSubcategories.sorted { subcategories.contains($0) && !subcategories.contains($1) }
+        filteredSubcategories.sorted { subcategories.contains($0) && !subcategories.contains($1) }
     }
 
     private var showContentUnavailableView: Bool {
-        !searchTerm.isEmpty && shownSubcategories.isEmpty
+        !searchTerm.isEmpty && filteredSubcategories.isEmpty
     }
 
     var body: some View {
         List(sortedSubcategories, selection: $subcategories.map(getter: { subcategories in
             Set(subcategories.map(\.id))
         }, setter: { ids in
-            ids.compactMap { id in category.subcategories.first(where: { $0.id == id }) }
+            ids.compactMap { id in availableSubcategories.first(where: { $0.id == id }) }
         })) { subcategory in
             Text(subcategory.name)
                 .listRowBackground(Color.clear)

@@ -12,7 +12,6 @@ struct CategoryPickerSheet: View {
     @State private var searchTerm = ""
     @Binding var category: Models.Category.JoinedSubcategoriesServingStyles?
 
-
     private var shownCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
         appEnvironmentModel.categories.filter { category in
             searchTerm.isEmpty ||
