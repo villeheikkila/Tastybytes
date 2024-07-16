@@ -4822,50 +4822,6 @@
         }
       }
     },
-    "settings.appearance.navigationTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appearance"
-          }
-        }
-      }
-    },
-    "settings.appearance.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appearance"
-          }
-        }
-      }
-    },
-    "settings.appearance.useDarkMode.label" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use dark color scheme"
-          }
-        }
-      }
-    },
-    "settings.appearance.useSystemColorScheme.label" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use system color scheme"
-          }
-        }
-      }
-    },
     "settings.appIcon.selected" : {
       "localizations" : {
         "en" : {
