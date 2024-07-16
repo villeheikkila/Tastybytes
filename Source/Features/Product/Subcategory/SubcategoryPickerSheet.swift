@@ -44,7 +44,7 @@ struct SubcategoryPickerSheet: View {
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
         .safeAreaInset(edge: .bottom) {
-            if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
+            if profileEnvironmentModel.hasPermission(.canAddSubcategories) {
                 Form {
                     Section("subcategory.add.name") {
                         TextField("subcategory.name.placeholder", text: $newSubcategoryName)
