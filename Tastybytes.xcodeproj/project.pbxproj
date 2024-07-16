@@ -199,6 +199,7 @@
 		5C90AF732C15C43400BA3202 /* ScreenLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF722C15C43400BA3202 /* ScreenLoadingView.swift */; };
 		5C90AF752C15C44C00BA3202 /* ScreenContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */; };
 		5C9583872B41EE0000A2A03B /* View+InjectSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* View+InjectSheets.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5C95DC1C2C46D82E00E2184C /* RoleSuperAdminPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95DC1B2C46D82E00E2184C /* RoleSuperAdminPickerScreen.swift */; };
 		5C974CCD2C04E9B500CFE98A /* CheckInImageManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */; };
 		5C974CCF2C04E9E600CFE98A /* LocationInputButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCE2C04E9E600CFE98A /* LocationInputButtonView.swift */; };
 		5C974CD12C04EA0B00CFE98A /* OverlayButton+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */; };
@@ -518,6 +519,7 @@
 		5C90AF722C15C43400BA3202 /* ScreenLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingView.swift; sourceTree = "<group>"; };
 		5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenContentUnavailableView.swift; sourceTree = "<group>"; };
 		5C9583862B41EE0000A2A03B /* View+InjectSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+InjectSheets.swift"; sourceTree = "<group>"; };
+		5C95DC1B2C46D82E00E2184C /* RoleSuperAdminPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleSuperAdminPickerScreen.swift; sourceTree = "<group>"; };
 		5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageManagementView.swift; sourceTree = "<group>"; };
 		5C974CCE2C04E9E600CFE98A /* LocationInputButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputButtonView.swift; sourceTree = "<group>"; };
 		5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverlayButton+View.swift"; sourceTree = "<group>"; };
@@ -1152,6 +1154,7 @@
 				5C9057882B2894BE00EC157B /* NotificationSettingsScreen.swift */,
 				5C90578A2B2894BE00EC157B /* BlockedUsersScreen.swift */,
 				5C90578D2B2894BE00EC157B /* AccountDeletedScreen.swift */,
+				5C95DC1B2C46D82E00E2184C /* RoleSuperAdminPickerScreen.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1862,6 +1865,7 @@
 				5CD2EE192C35538A009AA949 /* ToastType.swift in Sources */,
 				5C90580D2B2894BE00EC157B /* BrandAdminSheet.swift in Sources */,
 				5C9058322B2894BE00EC157B /* ScalingButton.swift in Sources */,
+				5C95DC1C2C46D82E00E2184C /* RoleSuperAdminPickerScreen.swift in Sources */,
 				5C90582A2B2894BE00EC157B /* ProductScreen.swift in Sources */,
 				5C9058252B2894BE00EC157B /* CheckInReactionNotificationView.swift in Sources */,
 				5C9058282B2894BE00EC157B /* FlavorAdminScreen.swift in Sources */,

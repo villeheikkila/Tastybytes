@@ -81,17 +81,19 @@ struct CurrentUserFriendsScreen: View {
             .imageScale(.large)
             .popoverTip(NameTagTip())
 
-            RouterLink(
-                "friends.add.label", systemImage: "plus",
-                open: .sheet(.user(
-                    mode: .add,
-                    onSubmit: {
-                        router.open(.toast(.success("friends.add.success")))
-                    }
-                ))
-            )
-            .labelStyle(.iconOnly)
-            .imageScale(.large)
+            if profileEnvironmentModel.hasPermission(.canSendFriendRequests) {
+                RouterLink(
+                    "friends.add.label", systemImage: "plus",
+                    open: .sheet(.user(
+                        mode: .add,
+                        onSubmit: {
+                            router.open(.toast(.success("friends.add.success")))
+                        }
+                    ))
+                )
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+            }
         }
     }
 }

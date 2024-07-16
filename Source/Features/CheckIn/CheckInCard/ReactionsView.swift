@@ -47,7 +47,7 @@ struct ReactionsView: View {
                         await toggleReaction()
                     }
                 }
-                .allowsHitTesting(!isLoading)
+                .allowsHitTesting(!isLoading && profileEnvironmentModel.hasPermission(.canReactToCheckIns))
         }
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxHeight: 24)

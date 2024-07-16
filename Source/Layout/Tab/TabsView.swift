@@ -9,7 +9,7 @@ struct TabsView: View {
     @State private var selection = Tab.activity
 
     private var shownTabs: [Tab] {
-        if profileEnvironmentModel.hasRole(.admin) {
+        if profileEnvironmentModel.hasRole(.admin) || profileEnvironmentModel.hasRole(.superAdmin) {
             [.activity, .discover, .notifications, .admin, .profile]
         } else {
             [.activity, .discover, .notifications, .profile]
