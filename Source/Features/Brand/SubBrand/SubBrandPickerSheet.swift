@@ -53,6 +53,7 @@ struct SubBrandPickerSheet: View {
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
         .navigationTitle("subBrand.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }

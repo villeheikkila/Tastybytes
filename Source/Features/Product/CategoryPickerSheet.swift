@@ -9,9 +9,9 @@ struct CategoryPickerSheet: View {
     private let logger = Logger(category: "CategoryPickerSheet")
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var searchTerm = ""
     @Binding var category: Models.Category.JoinedSubcategoriesServingStyles?
 
-    @State private var searchTerm = ""
 
     private var shownCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
         appEnvironmentModel.categories.filter { category in
@@ -38,19 +38,23 @@ struct CategoryPickerSheet: View {
                 }
                 Text(category.name)
             }
+            .listRowBackground(Color.clear)
         }
+        .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 50)
+        .scrollContentBackground(.hidden)
         .onChange(of: category) {
             dismiss()
         }
         .searchable(text: $searchTerm)
         .navigationTitle("category.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneActionView()
+        ToolbarDismissAction()
     }
 }

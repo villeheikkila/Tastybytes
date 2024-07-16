@@ -6,14 +6,12 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct SubcategorySheet: View {
-    private let logger = Logger(category: "SubcategorySheet")
+struct SubcategoryPickerSheet: View {
+    private let logger = Logger(category: "SubcategoryPickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(\.dismiss) private var dismiss
     @Binding var subcategories: [Subcategory]
-    @State private var showAddSubcategory = false
     @State private var newSubcategoryName = ""
     @State private var searchTerm = ""
 
@@ -38,35 +36,41 @@ struct SubcategorySheet: View {
             ids.compactMap { id in category.subcategories.first(where: { $0.id == id }) }
         })) { subcategory in
             Text(subcategory.name)
+                .listRowBackground(Color.clear)
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
         .environment(\.defaultMinListRowHeight, 50)
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
+        .safeAreaInset(edge: .bottom) {
+            if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
+                Form {
+                    Section("subcategory.add.name") {
+                        TextField("subcategory.name.placeholder", text: $newSubcategoryName)
+                        AsyncButton("labels.create") {
+                            await appEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
+                        }
+                    }
+                }
+                .scrollBounceBehavior(.basedOnSize)
+                .scrollContentBackground(.hidden)
+                .background(.ultraThinMaterial)
+                .frame(height: 150)
+            }
+        }
         .overlay {
             ContentUnavailableView.search(text: searchTerm)
                 .opacity(showContentUnavailableView ? 1 : 0)
         }
         .navigationTitle("subcategory.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
-        .alert("subcategory.add.name", isPresented: $showAddSubcategory, actions: {
-            TextField("subcategory.name.placeholder", text: $newSubcategoryName)
-            Button("labels.cancel", role: .cancel, action: {})
-            AsyncButton("labels.create", action: {
-                await appEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
-            })
-        })
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarDoneActionView()
-        if profileEnvironmentModel.hasPermission(.canDeleteBrands) {
-            ToolbarItemGroup(placement: .topBarLeading) {
-                Button("subcategory.add.openSheet.label", systemImage: "plus", action: { showAddSubcategory.toggle() })
-                    .labelStyle(.iconOnly)
-                    .bold()
-            }
-        }
+        ToolbarDismissAction()
     }
 }

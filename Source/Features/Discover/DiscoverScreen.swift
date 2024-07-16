@@ -95,8 +95,8 @@ struct DiscoverScreen: View {
                 }
                 .scrollBounceBehavior(.basedOnSize)
                 .scrollContentBackground(.hidden)
-                .background(.ultraThinMaterial)
-                .frame(height: 100)
+                .background(.thinMaterial)
+                .frame(height: 90)
             }
         })
         .safeAreaInset(edge: .top) {

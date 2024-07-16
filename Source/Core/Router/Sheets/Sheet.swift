@@ -67,7 +67,7 @@ enum Sheet: Identifiable, Equatable {
         case let .subBrand(brandWithSubBrands, subBrand: subBrand):
             SubBrandPickerSheet(subBrand: subBrand, brandWithSubBrands: brandWithSubBrands)
         case let .subcategory(subcategories, category):
-            SubcategorySheet(subcategories: subcategories, category: category)
+            SubcategoryPickerSheet(subcategories: subcategories, category: category)
         case let .companySearch(onSelect):
             CompanyPickerSheet(onSelect: onSelect)
         case let .product(mode):

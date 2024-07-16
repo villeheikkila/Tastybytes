@@ -88,6 +88,7 @@ struct CompanyPickerSheet: View {
             }
         }
         .navigationTitle("company.search.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
