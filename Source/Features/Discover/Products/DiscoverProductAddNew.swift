@@ -7,20 +7,15 @@ struct DiscoverProductAddNew: View {
 
     var body: some View {
         Section("product.createNew.description") {
-            HStack {
-                Text("product.createNew.label")
-                    .fontWeight(.medium)
-                Spacer()
-            }
-            .contentShape(.rect)
-            .accessibilityAddTraits(.isLink)
-            .onTapGesture {
+            Button("product.createNew.label") {
                 let barcodeCopy = barcode
                 barcode = nil
                 router.open(.sheet(.product(.new(barcode: barcodeCopy, onCreate: { product in
                     router.open(.screen(.product(product)))
                 }))))
             }
+            .fontWeight(.medium)
+            .contentShape(.rect)
         }
     }
 }

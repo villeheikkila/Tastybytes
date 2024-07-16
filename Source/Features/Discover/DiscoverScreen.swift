@@ -27,7 +27,7 @@ struct DiscoverScreen: View {
     // Barcode
     @State private var barcode: Barcode?
 
-    var currentScopeIsEmpty: Bool {
+    private var currentScopeIsEmpty: Bool {
         switch searchScope {
         case .companies:
             companies.isEmpty
@@ -46,6 +46,11 @@ struct DiscoverScreen: View {
 
     private var showContentUnavailableView: Bool {
         searchResultKey != nil && !isLoading && currentScopeIsEmpty
+    }
+
+    private var showAddProductViewRow: Bool {
+        searchScope == .products && searchResultKey != nil && searchKey == searchResultKey && !showContentUnavailableView && profileEnvironmentModel
+            .hasPermission(.canCreateProducts)
     }
 
     var body: some View {
@@ -83,6 +88,24 @@ struct DiscoverScreen: View {
             }
         }
         .disableAutocorrection(true)
+        .safeAreaInset(edge: .bottom, content: {
+            if showAddProductViewRow {
+                Form {
+                    DiscoverProductAddNew(barcode: $barcode)
+                }
+                .scrollBounceBehavior(.basedOnSize)
+                .scrollContentBackground(.hidden)
+                .background(.ultraThinMaterial)
+                .frame(height: 100)
+            }
+        })
+        .safeAreaInset(edge: .top) {
+            if searchScope == .products, barcode != nil, !showContentUnavailableView {
+                DiscoverProductAssignBarcode(isEmpty: products.isEmpty, barcode: $barcode)
+            } else if searchScope == .products, let productFilter {
+                ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
+            }
+        }
         .onSubmit(of: .search) {
             if searchTerm.isEmpty {
                 searchKey = nil
@@ -94,19 +117,9 @@ struct DiscoverScreen: View {
         .toolbar {
             toolbarContent
         }
-        .safeAreaInset(edge: .bottom) {
-            if searchScope == .products, barcode != nil, !showContentUnavailableView {
-                DiscoverProductAssignBarcode(isEmpty: products.isEmpty, barcode: $barcode)
-            }
-        }
         .overlay {
             if showContentUnavailableView {
                 contentUnavailableView
-            }
-        }
-        .overlay {
-            if searchScope == .products, let productFilter {
-                ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
             }
         }
         .task(id: searchKey, milliseconds: 200) { [searchKey] in

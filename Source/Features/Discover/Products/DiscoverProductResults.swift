@@ -12,11 +12,6 @@ struct DiscoverProductResults: View {
     let searchKey: DiscoverScreen.SearchKey?
     let searchResultKey: DiscoverScreen.SearchKey?
 
-    private var showAddProductViewRow: Bool {
-        searchResultKey != nil && searchKey == searchResultKey && !showContentUnavailableView && profileEnvironmentModel
-            .hasPermission(.canCreateProducts)
-    }
-
     var body: some View {
         if products.isEmpty, searchKey == nil {
             DiscoverProductLinks()
@@ -28,10 +23,6 @@ struct DiscoverProductResults: View {
                         0
                     }
             }
-        }
-
-        if showAddProductViewRow {
-            DiscoverProductAddNew(barcode: $barcode)
         }
     }
 }
