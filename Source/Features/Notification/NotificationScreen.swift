@@ -8,7 +8,7 @@ struct NotificationScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var filter: NotificationType?
 
-    var filteredNotifications: [Models.Notification] {
+    private var filteredNotifications: [Models.Notification] {
         notificationEnvironmentModel.notifications.filter { notification in
             if filter == nil {
                 return true
@@ -28,7 +28,7 @@ struct NotificationScreen: View {
         }
     }
 
-    var showContentUnavailableView: Bool {
+    private var showContentUnavailableView: Bool {
         filteredNotifications.isEmpty && !notificationEnvironmentModel.isRefreshing
     }
 

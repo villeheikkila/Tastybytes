@@ -17,16 +17,8 @@ struct UserSheet: View {
     @State private var searchedFor: String?
     @State private var searchResults = [Profile]()
 
-    let onSubmit: () -> Void
     let mode: Mode
-
-    init(
-        mode: Mode,
-        onSubmit: @escaping () -> Void
-    ) {
-        self.mode = mode
-        self.onSubmit = onSubmit
-    }
+    let onSubmit: () -> Void
 
     var body: some View {
         List(searchResults) { profile in

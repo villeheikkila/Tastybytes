@@ -21,11 +21,11 @@ struct BrandSheet: View {
     let brandOwner: Company
     let mode: Mode
 
-    var filteredBrands: [Brand.JoinedSubBrands] {
-        brandsWithSubBrands.filter { searchTerm.isEmpty || $0.name.contains(searchTerm) == true }
+    private var filteredBrands: [Brand.JoinedSubBrands] {
+        brandsWithSubBrands.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
-    var showContentUnavailableView: Bool {
+    private var showContentUnavailableView: Bool {
         !searchTerm.isEmpty && filteredBrands.isEmpty
     }
 

@@ -44,7 +44,6 @@ struct SettingsScreen: View {
 
     @ViewBuilder private var appSection: some View {
         Section {
-            RouterLink("settings.appearance.title", systemName: "paintbrush.fill", color: .blue, open: .screen(.appearanaceSettings))
             RouterLink(
                 "notifications.title",
                 systemName: "bell.badge.fill",

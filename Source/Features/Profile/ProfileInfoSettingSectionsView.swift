@@ -17,12 +17,12 @@ struct ProfileInfoSettingSectionsView: View {
 
     var body: some View {
         requiredSection
-        optionalSection
+        additionalInformationSection
     }
 
     private var requiredSection: some View {
         Section {
-            TextField("Pick an unique username", text: $username)
+            TextField("profile.username.placeholder", text: $username)
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.primary)
                 .autocapitalization(.none)
@@ -55,7 +55,7 @@ struct ProfileInfoSettingSectionsView: View {
         }
     }
 
-    private var optionalSection: some View {
+    private var additionalInformationSection: some View {
         Section {
             TextField("settings.profile.firstName", text: $firstName)
                 .focused($focusedField, equals: .firstName)
@@ -64,11 +64,11 @@ struct ProfileInfoSettingSectionsView: View {
             TextField("settings.profile.lastName", text: $lastName)
                 .focused($focusedField, equals: .lastName)
                 .multilineTextAlignment(.leading)
-                .foregroundColor(.black)
+                .foregroundColor(.primary)
         } header: {
-            Text("Additional information")
+            Text("profile.additionalInformation.header")
         } footer: {
-            Text("These values are optional but can help people find your profile")
+            Text("profile.additionalInformation.footer")
         }
         .headerProminence(.increased)
     }

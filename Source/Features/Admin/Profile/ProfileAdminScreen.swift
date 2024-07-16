@@ -5,22 +5,27 @@ import SwiftUI
 
 struct ProfilesAdminScreen: View {
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var profiles = [Profile]()
     @State private var searchTerm = ""
 
     private var filteredProfiles: [Profile] {
-        guard !searchTerm.isEmpty else { return profiles }
-        return profiles.filter { profile in
-            profile.preferredName.localizedCaseInsensitiveContains(searchTerm)
-        }
+        profiles.filteredBySearchTerm(by: \.preferredName, searchTerm: searchTerm)
     }
 
     var body: some View {
-        List(profiles) { profile in
+        List(filteredProfiles) { profile in
             RouterLink(open: .screen(.profile(profile))) {
                 ProfileEntityView(profile: profile)
+            }
+            .swipeActions {
+                Button("profile.admin.navigationTitle", systemImage: "wrench.and.screwdriver") {
+                    router.open(.sheet(.profileAdmin(profile: profile, onDelete: { profile in
+                        profiles = profiles.removing(profile)
+                    })))
+                }
             }
         }
         .listStyle(.plain)

@@ -131,7 +131,6 @@
 		5C9058192B2894BE00EC157B /* ProfileSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057862B2894BE00EC157B /* ProfileSettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90581A2B2894BE00EC157B /* AccountSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057872B2894BE00EC157B /* AccountSettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90581B2B2894BE00EC157B /* NotificationSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057882B2894BE00EC157B /* NotificationSettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C90581C2B2894BE00EC157B /* AppearanceSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057892B2894BE00EC157B /* AppearanceSettingsScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90581D2B2894BE00EC157B /* BlockedUsersScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90578A2B2894BE00EC157B /* BlockedUsersScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90581E2B2894BE00EC157B /* ErrorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90578B2B2894BE00EC157B /* ErrorScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90581F2B2894BE00EC157B /* AdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90578C2B2894BE00EC157B /* AdminScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -451,7 +450,6 @@
 		5C9057862B2894BE00EC157B /* ProfileSettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSettingsScreen.swift; sourceTree = "<group>"; };
 		5C9057872B2894BE00EC157B /* AccountSettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreen.swift; sourceTree = "<group>"; };
 		5C9057882B2894BE00EC157B /* NotificationSettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsScreen.swift; sourceTree = "<group>"; };
-		5C9057892B2894BE00EC157B /* AppearanceSettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsScreen.swift; sourceTree = "<group>"; };
 		5C90578A2B2894BE00EC157B /* BlockedUsersScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsersScreen.swift; sourceTree = "<group>"; };
 		5C90578B2B2894BE00EC157B /* ErrorScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorScreen.swift; sourceTree = "<group>"; };
 		5C90578C2B2894BE00EC157B /* AdminScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminScreen.swift; sourceTree = "<group>"; };
@@ -1152,7 +1150,6 @@
 				5C9057862B2894BE00EC157B /* ProfileSettingsScreen.swift */,
 				5C9057872B2894BE00EC157B /* AccountSettingsScreen.swift */,
 				5C9057882B2894BE00EC157B /* NotificationSettingsScreen.swift */,
-				5C9057892B2894BE00EC157B /* AppearanceSettingsScreen.swift */,
 				5C90578A2B2894BE00EC157B /* BlockedUsersScreen.swift */,
 				5C90578D2B2894BE00EC157B /* AccountDeletedScreen.swift */,
 			);
@@ -1983,7 +1980,6 @@
 				5C9058342B2894BE00EC157B /* ProfileWishlistScreen.swift in Sources */,
 				5C9057F72B2894BE00EC157B /* BarcodeScannerSheet.swift in Sources */,
 				5CEEA3072C39B4380009B3F5 /* CheckInImageAdminSheet.swift in Sources */,
-				5C90581C2B2894BE00EC157B /* AppearanceSettingsScreen.swift in Sources */,
 				5C90582E2B2894BE00EC157B /* TimePeriodStatisticView.swift in Sources */,
 				5CD1F0B42B9E4FD100C76F0C /* ToastView.swift in Sources */,
 				5C9990A52B8A24F5002BD3F7 /* NotificationFromUserWrapper.swift in Sources */,

@@ -17,6 +17,17 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
+    func getDetailed(id: UUID) async throws -> Profile.Detailed {
+        try await client
+            .from(.profiles)
+            .select(Profile.getQuery(.detailed(false)))
+            .eq("id", value: id.uuidString.lowercased())
+            .limit(1)
+            .single()
+            .execute()
+            .value
+    }
+
     func getAll() async throws -> [Profile] {
         try await client
             .from(.profiles)
@@ -29,7 +40,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     func getContributions(id: UUID) async throws -> Profile.Contributions {
         try await client
             .from(.profiles)
-            .select(Profile.getQuery(.contribtions(false)))
+            .select(Profile.getQuery(.contributions(false)))
             .eq("id", value: id.uuidString.lowercased())
             .not("sub_brands.name", operator: .is, value: AnyJSON.null)
             .limit(1)
@@ -121,9 +132,8 @@ struct SupabaseProfileRepository: ProfileRepository {
             .eq("profile_id", value: id)
             .execute()
             .value
-        
+
         return response.flatMap(\.roles)
-        
     }
 
     func deleteUserAsSuperAdmin(_ profile: Profile) async throws {

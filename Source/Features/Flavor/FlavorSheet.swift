@@ -14,11 +14,7 @@ struct FlavorSheet: View {
     private let maxFlavors = 4
 
     private var filteredFlavors: [Flavor] {
-        if searchTerm.isEmpty {
-            appEnvironmentModel.flavors
-        } else {
-            appEnvironmentModel.flavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
-        }
+        appEnvironmentModel.flavors.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
     private var showContentUnavailableView: Bool {

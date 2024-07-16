@@ -18,12 +18,12 @@ struct SubBrandSheet: View {
 
     let brandWithSubBrands: Brand.JoinedSubBrands
 
-    var filteredSubBrands: [SubBrand] {
-        brandWithSubBrands.subBrands.sorted()
-            .filter { sub in
-                guard let name = sub.name else { return false }
-                return searchTerm.isEmpty || name.lowercased().contains(searchTerm.lowercased())
-            }
+    private var sortedSubBrands: [SubBrand] {
+        brandWithSubBrands.subBrands.sorted().filter { $0.name != nil }
+    }
+
+    private var filteredSubBrands: [SubBrand] {
+        sortedSubBrands.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
     var showContentUnavailableView: Bool {

@@ -158,19 +158,18 @@ struct CheckInSheet: View {
                 }
             }
 
-            RouterLink(open: .sheet(.friends(taggedFriends: $taggedFriends)),
-                       label: {
-                           if taggedFriends.isEmpty {
-                               Text("checkIn.friends.tag")
-                           } else {
-                               WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
-                                   ForEach(taggedFriends) { friend in
-                                       Avatar(profile: friend)
-                                           .avatarSize(.medium)
-                                   }
-                               }
-                           }
-                       })
+            RouterLink(open: .sheet(.friends(taggedFriends: $taggedFriends))) {
+                if taggedFriends.isEmpty {
+                    Text("checkIn.friends.tag")
+                } else {
+                    WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
+                        ForEach(taggedFriends) { friend in
+                            Avatar(profile: friend)
+                                .avatarSize(.large)
+                        }
+                    }
+                }
+            }
         }
         .customListRowBackground()
     }

@@ -16,7 +16,13 @@ extension Profile: Queryable {
                 [saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
                 withTableName
             )
-        case let .contribtions(withTableName):
+        case let .detailed(withTableName):
+            return buildQuery(
+                .profiles,
+                [saved, Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
+                withTableName
+            )
+        case let .contributions(withTableName):
             return buildQuery(
                 .profiles,
                 [saved, buildQuery(name: "products", foreignKey: "products!products_created_by_fkey", [Product.getQuery(.joinedBrandSubcategories(false))]), buildQuery(name: "companies", foreignKey: "companies!companies_created_by_fkey", [Company.getQuery(.saved(false))]), buildQuery(name: "brands", foreignKey: "brands!brands_created_by_fkey", [Brand.getQuery(.saved(false))]), buildQuery(name: "sub_brands", foreignKey: "sub_brands!sub_brands_created_by_fkey", [SubBrand.getQuery(.joinedBrand(false))]), buildQuery(name: "barcodes", foreignKey: "product_barcodes!product_barcodes_created_by_fkey", [ProductBarcode.getQuery(.joined(false))])],
@@ -28,7 +34,8 @@ extension Profile: Queryable {
     enum QueryType {
         case minimal(_ withTableName: Bool)
         case extended(_ withTableName: Bool)
-        case contribtions(_ withTableName: Bool)
+        case detailed(_ withTableName: Bool)
+        case contributions(_ withTableName: Bool)
     }
 }
 
@@ -53,10 +60,9 @@ struct RolesPermissions: Sendable, Codable {
 
 extension RolesPermissions: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
-
         switch queryType {
         case let .joined(withTableName):
-            return buildQuery(.rolesPermissions, [Role.getQuery(.joined(true))], withTableName)
+            buildQuery(.rolesPermissions, [Role.getQuery(.joined(true))], withTableName)
         }
     }
 
@@ -64,7 +70,6 @@ extension RolesPermissions: Queryable {
         case joined(_ withTableName: Bool)
     }
 }
-
 
 extension Permission: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {

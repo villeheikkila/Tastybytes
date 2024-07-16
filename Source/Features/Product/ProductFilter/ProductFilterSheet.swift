@@ -34,7 +34,7 @@ struct ProductFilterSheet: View {
         sortBy = initialFilter?.sortBy
     }
 
-    var filter: Product.Filter? {
+    private var filter: Product.Filter? {
         guard !(categoryFilter == nil && subcategoryFilter == nil && onlyNonCheckedIn == false && sortBy == nil)
         else { return nil }
         return .init(
@@ -115,7 +115,7 @@ struct ProductFilterSheet: View {
         }
     }
 
-    func resetFilter() {
+    private func resetFilter() {
         withAnimation {
             categoryFilter = nil
             subcategoryFilter = nil

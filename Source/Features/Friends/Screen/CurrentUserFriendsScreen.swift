@@ -14,11 +14,13 @@ struct CurrentUserFriendsScreen: View {
 
     let showToolbar: Bool
 
-    var filteredFriends: [Friend] {
-        friendEnvironmentModel.acceptedOrPendingFriends.filter { friend in
-            searchTerm.isEmpty
-                || friend.getFriend(userId: profileEnvironmentModel.id).preferredName.lowercased()
-                .contains(searchTerm.lowercased())
+    private var filteredFriends: [Friend] {
+        if searchTerm.isEmpty {
+            friendEnvironmentModel.acceptedOrPendingFriends
+        } else {
+            friendEnvironmentModel.acceptedOrPendingFriends.filter {
+                $0.getFriend(userId: profileEnvironmentModel.id).preferredName.localizedCaseInsensitiveContains(searchTerm)
+            }
         }
     }
 

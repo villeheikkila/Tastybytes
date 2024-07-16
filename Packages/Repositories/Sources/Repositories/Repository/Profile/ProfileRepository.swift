@@ -3,6 +3,7 @@ import Models
 
 public protocol ProfileRepository: Sendable {
     func getById(id: UUID) async throws -> Profile
+    func getDetailed(id: UUID) async throws -> Profile.Detailed
     func getAll() async throws -> [Profile]
     func getCurrentUser() async throws -> Profile.Extended
     func update(update: Profile.UpdateRequest) async throws -> Profile.Extended

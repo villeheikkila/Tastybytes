@@ -24,10 +24,12 @@ struct FriendsScreen: View {
     }
 
     private var filteredFriends: [Friend] {
-        friends.filter { f in
-            searchTerm.isEmpty ||
-                f.getFriend(userId: profile.id).preferredName.lowercased()
-                .contains(searchTerm.lowercased())
+        if searchTerm.isEmpty {
+            friends
+        } else {
+            friends.filter {
+                $0.getFriend(userId: profile.id).preferredName.localizedCaseInsensitiveContains(searchTerm)
+            }
         }
     }
 

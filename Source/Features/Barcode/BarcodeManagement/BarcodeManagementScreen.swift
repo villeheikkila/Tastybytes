@@ -37,7 +37,7 @@ struct BarcodeManagementScreen: View {
         .overlay {
             if state == .populated {
                 if barcodes.isEmpty {
-                    ContentUnavailableView("No barcodes have been added", systemImage: "barcode")
+                    ContentUnavailableView("barcode.management.empty.title", systemImage: "barcode")
                 }
             } else {
                 ScreenStateOverlayView(state: state, errorDescription: "") {

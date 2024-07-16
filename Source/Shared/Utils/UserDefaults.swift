@@ -109,20 +109,3 @@ extension UserDefaults {
         value(forKey: key.rawValue)
     }
 }
-
-enum CustomColorScheme: String, CaseIterable, Codable, Equatable, Sendable {
-    case system
-    case light
-    case dark
-
-    var systemColorScheme: ColorScheme? {
-        switch self {
-        case .light:
-            .light
-        case .dark:
-            .dark
-        case .system:
-            nil
-        }
-    }
-}

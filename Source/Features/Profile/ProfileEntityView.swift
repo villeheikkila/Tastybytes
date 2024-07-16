@@ -16,5 +16,6 @@ struct ProfileEntityView: View {
                 }
             }
         }
+        .contentShape(.rect)
     }
 }

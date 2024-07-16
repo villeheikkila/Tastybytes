@@ -246,9 +246,6 @@
         }
       }
     },
-    "Additional information" : {
-
-    },
     "admin.category.title" : {
       "localizations" : {
         "en" : {
@@ -314,10 +311,24 @@
       }
     },
     "admin.profiles.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Profiles"
+          }
+        }
+      }
     },
     "admin.profiles.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profiles"
+          }
+        }
+      }
     },
     "admin.section.data.title" : {
       "localizations" : {
@@ -504,6 +515,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Barcodes"
+          }
+        }
+      }
+    },
+    "barcode.management.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No barcodes have been added"
           }
         }
       }
@@ -2574,7 +2595,14 @@
       }
     },
     "friends.empty.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven’t yet connected with anyone"
+          }
+        }
+      }
     },
     "friends.navigationTitle" : {
       "localizations" : {
@@ -2607,7 +2635,14 @@
       }
     },
     "label.isVerified" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verified"
+          }
+        }
+      }
     },
     "labels.add" : {
       "localizations" : {
@@ -3233,9 +3268,6 @@
         }
       }
     },
-    "No barcodes have been added" : {
-
-    },
     "notification.checkInComment.label" : {
       "localizations" : {
         "en" : {
@@ -3566,9 +3598,6 @@
         }
       }
     },
-    "Pick an unique username" : {
-
-    },
     "product.admin.editSuggestion.delete.description" : {
 
     },
@@ -3837,28 +3866,6 @@
         }
       }
     },
-    "product.logo.navigationTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Product Logo"
-          }
-        }
-      }
-    },
-    "product.logo.section.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Logo"
-          }
-        }
-      }
-    },
     "product.markAsDuplicate.label" : {
       "localizations" : {
         "en" : {
@@ -3975,6 +3982,39 @@
         }
       }
     },
+    "profile.additionalInformation.footer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These values are optional but can help people find your profile"
+          }
+        }
+      }
+    },
+    "profile.additionalInformation.header" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Additional information"
+          }
+        }
+      }
+    },
+    "profile.admin.avatars.count" : {
+
+    },
+    "profile.admin.isOnboarded" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onboarded"
+          }
+        }
+      }
+    },
     "profile.admin.joinedAt.label" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4007,7 +4047,14 @@
       }
     },
     "profile.avatar.actions.change" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change avatar"
+          }
+        }
+      }
     },
     "profile.avatar.delete.label" : {
       "localizations" : {
@@ -4020,10 +4067,24 @@
       }
     },
     "profile.delete.confirmation.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete the user? All related data will be permanently lost"
+          }
+        }
+      }
     },
     "profile.delete.confirmation.label %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete user %@"
+          }
+        }
+      }
     },
     "profile.error.unexpected.description" : {
       "localizations" : {
@@ -4146,10 +4207,24 @@
       }
     },
     "profile.private.title" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private Profile"
+          }
+        }
+      }
     },
     "profile.rolePickerSheet.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Roles"
+          }
+        }
+      }
     },
     "profile.shareLink.subject %@" : {
       "localizations" : {
@@ -4207,6 +4282,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Profile"
+          }
+        }
+      }
+    },
+    "profile.totalCheckIns" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total check-ins"
+          }
+        }
+      }
+    },
+    "profile.uniqueCheckIns" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unique check-ins"
+          }
+        }
+      }
+    },
+    "profile.username.placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick an unique username"
           }
         }
       }
@@ -4688,6 +4793,7 @@
       }
     },
     "settings.appearance.navigationTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4698,6 +4804,7 @@
       }
     },
     "settings.appearance.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4708,6 +4815,7 @@
       }
     },
     "settings.appearance.useDarkMode.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4718,6 +4826,7 @@
       }
     },
     "settings.appearance.useSystemColorScheme.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4847,28 +4956,6 @@
         }
       }
     },
-    "settings.profile.section.identity.description" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "These values are used in your personal page and can be seen by other users."
-          }
-        }
-      }
-    },
-    "settings.profile.section.identity.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profile"
-          }
-        }
-      }
-    },
     "settings.profile.update" : {
       "localizations" : {
         "en" : {
@@ -4910,7 +4997,14 @@
       }
     },
     "settings.profile.username.description" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username is your unique name, it must be at least 3 characters long."
+          }
+        }
+      }
     },
     "settings.signOut" : {
       "localizations" : {
@@ -5318,9 +5412,6 @@
           }
         }
       }
-    },
-    "These values are optional but can help people find your profile" : {
-
     },
     "timePeriod.abbreviated.month" : {
       "localizations" : {

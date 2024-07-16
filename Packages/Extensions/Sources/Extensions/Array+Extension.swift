@@ -33,6 +33,26 @@ public extension Array {
     }
 }
 
+public extension Array {
+    func filteredBySearchTerm(
+        by keyPath: KeyPath<Element, some StringProtocol>,
+        searchTerm: String
+    ) -> [Element] {
+        guard !searchTerm.isEmpty else { return self }
+        return filter { $0[keyPath: keyPath].localizedCaseInsensitiveContains(searchTerm) }
+    }
+}
+
+public extension Array {
+    func filteredBySearchTerm(
+        by keyPath: KeyPath<Element, (some StringProtocol)?>,
+        searchTerm: String
+    ) -> [Element] {
+        guard !searchTerm.isEmpty else { return self }
+        return filter { $0[keyPath: keyPath]?.localizedCaseInsensitiveContains(searchTerm) ?? false }
+    }
+}
+
 public extension Array where Element: Equatable {
     func removing(_ items: [Element]) -> [Element] {
         var result = self

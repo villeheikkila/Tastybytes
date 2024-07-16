@@ -9,13 +9,26 @@ struct ProfileAdminSheet: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Repository.self) private var repository
     @Environment(\.dismiss) private var dismiss
+    @State private var state: ScreenState = .loading
+    @State private var detailedProfile: Profile.Detailed?
+    @State private var summary: ProfileSummary?
 
     let profile: Profile
     let onDelete: (_ profile: Profile) -> Void
 
+    private var isProfileDeletable: Bool {
+        if let summary {
+            profileEnvironmentModel.hasRole(.superAdmin) && summary.totalCheckIns > 0
+        } else {
+            false
+        }
+    }
+
     var body: some View {
         Form {
-            content
+            if state == .populated, let detailedProfile, let summary {
+                content(detailedProfile, summary)
+            }
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("profile.admin.navigationTitle")
@@ -23,9 +36,12 @@ struct ProfileAdminSheet: View {
         .toolbar {
             toolbarContent
         }
+        .task {
+            await load()
+        }
     }
 
-    @ViewBuilder private var content: some View {
+    @ViewBuilder private func content(_ detailedProfile: Profile.Detailed, _ summary: ProfileSummary) -> some View {
         Section("profile.admin.section.profile") {
             RouterLink(open: .screen(.profile(profile))) {
                 ProfileEntityView(profile: profile)
@@ -38,23 +54,37 @@ struct ProfileAdminSheet: View {
                     .year()
                     .month(.wide)
                     .day()))
+            LabeledContent("settings.profile.username", value: detailedProfile.username ?? "-")
+            LabeledContent("settings.profile.firstName", value: detailedProfile.firstName ?? "-")
+            LabeledContent("settings.profile.lastName", value: detailedProfile.lastName ?? "-")
+            LabeledContent("profile.admin.avatars.count", value: detailedProfile.avatars.count.formatted())
+            Toggle("profile.admin.isOnboarded", isOn: .init(get: {
+                detailedProfile.isOnboarded
+            }, set: { _ in }))
+                .disabled(true)
+            LabeledContent("profile.uniqueCheckIns", value: summary.uniqueCheckIns.formatted())
+            LabeledContent("profile.totalCheckIns", value: summary.totalCheckIns.formatted())
         }
         .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.profile(profile.id))))
             RouterLink("contributions.title", systemImage: "plus", open: .screen(.contributions(profile)))
             if profileEnvironmentModel.hasRole(.superAdmin) {
-                RouterLink("profile.rolePickerSheet.navigationTitle", systemImage: "lock", open: .screen(.roleSuperAdminPicker(profile: profile)))
+                RouterLink(
+                    "profile.rolePickerSheet.navigationTitle",
+                    systemImage: "lock",
+                    open: .screen(.roleSuperAdminPicker(profile: profile, roles: detailedProfile.roles))
+                )
             }
         }
         .customListRowBackground()
         Section {
             ConfirmedDeleteButtonView(
                 presenting: profile,
-                action: deleteProduct,
+                action: delete,
                 description: "profile.delete.confirmation.description",
                 label: "profile.delete.confirmation.label \(profile.preferredName)",
-                isDisabled: !profileEnvironmentModel.hasRole(.superAdmin)
+                isDisabled: isProfileDeletable
             )
         }
         .customListRowBackground()
@@ -64,7 +94,19 @@ struct ProfileAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func deleteProduct(_ profile: Profile) async {
+    private func load() async {
+        do {
+            detailedProfile = try await repository.profile.getDetailed(id: profile.id)
+            summary = try await repository.checkIn.getSummaryByProfileId(id: profile.id)
+            state = .populated
+        } catch {
+            guard !error.isCancelled else { return }
+            state = .error([error])
+            logger.error("Failed to delete profile. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    private func delete(_ profile: Profile) async {
         do {
             try await repository.profile.deleteUserAsSuperAdmin(profile)
             onDelete(profile)
@@ -80,26 +122,31 @@ struct RoleSuperAdminPickerScreen: View {
     let logger = Logger(category: "RoleSuperAdminPickerScreen")
     @Environment(Repository.self) private var repository
     @State private var availableRoles = [Role]()
-    @State private var selectedRoles = [Role]()
 
     let profile: Profile
+    let roles: [Role]
+
+    private var availableRoleIds: [Int] {
+        roles.map(\.id)
+    }
 
     var body: some View {
         List(availableRoles) { role in
             Section {
                 ForEach(role.permissions) { permission in
                     HStack {
-                        Text(permission.name)
+                        Text(permission.label)
                         Spacer()
                     }
                 }
             } header: {
                 HStack {
-                    Text(role.name)
+                    Text(role.label)
                     Spacer()
                     Label("settings.appIcon.selected", systemImage: "checkmark")
                         .labelStyle(.iconOnly)
-                        .opacity(selectedRoles.contains(role) ? 1 : 0)
+                        .foregroundColor(.green)
+                        .opacity(availableRoleIds.contains(role.id) ? 1 : 0)
                 }
             }
         }
@@ -113,12 +160,9 @@ struct RoleSuperAdminPickerScreen: View {
 
     private func load() async {
         async let availableRolesPromise = repository.profile.getRoles()
-        //async let profileRolesPromise = repository.profile.getRolesForProfile(id: profile.id)
-
         do {
-            let (availableRoles) = try await (availableRolesPromise)
+            let availableRoles = try await (availableRolesPromise)
             self.availableRoles = availableRoles
-           // self.selectedRoles = selectedRoles
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to load roles. Error: \(error) (\(#file):\(#line))")

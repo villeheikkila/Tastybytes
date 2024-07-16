@@ -32,7 +32,6 @@ enum Screen: Hashable, Sendable {
     case profileSettings
     case privacySettings
     case accountSettings
-    case appearanaceSettings
     case notificationSettingsScreen
     case appIcon
     case blockedUsers
@@ -50,7 +49,7 @@ enum Screen: Hashable, Sendable {
     case subBrandList(subBrands: [SubBrand.JoinedBrand])
     case barcodeList(barcodes: [ProductBarcode.Joined])
     case profilesAdmin
-    case roleSuperAdminPicker(profile: Profile)
+    case roleSuperAdminPicker(profile: Profile, roles: [Role])
 
     @MainActor
     @ViewBuilder
@@ -110,8 +109,6 @@ enum Screen: Hashable, Sendable {
             ProfileSettingsScreen()
         case .accountSettings:
             AccountSettingsScreen()
-        case .appearanaceSettings:
-            AppearanceSettingsScreen()
         case .privacySettings:
             PrivacySettingsScreen()
         case .notificationSettingsScreen:
@@ -150,8 +147,8 @@ enum Screen: Hashable, Sendable {
             BrandScreen(brandId: id, initialScrollPosition: initialScrollPosition)
         case .profilesAdmin:
             ProfilesAdminScreen()
-        case let .roleSuperAdminPicker(profile):
-            RoleSuperAdminPickerScreen(profile: profile)
+        case let .roleSuperAdminPicker(profile, roles):
+            RoleSuperAdminPickerScreen(profile: profile, roles: roles)
         }
     }
 
@@ -213,8 +210,8 @@ enum Screen: Hashable, Sendable {
             lhsSubBrands == rhsSubBrands
         case let (.barcodeList(lhsBarcodes), .barcodeList(rhsBarcodes)):
             lhsBarcodes == rhsBarcodes
-        case let (.roleSuperAdminPicker(lhsProfile), .roleSuperAdminPicker(rhsProfile)):
-            lhsProfile == rhsProfile
+        case let (.roleSuperAdminPicker(lhsProfile, lhsRoles), .roleSuperAdminPicker(rhsProfile, rhsRoles)):
+            lhsProfile == rhsProfile && lhsRoles == rhsRoles
         case (.settings, .settings),
              (.currentUserFriends, .currentUserFriends),
              (.flavorAdmin, .flavorAdmin),
@@ -224,7 +221,6 @@ enum Screen: Hashable, Sendable {
              (.profileSettings, .profileSettings),
              (.privacySettings, .privacySettings),
              (.accountSettings, .accountSettings),
-             (.appearanaceSettings, .appearanaceSettings),
              (.notificationSettingsScreen, .notificationSettingsScreen),
              (.appIcon, .appIcon),
              (.blockedUsers, .blockedUsers),
@@ -318,8 +314,6 @@ enum Screen: Hashable, Sendable {
             hasher.combine("privacySettings")
         case .accountSettings:
             hasher.combine("accountSettings")
-        case .appearanaceSettings:
-            hasher.combine("appearanaceSettings")
         case .notificationSettingsScreen:
             hasher.combine("notificationSettingsScreen")
         case .appIcon:
@@ -368,9 +362,10 @@ enum Screen: Hashable, Sendable {
             hasher.combine(initialScrollPosition)
         case .profilesAdmin:
             hasher.combine("profilesAdmin")
-        case let .roleSuperAdminPicker(profile):
+        case let .roleSuperAdminPicker(profile, roles):
             hasher.combine("roleSuperAdminPicker")
             hasher.combine(profile)
+            hasher.combine(roles)
         }
     }
 }

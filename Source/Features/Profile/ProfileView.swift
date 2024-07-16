@@ -29,8 +29,10 @@ struct ProfileInnerView: View {
     @State private var profileSummary: ProfileSummary?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoading = false
+    @State private var isLoadingImages = false
     @State private var loadImagesTask: Task<Void, Never>?
     @State private var page = 0
+    @State private var imagePage = 0
     @State private var showPicker = false
     @State private var selectedItem: PhotosPickerItem?
     @State private var state: ScreenState = .loading
@@ -98,7 +100,8 @@ struct ProfileInnerView: View {
             if showInFull {
                 RatingChartView(profile: profile, profileSummary: profileSummary)
                 if !checkInImages.isEmpty {
-                    CheckInImagesSection(checkInImages: checkInImages, isLoading: isLoading, onLoadMore: {
+                    CheckInImagesSection(checkInImages: checkInImages, isLoading: isLoadingImages, onLoadMore: {
+                        guard loadImagesTask == nil else { return }
                         loadImagesTask = Task {
                             await fetchImages()
                         }
@@ -137,11 +140,8 @@ struct ProfileInnerView: View {
                 profileSummary = summaryResult
             }
             withAnimation {
-                if isRefresh {
-                    checkInImages = imagesResult
-                } else {
-                    checkInImages.append(contentsOf: imagesResult)
-                }
+                imagePage = 1
+                checkInImages = imagesResult
             }
             page += 1
             isLoading = false
@@ -156,16 +156,17 @@ struct ProfileInnerView: View {
     }
 
     private func fetchImages() async {
-        let (from, to) = getPagination(page: page, size: pageSize)
-        isLoading = true
+        defer { loadImagesTask = nil }
+        let (from, to) = getPagination(page: imagePage, size: pageSize)
+        isLoadingImages = true
 
         do {
             let checkIns = try await repository.checkIn.getCheckInImages(by: .profile(profile), from: from, to: to)
             withAnimation {
                 checkInImages.append(contentsOf: checkIns)
             }
-            page += 1
-            isLoading = false
+            imagePage += 1
+            isLoadingImages = false
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")

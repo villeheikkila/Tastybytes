@@ -1,42 +1,35 @@
 import Components
 import EnvironmentModels
+import Extensions
 import Models
 import SwiftUI
 
 struct FriendSheet: View {
-    @Binding private var taggedFriends: [Profile]
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
-    @State private var selectedFriendIds: Set<UUID> = Set()
-
-    init(taggedFriends: Binding<[Profile]>) {
-        _taggedFriends = taggedFriends
-        _selectedFriendIds = State(initialValue: Set(taggedFriends.map(\.id)))
-    }
+    @Binding var taggedFriends: [Profile]
 
     private var shownProfiles: [Profile] {
-        friendEnvironmentModel.acceptedFriends
-            .filter { searchTerm.isEmpty || $0.preferredName.lowercased().contains(searchTerm.lowercased()) }
+        friendEnvironmentModel.acceptedFriends.filteredBySearchTerm(by: \.preferredName, searchTerm: searchTerm)
     }
 
     private var sortedShownProfiles: [Profile] {
-        shownProfiles.sorted { selectedFriendIds.contains($0.id) && !selectedFriendIds.contains($1.id) }
+        shownProfiles.sorted { taggedFriends.contains($0) && !taggedFriends.contains($1) }
     }
 
     private var showContentUnavailableView: Bool {
         !searchTerm.isEmpty && sortedShownProfiles.isEmpty
     }
 
-    private var selectedFriendIdsAsFrieds: [Profile] {
-        selectedFriendIds.compactMap { flavor in
-            friendEnvironmentModel.acceptedFriends.first(where: { $0.id == flavor })
-        }
-    }
-
     var body: some View {
-        List(sortedShownProfiles, selection: $selectedFriendIds) { friend in
-            FriendSheetRow(friend: friend)
+        List(sortedShownProfiles, selection: $taggedFriends.map(getter: { friends in
+            Set(friends.map(\.id))
+        }, setter: { ids in
+            ids.compactMap { id in friendEnvironmentModel.acceptedFriends.first(where: { $0.id == id }) }
+        })) { profile in
+            ProfileEntityView(profile: profile)
+                .listRowBackground(Color.clear)
         }
         .environment(\.editMode, .constant(.active))
         .scrollContentBackground(.hidden)
@@ -52,26 +45,9 @@ struct FriendSheet: View {
         .toolbar {
             toolbarContent
         }
-        .onChange(of: selectedFriendIds) {
-            taggedFriends = selectedFriendIdsAsFrieds
-        }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
-    }
-}
-
-struct FriendSheetRow: View {
-    let friend: Profile
-
-    var body: some View {
-        HStack {
-            Avatar(profile: friend)
-                .avatarSize(.extraLarge)
-            Text(friend.preferredName).padding(.leading, 8)
-            Spacer()
-        }
-        .listRowBackground(Color.clear)
     }
 }

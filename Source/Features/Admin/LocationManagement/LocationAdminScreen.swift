@@ -1,4 +1,5 @@
 import EnvironmentModels
+import Extensions
 import Models
 import Repositories
 import SwiftUI
@@ -11,12 +12,8 @@ struct LocationAdminScreen: View {
     @State private var locations = [Location]()
     @State private var searchTerm = ""
 
-    var filteredLocations: [Location] {
-        if searchTerm.isEmpty {
-            locations
-        } else {
-            locations.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
-        }
+    private var filteredLocations: [Location] {
+        locations.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
     var body: some View {
