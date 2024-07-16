@@ -21,7 +21,8 @@ struct RouterLink<LabelView: View>: View {
 
     @ViewBuilder
     private var content: some View {
-        if routerLinkMode == .preferNavigationLink, case let .screen(screen, resetStack, removeLast) = open, !resetStack || !removeLast {
+        // TODO: Enable after double navigation is fixed
+        if false, routerLinkMode == .preferNavigationLink, case let .screen(screen, resetStack, removeLast) = open, !resetStack || !removeLast {
             NavigationLink(value: screen, label: label)
         } else {
             Button(action: { router.open(open) }, label: label)
