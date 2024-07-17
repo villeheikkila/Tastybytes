@@ -66,6 +66,8 @@ struct CompanyPickerSheet: View {
                 .background(.ultraThinMaterial)
                 .animation(.default, value: status)
                 .frame(height: status == .add ? 150 : 100)
+                .clipShape(.rect(cornerRadius: 8))
+                .padding()
             }
         }
         .overlay {

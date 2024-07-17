@@ -45,6 +45,11 @@ struct CheckInListCardView: View {
                 }
             }
             Divider()
+            RouterLink(
+                "checkIn.screen.open",
+                systemImage: "checkmark.circle",
+                open: .screen(.checkIn(checkIn))
+            )
             RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product)))
             RouterLink(
                 "company.screen.open",

@@ -97,6 +97,8 @@ struct DiscoverScreen: View {
                 .scrollContentBackground(.hidden)
                 .background(.thinMaterial)
                 .frame(height: 90)
+                .clipShape(.rect(cornerRadius: 8))
+                .padding()
             }
         })
         .safeAreaInset(edge: .top) {

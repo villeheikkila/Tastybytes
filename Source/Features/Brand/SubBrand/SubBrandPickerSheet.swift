@@ -45,7 +45,6 @@ struct SubBrandPickerSheet: View {
                     self.subBrand = subBrand
                     dismiss()
                 }
-                .background(.ultraThinMaterial)
             }
         })
         .overlay {
@@ -93,6 +92,8 @@ struct CreateSubBrandView: View {
         .scrollContentBackground(.hidden)
         .background(.ultraThinMaterial)
         .frame(height: 200)
+        .clipShape(.rect(cornerRadius: 8))
+        .padding()
     }
 
     private func createNewSubBrand() async {

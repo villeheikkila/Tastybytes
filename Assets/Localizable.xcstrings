@@ -1547,6 +1547,16 @@
         }
       }
     },
+    "checkIn.screen.open" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Check-in"
+          }
+        }
+      }
+    },
     "checkIn.section.additionalInformation.title" : {
       "localizations" : {
         "en" : {

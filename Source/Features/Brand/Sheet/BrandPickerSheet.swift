@@ -54,6 +54,8 @@ struct BrandPickerSheet: View {
                 .scrollContentBackground(.hidden)
                 .background(.ultraThinMaterial)
                 .frame(height: 150)
+                .clipShape(.rect(cornerRadius: 8))
+                .padding()
             }
         }
         .overlay {

@@ -56,7 +56,10 @@ struct SubcategoryPickerSheet: View {
                     Section("subcategory.add.name") {
                         TextField("subcategory.name.placeholder", text: $newSubcategoryName)
                         AsyncButton("labels.create") {
-                            await appEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName)
+                            await appEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName) { subcategory in
+                                newSubcategoryName = ""
+                                subcategories.append(subcategory)
+                            }
                         }
                     }
                 }
@@ -64,6 +67,8 @@ struct SubcategoryPickerSheet: View {
                 .scrollContentBackground(.hidden)
                 .background(.ultraThinMaterial)
                 .frame(height: 150)
+                .clipShape(.rect(cornerRadius: 8))
+                .padding()
             }
         }
         .overlay {

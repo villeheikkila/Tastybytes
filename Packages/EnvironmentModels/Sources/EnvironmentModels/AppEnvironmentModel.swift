@@ -330,11 +330,14 @@ public final class AppEnvironmentModel {
         }
     }
 
-    public func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String) async {
+    public func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String, onCreate: ((Subcategory) -> Void)? = nil) async {
         do {
             let newSubcategory = try await repository.subcategory
                 .insert(newSubcategory: Subcategory.NewRequest(name: name, category: category))
             categories = categories.replacing(category, with: category.appending(subcategory: newSubcategory))
+            if let onCreate {
+                onCreate(newSubcategory)
+            }
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
