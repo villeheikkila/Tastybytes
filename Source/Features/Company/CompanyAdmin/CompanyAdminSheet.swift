@@ -14,7 +14,7 @@ struct CompanyAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var showDeleteCompanyConfirmationDialog = false
-    @State private var company: Company.Management
+    @State private var company: Company.Detailed
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
 
@@ -79,7 +79,7 @@ struct CompanyAdminSheet: View {
                 HStack {
                     Label("admin.section.editSuggestions.title", systemImage: "square.and.pencil")
                     Spacer()
-                    Text("(\(company.editSuggestions.count.formatted()))")
+                    Text("(\(company.editSuggestions.unresolvedCount.formatted()))")
                 }
             }
         }
@@ -102,7 +102,7 @@ struct CompanyAdminSheet: View {
 
     private func loadData() async {
         do {
-            let company = try await repository.company.getManagementDataById(id: company.id)
+            let company = try await repository.company.getDetailed(id: company.id)
             withAnimation {
                 self.company = company
                 state = .populated
@@ -140,7 +140,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    private func deleteCompany(_ company: Company.Management) async {
+    private func deleteCompany(_ company: Company.Detailed) async {
         do { try await repository.company.delete(id: company.id)
             onDelete()
             dismiss()

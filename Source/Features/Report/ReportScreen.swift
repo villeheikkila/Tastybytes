@@ -82,7 +82,6 @@ struct ReportScreen: View {
 struct ReportScreenRow: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @State private var showDeleteConfirmation = false
     let report: Report
 
     let deleteReport: (_ report: Report) async -> Void

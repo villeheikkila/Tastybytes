@@ -60,6 +60,10 @@ struct DiscoverProductRow: View {
             router.open(.screen(.product(addBarcodeTo)))
         } catch {
             guard !error.isCancelled else { return }
+            guard !error.isDuplicate else {
+                router.open(.toast(.warning("barcode.duplicate.toast")))
+                return
+            }
             logger.error("Adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed. error: \(error)")
         }
     }

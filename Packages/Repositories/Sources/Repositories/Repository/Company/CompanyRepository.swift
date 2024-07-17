@@ -4,10 +4,10 @@ import Models
 public protocol CompanyRepository: Sendable {
     func getById(id: Int) async throws -> Company
     func getJoinedById(id: Int) async throws -> Company.Joined
-    func getManagementDataById(id: Int) async throws -> Company.Management
+    func getDetailed(id: Int) async throws -> Company.Detailed
     func getUnverified() async throws -> [Company]
     func insert(newCompany: Company.NewRequest) async throws -> Company
-    func update(updateRequest: Company.UpdateRequest) async throws -> Company.Management
+    func update(updateRequest: Company.UpdateRequest) async throws -> Company.Detailed
     func editSuggestion(updateRequest: Company.EditSuggestionRequest) async throws
     func deleteEditSuggestion(editSuggestion: Company.EditSuggestion) async throws
     func resolveEditSuggestion(editSuggestion: Company.EditSuggestion) async throws

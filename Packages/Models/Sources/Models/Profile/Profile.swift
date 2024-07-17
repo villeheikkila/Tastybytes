@@ -274,12 +274,12 @@ public extension Profile {
             self.id = id
         }
 
-        public init(id: UUID,isPrivate: Bool) {
+        public init(id: UUID, isPrivate: Bool) {
             self.isPrivate = isPrivate
             self.id = id
         }
 
-        public init(id: UUID,isOnboarded: Bool) {
+        public init(id: UUID, isOnboarded: Bool) {
             self.isOnboarded = isOnboarded
             self.id = id
         }

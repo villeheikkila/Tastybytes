@@ -73,9 +73,6 @@ struct CategoryAdminSheet: View {
 }
 
 struct CategoryAdminSheetSubcategoryRowView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @State private var showDeleteConfirmationDialog = false
-
     let subcategory: Subcategory.JoinedCategory
 
     var body: some View {

@@ -28,7 +28,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func getManagementDataById(id: Int) async throws -> Company.Management {
+    func getDetailed(id: Int) async throws -> Company.Detailed {
         try await client
             .from(.companies)
             .select(Company.getQuery(.detailed(false)))
@@ -70,7 +70,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func update(updateRequest: Company.UpdateRequest) async throws -> Company.Management {
+    func update(updateRequest: Company.UpdateRequest) async throws -> Company.Detailed {
         try await client
             .from(.companies)
             .update(updateRequest)

@@ -47,7 +47,7 @@ struct FlavorPickerSheet: View {
         .onChange(of: pickedFlavors) { oldValue, newValue in
             if newValue.count > maxFlavors {
                 pickedFlavors = pickedFlavors.removing(newValue.addedValues(oldValue))
-                router.open(.toast(.warning("flavor.add.maxAmountReached.toast \(maxFlavors)")))
+                router.open(.toast(.error("flavor.add.maxAmountReached.toast \(maxFlavors)")))
             }
         }
         .toolbar {

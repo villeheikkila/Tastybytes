@@ -218,9 +218,13 @@ struct ProductInnerScreen: View {
     private func addBarcodeToProduct(_ barcode: Barcode) async {
         do {
             try await repository.productBarcode.addToProduct(product: product, barcode: barcode)
-            router.open(.toast(.success("bracode.add.success.toast")))
+            router.open(.toast(.success("barcode.add.success.toast")))
         } catch {
             guard !error.isCancelled else { return }
+            guard !error.isDuplicate else {
+                router.open(.toast(.warning("barcode.duplicate.toast")))
+                return
+            }
             router.open(.alert(.init(title: "barcode.error.failedToAdd.title", retryLabel: "labels.retry", retry: {
                 Task { await addBarcodeToProduct(barcode) }
             })))

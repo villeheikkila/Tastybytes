@@ -4,7 +4,7 @@ import Models
 public protocol BrandRepository: Sendable {
     func getById(id: Int) async throws -> Brand.JoinedSubBrandsProducts
     func getJoinedById(id: Int) async throws -> Brand.JoinedSubBrandsProductsCompany
-    func getDetailed(id: Int) async throws -> Brand.JoinedSubBrandsProductsCompany
+    func getDetailed(id: Int) async throws -> Brand.Detailed
     func getByBrandOwnerId(brandOwnerId: Int) async throws -> [Brand.JoinedSubBrands]
     func getUnverified() async throws -> [Brand.JoinedSubBrandsProductsCompany]
     func getSummaryById(id: Int) async throws -> Summary
@@ -12,8 +12,11 @@ public protocol BrandRepository: Sendable {
     func isLikedByCurrentUser(id: Int) async throws -> Bool
     func likeBrand(brandId: Int) async throws
     func unlikeBrand(brandId: Int) async throws
-    func update(updateRequest: Brand.UpdateRequest) async throws -> Brand.JoinedSubBrandsProductsCompany
+    func update(updateRequest: Brand.UpdateRequest) async throws -> Brand.Detailed
+    func editSuggestion(_ updateRequest: Brand.EditSuggestionRequest) async throws
     func verification(id: Int, isVerified: Bool) async throws
     func delete(id: Int) async throws
     func uploadLogo(brandId: Int, data: Data) async throws -> ImageEntity
+    func resolveEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws
+    func deleteEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws
 }

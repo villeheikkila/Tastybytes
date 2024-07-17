@@ -40,7 +40,7 @@ enum Screen: Hashable, Sendable {
     case reports(ReportFilter? = nil)
     case locationAdmin
     case error(reason: String)
-    case companyEditSuggestion(company: Binding<Company.Management>)
+    case companyEditSuggestion(company: Binding<Company.Detailed>)
     case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
     case barcodeManagement(product: Product.Joined)
     case productList(products: [Product.Joined])
@@ -50,6 +50,7 @@ enum Screen: Hashable, Sendable {
     case barcodeList(barcodes: [ProductBarcode.Joined])
     case profilesAdmin
     case roleSuperAdminPicker(profile: Binding<Profile.Detailed?>, roles: [Role])
+    case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed?>)
 
     @MainActor
     @ViewBuilder
@@ -149,6 +150,8 @@ enum Screen: Hashable, Sendable {
             ProfilesAdminScreen()
         case let .roleSuperAdminPicker(profile, roles):
             RoleSuperAdminPickerScreen(profile: profile, roles: roles)
+        case let .brandEditSuggestionAdmin(brand: brand):
+            BrandEditSuggestionAdminScreen(brand: brand)
         }
     }
 
@@ -212,6 +215,8 @@ enum Screen: Hashable, Sendable {
             lhsBarcodes == rhsBarcodes
         case let (.roleSuperAdminPicker(lhsProfile, lhsRoles), .roleSuperAdminPicker(rhsProfile, rhsRoles)):
             lhsProfile.wrappedValue == rhsProfile.wrappedValue && lhsRoles == rhsRoles
+        case let (.brandEditSuggestionAdmin(lhsBrand), .brandEditSuggestionAdmin(rhsBrand)):
+            lhsBrand.wrappedValue == rhsBrand.wrappedValue
         case (.settings, .settings),
              (.currentUserFriends, .currentUserFriends),
              (.flavorAdmin, .flavorAdmin),
@@ -368,6 +373,9 @@ enum Screen: Hashable, Sendable {
                 hasher.combine(profile)
             }
             hasher.combine(roles)
+        case let .brandEditSuggestionAdmin(brand):
+            hasher.combine("brandEditSuggestionAdmin")
+            hasher.combine(brand.wrappedValue)
         }
     }
 }

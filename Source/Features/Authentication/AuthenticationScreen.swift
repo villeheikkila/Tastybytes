@@ -6,8 +6,6 @@ import Repositories
 import SwiftUI
 
 struct AuthenticationScreen: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-
     var body: some View {
         VStack(alignment: .center) {
             #if !os(watchOS)

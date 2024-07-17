@@ -234,7 +234,7 @@ struct ProductMutationView: View {
                 isDiscontinued: isDiscontinued
             ).diff(from: product)
             guard let diffFromCurrent else {
-                router.open(.toast(.warning("product.editSuggestion.nothingToEdit.toast")))
+                router.open(.toast(.error("product.editSuggestion.nothingToEdit.toast")))
                 return
             }
             do {

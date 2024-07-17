@@ -108,6 +108,10 @@ struct CreateSubBrandView: View {
             onCreate(newSubBrand)
         } catch {
             guard !error.isCancelled else { return }
+            guard !error.isDuplicate else {
+                router.open(.toast(.warning("labels.duplicate.toast")))
+                return
+            }
             router.open(.alert(.init()))
             logger.error("Saving sub-brand failed. Error: \(error) (\(#file):\(#line))")
         }

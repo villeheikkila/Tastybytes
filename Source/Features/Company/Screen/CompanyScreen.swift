@@ -108,7 +108,7 @@ struct CompanyScreen: View {
             }
             Divider()
             RouterLink(
-                "company.editSuggestion.title",
+                "labels.editSuggestion",
                 systemImage: "pencil",
                 open: .sheet(.companyEditSuggestion(company: company.saved, onSuccess: {
                     router.open(.toast(.success("company.editSuggestion.success.toast")))

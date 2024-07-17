@@ -16,7 +16,6 @@ struct SubBrandAdminSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var showDeleteConfirmation = false
     @State private var newSubBrandName: String
     @State private var includesBrandName: Bool
     @State private var subBrand: SubBrand.JoinedProduct
@@ -68,6 +67,7 @@ struct SubBrandAdminSheet: View {
         CreationInfoSection(createdBy: subBrand.createdBy, createdAt: subBrand.createdAt)
         Section("admin.section.details") {
             LabeledTextFieldView(title: "labels.name", text: $newSubBrandName)
+            Toggle("brand.includesBrandName.toggle.label", isOn: $includesBrandName)
         }
         .customListRowBackground()
         if !subBrandsToMergeTo.isEmpty {
@@ -84,7 +84,6 @@ struct SubBrandAdminSheet: View {
             LabeledIdView(id: subBrand.id.formatted())
             LabeledContent("brand.admin.product.count", value: subBrand.products.count.formatted())
             VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
-            Toggle("brand.includesBrandName.toggle.label", isOn: $includesBrandName)
         }
         .customListRowBackground()
         Section {

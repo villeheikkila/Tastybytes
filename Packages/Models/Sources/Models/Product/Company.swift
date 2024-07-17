@@ -31,7 +31,7 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtoco
         logos = company.logos
     }
 
-    public init(company: Company.Management) {
+    public init(company: Company.Detailed) {
         id = company.id
         name = company.name
         isVerified = company.isVerified
@@ -56,7 +56,7 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtoco
 }
 
 public extension Company {
-    struct Management: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol {
+    struct Detailed: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol {
         public let id: Int
         public let name: String
         public let isVerified: Bool
@@ -235,10 +235,10 @@ public extension CompanyLogoProtocol {
 }
 
 public extension Company {
-    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable {
+    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable {
         public let id: Int
         public let name: String
-        public let createdBy: Profile?
+        public let createdBy: Profile
         public let createdAt: Date
         public let resolvedAt: Date?
 

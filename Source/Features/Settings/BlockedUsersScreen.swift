@@ -55,7 +55,6 @@ struct BlockedUsersScreen: View {
 }
 
 struct BlockedUserListItemView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     let profile: Profile
     let onUnblockUser: () async -> Void
 

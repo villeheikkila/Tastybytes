@@ -28,7 +28,7 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func getDetailed(id: Int) async throws -> Brand.JoinedSubBrandsProductsCompany {
+    func getDetailed(id: Int) async throws -> Brand.Detailed {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.detailed(false)))
@@ -103,15 +103,22 @@ struct SupabaseBrandRepository: BrandRepository {
             .execute()
     }
 
-    func update(updateRequest: Brand.UpdateRequest) async throws -> Brand.JoinedSubBrandsProductsCompany {
+    func update(updateRequest: Brand.UpdateRequest) async throws -> Brand.Detailed {
         try await client
             .from(.brands)
             .update(updateRequest)
             .eq("id", value: updateRequest.id)
-            .select(Brand.getQuery(.joinedSubBrandsCompany(false)))
+            .select(Brand.getQuery(.detailed(false)))
             .single()
             .execute()
             .value
+    }
+
+    func editSuggestion(_ updateRequest: Brand.EditSuggestionRequest) async throws {
+        try await client
+            .from(.brandEditSuggestions)
+            .insert(updateRequest)
+            .execute()
     }
 
     func delete(id: Int) async throws {
@@ -142,5 +149,21 @@ struct SupabaseBrandRepository: BrandRepository {
             .upload(path: fileName, file: data, options: .init(contentType: "image/jpeg"))
 
         return try await imageEntityRepository.getByFileName(from: .brandLogos, fileName: fileName)
+    }
+
+    func resolveEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws {
+        try await client
+            .from(.brandEditSuggestions)
+            .update(Report.ResolveRequest(resolvedAt: Date.now))
+            .eq("id", value: editSuggestion.id)
+            .execute()
+    }
+
+    func deleteEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws {
+        try await client
+            .from(.brandEditSuggestions)
+            .delete()
+            .eq("id", value: editSuggestion.id)
+            .execute()
     }
 }

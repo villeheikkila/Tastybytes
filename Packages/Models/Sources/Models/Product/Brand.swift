@@ -123,8 +123,6 @@ public extension Brand {
         public let brandOwner: Company
         public let subBrands: [SubBrand.JoinedProduct]
         public let logos: [ImageEntity]
-        public let createdBy: Profile?
-        public let createdAt: Date?
 
         public init(brandOwner: Company, brand: JoinedSubBrandsProducts) {
             id = brand.id
@@ -133,8 +131,6 @@ public extension Brand {
             self.brandOwner = brandOwner
             subBrands = brand.subBrands
             logos = brand.logos
-            createdBy = nil
-            createdAt = nil
         }
 
         public init(subBrand: SubBrand.JoinedBrand) {
@@ -144,8 +140,6 @@ public extension Brand {
             brandOwner = subBrand.brand.brandOwner
             subBrands = []
             logos = subBrand.brand.logos
-            createdBy = nil
-            createdAt = nil
         }
 
         public init(brand: Brand.JoinedCompany) {
@@ -155,8 +149,15 @@ public extension Brand {
             brandOwner = brand.brandOwner
             subBrands = []
             logos = brand.logos
-            createdBy = nil
-            createdAt = nil
+        }
+
+        public init(brand: Brand.Detailed) {
+            id = brand.id
+            name = brand.name
+            isVerified = brand.isVerified
+            brandOwner = brand.brandOwner
+            subBrands = brand.subBrands
+            logos = brand.logos
         }
 
         public var productCount: Int {
@@ -170,8 +171,6 @@ public extension Brand {
             self.brandOwner = brandOwner
             self.subBrands = subBrands
             self.logos = logos
-            createdBy = nil
-            createdAt = nil
         }
 
         enum CodingKeys: String, CodingKey {
@@ -181,8 +180,6 @@ public extension Brand {
             case brandOwner = "companies"
             case subBrands = "sub_brands"
             case logos = "brand_logos"
-            case createdBy = "profiles"
-            case createdAt = "created_at"
         }
 
         public func copyWith(name: String? = nil,
@@ -198,6 +195,54 @@ public extension Brand {
                 brandOwner: brandOwner ?? self.brandOwner,
                 subBrands: subBrands ?? self.subBrands,
                 logos: logos ?? self.logos
+            )
+        }
+    }
+
+    struct Detailed: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
+        public let id: Int
+        public let name: String
+        public let isVerified: Bool
+        public let brandOwner: Company
+        public let subBrands: [SubBrand.JoinedProduct]
+        public let logos: [ImageEntity]
+        public let createdBy: Profile?
+        public let createdAt: Date
+        public let editSuggestions: [EditSuggestion]
+
+        public var productCount: Int {
+            subBrands.flatMap(\.products).count
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case isVerified = "is_verified"
+            case brandOwner = "companies"
+            case subBrands = "sub_brands"
+            case logos = "brand_logos"
+            case createdBy = "profiles"
+            case createdAt = "created_at"
+            case editSuggestions = "brand_edit_suggestions"
+        }
+
+        public func copyWith(name: String? = nil,
+                             isVerified: Bool? = nil,
+                             brandOwner: Company? = nil,
+                             subBrands: [SubBrand.JoinedProduct]? = nil,
+                             logos: [ImageEntity]? = nil,
+                             editSuggestions: [EditSuggestion]? = nil) -> Self
+        {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                isVerified: isVerified ?? self.isVerified,
+                brandOwner: brandOwner ?? self.brandOwner,
+                subBrands: subBrands ?? self.subBrands,
+                logos: logos ?? self.logos,
+                createdBy: createdBy,
+                createdAt: createdAt,
+                editSuggestions: editSuggestions ?? self.editSuggestions
             )
         }
     }
@@ -231,6 +276,39 @@ public extension Brand {
             self.id = id
             self.name = name
             self.brandOwnerId = brandOwnerId
+        }
+    }
+
+    struct EditSuggestion: Codable, Sendable, Identifiable, Hashable, Resolvable {
+        public let id: Int
+        public let name: String?
+        public let brandOwner: Company?
+        public let createdBy: Profile
+        public let createdAt: Date
+        public let resolvedAt: Date?
+
+        enum CodingKeys: String, CodingKey {
+            case id, name, brandOwner = "companies", createdBy = "profiles", createdAt = "created_at", resolvedAt = "resolved_at"
+        }
+
+        public func copyWith(resolvedAt: Date?) -> Self {
+            .init(id: id, name: name, brandOwner: brandOwner, createdBy: createdBy, createdAt: createdAt, resolvedAt: resolvedAt)
+        }
+    }
+
+    struct EditSuggestionRequest: Encodable, Sendable {
+        let brandId: Int
+        let name: String?
+        let brandOwnerId: Int?
+
+        public init(brand: Brand.JoinedSubBrandsProductsCompany, name: String?, brandOwner: Company?) {
+            brandId = brand.id
+            self.name = name
+            brandOwnerId = brandOwner?.id
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case name, brandId = "brand_id", brandOwnerId = "brand_owner_id"
         }
     }
 

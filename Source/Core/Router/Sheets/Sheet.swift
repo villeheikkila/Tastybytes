@@ -46,6 +46,7 @@ enum Sheet: Identifiable, Equatable {
     case checkInCommentAdmin(checkIn: CheckIn, checkInComment: CheckInComment, onDelete: (_ comment: CheckInComment) -> Void)
     case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: (_ comment: ImageEntity) async -> Void)
     case categoryAdmin(category: Models.Category.JoinedSubcategoriesServingStyles)
+    case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -135,6 +136,8 @@ enum Sheet: Identifiable, Equatable {
             CheckInImageAdminSheet(checkIn: checkIn, imageEntity: imageEntity, onDelete: onDelete)
         case let .categoryAdmin(category):
             CategoryAdminSheet(category: category)
+        case let .brandEditSuggestion(brand, onSuccess):
+            BrandEditSuggestionSheet(brand: brand, onSuccess: onSuccess)
         }
     }
 
@@ -144,6 +147,8 @@ enum Sheet: Identifiable, Equatable {
             [.medium]
         case .nameTag:
             [.height(320)]
+        case .companyEditSuggestion:
+            [.height(200)]
         case .checkInDatePicker:
             [.height(500)]
         case .editComment:
@@ -256,6 +261,8 @@ enum Sheet: Identifiable, Equatable {
             "check_in_image_admin_\(checkIn)_\(imageEntity)"
         case let .categoryAdmin(category):
             "category_admin_\(category)"
+        case let .brandEditSuggestion(brand, _):
+            "brand_edit_suggestion_\(brand)"
         }
     }
 

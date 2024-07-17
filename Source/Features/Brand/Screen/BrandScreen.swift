@@ -17,8 +17,6 @@ struct BrandScreen: View {
     @State private var isLikedByCurrentUser = false
     @State private var productGrouping: GroupProductsBy = .subBrand
     @State private var showProductGroupingPicker = false
-
-    @State private var showBrandUnverificationConfirmation = false
     @State private var state: ScreenState = .loading
 
     let initialScrollPosition: SubBrand.JoinedBrand?
@@ -144,6 +142,7 @@ struct BrandScreen: View {
                 }
                 Text(brand.name)
                     .font(.headline)
+                    .multilineTextAlignment(.center)
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
@@ -173,6 +172,9 @@ struct BrandScreen: View {
                     open: .screen(.company(brand.brandOwner))
                 )
                 Divider()
+                RouterLink("labels.editSuggestion", systemImage: "pencil", open: .sheet(.brandEditSuggestion(brand: brand, onSuccess: {
+                    router.open(.toast(.success("brand.editSuggestion.submitted")))
+                })))
                 ReportButton(entity: .brand(brand))
                 Divider()
                 AdminRouterLink(open: .sheet(.brandAdmin(brand: brand, onUpdate: { updatedBrand in brand = updatedBrand }, onDelete: { _ in

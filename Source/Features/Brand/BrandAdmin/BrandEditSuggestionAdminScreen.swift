@@ -4,16 +4,16 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct CompanyEditSuggestionScreen: View {
-    @Binding var company: Company.Detailed
+struct BrandEditSuggestionAdminScreen: View {
+    @Binding var brand: Brand.Detailed?
 
     var body: some View {
-        List(company.editSuggestions) { editSuggestion in
-            CompanyEditSuggestionRow(company: $company, editSuggestion: editSuggestion)
+        List(brand?.editSuggestions ?? []) { editSuggestion in
+            BrandEditSuggestionAdminRow(brand: $brand, editSuggestion: editSuggestion)
         }
         .listStyle(.plain)
         .overlay {
-            if company.editSuggestions.isEmpty {
+            if let editSuggestions = brand?.editSuggestions, editSuggestions.isEmpty {
                 ContentUnavailableView("admin.noEditSuggestions.title", systemImage: "tray")
             }
         }
@@ -22,14 +22,14 @@ struct CompanyEditSuggestionScreen: View {
     }
 }
 
-struct CompanyEditSuggestionRow: View {
+struct BrandEditSuggestionAdminRow: View {
     private let logger = Logger(category: "CompanyEditSuggestionRow")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var showApplyConfirmationDialog = false
     @State private var showDeleteConfirmationDialog = false
-    @Binding var company: Company.Detailed
-    let editSuggestion: Company.EditSuggestion
+    @Binding var brand: Brand.Detailed?
+    let editSuggestion: Brand.EditSuggestion
 
     var body: some View {
         HStack(alignment: .top) {
@@ -47,7 +47,7 @@ struct CompanyEditSuggestionRow: View {
                         }
                     }
                 }
-                Text("company.admin.editSuggestion.changeNameTo.label \(company.name) \(editSuggestion.name)")
+                Text("company.admin.editSuggestion.changeNameTo.label \(brand?.name ?? "-") \(editSuggestion.name ?? "-")")
                     .font(.callout)
             }
             Spacer()
@@ -70,7 +70,7 @@ struct CompanyEditSuggestionRow: View {
             presenting: editSuggestion
         ) { presenting in
             AsyncButton(
-                "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name)",
+                "company.admin.editSuggestion.apply.label \(brand?.name ?? "-") \(presenting.name ?? "-")",
                 action: {
                     await resolveEditSuggestion(presenting)
                 }
@@ -84,7 +84,7 @@ struct CompanyEditSuggestionRow: View {
             presenting: editSuggestion
         ) { presenting in
             AsyncButton(
-                "company.admin.editSuggestion.delete.label \(presenting.name)",
+                "company.admin.editSuggestion.delete.label \(presenting.name ?? "-")",
                 action: {
                     await deleteEditSuggestion(presenting)
                 }
@@ -94,30 +94,32 @@ struct CompanyEditSuggestionRow: View {
         .listRowBackground(Color.clear)
     }
 
-    private func deleteEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
+    private func deleteEditSuggestion(_ editSuggestion: Brand.EditSuggestion) async {
+        guard let brand else { return }
         do {
-            try await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion)
+            try await repository.brand.deleteEditSuggestion(editSuggestion: editSuggestion)
             withAnimation {
-                company = company.copyWith(editSuggestions: company.editSuggestions.removing(editSuggestion))
+                self.brand = brand.copyWith(editSuggestions: brand.editSuggestions.removing(editSuggestion))
             }
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
-            logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to delete brand edit suggestion '\(editSuggestion.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    private func resolveEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
+    private func resolveEditSuggestion(_ editSuggestion: Brand.EditSuggestion) async {
+        guard let brand else { return }
         do {
-            try await repository.company.resolveEditSuggestion(editSuggestion: editSuggestion)
+            try await repository.brand.resolveEditSuggestion(editSuggestion: editSuggestion)
             withAnimation {
-                company = company.copyWith(name: editSuggestion.name, editSuggestions: company.editSuggestions.replacing(editSuggestion, with: editSuggestion.copyWith(resolvedAt: Date.now)))
+                self.brand = brand.copyWith(name: editSuggestion.name, editSuggestions: self.brand?.editSuggestions.replacing(editSuggestion, with: editSuggestion.copyWith(resolvedAt: Date.now)))
             }
             router.removeLast()
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
-            logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to resolve edit suggestion '\(editSuggestion.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

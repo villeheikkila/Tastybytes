@@ -50,6 +50,8 @@
 		5C511D852BA792DF00F95290 /* CheckInListLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C511D842BA792DF00F95290 /* CheckInListLoadingIndicator.swift */; };
 		5C511D872BA7952100F95290 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C511D862BA7952100F95290 /* Pagination.swift */; };
 		5C5270572B821D6C0062AB18 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */; };
+		5C6337402C47D53700390B38 /* BrandEditSuggestionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63373F2C47D53700390B38 /* BrandEditSuggestionSheet.swift */; };
+		5C6337422C47F2A200390B38 /* BrandEditSuggestionAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6337412C47F2A200390B38 /* BrandEditSuggestionAdminScreen.swift */; };
 		5C64E7E72B70122F006FC2C3 /* Product+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */; };
 		5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E892B504DD80048605B /* ProfileStateObserver.swift */; };
@@ -369,6 +371,8 @@
 		5C511D842BA792DF00F95290 /* CheckInListLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListLoadingIndicator.swift; sourceTree = "<group>"; };
 		5C511D862BA7952100F95290 /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		5C63373F2C47D53700390B38 /* BrandEditSuggestionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEditSuggestionSheet.swift; sourceTree = "<group>"; };
+		5C6337412C47F2A200390B38 /* BrandEditSuggestionAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEditSuggestionAdminScreen.swift; sourceTree = "<group>"; };
 		5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+Extension.swift"; sourceTree = "<group>"; };
 		5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
 		5C672E892B504DD80048605B /* ProfileStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStateObserver.swift; sourceTree = "<group>"; };
@@ -984,6 +988,7 @@
 			children = (
 				5C90574C2B2894BE00EC157B /* BrandPickerSheet.swift */,
 				5C24E1D02B5DADD4003AB7C8 /* BrandSheetRow.swift */,
+				5C63373F2C47D53700390B38 /* BrandEditSuggestionSheet.swift */,
 			);
 			path = Sheet;
 			sourceTree = "<group>";
@@ -1081,6 +1086,7 @@
 			isa = PBXGroup;
 			children = (
 				5C9057732B2894BE00EC157B /* BrandAdminSheet.swift */,
+				5C6337412C47F2A200390B38 /* BrandEditSuggestionAdminScreen.swift */,
 			);
 			path = BrandAdmin;
 			sourceTree = "<group>";
@@ -1934,6 +1940,7 @@
 				5CD2EE162C35369B009AA949 /* View+InjectAlerts.swift in Sources */,
 				5C24E1C62B5D1F83003AB7C8 /* CheckInLeaveComment.swift in Sources */,
 				5CAADF052B5C534000D956C1 /* DIscoverScreen+Extension.swift in Sources */,
+				5C6337402C47D53700390B38 /* BrandEditSuggestionSheet.swift in Sources */,
 				5CEEA2FA2C3814BE0009B3F5 /* CreationInfoSection.swift in Sources */,
 				5C9058182B2894BE00EC157B /* AppIconScreen.swift in Sources */,
 				5C9058522B2894BE00EC157B /* OnboardingScreen.swift in Sources */,
@@ -1961,6 +1968,7 @@
 				5C9057E62B2894BE00EC157B /* Utils.swift in Sources */,
 				5CEEA2FE2C381AE40009B3F5 /* BrandEntityView.swift in Sources */,
 				5C511D7B2BA78E2A00F95290 /* AuthenticationScreenContentView.swift in Sources */,
+				5C6337422C47F2A200390B38 /* BrandEditSuggestionAdminScreen.swift in Sources */,
 				5C9058042B2894BE00EC157B /* CategoryCreationSheet.swift in Sources */,
 				5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */,
 				5C9058052B2894BE00EC157B /* ProductDuplicateScreen.swift in Sources */,

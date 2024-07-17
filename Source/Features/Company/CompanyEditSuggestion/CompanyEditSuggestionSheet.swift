@@ -20,14 +20,14 @@ struct CompanyEditSuggestionSheet: View {
         self.onSuccess = onSuccess
     }
 
+    private var canUpdate: Bool {
+        newCompanyName.isValidLength(.normal(allowEmpty: true)) && company.name != newCompanyName
+    }
+
     var body: some View {
         Form {
             Section("company.editSuggestion.section.name.title") {
                 TextField("company.edit.name.placeholder", text: $newCompanyName)
-                AsyncButton("labels.send", action: {
-                    await sendCompanyEditSuggestion()
-                })
-                .disabled(!newCompanyName.isValidLength(.normal(allowEmpty: true)))
             }
             .headerProminence(.increased)
             .customListRowBackground()
@@ -42,6 +42,13 @@ struct CompanyEditSuggestionSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
+        ToolbarItem(placement: .primaryAction) {
+            AsyncButton("labels.send", action: {
+                await sendCompanyEditSuggestion()
+            })
+            .bold()
+            .disabled(!canUpdate)
+        }
     }
 
     private func sendCompanyEditSuggestion() async {

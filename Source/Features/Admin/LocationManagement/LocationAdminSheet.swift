@@ -12,7 +12,6 @@ struct LocationAdminSheet: View {
     @Environment(Router.self) private var router
     @State private var state: ScreenState = .loading
     @State private var location: Location
-    @State private var showDeleteConfirmation = false
 
     let onEdit: (_ location: Location) async -> Void
     let onDelete: (_ location: Location) async -> Void

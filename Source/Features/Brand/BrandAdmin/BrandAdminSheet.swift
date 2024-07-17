@@ -13,18 +13,19 @@ struct BrandAdminSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var state: ScreenState = .loading
     @State private var showDeleteBrandConfirmationDialog = false
     @State private var name: String
     @State private var brandOwner: Company
-    @State private var brand: Brand.JoinedSubBrandsProductsCompany
+    @State private var brand: Brand.Detailed?
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
 
+    let id: Int
+
     let onUpdate: BrandUpdateCallback
     let onDelete: BrandUpdateCallback
-    let initialBrandOwner: Company
 
     init(
         brand: Brand.JoinedSubBrandsProductsCompany,
@@ -33,23 +34,41 @@ struct BrandAdminSheet: View {
     ) {
         self.onUpdate = onUpdate
         self.onDelete = onDelete
-        initialBrandOwner = brand.brandOwner
-        _brand = State(wrappedValue: brand)
+        id = brand.id
         _brandOwner = State(wrappedValue: brand.brandOwner)
         _name = State(wrappedValue: brand.name)
     }
 
+    private var isValidNameUpdate: Bool {
+        name.isValidLength(.normal(allowEmpty: false)) && brand?.name != name
+    }
+
+    private var canUpdate: Bool {
+        if let brand {
+            isValidNameUpdate && brandOwner.id != brand.brandOwner.id
+        } else {
+            false
+        }
+    }
+
     var body: some View {
         Form {
-            content
+            if let brand {
+                content(brand: brand)
+            }
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("brand.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
+        .overlay {
+            ScreenStateOverlayView(state: state) {
+                await loadData()
+            }
+        }
         .toolbar {
             toolbarContent
         }
-        .initialTask {
+        .task {
             await loadData()
         }
         .task(id: selectedLogo) {
@@ -62,9 +81,9 @@ struct BrandAdminSheet: View {
         }
     }
 
-    @ViewBuilder private var content: some View {
+    @ViewBuilder private func content(brand: Brand.Detailed) -> some View {
         Section("brand.admin.section.brand") {
-            RouterLink(open: .screen(.brand(brand))) {
+            RouterLink(open: .screen(.brand(.init(brand: brand)))) {
                 BrandEntityView(brand: brand)
             }
         }
@@ -91,6 +110,13 @@ struct BrandAdminSheet: View {
         .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
+            RouterLink(open: .screen(.brandEditSuggestionAdmin(brand: $brand))) {
+                HStack {
+                    Label("admin.section.editSuggestions.title", systemImage: "square.and.pencil")
+                    Spacer()
+                    Text("(\(brand.editSuggestions.unresolvedCount.formatted()))")
+                }
+            }
         }
         .customListRowBackground()
         Section {
@@ -107,28 +133,32 @@ struct BrandAdminSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
-        ToolbarItem(placement: .primaryAction) {
-            AsyncButton("labels.edit") {
-                await editBrand()
+        if let brand {
+            ToolbarItem(placement: .primaryAction) {
+                AsyncButton("labels.edit") {
+                    await editBrand(brand: brand)
+                }
+                .disabled(!canUpdate)
             }
-            .disabled((!name.isValidLength(.normal(allowEmpty: false)) || brand.name == name) && brandOwner.id == initialBrandOwner.id)
         }
     }
 
     private func loadData() async {
         do {
-            let brand = try await repository.brand.getDetailed(id: brand.id)
-            self.brand = brand
+            brand = try await repository.brand.getDetailed(id: id)
+            state = .populated
         } catch {
             guard !error.isCancelled else { return }
+            state = .error([error])
             logger.error("Failed to load detailed brand info. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     private func verifyBrand(isVerified: Bool) async {
+        guard let brand else { return }
         do {
             try await repository.brand.verification(id: brand.id, isVerified: isVerified)
-            brand = brand.copyWith(isVerified: isVerified)
+            self.brand = brand.copyWith(isVerified: isVerified)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -136,12 +166,12 @@ struct BrandAdminSheet: View {
         }
     }
 
-    private func editBrand() async {
+    private func editBrand(brand: Brand.Detailed) async {
         do {
-            let brand = try await repository.brand.update(updateRequest: .init(id: brand.id, name: name, brandOwnerId: brandOwner.id))
+            let brand = try await repository.brand.update(updateRequest: .init(id: id, name: isValidNameUpdate ? name : brand.name, brandOwnerId: brandOwner.id))
             router.open(.toast(.success("brand.edit.success.toast")))
             self.brand = brand
-            await onUpdate(brand)
+            await onUpdate(.init(brand: brand))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -150,13 +180,14 @@ struct BrandAdminSheet: View {
     }
 
     private func uploadLogo(data: Data) async {
+        guard let brand else { return }
         do {
             let imageEntity = try await repository.brand.uploadLogo(brandId: brand.id, data: data)
             withAnimation {
-                brand = brand.copyWith(logos: brand.logos + [imageEntity])
+                self.brand = brand.copyWith(logos: brand.logos + [imageEntity])
             }
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
-            await onUpdate(brand)
+            await onUpdate(.init(brand: brand))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -165,10 +196,11 @@ struct BrandAdminSheet: View {
     }
 
     private func deleteLogo(entity: ImageEntity) async {
+        guard let brand else { return }
         do {
             try await repository.imageEntity.delete(from: .brandLogos, entity: entity)
             withAnimation {
-                brand = brand.copyWith(logos: brand.logos.removing(entity))
+                self.brand = brand.copyWith(logos: brand.logos.removing(entity))
             }
         } catch {
             guard !error.isCancelled else { return }
@@ -177,10 +209,10 @@ struct BrandAdminSheet: View {
         }
     }
 
-    private func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
+    private func deleteBrand(_ brand: Brand.Detailed) async {
         do {
             try await repository.brand.delete(id: brand.id)
-            await onDelete(brand)
+            await onDelete(.init(brand: brand))
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

@@ -18,6 +18,7 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
             .from(.productBarcodes)
             .insert(ProductBarcode.NewRequest(product: product, barcode: barcode))
             .select(ProductBarcode.getQuery(.joinedCreator(false)))
+            .single()
             .execute()
             .value
     }
