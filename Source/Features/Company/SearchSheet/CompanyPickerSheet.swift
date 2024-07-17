@@ -128,6 +128,10 @@ struct CompanyPickerSheet: View {
             onSuccess(newCompany)
         } catch {
             guard !error.isCancelled else { return }
+            guard !error.isDuplicate else {
+                router.open(.toast(.warning("labels.duplicate.toast")))
+                return
+            }
             router.open(.alert(.init()))
             logger.error("Failed to create new company'. Error: \(error) (\(#file):\(#line))")
         }
