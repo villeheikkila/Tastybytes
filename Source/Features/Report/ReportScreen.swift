@@ -87,30 +87,10 @@ struct ReportScreenRow: View {
     let deleteReport: (_ report: Report) async -> Void
     let resolveReport: (_ report: Report) async -> Void
 
-    private func action() {
-        guard let entity = report.entity else { return }
-        switch entity {
-        case let .brand(brand):
-            router.open(.screen(.brand(brand)))
-        case let .product(product):
-            router.open(.screen(.product(product)))
-        case let .company(company):
-            router.open(.screen(.company(company)))
-        case let .subBrand(subBrand):
-            router.fetchAndNavigateTo(repository, .brand(id: subBrand.brand.id))
-        case let .checkIn(checkIn):
-            router.open(.screen(.checkIn(checkIn)))
-        case let .comment(comment):
-            router.fetchAndNavigateTo(repository, .company(id: comment.id))
-        case let .checkInImage(imageEntity):
-            router.fetchAndNavigateTo(repository, .checkIn(id: imageEntity.checkIn.id))
-        case let .profile(profile):
-            router.open(.screen(.profile(profile)))
-        }
-    }
-
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            report.entity.open(repository, router)
+        }) {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .center) {
                     Avatar(profile: report.createdBy)
@@ -122,12 +102,7 @@ struct ReportScreenRow: View {
                     Text(report.createdAt.formatted(.customRelativetime))
                         .font(.caption)
                 }
-
-                if let entity = report.entity {
-                    VStack(alignment: .leading, spacing: 2) {
-                        entity.view
-                    }
-                }
+                ReportEntityView(entity: report.entity)
                 if let message = report.message {
                     VStack(alignment: .leading) {
                         Text("report.section.report.title").bold()

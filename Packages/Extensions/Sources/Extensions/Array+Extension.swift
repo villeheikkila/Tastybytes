@@ -18,9 +18,9 @@ public extension Array where Element: Equatable {
 }
 
 public extension Array where Element: Identifiable {
-    func removingWithId(_ item: Element) -> [Element] {
+    func removingWithId(_ item: Element.ID) -> [Element] {
         var newArray = self
-        if let toReplace = newArray.firstIndex(where: { $0.id == item.id }) {
+        if let toReplace = newArray.firstIndex(where: { $0.id == item }) {
             newArray.remove(at: toReplace)
         }
         return newArray
@@ -74,9 +74,9 @@ public extension Array where Element: Equatable {
 }
 
 public extension Array where Element: Identifiable {
-    func replacingWithId(_ element: Element, with new: Element) -> [Element] {
+    func replacingWithId(_ id: Element.ID, with new: Element) -> [Element] {
         var newArray = self
-        if let toReplace = newArray.firstIndex(where: { $0.id == element.id }) {
+        if let toReplace = newArray.firstIndex(where: { $0.id == id }) {
             newArray[toReplace] = new
         }
         return newArray

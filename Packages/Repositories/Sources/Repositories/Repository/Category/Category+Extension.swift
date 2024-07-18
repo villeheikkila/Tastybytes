@@ -5,13 +5,24 @@ extension Models.Category: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name, icon"
 
-        switch queryType {
+        return switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.categories, [saved], withTableName)
+            buildQuery(.categories, [saved], withTableName)
         case let .joinedSubcaategoriesServingStyles(withTableName):
-            return buildQuery(
+            buildQuery(
                 .categories,
-                [saved, "created_at", Subcategory.getQuery(.detailed(true)), ServingStyle.getQuery(.saved(true)), Profile.getQuery(.minimal(true))],
+                [saved, Subcategory.getQuery(.detailed(true)), ServingStyle.getQuery(.saved(true))],
+                withTableName
+            )
+        case let .detailed(withTableName):
+            buildQuery(
+                .categories,
+                [
+                    saved,
+                    Subcategory.getQuery(.detailed(true)),
+                    ServingStyle.getQuery(.saved(true)),
+                    modificationInfoFragment,
+                ],
                 withTableName
             )
         }
@@ -20,5 +31,6 @@ extension Models.Category: Queryable {
     enum QueryType {
         case saved(_ withTableName: Bool)
         case joinedSubcaategoriesServingStyles(_ withTableName: Bool)
+        case detailed(_ withTableName: Bool)
     }
 }

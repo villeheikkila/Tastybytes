@@ -1,0 +1,52 @@
+import Models
+import Repositories
+import SwiftUI
+
+struct ReportEntityView: View {
+    let entity: Report.Entity
+
+    var body: some View {
+        switch entity {
+        case let .product(product):
+            ProductEntityView(product: product, extras: [.companyLink, .logoOnRight])
+        case let .company(company):
+            CompanyEntityView(company: company)
+        case let .brand(brand):
+            BrandEntityView(brand: brand)
+        case let .subBrand(subBrand):
+            SubBrandEntityView(brand: subBrand.brand, subBrand: subBrand)
+        case let .comment(comment):
+            CheckInCommentEntityView(comment: comment)
+        case let .checkIn(checkIn):
+            CheckInEntityView(checkIn: checkIn)
+        case let .checkInImage(imageEntity):
+            CheckInImageEntityView(imageEntity: imageEntity)
+        case let .profile(profile):
+            ProfileEntityView(profile: profile)
+        }
+    }
+}
+
+extension Report.Entity {
+    @MainActor
+    func open(_ repository: Repository, _ router: Router) {
+        switch self {
+        case let .brand(brand):
+            router.open(.screen(.brand(brand)))
+        case let .product(product):
+            router.open(.screen(.product(product)))
+        case let .company(company):
+            router.open(.screen(.company(company)))
+        case let .subBrand(subBrand):
+            router.fetchAndNavigateTo(repository, .brand(id: subBrand.brand.id))
+        case let .checkIn(checkIn):
+            router.open(.screen(.checkIn(checkIn)))
+        case let .comment(comment):
+            router.fetchAndNavigateTo(repository, .company(id: comment.id))
+        case let .checkInImage(imageEntity):
+            router.fetchAndNavigateTo(repository, .checkIn(id: imageEntity.checkIn.id))
+        case let .profile(profile):
+            router.open(.screen(.profile(profile)))
+        }
+    }
+}

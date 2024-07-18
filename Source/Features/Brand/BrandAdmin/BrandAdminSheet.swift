@@ -45,7 +45,7 @@ struct BrandAdminSheet: View {
 
     private var canUpdate: Bool {
         if let brand {
-            isValidNameUpdate && brandOwner.id != brand.brandOwner.id
+            isValidNameUpdate || brandOwner.id != brand.brandOwner.id
         } else {
             false
         }
@@ -88,7 +88,7 @@ struct BrandAdminSheet: View {
             }
         }
         .customListRowBackground()
-        CreationInfoSection(createdBy: brand.createdBy, createdAt: brand.createdAt)
+        ModificationInfoView(modificationInfo: brand)
         Section("admin.section.details") {
             LabeledTextFieldView(title: "brand.admin.changeName.label", text: $name)
             LabeledContent("brand.admin.changeBrandOwner.label") {

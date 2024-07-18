@@ -41,7 +41,7 @@ enum Screen: Hashable, Sendable {
     case locationAdmin
     case error(reason: String)
     case companyEditSuggestion(company: Binding<Company.Detailed>)
-    case categoryServingStyle(category: Models.Category.JoinedSubcategoriesServingStyles)
+    case categoryServingStyle(category: Models.Category.Detailed)
     case barcodeManagement(product: Product.Joined)
     case productList(products: [Product.Joined])
     case companyList(companies: [Company])
@@ -51,6 +51,7 @@ enum Screen: Hashable, Sendable {
     case profilesAdmin
     case roleSuperAdminPicker(profile: Binding<Profile.Detailed?>, roles: [Role])
     case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed?>)
+    case adminEvent
 
     @MainActor
     @ViewBuilder
@@ -152,6 +153,8 @@ enum Screen: Hashable, Sendable {
             RoleSuperAdminPickerScreen(profile: profile, roles: roles)
         case let .brandEditSuggestionAdmin(brand: brand):
             BrandEditSuggestionAdminScreen(brand: brand)
+        case .adminEvent:
+            AdminEventScreen()
         }
     }
 
@@ -376,6 +379,8 @@ enum Screen: Hashable, Sendable {
         case let .brandEditSuggestionAdmin(brand):
             hasher.combine("brandEditSuggestionAdmin")
             hasher.combine(brand.wrappedValue)
+        case .adminEvent:
+            hasher.combine("adminEvent")
         }
     }
 }

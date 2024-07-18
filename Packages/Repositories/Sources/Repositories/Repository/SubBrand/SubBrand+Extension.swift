@@ -11,7 +11,7 @@ extension SubBrand: Queryable {
         case let .detailed(withTableName):
             buildQuery(
                 .subBrands,
-                [saved, "created_at", Profile.getQuery(.minimal(true)), Product.getQuery(.joinedBrandSubcategories(true))],
+                [saved, Product.getQuery(.joinedBrandSubcategories(true)), modificationInfoFragment],
                 withTableName
             )
         case let .joined(withTableName):
@@ -34,5 +34,29 @@ extension SubBrand: Queryable {
         case detailed(_ withTableName: Bool)
         case joined(_ withTableName: Bool)
         case joinedBrand(_ withTableName: Bool)
+    }
+}
+
+extension SubBrand.EditSuggestion: Queryable {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let saved = "id, created_at, name, includes_brand_name"
+
+        switch queryType {
+        case let .joined(withTableName):
+            return buildQuery(
+                .subBrandEditSuggestion,
+                [
+                    saved,
+                    Brand.getQuery(.saved(true)),
+                    SubBrand.getQuery(.joinedBrand(true)),
+                    Profile.getQuery(.minimal(true)),
+                ],
+                withTableName
+            )
+        }
+    }
+
+    enum QueryType {
+        case joined(_ withTableName: Bool)
     }
 }

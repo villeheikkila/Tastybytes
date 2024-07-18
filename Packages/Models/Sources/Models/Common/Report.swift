@@ -1,11 +1,15 @@
 import Foundation
 
+public enum ReportError: Error {
+    case unknownEntity
+}
+
 public struct Report: Decodable, Identifiable, Sendable, Hashable {
     public let id: Int
     public let message: String?
     public let createdAt: Date
     public let createdBy: Profile
-    public let entity: Entity?
+    public let entity: Entity
     public let resolvedAt: Date?
 
     public init(from decoder: Decoder) throws {
@@ -42,7 +46,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         } else if let profile {
             .profile(profile)
         } else {
-            nil
+            throw ReportError.unknownEntity
         }
     }
 

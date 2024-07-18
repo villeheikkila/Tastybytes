@@ -60,6 +60,14 @@ public extension SubBrand {
             self.brand = .init(brand: brand)
         }
 
+        public init(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.Detailed) {
+            id = subBrand.id
+            name = subBrand.name
+            isVerified = subBrand.isVerified
+            includesBrandName = subBrand.includesBrandName
+            self.brand = .init(brand: brand)
+        }
+
         enum CodingKeys: String, CodingKey {
             case id
             case name
@@ -83,8 +91,22 @@ public extension SubBrand {
         public let includesBrandName: Bool
         public let isVerified: Bool
         public let products: [Product.JoinedCategory]
-        public let createdAt: Date?
-        public let createdBy: Profile?
+
+        public init(id: Int, name: String? = nil, includesBrandName: Bool, isVerified: Bool, products: [Product.JoinedCategory]) {
+            self.id = id
+            self.name = name
+            self.includesBrandName = includesBrandName
+            self.isVerified = isVerified
+            self.products = products
+        }
+
+        public init(subBrand: SubBrand.Detailed) {
+            id = subBrand.id
+            name = subBrand.name
+            includesBrandName = subBrand.includesBrandName
+            isVerified = subBrand.isVerified
+            products = subBrand.products
+        }
 
         public var subBrand: SubBrand {
             .init(id: id, name: name, includesBrandName: includesBrandName, isVerified: isVerified)
@@ -96,8 +118,6 @@ public extension SubBrand {
             case isVerified = "is_verified"
             case includesBrandName = "includes_brand_name"
             case products
-            case createdAt = "created_at"
-            case createdBy = "profiles"
         }
 
         public static func < (lhs: JoinedProduct, rhs: JoinedProduct) -> Bool {
@@ -114,10 +134,66 @@ public extension SubBrand {
                 name: name ?? self.name,
                 includesBrandName: includesBrandName ?? self.includesBrandName,
                 isVerified: isVerified ?? self.isVerified,
+                products: products ?? self.products
+            )
+        }
+    }
+
+    struct Detailed: Identifiable, Hashable, Codable, Sendable, SubBrandProtocol, ModificationInfo {
+        public let id: Int
+        public let name: String?
+        public let includesBrandName: Bool
+        public let isVerified: Bool
+        public let products: [Product.JoinedCategory]
+        public let createdAt: Date
+        public let createdBy: Profile?
+        public let updatedAt: Date?
+        public let updatedBy: Profile?
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case isVerified = "is_verified"
+            case includesBrandName = "includes_brand_name"
+            case products
+            case createdBy = "created_by"
+            case createdAt = "created_at"
+            case updatedBy = "updated_by"
+            case updatedAt = "updated_at"
+        }
+
+        public func copyWith(name: String? = nil, includesBrandName: Bool? = nil, isVerified: Bool? = nil, products: [Product.JoinedCategory]? = nil) -> Self {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                includesBrandName: includesBrandName ?? self.includesBrandName,
+                isVerified: isVerified ?? self.isVerified,
                 products: products ?? self.products,
                 createdAt: createdAt,
-                createdBy: createdBy
+                createdBy: createdBy,
+                updatedAt: updatedAt,
+                updatedBy: updatedBy
             )
+        }
+    }
+
+    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable {
+        public let id: Int
+        public let subBrand: SubBrand.JoinedBrand
+        public let createdAt: Date
+        public let createdBy: Profile?
+        public let brand: Brand?
+        public let name: String?
+        public let includesBrandName: Bool?
+
+        enum CodingKeys: String, CodingKey, Sendable {
+            case id
+            case name
+            case createdAt = "created_at"
+            case createdBy = "profiles"
+            case brand = "brands"
+            case subBrand = "sub_brands"
+            case includesBrandName = "includes_brand_name"
         }
     }
 }

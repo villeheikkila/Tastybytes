@@ -14,9 +14,9 @@ struct CategoryServingStyleAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var servingStyles: [ServingStyle]
 
-    let category: Models.Category.JoinedSubcategoriesServingStyles
+    let category: Models.Category.Detailed
 
-    init(category: Models.Category.JoinedSubcategoriesServingStyles) {
+    init(category: Models.Category.Detailed) {
         self.category = category
         _servingStyles = State(wrappedValue: category.servingStyles)
     }
@@ -79,7 +79,7 @@ struct CategoryServingStyleAdminSheet: View {
 struct CategoryServingStyleRow: View {
     @State private var showDeleteServingStyleConfirmation = false
 
-    let category: Models.Category.JoinedSubcategoriesServingStyles
+    let category: Models.Category.Detailed
     let servingStyle: ServingStyle
     let deleteServingStyle: (_ servingStyle: ServingStyle) async -> Void
 

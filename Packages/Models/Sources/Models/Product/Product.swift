@@ -71,6 +71,30 @@ public extension Product {
         }
     }
 
+    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable {
+        public let id: Int
+        public let product: Product.Joined
+        public let createdAt: Date
+        public let createdBy: Profile?
+        public let name: String?
+        public let description: String?
+        public let category: Category?
+        public let subBrand: SubBrand.JoinedBrand?
+        public let isDiscontinued: Bool?
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case product = "products"
+            case createdAt = "created_at"
+            case createdBy = "created_by"
+            case name
+            case description
+            case category = "categories"
+            case subBrand = "sub_brands"
+            case isDiscontinued = "is_discontinued"
+        }
+    }
+
     struct EditRequest: Codable, Sendable {
         let productId: Int
         let name: String?
@@ -169,9 +193,7 @@ public extension Product {
                     name: category.name,
                     icon: category.icon,
                     subcategories: [],
-                    servingStyles: [],
-                    createdAt: nil,
-                    createdBy: nil
+                    servingStyles: []
                 )
             } else {
                 self.category = nil

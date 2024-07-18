@@ -25,16 +25,11 @@ extension Brand: Queryable {
                 .brands,
                 [
                     saved,
-                    "created_at",
                     SubBrand.getQuery(.joined(true)),
                     Company.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.brandLogos)),
-                    buildQuery(
-                        name: "profiles",
-                        foreignKey: "created_by",
-                        [Profile.getQuery(.minimal(false))]
-                    ),
                     Brand.EditSuggestion.getQuery(.joined(true)),
+                    modificationInfoFragment,
                 ],
                 withTableName
             )

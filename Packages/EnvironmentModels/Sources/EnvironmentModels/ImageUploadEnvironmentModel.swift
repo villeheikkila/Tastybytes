@@ -6,7 +6,7 @@ import SwiftUI
 
 @MainActor
 @Observable
-public class ImageUploadEnvironmentModel {
+public final class ImageUploadEnvironmentModel {
     private let logger = Logger(category: "ImageUploadEnvironmentModel")
 
     public var uploadedImageForCheckIn: CheckIn?

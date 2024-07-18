@@ -55,15 +55,24 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtoco
     }
 }
 
+public protocol ModificationInfo {
+    var createdBy: Profile? { get }
+    var createdAt: Date { get }
+    var updatedBy: Profile? { get }
+    var updatedAt: Date? { get }
+}
+
 public extension Company {
-    struct Detailed: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol {
+    struct Detailed: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, ModificationInfo {
         public let id: Int
         public let name: String
         public let isVerified: Bool
         public let logos: [ImageEntity]
-        public let createdBy: Profile?
-        public let createdAt: Date?
         public let editSuggestions: [EditSuggestion]
+        public let createdBy: Profile?
+        public let createdAt: Date
+        public let updatedBy: Profile?
+        public let updatedAt: Date?
 
         public init(company: Company) {
             id = company.id
@@ -71,18 +80,22 @@ public extension Company {
             isVerified = company.isVerified
             logos = company.logos
             createdBy = nil
-            createdAt = nil
+            createdAt = Date.now
+            updatedAt = nil
+            updatedBy = nil
             editSuggestions = []
         }
 
-        init(id: Int, name: String, isVerified: Bool, logos: [ImageEntity], createdBy: Profile? = nil, createdAt: Date? = nil, editSuggestions: [Company.EditSuggestion]) {
+        init(id: Int, name: String, isVerified: Bool, logos: [ImageEntity], editSuggestions: [Company.EditSuggestion], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
             self.logos = logos
+            self.editSuggestions = editSuggestions
             self.createdBy = createdBy
             self.createdAt = createdAt
-            self.editSuggestions = editSuggestions
+            self.updatedBy = updatedBy
+            self.updatedAt = updatedAt
         }
 
         enum CodingKeys: String, CodingKey {
@@ -90,9 +103,11 @@ public extension Company {
             case name
             case logos = "company_logos"
             case isVerified = "is_verified"
-            case createdBy = "profiles"
-            case createdAt = "created_at"
             case editSuggestions = "company_edit_suggestions"
+            case createdBy = "created_by"
+            case createdAt = "created_at"
+            case updatedBy = "updated_by"
+            case updatedAt = "updated_at"
         }
 
         public func copyWith(
@@ -100,8 +115,6 @@ public extension Company {
             name: String? = nil,
             isVerified: Bool? = nil,
             logos: [ImageEntity]? = nil,
-            createdBy: Profile?? = nil,
-            createdAt: Date?? = nil,
             editSuggestions: [EditSuggestion]? = nil
         ) -> Self {
             .init(
@@ -109,9 +122,11 @@ public extension Company {
                 name: name ?? self.name,
                 isVerified: isVerified ?? self.isVerified,
                 logos: logos ?? self.logos,
-                createdBy: createdBy ?? self.createdBy,
-                createdAt: createdAt ?? self.createdAt,
-                editSuggestions: editSuggestions ?? self.editSuggestions
+                editSuggestions: editSuggestions ?? self.editSuggestions,
+                createdBy: createdBy,
+                createdAt: createdAt,
+                updatedBy: updatedBy,
+                updatedAt: updatedAt
             )
         }
     }
@@ -237,7 +252,8 @@ public extension CompanyLogoProtocol {
 public extension Company {
     struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable {
         public let id: Int
-        public let name: String
+        public let name: String?
+        public let company: Company
         public let createdBy: Profile
         public let createdAt: Date
         public let resolvedAt: Date?
@@ -245,13 +261,14 @@ public extension Company {
         enum CodingKeys: String, CodingKey {
             case id
             case name
+            case company = "companies"
             case createdBy = "profiles"
             case createdAt = "created_at"
             case resolvedAt = "resolved_at"
         }
 
         public func copyWith(resolvedAt: Date?) -> Self {
-            .init(id: id, name: name, createdBy: createdBy, createdAt: createdAt, resolvedAt: resolvedAt)
+            .init(id: id, name: name, company: company, createdBy: createdBy, createdAt: createdAt, resolvedAt: resolvedAt)
         }
     }
 }

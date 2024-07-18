@@ -32,66 +32,47 @@ struct CompanyEditSuggestionRow: View {
     let editSuggestion: Company.EditSuggestion
 
     var body: some View {
-        HStack(alignment: .top) {
-            Avatar(profile: editSuggestion.createdBy)
-                .avatarSize(.medium)
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(alignment: .top) {
-                    Text(editSuggestion.createdBy.preferredName)
-                        .font(.caption)
-                    Spacer()
-                    VStack(alignment: .leading) {
-                        Text("\(Image(systemName: "calendar.badge.plus")) \(editSuggestion.createdAt.formatted(.customRelativetime))").font(.caption2)
-                        if let resolvedAt = editSuggestion.resolvedAt {
-                            Text("\(Image(systemName: "calendar.badge.checkmark")) \(resolvedAt.formatted(.customRelativetime))").font(.caption2)
-                        }
+        CompanyEditSuggestionEntityView(editSuggestion: editSuggestion, company: company)
+            .padding(.vertical, 2)
+            .swipeActions {
+                Button("company.admin.editSuggestion.delete.label", systemImage: "trash") {
+                    showDeleteConfirmationDialog = true
+                }
+                .tint(.red)
+                Button("company.admin.editSuggestion.apply.label", systemImage: "checkmark") {
+                    showApplyConfirmationDialog = true
+                }
+                .tint(.green)
+            }
+            .confirmationDialog(
+                "company.admin.editSuggestion.apply.description",
+                isPresented: $showApplyConfirmationDialog,
+                titleVisibility: .visible,
+                presenting: editSuggestion
+            ) { presenting in
+                AsyncButton(
+                    "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name)",
+                    action: {
+                        await resolveEditSuggestion(presenting)
                     }
-                }
-                Text("company.admin.editSuggestion.changeNameTo.label \(company.name) \(editSuggestion.name)")
-                    .font(.callout)
+                )
+                .tint(.green)
             }
-            Spacer()
-        }
-        .padding(.vertical, 2)
-        .swipeActions {
-            Button("company.admin.editSuggestion.delete.label", systemImage: "trash") {
-                showDeleteConfirmationDialog = true
+            .confirmationDialog(
+                "company.admin.editSuggestion.delete.description",
+                isPresented: $showDeleteConfirmationDialog,
+                titleVisibility: .visible,
+                presenting: editSuggestion
+            ) { presenting in
+                AsyncButton(
+                    "company.admin.editSuggestion.delete.label \(presenting.name)",
+                    action: {
+                        await deleteEditSuggestion(presenting)
+                    }
+                )
+                .tint(.green)
             }
-            .tint(.red)
-            Button("company.admin.editSuggestion.apply.label", systemImage: "checkmark") {
-                showApplyConfirmationDialog = true
-            }
-            .tint(.green)
-        }
-        .confirmationDialog(
-            "company.admin.editSuggestion.apply.description",
-            isPresented: $showApplyConfirmationDialog,
-            titleVisibility: .visible,
-            presenting: editSuggestion
-        ) { presenting in
-            AsyncButton(
-                "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name)",
-                action: {
-                    await resolveEditSuggestion(presenting)
-                }
-            )
-            .tint(.green)
-        }
-        .confirmationDialog(
-            "company.admin.editSuggestion.delete.description",
-            isPresented: $showDeleteConfirmationDialog,
-            titleVisibility: .visible,
-            presenting: editSuggestion
-        ) { presenting in
-            AsyncButton(
-                "company.admin.editSuggestion.delete.label \(presenting.name)",
-                action: {
-                    await deleteEditSuggestion(presenting)
-                }
-            )
-            .tint(.green)
-        }
-        .listRowBackground(Color.clear)
+            .listRowBackground(Color.clear)
     }
 
     private func deleteEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
@@ -118,6 +99,39 @@ struct CompanyEditSuggestionRow: View {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete company '\(company.id)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct CompanyEditSuggestionEntityView: View {
+    let company: (any CompanyProtocol)?
+    let editSuggestion: Company.EditSuggestion
+
+    init(editSuggestion: Company.EditSuggestion, company: (any CompanyProtocol)? = nil) {
+        self.company = company
+        self.editSuggestion = editSuggestion
+    }
+
+    var body: some View {
+        HStack(alignment: .top) {
+            Avatar(profile: editSuggestion.createdBy)
+                .avatarSize(.medium)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(alignment: .top) {
+                    Text(editSuggestion.createdBy.preferredName)
+                        .font(.caption)
+                    Spacer()
+                    VStack(alignment: .leading) {
+                        Text("\(Image(systemName: "calendar.badge.plus")) \(editSuggestion.createdAt.formatted(.customRelativetime))").font(.caption2)
+                        if let resolvedAt = editSuggestion.resolvedAt {
+                            Text("\(Image(systemName: "calendar.badge.checkmark")) \(resolvedAt.formatted(.customRelativetime))").font(.caption2)
+                        }
+                    }
+                }
+                Text("company.admin.editSuggestion.changeNameTo.label \(company?.name ?? "") \(editSuggestion.name)")
+                    .font(.callout)
+            }
+            Spacer()
         }
     }
 }

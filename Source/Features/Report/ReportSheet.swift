@@ -30,7 +30,7 @@ struct ReportSheet: View {
     @ViewBuilder private var content: some View {
         Group {
             Section("report.section.content.title") {
-                entity.view
+                ReportEntityView(entity: entity)
             }
             Section("report.section.report.title") {
                 TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)

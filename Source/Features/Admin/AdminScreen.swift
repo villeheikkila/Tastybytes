@@ -2,8 +2,14 @@ import EnvironmentModels
 import SwiftUI
 
 struct AdminScreen: View {
+    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
+
     var body: some View {
         List {
+            Section {
+                RouterLink("admin.events.title", systemImage: "bell.badge", open: .screen(.adminEvent))
+            }
+
             Section("admin.section.data.title") {
                 RouterLink("admin.category.title", systemImage: "rectangle.stack", open: .screen(.categoryAdmin))
                 RouterLink("flavor.navigationTitle", systemImage: "face.smiling", open: .screen(.flavorAdmin))

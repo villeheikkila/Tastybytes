@@ -16,55 +16,69 @@ struct SubBrandAdminSheet: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
+    @State private var state: ScreenState = .loading
     @State private var newSubBrandName: String
     @State private var includesBrandName: Bool
-    @State private var subBrand: SubBrand.JoinedProduct
+    @State private var subBrand: SubBrand.Detailed?
+    @State private var id: Int
 
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
 
     init(
         brand: Binding<Brand.JoinedSubBrandsProductsCompany>,
-        subBrand: SubBrand.JoinedProduct
+        subBrand: SubBrandProtocol
     ) {
+        _id = State(initialValue: subBrand.id)
         _brand = brand
-        _subBrand = State(wrappedValue: subBrand)
-        _newSubBrandName = State(wrappedValue: subBrand.name ?? "")
-        _includesBrandName = State(wrappedValue: subBrand.includesBrandName)
+        _newSubBrandName = State(initialValue: subBrand.name ?? "")
+        _includesBrandName = State(initialValue: subBrand.includesBrandName)
     }
 
     private var canUpdate: Bool {
-        (subBrand
-            .name != newSubBrandName && newSubBrandName
-            .isValidLength(.normal(allowEmpty: false))) || includesBrandName != subBrand.includesBrandName
+        if let subBrand {
+            (subBrand
+                .name != newSubBrandName && newSubBrandName
+                .isValidLength(.normal(allowEmpty: false))) || includesBrandName != subBrand.includesBrandName
+        } else {
+            false
+        }
     }
 
     private var subBrandsToMergeTo: [SubBrand.JoinedProduct] {
-        brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }
+        brand.subBrands.filter { $0.name != nil && $0.id != subBrand?.id }
     }
 
     var body: some View {
         Form {
-            content
+            if let subBrand {
+                content(subBrand: subBrand)
+            }
         }
         .scrollContentBackground(.hidden)
+        .overlay {
+            ScreenStateOverlayView(state: state) {
+                await loadData(id: id)
+            }
+        }
         .navigationTitle("subBrand.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
+        .animation(.default, value: subBrand)
         .toolbar {
             toolbarContent
         }
-        .initialTask {
-            await loadData()
+        .task(id: id) {
+            await loadData(id: id)
         }
     }
 
-    @ViewBuilder private var content: some View {
+    @ViewBuilder private func content(subBrand: SubBrand.Detailed) -> some View {
         Section("subBrand.admin.section.subBrand") {
             RouterLink(open: .screen(.subBrand(.init(brand: brand, subBrand: subBrand)))) {
                 SubBrandEntityView(brand: brand, subBrand: subBrand)
             }
         }
         .customListRowBackground()
-        CreationInfoSection(createdBy: subBrand.createdBy, createdAt: subBrand.createdAt)
+        ModificationInfoView(modificationInfo: subBrand)
         Section("admin.section.details") {
             LabeledTextFieldView(title: "labels.name", text: $newSubBrandName)
             Toggle("brand.includesBrandName.toggle.label", isOn: $includesBrandName)
@@ -112,25 +126,28 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    private func loadData() async {
+    private func loadData(id: Int) async {
+        state = .loading
         do {
-            let subBrand = try await repository.subBrand.getDetailed(id: subBrand.id)
-            withAnimation {
-                self.subBrand = subBrand
-            }
+            subBrand = try await repository.subBrand.getDetailed(id: id)
+            state = .populated
         } catch {
             guard !error.isCancelled else { return }
+            state = .error([error])
             logger.error("Failed to load detailed sub-brand information. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     private func verifySubBrand(isVerified: Bool) async {
+        guard let subBrand else { return }
         do {
             try await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified)
-            let updatedSubBrand = subBrand.copyWith(isVerified: isVerified)
-            let updatedSubBrands = brand.subBrands.replacing(subBrand, with: updatedSubBrand)
+            let updatedSubBrand = SubBrand.JoinedProduct(subBrand: subBrand).copyWith(
+                isVerified: isVerified
+            )
+            self.subBrand = self.subBrand?.copyWith(isVerified: isVerified)
+            let updatedSubBrands = brand.subBrands.replacingWithId(id, with: updatedSubBrand)
             brand = brand.copyWith(subBrands: updatedSubBrands)
-            subBrand = updatedSubBrand
             feedbackEnvironmentModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
@@ -142,26 +159,26 @@ struct SubBrandAdminSheet: View {
     private func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
         do {
             try await repository.subBrand
-                .update(updateRequest: .brand(.init(id: subBrand.id, brandId: mergeTo.id)))
+                .update(updateRequest: .brand(.init(id: id, brandId: mergeTo.id)))
             withAnimation {
-                brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand))
+                brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(id))
             }
-            subBrand = mergeTo
+            id = mergeTo.id
             feedbackEnvironmentModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
-            logger.error("Failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to merge to merge sub-brand '\(id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     private func editSubBrand() async {
+        guard let subBrand else { return }
         do {
-            let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: subBrand.id, name: newSubBrandName, includesBrandName: includesBrandName)))
+            let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: id, name: newSubBrandName, includesBrandName: includesBrandName)))
             router.open(.toast(.success("subBrand.updated.toast")))
-            let updatedSubBrand = subBrand.copyWith(name: updated.name, includesBrandName: includesBrandName)
-            subBrand = updatedSubBrand
-            let updatedSubBrands = brand.subBrands.replacingWithId(subBrand, with: updatedSubBrand)
+            self.subBrand = subBrand.copyWith(name: updated.name, includesBrandName: includesBrandName)
+            let updatedSubBrands = brand.subBrands.replacingWithId(id, with: SubBrand.JoinedProduct(subBrand: subBrand).copyWith(name: updated.name, includesBrandName: includesBrandName))
             brand = brand.copyWith(subBrands: updatedSubBrands)
         } catch {
             guard !error.isCancelled else { return }
@@ -170,12 +187,12 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    private func deleteSubBrand(_ subBrand: SubBrand.JoinedProduct) async {
+    private func deleteSubBrand(_ subBrand: SubBrand.Detailed) async {
         do {
             try await repository.subBrand.delete(id: subBrand.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             withAnimation {
-                brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand))
+                brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand.id))
             }
             dismiss()
         } catch {

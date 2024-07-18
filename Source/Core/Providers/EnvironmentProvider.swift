@@ -7,6 +7,7 @@ import SwiftUI
 import TipKit
 
 struct EnvironmentProvider<Content: View>: View {
+    @State private var adminEnvironmentModel: AdminEnvironmentModel
     @State private var profileEnvironmentModel: ProfileEnvironmentModel
     @State private var notificationEnvironmentModel: NotificationEnvironmentModel
     @State private var appEnvironmentModel: AppEnvironmentModel
@@ -18,6 +19,7 @@ struct EnvironmentProvider<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(repository: Repository, infoPlist: InfoPlist, content: @escaping () -> Content) {
+        adminEnvironmentModel = AdminEnvironmentModel(repository: repository)
         profileEnvironmentModel = ProfileEnvironmentModel(repository: repository)
         notificationEnvironmentModel = NotificationEnvironmentModel(repository: repository)
         appEnvironmentModel = AppEnvironmentModel(repository: repository, infoPlist: infoPlist)
@@ -29,6 +31,7 @@ struct EnvironmentProvider<Content: View>: View {
 
     var body: some View {
         content()
+            .environment(adminEnvironmentModel)
             .environment(notificationEnvironmentModel)
             .environment(profileEnvironmentModel)
             .environment(appEnvironmentModel)

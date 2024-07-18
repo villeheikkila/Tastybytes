@@ -286,7 +286,7 @@ public final class AppEnvironmentModel {
     }
 
     // Categories
-    public func verifySubcategory(_ subcategory: Subcategory.JoinedCategory, isVerified: Bool, onSuccess: () -> Void) async {
+    public func verifySubcategory(_ subcategory: SubcategoryProtocol, isVerified: Bool, onSuccess: () -> Void) async {
         do {
             try await repository.subcategory.verification(id: subcategory.id, isVerified: isVerified)
             await loadCategories()

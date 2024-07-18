@@ -99,6 +99,31 @@ extension ProductVariant: Queryable {
     }
 }
 
+extension Product.EditSuggestion: Queryable {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let saved = "id, created_at, name, description, is_discontinued"
+
+        return switch queryType {
+        case let .joined(withTableName):
+            buildQuery(
+                .productEditSuggestions,
+                [
+                    saved,
+                    Product.getQuery(.joinedBrandSubcategories(true)),
+                    Profile.getQuery(.minimal(true)),
+                    Category.getQuery(.saved(true)),
+                    SubBrand.getQuery(.joinedBrand(true)),
+                ],
+                withTableName
+            )
+        }
+    }
+
+    enum QueryType {
+        case joined(_ withTableName: Bool)
+    }
+}
+
 extension ProductDuplicateSuggestion: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "product_id, duplicate_of_product_id"

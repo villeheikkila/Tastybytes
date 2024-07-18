@@ -24,7 +24,7 @@ enum Sheet: Identifiable, Equatable {
     case locationSearch(initialLocation: Location?, initialSearchTerm: String?, onSelect: (_ location: Location) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>, onSelect: (_ servingStyle: ServingStyle) async -> Void)
-    case subcategoryAdmin(subcategory: Subcategory.JoinedCategory, onSubmit: (_ subcategoryName: String) async -> Void)
+    case subcategoryAdmin(subcategory: SubcategoryProtocol, onSubmit: (_ subcategoryName: String) async -> Void)
     case subcategoryCreation(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case categoryCreation(onSubmit: (_ newCategoryName: String) async -> Void)
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
@@ -220,7 +220,7 @@ enum Sheet: Identifiable, Equatable {
         case .subcategoryCreation:
             "add_subcategory"
         case let .subcategoryAdmin(subcategory, _):
-            "edit_subcategory_\(subcategory.hashValue)"
+            "edit_subcategory_\(subcategory.id)"
         case let .companyAdmin(company, _, _):
             "edit_company_\(company.hashValue)"
         case .companyEditSuggestion:

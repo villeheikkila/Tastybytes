@@ -4,6 +4,7 @@ internal import Supabase
 
 @Observable
 public final class Repository: RepositoryProtocol {
+    public let admin: AdminRepository
     public let appConfig: AppConfigRepository
     public let profile: ProfileRepository
     public let role: RoleRepository
@@ -34,6 +35,7 @@ public final class Repository: RepositoryProtocol {
             supabaseKey: supabaseKey,
             options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers, logger: CustomSupabaseLogger()))
         )
+        admin = SupabaseAdminRepository(client: client)
         appConfig = SupabaseAppConfigRepository(client: client)
         imageEntity = SupabaseImageEntityRepository(client: client)
         profile = SupabaseProfileRepository(client: client, imageEntityRepository: imageEntity)

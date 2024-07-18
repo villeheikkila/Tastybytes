@@ -1,7 +1,9 @@
 import Foundation
+import Models
 
 enum Database {
     enum Table: String {
+        case adminEvents = "admin_events"
         case appConfigs = "app_configs"
         case brandLikes = "brand_likes"
         case profileWishlistItems = "profile_wishlist_items"
@@ -43,7 +45,7 @@ enum Database {
         case roles
         case rolesPermissions = "roles_permissions"
         case servingStyles = "serving_styles"
-        case subBrandEditSuggestion = "sub_brand_edit_suggestion"
+        case subBrandEditSuggestion = "sub_brand_edit_suggestions"
         case subBrands = "sub_brands"
         case subcategories
         case subscriptionGroups = "subscription_groups"
@@ -110,6 +112,7 @@ enum Database {
         case getNumberOfCheckInsByDay = "fnc__get_check_ins_by_time_range"
         case getNumberOfCheckInsByLocation = "fnc__get_number_of_check_ins_by_location"
         case deleteUserAsSuperAdmin = "fnc__delete_user_as_super_admin"
+        case markAdminEventAsReviewed = "fnc__mark_admin_event_as_reviewed"
     }
 }
 
@@ -126,6 +129,10 @@ extension Queryable {
 
     static func buildQuery(name: String, foreignKey: String, _ query: [String]) -> String {
         "\(name):\(foreignKey) (\(query.joinQueryParts()))"
+    }
+
+    static var modificationInfoFragment: String {
+        "created_at, updated_at, \(buildQuery(name: "created_by", foreignKey: "created_by", [Profile.getQuery(.minimal(false))])), \(buildQuery(name: "updated_by", foreignKey: "updated_by", [Profile.getQuery(.minimal(false))]))"
     }
 }
 

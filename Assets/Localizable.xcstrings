@@ -269,6 +269,126 @@
         }
       }
     },
+    "admin.event.brandCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand was created"
+          }
+        }
+      }
+    },
+    "admin.event.brandEditSuggestionCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand edit suggestion was submitted"
+          }
+        }
+      }
+    },
+    "admin.event.companyCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Company was created"
+          }
+        }
+      }
+    },
+    "admin.event.companyEditSuggestionCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Company edit suggestion was submitted"
+          }
+        }
+      }
+    },
+    "admin.event.productCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product was created"
+          }
+        }
+      }
+    },
+    "admin.event.productEditSuggestionCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product edit suggestion was submitted"
+          }
+        }
+      }
+    },
+    "admin.event.profileCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile was created"
+          }
+        }
+      }
+    },
+    "admin.event.reportCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report was submitted"
+          }
+        }
+      }
+    },
+    "admin.event.subBrandCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brand was created"
+          }
+        }
+      }
+    },
+    "admin.event.subBrandEditSuggestionCreated.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brand edit suggestion was submitted"
+          }
+        }
+      }
+    },
+    "admin.events.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Events"
+          }
+        }
+      }
+    },
+    "admin.events.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Events"
+          }
+        }
+      }
+    },
     "admin.locations.title" : {
       "localizations" : {
         "en" : {
@@ -330,6 +450,16 @@
         }
       }
     },
+    "admin.section.createdBy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created By"
+          }
+        }
+      }
+    },
     "admin.section.data.title" : {
       "localizations" : {
         "en" : {
@@ -376,6 +506,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reports"
+          }
+        }
+      }
+    },
+    "admin.section.updatedBy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updated By"
           }
         }
       }

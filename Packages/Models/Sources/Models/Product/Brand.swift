@@ -197,18 +197,24 @@ public extension Brand {
                 logos: logos ?? self.logos
             )
         }
+
+        struct EditSuggestion: Identifiable, Codable, Hashable, Sendable {
+            public let id: Int
+        }
     }
 
-    struct Detailed: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
+    struct Detailed: Identifiable, Hashable, Codable, Sendable, BrandProtocol, ModificationInfo {
         public let id: Int
         public let name: String
         public let isVerified: Bool
         public let brandOwner: Company
         public let subBrands: [SubBrand.JoinedProduct]
         public let logos: [ImageEntity]
+        public let editSuggestions: [EditSuggestion]
         public let createdBy: Profile?
         public let createdAt: Date
-        public let editSuggestions: [EditSuggestion]
+        public let updatedBy: Profile?
+        public let updatedAt: Date?
 
         public var productCount: Int {
             subBrands.flatMap(\.products).count
@@ -221,18 +227,35 @@ public extension Brand {
             case brandOwner = "companies"
             case subBrands = "sub_brands"
             case logos = "brand_logos"
-            case createdBy = "profiles"
-            case createdAt = "created_at"
             case editSuggestions = "brand_edit_suggestions"
+            case createdBy = "created_by"
+            case createdAt = "created_at"
+            case updatedBy = "updated_by"
+            case updatedAt = "updated_at"
         }
 
-        public func copyWith(name: String? = nil,
-                             isVerified: Bool? = nil,
-                             brandOwner: Company? = nil,
-                             subBrands: [SubBrand.JoinedProduct]? = nil,
-                             logos: [ImageEntity]? = nil,
-                             editSuggestions: [EditSuggestion]? = nil) -> Self
-        {
+        public init(id: Int, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity], editSuggestions: [Brand.EditSuggestion], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
+            self.id = id
+            self.name = name
+            self.isVerified = isVerified
+            self.brandOwner = brandOwner
+            self.subBrands = subBrands
+            self.logos = logos
+            self.editSuggestions = editSuggestions
+            self.createdBy = createdBy
+            self.createdAt = createdAt
+            self.updatedBy = updatedBy
+            self.updatedAt = updatedAt
+        }
+
+        public func copyWith(
+            name: String? = nil,
+            isVerified: Bool? = nil,
+            brandOwner: Company? = nil,
+            subBrands: [SubBrand.JoinedProduct]? = nil,
+            logos: [ImageEntity]? = nil,
+            editSuggestions: [Brand.EditSuggestion]? = nil
+        ) -> Self {
             .init(
                 id: id,
                 name: name ?? self.name,
@@ -240,9 +263,11 @@ public extension Brand {
                 brandOwner: brandOwner ?? self.brandOwner,
                 subBrands: subBrands ?? self.subBrands,
                 logos: logos ?? self.logos,
+                editSuggestions: editSuggestions ?? self.editSuggestions,
                 createdBy: createdBy,
                 createdAt: createdAt,
-                editSuggestions: editSuggestions ?? self.editSuggestions
+                updatedBy: updatedBy,
+                updatedAt: updatedAt
             )
         }
     }

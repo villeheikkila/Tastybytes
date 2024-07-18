@@ -65,7 +65,7 @@ struct CompanyAdminSheet: View {
             }
         }
         .customListRowBackground()
-        CreationInfoSection(createdBy: company.createdBy, createdAt: company.createdAt)
+        ModificationInfoView(modificationInfo: company)
         Section("admin.section.details") {
             LabeledTextFieldView(title: "labels.name", text: $newCompanyName)
             LabeledIdView(id: company.id.formatted())

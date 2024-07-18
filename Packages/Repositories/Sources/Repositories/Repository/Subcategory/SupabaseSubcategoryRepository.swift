@@ -14,6 +14,17 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
             .value
     }
 
+    func getDetailed(id: Int) async throws -> Subcategory.Detailed {
+        try await client
+            .from(.subcategories)
+            .select(Subcategory.getQuery(.detailed(false)))
+            .eq("id", value: id)
+            .limit(1)
+            .single()
+            .execute()
+            .value
+    }
+
     func delete(id: Int) async throws {
         try await client
             .from(.subcategories)

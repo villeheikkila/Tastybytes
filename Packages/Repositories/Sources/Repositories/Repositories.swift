@@ -3,6 +3,7 @@ import OSLog
 internal import Supabase
 
 public protocol RepositoryProtocol: Sendable {
+    var admin: AdminRepository { get }
     var appConfig: AppConfigRepository { get }
     var profile: ProfileRepository { get }
     var role: RoleRepository { get }

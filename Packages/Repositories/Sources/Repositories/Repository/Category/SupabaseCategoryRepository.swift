@@ -13,6 +13,18 @@ struct SupabaseCategoryRepository: CategoryRepository {
             .value
     }
 
+    func getDetailed(id: Int) async throws -> Category.Detailed {
+        try await client
+            .from(.categories)
+            .select(Models.Category.getQuery(.detailed(false)))
+            .eq("id", value: id)
+            .order("name")
+            .limit(1)
+            .single()
+            .execute()
+            .value
+    }
+
     func insert(newCategory: Category.NewRequest) async throws -> Models.Category.JoinedSubcategoriesServingStyles {
         try await client
             .from(.categories)

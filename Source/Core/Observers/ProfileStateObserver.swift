@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ProfileStateObserver<Content: View>: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @ViewBuilder let content: () -> Content
 
@@ -12,6 +13,11 @@ struct ProfileStateObserver<Content: View>: View {
             content()
                 .task {
                     await friendEnvironmentModel.initialize(profile: profileEnvironmentModel.profile)
+                }
+                .task {
+                    if profileEnvironmentModel.hasRole(.admin) {
+                        await adminEnvironmentModel.loadAdminEventFeed()
+                    }
                 }
         case .loading:
             EmptyView()

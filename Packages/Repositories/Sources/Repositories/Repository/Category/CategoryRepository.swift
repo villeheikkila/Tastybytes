@@ -2,6 +2,7 @@ import Models
 
 public protocol CategoryRepository: Sendable {
     func getAllWithSubcategoriesServingStyles() async throws -> [Models.Category.JoinedSubcategoriesServingStyles]
+    func getDetailed(id: Int) async throws -> Category.Detailed
     func insert(newCategory: Category.NewRequest) async throws -> Models.Category.JoinedSubcategoriesServingStyles
     func addServingStyle(categoryId: Int, servingStyleId: Int) async throws
     func deleteCategory(id: Int) async throws

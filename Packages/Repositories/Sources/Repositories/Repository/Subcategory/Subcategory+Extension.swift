@@ -9,7 +9,11 @@ extension Subcategory: Queryable {
         case let .saved(withTableName):
             return buildQuery(.subcategories, [saved], withTableName)
         case let .detailed(withTableName):
-            return buildQuery(.subcategories, [saved, "created_at", Profile.getQuery(.minimal(true))], withTableName)
+            return buildQuery(
+                .subcategories,
+                [saved, Category.getQuery(.saved(true)), modificationInfoFragment],
+                withTableName
+            )
         case let .joinedCategory(withTableName):
             return buildQuery(.subcategories, [saved, Category.getQuery(.saved(true))], withTableName)
         }

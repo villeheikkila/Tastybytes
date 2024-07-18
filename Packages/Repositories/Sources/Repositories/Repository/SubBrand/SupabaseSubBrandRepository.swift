@@ -14,7 +14,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             .value
     }
 
-    func getDetailed(id: Int) async throws -> SubBrand.JoinedProduct {
+    func getDetailed(id: Int) async throws -> SubBrand.Detailed {
         try await client
             .from(.subBrands)
             .select(SubBrand.getQuery(.detailed(false)))

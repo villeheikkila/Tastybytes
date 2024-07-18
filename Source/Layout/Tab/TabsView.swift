@@ -4,6 +4,7 @@ import SwiftUI
 
 struct TabsView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var selection = Tab.activity
@@ -46,6 +47,8 @@ struct TabsView: View {
         switch tab {
         case .notifications:
             notificationEnvironmentModel.unreadCount
+        case .admin:
+            adminEnvironmentModel.unresolvedEventCount
         default:
             0
         }

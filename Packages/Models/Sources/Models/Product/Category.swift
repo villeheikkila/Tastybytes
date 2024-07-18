@@ -41,8 +41,6 @@ public extension Category {
         public let icon: String?
         public let subcategories: [Subcategory]
         public let servingStyles: [ServingStyle]
-        public let createdAt: Date?
-        public let createdBy: Profile?
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -50,8 +48,22 @@ public extension Category {
             case icon
             case subcategories
             case servingStyles = "serving_styles"
-            case createdAt = "created_at"
-            case createdBy = "profiles"
+        }
+
+        init(id: Int, name: String, icon: String? = nil, subcategories: [Subcategory], servingStyles: [ServingStyle]) {
+            self.id = id
+            self.name = name
+            self.icon = icon
+            self.subcategories = subcategories
+            self.servingStyles = servingStyles
+        }
+
+        public init(category: Category.Detailed) {
+            id = category.id
+            name = category.name
+            icon = category.icon
+            subcategories = category.subcategories
+            servingStyles = category.servingStyles
         }
 
         public func copyWith(
@@ -60,19 +72,65 @@ public extension Category {
             icon: String? = nil,
             subcategories: [Subcategory]? = nil,
             servingStyles: [ServingStyle]? = nil
-        ) -> JoinedSubcategoriesServingStyles {
-            JoinedSubcategoriesServingStyles(
+        ) -> Self {
+            .init(
+                id: id ?? self.id,
+                name: name ?? self.name,
+                icon: icon ?? self.icon,
+                subcategories: subcategories ?? self.subcategories,
+                servingStyles: servingStyles ?? self.servingStyles
+            )
+        }
+
+        public func appending(subcategory: Subcategory) -> JoinedSubcategoriesServingStyles {
+            copyWith(subcategories: subcategories + [subcategory])
+        }
+    }
+
+    struct Detailed: Identifiable, Codable, Hashable, Sendable, CategoryProtocol, ModificationInfo {
+        public let id: Int
+        public let name: String
+        public let icon: String?
+        public let subcategories: [Subcategory]
+        public let servingStyles: [ServingStyle]
+        public let createdAt: Date
+        public let createdBy: Profile?
+        public let updatedAt: Date?
+        public let updatedBy: Profile?
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case icon
+            case subcategories
+            case servingStyles = "serving_styles"
+            case createdBy = "created_by"
+            case createdAt = "created_at"
+            case updatedBy = "updated_by"
+            case updatedAt = "updated_at"
+        }
+
+        public func copyWith(
+            id: Int? = nil,
+            name: String? = nil,
+            icon: String? = nil,
+            subcategories: [Subcategory]? = nil,
+            servingStyles: [ServingStyle]? = nil
+        ) -> Self {
+            .init(
                 id: id ?? self.id,
                 name: name ?? self.name,
                 icon: icon ?? self.icon,
                 subcategories: subcategories ?? self.subcategories,
                 servingStyles: servingStyles ?? self.servingStyles,
                 createdAt: createdAt,
-                createdBy: createdBy
+                createdBy: createdBy,
+                updatedAt: updatedAt,
+                updatedBy: updatedBy
             )
         }
 
-        public func appending(subcategory: Subcategory) -> JoinedSubcategoriesServingStyles {
+        public func appending(subcategory: Subcategory) -> Detailed {
             copyWith(subcategories: subcategories + [subcategory])
         }
     }
