@@ -7,3 +7,4 @@ DerivedData/
 .build/
 
 /Config.xcconfig
+build

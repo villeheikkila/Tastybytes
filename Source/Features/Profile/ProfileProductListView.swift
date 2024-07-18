@@ -66,17 +66,16 @@ struct ProfileProductListView: View {
         }
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .safeAreaInset(edge: .top, content: {
+            if let productFilter, !locked {
+                ProductFilterOverlayView(filters: productFilter, onReset: {
+                    self.productFilter = nil
+                })
+            }
+        })
         .overlay {
-            if state == .populated {
-                if let productFilter, !locked {
-                    ProductFilterOverlayView(filters: productFilter, onReset: {
-                        self.productFilter = nil
-                    })
-                }
-            } else {
-                ScreenStateOverlayView(state: state, errorDescription: "") {
-                    await loadProducts()
-                }
+            ScreenStateOverlayView(state: state, errorDescription: "") {
+                await loadProducts()
             }
         }
         .navigationTitle(navigationTitle)
