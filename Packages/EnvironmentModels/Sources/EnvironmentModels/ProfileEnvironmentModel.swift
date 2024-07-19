@@ -45,10 +45,6 @@ public final class ProfileEnvironmentModel {
     // AppIcon
     public var appIcon: AppIcon = .ramune
 
-    // Contributions
-    public var contributions: Profile.Contributions?
-    public var contributionsState: ScreenState = .loading
-
     private let repository: Repository
 
     public var extendedProfile: Profile.Extended? {
@@ -330,66 +326,6 @@ public final class ProfileEnvironmentModel {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    public func loadContributions(refresh: Bool = false) async {
-        guard contributions == nil || refresh else { return }
-        do {
-            let contributions = try await repository.profile.getContributions(id: profile.id)
-            withAnimation {
-                self.contributions = contributions
-                contributionsState = .populated
-            }
-        } catch {
-            guard !error.isCancelled else { return }
-            contributionsState = .error([error])
-            logger.error("Failed to load contributions. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-    
-   public func deleteEditSuggestion(_ editSuggestion: EditSuggestion) async {
-        do {
-            switch editSuggestion {
-            case let .product(editSuggestion):
-                try await repository.product.deleteEditSuggestion(editSuggestion: editSuggestion)
-            case let .company(editSuggestion):
-                try await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion)
-            case let .brand(editSuggestion):
-                try await repository.brand.deleteEditSuggestion(editSuggestion: editSuggestion)
-            case let .subBrand(editSuggestion):
-                try await repository.subBrand.deleteEditSuggestion(editSuggestion: editSuggestion)
-            }
-            self.contributions = contributions?.copyWith(
-                editSuggestions: contributions?.editSuggestions.removing(editSuggestion)
-            )
-        } catch {
-            guard !error.isCancelled else { return }
-            logger.error("Failed to delete an edit suggestions")
-        }
-    }
-    
-    public func deleteReportSuggestion(_ report: Report) async {
-        do {
-            try await repository.report.delete(id: report.id)
-            contributions = contributions?.copyWith(reports: contributions?.reports.removing(report))
-        } catch {
-            guard !error.isCancelled else { return }
-            logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
-        }
-    }
-    
-    
-    public func deleteDuplicateSuggestion(_ duplicateSuggestion: DuplicateSuggestion) async {
-        do {
-            switch duplicateSuggestion {
-            case let .product(duplicateSuggestion):
-                try await repository.product.deleteProductDuplicateSuggestion(duplicateSuggestion)
-            }
-            contributions = contributions?.copyWith(duplicateSuggestions: contributions?.duplicateSuggestions.removing(duplicateSuggestion))
-        } catch {
-            guard !error.isCancelled else { return }
-            logger.error("Failed to delete a duplicate suggestion")
         }
     }
 }

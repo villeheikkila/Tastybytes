@@ -558,11 +558,11 @@ public enum EditSuggestion: Hashable, Identifiable, Sendable, Decodable {
 
 public enum DuplicateSuggestion: Hashable, Identifiable, Sendable, Decodable {
     case product(Product.DuplicateSuggestion)
-    
+
     public var id: Int {
         hashValue
     }
-    
+
     public var createdAt: Date {
         switch self {
         case let .product(editSuggestion):

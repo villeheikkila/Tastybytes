@@ -7,18 +7,18 @@ import Repositories
 import SwiftUI
 
 struct ProfileReportScreen: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-   
+    let contributionsModel: ContributionsModel
+
     var reports: [Report] {
-        profileEnvironmentModel.contributions?.reports ?? []
+        contributionsModel.contributions?.reports ?? []
     }
-    
+
     var body: some View {
         List(reports) { report in
             ReportReaderRowView(report: report)
                 .swipeActions {
                     AsyncButton("labels.delete", systemImage: "trash") {
-                        await profileEnvironmentModel.deleteReportSuggestion(report)
+                        await contributionsModel.deleteReportSuggestion(report)
                     }
                     .tint(.red)
                 }
@@ -43,8 +43,6 @@ struct ReportReaderRowView: View {
         } header: {
             if let message = report.message {
                 Text(message)
-                    .font(.body)
-                    .foregroundStyle(.primary)
             }
         } footer: {
             Text(report.createdAt.formatted(.customRelativetime))

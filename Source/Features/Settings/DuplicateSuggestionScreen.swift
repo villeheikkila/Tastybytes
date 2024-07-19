@@ -1,15 +1,15 @@
 import Components
+import EnvironmentModels
 import Models
 import OSLog
 import Repositories
 import SwiftUI
-import EnvironmentModels
 
 struct ProfileDuplicateSuggestionScreen: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    
+    let contributionsModel: ContributionsModel
+
     var duplicateSuggestions: [DuplicateSuggestion] {
-        profileEnvironmentModel.contributions?.duplicateSuggestions ?? []
+        contributionsModel.contributions?.duplicateSuggestions ?? []
     }
 
     var body: some View {
@@ -17,7 +17,7 @@ struct ProfileDuplicateSuggestionScreen: View {
             DuplicateSuggesEntityView(duplicateSuggestion: duplicateSuggestion)
                 .swipeActions {
                     AsyncButton("labels.delete", systemImage: "trash") {
-                        await profileEnvironmentModel.deleteDuplicateSuggestion(duplicateSuggestion)
+                        await contributionsModel.deleteDuplicateSuggestion(duplicateSuggestion)
                     }
                     .labelStyle(.iconOnly)
                     .tint(.red)

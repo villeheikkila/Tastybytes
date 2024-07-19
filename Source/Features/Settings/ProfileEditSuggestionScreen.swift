@@ -1,15 +1,15 @@
 import Components
+import EnvironmentModels
 import Models
 import OSLog
 import Repositories
 import SwiftUI
-import EnvironmentModels
 
 struct ProfileEditSuggestionScreen: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    
+    let contributionsModel: ContributionsModel
+
     var editSuggestions: [EditSuggestion] {
-        profileEnvironmentModel.contributions?.editSuggestions ?? []
+        contributionsModel.contributions?.editSuggestions ?? []
     }
 
     var body: some View {
@@ -17,7 +17,7 @@ struct ProfileEditSuggestionScreen: View {
             EditSuggestionEntityView(editSuggestion: editSuggestion)
                 .swipeActions {
                     AsyncButton("labels.delete", systemImage: "trash") {
-                        await profileEnvironmentModel.deleteEditSuggestion(editSuggestion)
+                        await contributionsModel.deleteEditSuggestion(editSuggestion)
                     }
                     .labelStyle(.iconOnly)
                     .tint(.red)

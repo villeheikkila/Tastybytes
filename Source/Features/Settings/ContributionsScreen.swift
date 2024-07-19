@@ -5,32 +5,120 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct ContributionsScreen: View {
-    private let logger = Logger(category: "ContributionsScreen")
-    @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+@MainActor
+@Observable
+public final class ContributionsModel {
+    private let logger = Logger(category: "ContributionsModel")
 
+    public var contributions: Profile.Contributions?
+    public var contributionsState: ScreenState = .loading
+
+    private let repository: Repository
+    private let profile: Profile
+
+    public init(repository: Repository, profile: Profile) {
+        self.repository = repository
+        self.profile = profile
+    }
+
+    public func loadContributions(refresh: Bool = false) async {
+        guard contributions == nil || refresh else { return }
+        do {
+            let contributions = try await repository.profile.getContributions(id: profile.id)
+            withAnimation {
+                self.contributions = contributions
+                contributionsState = .populated
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            contributionsState = .error([error])
+            logger.error("Failed to load contributions. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func deleteEditSuggestion(_ editSuggestion: EditSuggestion) async {
+        do {
+            switch editSuggestion {
+            case let .product(editSuggestion):
+                try await repository.product.deleteEditSuggestion(editSuggestion: editSuggestion)
+            case let .company(editSuggestion):
+                try await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion)
+            case let .brand(editSuggestion):
+                try await repository.brand.deleteEditSuggestion(editSuggestion: editSuggestion)
+            case let .subBrand(editSuggestion):
+                try await repository.subBrand.deleteEditSuggestion(editSuggestion: editSuggestion)
+            }
+            contributions = contributions?.copyWith(
+                editSuggestions: contributions?.editSuggestions.removing(editSuggestion)
+            )
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to delete an edit suggestions")
+        }
+    }
+
+    public func deleteReportSuggestion(_ report: Report) async {
+        do {
+            try await repository.report.delete(id: report.id)
+            contributions = contributions?.copyWith(reports: contributions?.reports.removing(report))
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func deleteDuplicateSuggestion(_ duplicateSuggestion: DuplicateSuggestion) async {
+        do {
+            switch duplicateSuggestion {
+            case let .product(duplicateSuggestion):
+                try await repository.product.deleteProductDuplicateSuggestion(duplicateSuggestion)
+            }
+            contributions = contributions?.copyWith(duplicateSuggestions: contributions?.duplicateSuggestions.removing(duplicateSuggestion))
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to delete a duplicate suggestion")
+        }
+    }
+}
+
+struct ContributionsScreen: View {
+    @Environment(Repository.self) private var repository
     let profile: Profile
 
     var body: some View {
+        ContributionsInnerScreen(repository: repository, profile: profile)
+    }
+}
+
+private struct ContributionsInnerScreen: View {
+    @State private var contributionsModel: ContributionsModel
+
+    let profile: Profile
+
+    init(repository: Repository, profile: Profile) {
+        _contributionsModel = State(wrappedValue: ContributionsModel(repository: repository, profile: profile))
+        self.profile = profile
+    }
+
+    var body: some View {
         List {
-            if let contributions = profileEnvironmentModel.contributions {
+            if let contributions = contributionsModel.contributions {
                 content(contributions: contributions)
             }
         }
         .listStyle(.insetGrouped)
         .refreshable {
-            await profileEnvironmentModel.loadContributions(refresh: true)
+            await contributionsModel.loadContributions(refresh: true)
         }
         .overlay {
-            ScreenStateOverlayView(state: profileEnvironmentModel.contributionsState) {
-                await profileEnvironmentModel.loadContributions()
+            ScreenStateOverlayView(state: contributionsModel.contributionsState) {
+                await contributionsModel.loadContributions()
             }
         }
         .navigationTitle("settings.contributions.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            await profileEnvironmentModel.loadContributions()
+            await contributionsModel.loadContributions()
         }
     }
 
@@ -48,23 +136,23 @@ struct ContributionsScreen: View {
         Section {
             if !contributions.reports.isEmpty {
                 RouterLink(
-                    "reports.title",
+                    "report.admin.navigationTitle",
                     count: contributions.reports.count,
-                    open: .screen(.profileReports)
+                    open: .screen(.profileReports(contributionsModel: contributionsModel))
                 )
             }
             if !contributions.editSuggestions.isEmpty {
                 RouterLink(
                     "editSuggestions.navigationTitle",
                     count: contributions.editSuggestions.count,
-                    open: .screen(.profileEditSuggestions)
+                    open: .screen(.profileEditSuggestions(contributionsModel: contributionsModel))
                 )
             }
             if !contributions.duplicateSuggestions.isEmpty {
                 RouterLink(
                     "duplicateSuggestions.navigationTitle",
                     count: contributions.duplicateSuggestions.count,
-                    open: .screen(.profileDuplicateSuggestions)
+                    open: .screen(.profileDuplicateSuggestions(contributionsModel: contributionsModel))
                 )
             }
         }

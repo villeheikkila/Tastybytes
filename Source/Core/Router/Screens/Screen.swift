@@ -54,9 +54,9 @@ enum Screen: Hashable, Sendable {
     case productEditSuggestion(product: Binding<Product.Detailed?>)
     case productVariants(variants: [Product.Variant])
     case subBrandEditSuggestions(subBrand: Binding<SubBrand.Detailed?>)
-    case profileReports
-    case profileEditSuggestions
-    case profileDuplicateSuggestions
+    case profileReports(contributionsModel: ContributionsModel)
+    case profileEditSuggestions(contributionsModel: ContributionsModel)
+    case profileDuplicateSuggestions(contributionsModel: ContributionsModel)
 
     @MainActor
     @ViewBuilder
@@ -164,12 +164,12 @@ enum Screen: Hashable, Sendable {
             ProductVariantsScreen(variants: variants)
         case let .subBrandEditSuggestions(subBrand):
             SubBrandEditSuggestionsScreen(subBrand: subBrand)
-        case .profileReports:
-            ProfileReportScreen()
-        case .profileEditSuggestions:
-            ProfileEditSuggestionScreen()
-        case .profileDuplicateSuggestions:
-            ProfileDuplicateSuggestionScreen()
+        case let .profileReports(contributionsModel):
+            ProfileReportScreen(contributionsModel: contributionsModel)
+        case let .profileEditSuggestions(contributionsModel):
+            ProfileEditSuggestionScreen(contributionsModel: contributionsModel)
+        case let .profileDuplicateSuggestions(contributionsModel):
+            ProfileDuplicateSuggestionScreen(contributionsModel: contributionsModel)
         }
     }
 
@@ -241,6 +241,8 @@ enum Screen: Hashable, Sendable {
             lhsVariants == rhsVariants
         case let (.subBrandEditSuggestions(lhsSubBrands), .subBrandEditSuggestions(rhsSubBrands)):
             lhsSubBrands.wrappedValue == rhsSubBrands.wrappedValue
+        case let (.contributions(lhsProfile), .contributions(rhsProfile)):
+            lhsProfile == rhsProfile
         case
             (.currentUserFriends, .currentUserFriends),
             (.flavorAdmin, .flavorAdmin),
@@ -253,10 +255,10 @@ enum Screen: Hashable, Sendable {
             (.notificationSettingsScreen, .notificationSettingsScreen),
             (.appIcon, .appIcon),
             (.blockedUsers, .blockedUsers),
-            (.contributions, .contributions),
             (.about, .about),
             (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin), (.profileEditSuggestions, .profileEditSuggestions), (
-                .profileReports, .profileReports), (.profileDuplicateSuggestions, .profileDuplicateSuggestions):
+                .profileReports, .profileReports
+            ), (.profileDuplicateSuggestions, .profileDuplicateSuggestions):
             true
         default:
             false
@@ -416,7 +418,6 @@ enum Screen: Hashable, Sendable {
             hasher.combine("profileEditSuggestions")
         case .profileDuplicateSuggestions:
             hasher.combine("profileDuplicateSuggestions")
-
         }
     }
 }
