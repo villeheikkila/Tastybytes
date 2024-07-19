@@ -74,7 +74,7 @@ struct ProfileProductListView: View {
             }
         })
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "") {
+            ScreenStateOverlayView(state: state) {
                 await loadProducts()
             }
         }

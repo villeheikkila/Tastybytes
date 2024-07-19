@@ -20,6 +20,7 @@ extension AdminEvent: Queryable {
                     SubBrand.EditSuggestion.getQuery(.joined(true)),
                     Company.EditSuggestion.getQuery(.joined(true)),
                     Brand.EditSuggestion.getQuery(.joined(true)),
+                    Product.DuplicateSuggestion.getQuery(.joined(true)),
                     Report.getQuery(.joined(true)),
                 ],
                 withTableName

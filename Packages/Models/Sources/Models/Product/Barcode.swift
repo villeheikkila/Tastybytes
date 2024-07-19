@@ -1,7 +1,18 @@
 import Extensions
 import Foundation
 
-public struct Barcode: Codable, Hashable, Sendable, Identifiable {
+public protocol BarcodeProtocol {
+    var barcode: String { get }
+    var type: String { get }
+}
+
+public extension BarcodeProtocol {
+    func isSameAs(_ barcode: BarcodeProtocol?) -> Bool {
+        self.barcode == barcode?.barcode && type == barcode?.type
+    }
+}
+
+public struct Barcode: Codable, Hashable, Sendable, Identifiable, BarcodeProtocol {
     enum CodingKeys: String, CodingKey {
         case barcode, type
     }
@@ -19,22 +30,25 @@ public struct Barcode: Codable, Hashable, Sendable, Identifiable {
     }
 }
 
-public struct ProductBarcode: Identifiable, Hashable, Codable, Sendable {
-    enum CodingKeys: String, CodingKey {
-        case id, barcode, type
-    }
+public extension Product {
+    struct Barcode: Identifiable, Hashable, Codable, Sendable, BarcodeProtocol {
+        enum CodingKeys: String, CodingKey {
+            case id, barcode, type
+        }
 
-    public let id: Int
-    public let barcode: String
-    public let type: String
+        public let id: Int
+        public let barcode: String
+        public let type: String
 
-    public func isBarcode(_ code: Barcode?) -> Bool {
-        guard let code else { return false }
-        return type == code.type && barcode == code.barcode
+        public init(barcode: Barcode.JoinedWithCreator) {
+            id = barcode.id
+            self.barcode = barcode.barcode
+            type = barcode.type
+        }
     }
 }
 
-public extension ProductBarcode {
+public extension Product.Barcode {
     struct NewRequest: Codable, Sendable {
         enum CodingKeys: String, CodingKey {
             case barcode, type, productId = "product_id"
@@ -44,14 +58,14 @@ public extension ProductBarcode {
         public let type: String
         public let productId: Int
 
-        public init(product: Product.Joined, barcode: Barcode) {
+        public init(product: ProductProtocol, barcode: Barcode) {
             productId = product.id
             type = barcode.type
             self.barcode = barcode.barcode
         }
     }
 
-    struct JoinedWithCreator: Identifiable, Hashable, Codable, Sendable {
+    struct JoinedWithCreator: Identifiable, Hashable, Codable, Sendable, BarcodeProtocol {
         public let id: Int
         public let barcode: String
         public let type: String

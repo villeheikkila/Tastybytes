@@ -22,7 +22,7 @@ extension Models.Notification: Queryable {
     }
 }
 
-extension ProfilePushNotification: Queryable {
+extension Profile.PushNotification: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved =
             "device_token, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications, send_friend_request_notifications, send_comment_notifications"

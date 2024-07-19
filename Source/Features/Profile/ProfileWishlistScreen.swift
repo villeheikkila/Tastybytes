@@ -45,7 +45,7 @@ struct ProfileWishlistScreen: View {
                     }
                 }
             } else {
-                ScreenStateOverlayView(state: state, errorDescription: "") {
+                ScreenStateOverlayView(state: state) {
                     await loadProducts()
                 }
             }

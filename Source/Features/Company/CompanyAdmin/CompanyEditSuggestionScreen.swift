@@ -51,7 +51,7 @@ struct CompanyEditSuggestionRow: View {
                 presenting: editSuggestion
             ) { presenting in
                 AsyncButton(
-                    "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name)",
+                    "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name ?? "-")",
                     action: {
                         await resolveEditSuggestion(presenting)
                     }
@@ -65,7 +65,7 @@ struct CompanyEditSuggestionRow: View {
                 presenting: editSuggestion
             ) { presenting in
                 AsyncButton(
-                    "company.admin.editSuggestion.delete.label \(presenting.name)",
+                    "company.admin.editSuggestion.delete.label \(presenting.name ?? "-")",
                     action: {
                         await deleteEditSuggestion(presenting)
                     }
@@ -124,11 +124,13 @@ struct CompanyEditSuggestionEntityView: View {
                     VStack(alignment: .leading) {
                         Text("\(Image(systemName: "calendar.badge.plus")) \(editSuggestion.createdAt.formatted(.customRelativetime))").font(.caption2)
                         if let resolvedAt = editSuggestion.resolvedAt {
-                            Text("\(Image(systemName: "calendar.badge.checkmark")) \(resolvedAt.formatted(.customRelativetime))").font(.caption2)
+                            Text("\(Image(systemName: "calendar.badge.checkmark")) \(resolvedAt.formatted(.customRelativetime))")
+                                .font(.caption2)
+                                .foregroundStyle(.green)
                         }
                     }
                 }
-                Text("company.admin.editSuggestion.changeNameTo.label \(company?.name ?? "") \(editSuggestion.name)")
+                Text("company.admin.editSuggestion.changeNameTo.label \(company?.name ?? "") \(editSuggestion.name ?? "-")")
                     .font(.callout)
             }
             Spacer()

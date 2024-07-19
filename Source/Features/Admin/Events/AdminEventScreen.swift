@@ -13,23 +13,7 @@ struct AdminEventScreen: View {
 
     var body: some View {
         List(adminEnvironmentModel.events) { event in
-            Section {
-                AdminEventEntityView(event: event.event)
-            } header: {
-                Text(event.sectionTitle)
-            } footer: {
-                Text(event.createdAt.formatted())
-            }
-            .contentShape(.rect)
-            .onTapGesture {
-                open(event: event)
-            }
-            .swipeActions {
-                AsyncButton("labels.ok", systemImage: "checkmark") {
-                    await adminEnvironmentModel.markAsReviewed(event)
-                }
-                .tint(.green)
-            }
+            AdminEventRowView(event: event)
         }
         .refreshable {
             await adminEnvironmentModel.loadAdminEventFeed()
@@ -41,37 +25,37 @@ struct AdminEventScreen: View {
             await adminEnvironmentModel.loadAdminEventFeed()
         }
     }
+}
 
-    func open(event: AdminEvent) {
-        switch event.event {
-        case let .company(company):
-            router.open(.screen(.company(company)))
-        case let .product(product):
-            router.open(.screen(.product(product)))
-        case let .subBrand(subBrand):
-            router.fetchAndNavigateTo(repository, .brand(id: subBrand.brand.id))
-        case let .brand(brand):
-            router.fetchAndNavigateTo(repository, .brand(id: brand.id))
-        case let .profile(profile):
-            router.open(.screen(.profile(profile)))
-        case let .productEditSuggestion(editSuggestion):
-            router.open(.screen(.product(editSuggestion.product)))
-        case let .brandEditSuggestion(editSuggestion):
-            router.fetchAndNavigateTo(repository, .brand(id: editSuggestion.id))
-        case let .subBrandEditSuggestion(editSuggestion):
-            router.fetchAndNavigateTo(repository, .brand(id: editSuggestion.subBrand.brand.id))
-        case let .companyEditSuggestion(editSuggestion):
-            router.open(.screen(.company(editSuggestion.company)))
-        case let .report(report):
-            report.entity.open(repository, router)
+struct AdminEventRowView: View {
+    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
+    let event: AdminEvent
+
+    var body: some View {
+        Section {
+            RouterLink(open: event.open) {
+                event.view
+            }
+            .buttonStyle(.plain)
+        } header: {
+            Text(event.sectionTitle)
+        } footer: {
+            Text(event.createdAt.formatted())
+        }
+        .contentShape(.rect)
+        .swipeActions {
+            AsyncButton("labels.ok", systemImage: "checkmark") {
+                await adminEnvironmentModel.markAsReviewed(event)
+            }
+            .tint(.green)
         }
     }
 }
 
-struct AdminEventEntityView: View {
-    let event: AdminEvent.Event
-
-    var body: some View {
+extension AdminEvent {
+    @MainActor
+    @ViewBuilder
+    var view: some View {
         switch event {
         case let .company(company):
             CompanyEntityView(company: company)
@@ -93,11 +77,38 @@ struct AdminEventEntityView: View {
             CompanyEditSuggestionEntityView(editSuggestion: editSuggestion)
         case let .report(report):
             ReportEntityView(entity: report.entity)
+        case let .productDuplicateSuggestion(productDuplicateSuggestion):
+            DuplicateProductSuggestionEntityView(duplicateProductSuggestion: productDuplicateSuggestion)
         }
     }
-}
 
-extension AdminEvent {
+    var open: Router.Open {
+        switch event {
+        case let .company(company):
+            .screen(.company(company))
+        case let .product(product):
+            .screen(.product(product))
+        case let .subBrand(subBrand):
+            .navigatablePath(.brand(id: subBrand.brand.id))
+        case let .brand(brand):
+            .navigatablePath(.brand(id: brand.id))
+        case let .profile(profile):
+            .screen(.profile(profile))
+        case let .productEditSuggestion(editSuggestion):
+            .screen(.product(editSuggestion.product))
+        case let .brandEditSuggestion(editSuggestion):
+            .navigatablePath(.brand(id: editSuggestion.brand.id))
+        case let .subBrandEditSuggestion(editSuggestion):
+            .navigatablePath(.brand(id: editSuggestion.subBrand.brand.id))
+        case let .companyEditSuggestion(editSuggestion):
+            .screen(.company(editSuggestion.company))
+        case let .report(report):
+            report.entity.open
+        case let .productDuplicateSuggestion(duplicateProductSuggestion):
+            .screen(.product(duplicateProductSuggestion.product))
+        }
+    }
+
     var sectionTitle: LocalizedStringKey {
         switch event {
         case .company:
@@ -120,26 +131,8 @@ extension AdminEvent {
             "admin.event.companyEditSuggestionCreated.title"
         case .report:
             "admin.event.reportCreated.title"
+        case .productDuplicateSuggestion:
+            "admin.event.productDuplicateSuggestionCreated.title"
         }
-    }
-}
-
-struct SubBrandEditSuggestionEntityView: View {
-    let editSuggestion: SubBrand.EditSuggestion
-
-    var body: some View {
-        VStack {
-            if let name = editSuggestion.name {
-                Text(name)
-            }
-        }
-    }
-}
-
-struct ProductEditSuggestionEntityView: View {
-    let editSuggestion: Product.EditSuggestion
-
-    var body: some View {
-        Text(editSuggestion.id.formatted())
     }
 }

@@ -75,14 +75,12 @@ struct VerificationScreen: View {
 
     private var unverifiedSubBrands: some View {
         ForEach(subBrands) { subBrand in
-            HStack {
-                Text("\(subBrand.brand.brandOwner.name): \(subBrand.brand.name): \(subBrand.name ?? "-")")
-                Spacer()
+            RouterLink(open: .navigatablePath(.brand(id: subBrand.brand.id))) {
+                HStack {
+                    Text("\(subBrand.brand.brandOwner.name): \(subBrand.brand.name): \(subBrand.name ?? "-")")
+                    Spacer()
+                }
             }
-            .onTapGesture {
-                router.fetchAndNavigateTo(repository, .brand(id: subBrand.brand.id))
-            }
-            .accessibilityAddTraits(.isButton)
             .swipeActions {
                 AsyncButton("labels.verify", systemImage: "checkmark", action: { await verifySubBrand(subBrand) })
                     .tint(.green)
@@ -265,17 +263,17 @@ struct VerificationScreenProductRowView: View {
     var body: some View {
         RouterLink(open: .screen(.product(product))) {
             VStack {
-                if let createdBy = product.createdBy {
-                    HStack {
-                        Avatar(profile: createdBy)
-                            .avatarSize(.small)
-                        Text(createdBy.preferredName).font(.caption).bold()
-                        Spacer()
-                        if let createdAt = product.createdAt {
-                            Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
-                        }
-                    }
-                }
+//                if let createdBy = product?.createdBy {
+//                    HStack {
+//                        Avatar(profile: createdBy)
+//                            .avatarSize(.small)
+//                        Text(createdBy.preferredName).font(.caption).bold()
+//                        Spacer()
+//                        if let createdAt = product.createdAt {
+//                            Text(createdAt.formatted(.customRelativetime)).font(.caption).bold()
+//                        }
+//                    }
+//                }
                 ProductEntityView(product: product)
             }
         }

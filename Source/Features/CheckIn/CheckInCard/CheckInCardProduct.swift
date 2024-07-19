@@ -5,7 +5,7 @@ import SwiftUI
 struct CheckInCardProduct: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
     let product: Product.Joined
-    let productVariant: ProductVariant?
+    let productVariant: Product.Variant?
     let servingStyle: ServingStyle?
 
     var body: some View {

@@ -24,7 +24,7 @@ struct ProductDuplicateScreen: View {
 
     var body: some View {
         List(products) { product in
-            DuplicateProductSheetRow(product: product, mode: mode) { product in
+            DuplicateProductRow(product: product, mode: mode) { product in
                 switch mode {
                 case .reportDuplicate:
                     await reportDuplicate(product)

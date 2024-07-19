@@ -1,5 +1,20 @@
 import Foundation
 
+public protocol ProductLogoProtocol {
+    var logos: [ImageEntity] { get }
+}
+
+public protocol ProductProtocol: ProductLogoProtocol {
+    var id: Int { get }
+    var name: String? { get }
+    var description: String? { get }
+    var isVerified: Bool { get }
+    var subBrand: SubBrand.JoinedBrand { get }
+    var category: Category { get }
+    var subcategories: [Subcategory.JoinedCategory] { get }
+    var isDiscontinued: Bool { get }
+}
+
 public struct Product: Identifiable, Codable, Hashable, Sendable {
     public let id: Int
     public let name: String?
@@ -18,21 +33,21 @@ public struct Product: Identifiable, Codable, Hashable, Sendable {
     }
 }
 
-public struct ProductDuplicateSuggestion: Codable, Hashable, Sendable, Identifiable {
-    public var id: String {
-        String(product.hashValue) + String(duplicate.hashValue)
-    }
+public extension Product {
+    struct DuplicateSuggestion: Codable, Hashable, Sendable, Identifiable, CreationInfo {
+        public let id: Int
+        public let createdAt: Date
+        public let createdBy: Profile
+        public let product: Product.Joined
+        public let duplicate: Product.Joined
 
-    public let createdAt: Date
-    public let createdBy: Profile
-    public let product: Product.Joined
-    public let duplicate: Product.Joined
-
-    enum CodingKeys: String, CodingKey {
-        case createdAt = "created_at"
-        case createdBy = "profiles"
-        case product
-        case duplicate
+        enum CodingKeys: String, CodingKey {
+            case id
+            case createdAt = "created_at"
+            case createdBy = "profiles"
+            case product
+            case duplicate
+        }
     }
 }
 
@@ -71,27 +86,59 @@ public extension Product {
         }
     }
 
-    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable {
+    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
         public let id: Int
         public let product: Product.Joined
         public let createdAt: Date
-        public let createdBy: Profile?
+        public let createdBy: Profile
         public let name: String?
         public let description: String?
         public let category: Category?
         public let subBrand: SubBrand.JoinedBrand?
+        public let subcategoryEditSuggestions: [SubcategoryEditSuggestion]
         public let isDiscontinued: Bool?
+        public let resolvedAt: Date?
 
         enum CodingKeys: String, CodingKey {
             case id
             case product = "products"
             case createdAt = "created_at"
-            case createdBy = "created_by"
+            case createdBy = "profiles"
             case name
             case description
             case category = "categories"
             case subBrand = "sub_brands"
+            case subcategoryEditSuggestions = "product_edit_suggestion_subcategories"
             case isDiscontinued = "is_discontinued"
+            case resolvedAt = "resolved_at"
+        }
+
+        public func copyWith(resolvedAt: Date?) -> Self {
+            .init(
+                id: id,
+                product: product,
+                createdAt: createdAt,
+                createdBy: createdBy,
+                name: name,
+                description: description,
+                category: category,
+                subBrand: subBrand,
+                subcategoryEditSuggestions: subcategoryEditSuggestions,
+                isDiscontinued: isDiscontinued,
+                resolvedAt: resolvedAt ?? self.resolvedAt
+            )
+        }
+
+        public struct SubcategoryEditSuggestion: Identifiable, Codable, Hashable, Sendable {
+            public let id: Int
+            public let subcategory: Subcategory.JoinedCategory
+            public let delete: Bool
+
+            enum CodingKeys: String, CodingKey {
+                case id
+                case subcategory = "subcategories"
+                case delete
+            }
         }
     }
 
@@ -267,7 +314,7 @@ public extension Product {
             subBrandId: Int?,
             subcategories: [Subcategory],
             isDiscontinued: Bool,
-            barcode: Barcode?
+            barcode: BarcodeProtocol?
         ) {
             self.name = name
             self.description = description
@@ -343,7 +390,7 @@ public extension Product {
         case topRated, trending, latest
     }
 
-    struct Joined: Identifiable, Hashable, Codable, Sendable {
+    struct Joined: Identifiable, Hashable, Codable, Sendable, ProductProtocol {
         public let id: Int
         public let name: String?
         public let description: String?
@@ -351,11 +398,9 @@ public extension Product {
         public let subBrand: SubBrand.JoinedBrand
         public let category: Category
         public let subcategories: [Subcategory.JoinedCategory]
-        public let barcodes: [ProductBarcode]
+        public let barcodes: [Product.Barcode]
         public let averageRating: Double?
         public let currentUserCheckIns: Int?
-        public let createdBy: Profile?
-        public let createdAt: Date?
         public let isDiscontinued: Bool
         public let logos: [ImageEntity]
 
@@ -370,10 +415,16 @@ public extension Product {
             case barcodes = "product_barcodes"
             case averageRating = "average_rating"
             case currentUserCheckIns = "current_user_check_ins"
-            case createdBy = "profiles"
-            case createdAt = "created_at"
             case isDiscontinued = "is_discontinued"
             case logos = "product_logos"
+        }
+
+        public var isCheckedInByCurrentUser: Bool {
+            if let currentUserCheckIns, currentUserCheckIns > 0 {
+                true
+            } else {
+                false
+            }
         }
 
         public init(
@@ -384,11 +435,9 @@ public extension Product {
             subBrand: SubBrand.JoinedBrand,
             category: Category,
             subcategories: [Subcategory.JoinedCategory],
-            barcodes: [ProductBarcode],
+            barcodes: [Product.Barcode],
             isDiscontinued: Bool,
-            logos: [ImageEntity],
-            createdBy: Profile? = nil,
-            createdAt: Date? = nil
+            logos: [ImageEntity]
         ) {
             self.id = id
             self.name = name
@@ -402,8 +451,6 @@ public extension Product {
             self.logos = logos
             currentUserCheckIns = nil
             averageRating = nil
-            self.createdBy = createdBy
-            self.createdAt = createdAt
         }
 
         public init(
@@ -435,8 +482,6 @@ public extension Product {
             logos = product.logos
             currentUserCheckIns = nil
             averageRating = nil
-            createdBy = nil
-            createdAt = nil
             isDiscontinued = product.isDiscontinued
         }
 
@@ -467,10 +512,23 @@ public extension Product {
             barcodes = []
             currentUserCheckIns = nil
             averageRating = nil
-            createdBy = nil
-            createdAt = nil
             isDiscontinued = product.isDiscontinued
             logos = product.logos
+        }
+
+        public init(product: Product.Detailed) {
+            id = product.id
+            name = product.name
+            description = product.description
+            isVerified = product.isVerified
+            subBrand = product.subBrand
+            subcategories = product.subcategories
+            category = product.category
+            barcodes = product.barcodes.map { .init(barcode: $0) }
+            isDiscontinued = product.isDiscontinued
+            logos = product.logos
+            currentUserCheckIns = nil
+            averageRating = nil
         }
 
         public func copyWith(
@@ -480,11 +538,9 @@ public extension Product {
             subBrand: SubBrand.JoinedBrand? = nil,
             category: Category? = nil,
             subcategories: [Subcategory.JoinedCategory]? = nil,
-            barcodes: [ProductBarcode]? = nil,
+            barcodes: [Product.Barcode]? = nil,
             isDiscontinued: Bool? = nil,
-            logos: [ImageEntity]? = nil,
-            createdBy: Profile? = nil,
-            createdAt: Date? = nil
+            logos: [ImageEntity]? = nil
         ) -> Self {
             .init(
                 id: id,
@@ -496,9 +552,109 @@ public extension Product {
                 subcategories: subcategories ?? self.subcategories,
                 barcodes: barcodes ?? self.barcodes,
                 isDiscontinued: isDiscontinued ?? self.isDiscontinued,
+                logos: logos ?? self.logos
+            )
+        }
+    }
+
+    struct Detailed: Identifiable, Hashable, Decodable, Sendable, ModificationInfo, ProductProtocol {
+        public let id: Int
+        public let name: String?
+        public let description: String?
+        public let isVerified: Bool
+        public let subBrand: SubBrand.JoinedBrand
+        public let category: Category
+        public let subcategories: [Subcategory.JoinedCategory]
+        public let barcodes: [Product.Barcode.JoinedWithCreator]
+        public let editSuggestions: [EditSuggestion]
+        public let variants: [Product.Variant]
+        public let reports: [Report]
+        public let duplicates: [Product.DuplicateSuggestion]
+        public let isDiscontinued: Bool
+        public let logos: [ImageEntity]
+        public let createdBy: Profile?
+        public let createdAt: Date
+        public let updatedBy: Profile?
+        public let updatedAt: Date?
+
+        enum CodingKeys: String, CodingKey, Sendable {
+            case id
+            case name
+            case description
+            case isVerified = "is_verified"
+            case subBrand = "sub_brands"
+            case category = "categories"
+            case subcategories
+            case barcodes = "product_barcodes"
+            case editSuggestions = "product_edit_suggestions"
+            case variants = "product_variants"
+            case reports
+            case duplicates = "product_duplicate_suggestions"
+            case isDiscontinued = "is_discontinued"
+            case logos = "product_logos"
+            case createdBy = "created_by"
+            case createdAt = "created_at"
+            case updatedBy = "updated_by"
+            case updatedAt = "updated_at"
+        }
+
+        public func mergeWith(product: Product.Joined) -> Product.Detailed {
+            .init(
+                id: id,
+                name: product.name,
+                description: product.description,
+                isVerified: isVerified,
+                subBrand: product.subBrand,
+                category: product.category,
+                subcategories: product.subcategories,
+                barcodes: barcodes,
+                editSuggestions: editSuggestions,
+                variants: variants,
+                reports: reports,
+                duplicates: duplicates,
+                isDiscontinued: product.isDiscontinued,
+                logos: logos,
+                createdBy: createdBy,
+                createdAt: createdAt,
+                updatedBy: updatedBy,
+                updatedAt: updatedAt
+            )
+        }
+
+        public func copyWith(
+            name: String? = nil,
+            description: String? = nil,
+            isVerified: Bool? = nil,
+            subBrand: SubBrand.JoinedBrand? = nil,
+            category: Category? = nil,
+            subcategories: [Subcategory.JoinedCategory]? = nil,
+            barcodes: [Product.Barcode.JoinedWithCreator]? = nil,
+            editSuggestions: [Product.EditSuggestion]? = nil,
+            variants: [Product.Variant]? = nil,
+            reports: [Report]? = nil,
+            duplicates: [Product.DuplicateSuggestion]? = nil,
+            isDiscontinued: Bool? = nil,
+            logos: [ImageEntity]? = nil
+        ) -> Self {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                description: description ?? self.description,
+                isVerified: isVerified ?? self.isVerified,
+                subBrand: subBrand ?? self.subBrand,
+                category: category ?? self.category,
+                subcategories: subcategories ?? self.subcategories,
+                barcodes: barcodes ?? self.barcodes,
+                editSuggestions: editSuggestions ?? self.editSuggestions,
+                variants: variants ?? self.variants,
+                reports: reports ?? self.reports,
+                duplicates: duplicates ?? self.duplicates,
+                isDiscontinued: isDiscontinued ?? self.isDiscontinued,
                 logos: logos ?? self.logos,
-                createdBy: createdBy ?? self.createdBy,
-                createdAt: createdAt ?? self.createdAt
+                createdBy: createdBy,
+                createdAt: createdAt,
+                updatedBy: updatedBy,
+                updatedAt: updatedAt
             )
         }
     }

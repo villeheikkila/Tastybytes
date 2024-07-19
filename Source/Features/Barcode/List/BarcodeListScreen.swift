@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct BarcodeListScreen: View {
-    let barcodes: [ProductBarcode.Joined]
+    let barcodes: [Product.Barcode.Joined]
 
     var body: some View {
         List(barcodes) { barcode in
@@ -15,7 +15,7 @@ struct BarcodeListScreen: View {
 }
 
 struct BarcodeListRowView: View {
-    let barcode: ProductBarcode.Joined
+    let barcode: Product.Barcode.Joined
 
     var body: some View {
         RouterLink(open: .screen(.product(barcode.product))) {

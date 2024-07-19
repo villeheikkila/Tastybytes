@@ -65,7 +65,7 @@ struct NotificationScreen: View {
                     }
                 }
             } else {
-                ScreenStateOverlayView(state: notificationEnvironmentModel.state, errorDescription: "") {
+                ScreenStateOverlayView(state: notificationEnvironmentModel.state) {
                     notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
                 }
             }
@@ -143,31 +143,26 @@ extension NotificationType {
         case .checkInComment:
             ContentUnavailableViewProps(
                 title: "notification.checkInComments.empty.title",
-                description: "",
                 icon: "tray"
             )
         case .checkInReaction:
             ContentUnavailableViewProps(
                 title: "notification.checkInReactions.empty.title",
-                description: "",
                 icon: "tray"
             )
         case .friendRequest:
             ContentUnavailableViewProps(
                 title: "notification.friendRequests.empty.title",
-                description: "",
                 icon: "tray"
             )
         case .message:
             ContentUnavailableViewProps(
                 title: "notification.messages.empty.title",
-                description: "",
                 icon: "tray"
             )
         case .taggedCheckIn:
             ContentUnavailableViewProps(
                 title: "notification.checkInTags.empty.title",
-                description: "",
                 icon: "tray"
             )
         }
@@ -176,8 +171,14 @@ extension NotificationType {
 
 struct ContentUnavailableViewProps {
     let title: LocalizedStringKey
-    let description: LocalizedStringKey
+    let description: LocalizedStringKey?
     let icon: String
+
+    init(title: LocalizedStringKey, description: LocalizedStringKey? = nil, icon: String) {
+        self.title = title
+        self.description = description
+        self.icon = icon
+    }
 }
 
 public extension NotificationType {

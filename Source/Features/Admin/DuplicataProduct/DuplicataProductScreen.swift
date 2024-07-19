@@ -12,7 +12,7 @@ struct DuplicateProductScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
-    @State private var duplicateProductSuggestions = [ProductDuplicateSuggestion]()
+    @State private var duplicateProductSuggestions = [Product.DuplicateSuggestion]()
     @State private var deleteProduct: Product.Joined?
 
     let filter: MarkedAsDuplicateFilter
@@ -26,7 +26,7 @@ struct DuplicateProductScreen: View {
             if state == .populated, duplicateProductSuggestions.isEmpty {
                 ContentUnavailableView("admin.duplicates.empty.title", systemImage: "tray")
             } else {
-                ScreenStateOverlayView(state: state, errorDescription: "") {
+                ScreenStateOverlayView(state: state) {
                     await loadDuplicateProducts()
                 }
             }
@@ -61,7 +61,7 @@ struct DuplicateProductScreen: View {
         }
     }
 
-    private func deleteProductSuggestion(_ duplicateProductSuggestion: ProductDuplicateSuggestion) async {
+    private func deleteProductSuggestion(_ duplicateProductSuggestion: Product.DuplicateSuggestion) async {
         do { try await repository.product.deleteProductDuplicateSuggestion(duplicateProductSuggestion)
             withAnimation {
                 duplicateProductSuggestions = duplicateProductSuggestions.removing(duplicateProductSuggestion)
@@ -76,9 +76,37 @@ struct DuplicateProductScreen: View {
 
 struct DuplicateProductScreeRowView: View {
     @State private var showDeleteSuggestionConfirmation = false
-    let duplicateProductSuggestion: ProductDuplicateSuggestion
+    let duplicateProductSuggestion: Product.DuplicateSuggestion
 
-    let onDelete: (_ suggestion: ProductDuplicateSuggestion) async -> Void
+    let onDelete: (_ suggestion: Product.DuplicateSuggestion) async -> Void
+
+    var body: some View {
+        DuplicateProductSuggestionEntityView(duplicateProductSuggestion: duplicateProductSuggestion)
+            .swipeActions {
+                Button("labels.delete", systemImage: "trash") {
+                    showDeleteSuggestionConfirmation = true
+                }
+                .tint(.red)
+            }
+            .confirmationDialog(
+                "product.admin.editSuggestion.delete.description",
+                isPresented: $showDeleteSuggestionConfirmation,
+                titleVisibility: .visible,
+                presenting: duplicateProductSuggestion
+            ) { presenting in
+                AsyncButton(
+                    "product.admin.editSuggestion.delete.label",
+                    action: {
+                        await onDelete(presenting)
+                    }
+                )
+                .tint(.green)
+            }
+    }
+}
+
+struct DuplicateProductSuggestionEntityView: View {
+    let duplicateProductSuggestion: Product.DuplicateSuggestion
 
     var body: some View {
         VStack {
@@ -95,26 +123,6 @@ struct DuplicateProductScreeRowView: View {
             RouterLink(open: .screen(.product(duplicateProductSuggestion.duplicate))) {
                 ProductEntityView(product: duplicateProductSuggestion.duplicate)
             }
-        }
-        .swipeActions {
-            Button("labels.delete", systemImage: "trash") {
-                showDeleteSuggestionConfirmation = true
-            }
-            .tint(.red)
-        }
-        .confirmationDialog(
-            "product.admin.editSuggestion.delete.description",
-            isPresented: $showDeleteSuggestionConfirmation,
-            titleVisibility: .visible,
-            presenting: duplicateProductSuggestion
-        ) { presenting in
-            AsyncButton(
-                "product.admin.editSuggestion.delete.label",
-                action: {
-                    await onDelete(presenting)
-                }
-            )
-            .tint(.green)
         }
     }
 }

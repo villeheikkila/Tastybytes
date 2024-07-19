@@ -197,10 +197,6 @@ public extension Brand {
                 logos: logos ?? self.logos
             )
         }
-
-        struct EditSuggestion: Identifiable, Codable, Hashable, Sendable {
-            public let id: Int
-        }
     }
 
     struct Detailed: Identifiable, Hashable, Codable, Sendable, BrandProtocol, ModificationInfo {
@@ -304,8 +300,9 @@ public extension Brand {
         }
     }
 
-    struct EditSuggestion: Codable, Sendable, Identifiable, Hashable, Resolvable {
+    struct EditSuggestion: Codable, Sendable, Identifiable, Hashable, Resolvable, CreationInfo {
         public let id: Int
+        public let brand: Brand
         public let name: String?
         public let brandOwner: Company?
         public let createdBy: Profile
@@ -313,11 +310,11 @@ public extension Brand {
         public let resolvedAt: Date?
 
         enum CodingKeys: String, CodingKey {
-            case id, name, brandOwner = "companies", createdBy = "profiles", createdAt = "created_at", resolvedAt = "resolved_at"
+            case id, brand = "brands", name, brandOwner = "companies", createdBy = "profiles", createdAt = "created_at", resolvedAt = "resolved_at"
         }
 
         public func copyWith(resolvedAt: Date?) -> Self {
-            .init(id: id, name: name, brandOwner: brandOwner, createdBy: createdBy, createdAt: createdAt, resolvedAt: resolvedAt)
+            .init(id: id, brand: brand, name: name, brandOwner: brandOwner, createdBy: createdBy, createdAt: createdAt, resolvedAt: resolvedAt)
         }
     }
 

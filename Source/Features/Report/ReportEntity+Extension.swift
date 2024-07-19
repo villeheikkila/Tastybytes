@@ -22,6 +22,8 @@ public extension Report.Entity {
             "report.navigationTitle.checkInImage"
         case .profile:
             "report.navigationTitle.profile"
+        case .location:
+            "report.navigationTitle.location"
         }
     }
 }

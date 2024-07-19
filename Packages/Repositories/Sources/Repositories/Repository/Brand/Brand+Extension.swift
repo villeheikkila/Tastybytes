@@ -54,7 +54,7 @@ extension Brand.EditSuggestion: Queryable {
         case let .joined(withTableName):
             buildQuery(
                 .brandEditSuggestions,
-                [saved, Profile.getQuery(.minimal(true)), Company.getQuery(.saved(true))],
+                [saved, Brand.getQuery(.saved(true)), Profile.getQuery(.minimal(true)), Company.getQuery(.saved(true))],
                 withTableName
             )
         }

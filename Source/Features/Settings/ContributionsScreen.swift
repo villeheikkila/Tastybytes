@@ -8,62 +8,65 @@ import SwiftUI
 struct ContributionsScreen: View {
     private let logger = Logger(category: "ContributionsScreen")
     @Environment(Repository.self) private var repository
-    @State private var state: ScreenState = .loading
-    @State private var contributions: Profile.Contributions?
+    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 
     let profile: Profile
 
     var body: some View {
         List {
-            if let contributions {
-                Section {
-                    RouterLink(open: .screen(.productList(products: contributions.products))) {
-                        LabeledContent("products.title", value: contributions.products.count.formatted())
-                    }
-                    RouterLink(open: .screen(.companyList(companies: contributions.companies))) {
-                        LabeledContent("company.title", value: contributions.companies.count.formatted())
-                    }
-                    RouterLink(open: .screen(.brandList(brands: contributions.brands))) {
-                        LabeledContent("brand.title", value: contributions.brands.count.formatted())
-                    }
-                    RouterLink(open: .screen(.subBrandList(subBrands: contributions.subBrands))) {
-                        LabeledContent("subBrand.title", value: contributions.subBrands.count.formatted())
-                    }
-                    RouterLink(open: .screen(.barcodeList(barcodes: contributions.barcodes))) {
-                        LabeledContent("barcode.title", value: contributions.barcodes.count.formatted())
-                    }
-                } footer: {
-                    Text("settings.contributions.description")
-                }
+            if let contributions = profileEnvironmentModel.contributions {
+                content(contributions: contributions)
             }
         }
         .listStyle(.insetGrouped)
         .refreshable {
-            await loadContributions()
+            await profileEnvironmentModel.loadContributions(refresh: true)
         }
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "") {
-                await loadContributions()
+            ScreenStateOverlayView(state: profileEnvironmentModel.contributionsState) {
+                await profileEnvironmentModel.loadContributions()
             }
         }
         .navigationTitle("settings.contributions.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
-        .initialTask {
-            await loadContributions()
+        .task {
+            await profileEnvironmentModel.loadContributions()
         }
     }
 
-    private func loadContributions() async {
-        do {
-            let contributions = try await repository.profile.getContributions(id: profile.id)
-            withAnimation {
-                self.contributions = contributions
-                state = .populated
+    @ViewBuilder private func content(contributions: Profile.Contributions) -> some View {
+        Section {
+            RouterLink("products.title", count: contributions.products.count, open: .screen(.productList(products: contributions.products)))
+            RouterLink("company.title", count: contributions.companies.count, open: .screen(.companyList(companies: contributions.companies)))
+            RouterLink("brand.title", count: contributions.brands.count, open: .screen(.brandList(brands: contributions.brands)))
+            RouterLink("subBrand.title", count: contributions.subBrands.count, open: .screen(.subBrandList(subBrands: contributions.subBrands)))
+            RouterLink("barcode.title", count: contributions.barcodes.count, open: .screen(.barcodeList(barcodes: contributions.barcodes)))
+        } footer: {
+            Text("settings.contributions.description")
+        }
+
+        Section {
+            if !contributions.reports.isEmpty {
+                RouterLink(
+                    "reports.title",
+                    count: contributions.reports.count,
+                    open: .screen(.profileReports)
+                )
             }
-        } catch {
-            guard !error.isCancelled else { return }
-            state = .error([error])
-            logger.error("Failed to load contributions. Error: \(error) (\(#file):\(#line))")
+            if !contributions.editSuggestions.isEmpty {
+                RouterLink(
+                    "editSuggestions.navigationTitle",
+                    count: contributions.editSuggestions.count,
+                    open: .screen(.profileEditSuggestions)
+                )
+            }
+            if !contributions.duplicateSuggestions.isEmpty {
+                RouterLink(
+                    "duplicateSuggestions.navigationTitle",
+                    count: contributions.duplicateSuggestions.count,
+                    open: .screen(.profileDuplicateSuggestions)
+                )
+            }
         }
     }
 }

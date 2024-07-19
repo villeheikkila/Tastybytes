@@ -11,7 +11,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let checkInReactions: [CheckInReaction]
     public let taggedProfiles: [CheckInTaggedProfile]
     public let flavors: [CheckInFlavor]
-    public let variant: ProductVariant?
+    public let variant: Product.Variant?
     public let servingStyle: ServingStyle?
     public let location: Location?
     public let purchaseLocation: Location?
@@ -33,7 +33,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         checkInReactions: [CheckInReaction],
         taggedProfiles: [CheckInTaggedProfile],
         flavors: [CheckInFlavor],
-        variant: ProductVariant? = nil,
+        variant: Product.Variant? = nil,
         servingStyle: ServingStyle? = nil,
         location: Location? = nil,
         purchaseLocation: Location? = nil,
@@ -68,7 +68,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         checkInReactions: [CheckInReaction]? = nil,
         taggedProfiles: [CheckInTaggedProfile]? = nil,
         flavors: [CheckInFlavor]? = nil,
-        variant: ProductVariant? = nil,
+        variant: Product.Variant? = nil,
         servingStyle: ServingStyle? = nil,
         location: Location? = nil,
         purchaseLocation: Location? = nil,

@@ -248,7 +248,7 @@ struct DiscoverScreen: View {
                     error = nil
                 }
                 if searchResults.count == 1, let result = searchResults.first {
-                    router.fetchAndNavigateTo(repository, .productWithBarcode(id: result.id, barcode: barcode))
+                    router.open(.navigatablePath(.productWithBarcode(id: result.id, barcode: barcode)))
                 }
             } catch {
                 guard !error.isCancelled else { return }

@@ -68,9 +68,9 @@ struct SupabaseProductRepository: ProductRepository {
     }
 
     func search(barcode: Barcode) async throws -> [Product.Joined] {
-        let response: [ProductBarcode.Joined] = try await client
+        let response: [Product.Barcode.Joined] = try await client
             .from(.productBarcodes)
-            .select(ProductBarcode.getQuery(.joined(false)))
+            .select(Product.Barcode.getQuery(.joined(false)))
             .eq("barcode", value: barcode.barcode)
             .execute()
             .value
@@ -89,10 +89,10 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func getDetailed(id: Int) async throws -> Product.Joined {
+    func getDetailed(id: Int) async throws -> Product.Detailed {
         try await client
             .from(.products)
-            .select(Product.getQuery(.joinedBrandSubcategoriesCreator(false)))
+            .select(Product.getQuery(.detailed(false)))
             .eq("id", value: id)
             .limit(1)
             .single()
@@ -203,10 +203,10 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func getMarkedAsDuplicateProducts(filter: MarkedAsDuplicateFilter) async throws -> [ProductDuplicateSuggestion] {
+    func getMarkedAsDuplicateProducts(filter: MarkedAsDuplicateFilter) async throws -> [Product.DuplicateSuggestion] {
         let query = client
             .from(.productDuplicateSuggestions)
-            .select(Product.getQuery(.productDuplicateSuggestion(false)))
+            .select(Product.DuplicateSuggestion.getQuery(.joined(false)))
 
         let filtered = switch filter {
         case .all:
@@ -220,7 +220,7 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func deleteProductDuplicateSuggestion(_ duplicateSuggestion: ProductDuplicateSuggestion) async throws {
+    func deleteProductDuplicateSuggestion(_ duplicateSuggestion: Product.DuplicateSuggestion) async throws {
         try await client
             .from(.productDuplicateSuggestions)
             .delete()
@@ -268,5 +268,21 @@ struct SupabaseProductRepository: ProductRepository {
             .single()
             .execute()
             .value
+    }
+
+    func resolveEditSuggestion(editSuggestion: Product.EditSuggestion) async throws {
+        try await client
+            .from(.productEditSuggestions)
+            .update(["resolved_at": Date.now])
+            .eq("id", value: editSuggestion.id)
+            .execute()
+    }
+
+    func deleteEditSuggestion(editSuggestion: Product.EditSuggestion) async throws {
+        try await client
+            .from(.productEditSuggestions)
+            .delete()
+            .eq("id", value: editSuggestion.id)
+            .execute()
     }
 }

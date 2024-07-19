@@ -14,19 +14,33 @@ struct ProductAdminSheet: View {
     @State private var state: ScreenState = .loading
     @State private var showDeleteProductConfirmationDialog = false
     @State private var logos: [ImageEntity] = []
-    @Binding var product: Product.Joined
+    @State private var product: Product.Detailed?
+
+    let id: Int
+
+    init(
+        product: ProductProtocol,
+        onDelete: @escaping () -> Void,
+        onUpdate: @escaping () async -> Void
+    ) {
+        id = product.id
+        self.onDelete = onDelete
+        self.onUpdate = onUpdate
+    }
 
     let onDelete: () -> Void
+    let onUpdate: () async -> Void
 
     var body: some View {
         List {
-            if state == .populated {
-                content
+            if state == .populated, let product {
+                content(product: product)
             }
         }
         .scrollContentBackground(.hidden)
+        .animation(.default, value: product)
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "", errorAction: loadData)
+            ScreenStateOverlayView(state: state, errorAction: loadData)
         }
         .navigationTitle("product.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
@@ -38,33 +52,60 @@ struct ProductAdminSheet: View {
         }
     }
 
-    @ViewBuilder private var content: some View {
+    @ViewBuilder private func content(product: Product.Detailed) -> some View {
         Section("product.admin.section.product") {
-            RouterLink(open: .screen(.product(product))) {
+            RouterLink(open: .screen(.product(.init(product: product)))) {
                 ProductEntityView(product: product)
             }
+            .buttonStyle(.plain)
         }
         .customListRowBackground()
-        CreationInfoSection(createdBy: product.createdBy, createdAt: product.createdAt)
+        ModificationInfoView(modificationInfo: product)
         Section("admin.section.details") {
             LabeledIdView(id: product.id.formatted())
             VerificationAdminToggleView(isVerified: product.isVerified, action: verifyProduct)
         }
         .customListRowBackground()
         EditLogoSection(logos: logos, onUpload: uploadData, onDelete: deleteLogo)
-        Section {
-            RouterLink("barcode.management.open", systemImage: "barcode", open: .screen(.barcodeManagement(product: product)))
-            RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(product, onEdit: { updatedProduct in
-                withAnimation {
-                    product = updatedProduct
-                }
-            }))))
-            RouterLink("product.mergeTo.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .mergeDuplicate, product: product)))
-            RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts(filter: .id(product.id))))
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.product(product.id))))
+        Section("admin.section.contributions.label") {
+            RouterLink(
+                "barcode.management.open",
+                systemImage: "barcode",
+                count: product.barcodes.count,
+                open: .screen(.barcodeManagement(product: $product))
+            )
+            RouterLink(
+                "admin.section.editSuggestions.title",
+                systemImage: "pencil",
+                count: product.editSuggestions.unresolvedCount,
+                open: .screen(.productEditSuggestion(product: $product))
+            )
+            RouterLink(
+                "product.admin.variants.navigationTitle",
+                systemImage: "square.stack",
+                count: product.variants.count,
+                open: .screen(.productVariants(variants: product.variants))
+            )
+            RouterLink(
+                "admin.duplicates.title",
+                systemImage: "plus.square.on.square",
+                count: product.duplicates.count,
+                open: .screen(.duplicateProducts(filter: .id(product.id)))
+            )
+            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", count: product.reports.count, open: .screen(.reports(.product(product.id))))
         }
-        .foregroundColor(.accent)
+        .buttonStyle(.plain)
         .customListRowBackground()
+
+        Section {
+            RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(.init(product: product), onEdit: { updatedProduct in
+                self.product = product.mergeWith(product: updatedProduct)
+            }))))
+            RouterLink("product.mergeTo.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .mergeDuplicate, product: .init(product: product))))
+        }
+        .buttonStyle(.plain)
+        .customListRowBackground()
+
         Section {
             ConfirmedDeleteButtonView(
                 presenting: product,
@@ -83,7 +124,7 @@ struct ProductAdminSheet: View {
 
     private func loadData() async {
         do {
-            let product = try await repository.product.getDetailed(id: product.id)
+            let product = try await repository.product.getDetailed(id: id)
             withAnimation {
                 self.product = product
                 state = .populated
@@ -96,10 +137,11 @@ struct ProductAdminSheet: View {
     }
 
     private func verifyProduct(isVerified: Bool) async {
+        guard let product else { return }
         do {
-            try await repository.product.verification(id: product.id, isVerified: isVerified)
+            try await repository.product.verification(id: id, isVerified: isVerified)
             feedbackEnvironmentModel.trigger(.notification(.success))
-            product = product.copyWith(isVerified: isVerified)
+            self.product = product.copyWith(isVerified: isVerified)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -107,7 +149,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    private func deleteProduct(_ product: Product.Joined) async {
+    private func deleteProduct(_ product: Product.Detailed) async {
         do {
             try await repository.product.delete(id: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -135,11 +177,23 @@ struct ProductAdminSheet: View {
 
     private func uploadData(data: Data) async {
         do {
-            let imageEntity = try await repository.product.uploadLogo(productId: product.id, data: data)
+            let imageEntity = try await repository.product.uploadLogo(productId: id, data: data)
             logos.append(imageEntity)
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
         } catch {
             logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
+    }
+}
+
+struct ProductVariantsScreen: View {
+    let variants: [Product.Variant]
+
+    var body: some View {
+        List(variants) { variant in
+            Text(variant.id.formatted())
+        }
+        .navigationTitle("product.admin.variants.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

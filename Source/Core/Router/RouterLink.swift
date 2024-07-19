@@ -64,6 +64,19 @@ extension RouterLink where LabelView == Text {
     }
 }
 
+extension RouterLink where LabelView == HStack<TupleView<(Text, Spacer, Text)>> {
+    init(_ label: LocalizedStringKey, count: Int, open: Router.Open) {
+        self.init(open: open) {
+            HStack {
+                Text(label)
+                Spacer()
+                Text(count == 0 ? "" : count.formatted())
+                    .foregroundStyle(.yellow)
+            }
+        }
+    }
+}
+
 extension RouterLink where LabelView == Text {
     @_disfavoredOverload
     init(_ label: String, open: Router.Open) {
@@ -87,6 +100,19 @@ extension RouterLink where LabelView == Label<Text, Image> {
         self.init(open: open, label: {
             Label(titleKey, systemImage: systemImage)
         })
+    }
+}
+
+extension RouterLink where LabelView == HStack<TupleView<(Label<Text, Image>, Spacer, Text)>> {
+    init(_ label: LocalizedStringKey, systemImage: String, count: Int, open: Router.Open) {
+        self.init(open: open) {
+            HStack {
+                Label(label, systemImage: systemImage)
+                Spacer()
+                Text(count == 0 ? "" : count.formatted())
+                    .foregroundStyle(.yellow)
+            }
+        }
     }
 }
 

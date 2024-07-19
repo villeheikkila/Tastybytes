@@ -21,7 +21,6 @@ enum Screen: Hashable, Sendable {
     case profileStatisticsTopLocations(Profile)
     case profileLocations(Profile)
     case profileCheckIns(Profile, ProfileCheckInListFilter)
-    case settings
     case currentUserFriends
     case friends(Profile)
     case productFeed(Product.FeedType)
@@ -42,16 +41,22 @@ enum Screen: Hashable, Sendable {
     case error(reason: String)
     case companyEditSuggestion(company: Binding<Company.Detailed>)
     case categoryServingStyle(category: Models.Category.Detailed)
-    case barcodeManagement(product: Product.Joined)
+    case barcodeManagement(product: Binding<Product.Detailed?>)
     case productList(products: [Product.Joined])
     case companyList(companies: [Company])
     case brandList(brands: [Brand])
     case subBrandList(subBrands: [SubBrand.JoinedBrand])
-    case barcodeList(barcodes: [ProductBarcode.Joined])
+    case barcodeList(barcodes: [Product.Barcode.Joined])
     case profilesAdmin
     case roleSuperAdminPicker(profile: Binding<Profile.Detailed?>, roles: [Role])
     case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed?>)
     case adminEvent
+    case productEditSuggestion(product: Binding<Product.Detailed?>)
+    case productVariants(variants: [Product.Variant])
+    case subBrandEditSuggestions(subBrand: Binding<SubBrand.Detailed?>)
+    case profileReports
+    case profileEditSuggestions
+    case profileDuplicateSuggestions
 
     @MainActor
     @ViewBuilder
@@ -67,8 +72,6 @@ enum Screen: Hashable, Sendable {
             BrandScreen(brand: .init(brand: brand))
         case .currentUserFriends:
             CurrentUserFriendsScreen(showToolbar: true)
-        case .settings:
-            SettingsScreen()
         case let .location(location):
             LocationScreen(location: location)
         case let .profileProducts(profile):
@@ -155,6 +158,18 @@ enum Screen: Hashable, Sendable {
             BrandEditSuggestionAdminScreen(brand: brand)
         case .adminEvent:
             AdminEventScreen()
+        case let .productEditSuggestion(product: product):
+            ProductEditSuggestionScreen(product: product)
+        case let .productVariants(variants):
+            ProductVariantsScreen(variants: variants)
+        case let .subBrandEditSuggestions(subBrand):
+            SubBrandEditSuggestionsScreen(subBrand: subBrand)
+        case .profileReports:
+            ProfileReportScreen()
+        case .profileEditSuggestions:
+            ProfileEditSuggestionScreen()
+        case .profileDuplicateSuggestions:
+            ProfileDuplicateSuggestionScreen()
         }
     }
 
@@ -205,7 +220,7 @@ enum Screen: Hashable, Sendable {
         case let (.companyEditSuggestion(lhsCompany), .companyEditSuggestion(rhsCompany)):
             lhsCompany.wrappedValue == rhsCompany.wrappedValue
         case let (.barcodeManagement(lhsProduct), .barcodeManagement(rhsProduct)):
-            lhsProduct == rhsProduct
+            lhsProduct.wrappedValue == rhsProduct.wrappedValue
         case let (.productList(lhsProduct), .productList(rhsProduct)):
             lhsProduct == rhsProduct
         case let (.companyList(lhsProduct), .companyList(rhsProduct)):
@@ -220,21 +235,28 @@ enum Screen: Hashable, Sendable {
             lhsProfile.wrappedValue == rhsProfile.wrappedValue && lhsRoles == rhsRoles
         case let (.brandEditSuggestionAdmin(lhsBrand), .brandEditSuggestionAdmin(rhsBrand)):
             lhsBrand.wrappedValue == rhsBrand.wrappedValue
-        case (.settings, .settings),
-             (.currentUserFriends, .currentUserFriends),
-             (.flavorAdmin, .flavorAdmin),
-             (.verification, .verification),
-             (.duplicateProducts, .duplicateProducts),
-             (.categoryAdmin, .categoryAdmin),
-             (.profileSettings, .profileSettings),
-             (.privacySettings, .privacySettings),
-             (.accountSettings, .accountSettings),
-             (.notificationSettingsScreen, .notificationSettingsScreen),
-             (.appIcon, .appIcon),
-             (.blockedUsers, .blockedUsers),
-             (.contributions, .contributions),
-             (.about, .about),
-             (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin):
+        case let (.productEditSuggestion(lhsProduct), .productEditSuggestion(rhsProduct)):
+            lhsProduct.wrappedValue == rhsProduct.wrappedValue
+        case let (.productVariants(lhsVariants), .productVariants(rhsVariants)):
+            lhsVariants == rhsVariants
+        case let (.subBrandEditSuggestions(lhsSubBrands), .subBrandEditSuggestions(rhsSubBrands)):
+            lhsSubBrands.wrappedValue == rhsSubBrands.wrappedValue
+        case
+            (.currentUserFriends, .currentUserFriends),
+            (.flavorAdmin, .flavorAdmin),
+            (.verification, .verification),
+            (.duplicateProducts, .duplicateProducts),
+            (.categoryAdmin, .categoryAdmin),
+            (.profileSettings, .profileSettings),
+            (.privacySettings, .privacySettings),
+            (.accountSettings, .accountSettings),
+            (.notificationSettingsScreen, .notificationSettingsScreen),
+            (.appIcon, .appIcon),
+            (.blockedUsers, .blockedUsers),
+            (.contributions, .contributions),
+            (.about, .about),
+            (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin), (.profileEditSuggestions, .profileEditSuggestions), (
+                .profileReports, .profileReports), (.profileDuplicateSuggestions, .profileDuplicateSuggestions):
             true
         default:
             false
@@ -297,8 +319,6 @@ enum Screen: Hashable, Sendable {
             hasher.combine("profileCheckIns")
             hasher.combine(profile)
             hasher.combine(filter)
-        case .settings:
-            hasher.combine("settings")
         case .currentUserFriends:
             hasher.combine("currentUserFriends")
         case let .friends(profile):
@@ -348,7 +368,7 @@ enum Screen: Hashable, Sendable {
             hasher.combine(category)
         case let .barcodeManagement(product):
             hasher.combine("categoryServingStyle")
-            hasher.combine(product)
+            hasher.combine(product.wrappedValue)
         case let .productList(products):
             hasher.combine("productList")
             hasher.combine(products)
@@ -381,6 +401,22 @@ enum Screen: Hashable, Sendable {
             hasher.combine(brand.wrappedValue)
         case .adminEvent:
             hasher.combine("adminEvent")
+        case let .productEditSuggestion(product):
+            hasher.combine("productEditSuggestion")
+            hasher.combine(product.wrappedValue)
+        case let .productVariants(variants: variants):
+            hasher.combine("productVariants")
+            hasher.combine(variants)
+        case let .subBrandEditSuggestions(subBrand: subBrand):
+            hasher.combine("subBrandEditSuggestions")
+            hasher.combine(subBrand.wrappedValue)
+        case .profileReports:
+            hasher.combine("profileReports")
+        case .profileEditSuggestions:
+            hasher.combine("profileEditSuggestions")
+        case .profileDuplicateSuggestions:
+            hasher.combine("profileDuplicateSuggestions")
+
         }
     }
 }

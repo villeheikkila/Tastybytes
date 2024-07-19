@@ -68,6 +68,7 @@ struct ModificationInfoView: View {
                     .foregroundColor(.secondary)
             }
         }
+        .buttonStyle(.plain)
         .customListRowBackground()
 
         if let updatedAt = modificationInfo.updatedAt {
@@ -97,6 +98,7 @@ struct ModificationInfoView: View {
                         .foregroundColor(.secondary)
                 }
             }
+            .buttonStyle(.plain)
             .customListRowBackground()
         }
     }

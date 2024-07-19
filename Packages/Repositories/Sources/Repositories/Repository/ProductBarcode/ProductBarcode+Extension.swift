@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-extension ProductBarcode: Queryable {
+extension Product.Barcode: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, barcode, type"
 

@@ -7,25 +7,19 @@ extension Profile: Queryable {
         let saved =
             "id, first_name, last_name, username, name_display, preferred_name, is_private, is_onboarded, joined_at"
 
-        switch queryType {
+        return switch queryType {
         case let .minimal(withTableName):
-            return buildQuery(.profiles, [minimal, ImageEntity.getQuery(.saved(.profileAvatars))], withTableName)
+            buildQuery(.profiles, [minimal, ImageEntity.getQuery(.saved(.profileAvatars))], withTableName)
         case let .extended(withTableName):
-            return buildQuery(
+            buildQuery(
                 .profiles,
-                [saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
+                [saved, Profile.Settings.getQuery(.saved(true)), Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
                 withTableName
             )
         case let .detailed(withTableName):
-            return buildQuery(
+            buildQuery(
                 .profiles,
                 [saved, Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
-                withTableName
-            )
-        case let .contributions(withTableName):
-            return buildQuery(
-                .profiles,
-                [saved, buildQuery(name: "products", foreignKey: "products!products_created_by_fkey", [Product.getQuery(.joinedBrandSubcategories(false))]), buildQuery(name: "companies", foreignKey: "companies!companies_created_by_fkey", [Company.getQuery(.saved(false))]), buildQuery(name: "brands", foreignKey: "brands!brands_created_by_fkey", [Brand.getQuery(.saved(false))]), buildQuery(name: "sub_brands", foreignKey: "sub_brands!sub_brands_created_by_fkey", [SubBrand.getQuery(.joinedBrand(false))]), buildQuery(name: "barcodes", foreignKey: "product_barcodes!product_barcodes_created_by_fkey", [ProductBarcode.getQuery(.joined(false))])],
                 withTableName
             )
         }
@@ -35,7 +29,6 @@ extension Profile: Queryable {
         case minimal(_ withTableName: Bool)
         case extended(_ withTableName: Bool)
         case detailed(_ withTableName: Bool)
-        case contributions(_ withTableName: Bool)
     }
 }
 
@@ -58,7 +51,7 @@ extension ProfileWishlist: Queryable {
     }
 }
 
-extension ProfileSettings: Queryable {
+extension Profile.Settings: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved =
             """
@@ -100,5 +93,35 @@ extension SubcategoryStatistics {
         case .value:
             "id, name, count"
         }
+    }
+}
+
+extension Profile.Contributions: Queryable {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let minimal = "id, is_private, preferred_name, joined_at"
+        switch queryType {
+        case let .joined(withTableName):
+            return buildQuery(
+                .profiles,
+                [minimal,
+                 buildQuery(name: "products", foreignKey: "products!products_created_by_fkey", [Product.getQuery(.joinedBrandSubcategories(false))]),
+                 buildQuery(name: "companies", foreignKey: "companies!companies_created_by_fkey", [Company.getQuery(.saved(false))]),
+                 buildQuery(name: "brands", foreignKey: "brands!brands_created_by_fkey", [Brand.getQuery(.saved(false))]),
+                 buildQuery(name: "sub_brands", foreignKey: "sub_brands!sub_brands_created_by_fkey", [SubBrand.getQuery(.joinedBrand(false))]),
+                 buildQuery(name: "barcodes", foreignKey: "product_barcodes!product_barcodes_created_by_fkey", [Product.Barcode.getQuery(.joined(false))]),
+                 buildQuery(name: "reports", foreignKey: "reports!reports_created_by_fkey", [Report.getQuery(.joined(false))]),
+                 Product.EditSuggestion.getQuery(.joined(true)),
+                 Company.EditSuggestion.getQuery(.joined(true)),
+                 Brand.EditSuggestion.getQuery(.joined(true)),
+                 SubBrand.EditSuggestion.getQuery(.joined(true)),
+                 Product.DuplicateSuggestion.getQuery(.joined(true))
+                ],
+                withTableName
+            )
+        }
+    }
+
+    enum QueryType {
+        case joined(_ withTableName: Bool)
     }
 }

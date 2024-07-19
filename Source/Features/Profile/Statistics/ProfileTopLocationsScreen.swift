@@ -8,7 +8,7 @@ struct ProfileTopLocationsScreen: View {
     private let logger = Logger(category: "ProfileTopLocationsScreen")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
-    @State private var locations = [ProfileTopLocations]()
+    @State private var locations = [Profile.TopLocations]()
 
     let profile: Profile
 
@@ -21,7 +21,7 @@ struct ProfileTopLocationsScreen: View {
             if state == .populated, locations.isEmpty {
                 ContentUnavailableView("profileTopLocations.empty.title", systemImage: "tray")
             } else {
-                ScreenStateOverlayView(state: state, errorDescription: "") {
+                ScreenStateOverlayView(state: state) {
                     await loadData()
                 }
             }
@@ -47,7 +47,7 @@ struct ProfileTopLocationsScreen: View {
 }
 
 struct TopLocationRow: View {
-    let location: ProfileTopLocations
+    let location: Profile.TopLocations
     let profile: Profile
 
     var body: some View {

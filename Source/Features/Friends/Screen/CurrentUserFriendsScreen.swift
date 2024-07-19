@@ -46,7 +46,7 @@ struct CurrentUserFriendsScreen: View {
                     ContentUnavailableView.search(text: searchTerm)
                 }
             } else {
-                ScreenStateOverlayView(state: friendEnvironmentModel.state, errorDescription: "") {
+                ScreenStateOverlayView(state: friendEnvironmentModel.state) {
                     await friendEnvironmentModel.refresh()
                 }
             }

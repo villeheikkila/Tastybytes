@@ -73,9 +73,9 @@ struct ProductMutationView: View {
         .navigationBarTitleDisplayMode(.inline)
         .foregroundColor(.primary)
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
+            ScreenStateOverlayView(state: state) {
                 await initialize()
-            })
+            }
         }
         .toolbar {
             toolbarContent

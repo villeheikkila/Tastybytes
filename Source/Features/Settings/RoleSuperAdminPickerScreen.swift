@@ -7,31 +7,19 @@ import SwiftUI
 
 struct RoleSuperAdminPickerScreen: View {
     let logger = Logger(category: "RoleSuperAdminPickerScreen")
+    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
     @Environment(Repository.self) private var repository
-    @State private var availableRoles = [Role]()
 
     @Binding var profile: Profile.Detailed?
     let roles: [Role]
 
     var body: some View {
-        List(availableRoles) { role in
+        List(adminEnvironmentModel.roles) { role in
             RolePickerRowView(profile: $profile, role: role)
         }
-        .animation(.default, value: availableRoles)
+        .animation(.default, value: adminEnvironmentModel.roles)
         .navigationTitle("profile.rolePickerSheet.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
-        .task {
-            await load()
-        }
-    }
-
-    private func load() async {
-        do {
-            availableRoles = try await repository.role.getRoles()
-        } catch {
-            guard !error.isCancelled else { return }
-            logger.error("Failed to load roles. Error: \(error) (\(#file):\(#line))")
-        }
     }
 }
 

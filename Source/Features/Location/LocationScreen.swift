@@ -52,7 +52,7 @@ struct LocationInnerScreen: View {
         }
         .checkInCardLoadedFrom(.location(location))
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "") {
+            ScreenStateOverlayView(state: state) {
                 await getLocationData(isRefresh: true)
             }
         }
@@ -71,6 +71,8 @@ struct LocationInnerScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 LocationShareLinkView(location: location)
+                Divider()
+                ReportButton(entity: .location(location))
                 Divider()
                 AdminRouterLink(open: .sheet(.locationAdmin(location: location, onEdit: { location in
                     withAnimation {

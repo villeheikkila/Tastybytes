@@ -40,7 +40,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     func getContributions(id: UUID) async throws -> Profile.Contributions {
         try await client
             .from(.profiles)
-            .select(Profile.getQuery(.contributions(false)))
+            .select(Profile.Contributions.getQuery(.joined(false)))
             .eq("id", value: id.uuidString.lowercased())
             .not("sub_brands.name", operator: .is, value: AnyJSON.null)
             .limit(1)
@@ -70,12 +70,12 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func updateSettings(update: ProfileSettings.UpdateRequest) async throws -> ProfileSettings {
+    func updateSettings(update: Profile.SettingsUpdateRequest) async throws -> Profile.Settings {
         try await client
             .from(.profileSettings)
             .update(update, returning: .representation)
             .eq("id", value: update.id)
-            .select(ProfileSettings.getQuery(.saved(false)))
+            .select(Profile.Settings.getQuery(.saved(false)))
             .single()
             .execute()
             .value
@@ -197,7 +197,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getNumberOfCheckInsByLocation(userId: UUID) async throws -> [ProfileTopLocations] {
+    func getNumberOfCheckInsByLocation(userId: UUID) async throws -> [Profile.TopLocations] {
         struct Request: Encodable {
             let profileId: UUID
 

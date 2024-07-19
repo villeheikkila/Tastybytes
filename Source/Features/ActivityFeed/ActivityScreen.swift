@@ -51,7 +51,7 @@ struct ActivityScreen: View {
                         EmptyActivityFeedView()
                     }
                 } else {
-                    ScreenStateOverlayView(state: state, errorDescription: "") {
+                    ScreenStateOverlayView(state: state) {
                         await fetchFeedItems(reset: true, onPageLoad: false)
                     }
                 }
@@ -82,7 +82,7 @@ struct ActivityScreen: View {
         }
         ToolbarItem(placement: .principal) {}
         ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("settings.navigationTitle", systemImage: "gear", open: .screen(.settings))
+            RouterLink("settings.navigationTitle", systemImage: "gear", open: .sheet(.settings))
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
         }

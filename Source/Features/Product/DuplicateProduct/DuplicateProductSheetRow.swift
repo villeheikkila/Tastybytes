@@ -2,7 +2,7 @@ import Components
 import Models
 import SwiftUI
 
-struct DuplicateProductSheetRow: View {
+struct DuplicateProductRow: View {
     @State private var showMergeToProductConfirmationDialog = false
     let product: Product.Joined
     let mode: ProductDuplicateScreen.Mode

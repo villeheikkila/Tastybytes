@@ -10,12 +10,16 @@ struct SettingsScreen: View {
 
     var body: some View {
         List {
-            profileSection
-            appSection
-            aboutSection
-            logOutSection
+            Group {
+                profileSection
+                appSection
+                aboutSection
+                logOutSection
+            }
+            .customListRowBackground()
         }
         .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
         .navigationBarTitle("settings.navigationTitle")
         .toolbar {
             toolbarContent
@@ -23,6 +27,7 @@ struct SettingsScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarDismissAction()
         if let subscriptionGroup = appEnvironmentModel.subscriptionGroup {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 RouterLink("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", open: .sheet(.subscribe))

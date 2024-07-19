@@ -24,7 +24,7 @@ struct ReportScreen: View {
         }
         .overlay {
             if state != .populated {
-                ScreenStateOverlayView(state: state, errorDescription: "") {
+                ScreenStateOverlayView(state: state) {
                     await loadInitialData()
                 }
             } else if reports.isEmpty {
@@ -81,16 +81,13 @@ struct ReportScreen: View {
 
 struct ReportScreenRow: View {
     @Environment(Repository.self) private var repository
-    @Environment(Router.self) private var router
     let report: Report
 
     let deleteReport: (_ report: Report) async -> Void
     let resolveReport: (_ report: Report) async -> Void
 
     var body: some View {
-        Button(action: {
-            report.entity.open(repository, router)
-        }) {
+        RouterLink(open: report.entity.open) {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .center) {
                     Avatar(profile: report.createdBy)

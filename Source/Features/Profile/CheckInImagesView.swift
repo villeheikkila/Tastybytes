@@ -15,24 +15,23 @@ struct CheckInImageCellView: View {
 
     var body: some View {
         HStack {
-            RemoteImageView(url: checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 100, height: 100)
-            }, progress: {
-                if let blurHash = checkInImage.blurHash {
-                    BlurHashPlaceholderView(blurHash: blurHash, height: 100)
-                } else {
-                    ProgressView()
-                }
-            })
-            .frame(width: 100, height: 100)
-            .clipShape(.rect(cornerRadius: 4))
-            .onTapGesture {
-                router.fetchAndNavigateTo(repository, .checkIn(id: checkInImage.checkIn.id))
+            RouterLink(open: .navigatablePath(.checkIn(id: checkInImage.checkIn.id))) {
+                RemoteImageView(url: checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100)
+                }, progress: {
+                    if let blurHash = checkInImage.blurHash {
+                        BlurHashPlaceholderView(blurHash: blurHash, height: 100)
+                    } else {
+                        ProgressView()
+                    }
+                })
+                .frame(width: 100, height: 100)
+                .clipShape(.rect(cornerRadius: 4))
             }
-            .accessibilityAddTraits(.isButton)
+            .buttonStyle(.plain)
         }
     }
 }

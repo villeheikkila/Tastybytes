@@ -4,20 +4,20 @@ internal import Supabase
 struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
     let client: SupabaseClient
 
-    func getByProductId(id: Int) async throws -> [ProductBarcode.JoinedWithCreator] {
+    func getByProductId(id: Int) async throws -> [Product.Barcode.JoinedWithCreator] {
         try await client
             .from(.productBarcodes)
-            .select(ProductBarcode.getQuery(.joinedCreator(false)))
+            .select(Product.Barcode.getQuery(.joinedCreator(false)))
             .eq("product_id", value: id)
             .execute()
             .value
     }
 
-    func addToProduct(product: Product.Joined, barcode: Barcode) async throws -> ProductBarcode.JoinedWithCreator {
+    func addToProduct(product: ProductProtocol, barcode: Barcode) async throws -> Product.Barcode.JoinedWithCreator {
         try await client
             .from(.productBarcodes)
-            .insert(ProductBarcode.NewRequest(product: product, barcode: barcode))
-            .select(ProductBarcode.getQuery(.joinedCreator(false)))
+            .insert(Product.Barcode.NewRequest(product: product, barcode: barcode))
+            .select(Product.Barcode.getQuery(.joinedCreator(false)))
             .single()
             .execute()
             .value

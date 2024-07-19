@@ -12,19 +12,16 @@ struct BarcodeManagementScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var state: ScreenState = .loading
-    @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
 
-    let product: Product.Joined
+    @Binding var product: Product.Detailed?
+
+    var barcodes: [Product.Barcode.JoinedWithCreator] {
+        product?.barcodes ?? []
+    }
 
     var body: some View {
         List(barcodes) { barcode in
             BarcodeManagementRowView(barcode: barcode)
-                .swipeActions {
-                    DeleteButtonView(action: {
-                        await deleteBarcode(barcode)
-                    })
-                }
                 .contextMenu {
                     DeleteButtonView(action: {
                         await deleteBarcode(barcode)
@@ -35,18 +32,9 @@ struct BarcodeManagementScreen: View {
         }
         .listStyle(.plain)
         .overlay {
-            if state == .populated {
-                if barcodes.isEmpty {
-                    ContentUnavailableView("barcode.management.empty.title", systemImage: "barcode")
-                }
-            } else {
-                ScreenStateOverlayView(state: state, errorDescription: "") {
-                    await getBarcodes()
-                }
+            if let product, product.barcodes.isEmpty {
+                ContentUnavailableView("barcode.management.empty.title", systemImage: "barcode")
             }
-        }
-        .task {
-            await getBarcodes()
         }
         .navigationTitle("barcode.management.navigationTitle")
         .toolbar {
@@ -55,23 +43,23 @@ struct BarcodeManagementScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .primaryAction) {
-            RouterLink(
-                "discover.barcode.scan",
-                systemImage: "barcode.viewfinder",
-                open: .sheet(.barcodeScanner(onComplete: { barcode in
-                    await addBarcodeToProduct(barcode)
-                }))
-            )
+        if let product {
+            ToolbarItemGroup(placement: .primaryAction) {
+                RouterLink(
+                    "discover.barcode.scan",
+                    systemImage: "barcode.viewfinder",
+                    open: .sheet(.barcodeScanner(onComplete: { barcode in
+                        await addBarcodeToProduct(product: product, barcode)
+                    }))
+                )
+            }
         }
     }
 
-    private func addBarcodeToProduct(_ barcode: Barcode) async {
+    private func addBarcodeToProduct(product: Product.Detailed, _ barcode: Barcode) async {
         do {
-            let addedBarcode = try await repository.productBarcode.addToProduct(product: product, barcode: barcode)
-            withAnimation {
-                barcodes.append(addedBarcode)
-            }
+            let new = try await repository.productBarcode.addToProduct(product: product, barcode: barcode)
+            self.product = product.copyWith(barcodes: product.barcodes + [new])
         } catch {
             guard !error.isCancelled else { return }
             guard !error.isDuplicate else {
@@ -79,36 +67,22 @@ struct BarcodeManagementScreen: View {
                 return
             }
             router.open(.alert(.init(title: "barcode.error.failedToAdd.title", retryLabel: "labels.retry", retry: {
-                Task { await addBarcodeToProduct(barcode) }
+                Task { await addBarcodeToProduct(product: product, barcode) }
             })))
             logger.error("Adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    private func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {
+    private func deleteBarcode(_ barcode: Product.Barcode.JoinedWithCreator) async {
+        guard let product else { return }
         do {
             try await repository.productBarcode.delete(id: barcode.id)
-            withAnimation {
-                barcodes.remove(object: barcode)
-            }
+            let updated = product.barcodes.removing(barcode)
+            self.product = product.copyWith(barcodes: updated)
             feedbackEnvironmentModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
-            logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    private func getBarcodes() async {
-        do {
-            let barcodes = try await repository.productBarcode.getByProductId(id: product.id)
-            withAnimation {
-                self.barcodes = barcodes
-                state = .populated
-            }
-        } catch {
-            guard !error.isCancelled else { return }
-            state = .error([error])
             logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }

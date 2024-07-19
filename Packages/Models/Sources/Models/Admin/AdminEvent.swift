@@ -15,6 +15,7 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
         case brandEditSuggestion(Brand.EditSuggestion)
         case subBrandEditSuggestion(SubBrand.EditSuggestion)
         case companyEditSuggestion(Company.EditSuggestion)
+        case productDuplicateSuggestion(Product.DuplicateSuggestion)
         case report(Report)
     }
 
@@ -38,6 +39,7 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
         case brandEditSuggestion = "brand_edit_suggestions"
         case subBrandEditSuggestion = "sub_brand_edit_suggestions"
         case companyEditSuggestion = "company_edit_suggestions"
+        case productDuplicateSuggestion = "product_duplicate_suggestions"
         case report = "reports"
     }
 
@@ -58,6 +60,10 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
         let brandEditSuggestion = try container.decodeIfPresent(Brand.EditSuggestion.self, forKey: .brandEditSuggestion)
         let subBrandEditSuggestion = try container.decodeIfPresent(SubBrand.EditSuggestion.self, forKey: .subBrandEditSuggestion)
         let companyEditSuggestion = try container.decodeIfPresent(Company.EditSuggestion.self, forKey: .companyEditSuggestion)
+        let productDuplicateSuggestion = try container.decodeIfPresent(
+            Product.DuplicateSuggestion.self,
+            forKey: .productDuplicateSuggestion
+        )
         let report = try container.decodeIfPresent(Report.self, forKey: .report)
 
         event = if let company {
@@ -80,6 +86,8 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
             .companyEditSuggestion(companyEditSuggestion)
         } else if let report {
             .report(report)
+        } else if let productDuplicateSuggestion {
+            .productDuplicateSuggestion(productDuplicateSuggestion)
         } else {
             throw AdminEventError.unknownEntity
         }

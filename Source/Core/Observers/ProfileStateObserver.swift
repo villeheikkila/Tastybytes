@@ -16,7 +16,7 @@ struct ProfileStateObserver<Content: View>: View {
                 }
                 .task {
                     if profileEnvironmentModel.hasRole(.admin) {
-                        await adminEnvironmentModel.loadAdminEventFeed()
+                        await adminEnvironmentModel.initialize()
                     }
                 }
         case .loading:

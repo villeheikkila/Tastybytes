@@ -23,30 +23,33 @@ struct ReportEntityView: View {
             CheckInImageEntityView(imageEntity: imageEntity)
         case let .profile(profile):
             ProfileEntityView(profile: profile)
+        case let .location(location):
+            LocationEntityView(location: location)
         }
     }
 }
 
 extension Report.Entity {
-    @MainActor
-    func open(_ repository: Repository, _ router: Router) {
+    var open: Router.Open {
         switch self {
         case let .brand(brand):
-            router.open(.screen(.brand(brand)))
+            .screen(.brand(brand))
         case let .product(product):
-            router.open(.screen(.product(product)))
+            .screen(.product(product))
         case let .company(company):
-            router.open(.screen(.company(company)))
+            .screen(.company(company))
         case let .subBrand(subBrand):
-            router.fetchAndNavigateTo(repository, .brand(id: subBrand.brand.id))
+            .navigatablePath(.brand(id: subBrand.brand.id))
         case let .checkIn(checkIn):
-            router.open(.screen(.checkIn(checkIn)))
+            .screen(.checkIn(checkIn))
         case let .comment(comment):
-            router.fetchAndNavigateTo(repository, .company(id: comment.id))
+            .navigatablePath(.company(id: comment.id))
         case let .checkInImage(imageEntity):
-            router.fetchAndNavigateTo(repository, .checkIn(id: imageEntity.checkIn.id))
+            .navigatablePath(.checkIn(id: imageEntity.checkIn.id))
         case let .profile(profile):
-            router.open(.screen(.profile(profile)))
+            .screen(.profile(profile))
+        case let .location(location):
+            .screen(.location(location))
         }
     }
 }

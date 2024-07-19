@@ -55,13 +55,6 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtoco
     }
 }
 
-public protocol ModificationInfo {
-    var createdBy: Profile? { get }
-    var createdAt: Date { get }
-    var updatedBy: Profile? { get }
-    var updatedAt: Date? { get }
-}
-
 public extension Company {
     struct Detailed: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, ModificationInfo {
         public let id: Int
@@ -250,7 +243,7 @@ public extension CompanyLogoProtocol {
 }
 
 public extension Company {
-    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable {
+    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
         public let id: Int
         public let name: String?
         public let company: Company

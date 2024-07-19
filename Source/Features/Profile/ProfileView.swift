@@ -67,9 +67,9 @@ struct ProfileInnerView: View {
         }
         .checkInCardLoadedFrom(.profile(profile))
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
+            ScreenStateOverlayView(state: state) {
                 await getProfileData(isRefresh: true)
-            })
+            }
         }
         .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
         .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)

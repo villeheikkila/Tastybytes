@@ -145,6 +145,7 @@ public extension SubBrand {
         public let includesBrandName: Bool
         public let isVerified: Bool
         public let products: [Product.JoinedCategory]
+        public let editSuggestions: [SubBrand.EditSuggestion]
         public let createdAt: Date
         public let createdBy: Profile?
         public let updatedAt: Date?
@@ -156,19 +157,21 @@ public extension SubBrand {
             case isVerified = "is_verified"
             case includesBrandName = "includes_brand_name"
             case products
+            case editSuggestions = "sub_brand_edit_suggestions"
             case createdBy = "created_by"
             case createdAt = "created_at"
             case updatedBy = "updated_by"
             case updatedAt = "updated_at"
         }
 
-        public func copyWith(name: String? = nil, includesBrandName: Bool? = nil, isVerified: Bool? = nil, products: [Product.JoinedCategory]? = nil) -> Self {
+        public func copyWith(name: String? = nil, includesBrandName: Bool? = nil, isVerified: Bool? = nil, products: [Product.JoinedCategory]? = nil, editSuggestions: [SubBrand.EditSuggestion]? = nil) -> Self {
             .init(
                 id: id,
                 name: name ?? self.name,
                 includesBrandName: includesBrandName ?? self.includesBrandName,
                 isVerified: isVerified ?? self.isVerified,
                 products: products ?? self.products,
+                editSuggestions: editSuggestions ?? self.editSuggestions,
                 createdAt: createdAt,
                 createdBy: createdBy,
                 updatedAt: updatedAt,
@@ -177,14 +180,15 @@ public extension SubBrand {
         }
     }
 
-    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable {
+    struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
         public let id: Int
         public let subBrand: SubBrand.JoinedBrand
         public let createdAt: Date
-        public let createdBy: Profile?
+        public let createdBy: Profile
         public let brand: Brand?
         public let name: String?
         public let includesBrandName: Bool?
+        public let resolvedAt: Date?
 
         enum CodingKeys: String, CodingKey, Sendable {
             case id
@@ -194,6 +198,7 @@ public extension SubBrand {
             case brand = "brands"
             case subBrand = "sub_brands"
             case includesBrandName = "includes_brand_name"
+            case resolvedAt = "resolved_at"
         }
     }
 }

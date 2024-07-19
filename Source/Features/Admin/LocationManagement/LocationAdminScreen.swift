@@ -37,7 +37,7 @@ struct LocationAdminScreen: View {
             await loadData()
         }
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "") {
+            ScreenStateOverlayView(state: state) {
                 await loadData()
             }
         }

@@ -5,11 +5,31 @@ import SwiftUI
 
 struct RouterProvider<Content: View>: View {
     @Environment(Repository.self) private var repository
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @State private var router = Router()
 
     let enableRoutingFromURLs: Bool
     @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        RouterInnerProvider(repository: repository, enableRoutingFromURLs: enableRoutingFromURLs, content: content)
+    }
+}
+
+private struct RouterInnerProvider<Content: View>: View {
+    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @State private var router: Router
+
+    let enableRoutingFromURLs: Bool
+    @ViewBuilder let content: () -> Content
+
+    init(
+        repository: Repository,
+        enableRoutingFromURLs: Bool,
+        content: @escaping () -> Content
+    ) {
+        _router = State(wrappedValue: Router(repository: repository))
+        self.enableRoutingFromURLs = enableRoutingFromURLs
+        self.content = content
+    }
 
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -30,7 +50,7 @@ struct RouterProvider<Content: View>: View {
         .if(enableRoutingFromURLs) { view in
             view.onOpenURL { url in
                 if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
-                    router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
+                    router.open(.navigatablePath(detailPage, resetStack: true))
                 }
             }
         }

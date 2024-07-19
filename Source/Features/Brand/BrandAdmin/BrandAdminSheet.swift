@@ -110,13 +110,7 @@ struct BrandAdminSheet: View {
         .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
-            RouterLink(open: .screen(.brandEditSuggestionAdmin(brand: $brand))) {
-                HStack {
-                    Label("admin.section.editSuggestions.title", systemImage: "square.and.pencil")
-                    Spacer()
-                    Text("(\(brand.editSuggestions.unresolvedCount.formatted()))")
-                }
-            }
+            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", count: brand.editSuggestions.unresolvedCount, open: .screen(.brandEditSuggestionAdmin(brand: $brand)))
         }
         .customListRowBackground()
         Section {

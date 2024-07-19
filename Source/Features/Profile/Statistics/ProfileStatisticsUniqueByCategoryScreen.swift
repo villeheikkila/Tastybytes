@@ -86,7 +86,7 @@ struct SubcategoryStatisticsView: View {
                     SubcategoryStatisticsRow(profile: profile, category: category.category, subcategory: subcategory)
                 }
             } else {
-                ScreenStateOverlayView(state: state, errorDescription: "") {
+                ScreenStateOverlayView(state: state) {
                     await loadSubcategoryStatistics()
                 }
             }

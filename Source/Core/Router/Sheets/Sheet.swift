@@ -41,12 +41,13 @@ enum Sheet: Identifiable, Equatable {
     case companyAdmin(company: Company, onUpdate: () async -> Void, onDelete: () -> Void)
     case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case profileAdmin(profile: Profile, onDelete: (_ profile: Profile) -> Void)
-    case productAdmin(product: Binding<Product.Joined>, onDelete: () -> Void)
+    case productAdmin(product: ProductProtocol, onDelete: () -> Void, onUpdate: () async -> Void)
     case checkInAdmin(checkIn: CheckIn, onDelete: () -> Void)
     case checkInCommentAdmin(checkIn: CheckIn, checkInComment: CheckInComment, onDelete: (_ comment: CheckInComment) -> Void)
     case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: (_ comment: ImageEntity) async -> Void)
     case categoryAdmin(category: Models.Category.JoinedSubcategoriesServingStyles)
     case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
+    case settings
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -126,8 +127,8 @@ enum Sheet: Identifiable, Equatable {
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
         case let .profileAdmin(profile, onDelete):
             ProfileAdminSheet(profile: profile, onDelete: onDelete)
-        case let .productAdmin(product, onDelete):
-            ProductAdminSheet(product: product, onDelete: onDelete)
+        case let .productAdmin(product, onDelete, onUpdate):
+            ProductAdminSheet(product: product, onDelete: onDelete, onUpdate: onUpdate)
         case let .checkInAdmin(checkIn, onDelete):
             CheckInAdminSheet(checkIn: checkIn, onDelete: onDelete)
         case let .checkInCommentAdmin(checkIn, checkInComment, onDelete):
@@ -138,6 +139,8 @@ enum Sheet: Identifiable, Equatable {
             CategoryAdminSheet(category: category)
         case let .brandEditSuggestion(brand, onSuccess):
             BrandEditSuggestionSheet(brand: brand, onSuccess: onSuccess)
+        case .settings:
+            SettingsScreen()
         }
     }
 
@@ -251,7 +254,7 @@ enum Sheet: Identifiable, Equatable {
             "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
         case let .profileAdmin(profile, _):
             "profile_admin_sheet_\(profile)"
-        case let .productAdmin(product, _):
+        case let .productAdmin(product, _, _):
             "product_admin_\(product)"
         case let .checkInAdmin(checkIn, _):
             "check_in_admin_\(checkIn)"
@@ -263,6 +266,8 @@ enum Sheet: Identifiable, Equatable {
             "category_admin_\(category)"
         case let .brandEditSuggestion(brand, _):
             "brand_edit_suggestion_\(brand)"
+        case .settings:
+            "settings"
         }
     }
 

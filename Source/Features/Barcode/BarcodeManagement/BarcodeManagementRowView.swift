@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct BarcodeManagementRowView: View {
-    let barcode: ProductBarcode.JoinedWithCreator
+    let barcode: Product.Barcode.JoinedWithCreator
 
     var body: some View {
         HStack {

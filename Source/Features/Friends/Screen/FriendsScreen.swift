@@ -52,9 +52,9 @@ struct FriendsScreen: View {
                     ContentUnavailableView.search(text: searchTerm)
                 }
             } else {
-                ScreenStateOverlayView(state: state, errorDescription: "", errorAction: {
+                ScreenStateOverlayView(state: state) {
                     await loadFriends()
-                })
+                }
             }
         }
         .toolbar {

@@ -5,7 +5,7 @@ import SwiftUI
 
 struct ProductLogoView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    let product: Product.Joined
+    let product: ProductLogoProtocol
     let size: Double
 
     var logoUrl: URL? {

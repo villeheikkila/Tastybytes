@@ -11,12 +11,16 @@ struct ProductEntityView: View {
         case checkInCheck, rating, companyLink, logoOnLeft, logoOnRight
     }
 
-    let product: Product.Joined
+    let product: ProductProtocol
     let extras: Set<Extra>
+    let isCheckedIn: Bool
+    let averageRating: Double?
 
-    init(product: Product.Joined, extras: Set<Extra> = Set()) {
+    init(product: ProductProtocol, extras: Set<Extra> = Set(), isCheckedIn: Bool = false, averageRating: Double? = nil) {
         self.product = product
         self.extras = extras
+        self.isCheckedIn = isCheckedIn
+        self.averageRating = averageRating
     }
 
     var body: some View {
@@ -34,9 +38,7 @@ struct ProductEntityView: View {
                     }
 
                     Spacer()
-                    if let currentUserCheckIns = product.currentUserCheckIns, currentUserCheckIns > 0,
-                       extras.contains(.checkInCheck)
-                    {
+                    if isCheckedIn, extras.contains(.checkInCheck) {
                         Label("checkIn.checkedIn.label", systemImage: "checkmark.circle")
                             .labelStyle(.iconOnly)
                             .symbolRenderingMode(.palette)
@@ -63,7 +65,7 @@ struct ProductEntityView: View {
                 HStack {
                     CategoryView(category: product.category, subcategories: product.subcategories)
                     Spacer()
-                    if let averageRating = product.averageRating, extras.contains(.rating) {
+                    if let averageRating, extras.contains(.rating) {
                         RatingView(rating: averageRating)
                             .ratingSize(.small)
                     }

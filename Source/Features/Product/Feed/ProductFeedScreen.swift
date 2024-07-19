@@ -52,7 +52,7 @@ struct ProductFeedScreen: View {
         }
         .listStyle(.plain)
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "") {
+            ScreenStateOverlayView(state: state) {
                 await loadFeedItems(refresh: true)
             }
         }

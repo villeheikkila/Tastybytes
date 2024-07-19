@@ -73,4 +73,12 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             .execute()
             .value
     }
+
+    func deleteEditSuggestion(editSuggestion: SubBrand.EditSuggestion) async throws {
+        try await client
+            .from(.subBrandEditSuggestion)
+            .delete()
+            .eq("id", value: editSuggestion.id)
+            .execute()
+    }
 }

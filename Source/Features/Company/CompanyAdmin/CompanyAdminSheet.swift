@@ -36,7 +36,7 @@ struct CompanyAdminSheet: View {
         }
         .scrollContentBackground(.hidden)
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "") {
+            ScreenStateOverlayView(state: state) {
                 await loadData()
             }
         }
@@ -75,13 +75,7 @@ struct CompanyAdminSheet: View {
         EditLogoSection(logos: company.logos, onUpload: uploadLogo, onDelete: deleteLogo)
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
-            RouterLink(open: .screen(.companyEditSuggestion(company: $company))) {
-                HStack {
-                    Label("admin.section.editSuggestions.title", systemImage: "square.and.pencil")
-                    Spacer()
-                    Text("(\(company.editSuggestions.unresolvedCount.formatted()))")
-                }
-            }
+            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", count: company.editSuggestions.unresolvedCount, open: .screen(.companyEditSuggestion(company: $company)))
         }
         .customListRowBackground()
         Section {

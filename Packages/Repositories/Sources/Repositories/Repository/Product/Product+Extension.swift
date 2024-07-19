@@ -5,33 +5,32 @@ extension Product: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name, description, is_verified, is_discontinued"
 
-        switch queryType {
+        return switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.products, [saved], withTableName)
+            buildQuery(.products, [saved], withTableName)
         case let .joinedBrandSubcategories(withTableName):
-            return buildQuery(
+            buildQuery(
                 .products,
                 [saved, SubBrand.getQuery(.joinedBrand(true)), Category.getQuery(.saved(true)),
-                 Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.productLogos))],
+                 Subcategory.getQuery(.joinedCategory(true)), Product.Barcode.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.productLogos))],
                 withTableName
             )
         case let .joinedBrandSubcategoriesCreator(withTableName):
-            return buildQuery(
+            buildQuery(
                 .products,
                 [
                     saved,
-                    "created_at",
                     buildQuery(name: "profiles", foreignKey: "created_by", [Profile.getQuery(.minimal(false))]),
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.joinedCategory(true)),
-                    ProductBarcode.getQuery(.saved(true)),
+                    Product.Barcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                 ],
                 withTableName
             )
         case let .joinedBrandSubcategoriesRatings(withTableName):
-            return buildQuery(
+            buildQuery(
                 .products,
                 [
                     saved,
@@ -40,13 +39,13 @@ extension Product: Queryable {
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.joinedCategory(true)),
-                    ProductBarcode.getQuery(.saved(true)),
+                    Product.Barcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                 ],
                 withTableName
             )
         case let .joinedBrandSubcategoriesProfileRatings(withTableName):
-            return buildQuery(
+            buildQuery(
                 .products,
                 [
                     saved,
@@ -55,19 +54,30 @@ extension Product: Queryable {
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.joinedCategory(true)),
-                    ProductBarcode.getQuery(.saved(true)),
+                    Product.Barcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                 ],
                 withTableName
             )
-        case let .productDuplicateSuggestion(withTableName):
-            return buildQuery(
-                .productDuplicateSuggestions,
+        case let .detailed(withTableName):
+            buildQuery(
+                .products,
                 [
-                    "created_at",
-                    Profile.getQuery(.minimal(true)),
-                    buildQuery(name: "product", foreignKey: "product_id", [Product.getQuery(.joinedBrandSubcategoriesCreator(false))]),
-                    buildQuery(name: "duplicate", foreignKey: "duplicate_of_product_id", [Product.getQuery(.joinedBrandSubcategoriesCreator(false))]),
+                    saved,
+                    SubBrand.getQuery(.joinedBrand(true)),
+                    Category.getQuery(.saved(true)),
+                    Subcategory.getQuery(.joinedCategory(true)),
+                    Product.Barcode.getQuery(.joinedCreator(true)),
+                    Product.EditSuggestion.getQuery(.joined(true)),
+                    Product.Variant.getQuery(.joined(true)),
+                    buildQuery(
+                        name: "product_duplicate_suggestions",
+                        foreignKey: "product_duplicate_suggestions!product_duplicate_suggestion_product_id_fkey",
+                        [Product.DuplicateSuggestion.getQuery(.joined(false))]
+                    ),
+                    Report.getQuery(.joined(true)),
+                    ImageEntity.getQuery(.saved(.productLogos)),
+                    modificationInfoFragment,
                 ],
                 withTableName
             )
@@ -80,11 +90,11 @@ extension Product: Queryable {
         case joinedBrandSubcategoriesCreator(_ withTableName: Bool)
         case joinedBrandSubcategoriesRatings(_ withTableName: Bool)
         case joinedBrandSubcategoriesProfileRatings(_ withTableName: Bool)
-        case productDuplicateSuggestion(_ withTableName: Bool)
+        case detailed(_ withTableName: Bool)
     }
 }
 
-extension ProductVariant: Queryable {
+extension Product.Variant: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id"
 
@@ -113,6 +123,7 @@ extension Product.EditSuggestion: Queryable {
                     Profile.getQuery(.minimal(true)),
                     Category.getQuery(.saved(true)),
                     SubBrand.getQuery(.joinedBrand(true)),
+                    Product.EditSuggestion.SubcategoryEditSuggestion.getQuery(.joined(true)),
                 ],
                 withTableName
             )
@@ -124,17 +135,51 @@ extension Product.EditSuggestion: Queryable {
     }
 }
 
-extension ProductDuplicateSuggestion: Queryable {
+extension Product.EditSuggestion.SubcategoryEditSuggestion: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "product_id, duplicate_of_product_id"
+        let saved = "id, delete"
 
-        switch queryType {
+        return switch queryType {
+        case let .joined(withTableName):
+            buildQuery(
+                .productEditSuggestionSubcategories,
+                [
+                    saved,
+                    Subcategory.getQuery(.joinedCategory(true)),
+                ],
+                withTableName
+            )
+        }
+    }
+
+    enum QueryType {
+        case joined(_ withTableName: Bool)
+    }
+}
+
+extension Product.DuplicateSuggestion: Queryable {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let saved = "id, created_at"
+
+        return switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.productDuplicateSuggestions, [saved], withTableName)
+            buildQuery(.productDuplicateSuggestions, [saved], withTableName)
+        case let .joined(withTableName):
+            buildQuery(
+                .productDuplicateSuggestions,
+                [
+                    saved,
+                    Profile.getQuery(.minimal(true)),
+                    buildQuery(name: "product", foreignKey: "product_id", [Product.getQuery(.joinedBrandSubcategoriesCreator(false))]),
+                    buildQuery(name: "duplicate", foreignKey: "duplicate_of_product_id", [Product.getQuery(.joinedBrandSubcategoriesCreator(false))]),
+                ],
+                withTableName
+            )
         }
     }
 
     enum QueryType {
         case saved(_ withTableName: Bool)
+        case joined(_ withTableName: Bool)
     }
 }

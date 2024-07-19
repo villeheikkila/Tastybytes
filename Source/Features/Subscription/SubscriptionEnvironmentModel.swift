@@ -11,7 +11,7 @@ final class SubscriptionEnvironmentModel {
     let productSubscription = ProductSubscription()
     private var activeTransactions: Set<StoreKit.Transaction> = []
 
-    let repository: Repository
+    private let repository: Repository
 
     public init(repository: Repository) {
         self.repository = repository

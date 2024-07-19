@@ -68,7 +68,7 @@ struct UserPickerSheet: View {
         }
         .overlay {
             if state != .populated {
-                ScreenStateOverlayView(state: state, errorDescription: "") {
+                ScreenStateOverlayView(state: state) {
                     await searchUsers(searchTerm: searchTerm)
                 }
             } else if searchResults.isEmpty, let searchedFor {

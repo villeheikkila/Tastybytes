@@ -101,6 +101,12 @@ struct SubBrandAdminSheet: View {
         }
         .customListRowBackground()
         Section {
+            RouterLink(
+                "admin.section.editSuggestions.title",
+                systemImage: "square.and.pencil",
+                count: subBrand.editSuggestions.unresolvedCount,
+                open: .screen(.subBrandEditSuggestions(subBrand: $subBrand))
+            )
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
         }
         .customListRowBackground()
@@ -236,6 +242,34 @@ extension SubBrandProtocol {
             name
         } else {
             String(localized: "subBrand.defaultSubBrand.label")
+        }
+    }
+}
+
+struct SubBrandEditSuggestionsScreen: View {
+    @Binding var subBrand: SubBrand.Detailed?
+
+    private var editSuggestions: [SubBrand.EditSuggestion] {
+        subBrand?.editSuggestions ?? []
+    }
+
+    var body: some View {
+        List(editSuggestions) { editSuggestion in
+            SubBrandEditSuggestionEntityView(editSuggestion: editSuggestion)
+        }
+        .navigationTitle("product.admin.variants.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+struct SubBrandEditSuggestionEntityView: View {
+    let editSuggestion: SubBrand.EditSuggestion
+
+    var body: some View {
+        VStack {
+            if let name = editSuggestion.name {
+                Text(name)
+            }
         }
     }
 }

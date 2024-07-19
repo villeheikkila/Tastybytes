@@ -25,22 +25,22 @@ struct SupabaseNotificationRepository: NotificationRepository {
         return response ?? 0
     }
 
-    func refreshPushNotificationToken(deviceToken: String) async throws -> ProfilePushNotification {
+    func refreshPushNotificationToken(deviceToken: String) async throws -> Profile.PushNotification {
         try await client
             .rpc(fn: .upsertDeviceToken, params: Profile.PushNotificationToken(deviceToken: deviceToken))
-            .select(ProfilePushNotification.getQuery(.saved(false)))
+            .select(Profile.PushNotification.getQuery(.saved(false)))
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async throws -> ProfilePushNotification {
+    func updatePushNotificationSettingsForDevice(updateRequest: Profile.PushNotification) async throws -> Profile.PushNotification {
         try await client
             .from(.profilePushNotifications)
             .update(updateRequest, returning: .representation)
             .eq("device_token", value: updateRequest.id)
-            .select(ProfilePushNotification.getQuery(.saved(false)))
+            .select(Profile.PushNotification.getQuery(.saved(false)))
             .single()
             .execute()
             .value

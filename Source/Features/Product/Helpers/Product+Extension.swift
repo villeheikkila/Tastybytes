@@ -1,17 +1,17 @@
 import Models
 import SwiftUI
 
-public extension Product.Joined {
-    struct Formatter<Output> {
-        let format: (Product.Joined) -> Output
-    }
+public struct ProductFormatter<Output> {
+    let format: (ProductProtocol) -> Output
+}
 
-    func formatted<Output>(_ formatter: Formatter<Output>) -> Output {
+public extension ProductProtocol {
+    func formatted<Output>(_ formatter: ProductFormatter<Output>) -> Output {
         formatter.format(self)
     }
 }
 
-public extension Product.Joined.Formatter where Output == String {
+public extension ProductFormatter where Output == String {
     static var fullName: Self {
         .init { value in
             [

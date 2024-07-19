@@ -55,7 +55,7 @@ struct CheckInLocationSearchSheet: View {
         .scrollContentBackground(.hidden)
         .searchable(text: $searchTerm)
         .overlay {
-            ScreenStateOverlayView(state: state, errorDescription: "") {
+            ScreenStateOverlayView(state: state) {
                 await loadInitialData()
             }
         }

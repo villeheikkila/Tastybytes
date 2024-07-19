@@ -12,7 +12,7 @@ public final class NotificationEnvironmentModel {
     public var isRefreshing = false
     public var task: Task<Void, Never>?
 
-    public var pushNotificationSettings: ProfilePushNotification?
+    public var pushNotificationSettings: Profile.PushNotification?
     public var unreadCount: Int = 0
     public var alertError: AlertEvent?
     public var state: ScreenState = .loading

@@ -15,40 +15,45 @@ struct DiscoverProductRow: View {
     @Binding var barcode: Barcode?
 
     var body: some View {
-        ProductEntityView(product: product, extras: [.checkInCheck, .rating, .logoOnLeft])
-            .swipeActions {
-                RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIn in
-                    router.open(.screen(.checkIn(checkIn)))
-                })))).tint(.green)
+        ProductEntityView(
+            product: product,
+            extras: [.checkInCheck, .rating, .logoOnLeft],
+            isCheckedIn: product.isCheckedInByCurrentUser,
+            averageRating: product.averageRating
+        )
+        .swipeActions {
+            RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIn in
+                router.open(.screen(.checkIn(checkIn)))
+            })))).tint(.green)
+        }
+        .contentShape(.rect)
+        .accessibilityAddTraits(.isLink)
+        .onTapGesture {
+            if barcode == nil || product.barcodes.contains(where: { $0.isSameAs(barcode) }) {
+                router.open(.screen(.product(product)))
+            } else {
+                showAddBarcodeToConfirmationDialog = true
             }
-            .contentShape(.rect)
-            .accessibilityAddTraits(.isLink)
-            .onTapGesture {
-                if barcode == nil || product.barcodes.contains(where: { $0.isBarcode(barcode) }) {
-                    router.open(.screen(.product(product)))
-                } else {
-                    showAddBarcodeToConfirmationDialog = true
+        }
+        .confirmationDialog(
+            "checkIn.addBarcode.confirmation.title",
+            isPresented: $showAddBarcodeToConfirmationDialog,
+            presenting: product
+        ) { presenting in
+            AsyncButton(
+                "checkIn.addBarcode.label \(presenting.formatted(.fullName))",
+                action: {
+                    await addBarcodeToProduct(presenting)
                 }
-            }
-            .confirmationDialog(
-                "checkIn.addBarcode.confirmation.title",
-                isPresented: $showAddBarcodeToConfirmationDialog,
-                presenting: product
-            ) { presenting in
-                AsyncButton(
-                    "checkIn.addBarcode.label \(presenting.formatted(.fullName))",
-                    action: {
-                        await addBarcodeToProduct(presenting)
-                    }
-                )
-                Button(
-                    "checkIn.discardBarcode.label",
-                    role: .destructive,
-                    action: {
-                        barcode = nil
-                    }
-                )
-            }
+            )
+            Button(
+                "checkIn.discardBarcode.label",
+                role: .destructive,
+                action: {
+                    barcode = nil
+                }
+            )
+        }
     }
 
     private func addBarcodeToProduct(_ addBarcodeTo: Product.Joined) async {
