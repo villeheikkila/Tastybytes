@@ -7,7 +7,18 @@ struct AdminScreen: View {
     var body: some View {
         List {
             Section {
-                RouterLink("admin.events.title", systemImage: "bell.badge", open: .screen(.adminEvent))
+                RouterLink(
+                    "admin.events.title",
+                    systemImage: "bell.badge",
+                    count: adminEnvironmentModel.events.count,
+                    open: .screen(.adminEvent)
+                )
+                RouterLink(
+                    "admin.verification.title",
+                    systemImage: "checkmark.seal",
+                    count: adminEnvironmentModel.unverified.count,
+                    open: .screen(.verification)
+                )
             }
 
             Section("admin.section.data.title") {
@@ -19,7 +30,6 @@ struct AdminScreen: View {
                 RouterLink("report.admin.navigationTitle", systemImage: "exclamationmark.bubble", open: .screen(.reports(nil)))
             }
             Section("admin.section.management.title") {
-                RouterLink("admin.verification.title", systemImage: "checkmark.seal", open: .screen(.verification))
                 RouterLink("admin.locations.title", systemImage: "mappin.square", open: .screen(.locationAdmin))
                 RouterLink("admin.profiles.title", systemImage: "person", open: .screen(.profilesAdmin))
             }

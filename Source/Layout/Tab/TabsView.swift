@@ -48,7 +48,7 @@ struct TabsView: View {
         case .notifications:
             notificationEnvironmentModel.unreadCount
         case .admin:
-            adminEnvironmentModel.unresolvedEventCount
+            adminEnvironmentModel.notificationCount
         default:
             0
         }

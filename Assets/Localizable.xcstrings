@@ -3272,17 +3272,6 @@
         }
       }
     },
-    "labels.unverified" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unverified "
-          }
-        }
-      }
-    },
     "labels.url" : {
       "localizations" : {
         "en" : {
@@ -4022,17 +4011,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete %@"
-          }
-        }
-      }
-    },
-    "product.delete.confirmation.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete the product and all of its check-ins?"
           }
         }
       }
@@ -5919,7 +5897,14 @@
       }
     },
     "verification.navigationTitle" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verification"
+          }
+        }
+      }
     },
     "verification.verified.label" : {
       "localizations" : {

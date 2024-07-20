@@ -117,7 +117,7 @@ struct ActivityScreen: View {
             isLoading = true
         }
         let (from, to) = getPagination(page: reset ? 0 : page, size: 10)
-        let queryType: ActivityFeedQueryType = if !reset, !isInitialLoad, onPageLoad, let id = checkIns.last?.id {
+        let queryType: ActivityFeedQueryType = if !reset, !isInitialLoad, onPageLoad, let id = checkIns.first?.id {
             .afterId(id)
         } else {
             .paginated(from, to)

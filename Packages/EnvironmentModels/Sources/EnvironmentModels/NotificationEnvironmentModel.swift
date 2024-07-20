@@ -88,6 +88,7 @@ public final class NotificationEnvironmentModel {
             try await repository.notification.deleteAll()
             withAnimation {
                 self.notifications = [Models.Notification]()
+                self.unreadCount = 0
             }
         } catch {
             guard !error.isCancelled else { return }
@@ -106,6 +107,7 @@ public final class NotificationEnvironmentModel {
 
             withAnimation {
                 notifications = markedAsSeenNotifications
+                self.unreadCount = 0
             }
         } catch {
             guard !error.isCancelled else { return }
@@ -158,6 +160,7 @@ public final class NotificationEnvironmentModel {
                         notification
                     }
                 }
+                unreadCount = notifications.count
             } catch {
                 guard !error.isCancelled else { return }
                 alertError = .init()

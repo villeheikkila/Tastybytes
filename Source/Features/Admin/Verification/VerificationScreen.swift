@@ -10,22 +10,24 @@ struct VerifiableEntityView: View {
     let verifiableEntity: VerifiableEntity
 
     var body: some View {
-        switch verifiableEntity {
-        case let .product(product):
-            RouterLink(open: .screen(.product(product))) {
-                ProductEntityView(product: product)
-            }
-        case let .brand(brand):
-            RouterLink(open: .screen(.brand(brand))) {
-                BrandEntityView(brand: brand)
-            }
-        case let .subBrand(subBrand):
-            RouterLink(open: .screen(.brandById(id: subBrand.brand.id, initialScrollPosition: subBrand))) {
-                SubBrandEntityView(subBrand: subBrand)
-            }
-        case let .company(company):
-            RouterLink(open: .screen(.company(company))) {
-                CompanyEntityView(company: company)
+        Section {
+            switch verifiableEntity {
+            case let .product(product):
+                RouterLink(open: .sheet(.productAdmin(id: product.id, onDelete: {}, onUpdate: {}))) {
+                    ProductEntityView(product: product)
+                }
+            case let .brand(brand):
+                RouterLink(open: .sheet(.brandAdmin(id: brand.id, onUpdate: { _ in }, onDelete: { _ in }))) {
+                    BrandEntityView(brand: brand)
+                }
+            case let .subBrand(subBrand):
+                RouterLink(open: .sheet(.brandAdmin(id: subBrand.brand.id, onUpdate: { _ in }, onDelete: { _ in }))) {
+                    SubBrandEntityView(subBrand: subBrand)
+                }
+            case let .company(company):
+                RouterLink(open: .sheet(.companyAdmin(id: company.id, onUpdate: {}, onDelete: {}))) {
+                    CompanyEntityView(company: company)
+                }
             }
         }
     }
@@ -35,7 +37,7 @@ struct VerificationScreen: View {
     @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
 
     var body: some View {
-        List(adminEnvironmentModel.unverifiedEntities) { unverifiedEntity in
+        List(adminEnvironmentModel.unverified) { unverifiedEntity in
             VerifiableEntityView(verifiableEntity: unverifiedEntity)
                 .swipeActions {
                     AsyncButton("labels.verify", systemImage: "checkmark", action: {
@@ -44,7 +46,7 @@ struct VerificationScreen: View {
                     .tint(.green)
                 }
         }
-        .animation(.default, value: adminEnvironmentModel.unverifiedEntities)
+        .animation(.default, value: adminEnvironmentModel.unverified)
         .navigationBarTitle("verification.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .refreshable {

@@ -10,13 +10,12 @@ public final class AdminEnvironmentModel {
     private let logger = Logger(category: "AdminEnvironmentModel")
 
     public var events = [AdminEvent]()
-    public var unresolvedEventCount: Int {
-        events.count
-    }
-
-    public var unverifiedEntities = [VerifiableEntity]()
-
+    public var unverified = [VerifiableEntity]()
     public var roles = [Role]()
+    
+    public var notificationCount: Int {
+        events.count + unverified.count
+    }
 
     private let repository: Repository
 
@@ -27,8 +26,9 @@ public final class AdminEnvironmentModel {
     public func initialize() async {
         async let events = repository.admin.getAdminEventFeed()
         async let roles = repository.role.getRoles()
+        async let unverified: Void = loadUnverifiedEntities()
         do {
-            let (events, roles) = try await (events, roles)
+            let (events, roles, _) = try await (events, roles, unverified)
             self.events = events
             self.roles = roles
         } catch {
@@ -63,7 +63,7 @@ public final class AdminEnvironmentModel {
     }
 
     // Verification
-    public func loadUnverifiedEntities(refresh _: Bool = false) async {
+    public func loadUnverifiedEntities() async {
         do {
             async let companiesPromise = repository.company.getUnverified()
             async let productsPromise = repository.product.getUnverified()
@@ -82,7 +82,7 @@ public final class AdminEnvironmentModel {
             let brands: [VerifiableEntity] = unverifiedBrands.map { .brand($0) }
             let subBrands: [VerifiableEntity] = unverifiedSubBrands.map { .subBrand($0) }
 
-            unverifiedEntities = companies + products + brands + subBrands
+            unverified = companies + products + brands + subBrands
         } catch {
             logger.error("Failed to load unverified entities. Error: \(error) (\(#file):\(#line))")
         }
@@ -100,7 +100,7 @@ public final class AdminEnvironmentModel {
             case let .subBrand(subBrand):
                 try await repository.subBrand.verification(id: subBrand.id, isVerified: true)
             }
-            unverifiedEntities = unverifiedEntities.removing(entity)
+            unverified = unverified.removing(entity)
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
