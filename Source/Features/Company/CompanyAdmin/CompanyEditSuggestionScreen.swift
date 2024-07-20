@@ -6,7 +6,7 @@ import SwiftUI
 
 struct CompanyEditSuggestionScreen: View {
     @Binding var company: Company.Detailed?
-    
+
     private var editSuggestions: [Company.EditSuggestion] {
         company?.editSuggestions ?? []
     }

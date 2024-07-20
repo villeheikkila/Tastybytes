@@ -174,15 +174,13 @@ struct SupabaseProductRepository: ProductRepository {
     }
 
     func create(newProductParams: Product.NewRequest) async throws -> Product.Joined {
-        let product: Product = try await client
+        try await client
             .rpc(fn: .createProduct, params: newProductParams)
-            .select(Product.getQuery(.saved(false)))
+            .select(Product.getQuery(.joinedBrandSubcategories(false)))
             .limit(1)
             .single()
             .execute()
             .value
-
-        return try await getById(id: product.id)
     }
 
     func mergeProducts(productId: Product.Id, toProductId: Product.Id) async throws {
@@ -241,16 +239,13 @@ struct SupabaseProductRepository: ProductRepository {
     }
 
     func editProduct(productEditParams: Product.EditRequest) async throws -> Product.Joined {
-        let updateResult: Product.Joined = try await client
+        try await client
             .rpc(fn: .editProduct, params: productEditParams)
             .select(Product.getQuery(.joinedBrandSubcategories(false)))
             .limit(1)
             .single()
             .execute()
             .value
-
-        // TODO: Fix this when it is possible
-        return try await getById(id: updateResult.id)
     }
 
     func verification(id: Product.Id, isVerified: Bool) async throws {

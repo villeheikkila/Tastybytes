@@ -114,15 +114,13 @@ struct SupabaseCheckInRepository: CheckInRepository {
     }
 
     func create(newCheckInParams: CheckIn.NewRequest) async throws -> CheckIn {
-        let createdCheckIn: CheckIn = try await client
+        try await client
             .rpc(fn: .createCheckIn, params: newCheckInParams)
             .select(CheckIn.getQuery(.joined(false)))
             .limit(1)
             .single()
             .execute()
             .value
-
-        return try await getById(id: createdCheckIn.id)
     }
 
     func update(updateCheckInParams: CheckIn.UpdateRequest) async throws -> CheckIn {

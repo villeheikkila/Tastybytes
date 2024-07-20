@@ -21,7 +21,7 @@ struct CompanyAdminSheet: View {
     let id: Company.Id
     let onUpdate: () async -> Void
     let onDelete: () -> Void
-    
+
     private var isValidNameUpdate: Bool {
         name.isValidLength(.normal(allowEmpty: false)) && name != company?.name
     }
@@ -187,7 +187,7 @@ struct CompanySubsidiaryScreen: View {
     private var subsidiaries: [Company] {
         company?.subsidiaries ?? []
     }
-    
+
     var body: some View {
         List(subsidiaries) { subsidiary in
             RouterLink(open: .screen(.company(subsidiary))) {
