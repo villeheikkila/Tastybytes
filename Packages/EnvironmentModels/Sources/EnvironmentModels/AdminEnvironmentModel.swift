@@ -12,7 +12,7 @@ public final class AdminEnvironmentModel {
     public var events = [AdminEvent]()
     public var unverified = [VerifiableEntity]()
     public var roles = [Role]()
-    
+
     public var notificationCount: Int {
         events.count + unverified.count
     }

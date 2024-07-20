@@ -6,7 +6,7 @@ struct AdminScreen: View {
 
     var body: some View {
         List {
-            Section {
+            Section("admin.section.activity.title") {
                 RouterLink(
                     "admin.events.title",
                     systemImage: "bell.badge",
@@ -19,17 +19,13 @@ struct AdminScreen: View {
                     count: adminEnvironmentModel.unverified.count,
                     open: .screen(.verification)
                 )
+                RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts(filter: .all)))
+                RouterLink("report.admin.navigationTitle", systemImage: "exclamationmark.bubble", open: .screen(.reports()))
             }
 
-            Section("admin.section.data.title") {
+            Section("admin.section.management.title") {
                 RouterLink("admin.category.title", systemImage: "rectangle.stack", open: .screen(.categoryAdmin))
                 RouterLink("flavor.navigationTitle", systemImage: "face.smiling", open: .screen(.flavorAdmin))
-            }
-            Section("admin.section.reports.title") {
-                RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts(filter: .all)))
-                RouterLink("report.admin.navigationTitle", systemImage: "exclamationmark.bubble", open: .screen(.reports(nil)))
-            }
-            Section("admin.section.management.title") {
                 RouterLink("admin.locations.title", systemImage: "mappin.square", open: .screen(.locationAdmin))
                 RouterLink("admin.profiles.title", systemImage: "person", open: .screen(.profilesAdmin))
             }

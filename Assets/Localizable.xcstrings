@@ -481,6 +481,16 @@
         }
       }
     },
+    "admin.section.activity.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activity"
+          }
+        }
+      }
+    },
     "admin.section.contributions.label" : {
       "localizations" : {
         "en" : {
@@ -497,16 +507,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Created By"
-          }
-        }
-      }
-    },
-    "admin.section.data.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data"
           }
         }
       }
