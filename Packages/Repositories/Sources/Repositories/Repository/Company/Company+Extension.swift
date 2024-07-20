@@ -4,17 +4,31 @@ import Models
 extension Company: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         let saved = "id, name, is_verified"
-        let owner = buildQuery(.companies, [saved], true)
 
-        switch queryType {
+        return switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.companies, [saved, ImageEntity.getQuery(.saved(.companyLogos))], withTableName)
-        case let .detailed(withTableName):
-            return buildQuery(.companies, [saved, ImageEntity.getQuery(.saved(.companyLogos)), Company.EditSuggestion.getQuery(.joined(true)), modificationInfoFragment], withTableName)
+             buildQuery(.companies, [saved, ImageEntity.getQuery(.saved(.companyLogos))], withTableName)
         case let .joinedBrandSubcategoriesOwner(withTableName):
-            return buildQuery(
+             buildQuery(
                 .companies,
-                [saved, owner, Brand.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.companyLogos))],
+                [
+                    saved,
+                    Company.getQuery(.saved(true)),
+                    Brand.getQuery(.joined(true)),
+                    ImageEntity.getQuery(.saved(.companyLogos))
+                ],
+                withTableName
+            )
+        case let .detailed(withTableName):
+            buildQuery(
+                .companies,
+                [
+                    saved,
+                    ImageEntity.getQuery(.saved(.companyLogos)),
+                    Company.EditSuggestion.getQuery(.joined(true)),
+                    Company.getQuery(.saved(true)),
+                    modificationInfoFragment
+                ],
                 withTableName
             )
         }
@@ -22,8 +36,8 @@ extension Company: Queryable {
 
     enum QueryType {
         case saved(_ withTableName: Bool)
-        case detailed(_ withTableName: Bool)
         case joinedBrandSubcategoriesOwner(_ withTableName: Bool)
+        case detailed(_ withTableName: Bool)
     }
 }
 

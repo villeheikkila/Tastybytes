@@ -92,7 +92,7 @@ struct BrandAdminSheet: View {
         Section("admin.section.details") {
             LabeledTextFieldView(title: "brand.admin.changeName.label", text: $name)
             LabeledContent("brand.admin.changeBrandOwner.label") {
-                RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
+                RouterLink(brandOwner.name, open: .sheet(.companyPicker(onSelect: { company in
                     brandOwner = company
                 })))
             }

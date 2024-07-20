@@ -81,7 +81,7 @@ struct SubBrandAdminSheet: View {
         ModificationInfoView(modificationInfo: subBrand)
         Section("admin.section.details") {
             LabeledTextFieldView(title: "labels.name", text: $newSubBrandName)
-            Toggle("brand.includesBrandName.toggle.label", isOn: $includesBrandName)
+            Toggle("subBrand.includesBrandName.toggle.label", isOn: $includesBrandName)
         }
         .customListRowBackground()
         if !subBrandsToMergeTo.isEmpty {
@@ -257,7 +257,7 @@ struct SubBrandEditSuggestionsScreen: View {
         List(editSuggestions) { editSuggestion in
             SubBrandEditSuggestionEntityView(editSuggestion: editSuggestion)
         }
-        .navigationTitle("product.admin.variants.navigationTitle")
+        .navigationTitle("subBrand.editSuggestion.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

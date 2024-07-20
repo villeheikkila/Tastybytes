@@ -16,4 +16,5 @@ public protocol CompanyRepository: Sendable {
     func search(searchTerm: String) async throws -> [Company]
     func getSummaryById(id: Int) async throws -> Summary
     func uploadLogo(companyId: Int, data: Data) async throws -> ImageEntity
+    func makeCompanySubsidiaryOf(company: any CompanyProtocol, subsidiaryOf: any CompanyProtocol) async throws
 }

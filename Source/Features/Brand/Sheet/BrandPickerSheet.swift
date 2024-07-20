@@ -18,7 +18,7 @@ struct BrandPickerSheet: View {
 
     @Binding var brand: Brand.JoinedSubBrands?
 
-    let brandOwner: Company
+    let brandOwner: any CompanyProtocol
     let mode: Mode
 
     private var filteredBrands: [Brand.JoinedSubBrands] {
@@ -77,7 +77,7 @@ struct BrandPickerSheet: View {
         ToolbarDismissAction()
     }
 
-    private func loadBrands(_ brandOwner: Company) async {
+    private func loadBrands(_ brandOwner: any CompanyProtocol) async {
         do {
             let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id)
             self.brandsWithSubBrands = brandsWithSubBrands

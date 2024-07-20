@@ -298,6 +298,9 @@ struct SubBrandSectionHeaderView: View {
                     )
                 }
                 Divider()
+                RouterLink("labels.editSuggestion", systemImage: "pencil", open: .sheet(.subBrandEditSuggestion(brand: .init(brand: brand), subBrand: .init(brand: brand, subBrand: subBrand), onSuccess: {
+                    router.open(.toast(.success("brand.editSuggestion.submitted")))
+                })))
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))
                 Divider()
                 AdminRouterLink(open: .sheet(.subBrandAdmin(brand: $brand, subBrand: subBrand)))

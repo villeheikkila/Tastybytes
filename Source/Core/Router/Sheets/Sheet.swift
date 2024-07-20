@@ -9,17 +9,16 @@ enum Sheet: Identifiable, Equatable {
     case barcodeScanner(onComplete: (_ barcode: Barcode) async -> Void)
     case productFilter(initialFilter: Product.Filter?, sections: [ProductFilterSheet.Sections], onApply: (_ filter: Product.Filter?) -> Void)
     case nameTag(onSuccess: (_ profileId: UUID) -> Void)
-    case companySearch(onSelect: (_ company: Company) -> Void)
-    case brand(brandOwner: Company, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandPickerSheet.Mode)
-    case addBrand(brandOwner: Company, mode: BrandPickerSheet.Mode)
-    case subcategory(subcategories: Binding<[Subcategory]>, category: Models.Category.JoinedSubcategoriesServingStyles)
-    case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
+    case companyPicker(onSelect: (_ company: Company) -> Void)
+    case brandPicker(brandOwner: Company, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandPickerSheet.Mode)
+    case subcategoryPicker(subcategories: Binding<[Subcategory]>, category: Models.Category.JoinedSubcategoriesServingStyles)
+    case subBrandPicker(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: ProductDuplicateScreen.Mode, product: Product.Joined)
     case brandAdmin(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: BrandAdminSheet.BrandUpdateCallback, onDelete: BrandAdminSheet.BrandUpdateCallback)
     case subBrandAdmin(brand: Binding<Brand.JoinedSubBrandsProductsCompany>, subBrand: SubBrand.JoinedProduct)
-    case friends(taggedFriends: Binding<[Profile]>)
-    case flavors(pickedFlavors: Binding<[Flavor]>)
+    case friendPicker(taggedFriends: Binding<[Profile]>)
+    case flavorPicker(pickedFlavors: Binding<[Flavor]>)
     case checkInLocationSearch(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: Binding<Location?>, onSelect: (_ location: Location) -> Void)
     case locationSearch(initialLocation: Location?, initialSearchTerm: String?, onSelect: (_ location: Location) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
@@ -28,7 +27,7 @@ enum Sheet: Identifiable, Equatable {
     case subcategoryCreation(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case categoryCreation(onSubmit: (_ newCategoryName: String) async -> Void)
     case companyEditSuggestion(company: Company, onSuccess: () -> Void)
-    case user(mode: UserPickerSheet.Mode, onSubmit: () -> Void)
+    case profilePicker(mode: ProfilePickerSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
     case categoryPicker(category: Binding<Models.Category.JoinedSubcategoriesServingStyles?>)
     case mergeLocation(location: Location, onMerge: ((_ newLocation: Location) async -> Void)? = nil)
@@ -47,6 +46,7 @@ enum Sheet: Identifiable, Equatable {
     case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: (_ comment: ImageEntity) async -> Void)
     case categoryAdmin(category: Models.Category.JoinedSubcategoriesServingStyles)
     case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
+    case subBrandEditSuggestion(brand: Brand.JoinedSubBrands, subBrand: SubBrand.JoinedBrand, onSuccess: () -> Void)
     case settings
 
     @MainActor
@@ -62,15 +62,13 @@ enum Sheet: Identifiable, Equatable {
             ProductFilterSheet(initialFilter: initialFilter, sections: sections, onApply: onApply)
         case let .nameTag(onSuccess):
             NameTagSheet(onSuccess: onSuccess)
-        case let .addBrand(brandOwner: brandOwner, mode: mode):
-            BrandPickerSheet(brand: .constant(nil), brandOwner: brandOwner, mode: mode)
-        case let .brand(brandOwner, brand: brand, mode: mode):
+        case let .brandPicker(brandOwner, brand: brand, mode: mode):
             BrandPickerSheet(brand: brand, brandOwner: brandOwner, mode: mode)
-        case let .subBrand(brandWithSubBrands, subBrand: subBrand):
+        case let .subBrandPicker(brandWithSubBrands, subBrand: subBrand):
             SubBrandPickerSheet(subBrand: subBrand, brandWithSubBrands: brandWithSubBrands)
-        case let .subcategory(subcategories, category):
+        case let .subcategoryPicker(subcategories, category):
             SubcategoryPickerSheet(subcategories: subcategories, category: category)
-        case let .companySearch(onSelect):
+        case let .companyPicker(onSelect):
             CompanyPickerSheet(onSelect: onSelect)
         case let .product(mode):
             ProductMutationView(mode: mode)
@@ -80,9 +78,9 @@ enum Sheet: Identifiable, Equatable {
             BrandAdminSheet(brand: brand, onUpdate: onUpdate, onDelete: onDelete)
         case let .subBrandAdmin(brand: brand, subBrand: subBrand):
             SubBrandAdminSheet(brand: brand, subBrand: subBrand)
-        case let .friends(taggedFriends: taggedFriends):
+        case let .friendPicker(taggedFriends: taggedFriends):
             FriendPickerSheet(taggedFriends: taggedFriends)
-        case let .flavors(pickedFlavors: pickedFlavors):
+        case let .flavorPicker(pickedFlavors: pickedFlavors):
             FlavorPickerSheet(pickedFlavors: pickedFlavors)
         case let .checkInLocationSearch(category: category, title: title, initialLocation, onSelect: onSelect):
             CheckInLocationSearchSheet(category: category, title: title, initialLocation: initialLocation, onSelect: onSelect)
@@ -100,8 +98,8 @@ enum Sheet: Identifiable, Equatable {
             CompanyAdminSheet(company: company, onUpdate: onUpdate, onDelete: onDelete)
         case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
             CompanyEditSuggestionSheet(company: company, onSuccess: onSuccess)
-        case let .user(mode: mode, onSubmit: onSubmit):
-            UserPickerSheet(mode: mode, onSubmit: onSubmit)
+        case let .profilePicker(mode: mode, onSubmit: onSubmit):
+            ProfilePickerSheet(mode: mode, onSubmit: onSubmit)
         case let .checkInDatePicker(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic):
             CheckInDatePickerSheet(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn, isNostalgic: isNostalgic)
         case let .categoryPicker(category: category):
@@ -139,6 +137,8 @@ enum Sheet: Identifiable, Equatable {
             CategoryAdminSheet(category: category)
         case let .brandEditSuggestion(brand, onSuccess):
             BrandEditSuggestionSheet(brand: brand, onSuccess: onSuccess)
+        case let .subBrandEditSuggestion(brand, subBrand, onSuccess):
+            SubBrandEditSuggestionSheet(brand: brand, subBrand: subBrand, onSuccess: onSuccess)
         case .settings:
             SettingsScreen()
         }
@@ -146,7 +146,7 @@ enum Sheet: Identifiable, Equatable {
 
     var detents: Set<PresentationDetent> {
         switch self {
-        case .barcodeScanner, .productFilter, .newFlavor, .categoryCreation, .subcategoryCreation, .user:
+        case .barcodeScanner, .productFilter, .newFlavor, .categoryCreation, .subcategoryCreation, .profilePicker:
             [.medium]
         case .nameTag:
             [.height(320)]
@@ -190,15 +190,13 @@ enum Sheet: Identifiable, Equatable {
             "barcode_scanner"
         case .nameTag:
             "name_tag"
-        case .companySearch:
+        case .companyPicker:
             "company_search"
-        case let .brand(brandOwner, _, _):
+        case let .brandPicker(brandOwner, _, _):
             "brand_\(brandOwner.hashValue)"
-        case let .addBrand(brandOwner, brand):
-            "add_brand_\(brandOwner.hashValue)_\(brand.hashValue)"
-        case let .subBrand(subBrand, _):
+        case let .subBrandPicker(subBrand, _):
             "sub_brand_\(subBrand.hashValue)"
-        case .subcategory:
+        case .subcategoryPicker:
             "subcategory"
         case let .product(mode):
             "edit_product_\(mode)"
@@ -208,9 +206,9 @@ enum Sheet: Identifiable, Equatable {
             "brand_admin_\(brand.hashValue)"
         case let .subBrandAdmin(_, subBrand):
             "sub_brand_admin_\(subBrand.hashValue)"
-        case .friends:
+        case .friendPicker:
             "friends"
-        case .flavors:
+        case .flavorPicker:
             "flavors"
         case .checkInLocationSearch:
             "location_search"
@@ -228,7 +226,7 @@ enum Sheet: Identifiable, Equatable {
             "edit_company_\(company.hashValue)"
         case .companyEditSuggestion:
             "company_edit_suggestion"
-        case .user:
+        case .profilePicker:
             "user"
         case .checkInDatePicker:
             "check_in_date_picker"
@@ -266,6 +264,8 @@ enum Sheet: Identifiable, Equatable {
             "category_admin_\(category)"
         case let .brandEditSuggestion(brand, _):
             "brand_edit_suggestion_\(brand)"
+        case let .subBrandEditSuggestion(brand,subBrand, _):
+            "brand_edit_suggestion_\(brand)_\(subBrand)"
         case .settings:
             "settings"
         }

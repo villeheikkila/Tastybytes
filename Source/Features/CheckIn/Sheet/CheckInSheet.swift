@@ -97,7 +97,7 @@ struct CheckInSheet: View {
         Section("checkIn.review.title") {
             TextField("checkIn.review.label", text: $review, axis: .vertical)
                 .focused($focusedField, equals: .review)
-            RouterLink(open: .sheet(.flavors(pickedFlavors: $pickedFlavors)),
+            RouterLink(open: .sheet(.flavorPicker(pickedFlavors: $pickedFlavors)),
                        label: {
                            if !pickedFlavors.isEmpty {
                                FlavorsView(flavors: pickedFlavors)
@@ -126,7 +126,7 @@ struct CheckInSheet: View {
 
             RouterLink(
                 "checkIn.manufacturedBy.label \(manufacturer?.name ?? "")",
-                open: .sheet(.companySearch(onSelect: { company in
+                open: .sheet(.companyPicker(onSelect: { company in
                     manufacturer = company
                 }))
             )
@@ -158,7 +158,7 @@ struct CheckInSheet: View {
                 }
             }
 
-            RouterLink(open: .sheet(.friends(taggedFriends: $taggedFriends))) {
+            RouterLink(open: .sheet(.friendPicker(taggedFriends: $taggedFriends))) {
                 if taggedFriends.isEmpty {
                     Text("checkIn.friends.tag")
                 } else {

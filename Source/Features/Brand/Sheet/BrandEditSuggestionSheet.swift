@@ -38,7 +38,7 @@ struct BrandEditSuggestionSheet: View {
             .customListRowBackground()
             Section("brand.editSuggestion.section.brandOwner.title") {
                 LabeledContent("brand.admin.changeBrandOwner.label") {
-                    RouterLink(brandOwner.name, open: .sheet(.companySearch(onSelect: { company in
+                    RouterLink(brandOwner.name, open: .sheet(.companyPicker(onSelect: { company in
                         brandOwner = company
                     })))
                 }
@@ -58,14 +58,14 @@ struct BrandEditSuggestionSheet: View {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
             AsyncButton("labels.send", action: {
-                await sendCompanyEditSuggestion()
+                await submitEditSuggestion()
             })
             .bold()
             .disabled(!canUpdate)
         }
     }
 
-    private func sendCompanyEditSuggestion() async {
+    private func submitEditSuggestion() async {
         do {
             try await repository.brand
                 .editSuggestion(

@@ -62,6 +62,7 @@ public extension Company {
         public let isVerified: Bool
         public let logos: [ImageEntity]
         public let editSuggestions: [EditSuggestion]
+        public let subsidiaries: [Company]
         public let createdBy: Profile?
         public let createdAt: Date
         public let updatedBy: Profile?
@@ -77,14 +78,16 @@ public extension Company {
             updatedAt = nil
             updatedBy = nil
             editSuggestions = []
+            subsidiaries = []
         }
 
-        init(id: Int, name: String, isVerified: Bool, logos: [ImageEntity], editSuggestions: [Company.EditSuggestion], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
+        init(id: Int, name: String, isVerified: Bool, logos: [ImageEntity], editSuggestions: [Company.EditSuggestion], subsidiaries: [Company], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
             self.logos = logos
             self.editSuggestions = editSuggestions
+            self.subsidiaries = subsidiaries
             self.createdBy = createdBy
             self.createdAt = createdAt
             self.updatedBy = updatedBy
@@ -97,6 +100,7 @@ public extension Company {
             case logos = "company_logos"
             case isVerified = "is_verified"
             case editSuggestions = "company_edit_suggestions"
+            case subsidiaries = "companies"
             case createdBy = "created_by"
             case createdAt = "created_at"
             case updatedBy = "updated_by"
@@ -108,7 +112,8 @@ public extension Company {
             name: String? = nil,
             isVerified: Bool? = nil,
             logos: [ImageEntity]? = nil,
-            editSuggestions: [EditSuggestion]? = nil
+            editSuggestions: [EditSuggestion]? = nil,
+            subsidiaries: [Company]? = nil
         ) -> Self {
             .init(
                 id: id ?? self.id,
@@ -116,6 +121,7 @@ public extension Company {
                 isVerified: isVerified ?? self.isVerified,
                 logos: logos ?? self.logos,
                 editSuggestions: editSuggestions ?? self.editSuggestions,
+                subsidiaries: subsidiaries ?? self.subsidiaries,
                 createdBy: createdBy,
                 createdAt: createdAt,
                 updatedBy: updatedBy,

@@ -116,7 +116,7 @@ struct ProductMutationView: View {
 
             Button(action: {
                 if let category {
-                    router.open(.sheet(.subcategory(subcategories: $subcategories, category: category)))
+                    router.open(.sheet(.subcategoryPicker(subcategories: $subcategories, category: category)))
                 }
             }, label: {
                 HStack {
@@ -149,7 +149,7 @@ struct ProductMutationView: View {
             PickerLinkRow(
                 label: "brand.owner.title",
                 selection: brandOwner?.name,
-                sheet: .companySearch(onSelect: { company in
+                sheet: .companyPicker(onSelect: { company in
                     brandOwner = company
                 })
             )
@@ -158,7 +158,7 @@ struct ProductMutationView: View {
                 PickerLinkRow(
                     label: "brand.title",
                     selection: brand?.name,
-                    sheet: .brand(brandOwner: brandOwner, brand: $brand, mode: .select)
+                    sheet: .brandPicker(brandOwner: brandOwner, brand: $brand, mode: .select)
                 )
             }
 
@@ -177,7 +177,7 @@ struct ProductMutationView: View {
                 PickerLinkRow(
                     label: "subBrand.title",
                     selection: subBrand?.name,
-                    sheet: .subBrand(brandWithSubBrands: brand, subBrand: $subBrand)
+                    sheet: .subBrandPicker(brandWithSubBrands: brand, subBrand: $subBrand)
                 )
             }
 

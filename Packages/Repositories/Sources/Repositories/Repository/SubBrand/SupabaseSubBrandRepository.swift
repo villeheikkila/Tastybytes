@@ -81,4 +81,40 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             .eq("id", value: editSuggestion.id)
             .execute()
     }
+
+    func createEditSuggestion(subBrand: SubBrandProtocol, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) async throws {
+        struct SubBrandEditSuggestionRequest: Encodable {
+            let subBrandId: Int
+            let includesBrandName: Bool?
+            let name: String?
+            let brandId: Int?
+
+            init(subBrand: SubBrandProtocol, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) {
+                subBrandId = subBrand.id
+                self.includesBrandName = includesBrandName
+                self.name = name
+                brandId = brand?.id
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case subBrandId = "sub_brand_id"
+                case includesBrandName = "includes_brand_name"
+                case name
+                case brandId = "brand_id"
+            }
+        }
+
+        try await client
+            .from(.subBrandEditSuggestion)
+            .insert(
+                SubBrandEditSuggestionRequest(
+                    subBrand: subBrand,
+                    brand: brand,
+                    name: name,
+                    includesBrandName: includesBrandName
+                )
+            )
+            .execute()
+            .value
+    }
 }

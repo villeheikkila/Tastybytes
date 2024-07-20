@@ -84,7 +84,7 @@ struct CurrentUserFriendsScreen: View {
             if profileEnvironmentModel.hasPermission(.canSendFriendRequests) {
                 RouterLink(
                     "friends.add.label", systemImage: "plus",
-                    open: .sheet(.user(
+                    open: .sheet(.profilePicker(
                         mode: .add,
                         onSubmit: {
                             router.open(.toast(.success("friends.add.success")))

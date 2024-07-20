@@ -57,6 +57,7 @@ enum Screen: Hashable, Sendable {
     case profileReports(contributionsModel: ContributionsModel)
     case profileEditSuggestions(contributionsModel: ContributionsModel)
     case profileDuplicateSuggestions(contributionsModel: ContributionsModel)
+    case subsidiaries(company: Binding<Company.Detailed>)
 
     @MainActor
     @ViewBuilder
@@ -170,6 +171,8 @@ enum Screen: Hashable, Sendable {
             ProfileEditSuggestionScreen(contributionsModel: contributionsModel)
         case let .profileDuplicateSuggestions(contributionsModel):
             ProfileDuplicateSuggestionScreen(contributionsModel: contributionsModel)
+        case let .subsidiaries(company):
+            CompanySubsidiaryScreen(company: company)
         }
     }
 
@@ -418,6 +421,9 @@ enum Screen: Hashable, Sendable {
             hasher.combine("profileEditSuggestions")
         case .profileDuplicateSuggestions:
             hasher.combine("profileDuplicateSuggestions")
+        case let .subsidiaries(company):
+            hasher.combine("subsidiaries")
+            hasher.combine(company.wrappedValue)
         }
     }
 }

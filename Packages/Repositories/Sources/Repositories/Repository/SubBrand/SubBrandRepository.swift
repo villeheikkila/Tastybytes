@@ -8,4 +8,5 @@ public protocol SubBrandRepository: Sendable {
     func verification(id: Int, isVerified: Bool) async throws
     func getUnverified() async throws -> [SubBrand.JoinedBrand]
     func deleteEditSuggestion(editSuggestion: SubBrand.EditSuggestion) async throws
+    func createEditSuggestion(subBrand: SubBrandProtocol, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) async throws
 }

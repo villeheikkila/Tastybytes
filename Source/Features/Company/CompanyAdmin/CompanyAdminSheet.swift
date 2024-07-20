@@ -15,7 +15,7 @@ struct CompanyAdminSheet: View {
     @State private var state: ScreenState = .loading
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var company: Company.Detailed
-    @State private var newCompanyName = ""
+    @State private var name = ""
     @State private var selectedLogo: PhotosPickerItem?
 
     let onUpdate: () async -> Void
@@ -23,7 +23,7 @@ struct CompanyAdminSheet: View {
 
     init(company: Company, onUpdate: @escaping () async -> Void, onDelete: @escaping () -> Void) {
         _company = State(initialValue: .init(company: company))
-        _newCompanyName = State(initialValue: company.name)
+        _name = State(initialValue: company.name)
         self.onUpdate = onUpdate
         self.onDelete = onDelete
     }
@@ -67,13 +67,20 @@ struct CompanyAdminSheet: View {
         .customListRowBackground()
         ModificationInfoView(modificationInfo: company)
         Section("admin.section.details") {
-            LabeledTextFieldView(title: "labels.name", text: $newCompanyName)
+            LabeledTextFieldView(title: "labels.name", text: $name)
             LabeledIdView(id: company.id.formatted())
             VerificationAdminToggleView(isVerified: company.isVerified, action: verifyCompany)
+
         }
         .customListRowBackground()
         EditLogoSection(logos: company.logos, onUpload: uploadLogo, onDelete: deleteLogo)
         Section {
+            RouterLink(
+                "subsidiaries.navigationTitle",
+                systemImage: "square.on.square.dashed",
+                count: company.subsidiaries.count,
+                open: .screen(.subsidiaries(company: $company))
+            )
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
             RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", count: company.editSuggestions.unresolvedCount, open: .screen(.companyEditSuggestion(company: $company)))
         }
@@ -90,7 +97,7 @@ struct CompanyAdminSheet: View {
             AsyncButton("labels.edit", action: {
                 await editCompany()
             })
-            .disabled(!newCompanyName.isValidLength(.normal(allowEmpty: false)) || newCompanyName == company.name)
+            .disabled(!name.isValidLength(.normal(allowEmpty: false)) || name == company.name)
         }
     }
 
@@ -121,7 +128,7 @@ struct CompanyAdminSheet: View {
 
     private func editCompany() async {
         do {
-            let company = try await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
+            let company = try await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: name))
             withAnimation {
                 self.company = .init(company: .init(company: company))
             }
@@ -167,6 +174,65 @@ struct CompanyAdminSheet: View {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct CompanySubsidiaryScreen: View {
+    private let logger = Logger(category: "CompanySubsidiaryScreen")
+    @Environment(Repository.self) private var repository
+    @State private var companyToAttach: Company?
+    @Binding var company: Company.Detailed
+    
+    
+    private var subsidaries: [Company] {
+        company.subsidiaries
+    }
+    
+    var body: some View {
+        List(subsidaries) { subsidiary in
+            CompanyEntityView(company: subsidiary)
+        }
+        .toolbar {
+            toolbarContent
+        }
+        .navigationTitle("subsidiaries.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
+        .overlay {
+            if subsidaries.isEmpty {
+                ContentUnavailableView(" subsidaries.empty.title", systemImage: "tray")
+            }
+        }
+    }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            RouterLink("subsidiaries.pickCompany", open: .sheet(.companyPicker(onSelect: { company in
+                companyToAttach = company
+            })))
+            .confirmationDialog("subsidiaries.makeSubsidiaryOf.confirmation.title",
+                                isPresented: $companyToAttach.isNotNull(),
+                                titleVisibility: .visible,
+                                presenting: companyToAttach)
+            { presenting in
+                AsyncButton(
+                    "subsidiaries.makeSubsidiaryOf.confirmation.label \(presenting.name) \(company.name)",
+                    role: .destructive,
+                    action: {
+                        await makeCompanySubsidiaryOf(presenting)
+                    }
+                )
+            }
+        }
+    }
+    
+    
+    func makeCompanySubsidiaryOf(_ company: Company) async {
+        do {
+            try await repository.company.makeCompanySubsidiaryOf(company: company, subsidiaryOf: self.company)
+            
+        } catch {
+            logger.error("Failed to make company a subsidiary")
         }
     }
 }

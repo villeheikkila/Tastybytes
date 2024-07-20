@@ -292,6 +292,7 @@
 		5CEEA3132C3B30A60009B3F5 /* SubBrandListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3122C3B30A60009B3F5 /* SubBrandListScreen.swift */; };
 		5CEEA3152C3B31350009B3F5 /* BarcodeListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */; };
 		5CEEA3182C3BCBC70009B3F5 /* ProductListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA3172C3BCBC70009B3F5 /* ProductListRowView.swift */; };
+		5CF494852C4B981700B374AD /* SubBrandEditSuggestionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF494842C4B981700B374AD /* SubBrandEditSuggestionSheet.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -623,6 +624,7 @@
 		5CEEA3122C3B30A60009B3F5 /* SubBrandListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandListScreen.swift; sourceTree = "<group>"; };
 		5CEEA3142C3B31350009B3F5 /* BarcodeListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeListScreen.swift; sourceTree = "<group>"; };
 		5CEEA3172C3BCBC70009B3F5 /* ProductListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListRowView.swift; sourceTree = "<group>"; };
+		5CF494842C4B981700B374AD /* SubBrandEditSuggestionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandEditSuggestionSheet.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1122,6 +1124,7 @@
 				5C9057752B2894BE00EC157B /* SubBrandPickerSheet.swift */,
 				5C24E1D22B5E4464003AB7C8 /* SubBrandSheetRow.swift */,
 				5CD2EE262C37CE07009AA949 /* SubBrandEntityView.swift */,
+				5CF494842C4B981700B374AD /* SubBrandEditSuggestionSheet.swift */,
 			);
 			path = SubBrand;
 			sourceTree = "<group>";
@@ -2021,6 +2024,7 @@
 				5C24E1D32B5E4464003AB7C8 /* SubBrandSheetRow.swift in Sources */,
 				5C90581F2B2894BE00EC157B /* AdminScreen.swift in Sources */,
 				5C90580C2B2894BE00EC157B /* ReportSheet.swift in Sources */,
+				5CF494852C4B981700B374AD /* SubBrandEditSuggestionSheet.swift in Sources */,
 				5C9058222B2894BE00EC157B /* MessageNotificationView.swift in Sources */,
 				5C9058342B2894BE00EC157B /* ProfileWishlistScreen.swift in Sources */,
 				5C9057F72B2894BE00EC157B /* BarcodeScannerSheet.swift in Sources */,

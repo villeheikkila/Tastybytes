@@ -6,8 +6,8 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct UserPickerSheet: View {
-    private let logger = Logger(category: "UserPickerSheet")
+struct ProfilePickerSheet: View {
+    private let logger = Logger(category: "ProfilePickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
@@ -108,7 +108,7 @@ struct UserPickerSheet: View {
     }
 }
 
-extension UserPickerSheet {
+extension ProfilePickerSheet {
     enum Mode {
         case add
         case block

@@ -4,6 +4,9 @@
     "" : {
 
     },
+    " subsidaries.empty.title" : {
+
+    },
     "-" : {
 
     },
@@ -5403,6 +5406,66 @@
         }
       }
     },
+    "subBrand.edit.name.placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "subBrand.editSuggestion.brand.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand"
+          }
+        }
+      }
+    },
+    "subBrand.editSuggestion.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Suggestion"
+          }
+        }
+      }
+    },
+    "subBrand.editSuggestion.section.brand.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggest a change to the brand"
+          }
+        }
+      }
+    },
+    "subBrand.editSuggestion.section.name.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggest a change to the name"
+          }
+        }
+      }
+    },
+    "subBrand.includesBrandName.toggle.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name includes brand name"
+          }
+        }
+      }
+    },
     "subBrand.list.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -5666,6 +5729,32 @@
           }
         }
       }
+    },
+    "subsidiaries.makeSubsidiaryOf.confirmation.label %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "subsidiaries.makeSubsidiaryOf.confirmation.label %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "subsidiaries.makeSubsidiaryOf.confirmation.title" : {
+
+    },
+    "subsidiaries.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subsidiaries"
+          }
+        }
+      }
+    },
+    "subsidiaries.pickCompany" : {
+
     },
     "tab.activity" : {
       "localizations" : {

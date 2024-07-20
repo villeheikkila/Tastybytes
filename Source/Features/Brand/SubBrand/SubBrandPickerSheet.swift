@@ -81,7 +81,7 @@ struct CreateSubBrandView: View {
         Form {
             Section("subBrand.addSubBrandFor.title \(brandWithSubBrands.name)") {
                 ScanTextFieldView(title: "subBrand.name.placeholder", text: $subBrandName)
-                Toggle("brand.includesBrandName.toggle.label", isOn: $includesBrandName)
+                Toggle("subBrand.includesBrandName.toggle.label", isOn: $includesBrandName)
                     .disabled(!isValidName)
                 AsyncButton("labels.create", action: { await createNewSubBrand() })
                     .disabled(!isValidName)
