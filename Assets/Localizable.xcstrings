@@ -56,16 +56,6 @@
         }
       }
     },
-    "%@: %@: %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@: %2$@: %3$@"
-          }
-        }
-      }
-    },
     "about.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -3283,6 +3273,7 @@
       }
     },
     "labels.unverified" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4036,6 +4027,7 @@
       }
     },
     "product.delete.confirmation.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5925,6 +5917,9 @@
           }
         }
       }
+    },
+    "verification.navigationTitle" : {
+
     },
     "verification.verified.label" : {
       "localizations" : {
