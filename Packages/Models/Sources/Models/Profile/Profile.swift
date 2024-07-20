@@ -1,14 +1,15 @@
 import CoreLocation
 import Extensions
 import Foundation
+import Tagged
 
 public protocol AvatarURL {
-    var id: UUID { get }
+    var id: Profile.Id { get }
     var avatars: [ImageEntity] { get }
 }
 
 public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
-    public let id: UUID
+    public let id: Profile.Id
     private let rawPreferredName: String?
     public var preferredName: String {
         rawPreferredName ?? ""
@@ -18,7 +19,7 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
     public let joinedAt: Date
     public let avatars: [ImageEntity]
 
-    public init(id: UUID, preferredName: String?, isPrivate: Bool, joinedAt: Date, avatars: [ImageEntity]) {
+    public init(id: Profile.Id, preferredName: String?, isPrivate: Bool, joinedAt: Date, avatars: [ImageEntity]) {
         self.id = id
         rawPreferredName = preferredName
         self.isPrivate = isPrivate
@@ -46,8 +47,12 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
 }
 
 public extension Profile {
+    typealias Id = Tagged<Profile, UUID>
+}
+
+public extension Profile {
     struct Extended: Identifiable, Codable, Sendable, AvatarURL {
-        public let id: UUID
+        public let id: Profile.Id
         public let username: String?
         public let firstName: String?
         public let lastName: String?
@@ -65,7 +70,7 @@ public extension Profile {
         public let avatars: [ImageEntity]
 
         public init(
-            id: UUID,
+            id: Profile.Id,
             username: String?,
             joinedAt: Date,
             isPrivate: Bool,
@@ -150,7 +155,7 @@ public extension Profile {
 
 public extension Profile {
     struct Detailed: Identifiable, Codable, Sendable, Hashable, AvatarURL {
-        public let id: UUID
+        public let id: Profile.Id
         public let username: String?
         public let firstName: String?
         public let lastName: String?
@@ -167,7 +172,7 @@ public extension Profile {
         public let avatars: [ImageEntity]
 
         public init(
-            id: UUID,
+            id: Profile.Id,
             username: String?,
             joinedAt: Date,
             isPrivate: Bool,
@@ -252,7 +257,7 @@ public extension Profile {
     }
 
     struct UpdateRequest: Encodable, Sendable {
-        public let id: UUID
+        public let id: Profile.Id
         public var username: String?
         public var firstName: String?
         public var lastName: String?
@@ -269,22 +274,22 @@ public extension Profile {
             case isOnboarded = "is_onboarded"
         }
 
-        public init(id: UUID, showFullName: Bool) {
+        public init(id: Profile.Id, showFullName: Bool) {
             nameDisplay = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
             self.id = id
         }
 
-        public init(id: UUID, isPrivate: Bool) {
+        public init(id: Profile.Id, isPrivate: Bool) {
             self.isPrivate = isPrivate
             self.id = id
         }
 
-        public init(id: UUID, isOnboarded: Bool) {
+        public init(id: Profile.Id, isOnboarded: Bool) {
             self.isOnboarded = isOnboarded
             self.id = id
         }
 
-        public init(id: UUID, username: String?, firstName: String?, lastName: String?) {
+        public init(id: Profile.Id, username: String?, firstName: String?, lastName: String?) {
             self.username = username
             self.firstName = firstName
             self.lastName = lastName
@@ -292,7 +297,7 @@ public extension Profile {
         }
 
         init(
-            id: UUID,
+            id: Profile.Id,
             isPrivate: Bool,
             showFullName: Bool,
             isOnboarded: Bool
@@ -307,7 +312,7 @@ public extension Profile {
 
 public extension Profile {
     struct Settings: Identifiable, Codable, Hashable, Sendable {
-        public let id: UUID
+        public let id: Profile.Id
         public let sendReactionNotifications: Bool
         public let sendTaggedCheckInNotifications: Bool
         public let sendFriendRequestNotifications: Bool
@@ -325,7 +330,7 @@ public extension Profile {
 
 public extension Profile {
     struct SettingsUpdateRequest: Encodable, Sendable {
-        public let id: UUID
+        public let id: Profile.Id
         var sendReactionNotifications: Bool?
         var sendTaggedCheckInNotifications: Bool?
         var sendFriendRequestNotifications: Bool?
@@ -339,7 +344,7 @@ public extension Profile {
         }
 
         public init(
-            id: UUID,
+            id: Profile.Id,
             sendReactionNotifications: Bool? = nil,
             sendTaggedCheckInNotifications: Bool? = nil,
             sendFriendRequestNotifications: Bool? = nil,
@@ -355,17 +360,17 @@ public extension Profile {
 }
 
 public struct CategoryStatistics: Identifiable, Codable, Sendable, CategoryProtocol {
-    public let id: Int
+    public let id: Category.Id
     public let name: String
     public let icon: String?
     public let count: Int
 
     public struct CategoryStatisticsParams: Codable, Sendable {
-        public init(id: UUID) {
+        public init(id: Profile.Id) {
             self.id = id
         }
 
-        public let id: UUID
+        public let id: Profile.Id
 
         enum CodingKeys: String, CodingKey {
             case id = "p_user_id"
@@ -391,12 +396,12 @@ public struct TimePeriodStatistic: Codable, Sendable {
     }
 
     public struct RequestParams: Codable, Sendable {
-        public init(userId: UUID, timePeriod: StatisticsTimePeriod) {
+        public init(userId: Profile.Id, timePeriod: StatisticsTimePeriod) {
             self.userId = userId
             self.timePeriod = timePeriod.rawValue
         }
 
-        public let userId: UUID
+        public let userId: Profile.Id
         public let timePeriod: String
 
         enum CodingKeys: String, CodingKey {
@@ -407,18 +412,18 @@ public struct TimePeriodStatistic: Codable, Sendable {
 }
 
 public struct SubcategoryStatistics: Identifiable, Codable, Sendable {
-    public let id: Int
+    public let id: Subcategory.Id
     public let name: String
     public let count: Int
 
     public struct SubcategoryStatisticsParams: Codable, Sendable {
-        public init(userId: UUID, categoryId: Int) {
+        public init(userId: Profile.Id, categoryId: Category.Id) {
             self.userId = userId
             self.categoryId = categoryId
         }
 
-        public let userId: UUID
-        public let categoryId: Int
+        public let userId: Profile.Id
+        public let categoryId: Category.Id
 
         enum CodingKeys: String, CodingKey {
             case userId = "p_user_id"
@@ -466,9 +471,9 @@ public extension AvatarURL {
 }
 
 public struct NumberOfCheckInsByDayRequest: Sendable, Encodable {
-    public let profileId: UUID
+    public let profileId: Profile.Id
 
-    public init(profileId: UUID) {
+    public init(profileId: Profile.Id) {
         self.profileId = profileId
     }
 
@@ -496,7 +501,7 @@ public struct CheckInsPerDay: Sendable, Codable, Identifiable {
 
 public extension Profile {
     struct TopLocations: Sendable, Decodable, Identifiable {
-        public let id: UUID
+        public let id: Location.Id
         public let name: String
         public let title: String?
         public let location: CLLocation?
@@ -520,7 +525,7 @@ public extension Profile {
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            id = try container.decode(UUID.self, forKey: .id)
+            id = try container.decode(Location.Id.self, forKey: .id)
             name = try container.decode(String.self, forKey: .name)
             title = try container.decodeIfPresent(String.self, forKey: .title)
             let longitude = try container.decode(Double.self, forKey: .longitude)
@@ -556,6 +561,22 @@ public enum EditSuggestion: Hashable, Identifiable, Sendable, Decodable {
     }
 }
 
+public extension Brand.EditSuggestion {
+    typealias Id = Tagged<Brand.EditSuggestion, Int>
+}
+
+public extension Product.EditSuggestion {
+    typealias Id = Tagged<Product.EditSuggestion, Int>
+}
+
+public extension Company.EditSuggestion {
+    typealias Id = Tagged<Company.EditSuggestion, Int>
+}
+
+public extension SubBrand.EditSuggestion {
+    typealias Id = Tagged<SubBrand.EditSuggestion, Int>
+}
+
 public enum DuplicateSuggestion: Hashable, Identifiable, Sendable, Decodable {
     case product(Product.DuplicateSuggestion)
 
@@ -570,6 +591,11 @@ public enum DuplicateSuggestion: Hashable, Identifiable, Sendable, Decodable {
         }
     }
 }
+
+public extension Product.DuplicateSuggestion {
+    typealias Id = Tagged<Product.DuplicateSuggestion, Int>
+}
+
 
 public extension Profile {
     struct Contributions: Decodable, Sendable {

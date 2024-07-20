@@ -1,5 +1,7 @@
+import Tagged
+
 public struct Role: Identifiable, Codable, Hashable, Sendable {
-    public let id: Int
+    public let id: Role.Id
     public let name: String
     public let permissions: [Permission]
 
@@ -15,6 +17,11 @@ public struct Role: Identifiable, Codable, Hashable, Sendable {
         case permissions
     }
 }
+
+public extension Role {
+    typealias Id = Tagged<Role, Int>
+}
+
 
 public enum RoleName: String {
     case admin

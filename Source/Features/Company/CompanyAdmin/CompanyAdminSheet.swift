@@ -68,7 +68,7 @@ struct CompanyAdminSheet: View {
         ModificationInfoView(modificationInfo: company)
         Section("admin.section.details") {
             LabeledTextFieldView(title: "labels.name", text: $name)
-            LabeledIdView(id: company.id.formatted())
+            LabeledIdView(id: company.id.rawValue.formatted())
             VerificationAdminToggleView(isVerified: company.isVerified, action: verifyCompany)
         }
         .customListRowBackground()
@@ -141,7 +141,8 @@ struct CompanyAdminSheet: View {
     }
 
     private func deleteCompany(_ company: Company.Detailed) async {
-        do { try await repository.company.delete(id: company.id)
+        do {
+            try await repository.company.delete(id: company.id)
             onDelete()
             dismiss()
         } catch {
@@ -189,7 +190,9 @@ struct CompanySubsidiaryScreen: View {
 
     var body: some View {
         List(subsidaries) { subsidiary in
-            CompanyEntityView(company: subsidiary)
+            RouterLink(open: .screen(.company(subsidiary))) {
+                CompanyEntityView(company: subsidiary)
+            }
         }
         .toolbar {
             toolbarContent
@@ -205,9 +208,10 @@ struct CompanySubsidiaryScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .primaryAction) {
-            RouterLink("subsidiaries.pickCompany", open: .sheet(.companyPicker(onSelect: { company in
+            RouterLink("subsidiaries.pickCompany", systemImage: "plus", open: .sheet(.companyPicker(filterCompanies: company.subsidiaries + [.init(company: company)], onSelect: { company in
                 companyToAttach = company
             })))
+            .labelStyle(.iconOnly)
             .confirmationDialog("subsidiaries.makeSubsidiaryOf.confirmation.title",
                                 isPresented: $companyToAttach.isNotNull(),
                                 titleVisibility: .visible,
@@ -215,7 +219,6 @@ struct CompanySubsidiaryScreen: View {
             { presenting in
                 AsyncButton(
                     "subsidiaries.makeSubsidiaryOf.confirmation.label \(presenting.name) \(company.name)",
-                    role: .destructive,
                     action: {
                         await makeCompanySubsidiaryOf(presenting)
                     }
@@ -227,7 +230,7 @@ struct CompanySubsidiaryScreen: View {
     func makeCompanySubsidiaryOf(_ company: Company) async {
         do {
             try await repository.company.makeCompanySubsidiaryOf(company: company, subsidiaryOf: self.company)
-
+            self.company = self.company.copyWith(subsidiaries: self.company.subsidiaries + [company])
         } catch {
             logger.error("Failed to make company a subsidiary")
         }

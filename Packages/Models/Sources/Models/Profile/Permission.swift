@@ -1,5 +1,7 @@
+import Tagged
+
 public struct Permission: Identifiable, Codable, Hashable, Sendable {
-    public let id: Int
+    public let id: Permission.Id
     public let name: String
 
     public var label: String {
@@ -12,6 +14,10 @@ public struct Permission: Identifiable, Codable, Hashable, Sendable {
         case id
         case name
     }
+}
+
+public extension Permission {
+    typealias Id = Tagged<Permission, Int>
 }
 
 public enum PermissionName: String, Codable, Equatable, Sendable {

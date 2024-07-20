@@ -1,14 +1,15 @@
 import Foundation
+import Tagged
 
 public protocol BrandProtocol {
-    var id: Int { get }
+    var id: Brand.Id { get }
     var name: String { get }
     var logos: [ImageEntity] { get }
     var isVerified: Bool { get }
 }
 
 public struct Brand: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
-    public let id: Int
+    public let id: Brand.Id
     public let name: String
     public let isVerified: Bool
     public let logos: [ImageEntity]
@@ -22,8 +23,12 @@ public struct Brand: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
 }
 
 public extension Brand {
+    typealias Id = Tagged<Brand, Int>
+}
+
+public extension Brand {
     struct JoinedSubBrands: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
-        public init(id: Int, name: String, isVerified: Bool, subBrands: [SubBrand], logos: [ImageEntity]) {
+        public init(id: Brand.Id, name: String, isVerified: Bool, subBrands: [SubBrand], logos: [ImageEntity]) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -31,7 +36,7 @@ public extension Brand {
             self.logos = logos
         }
 
-        public let id: Int
+        public let id: Brand.Id
         public let name: String
         public let isVerified: Bool
         public let subBrands: [SubBrand]
@@ -57,7 +62,7 @@ public extension Brand {
     }
 
     struct JoinedCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
-        public init(id: Int, name: String, isVerified: Bool, brandOwner: Company, logos: [ImageEntity]) {
+        public init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company, logos: [ImageEntity]) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -73,7 +78,7 @@ public extension Brand {
             logos = brand.logos
         }
 
-        public let id: Int
+        public let id: Brand.Id
         public let name: String
         public let isVerified: Bool
         public let brandOwner: Company
@@ -89,7 +94,7 @@ public extension Brand {
     }
 
     struct JoinedSubBrandsProducts: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
-        public let id: Int
+        public let id: Brand.Id
         public let name: String
         public let isVerified: Bool
         public let subBrands: [SubBrand.JoinedProduct]
@@ -117,7 +122,7 @@ public extension Brand {
     }
 
     struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
-        public let id: Int
+        public let id: Brand.Id
         public let name: String
         public let isVerified: Bool
         public let brandOwner: Company
@@ -164,7 +169,7 @@ public extension Brand {
             subBrands.flatMap(\.products).count
         }
 
-        public init(id: Int, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity] = []) {
+        public init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity] = []) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -200,7 +205,7 @@ public extension Brand {
     }
 
     struct Detailed: Identifiable, Hashable, Codable, Sendable, BrandProtocol, ModificationInfo {
-        public let id: Int
+        public let id: Brand.Id
         public let name: String
         public let isVerified: Bool
         public let brandOwner: Company
@@ -230,7 +235,7 @@ public extension Brand {
             case updatedAt = "updated_at"
         }
 
-        public init(id: Int, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity], editSuggestions: [Brand.EditSuggestion], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
+        public init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity], editSuggestions: [Brand.EditSuggestion], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -272,28 +277,28 @@ public extension Brand {
 public extension Brand {
     struct NewRequest: Codable, Sendable {
         public let name: String
-        public let brandOwnerId: Int
+        public let brandOwnerId: Company.Id
 
         enum CodingKeys: String, CodingKey {
             case name, brandOwnerId = "brand_owner_id"
         }
 
-        public init(name: String, brandOwnerId: Int) {
+        public init(name: String, brandOwnerId: Company.Id) {
             self.name = name
             self.brandOwnerId = brandOwnerId
         }
     }
 
     struct UpdateRequest: Codable, Sendable {
-        public let id: Int
+        public let id: Brand.Id
         public let name: String
-        public let brandOwnerId: Int
+        public let brandOwnerId: Company.Id
 
         enum CodingKeys: String, CodingKey {
             case id, name, brandOwnerId = "brand_owner_id"
         }
 
-        public init(id: Int, name: String, brandOwnerId: Int) {
+        public init(id: Brand.Id, name: String, brandOwnerId: Company.Id) {
             self.id = id
             self.name = name
             self.brandOwnerId = brandOwnerId
@@ -301,7 +306,7 @@ public extension Brand {
     }
 
     struct EditSuggestion: Codable, Sendable, Identifiable, Hashable, Resolvable, CreationInfo {
-        public let id: Int
+        public let id: Brand.EditSuggestion.Id
         public let brand: Brand
         public let name: String?
         public let brandOwner: Company?
@@ -319,9 +324,9 @@ public extension Brand {
     }
 
     struct EditSuggestionRequest: Encodable, Sendable {
-        let brandId: Int
+        let brandId: Brand.Id
         let name: String?
-        let brandOwnerId: Int?
+        let brandOwnerId: Company.Id?
 
         public init(brand: Brand.JoinedSubBrandsProductsCompany, name: String?, brandOwner: Company?) {
             brandId = brand.id
@@ -335,10 +340,10 @@ public extension Brand {
     }
 
     struct VerifyRequest: Codable, Sendable {
-        public let id: Int
+        public let id: Brand.Id
         public let isVerified: Bool
 
-        public init(id: Int, isVerified: Bool) {
+        public init(id: Brand.Id, isVerified: Bool) {
             self.id = id
             self.isVerified = isVerified
         }

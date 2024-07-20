@@ -1,19 +1,20 @@
 import Foundation
+import Tagged
 
 public protocol SubBrandProtocol {
-    var id: Int { get }
+    var id: SubBrand.Id { get }
     var name: String? { get }
     var includesBrandName: Bool { get }
     var isVerified: Bool { get }
 }
 
 public struct SubBrand: Identifiable, Hashable, Codable, Sendable, Comparable, SubBrandProtocol {
-    public let id: Int
+    public let id: SubBrand.Id
     public let name: String?
     public let includesBrandName: Bool
     public let isVerified: Bool
 
-    public init(id: Int, name: String?, includesBrandName: Bool, isVerified: Bool) {
+    public init(id: SubBrand.Id, name: String?, includesBrandName: Bool, isVerified: Bool) {
         self.id = id
         self.name = name
         self.includesBrandName = includesBrandName
@@ -37,14 +38,18 @@ public struct SubBrand: Identifiable, Hashable, Codable, Sendable, Comparable, S
 }
 
 public extension SubBrand {
+    typealias Id = Tagged<SubBrand, Int>
+}
+
+public extension SubBrand {
     struct JoinedBrand: Identifiable, Hashable, Codable, Sendable, Comparable, SubBrandProtocol {
-        public let id: Int
+        public let id: SubBrand.Id
         public let name: String?
         public let includesBrandName: Bool
         public let isVerified: Bool
         public let brand: Brand.JoinedCompany
 
-        public init(id: Int, name: String?, includesBrandName: Bool, isVerified: Bool, brand: Brand.JoinedCompany) {
+        public init(id: SubBrand.Id, name: String?, includesBrandName: Bool, isVerified: Bool, brand: Brand.JoinedCompany) {
             self.id = id
             self.name = name
             self.includesBrandName = includesBrandName
@@ -86,13 +91,13 @@ public extension SubBrand {
     }
 
     struct JoinedProduct: Identifiable, Hashable, Codable, Sendable, Comparable, SubBrandProtocol {
-        public let id: Int
+        public let id: SubBrand.Id
         public let name: String?
         public let includesBrandName: Bool
         public let isVerified: Bool
         public let products: [Product.JoinedCategory]
 
-        public init(id: Int, name: String? = nil, includesBrandName: Bool, isVerified: Bool, products: [Product.JoinedCategory]) {
+        public init(id: SubBrand.Id, name: String? = nil, includesBrandName: Bool, isVerified: Bool, products: [Product.JoinedCategory]) {
             self.id = id
             self.name = name
             self.includesBrandName = includesBrandName
@@ -140,7 +145,7 @@ public extension SubBrand {
     }
 
     struct Detailed: Identifiable, Hashable, Codable, Sendable, SubBrandProtocol, ModificationInfo {
-        public let id: Int
+        public let id: SubBrand.Id
         public let name: String?
         public let includesBrandName: Bool
         public let isVerified: Bool
@@ -181,7 +186,7 @@ public extension SubBrand {
     }
 
     struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
-        public let id: Int
+        public let id: SubBrand.EditSuggestion.Id
         public let subBrand: SubBrand.JoinedBrand
         public let createdAt: Date
         public let createdBy: Profile
@@ -206,7 +211,7 @@ public extension SubBrand {
 public extension SubBrand {
     struct NewRequest: Codable, Sendable {
         let name: String
-        let brandId: Int
+        let brandId: Brand.Id
         let includesBrandName: Bool
 
         enum CodingKeys: String, CodingKey, Sendable {
@@ -215,7 +220,7 @@ public extension SubBrand {
             case includesBrandName = "includes_brand_name"
         }
 
-        public init(name: String, brandId: Int, includesBrandName: Bool) {
+        public init(name: String, brandId: Brand.Id, includesBrandName: Bool) {
             self.name = name
             self.brandId = brandId
             self.includesBrandName = includesBrandName
@@ -223,11 +228,11 @@ public extension SubBrand {
     }
 
     struct UpdateNameRequest: Codable, Sendable {
-        public let id: Int
+        public let id: SubBrand.Id
         public let name: String
         public let includesBrandName: Bool
 
-        public init(id: Int, name: String, includesBrandName: Bool) {
+        public init(id: SubBrand.Id, name: String, includesBrandName: Bool) {
             self.id = id
             self.name = name
             self.includesBrandName = includesBrandName
@@ -239,26 +244,26 @@ public extension SubBrand {
     }
 
     struct UpdateBrandRequest: Codable, Sendable {
-        public let id: Int
-        public let brandId: Int
+        public let id: SubBrand.Id
+        public let brandId: Brand.Id
 
         enum CodingKeys: String, CodingKey {
             case id, brandId = "brand_id"
         }
 
-        public init(id: Int, brandId: Int) {
+        public init(id: SubBrand.Id, brandId: Brand.Id) {
             self.id = id
             self.brandId = brandId
         }
     }
 
     struct VerifyRequest: Codable, Sendable {
-        public init(id: Int, isVerified: Bool) {
+        public init(id: SubBrand.Id, isVerified: Bool) {
             self.id = id
             self.isVerified = isVerified
         }
 
-        public let id: Int
+        public let id: SubBrand.Id
         public let isVerified: Bool
 
         enum CodingKeys: String, CodingKey {

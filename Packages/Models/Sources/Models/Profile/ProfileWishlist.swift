@@ -22,11 +22,11 @@ public enum ProfileWishlist {
     }
 
     public struct CheckIfOnWishlist: Codable, Sendable {
-        public init(id: Int) {
+        public init(id: Product.Id) {
             self.id = id
         }
 
-        public let id: Int
+        public let id: Product.Id
 
         enum CodingKeys: String, CodingKey {
             case id = "p_product_id"

@@ -1,8 +1,9 @@
 import Extensions
 import Foundation
+import Tagged
 
 public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
-    public let id: Int
+    public let id: CheckIn.Id
     public let rating: Double?
     public let review: String?
     public let checkInAt: Date?
@@ -24,7 +25,7 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     }
 
     public init(
-        id: Int,
+        id: CheckIn.Id,
         rating: Double? = nil,
         review: String? = nil,
         checkInAt: Date? = nil,
@@ -116,6 +117,10 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
 }
 
 public extension CheckIn {
+    typealias Id = Tagged<CheckIn, Int>
+}
+
+public extension CheckIn {
     struct CheckInTaggedProfile: Codable, Sendable, Hashable {
         public let profile: Profile
 
@@ -132,21 +137,9 @@ public extension CheckIn {
         }
     }
 
-    struct Image: Hashable, Sendable, Identifiable, Codable {
-        public let id: Int
-        public let createdBy: UUID
-        public let images: [ImageEntity]
-
-        enum CodingKeys: String, CodingKey {
-            case id
-            case images = "check_in_images"
-            case createdBy = "created_by"
-        }
-    }
-
     struct Minimal: Codable, Hashable, Sendable, Identifiable {
-        public let id: Int
-        public let createdBy: UUID
+        public let id: CheckIn.Id
+        public let createdBy: Profile.Id
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -155,7 +148,7 @@ public extension CheckIn {
     }
 
     struct DeleteAsAdminRequest: Codable, Sendable {
-        public let id: Int
+        public let id: CheckIn.Id
 
         public init(checkIn: CheckIn) {
             id = checkIn.id
@@ -167,15 +160,15 @@ public extension CheckIn {
     }
 
     struct NewRequest: Codable, Sendable {
-        public let productId: Int
+        public let productId: Product.Id
         public let rating: Double?
         public let review: String?
-        public let manufacturerId: Int?
-        public let servingStyleId: Int?
+        public let manufacturerId: Company.Id?
+        public let servingStyleId: ServingStyle.Id?
         public let friendIds: [String]?
-        public let flavorIds: [Int]?
-        public let locationId: String?
-        public let purchaseLocationId: String?
+        public let flavorIds: [Flavor.Id]?
+        public let locationId: Location.Id?
+        public let purchaseLocationId: Location.Id?
         public let checkInAt: Date?
         public let isNostalgic: Bool
 
@@ -213,24 +206,24 @@ public extension CheckIn {
             friendIds = taggedFriends.map(\.id.uuidString)
             flavorIds = flavors.map(\.id)
             self.rating = rating
-            locationId = location?.id.uuidString
-            purchaseLocationId = purchaseLocation?.id.uuidString
+            locationId = location?.id
+            purchaseLocationId = purchaseLocation?.id
             self.checkInAt = checkInAt
             self.isNostalgic = isNostalgic
         }
     }
 
     struct UpdateRequest: Codable, Sendable {
-        public let checkInId: Int
-        public let productId: Int
+        public let checkInId: CheckIn.Id
+        public let productId: Product.Id
         public let rating: Double?
         public let review: String?
-        public let manufacturerId: Int?
-        public let servingStyleId: Int?
+        public let manufacturerId: Company.Id?
+        public let servingStyleId: ServingStyle.Id?
         public let friendIds: [String]?
-        public let flavorIds: [Int]?
-        public let locationId: String?
-        public let purchaseLocationId: String?
+        public let flavorIds: [Flavor.Id]?
+        public let locationId: Location.Id?
+        public let purchaseLocationId: Location.Id?
         public let checkInAt: Date?
         public let isNostalgic: Bool
 
@@ -271,8 +264,8 @@ public extension CheckIn {
             friendIds = taggedFriends.map(\.id.uuidString)
             flavorIds = flavors.map(\.id)
             self.rating = rating
-            locationId = location?.id.uuidString
-            purchaseLocationId = purchaseLocation?.id.uuidString
+            locationId = location?.id
+            purchaseLocationId = purchaseLocation?.id
             self.checkInAt = checkInAt
             self.isNostalgic = isNostalgic
         }

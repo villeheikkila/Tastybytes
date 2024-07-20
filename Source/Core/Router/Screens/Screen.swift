@@ -10,7 +10,7 @@ enum Screen: Hashable, Sendable {
     case location(Location)
     case company(Company)
     case brand(Brand.JoinedSubBrandsProductsCompany)
-    case brandById(id: Int, initialScrollPosition: SubBrand.JoinedBrand? = nil)
+    case brandById(id: Brand.Id, initialScrollPosition: SubBrand.JoinedBrand? = nil)
     case fetchBrand(Brand.JoinedCompany)
     case subBrand(SubBrand.JoinedBrand)
     case profileProducts(Profile)

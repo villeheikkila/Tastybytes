@@ -1,10 +1,16 @@
+import Tagged
+
 public struct Flavor: Identifiable, Codable, Hashable, Sendable {
-    public let id: Int
+    public let id: Flavor.Id
     public let name: String
 
     public var label: String {
         name.capitalized
     }
+}
+
+public extension Flavor {
+    typealias Id = Tagged<Flavor, Int>
 }
 
 public extension Flavor {

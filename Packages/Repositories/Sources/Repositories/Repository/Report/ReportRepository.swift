@@ -2,14 +2,15 @@ import Foundation
 import Models
 
 public enum ReportFilter: Sendable, Codable, Hashable {
-    case checkIn(Int)
-    case product(Int)
-    case company(Int)
-    case brand(Int)
-    case comment(Int)
-    case subBrand(Int)
-    case checkInImage(Int)
-    case profile(UUID)
+    case checkIn(CheckIn.Id)
+    case product(Product.Id)
+    case company(Company.Id)
+    case brand(Brand.Id)
+    case comment(CheckInComment.Id)
+    case subBrand(SubBrand.Id)
+    case checkInImage(ImageEntity.Id)
+    case profile(Profile.Id)
+    case location(Location.Id)
 
     var column: String {
         switch self {
@@ -29,6 +30,8 @@ public enum ReportFilter: Sendable, Codable, Hashable {
             "check_in_image_id"
         case .profile:
             "profile_id"
+        case .location:
+            "location_id"
         }
     }
 }
@@ -36,6 +39,6 @@ public enum ReportFilter: Sendable, Codable, Hashable {
 public protocol ReportRepository: Sendable {
     func getAll(_ filter: ReportFilter?) async throws -> [Report]
     func insert(report: Report.NewRequest) async throws
-    func delete(id: Int) async throws
-    @discardableResult func resolve(id: Int) async throws -> Report
+    func delete(id: Report.Id) async throws
+    @discardableResult func resolve(id: Report.Id) async throws -> Report
 }

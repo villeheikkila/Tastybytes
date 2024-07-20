@@ -13,11 +13,11 @@ struct SupabaseCategoryRepository: CategoryRepository {
             .value
     }
 
-    func getDetailed(id: Int) async throws -> Category.Detailed {
+    func getDetailed(id: Category.Id) async throws -> Category.Detailed {
         try await client
             .from(.categories)
             .select(Models.Category.getQuery(.detailed(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .order("name")
             .limit(1)
             .single()
@@ -35,27 +35,27 @@ struct SupabaseCategoryRepository: CategoryRepository {
             .value
     }
 
-    func addServingStyle(categoryId: Int, servingStyleId: Int) async throws {
+    func addServingStyle(categoryId: Category.Id, servingStyleId: ServingStyle.Id) async throws {
         try await client
             .from(.servingStyles)
-            .insert(Category.NewServingStyleRequest(categoryId: categoryId, servingStyleId: servingStyleId))
+            .insert(Category.NewServingStyleRequest(categoryId: categoryId, servingStyleId: servingStyleId.rawValue))
             .execute()
     }
 
-    func deleteCategory(id: Int) async throws {
+    func deleteCategory(id: Category.Id) async throws {
         try await client
             .from(.categories)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
-    func deleteServingStyle(categoryId: Int, servingStyleId: Int) async throws {
+    func deleteServingStyle(categoryId: Category.Id, servingStyleId: ServingStyle.Id) async throws {
         try await client
             .from(.servingStyles)
             .delete()
-            .eq("category_id", value: categoryId)
-            .eq("serving_style_id", value: servingStyleId)
+            .eq("category_id", value: categoryId.rawValue)
+            .eq("serving_style_id", value: servingStyleId.rawValue)
             .execute()
     }
 }

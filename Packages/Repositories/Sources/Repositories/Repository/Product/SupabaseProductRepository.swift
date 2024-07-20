@@ -26,13 +26,13 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func getFeed(_ type: Product.FeedType, from: Int, to: Int, categoryFilterId: Int?) async throws -> [Product.Joined] {
+    func getFeed(_ type: Product.FeedType, from: Int, to: Int, categoryFilterId: Models.Category.Id?) async throws -> [Product.Joined] {
         var queryBuilder = client
             .from(.viewProductRatings)
             .select(Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
 
         if let categoryFilterId {
-            queryBuilder = queryBuilder.eq("category_id", value: categoryFilterId)
+            queryBuilder = queryBuilder.eq("category_id", value: categoryFilterId.rawValue)
         }
 
         switch type {
@@ -78,29 +78,29 @@ struct SupabaseProductRepository: ProductRepository {
         return response.map(\.product)
     }
 
-    func getById(id: Int) async throws -> Product.Joined {
+    func getById(id: Product.Id) async throws -> Product.Joined {
         try await client
             .from(.products)
             .select(Product.getQuery(.joinedBrandSubcategories(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func getDetailed(id: Int) async throws -> Product.Detailed {
+    func getDetailed(id: Product.Id) async throws -> Product.Detailed {
         try await client
             .from(.products)
             .select(Product.getQuery(.detailed(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func checkIfOnWishlist(id: Int) async throws -> Bool {
+    func checkIfOnWishlist(id: Product.Id) async throws -> Bool {
         try await client
             .rpc(
                 fn: .isOnCurrentUserWishlist,
@@ -111,23 +111,23 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func addToWishlist(productId: Int) async throws {
+    func addToWishlist(productId: Product.Id) async throws {
         try await client
             .from(.profileWishlistItems)
-            .insert(ProfileWishlist.New(productId: productId))
+            .insert(ProfileWishlist.New(productId: productId.rawValue))
             .single()
             .execute()
     }
 
-    func removeFromWishlist(productId: Int) async throws {
+    func removeFromWishlist(productId: Product.Id) async throws {
         try await client
             .from(.profileWishlistItems)
             .delete()
-            .eq("product_id", value: productId)
+            .eq("product_id", value: productId.rawValue)
             .execute()
     }
 
-    func getWishlistItems(profileId: UUID) async throws -> [ProfileWishlist.Joined] {
+    func getWishlistItems(profileId: Profile.Id) async throws -> [ProfileWishlist.Joined] {
         try await client
             .from(.profileWishlistItems)
             .select(ProfileWishlist.getQuery(.joined(false)))
@@ -136,7 +136,7 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func getByProfile(id: UUID) async throws -> [Product.Joined] {
+    func getByProfile(id: Profile.Id) async throws -> [Product.Joined] {
         try await client
             .from(.viewProfileProductRatings)
             .select(Product.getQuery(.joinedBrandSubcategoriesProfileRatings(false)))
@@ -145,7 +145,7 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func getCreatedByUserId(id: UUID) async throws -> [Product.Joined] {
+    func getCreatedByUserId(id: Profile.Id) async throws -> [Product.Joined] {
         try await client
             .from(.products)
             .select(Product.getQuery(.joinedBrandSubcategories(false)))
@@ -154,7 +154,7 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func uploadLogo(productId: Int, data: Data) async throws -> ImageEntity {
+    func uploadLogo(productId: Product.Id, data: Data) async throws -> ImageEntity {
         let fileName = "\(productId)_\(Date.now.timeIntervalSince1970).jpeg"
 
         try await client
@@ -165,18 +165,18 @@ struct SupabaseProductRepository: ProductRepository {
         return try await imageEntityRepository.getByFileName(from: .productLogos, fileName: fileName)
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Product.Id) async throws {
         try await client
             .from(.products)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
     func create(newProductParams: Product.NewRequest) async throws -> Product.Joined {
-        let product: IntId = try await client
+        let product: Product = try await client
             .rpc(fn: .createProduct, params: newProductParams)
-            .select("id")
+            .select(Product.getQuery(.saved(false)))
             .limit(1)
             .single()
             .execute()
@@ -185,7 +185,7 @@ struct SupabaseProductRepository: ProductRepository {
         return try await getById(id: product.id)
     }
 
-    func mergeProducts(productId: Int, toProductId: Int) async throws {
+    func mergeProducts(productId: Product.Id, toProductId: Product.Id) async throws {
         try await client
             .rpc(
                 fn: .mergeProducts,
@@ -194,7 +194,7 @@ struct SupabaseProductRepository: ProductRepository {
             .execute()
     }
 
-    func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async throws {
+    func markAsDuplicate(productId: Product.Id, duplicateOfProductId: Product.Id) async throws {
         try await client
             .from(.productDuplicateSuggestions)
             .insert(Product.DuplicateRequest(productId: productId, duplicateOfProductId: duplicateOfProductId),
@@ -212,7 +212,7 @@ struct SupabaseProductRepository: ProductRepository {
         case .all:
             query
         case let .id(id):
-            query.eq("product_id", value: id)
+            query.eq("product_id", value: id.rawValue)
         }
 
         return try await filtered.order("created_at", ascending: false)
@@ -224,8 +224,8 @@ struct SupabaseProductRepository: ProductRepository {
         try await client
             .from(.productDuplicateSuggestions)
             .delete()
-            .eq("product_id", value: duplicateSuggestion.product.id)
-            .eq("duplicate_of_product_id", value: duplicateSuggestion.duplicate.id)
+            .eq("product_id", value: duplicateSuggestion.product.id.rawValue)
+            .eq("duplicate_of_product_id", value: duplicateSuggestion.duplicate.id.rawValue)
             .select()
             .single()
             .execute()
@@ -253,14 +253,14 @@ struct SupabaseProductRepository: ProductRepository {
         return try await getById(id: updateResult.id)
     }
 
-    func verification(id: Int, isVerified: Bool) async throws {
+    func verification(id: Product.Id, isVerified: Bool) async throws {
         try await client
             .rpc(fn: .verifyProduct, params: Product.VerifyRequest(id: id, isVerified: isVerified))
             .single()
             .execute()
     }
 
-    func getSummaryById(id: Int) async throws -> Summary {
+    func getSummaryById(id: Product.Id) async throws -> Summary {
         try await client
             .rpc(fn: .getProductSummary, params: Product.SummaryRequest(id: id))
             .select()
@@ -274,7 +274,7 @@ struct SupabaseProductRepository: ProductRepository {
         try await client
             .from(.productEditSuggestions)
             .update(["resolved_at": Date.now])
-            .eq("id", value: editSuggestion.id)
+            .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
 
@@ -282,7 +282,7 @@ struct SupabaseProductRepository: ProductRepository {
         try await client
             .from(.productEditSuggestions)
             .delete()
-            .eq("id", value: editSuggestion.id)
+            .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
 }

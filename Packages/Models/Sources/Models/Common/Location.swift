@@ -1,8 +1,9 @@
 import CoreLocation
 import MapKit
+import Tagged
 
 public struct Location: Identifiable, Codable, Hashable, Sendable {
-    public let id: UUID
+    public let id: Location.Id
     public let mapKitIdentifier: String?
     public let name: String
     public let title: String?
@@ -14,7 +15,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
     public let createdBy: Profile?
 
     public init(mapItem: MKMapItem) {
-        id = UUID()
+        id = Location.Id(rawValue: UUID())
         mapKitIdentifier = mapItem.identifier?.rawValue
         name = mapItem.name.orEmpty
         title = mapItem.placemark.title.orEmpty
@@ -27,7 +28,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
     }
 
     public init(coordinate: CLLocationCoordinate2D, countryCode: String?, country: Country?) {
-        id = UUID()
+        id = Location.Id(rawValue: UUID())
         name = "Lat: \(coordinate.latitude.formatted(.number.precision(.fractionLength(2))))°, Lon: \(coordinate.longitude.formatted(.number.precision(.fractionLength(2))))° \(country?.name ?? "")"
         title = nil
         mapKitIdentifier = nil
@@ -39,7 +40,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         createdAt = nil
     }
 
-    public init(id: UUID, mapKitIdentifier: String?, name: String, title: String?, location: CLLocation?, countryCode: String?,
+    public init(id: Location.Id, mapKitIdentifier: String?, name: String, title: String?, location: CLLocation?, countryCode: String?,
                 country: Country?, source: String)
     {
         self.id = id
@@ -70,7 +71,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
+        id = try container.decode(Location.Id.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         title = try container.decodeIfPresent(String.self, forKey: .title)
         mapKitIdentifier = try container.decodeIfPresent(String.self, forKey: .mapKitIdentifier)
@@ -96,7 +97,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
     }
 
     public func copyWith(
-        id: UUID? = nil,
+        id: Location.Id? = nil,
         mapKitIdentifier: String? = nil,
         name: String? = nil,
         title: String?? = nil,
@@ -104,8 +105,8 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
         countryCode: String? = nil,
         country: Country? = nil,
         source: String? = nil
-    ) -> Location {
-        Location(
+    ) -> Self {
+        .init(
             id: id ?? self.id,
             mapKitIdentifier: mapKitIdentifier ?? self.mapKitIdentifier,
             name: name ?? self.name,
@@ -120,6 +121,10 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
     public var newLocationRequest: NewLocationRequest {
         NewLocationRequest(location: self)
     }
+}
+
+public extension Location {
+    typealias Id = Tagged<Location, UUID>
 }
 
 public extension Location {
@@ -157,10 +162,10 @@ public extension Location {
     }
 
     struct UpdateLocationRequest: Codable, Sendable {
-        let id: UUID
+        let id: Location.Id
         let mapKitIdentifier: String?
 
-        public init(id: UUID, mapKitIdentifier: String?) {
+        public init(id: Location.Id, mapKitIdentifier: String?) {
             self.id = id
             self.mapKitIdentifier = mapKitIdentifier
         }
@@ -171,13 +176,13 @@ public extension Location {
     }
 
     struct MergeLocationParams: Codable, Sendable {
-        public init(locationId: UUID, toLocationId: UUID) {
+        public init(locationId: Location.Id, toLocationId: Location.Id) {
             self.locationId = locationId
             self.toLocationId = toLocationId
         }
 
-        let locationId: UUID
-        let toLocationId: UUID
+        let locationId: Location.Id
+        let toLocationId: Location.Id
 
         enum CodingKeys: String, CodingKey {
             case locationId = "p_location_id", toLocationId = "p_to_location_id"
@@ -204,11 +209,11 @@ public extension Location {
     }
 
     struct SummaryRequest: Codable, Sendable {
-        public init(id: UUID) {
+        public init(id: Location.Id) {
             self.id = id
         }
 
-        public let id: UUID
+        public let id: Location.Id
 
         enum CodingKeys: String, CodingKey {
             case id = "p_location_id"

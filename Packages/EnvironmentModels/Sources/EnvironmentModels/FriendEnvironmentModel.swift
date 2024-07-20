@@ -38,7 +38,7 @@ public final class FriendEnvironmentModel {
         friends.filter { $0.status == .pending }
     }
 
-    public func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
+    public func sendFriendRequest(receiver: Profile.Id, onSuccess: (() -> Void)? = nil) async {
         do {
             let newFriend = try await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending))
             withAnimation {

@@ -16,10 +16,13 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Extensions", path: "../Extensions"),
+        .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
     ],
     targets: [
         .target(
-            name: "Models", dependencies: [.product(name: "Extensions", package: "Extensions"),
+            name: "Models", dependencies: [
+                .product(name: "Extensions", package: "Extensions"),
+                .product(name: "Tagged", package: "swift-tagged"),
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency"),

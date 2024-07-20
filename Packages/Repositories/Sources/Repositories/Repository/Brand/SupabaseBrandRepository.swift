@@ -6,33 +6,33 @@ struct SupabaseBrandRepository: BrandRepository {
     let client: SupabaseClient
     let imageEntityRepository: ImageEntityRepository
 
-    func getById(id: Int) async throws -> Brand.JoinedSubBrandsProducts {
+    func getById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsProducts {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.joined(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func getJoinedById(id: Int) async throws -> Brand.JoinedSubBrandsProductsCompany {
+    func getJoinedById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsProductsCompany {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.joinedSubBrandsCompany(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func getDetailed(id: Int) async throws -> Brand.Detailed {
+    func getDetailed(id: Brand.Id) async throws -> Brand.Detailed {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.detailed(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
@@ -49,11 +49,11 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func getByBrandOwnerId(brandOwnerId: Int) async throws -> [Brand.JoinedSubBrands] {
+    func getByBrandOwnerId(brandOwnerId: Company.Id) async throws -> [Brand.JoinedSubBrands] {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.joinedSubBrands(false)))
-            .eq("brand_owner_id", value: brandOwnerId)
+            .eq("brand_owner_id", value: brandOwnerId.rawValue)
             .order("name")
             .execute()
             .value
@@ -69,7 +69,7 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func isLikedByCurrentUser(id: Int) async throws -> Bool {
+    func isLikedByCurrentUser(id: Brand.Id) async throws -> Bool {
         try await client
             .rpc(
                 fn: .isBrandLikedByCurrentUser,
@@ -80,7 +80,7 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func likeBrand(brandId: Int) async throws {
+    func likeBrand(brandId: Brand.Id) async throws {
         try await client
             .from(.brandLikes)
             .insert(BrandLike.New(brandId: brandId))
@@ -88,15 +88,15 @@ struct SupabaseBrandRepository: BrandRepository {
             .execute()
     }
 
-    func unlikeBrand(brandId: Int) async throws {
+    func unlikeBrand(brandId: Brand.Id) async throws {
         try await client
             .from(.brandLikes)
             .delete()
-            .eq("brand_id", value: brandId)
+            .eq("brand_id", value: brandId.rawValue)
             .execute()
     }
 
-    func verification(id: Int, isVerified: Bool) async throws {
+    func verification(id: Brand.Id, isVerified: Bool) async throws {
         try await client
             .rpc(fn: .verifyBrand, params: Brand.VerifyRequest(id: id, isVerified: isVerified))
             .single()
@@ -107,7 +107,7 @@ struct SupabaseBrandRepository: BrandRepository {
         try await client
             .from(.brands)
             .update(updateRequest)
-            .eq("id", value: updateRequest.id)
+            .eq("id", value: updateRequest.id.rawValue)
             .select(Brand.getQuery(.detailed(false)))
             .single()
             .execute()
@@ -121,26 +121,26 @@ struct SupabaseBrandRepository: BrandRepository {
             .execute()
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Brand.Id) async throws {
         try await client
             .from(.brands)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
-    func getSummaryById(id: Int) async throws -> Summary {
+    func getSummaryById(id: Brand.Id) async throws -> Summary {
         try await client
             .from(.viewBrandRatings)
             .select()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func uploadLogo(brandId: Int, data: Data) async throws -> ImageEntity {
+    func uploadLogo(brandId: Brand.Id, data: Data) async throws -> ImageEntity {
         let fileName = "\(brandId)_\(Date.now.timeIntervalSince1970).jpeg"
 
         try await client
@@ -155,7 +155,7 @@ struct SupabaseBrandRepository: BrandRepository {
         try await client
             .from(.brandEditSuggestions)
             .update(Report.ResolveRequest(resolvedAt: Date.now))
-            .eq("id", value: editSuggestion.id)
+            .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
 
@@ -163,7 +163,7 @@ struct SupabaseBrandRepository: BrandRepository {
         try await client
             .from(.brandEditSuggestions)
             .delete()
-            .eq("id", value: editSuggestion.id)
+            .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
 }

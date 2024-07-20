@@ -6,33 +6,33 @@ struct SupabaseCompanyRepository: CompanyRepository {
     let client: SupabaseClient
     let imageEntityRepository: ImageEntityRepository
 
-    func getById(id: Int) async throws -> Company {
+    func getById(id: Company.Id) async throws -> Company {
         try await client
             .from(.companies)
             .select(Company.getQuery(.saved(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func getJoinedById(id: Int) async throws -> Company.Joined {
+    func getJoinedById(id: Company.Id) async throws -> Company.Joined {
         try await client
             .from(.companies)
             .select(Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func getDetailed(id: Int) async throws -> Company.Detailed {
+    func getDetailed(id: Company.Id) async throws -> Company.Detailed {
         try await client
             .from(.companies)
             .select(Company.getQuery(.detailed(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
@@ -49,7 +49,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func uploadLogo(companyId: Int, data: Data) async throws -> ImageEntity {
+    func uploadLogo(companyId: Company.Id, data: Data) async throws -> ImageEntity {
         let fileName = "\(companyId)_\(Date.now.timeIntervalSince1970).jpeg"
 
         try await client
@@ -74,7 +74,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         try await client
             .from(.companies)
             .update(updateRequest)
-            .eq("id", value: updateRequest.id)
+            .eq("id", value: updateRequest.id.rawValue)
             .select(Company.getQuery(.detailed(false)))
             .single()
             .execute()
@@ -85,7 +85,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         try await client
             .from(.companyEditSuggestions)
             .delete()
-            .eq("id", value: editSuggestion.id)
+            .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
 
@@ -93,7 +93,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         try await client
             .from(.companyEditSuggestions)
             .update(Report.ResolveRequest(resolvedAt: Date.now))
-            .eq("id", value: editSuggestion.id)
+            .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
 
@@ -104,36 +104,51 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .execute()
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Company.Id) async throws {
         try await client
             .from(.companies)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
-    func verification(id: Int, isVerified: Bool) async throws {
+    func verification(id: Company.Id, isVerified: Bool) async throws {
         try await client
             .rpc(fn: .verifyCompany, params: Company.VerifyRequest(id: id, isVerified: isVerified))
             .single()
             .execute()
     }
 
-    func search(searchTerm: String) async throws -> [Company] {
+    func search(filterCompanies: [Company] = [], searchTerm: String) async throws -> [Company] {
         let searchString = searchTerm
             .split(separator: " ")
             .map { "\($0.trimmingCharacters(in: .whitespaces)):*" }
             .joined(separator: " & ")
 
-        return try await client
+        let query = client
             .from(.companies)
             .select(Company.getQuery(.saved(false)))
+
+        // TODO: Revisit this later, combined textSearch and filter doesn't seem to work
+//        let filtered = if filterCompanies.isEmpty {
+//            query
+//        } else {
+//            query.not("id", operator: .in, value: filterCompanies.map(\.id))
+//        }
+
+        let value: [Company] = try await query
             .textSearch("name", query: searchString)
             .execute()
             .value
+
+        return if filterCompanies.isEmpty {
+            value
+        } else {
+            value.filter { !filterCompanies.contains($0) }
+        }
     }
 
-    func getSummaryById(id: Int) async throws -> Summary {
+    func getSummaryById(id: Company.Id) async throws -> Summary {
         try await client
             .rpc(fn: .getCompanySummary, params: Company.SummaryRequest(id: id))
             .select()
@@ -150,13 +165,13 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 subsidiary_of = subsidiaryOf.id
             }
 
-            public let id: Int
-            public let subsidiary_of: Int
+            public let id: Company.Id
+            public let subsidiary_of: Company.Id
         }
         try await client
             .from(.companies)
             .update(UpdateRequest(company: company, subsidiaryOf: subsidiaryOf))
-            .eq("id", value: company.id)
+            .eq("id", value: company.id.rawValue)
             .select(Company.getQuery(.detailed(false)))
             .single()
             .execute()

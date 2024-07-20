@@ -1,7 +1,8 @@
 import Foundation
+import Tagged
 
 public protocol CategoryProtocol: Sendable {
-    var id: Int { get }
+    var id: Category.Id { get }
     var name: String { get }
     var icon: String? { get }
 }
@@ -17,11 +18,11 @@ public extension CategoryProtocol {
 }
 
 public struct Category: Identifiable, Codable, Hashable, Sendable, CategoryProtocol {
-    public let id: Int
+    public let id: Category.Id
     public let name: String
     public let icon: String?
 
-    public init(id: Int, name: String, icon: String?) {
+    public init(id: Category.Id, name: String, icon: String?) {
         self.id = id
         self.name = name
         self.icon = icon
@@ -35,8 +36,12 @@ public struct Category: Identifiable, Codable, Hashable, Sendable, CategoryProto
 }
 
 public extension Category {
+    typealias Id = Tagged<Category, Int>
+}
+
+public extension Category {
     struct JoinedSubcategoriesServingStyles: Identifiable, Codable, Hashable, Sendable, CategoryProtocol {
-        public let id: Int
+        public let id: Category.Id
         public let name: String
         public let icon: String?
         public let subcategories: [Subcategory]
@@ -50,7 +55,7 @@ public extension Category {
             case servingStyles = "serving_styles"
         }
 
-        init(id: Int, name: String, icon: String? = nil, subcategories: [Subcategory], servingStyles: [ServingStyle]) {
+        init(id: Category.Id, name: String, icon: String? = nil, subcategories: [Subcategory], servingStyles: [ServingStyle]) {
             self.id = id
             self.name = name
             self.icon = icon
@@ -67,7 +72,7 @@ public extension Category {
         }
 
         public func copyWith(
-            id: Int? = nil,
+            id: Category.Id? = nil,
             name: String? = nil,
             icon: String? = nil,
             subcategories: [Subcategory]? = nil,
@@ -88,7 +93,7 @@ public extension Category {
     }
 
     struct Detailed: Identifiable, Codable, Hashable, Sendable, CategoryProtocol, ModificationInfo {
-        public let id: Int
+        public let id: Category.Id
         public let name: String
         public let icon: String?
         public let subcategories: [Subcategory]
@@ -111,7 +116,7 @@ public extension Category {
         }
 
         public func copyWith(
-            id: Int? = nil,
+            id: Category.Id? = nil,
             name: String? = nil,
             icon: String? = nil,
             subcategories: [Subcategory]? = nil,
@@ -144,12 +149,12 @@ public extension Category {
     }
 
     struct NewServingStyleRequest: Codable, Sendable {
-        public init(categoryId: Int, servingStyleId: Int) {
+        public init(categoryId: Category.Id, servingStyleId: Int) {
             self.categoryId = categoryId
             self.servingStyleId = servingStyleId
         }
 
-        public let categoryId: Int
+        public let categoryId: Category.Id
         public let servingStyleId: Int
 
         enum CodingKeys: String, CodingKey {

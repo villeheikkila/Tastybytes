@@ -23,11 +23,11 @@ struct SupabaseFlavorRepository: FlavorRepository {
             .value
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Flavor.Id) async throws {
         try await client
             .from(.flavors)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 }

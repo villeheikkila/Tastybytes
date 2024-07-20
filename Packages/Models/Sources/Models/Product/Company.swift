@@ -1,23 +1,24 @@
 import Foundation
+import Tagged
 
 public protocol CompanyLogoProtocol {
     var logos: [ImageEntity] { get }
 }
 
 public protocol CompanyProtocol: Hashable, Codable, Sendable, CompanyLogoProtocol {
-    var id: Int { get }
+    var id: Company.Id { get }
     var name: String { get }
     var isVerified: Bool { get }
     var logos: [ImageEntity] { get }
 }
 
 public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtocol, CompanyLogoProtocol {
-    public let id: Int
+    public let id: Company.Id
     public let name: String
     public let isVerified: Bool
     public let logos: [ImageEntity]
 
-    public init(id: Int, name: String, logos: [ImageEntity] = [], isVerified: Bool) {
+    public init(id: Company.Id, name: String, logos: [ImageEntity] = [], isVerified: Bool) {
         self.id = id
         self.name = name
         self.isVerified = isVerified
@@ -56,8 +57,12 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtoco
 }
 
 public extension Company {
+    typealias Id = Tagged<Company, Int>
+}
+
+public extension Company {
     struct Detailed: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, ModificationInfo {
-        public let id: Int
+        public let id: Company.Id
         public let name: String
         public let isVerified: Bool
         public let logos: [ImageEntity]
@@ -81,7 +86,7 @@ public extension Company {
             subsidiaries = []
         }
 
-        init(id: Int, name: String, isVerified: Bool, logos: [ImageEntity], editSuggestions: [Company.EditSuggestion], subsidiaries: [Company], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
+        init(id: Company.Id, name: String, isVerified: Bool, logos: [ImageEntity], editSuggestions: [Company.EditSuggestion], subsidiaries: [Company], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -108,7 +113,7 @@ public extension Company {
         }
 
         public func copyWith(
-            id: Int? = nil,
+            id: Company.Id? = nil,
             name: String? = nil,
             isVerified: Bool? = nil,
             logos: [ImageEntity]? = nil,
@@ -139,22 +144,22 @@ public extension Company {
     }
 
     struct UpdateRequest: Codable, Sendable {
-        public init(id: Int, name: String) {
+        public init(id: Company.Id, name: String) {
             self.id = id
             self.name = name
         }
 
-        public let id: Int
+        public let id: Company.Id
         public let name: String
     }
 
     struct EditSuggestionRequest: Codable, Sendable {
-        public init(id: Int, name: String) {
+        public init(id: Company.Id, name: String) {
             self.id = id
             self.name = name
         }
 
-        public let id: Int
+        public let id: Company.Id
         public let name: String
 
         enum CodingKeys: String, CodingKey {
@@ -164,12 +169,12 @@ public extension Company {
     }
 
     struct VerifyRequest: Codable, Sendable {
-        public init(id: Int, isVerified: Bool) {
+        public init(id: Company.Id, isVerified: Bool) {
             self.id = id
             self.isVerified = isVerified
         }
 
-        public let id: Int
+        public let id: Company.Id
         public let isVerified: Bool
 
         enum CodingKeys: String, CodingKey {
@@ -179,11 +184,11 @@ public extension Company {
     }
 
     struct SummaryRequest: Codable, Sendable {
-        public init(id: Int) {
+        public init(id: Company.Id) {
             self.id = id
         }
 
-        public let id: Int
+        public let id: Company.Id
 
         enum CodingKeys: String, CodingKey {
             case id = "p_company_id"
@@ -191,7 +196,7 @@ public extension Company {
     }
 
     struct Joined: Identifiable, Hashable, Codable, Sendable, CompanyLogoProtocol {
-        public let id: Int
+        public let id: Company.Id
         public let name: String
         public let subsidiaries: [Company]
         public let brands: [Brand.JoinedSubBrandsProducts]
@@ -250,7 +255,7 @@ public extension CompanyLogoProtocol {
 
 public extension Company {
     struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
-        public let id: Int
+        public let id: Company.EditSuggestion.Id
         public let name: String?
         public let company: Company
         public let createdBy: Profile

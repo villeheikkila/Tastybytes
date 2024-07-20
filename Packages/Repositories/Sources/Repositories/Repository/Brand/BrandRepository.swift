@@ -2,21 +2,21 @@ import Foundation
 import Models
 
 public protocol BrandRepository: Sendable {
-    func getById(id: Int) async throws -> Brand.JoinedSubBrandsProducts
-    func getJoinedById(id: Int) async throws -> Brand.JoinedSubBrandsProductsCompany
-    func getDetailed(id: Int) async throws -> Brand.Detailed
-    func getByBrandOwnerId(brandOwnerId: Int) async throws -> [Brand.JoinedSubBrands]
+    func getById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsProducts
+    func getJoinedById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsProductsCompany
+    func getDetailed(id: Brand.Id) async throws -> Brand.Detailed
+    func getByBrandOwnerId(brandOwnerId: Company.Id) async throws -> [Brand.JoinedSubBrands]
     func getUnverified() async throws -> [Brand.JoinedSubBrandsProductsCompany]
-    func getSummaryById(id: Int) async throws -> Summary
+    func getSummaryById(id: Brand.Id) async throws -> Summary
     func insert(newBrand: Brand.NewRequest) async throws -> Brand.JoinedSubBrands
-    func isLikedByCurrentUser(id: Int) async throws -> Bool
-    func likeBrand(brandId: Int) async throws
-    func unlikeBrand(brandId: Int) async throws
+    func isLikedByCurrentUser(id: Brand.Id) async throws -> Bool
+    func likeBrand(brandId: Brand.Id) async throws
+    func unlikeBrand(brandId: Brand.Id) async throws
     func update(updateRequest: Brand.UpdateRequest) async throws -> Brand.Detailed
     func editSuggestion(_ updateRequest: Brand.EditSuggestionRequest) async throws
-    func verification(id: Int, isVerified: Bool) async throws
-    func delete(id: Int) async throws
-    func uploadLogo(brandId: Int, data: Data) async throws -> ImageEntity
+    func verification(id: Brand.Id, isVerified: Bool) async throws
+    func delete(id: Brand.Id) async throws
+    func uploadLogo(brandId: Brand.Id, data: Data) async throws -> ImageEntity
     func resolveEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws
     func deleteEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws
 }

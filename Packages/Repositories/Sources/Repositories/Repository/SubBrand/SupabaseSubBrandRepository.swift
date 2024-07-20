@@ -14,11 +14,11 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             .value
     }
 
-    func getDetailed(id: Int) async throws -> SubBrand.Detailed {
+    func getDetailed(id: SubBrand.Id) async throws -> SubBrand.Detailed {
         try await client
             .from(.subBrands)
             .select(SubBrand.getQuery(.detailed(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
@@ -33,7 +33,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         case let .brand(update):
             return try await baseQuery
                 .update(update)
-                .eq("id", value: update.id)
+                .eq("id", value: update.id.rawValue)
                 .select(SubBrand.getQuery(.saved(false)))
                 .single()
                 .execute()
@@ -41,7 +41,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         case let .name(update):
             return try await baseQuery
                 .update(update)
-                .eq("id", value: update.id)
+                .eq("id", value: update.id.rawValue)
                 .select(SubBrand.getQuery(.saved(false)))
                 .single()
                 .execute()
@@ -49,15 +49,15 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: SubBrand.Id) async throws {
         try await client
             .from(.subBrands)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
-    func verification(id: Int, isVerified: Bool) async throws {
+    func verification(id: SubBrand.Id, isVerified: Bool) async throws {
         try await client
             .rpc(fn: .verifySubBrand, params: SubBrand.VerifyRequest(id: id, isVerified: isVerified))
             .single()
@@ -78,16 +78,16 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         try await client
             .from(.subBrandEditSuggestion)
             .delete()
-            .eq("id", value: editSuggestion.id)
+            .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
 
     func createEditSuggestion(subBrand: SubBrandProtocol, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) async throws {
         struct SubBrandEditSuggestionRequest: Encodable {
-            let subBrandId: Int
+            let subBrandId: SubBrand.Id
             let includesBrandName: Bool?
             let name: String?
-            let brandId: Int?
+            let brandId: Brand.Id?
 
             init(subBrand: SubBrandProtocol, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) {
                 subBrandId = subBrand.id

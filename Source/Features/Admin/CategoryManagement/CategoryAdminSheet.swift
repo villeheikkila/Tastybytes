@@ -13,7 +13,7 @@ struct CategoryAdminSheet: View {
     @State private var state: ScreenState = .loading
     @State private var category: Models.Category.Detailed?
 
-    let id: Int
+    let id: Models.Category.Id
 
     init(category: CategoryProtocol) {
         id = category.id

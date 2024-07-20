@@ -1,5 +1,6 @@
 import Extensions
 import Foundation
+import Tagged
 
 public struct Notification: Identifiable, Hashable, Sendable {
     public enum Content: Hashable, Sendable {
@@ -10,7 +11,7 @@ public struct Notification: Identifiable, Hashable, Sendable {
         case checkInComment(CheckInComment.Joined)
     }
 
-    public let id: Int
+    public let id: Notification.Id
     public let createdAt: Date
     public let seenAt: Date?
     public let content: Content
@@ -23,14 +24,18 @@ public struct Notification: Identifiable, Hashable, Sendable {
         return false
     }
 
-    public func copyWith(id: Int? = nil, createdAt: Date? = nil, seenAt: Date?? = nil,
-                         content: Content? = nil) -> Notification
+    public func copyWith(createdAt: Date? = nil, seenAt: Date?? = nil,
+                         content: Content? = nil) -> Self
     {
-        Notification(id: id ?? self.id,
-                     createdAt: createdAt ?? self.createdAt,
-                     seenAt: seenAt ?? self.seenAt,
-                     content: content ?? self.content)
+        .init(id: id,
+              createdAt: createdAt ?? self.createdAt,
+              seenAt: seenAt ?? self.seenAt,
+              content: content ?? self.content)
     }
+}
+
+public extension Notification {
+    typealias Id = Tagged<Notification, Int>
 }
 
 extension Notification: Codable {
@@ -47,7 +52,7 @@ extension Notification: Codable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
+        id = try values.decode(Notification.Id.self, forKey: .id)
         createdAt = try values.decode(Date.self, forKey: .createdAt)
         seenAt = try values.decodeIfPresent(Date.self, forKey: .seenAt)
 
@@ -95,7 +100,7 @@ extension Notification: Codable {
 
 public extension Notification {
     struct CheckInTaggedProfiles: Identifiable, Codable {
-        public let id: Int
+        public let id: Notification.Id
         public let checkIn: CheckIn
 
         enum CodingKeys: String, CodingKey {
@@ -105,11 +110,11 @@ public extension Notification {
     }
 
     struct MarkReadRequest: Codable, Sendable {
-        public init(id: Int) {
+        public init(id: Notification.Id) {
             self.id = id
         }
 
-        public let id: Int
+        public let id: Notification.Id
 
         enum CodingKeys: String, CodingKey {
             case id = "p_notification_id"
@@ -117,11 +122,11 @@ public extension Notification {
     }
 
     struct MarkCheckInReadRequest: Codable, Sendable {
-        public init(checkInId: Int) {
+        public init(checkInId: CheckIn.Id) {
             self.checkInId = checkInId
         }
 
-        public let checkInId: Int
+        public let checkInId: CheckIn.Id
 
         enum CodingKeys: String, CodingKey {
             case checkInId = "p_check_in_id"

@@ -24,7 +24,16 @@ struct CompanyPickerSheet: View {
         }
     }
 
+    let filterCompanies: [Company]
     let onSelect: (_ company: Company) -> Void
+
+    init(
+        filterCompanies: [Company] = [],
+        onSelect: @escaping (_: Company) -> Void
+    ) {
+        self.filterCompanies = filterCompanies
+        self.onSelect = onSelect
+    }
 
     var showEmptyResults: Bool {
         !isLoading && searchResults.isEmpty && status == .searched && !searchTerm.isEmpty
@@ -113,7 +122,7 @@ struct CompanyPickerSheet: View {
     private func search(searchTerm: String) async {
         guard searchTerm.count > 1 else { return }
         do {
-            let searchResults = try await repository.company.search(searchTerm: searchTerm)
+            let searchResults = try await repository.company.search(filterCompanies: filterCompanies, searchTerm: searchTerm)
             self.searchResults = searchResults
             status = .searched
         } catch {

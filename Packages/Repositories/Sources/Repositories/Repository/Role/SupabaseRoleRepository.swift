@@ -17,16 +17,16 @@ struct SupabaseRoleRepository: RoleRepository {
         try await client
             .from(.profilesRoles)
             .delete()
-            .eq("profile_id", value: profile.id)
-            .eq("role_id", value: role.id)
+            .eq("profile_id", value: profile.id.rawValue)
+            .eq("role_id", value: role.id.rawValue)
             .execute()
             .value
     }
 
     func addProfileForProfile(profile: Profile, role: Role) async throws {
         struct AddPermissionRequest: Encodable {
-            let roleId: Int
-            let profileId: UUID
+            let roleId: Role.Id
+            let profileId: Profile.Id
 
             init(role: Role, profile: Profile) {
                 roleId = role.id

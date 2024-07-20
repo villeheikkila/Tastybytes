@@ -5,9 +5,9 @@ import SwiftUI
 public struct AvatarView: View {
     @Environment(\.avatarSize) private var avatarSize
     let avatarUrl: URL?
-    let id: UUID
+    let id: Profile.Id
 
-    public init(avatarUrl: URL? = nil, id: UUID) {
+    public init(avatarUrl: URL? = nil, id: Profile.Id) {
         self.avatarUrl = avatarUrl
         self.id = id
     }

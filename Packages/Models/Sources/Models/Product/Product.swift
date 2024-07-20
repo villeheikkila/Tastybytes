@@ -1,11 +1,12 @@
 import Foundation
+import Tagged
 
 public protocol ProductLogoProtocol {
     var logos: [ImageEntity] { get }
 }
 
 public protocol ProductProtocol: ProductLogoProtocol {
-    var id: Int { get }
+    var id: Product.Id { get }
     var name: String? { get }
     var description: String? { get }
     var isVerified: Bool { get }
@@ -16,7 +17,7 @@ public protocol ProductProtocol: ProductLogoProtocol {
 }
 
 public struct Product: Identifiable, Codable, Hashable, Sendable {
-    public let id: Int
+    public let id: Product.Id
     public let name: String?
     public let description: String?
     public let isVerified: Bool
@@ -34,8 +35,12 @@ public struct Product: Identifiable, Codable, Hashable, Sendable {
 }
 
 public extension Product {
+    typealias Id = Tagged<Product, Int>
+}
+
+public extension Product {
     struct DuplicateSuggestion: Codable, Hashable, Sendable, Identifiable, CreationInfo {
-        public let id: Int
+        public let id: Product.DuplicateSuggestion.Id
         public let createdAt: Date
         public let createdBy: Profile
         public let product: Product.Joined
@@ -55,7 +60,7 @@ public extension Product {
     struct SearchParams: Codable, Sendable {
         public let searchTerm: String
         public let categoryName: String?
-        public let subCategoryId: Int?
+        public let subCategoryId: Subcategory.Id?
         public let onlyNonCheckedIn: Bool
 
         enum CodingKeys: String, CodingKey {
@@ -87,7 +92,7 @@ public extension Product {
     }
 
     struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
-        public let id: Int
+        public let id: Product.EditSuggestion.Id
         public let product: Product.Joined
         public let createdAt: Date
         public let createdBy: Profile
@@ -130,7 +135,7 @@ public extension Product {
         }
 
         public struct SubcategoryEditSuggestion: Identifiable, Codable, Hashable, Sendable {
-            public let id: Int
+            public let id: Product.EditSuggestion.SubcategoryEditSuggestion.Id
             public let subcategory: Subcategory.JoinedCategory
             public let delete: Bool
 
@@ -139,16 +144,18 @@ public extension Product {
                 case subcategory = "subcategories"
                 case delete
             }
+            
+            public typealias Id = Tagged<SubcategoryEditSuggestion, Int>
         }
     }
 
     struct EditRequest: Codable, Sendable {
-        let productId: Int
+        let productId: Product.Id
         let name: String?
         let description: String?
-        let categoryId: Int
-        let subcategoryIds: [Int]
-        let subBrandId: Int
+        let categoryId: Category.Id
+        let subcategoryIds: [Subcategory.Id]
+        let subBrandId: SubBrand.Id
         let isDiscontinued: Bool
 
         enum CodingKeys: String, CodingKey {
@@ -162,11 +169,11 @@ public extension Product {
         }
 
         public init(
-            productId: Int,
+            productId: Product.Id,
             name: String?,
             description: String?,
-            categoryId: Int,
-            subBrandId: Int,
+            categoryId: Category.Id,
+            subBrandId: SubBrand.Id,
             subcategories: [Subcategory],
             isDiscontinued: Bool
         ) {
@@ -270,13 +277,13 @@ public extension Product {
     }
 
     struct MergeProductsParams: Codable, Sendable {
-        public init(productId: Int, toProductId: Int) {
+        public init(productId: Product.Id, toProductId: Product.Id) {
             self.productId = productId
             self.toProductId = toProductId
         }
 
-        public let productId: Int
-        public let toProductId: Int
+        public let productId: Product.Id
+        public let toProductId: Product.Id
 
         enum CodingKeys: String, CodingKey {
             case productId = "p_product_id", toProductId = "p_to_product_id"
@@ -286,10 +293,10 @@ public extension Product {
     struct NewRequest: Codable, Sendable {
         public let name: String?
         public let description: String?
-        public let categoryId: Int
-        public let brandId: Int
-        public let subCategoryIds: [Int]
-        public let subBrandId: Int?
+        public let categoryId: Category.Id
+        public let brandId: Brand.Id
+        public let subCategoryIds: [Subcategory.Id]
+        public let subBrandId: SubBrand.Id?
         public let barcodeCode: String?
         public let barcodeType: String?
         public let isDiscontinued: Bool
@@ -309,9 +316,9 @@ public extension Product {
         public init(
             name: String,
             description: String?,
-            categoryId: Int,
-            brandId: Int,
-            subBrandId: Int?,
+            categoryId: Category.Id,
+            brandId: Brand.Id,
+            subBrandId: SubBrand.Id?,
             subcategories: [Subcategory],
             isDiscontinued: Bool,
             barcode: BarcodeProtocol?
@@ -335,13 +342,13 @@ public extension Product {
     }
 
     struct DuplicateRequest: Codable, Sendable {
-        public init(productId: Int, duplicateOfProductId: Int) {
+        public init(productId: Product.Id, duplicateOfProductId: Product.Id) {
             self.productId = productId
             self.duplicateOfProductId = duplicateOfProductId
         }
 
-        public let productId: Int
-        public let duplicateOfProductId: Int
+        public let productId: Product.Id
+        public let duplicateOfProductId: Product.Id
 
         enum CodingKeys: String, CodingKey {
             case productId = "product_id"
@@ -350,11 +357,11 @@ public extension Product {
     }
 
     struct SummaryRequest: Codable, Sendable {
-        public init(id: Int) {
+        public init(id: Product.Id) {
             self.id = id
         }
 
-        public let id: Int
+        public let id: Product.Id
 
         enum CodingKeys: String, CodingKey {
             case id = "p_product_id"
@@ -362,12 +369,12 @@ public extension Product {
     }
 
     struct VerifyRequest: Codable, Sendable {
-        public init(id: Int, isVerified: Bool) {
+        public init(id: Product.Id, isVerified: Bool) {
             self.id = id
             self.isVerified = isVerified
         }
 
-        public let id: Int
+        public let id: Product.Id
         public let isVerified: Bool
 
         enum CodingKeys: String, CodingKey {
@@ -391,7 +398,7 @@ public extension Product {
     }
 
     struct Joined: Identifiable, Hashable, Codable, Sendable, ProductProtocol {
-        public let id: Int
+        public let id: Product.Id
         public let name: String?
         public let description: String?
         public let isVerified: Bool
@@ -428,7 +435,7 @@ public extension Product {
         }
 
         public init(
-            id: Int,
+            id: Product.Id,
             name: String?,
             description: String?,
             isVerified: Bool,
@@ -558,7 +565,7 @@ public extension Product {
     }
 
     struct Detailed: Identifiable, Hashable, Decodable, Sendable, ModificationInfo, ProductProtocol {
-        public let id: Int
+        public let id: Product.Id
         public let name: String?
         public let description: String?
         public let isVerified: Bool
@@ -660,15 +667,15 @@ public extension Product {
     }
 
     struct EditSuggestionRequest: Codable, Sendable {
-        public let id: Int?
+        public let id: Product.Id?
         public let name: String?
         public let description: String?
-        public let subBrandId: Int?
-        public let categoryId: Int?
+        public let subBrandId: SubBrand.Id?
+        public let categoryId: Category.Id?
         public let isDiscontinued: Bool?
 
         public init(
-            id: Int?,
+            id: Product.Id?,
             name: String?,
             description: String?,
             subBrand: SubBrandProtocol?,
@@ -684,11 +691,11 @@ public extension Product {
         }
 
         public init(
-            id: Int? = nil,
+            id: Product.Id? = nil,
             name: String? = nil,
             description: String? = nil,
-            subBrandId: Int? = nil,
-            categoryId: Int? = nil,
+            subBrandId: SubBrand.Id? = nil,
+            categoryId: Category.Id? = nil,
             isDiscontinued: Bool? = nil
         ) {
             self.id = id
@@ -724,7 +731,7 @@ public extension Product {
     }
 
     struct JoinedCategory: Identifiable, Codable, Hashable, Sendable {
-        public let id: Int
+        public let id: Product.Id
         public let name: String?
         public let description: String?
         public let isVerified: Bool
@@ -745,7 +752,7 @@ public extension Product {
         }
 
         public init(
-            id: Int,
+            id: Product.Id,
             name: String?,
             description: String?,
             isVerified: Bool,

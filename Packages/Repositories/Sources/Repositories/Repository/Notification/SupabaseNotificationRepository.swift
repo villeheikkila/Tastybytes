@@ -4,11 +4,11 @@ internal import Supabase
 struct SupabaseNotificationRepository: NotificationRepository {
     let client: SupabaseClient
 
-    func getAll(afterId: Int? = nil) async throws -> [Models.Notification] {
+    func getAll(afterId: Notification.Id? = nil) async throws -> [Models.Notification] {
         try await client
             .from(.notifications)
             .select(Notification.getQuery(.joined))
-            .gt("id", value: afterId ?? 0)
+            .gt("id", value: afterId?.rawValue ?? 0)
             .order("id", ascending: false)
             .execute()
             .value
@@ -46,7 +46,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .value
     }
 
-    func markRead(id: Int) async throws -> Notification {
+    func markRead(id: Notification.Id) async throws -> Notification {
         try await client
             .rpc(fn: .markNotificationAsRead, params: Notification.MarkReadRequest(id: id))
             .select(Notification.getQuery(.joined))
@@ -72,7 +72,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .value
     }
 
-    func markAllCheckInNotificationsAsRead(checkInId: Int) async throws -> [Models.Notification] {
+    func markAllCheckInNotificationsAsRead(checkInId: CheckIn.Id) async throws -> [Models.Notification] {
         try await client
             .rpc(
                 fn: .markCheckInNotificationAsRead,
@@ -83,11 +83,11 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .value
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Notification.Id) async throws {
         try await client
             .from(.notifications)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 

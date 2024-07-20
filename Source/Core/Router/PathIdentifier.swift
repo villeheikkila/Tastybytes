@@ -39,22 +39,22 @@ struct DeepLinkHandler {
 
         switch pathIdentifier {
         case .products:
-            guard let id = Int(path) else { return nil }
+            guard let id = Product.Id(path) else { return nil }
             return .product(id: id)
         case .checkins:
-            guard let id = Int(path) else { return nil }
+            guard let id = CheckIn.Id(path) else { return nil }
             return .checkIn(id: id)
         case .profiles:
-            guard let uuid = UUID(uuidString: path) else { return nil }
+            guard let uuid = Profile.Id(uuidString: path) else { return nil }
             return .profile(id: uuid)
         case .brands:
-            guard let id = Int(path) else { return nil }
+            guard let id = Brand.Id(path) else { return nil }
             return .brand(id: id)
         case .companies:
-            guard let id = Int(path) else { return nil }
+            guard let id = Company.Id(path) else { return nil }
             return .company(id: id)
         case .locations:
-            guard let id = UUID(uuidString: path) else { return nil }
+            guard let id = Location.Id(uuidString: path) else { return nil }
             return .location(id: id)
         }
     }

@@ -8,8 +8,8 @@ enum Sheet: Identifiable, Equatable {
     case checkIn(CheckInSheet.Action)
     case barcodeScanner(onComplete: (_ barcode: Barcode) async -> Void)
     case productFilter(initialFilter: Product.Filter?, sections: [ProductFilterSheet.Sections], onApply: (_ filter: Product.Filter?) -> Void)
-    case nameTag(onSuccess: (_ profileId: UUID) -> Void)
-    case companyPicker(onSelect: (_ company: Company) -> Void)
+    case nameTag(onSuccess: (_ profileId: Profile.Id) -> Void)
+    case companyPicker(filterCompanies: [Company] = [], onSelect: (_ company: Company) -> Void)
     case brandPicker(brandOwner: Company, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandPickerSheet.Mode)
     case subcategoryPicker(subcategories: Binding<[Subcategory]>, category: Models.Category.JoinedSubcategoriesServingStyles)
     case subBrandPicker(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
@@ -68,8 +68,8 @@ enum Sheet: Identifiable, Equatable {
             SubBrandPickerSheet(subBrand: subBrand, brandWithSubBrands: brandWithSubBrands)
         case let .subcategoryPicker(subcategories, category):
             SubcategoryPickerSheet(subcategories: subcategories, category: category)
-        case let .companyPicker(onSelect):
-            CompanyPickerSheet(onSelect: onSelect)
+        case let .companyPicker(filterCompanies, onSelect):
+            CompanyPickerSheet(filterCompanies: filterCompanies, onSelect: onSelect)
         case let .product(mode):
             ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):

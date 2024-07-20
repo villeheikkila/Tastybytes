@@ -16,7 +16,7 @@ struct ProductAdminSheet: View {
     @State private var logos: [ImageEntity] = []
     @State private var product: Product.Detailed?
 
-    let id: Int
+    let id: Product.Id
 
     init(
         product: ProductProtocol,
@@ -62,7 +62,7 @@ struct ProductAdminSheet: View {
         .customListRowBackground()
         ModificationInfoView(modificationInfo: product)
         Section("admin.section.details") {
-            LabeledIdView(id: product.id.formatted())
+            LabeledIdView(id: product.id.rawValue.formatted())
             VerificationAdminToggleView(isVerified: product.isVerified, action: verifyProduct)
         }
         .customListRowBackground()
@@ -191,7 +191,7 @@ struct ProductVariantsScreen: View {
 
     var body: some View {
         List(variants) { variant in
-            Text(variant.id.formatted())
+            Text(variant.id.rawValue.formatted())
         }
         .navigationTitle("product.admin.variants.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)

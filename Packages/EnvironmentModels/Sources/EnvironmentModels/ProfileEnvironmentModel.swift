@@ -109,7 +109,7 @@ public final class ProfileEnvironmentModel {
         }
     }
 
-    public var id: UUID {
+    public var id: Profile.Id {
         if let extendedProfile {
             extendedProfile.id
         } else {

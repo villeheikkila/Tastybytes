@@ -1,10 +1,12 @@
+import Tagged
+
 public struct ServingStyle: Identifiable, Hashable, Codable, Sendable {
-    public init(id: Int, name: String) {
+    public init(id: ServingStyle.Id, name: String) {
         self.id = id
         self.name = name
     }
 
-    public let id: Int
+    public let id: ServingStyle.Id
     public let name: String
 
     public var label: String {
@@ -25,13 +27,17 @@ public struct ServingStyle: Identifiable, Hashable, Codable, Sendable {
 }
 
 public extension ServingStyle {
+    typealias Id = Tagged<ServingStyle, Int>
+}
+
+public extension ServingStyle {
     struct UpdateRequest: Codable, Sendable {
-        public init(id: Int, name: String) {
+        public init(id: ServingStyle.Id, name: String) {
             self.id = id
             self.name = name
         }
 
-        public let id: Int
+        public let id: ServingStyle.Id
         public let name: String
     }
 

@@ -42,7 +42,7 @@ struct CheckInImageAdminSheet: View {
         .customListRowBackground()
         CreationInfoSection(createdBy: checkIn.profile, createdAt: imageEntity.createdAt)
         Section("admin.section.details") {
-            LabeledIdView(id: imageEntity.id.formatted())
+            LabeledIdView(id: imageEntity.id.rawValue.formatted())
             if let imageDetails {
                 LabeledContent("labels.width", value: imageDetails.size.width.formatted())
                 LabeledContent("labels.height", value: imageDetails.size.height.formatted())

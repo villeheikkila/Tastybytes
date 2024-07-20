@@ -14,22 +14,22 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
             .value
     }
 
-    func getDetailed(id: Int) async throws -> Subcategory.Detailed {
+    func getDetailed(id: Subcategory.Id) async throws -> Subcategory.Detailed {
         try await client
             .from(.subcategories)
             .select(Subcategory.getQuery(.detailed(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Subcategory.Id) async throws {
         try await client
             .from(.subcategories)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
@@ -37,11 +37,11 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
         try await client
             .from(.subcategories)
             .update(updateRequest)
-            .eq("id", value: updateRequest.id)
+            .eq("id", value: updateRequest.id.rawValue)
             .execute()
     }
 
-    func verification(id: Int, isVerified: Bool) async throws {
+    func verification(id: Subcategory.Id, isVerified: Bool) async throws {
         try await client
             .rpc(fn: .verifySubcategory, params: Subcategory.VerifyRequest(id: id, isVerified: isVerified))
             .single()

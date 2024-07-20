@@ -1,6 +1,8 @@
+import Tagged
+
 public extension Product {
     struct Variant: Identifiable, Codable, Hashable, Sendable {
-        public let id: Int
+        public let id: Product.Variant.Id
         public let manufacturer: Company
 
         enum CodingKeys: String, CodingKey {
@@ -8,4 +10,8 @@ public extension Product {
             case manufacturer = "companies"
         }
     }
+}
+
+public extension Product.Variant {
+    typealias Id = Tagged<Product.Variant, Int>
 }

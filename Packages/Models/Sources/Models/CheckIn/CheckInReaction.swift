@@ -1,5 +1,7 @@
+import Tagged
+
 public struct CheckInReaction: Identifiable, Codable, Hashable, Sendable {
-    public let id: Int
+    public let id: CheckInReaction.Id
     public let profile: Profile
 
     enum CodingKeys: String, CodingKey {
@@ -9,8 +11,12 @@ public struct CheckInReaction: Identifiable, Codable, Hashable, Sendable {
 }
 
 public extension CheckInReaction {
+    typealias Id = Tagged<CheckInReaction, Int>
+}
+
+public extension CheckInReaction {
     struct JoinedCheckIn: Identifiable, Hashable, Codable, Sendable {
-        public let id: Int
+        public let id: CheckInReaction.Id
         public let profile: Profile
         public let checkIn: CheckIn
 
@@ -24,11 +30,11 @@ public extension CheckInReaction {
 
 public extension CheckInReaction {
     struct NewRequest: Codable, Sendable {
-        public init(checkInId: Int) {
+        public init(checkInId: CheckIn.Id) {
             self.checkInId = checkInId
         }
 
-        public let checkInId: Int
+        public let checkInId: CheckIn.Id
 
         enum CodingKeys: String, CodingKey {
             case checkInId = "p_check_in_id"
@@ -36,11 +42,11 @@ public extension CheckInReaction {
     }
 
     struct DeleteRequest: Codable, Sendable {
-        public init(id: Int) {
+        public init(id: CheckInReaction.Id) {
             self.id = id
         }
 
-        public let id: Int
+        public let id: CheckInReaction.Id
 
         enum CodingKeys: String, CodingKey {
             case id = "p_check_in_reaction_id"

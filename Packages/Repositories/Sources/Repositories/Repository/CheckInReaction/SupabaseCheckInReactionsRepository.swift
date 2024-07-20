@@ -14,7 +14,7 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
             .value
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: CheckInReaction.Id) async throws {
         try await client
             .rpc(fn: .softDeleteCheckInReaction, params: CheckInReaction.DeleteRequest(id: id))
             .execute()

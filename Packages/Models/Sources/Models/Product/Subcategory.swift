@@ -1,14 +1,15 @@
 import Extensions
 import Foundation
+import Tagged
 
 public protocol SubcategoryProtocol {
-    var id: Int { get }
+    var id: Subcategory.Id { get }
     var name: String { get }
     var isVerified: Bool { get }
 }
 
 public struct Subcategory: Identifiable, Codable, Hashable, Sendable, SubcategoryProtocol, Comparable {
-    public init(id: Int, name: String, isVerified: Bool) {
+    public init(id: Subcategory.Id, name: String, isVerified: Bool) {
         self.id = id
         self.name = name
         self.isVerified = isVerified
@@ -20,7 +21,7 @@ public struct Subcategory: Identifiable, Codable, Hashable, Sendable, Subcategor
         isVerified = subcategory.isVerified
     }
 
-    public let id: Int
+    public let id: Subcategory.Id
     public let name: String
     public let isVerified: Bool
 
@@ -44,13 +45,17 @@ public struct Subcategory: Identifiable, Codable, Hashable, Sendable, Subcategor
 }
 
 public extension Subcategory {
+    typealias Id = Tagged<Subcategory, Int>
+}
+
+public extension Subcategory {
     struct JoinedCategory: Identifiable, Hashable, Codable, Sendable, SubcategoryProtocol {
-        public let id: Int
+        public let id: Subcategory.Id
         public let name: String
         public let isVerified: Bool
         public let category: Category
 
-        public init(id: Int, name: String, isVerified: Bool, category: Category) {
+        public init(id: Subcategory.Id, name: String, isVerified: Bool, category: Category) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -90,7 +95,7 @@ public extension Subcategory {
     }
 
     struct Detailed: Identifiable, Hashable, Codable, Sendable, SubcategoryProtocol, ModificationInfo {
-        public let id: Int
+        public let id: Subcategory.Id
         public let name: String
         public let isVerified: Bool
         public let category: Category
@@ -132,7 +137,7 @@ public extension Subcategory {
 public extension Subcategory {
     struct NewRequest: Codable, Sendable {
         public let name: String
-        public let categoryId: Int
+        public let categoryId: Category.Id
 
         enum CodingKeys: String, CodingKey {
             case name, categoryId = "category_id"
@@ -145,12 +150,12 @@ public extension Subcategory {
     }
 
     struct VerifyRequest: Codable, Sendable {
-        public init(id: Int, isVerified: Bool) {
+        public init(id: Subcategory.Id, isVerified: Bool) {
             self.id = id
             self.isVerified = isVerified
         }
 
-        public let id: Int
+        public let id: Subcategory.Id
         public let isVerified: Bool
 
         enum CodingKeys: String, CodingKey {
@@ -160,14 +165,14 @@ public extension Subcategory {
     }
 
     struct UpdateRequest: Codable, Sendable {
-        public let id: Int
+        public let id: Subcategory.Id
         public let name: String
 
         enum CodingKeys: String, CodingKey {
             case id, name
         }
 
-        public init(id: Int, name: String) {
+        public init(id: Subcategory.Id, name: String) {
             self.id = id
             self.name = name
         }

@@ -30,7 +30,7 @@ struct BrandScreen: View {
     }
 
     init(
-        brandId: Int,
+        brandId: Brand.Id,
         initialScrollPosition: SubBrand.JoinedBrand? = nil
     ) {
         // fake data
@@ -263,7 +263,7 @@ struct BrandScreen: View {
 }
 
 private struct ProductsByCategory: Identifiable {
-    var id: Int {
+    var id: Models.Category.Id {
         category.id
     }
 

@@ -4,11 +4,11 @@ internal import Supabase
 struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
     let client: SupabaseClient
 
-    func getByProductId(id: Int) async throws -> [Product.Barcode.JoinedWithCreator] {
+    func getByProductId(id: Product.Barcode.Id) async throws -> [Product.Barcode.JoinedWithCreator] {
         try await client
             .from(.productBarcodes)
             .select(Product.Barcode.getQuery(.joinedCreator(false)))
-            .eq("product_id", value: id)
+            .eq("product_id", value: id.rawValue)
             .execute()
             .value
     }
@@ -23,11 +23,11 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
             .value
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Product.Barcode.Id) async throws {
         try await client
             .from(.productBarcodes)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 }

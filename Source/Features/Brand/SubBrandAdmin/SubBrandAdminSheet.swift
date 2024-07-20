@@ -20,7 +20,7 @@ struct SubBrandAdminSheet: View {
     @State private var newSubBrandName: String
     @State private var includesBrandName: Bool
     @State private var subBrand: SubBrand.Detailed?
-    @State private var id: Int
+    @State private var id: SubBrand.Id
 
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
 
@@ -95,7 +95,7 @@ struct SubBrandAdminSheet: View {
             .customListRowBackground()
         }
         Section("labels.info") {
-            LabeledIdView(id: subBrand.id.formatted())
+            LabeledIdView(id: subBrand.id.rawValue.formatted())
             LabeledContent("brand.admin.product.count", value: subBrand.products.count.formatted())
             VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
         }
@@ -132,7 +132,7 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    private func loadData(id: Int) async {
+    private func loadData(id: SubBrand.Id) async {
         state = .loading
         do {
             subBrand = try await repository.subBrand.getDetailed(id: id)
@@ -164,8 +164,9 @@ struct SubBrandAdminSheet: View {
 
     private func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
         do {
-            try await repository.subBrand
-                .update(updateRequest: .brand(.init(id: id, brandId: mergeTo.id)))
+            // TODO: This is completely wrong
+            // try await repository.subBrand
+            //    .update(updateRequest: .brand(.init(id: id, brandId: mergeTo.id)))
             withAnimation {
                 brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(id))
             }

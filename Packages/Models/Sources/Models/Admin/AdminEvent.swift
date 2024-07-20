@@ -1,4 +1,5 @@
 import Foundation
+import Tagged
 
 public enum AdminEventError: Error {
     case unknownEntity
@@ -19,7 +20,7 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
         case report(Report)
     }
 
-    public let id: Int
+    public let id: AdminEvent.Id
     public let reviewedAt: Date?
     public let reviewedBy: Profile?
     public let createdAt: Date
@@ -46,7 +47,7 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        id = try container.decode(Int.self, forKey: .id)
+        id = try container.decode(AdminEvent.Id.self, forKey: .id)
         createdAt = try container.decode(Date.self, forKey: .createdAt)
         reviewedAt = try container.decodeIfPresent(Date.self, forKey: .reviewedAt)
         reviewedBy = try container.decodeIfPresent(Profile.self, forKey: .reviewedBy)
@@ -92,4 +93,8 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
             throw AdminEventError.unknownEntity
         }
     }
+}
+
+public extension AdminEvent {
+    typealias Id = Tagged<AdminEvent, Int>
 }

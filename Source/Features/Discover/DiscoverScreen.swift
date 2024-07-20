@@ -277,7 +277,7 @@ struct DiscoverScreen: View {
                 }
             case .companies:
                 do {
-                    let searchResults = try await repository.company.search(searchTerm: searchTerm)
+                    let searchResults = try await repository.company.search(filterCompanies: [], searchTerm: searchTerm)
                     withAnimation {
                         companies = searchResults
                         searchResultKey = searchKey

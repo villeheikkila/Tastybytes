@@ -15,7 +15,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         case let .paginated(from, to):
             partialQuery.range(from: from, to: to)
         case let .afterId(id):
-            partialQuery.gt("id", value: id)
+            partialQuery.gt("id", value: id.rawValue)
         }
 
         return try await range
@@ -24,7 +24,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getByProfileId(id: UUID, queryType: CheckInQueryType) async throws -> [CheckIn] {
+    func getByProfileId(id: Profile.Id, queryType: CheckInQueryType) async throws -> [CheckIn] {
         let queryBuilder = client
             .from(.checkIns)
             .select(CheckIn.getQuery(.joined(false)))
@@ -36,7 +36,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             filter.gte("check_in_at", value: dateRange.lowerBound.formatted(.iso8601))
                 .lte("check_in_at", value: dateRange.upperBound.formatted(.iso8601))
         } else if case let .location(_, _, location) = queryType {
-            filter.eq("location_id", value: location.id)
+            filter.eq("location_id", value: location.id.rawValue)
         } else {
             filter
         }
@@ -58,22 +58,22 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getByProductId(id: Int, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn] {
+    func getByProductId(id: Product.Id, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn] {
         try await client
             .from(segment.table)
             .select(CheckIn.getQuery(.joined(false)))
-            .eq("product_id", value: id)
+            .eq("product_id", value: id.rawValue)
             .order("created_at", ascending: false)
             .range(from: from, to: to)
             .execute()
             .value
     }
 
-    func getCheckInImages(id: UUID, from: Int, to: Int) async throws -> [ImageEntity.JoinedCheckIn] {
+    func getCheckInImages(id: Profile.Id, from: Int, to: Int) async throws -> [ImageEntity.JoinedCheckIn] {
         try await client
             .from(.checkInImages)
             .select(CheckIn.getQuery(.image(false)))
-            .eq("created_by", value: id)
+            .eq("created_by", value: id.rawValue)
             .order("created_at", ascending: false)
             .range(from: from, to: to)
             .execute()
@@ -91,22 +91,22 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getByLocation(locationId: UUID, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn] {
+    func getByLocation(locationId: Location.Id, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn] {
         try await client
             .from(segment.table)
             .select(CheckIn.getQuery(.joined(false)))
-            .eq("location_id", value: locationId.uuidString)
+            .eq("location_id", value: locationId.rawValue)
             .order("created_at", ascending: false)
             .range(from: from, to: to)
             .execute()
             .value
     }
 
-    func getById(id: Int) async throws -> CheckIn {
+    func getById(id: CheckIn.Id) async throws -> CheckIn {
         try await client
             .from(.checkIns)
             .select(CheckIn.getQuery(.joined(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
@@ -114,9 +114,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
     }
 
     func create(newCheckInParams: CheckIn.NewRequest) async throws -> CheckIn {
-        let createdCheckIn: IntId = try await client
+        let createdCheckIn: CheckIn = try await client
             .rpc(fn: .createCheckIn, params: newCheckInParams)
-            .select("id")
+            .select(CheckIn.getQuery(.joined(false)))
             .limit(1)
             .single()
             .execute()
@@ -135,11 +135,11 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: CheckIn.Id) async throws {
         try await client
             .from(.checkIns)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
@@ -149,7 +149,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .execute()
     }
 
-    func getSummaryByProfileId(id: UUID) async throws -> ProfileSummary {
+    func getSummaryByProfileId(id: Profile.Id) async throws -> ProfileSummary {
         try await client
             .rpc(fn: .getProfileSummary, params: ProfileSummary.GetRequest(profileId: id))
             .select()
@@ -159,7 +159,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func uploadImage(id: Int, data: Data, userId: UUID, blurHash: String?) async throws -> ImageEntity {
+    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?) async throws -> ImageEntity {
         let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
         let path = "\(userId.uuidString.lowercased())/\(fileName)"
 

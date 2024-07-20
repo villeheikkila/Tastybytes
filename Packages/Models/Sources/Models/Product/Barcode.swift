@@ -1,5 +1,6 @@
 import Extensions
 import Foundation
+import Tagged
 
 public protocol BarcodeProtocol {
     var barcode: String { get }
@@ -36,7 +37,7 @@ public extension Product {
             case id, barcode, type
         }
 
-        public let id: Int
+        public let id: Product.Barcode.Id
         public let barcode: String
         public let type: String
 
@@ -49,6 +50,10 @@ public extension Product {
 }
 
 public extension Product.Barcode {
+    typealias Id = Tagged<Product.Barcode, Int>
+}
+
+public extension Product.Barcode {
     struct NewRequest: Codable, Sendable {
         enum CodingKeys: String, CodingKey {
             case barcode, type, productId = "product_id"
@@ -56,7 +61,7 @@ public extension Product.Barcode {
 
         public let barcode: String
         public let type: String
-        public let productId: Int
+        public let productId: Product.Id
 
         public init(product: ProductProtocol, barcode: Barcode) {
             productId = product.id
@@ -66,7 +71,7 @@ public extension Product.Barcode {
     }
 
     struct JoinedWithCreator: Identifiable, Hashable, Codable, Sendable, BarcodeProtocol {
-        public let id: Int
+        public let id: Product.Barcode.Id
         public let barcode: String
         public let type: String
         public let profile: Profile
@@ -78,7 +83,7 @@ public extension Product.Barcode {
     }
 
     struct Joined: Identifiable, Hashable, Codable, Sendable {
-        public let id: Int
+        public let id: Product.Barcode.Id
         public let barcode: String
         public let type: String
         public let product: Product.Joined

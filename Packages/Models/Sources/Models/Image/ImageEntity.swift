@@ -1,13 +1,14 @@
 import Foundation
+import Tagged
 
 public struct ImageEntity: Codable, Hashable, Sendable, Identifiable {
-    public let id: Int
+    public let id: ImageEntity.Id
     public let file: String
     public let bucket: String
     public let blurHash: BlurHash?
     public let createdAt: Date
 
-    public init(id: Int, file: String, bucket: String, blurHash: BlurHash?, createdAt: Date) {
+    public init(id: ImageEntity.Id, file: String, bucket: String, blurHash: BlurHash?, createdAt: Date) {
         self.id = id
         self.file = file
         self.bucket = bucket
@@ -29,8 +30,12 @@ public struct ImageEntity: Codable, Hashable, Sendable, Identifiable {
 }
 
 public extension ImageEntity {
+    typealias Id = Tagged<ImageEntity, Int>
+}
+
+public extension ImageEntity {
     struct JoinedCheckIn: Codable, Hashable, Sendable, Identifiable {
-        public let id: Int
+        public let id: ImageEntity.Id
         public let file: String
         public let bucket: String
         public let blurHash: BlurHash?

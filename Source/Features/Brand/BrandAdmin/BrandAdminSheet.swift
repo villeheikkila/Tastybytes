@@ -22,7 +22,7 @@ struct BrandAdminSheet: View {
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
 
-    let id: Int
+    let id: Brand.Id
 
     let onUpdate: BrandUpdateCallback
     let onDelete: BrandUpdateCallback
@@ -100,7 +100,7 @@ struct BrandAdminSheet: View {
         .customListRowBackground()
         EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
         Section("labels.info") {
-            LabeledIdView(id: brand.id.formatted())
+            LabeledIdView(id: brand.id.rawValue.formatted())
             LabeledContent("brand.admin.subBrand.count", value: brand.subBrands.count.formatted())
             LabeledContent("brand.admin.products.count", value: brand.subBrands.reduce(0) { result, subBrand in
                 result + subBrand.products.count

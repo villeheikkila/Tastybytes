@@ -22,11 +22,11 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
             .value
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: ServingStyle.Id) async throws {
         try await client
             .from(.servingStyles)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 

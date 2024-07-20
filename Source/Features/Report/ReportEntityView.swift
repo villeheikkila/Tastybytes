@@ -43,7 +43,7 @@ extension Report.Entity {
         case let .checkIn(checkIn):
             .screen(.checkIn(checkIn))
         case let .comment(comment):
-            .navigatablePath(.company(id: comment.id))
+            .navigatablePath(.checkIn(id: comment.checkIn.id))
         case let .checkInImage(imageEntity):
             .navigatablePath(.checkIn(id: imageEntity.checkIn.id))
         case let .profile(profile):

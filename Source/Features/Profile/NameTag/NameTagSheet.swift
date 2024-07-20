@@ -9,7 +9,7 @@ struct NameTagSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showNameTagScanner = false
 
-    let onSuccess: (_ profileId: UUID) -> Void
+    let onSuccess: (_ profileId: Profile.Id) -> Void
 
     var body: some View {
         VStack(spacing: 20) {
@@ -27,7 +27,7 @@ struct NameTagSheet: View {
                     DataScannerViewRepresentable(recognizedDataTypes: [.barcode(symbologies: [.qr])]) { data in
                         if case let .barcode(foundBarcode) = data, let qrCode = foundBarcode.payloadStringValue {
                             let string = qrCode.components(separatedBy: "/").last
-                            if let string, let profileId = UUID(uuidString: string) {
+                            if let string, let profileId = Profile.Id(uuidString: string) {
                                 dismiss()
                                 onSuccess(profileId)
                             }

@@ -14,29 +14,29 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func getById(id: UUID) async throws -> Location {
+    func getById(id: Location.Id) async throws -> Location {
         try await client
             .from(.locations)
             .select(Location.getQuery(.joined(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func getDetailed(id: UUID) async throws -> Location {
+    func getDetailed(id: Location.Id) async throws -> Location {
         try await client
             .from(.locations)
             .select(Location.getQuery(.detailed(false)))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func getCheckInLocations(userId _: UUID) async throws -> [Location] {
+    func getCheckInLocations(userId _: Profile.Id) async throws -> [Location] {
         try await client
             .from(.viewRecentLocationsFromCurrentUser)
             .select(Location.getQuery(.joined(false)))
@@ -72,11 +72,11 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func delete(id: UUID) async throws {
+    func delete(id: Location.Id) async throws {
         try await client
             .from(.locations)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
@@ -89,7 +89,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func getSummaryById(id: UUID) async throws -> Summary {
+    func getSummaryById(id: Location.Id) async throws -> Summary {
         try await client
             .rpc(fn: .getLocationSummary, params: Location.SummaryRequest(id: id))
             .select()
@@ -99,7 +99,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func mergeLocations(locationId: UUID, toLocationId: UUID) async throws {
+    func mergeLocations(locationId: Location.Id, toLocationId: Location.Id) async throws {
         try await client
             .rpc(
                 fn: .mergeLocations,

@@ -2,13 +2,13 @@ import Foundation
 import OSLog
 
 public enum NavigatablePath: Sendable {
-    case product(id: Int)
-    case productWithBarcode(id: Int, barcode: Barcode)
-    case checkIn(id: Int)
-    case company(id: Int)
-    case profile(id: UUID)
-    case location(id: UUID)
-    case brand(id: Int)
+    case product(id: Product.Id)
+    case productWithBarcode(id: Product.Id, barcode: Barcode)
+    case checkIn(id: CheckIn.Id)
+    case company(id: Company.Id)
+    case profile(id: Profile.Id)
+    case location(id: Location.Id)
+    case brand(id: Brand.Id)
 
     private var path: String {
         switch self {

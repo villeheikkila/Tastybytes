@@ -114,6 +114,6 @@ struct ProductEditSuggestionEntityView: View {
     let editSuggestion: Product.EditSuggestion
 
     var body: some View {
-        Text(editSuggestion.id.formatted())
+        Text(editSuggestion.id.rawValue.formatted())
     }
 }

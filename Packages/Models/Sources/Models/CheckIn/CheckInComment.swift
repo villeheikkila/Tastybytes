@@ -1,14 +1,15 @@
 import Foundation
+import Tagged
 
 public protocol CheckInCommentProtocol {
-    var id: Int { get }
+    var id: CheckInComment.Id { get }
     var content: String { get }
     var createdAt: Date { get }
     var profile: Profile { get }
 }
 
 public struct CheckInComment: Identifiable, Hashable, Codable, Sendable, CheckInCommentProtocol {
-    public let id: Int
+    public let id: CheckInComment.Id
     public let content: String
     public let createdAt: Date
     public let profile: Profile
@@ -22,8 +23,12 @@ public struct CheckInComment: Identifiable, Hashable, Codable, Sendable, CheckIn
 }
 
 public extension CheckInComment {
+    typealias Id = Tagged<CheckInComment, Int>
+}
+
+public extension CheckInComment {
     struct Joined: Identifiable, Hashable, Codable, Sendable, CheckInCommentProtocol {
-        public let id: Int
+        public let id: CheckInComment.Id
         public let content: String
         public let createdAt: Date
         public let profile: Profile
@@ -47,13 +52,13 @@ public extension CheckInComment {
     }
 
     struct NewRequest: Codable, Sendable {
-        public init(content: String, checkInId: Int) {
+        public init(content: String, checkInId: CheckIn.Id) {
             self.content = content
             self.checkInId = checkInId
         }
 
         public let content: String
-        public let checkInId: Int
+        public let checkInId: CheckIn.Id
 
         enum CodingKeys: String, CodingKey {
             case content, checkInId = "check_in_id"
@@ -61,11 +66,11 @@ public extension CheckInComment {
     }
 
     struct DeleteAsAdminRequest: Codable, Sendable {
-        public init(id: Int) {
+        public init(id: CheckInComment.Id) {
             self.id = id
         }
 
-        public let id: Int
+        public let id: CheckInComment.Id
 
         public init(comment: CheckInComment) {
             id = comment.id
@@ -77,12 +82,12 @@ public extension CheckInComment {
     }
 
     struct UpdateRequest: Codable, Sendable {
-        public init(id: Int, content: String) {
+        public init(id: CheckInComment.Id, content: String) {
             self.id = id
             self.content = content
         }
 
-        public let id: Int
+        public let id: CheckInComment.Id
         public let content: String
     }
 }

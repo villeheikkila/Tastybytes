@@ -35,7 +35,7 @@ struct CheckInCommentAdminSheet: View {
         .customListRowBackground()
         CreationInfoSection(createdBy: comment.profile, createdAt: comment.createdAt)
         Section("admin.section.details") {
-            LabeledIdView(id: comment.id.formatted())
+            LabeledIdView(id: comment.id.rawValue.formatted())
         }
         .customListRowBackground()
         Section {

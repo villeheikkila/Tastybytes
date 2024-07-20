@@ -42,7 +42,7 @@ public extension ProfileSummary {
             case profileId = "p_uid"
         }
 
-        public init(profileId: UUID) {
+        public init(profileId: Profile.Id) {
             self.profileId = profileId.uuidString
         }
     }

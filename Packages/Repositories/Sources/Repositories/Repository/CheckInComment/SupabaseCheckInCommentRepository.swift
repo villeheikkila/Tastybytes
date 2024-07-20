@@ -19,28 +19,28 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         try await client
             .from(.checkInComments)
             .update(updateCheckInComment, returning: .representation)
-            .eq("id", value: updateCheckInComment.id)
+            .eq("id", value: updateCheckInComment.id.rawValue)
             .select(CheckInComment.getQuery(.joinedProfile(false)))
             .single()
             .execute()
             .value
     }
 
-    func getByCheckInId(id: Int) async throws -> [CheckInComment] {
+    func getByCheckInId(id: CheckIn.Id) async throws -> [CheckInComment] {
         try await client
             .from(.checkInComments)
             .select(CheckInComment.getQuery(.joinedProfile(false)))
-            .eq("check_in_id", value: id)
+            .eq("check_in_id", value: id.rawValue)
             .order("created_at", ascending: false)
             .execute()
             .value
     }
 
-    func deleteById(id: Int) async throws {
+    func deleteById(id: CheckInComment.Id) async throws {
         try await client
             .from(.checkInComments)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 

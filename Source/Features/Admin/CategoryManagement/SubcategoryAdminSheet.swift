@@ -15,7 +15,7 @@ struct SubcategoryAdminSheet: View {
     @State private var category: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var subcategory: Subcategory.Detailed?
 
-    let id: Int
+    let id: Subcategory.Id
     let onSubmit: (_ subcategoryName: String) async -> Void
 
     init(subcategory: SubcategoryProtocol, onSubmit: @escaping (_ subcategoryName: String) async -> Void) {
@@ -66,7 +66,7 @@ struct SubcategoryAdminSheet: View {
         .customListRowBackground()
 
         Section("labels.info") {
-            LabeledIdView(id: subcategory.id.formatted())
+            LabeledIdView(id: subcategory.id.rawValue.formatted())
             VerificationAdminToggleView(isVerified: subcategory.isVerified) { isVerified in
                 await appEnvironmentModel.verifySubcategory(subcategory, isVerified: isVerified) {
                     withAnimation {

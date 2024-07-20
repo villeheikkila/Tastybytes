@@ -1,11 +1,12 @@
 import Foundation
+import Tagged
 
 public enum ReportError: Error {
     case unknownEntity
 }
 
 public struct Report: Decodable, Identifiable, Sendable, Hashable {
-    public let id: Int
+    public let id: Report.Id
     public let message: String?
     public let createdAt: Date
     public let createdBy: Profile
@@ -14,7 +15,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
+        id = try values.decode(Report.Id.self, forKey: .id)
         message = try values.decodeIfPresent(String.self, forKey: .message)
         createdAt = try values.decode(Date.self, forKey: .createdAt)
         createdBy = try values.decode(Profile.self, forKey: .createdBy)
@@ -84,17 +85,21 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
 }
 
 public extension Report {
+    typealias Id = Tagged<Report, Int>
+}
+
+public extension Report {
     struct NewRequest: Codable, Sendable {
         public let message: String
-        public let checkInId: Int?
-        public let productId: Int?
-        public let companyId: Int?
-        public let checkInCommentId: Int?
-        public let brandId: Int?
-        public let subBrandId: Int?
-        public let checkInImageId: Int?
-        public let profileId: UUID?
-        public let locationId: UUID?
+        public let checkInId: CheckIn.Id?
+        public let productId: Product.Id?
+        public let companyId: Company.Id?
+        public let checkInCommentId: CheckInComment.Id?
+        public let brandId: Brand.Id?
+        public let subBrandId: SubBrand.Id?
+        public let checkInImageId: ImageEntity.Id?
+        public let profileId: Profile.Id?
+        public let locationId: Location.Id?
 
         public init(message: String, entity: Entity) {
             self.message = message

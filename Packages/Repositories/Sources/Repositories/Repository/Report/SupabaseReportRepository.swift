@@ -13,10 +13,24 @@ struct SupabaseReportRepository: ReportRepository {
 
         let filtered = if let filter {
             switch filter {
-            case let .brand(id), let .checkIn(id), let .checkInImage(id), let .comment(id), let .company(id), let .product(id), let .subBrand(id):
-                query.eq(filter.column, value: id)
+            case let .company(id):
+                query.eq(filter.column, value: id.rawValue)
+            case let .checkIn(id):
+                query.eq(filter.column, value: id.rawValue)
+            case let .product(id):
+                query.eq(filter.column, value: id.rawValue)
+            case let .comment(id):
+                query.eq(filter.column, value: id.rawValue)
+            case let .brand(id):
+                query.eq(filter.column, value: id.rawValue)
+            case let .location(id):
+                query.eq(filter.column, value: id.rawValue)
+            case let .subBrand(id):
+                query.eq(filter.column, value: id.rawValue)
+            case let .checkInImage(id):
+                query.eq(filter.column, value: id.rawValue)
             case let .profile(id):
-                query.eq(filter.column, value: id)
+                query.eq(filter.column, value: id.rawValue)
             }
         } else {
             query
@@ -35,19 +49,19 @@ struct SupabaseReportRepository: ReportRepository {
             .execute()
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Report.Id) async throws {
         try await client
             .from(.reports)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 
-    func resolve(id: Int) async throws -> Report {
+    func resolve(id: Report.Id) async throws -> Report {
         try await client
             .from(.reports)
             .update(Report.ResolveRequest(resolvedAt: Date.now))
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .select(Report.getQuery(.joined(false)))
             .single()
             .execute()

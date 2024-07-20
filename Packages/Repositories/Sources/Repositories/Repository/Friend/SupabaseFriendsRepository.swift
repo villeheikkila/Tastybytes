@@ -5,7 +5,7 @@ internal import Supabase
 struct SupabaseFriendsRepository: FriendRepository {
     let client: SupabaseClient
 
-    func getByUserId(userId: UUID, status: Friend.Status?) async throws -> [Friend] {
+    func getByUserId(userId: Profile.Id, status: Friend.Status?) async throws -> [Friend] {
         var queryBuilder = client
             .from(.friends)
             .select(Friend.getQuery(.joined(false)))
@@ -15,7 +15,7 @@ struct SupabaseFriendsRepository: FriendRepository {
             switch status {
             case .blocked:
                 queryBuilder = queryBuilder.eq("status", value: status.rawValue)
-                    .eq("blocked_by", value: userId)
+                    .eq("blocked_by", value: userId.rawValue)
             case .accepted:
                 queryBuilder = queryBuilder.eq("status", value: status.rawValue)
             default:
@@ -38,22 +38,22 @@ struct SupabaseFriendsRepository: FriendRepository {
             .value
     }
 
-    func update(id: Int, friendUpdate: Friend.UpdateRequest) async throws -> Friend {
+    func update(id: Friend.Id, friendUpdate: Friend.UpdateRequest) async throws -> Friend {
         try await client
             .from(.friends)
             .update(friendUpdate, returning: .representation)
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .select(Friend.getQuery(.joined(false)))
             .single()
             .execute()
             .value
     }
 
-    func delete(id: Int) async throws {
+    func delete(id: Friend.Id) async throws {
         try await client
             .from(.friends)
             .delete()
-            .eq("id", value: id)
+            .eq("id", value: id.rawValue)
             .select()
             .single()
             .execute()

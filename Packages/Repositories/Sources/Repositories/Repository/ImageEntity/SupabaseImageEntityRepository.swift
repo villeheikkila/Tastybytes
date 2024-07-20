@@ -19,7 +19,7 @@ struct SupabaseImageEntityRepository: ImageEntityRepository {
         try await client
             .from(from.table)
             .delete()
-            .eq("id", value: entity.id)
+            .eq("id", value: entity.id.rawValue)
             .execute()
     }
 }

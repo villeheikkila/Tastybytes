@@ -6,7 +6,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     let client: SupabaseClient
     let imageEntityRepository: ImageEntityRepository
 
-    func getById(id: UUID) async throws -> Profile {
+    func getById(id: Profile.Id) async throws -> Profile {
         try await client
             .from(.profiles)
             .select(Profile.getQuery(.minimal(false)))
@@ -17,7 +17,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getDetailed(id: UUID) async throws -> Profile.Detailed {
+    func getDetailed(id: Profile.Id) async throws -> Profile.Detailed {
         try await client
             .from(.profiles)
             .select(Profile.getQuery(.detailed(false)))
@@ -37,7 +37,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getContributions(id: UUID) async throws -> Profile.Contributions {
+    func getContributions(id: Profile.Id) async throws -> Profile.Contributions {
         try await client
             .from(.profiles)
             .select(Profile.Contributions.getQuery(.joined(false)))
@@ -63,7 +63,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         try await client
             .from(.profiles)
             .update(update, returning: .representation)
-            .eq("id", value: update.id)
+            .eq("id", value: update.id.rawValue)
             .select(Profile.getQuery(.extended(false)))
             .single()
             .execute()
@@ -74,14 +74,14 @@ struct SupabaseProfileRepository: ProfileRepository {
         try await client
             .from(.profileSettings)
             .update(update, returning: .representation)
-            .eq("id", value: update.id)
+            .eq("id", value: update.id.rawValue)
             .select(Profile.Settings.getQuery(.saved(false)))
             .single()
             .execute()
             .value
     }
 
-    func getCategoryStatistics(userId: UUID) async throws -> [CategoryStatistics] {
+    func getCategoryStatistics(userId: Profile.Id) async throws -> [CategoryStatistics] {
         try await client
             .rpc(
                 fn: .getCategoryStats,
@@ -92,7 +92,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getSubcategoryStatistics(userId: UUID, categoryId: Int) async throws -> [SubcategoryStatistics] {
+    func getSubcategoryStatistics(userId: Profile.Id, categoryId: Models.Category.Id) async throws -> [SubcategoryStatistics] {
         try await client
             .rpc(
                 fn: .getSubcategoryStats,
@@ -119,7 +119,7 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func deleteUserAsSuperAdmin(_ profile: Profile) async throws {
         struct DeleteRequestParam: Encodable {
-            let id: UUID
+            let id: Profile.Id
 
             public init(profile: Profile) {
                 id = profile.id
@@ -135,7 +135,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .execute()
     }
 
-    func search(searchTerm: String, currentUserId: UUID? = nil) async throws -> [Profile] {
+    func search(searchTerm: String, currentUserId: Profile.Id? = nil) async throws -> [Profile] {
         let query = client
             .from(.profiles)
             .select(Profile.getQuery(.minimal(false)))
@@ -150,7 +150,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         return try await query.execute().value
     }
 
-    func uploadAvatar(userId: UUID, data: Data) async throws -> ImageEntity {
+    func uploadAvatar(userId: Profile.Id, data: Data) async throws -> ImageEntity {
         let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
         let path = "\(userId.uuidString.lowercased())/\(fileName)"
 
@@ -178,7 +178,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getTimePeriodStatistics(userId: UUID, timePeriod: StatisticsTimePeriod) async throws -> TimePeriodStatistic {
+    func getTimePeriodStatistics(userId: Profile.Id, timePeriod: StatisticsTimePeriod) async throws -> TimePeriodStatistic {
         try await client
             .rpc(
                 fn: .getTimePeriodStatistics,
@@ -197,9 +197,9 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getNumberOfCheckInsByLocation(userId: UUID) async throws -> [Profile.TopLocations] {
+    func getNumberOfCheckInsByLocation(userId: Profile.Id) async throws -> [Profile.TopLocations] {
         struct Request: Encodable {
-            let profileId: UUID
+            let profileId: Profile.Id
 
             enum CodingKeys: String, CodingKey {
                 case profileId = "p_profile_id"

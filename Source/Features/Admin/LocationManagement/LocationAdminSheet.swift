@@ -50,6 +50,7 @@ struct LocationAdminSheet: View {
         }
         .customListRowBackground()
         Section {
+            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.location(location.id))))
             RouterLink("location.admin.changeLocation.label", systemImage: "map", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
                 Task {
                     await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))

@@ -33,7 +33,7 @@ struct CheckInAdminSheet: View {
         .customListRowBackground()
         CreationInfoSection(createdBy: checkIn.profile, createdAt: checkIn.createdAt)
         Section("admin.section.details") {
-            LabeledIdView(id: checkIn.id.formatted())
+            LabeledIdView(id: checkIn.id.rawValue.formatted())
         }
         .customListRowBackground()
         Section {
