@@ -292,13 +292,13 @@ public extension Brand {
     struct UpdateRequest: Codable, Sendable {
         public let id: Brand.Id
         public let name: String
-        public let brandOwnerId: Company.Id
+        public let brandOwnerId: Company.Id?
 
         enum CodingKeys: String, CodingKey {
             case id, name, brandOwnerId = "brand_owner_id"
         }
 
-        public init(id: Brand.Id, name: String, brandOwnerId: Company.Id) {
+        public init(id: Brand.Id, name: String, brandOwnerId: Company.Id?) {
             self.id = id
             self.name = name
             self.brandOwnerId = brandOwnerId

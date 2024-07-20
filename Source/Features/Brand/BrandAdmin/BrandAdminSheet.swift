@@ -16,36 +16,31 @@ struct BrandAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var showDeleteBrandConfirmationDialog = false
-    @State private var name: String
-    @State private var brandOwner: Company
+    @State private var name: String = ""
+    @State private var brandOwner: Company?
     @State private var brand: Brand.Detailed?
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
 
     let id: Brand.Id
-
     let onUpdate: BrandUpdateCallback
     let onDelete: BrandUpdateCallback
-
-    init(
-        brand: Brand.JoinedSubBrandsProductsCompany,
-        onUpdate: @escaping BrandUpdateCallback,
-        onDelete: @escaping BrandUpdateCallback
-    ) {
-        self.onUpdate = onUpdate
-        self.onDelete = onDelete
-        id = brand.id
-        _brandOwner = State(wrappedValue: brand.brandOwner)
-        _name = State(wrappedValue: brand.name)
-    }
 
     private var isValidNameUpdate: Bool {
         name.isValidLength(.normal(allowEmpty: false)) && brand?.name != name
     }
 
-    private var canUpdate: Bool {
+    private var isValidBrandOwnerUpdate: Bool {
+        if let brandOwner, let currentBrandOwner = brand?.brandOwner {
+            brandOwner.id == currentBrandOwner.id
+        } else {
+            false
+        }
+    }
+
+    private var isValidUpdate: Bool {
         if let brand {
-            isValidNameUpdate || brandOwner.id != brand.brandOwner.id
+            isValidNameUpdate || isValidBrandOwnerUpdate
         } else {
             false
         }
@@ -92,7 +87,7 @@ struct BrandAdminSheet: View {
         Section("admin.section.details") {
             LabeledTextFieldView(title: "brand.admin.changeName.label", text: $name)
             LabeledContent("brand.admin.changeBrandOwner.label") {
-                RouterLink(brandOwner.name, open: .sheet(.companyPicker(onSelect: { company in
+                RouterLink(brandOwner?.name ?? "", open: .sheet(.companyPicker(onSelect: { company in
                     brandOwner = company
                 })))
             }
@@ -132,15 +127,20 @@ struct BrandAdminSheet: View {
                 AsyncButton("labels.edit") {
                     await editBrand(brand: brand)
                 }
-                .disabled(!canUpdate)
+                .disabled(!isValidUpdate)
             }
         }
     }
 
     private func loadData() async {
         do {
-            brand = try await repository.brand.getDetailed(id: id)
-            state = .populated
+            let brand = try await repository.brand.getDetailed(id: id)
+            withAnimation {
+                self.brand = brand
+                brandOwner = brand.brandOwner
+                name = brand.name
+                state = .populated
+            }
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
@@ -162,7 +162,13 @@ struct BrandAdminSheet: View {
 
     private func editBrand(brand: Brand.Detailed) async {
         do {
-            let brand = try await repository.brand.update(updateRequest: .init(id: id, name: isValidNameUpdate ? name : brand.name, brandOwnerId: brandOwner.id))
+            let brand = try await repository.brand.update(
+                updateRequest: .init(
+                    id: id,
+                    name: isValidNameUpdate ? name : brand.name,
+                    brandOwnerId: isValidBrandOwnerUpdate ? brandOwner?.id : nil
+                )
+            )
             router.open(.toast(.success("brand.edit.success.toast")))
             self.brand = brand
             await onUpdate(.init(brand: brand))

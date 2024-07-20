@@ -159,7 +159,7 @@ struct ProductInnerScreen: View {
                 )
                 ReportButton(entity: .product(product))
                 Divider()
-                AdminRouterLink(open: .sheet(.productAdmin(product: product, onDelete: {
+                AdminRouterLink(open: .sheet(.productAdmin(id: product.id, onDelete: {
                     router.removeLast()
                 }, onUpdate: {
                     await getProductData()

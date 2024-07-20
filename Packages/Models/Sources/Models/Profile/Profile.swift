@@ -596,7 +596,6 @@ public extension Product.DuplicateSuggestion {
     typealias Id = Tagged<Product.DuplicateSuggestion, Int>
 }
 
-
 public extension Profile {
     struct Contributions: Decodable, Sendable {
         public let products: [Product.Joined]

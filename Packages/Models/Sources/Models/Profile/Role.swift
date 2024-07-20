@@ -22,7 +22,6 @@ public extension Role {
     typealias Id = Tagged<Role, Int>
 }
 
-
 public enum RoleName: String {
     case admin
     case user

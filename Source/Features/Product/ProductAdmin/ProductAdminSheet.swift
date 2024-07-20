@@ -17,17 +17,6 @@ struct ProductAdminSheet: View {
     @State private var product: Product.Detailed?
 
     let id: Product.Id
-
-    init(
-        product: ProductProtocol,
-        onDelete: @escaping () -> Void,
-        onUpdate: @escaping () async -> Void
-    ) {
-        id = product.id
-        self.onDelete = onDelete
-        self.onUpdate = onUpdate
-    }
-
     let onDelete: () -> Void
     let onUpdate: () async -> Void
 

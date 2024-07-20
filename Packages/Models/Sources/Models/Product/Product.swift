@@ -144,7 +144,7 @@ public extension Product {
                 case subcategory = "subcategories"
                 case delete
             }
-            
+
             public typealias Id = Tagged<SubcategoryEditSuggestion, Int>
         }
     }

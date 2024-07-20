@@ -15,7 +15,7 @@ enum Sheet: Identifiable, Equatable {
     case subBrandPicker(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: ProductDuplicateScreen.Mode, product: Product.Joined)
-    case brandAdmin(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: BrandAdminSheet.BrandUpdateCallback, onDelete: BrandAdminSheet.BrandUpdateCallback)
+    case brandAdmin(id: Brand.Id, onUpdate: BrandAdminSheet.BrandUpdateCallback, onDelete: BrandAdminSheet.BrandUpdateCallback)
     case subBrandAdmin(brand: Binding<Brand.JoinedSubBrandsProductsCompany>, subBrand: SubBrand.JoinedProduct)
     case friendPicker(taggedFriends: Binding<[Profile]>)
     case flavorPicker(pickedFlavors: Binding<[Flavor]>)
@@ -40,7 +40,7 @@ enum Sheet: Identifiable, Equatable {
     case companyAdmin(company: Company, onUpdate: () async -> Void, onDelete: () -> Void)
     case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case profileAdmin(profile: Profile, onDelete: (_ profile: Profile) -> Void)
-    case productAdmin(product: ProductProtocol, onDelete: () -> Void, onUpdate: () async -> Void)
+    case productAdmin(id: Product.Id, onDelete: () -> Void, onUpdate: () async -> Void)
     case checkInAdmin(checkIn: CheckIn, onDelete: () -> Void)
     case checkInCommentAdmin(checkIn: CheckIn, checkInComment: CheckInComment, onDelete: (_ comment: CheckInComment) -> Void)
     case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: (_ comment: ImageEntity) async -> Void)
@@ -74,8 +74,8 @@ enum Sheet: Identifiable, Equatable {
             ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):
             ProductDuplicateScreen(mode: mode, product: product)
-        case let .brandAdmin(brand: brand, onUpdate, onDelete: onDelete):
-            BrandAdminSheet(brand: brand, onUpdate: onUpdate, onDelete: onDelete)
+        case let .brandAdmin(id, onUpdate, onDelete):
+            BrandAdminSheet(id: id, onUpdate: onUpdate, onDelete: onDelete)
         case let .subBrandAdmin(brand: brand, subBrand: subBrand):
             SubBrandAdminSheet(brand: brand, subBrand: subBrand)
         case let .friendPicker(taggedFriends: taggedFriends):
@@ -125,8 +125,8 @@ enum Sheet: Identifiable, Equatable {
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
         case let .profileAdmin(profile, onDelete):
             ProfileAdminSheet(profile: profile, onDelete: onDelete)
-        case let .productAdmin(product, onDelete, onUpdate):
-            ProductAdminSheet(product: product, onDelete: onDelete, onUpdate: onUpdate)
+        case let .productAdmin(id, onDelete, onUpdate):
+            ProductAdminSheet(id: id, onDelete: onDelete, onUpdate: onUpdate)
         case let .checkInAdmin(checkIn, onDelete):
             CheckInAdminSheet(checkIn: checkIn, onDelete: onDelete)
         case let .checkInCommentAdmin(checkIn, checkInComment, onDelete):
@@ -202,8 +202,8 @@ enum Sheet: Identifiable, Equatable {
             "edit_product_\(mode)"
         case .duplicateProduct:
             "duplicate_product"
-        case let .brandAdmin(brand, _, _):
-            "brand_admin_\(brand.hashValue)"
+        case let .brandAdmin(id, _, _):
+            "brand_admin_\(id)"
         case let .subBrandAdmin(_, subBrand):
             "sub_brand_admin_\(subBrand.hashValue)"
         case .friendPicker:
@@ -252,8 +252,8 @@ enum Sheet: Identifiable, Equatable {
             "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
         case let .profileAdmin(profile, _):
             "profile_admin_sheet_\(profile)"
-        case let .productAdmin(product, _, _):
-            "product_admin_\(product)"
+        case let .productAdmin(id, _, _):
+            "product_admin_\(id)"
         case let .checkInAdmin(checkIn, _):
             "check_in_admin_\(checkIn)"
         case let .checkInCommentAdmin(checkIn, checkInComment, _):
