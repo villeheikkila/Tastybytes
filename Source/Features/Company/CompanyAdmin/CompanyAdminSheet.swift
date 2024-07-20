@@ -70,7 +70,6 @@ struct CompanyAdminSheet: View {
             LabeledTextFieldView(title: "labels.name", text: $name)
             LabeledIdView(id: company.id.formatted())
             VerificationAdminToggleView(isVerified: company.isVerified, action: verifyCompany)
-
         }
         .customListRowBackground()
         EditLogoSection(logos: company.logos, onUpload: uploadLogo, onDelete: deleteLogo)
@@ -183,12 +182,11 @@ struct CompanySubsidiaryScreen: View {
     @Environment(Repository.self) private var repository
     @State private var companyToAttach: Company?
     @Binding var company: Company.Detailed
-    
-    
+
     private var subsidaries: [Company] {
         company.subsidiaries
     }
-    
+
     var body: some View {
         List(subsidaries) { subsidiary in
             CompanyEntityView(company: subsidiary)
@@ -204,7 +202,7 @@ struct CompanySubsidiaryScreen: View {
             }
         }
     }
-    
+
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .primaryAction) {
             RouterLink("subsidiaries.pickCompany", open: .sheet(.companyPicker(onSelect: { company in
@@ -225,12 +223,11 @@ struct CompanySubsidiaryScreen: View {
             }
         }
     }
-    
-    
+
     func makeCompanySubsidiaryOf(_ company: Company) async {
         do {
             try await repository.company.makeCompanySubsidiaryOf(company: company, subsidiaryOf: self.company)
-            
+
         } catch {
             logger.error("Failed to make company a subsidiary")
         }

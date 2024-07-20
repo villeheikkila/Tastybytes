@@ -2,12 +2,12 @@ import Foundation
 import Models
 
 extension Country: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "country_code, name, emoji"
+    private static let saved = "country_code, name, emoji"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.countries, [saved], withTableName)
+            buildQuery(.countries, [saved], withTableName)
         }
     }
 

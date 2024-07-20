@@ -2,11 +2,9 @@ import Foundation
 
 public enum ProfileWishlist {
     public struct Joined: Codable, Sendable {
-        public let createdBy: UUID
         public let product: Product.Joined
 
         enum CodingKeys: String, CodingKey {
-            case createdBy = "created_by"
             case product = "products"
         }
     }

@@ -2,12 +2,12 @@ import Foundation
 import Models
 
 extension Role: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name"
+    private static let saved = "id, name"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .joined(withTableName):
-            return buildQuery(.roles, [saved, Permission.getQuery(.saved(true))], withTableName)
+            buildQuery(.roles, [saved, Permission.getQuery(.saved(true))], withTableName)
         }
     }
 
@@ -34,12 +34,12 @@ extension RolesPermissions: Queryable {
 }
 
 extension Permission: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name"
+    private static let saved = "id, name"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.permissions, [saved], withTableName)
+            buildQuery(.permissions, [saved], withTableName)
         }
     }
 

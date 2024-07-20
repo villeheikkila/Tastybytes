@@ -2,20 +2,20 @@ import Foundation
 import Models
 
 extension Product.Barcode: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, barcode, type"
+    private static let saved = "id, barcode, type"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.productBarcodes, [saved], withTableName)
+            buildQuery(.productBarcodes, [saved], withTableName)
         case let .joined(withTableName):
-            return buildQuery(
+            buildQuery(
                 .productBarcodes,
                 [saved, Product.getQuery(.joinedBrandSubcategories(true))],
                 withTableName
             )
         case let .joinedCreator(withTableName):
-            return buildQuery(
+            buildQuery(
                 .productBarcodes,
                 [saved, "created_at", Profile.getQuery(.minimal(true))],
                 withTableName

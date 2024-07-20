@@ -2,20 +2,20 @@ import Foundation
 import Models
 
 extension Company: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name, is_verified"
+    private static let saved = "id, name, is_verified"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .saved(withTableName):
-             buildQuery(.companies, [saved, ImageEntity.getQuery(.saved(.companyLogos))], withTableName)
+            buildQuery(.companies, [saved, ImageEntity.getQuery(.saved(.companyLogos))], withTableName)
         case let .joinedBrandSubcategoriesOwner(withTableName):
-             buildQuery(
+            buildQuery(
                 .companies,
                 [
                     saved,
                     Company.getQuery(.saved(true)),
                     Brand.getQuery(.joined(true)),
-                    ImageEntity.getQuery(.saved(.companyLogos))
+                    ImageEntity.getQuery(.saved(.companyLogos)),
                 ],
                 withTableName
             )
@@ -27,7 +27,7 @@ extension Company: Queryable {
                     ImageEntity.getQuery(.saved(.companyLogos)),
                     Company.EditSuggestion.getQuery(.joined(true)),
                     Company.getQuery(.saved(true)),
-                    modificationInfoFragment
+                    modificationInfoFragment,
                 ],
                 withTableName
             )
@@ -42,10 +42,10 @@ extension Company: Queryable {
 }
 
 extension Company.EditSuggestion: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let savedEditSuggestion = "id, name, created_at"
+    private static let savedEditSuggestion = "id, name, created_at"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .joined(withTableName):
             buildQuery(
                 .companyEditSuggestions,

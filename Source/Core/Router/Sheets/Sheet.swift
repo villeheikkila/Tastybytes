@@ -264,7 +264,7 @@ enum Sheet: Identifiable, Equatable {
             "category_admin_\(category)"
         case let .brandEditSuggestion(brand, _):
             "brand_edit_suggestion_\(brand)"
-        case let .subBrandEditSuggestion(brand,subBrand, _):
+        case let .subBrandEditSuggestion(brand, subBrand, _):
             "brand_edit_suggestion_\(brand)_\(subBrand)"
         case .settings:
             "settings"

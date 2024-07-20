@@ -2,12 +2,12 @@ import Foundation
 import Models
 
 extension Flavor: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name"
+    private static let saved = "id, name"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.flavors, [saved], withTableName)
+            buildQuery(.flavors, [saved], withTableName)
         }
     }
 

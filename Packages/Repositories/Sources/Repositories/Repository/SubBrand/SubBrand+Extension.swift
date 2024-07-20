@@ -2,10 +2,10 @@ import Foundation
 import Models
 
 extension SubBrand: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name, includes_brand_name, is_verified"
+    private static let saved = "id, name, includes_brand_name, is_verified"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .saved(withTableName):
             buildQuery(.subBrands, [saved], withTableName)
         case let .joined(withTableName):
@@ -43,12 +43,12 @@ extension SubBrand: Queryable {
 }
 
 extension SubBrand.EditSuggestion: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, created_at, name, includes_brand_name"
+    private static let saved = "id, created_at, name, includes_brand_name"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .joined(withTableName):
-            return buildQuery(
+            buildQuery(
                 .subBrandEditSuggestion,
                 [
                     saved,

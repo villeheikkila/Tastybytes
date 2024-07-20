@@ -2,10 +2,10 @@ import Foundation
 import Models
 
 extension Product: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name, description, is_verified, is_discontinued"
+    private static let saved = "id, name, description, is_verified, is_discontinued"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .saved(withTableName):
             buildQuery(.products, [saved], withTableName)
         case let .joinedBrandSubcategories(withTableName):
@@ -95,12 +95,12 @@ extension Product: Queryable {
 }
 
 extension Product.Variant: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id"
+    private static let saved = "id"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .joined(withTableName):
-            return buildQuery(.productVariants, [saved, Company.getQuery(.saved(true))], withTableName)
+            buildQuery(.productVariants, [saved, Company.getQuery(.saved(true))], withTableName)
         }
     }
 
@@ -110,10 +110,10 @@ extension Product.Variant: Queryable {
 }
 
 extension Product.EditSuggestion: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, created_at, name, description, is_discontinued"
+    private static let saved = "id, created_at, name, description, is_discontinued"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .joined(withTableName):
             buildQuery(
                 .productEditSuggestions,
@@ -136,10 +136,10 @@ extension Product.EditSuggestion: Queryable {
 }
 
 extension Product.EditSuggestion.SubcategoryEditSuggestion: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, delete"
+    private static let saved = "id, delete"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .joined(withTableName):
             buildQuery(
                 .productEditSuggestionSubcategories,
@@ -158,10 +158,10 @@ extension Product.EditSuggestion.SubcategoryEditSuggestion: Queryable {
 }
 
 extension Product.DuplicateSuggestion: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, created_at"
+    private static let saved = "id, created_at"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .saved(withTableName):
             buildQuery(.productDuplicateSuggestions, [saved], withTableName)
         case let .joined(withTableName):

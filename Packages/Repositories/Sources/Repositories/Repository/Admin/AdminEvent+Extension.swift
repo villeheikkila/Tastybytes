@@ -1,10 +1,10 @@
 import Models
 
 extension AdminEvent: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, created_at, reviewed_at"
+    private static let saved = "id, created_at, reviewed_at"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .joined(withTableName):
             buildQuery(
                 .adminEvents,

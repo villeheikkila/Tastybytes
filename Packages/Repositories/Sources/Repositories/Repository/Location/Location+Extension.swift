@@ -2,16 +2,16 @@ import Foundation
 import Models
 
 extension Location: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name, title, longitude, latitude, country_code, source, map_kit_identifier"
+    private static let saved = "id, name, title, longitude, latitude, country_code, source, map_kit_identifier"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .joined(withTableName):
-            return buildQuery(.locations, [saved, Country.getQuery(.saved(true))], withTableName)
+            buildQuery(.locations, [saved, Country.getQuery(.saved(true))], withTableName)
         case let .detailed(withTableName):
-            return buildQuery(.locations, [saved, "created_at", Country.getQuery(.saved(true)), Profile.getQuery(.minimal(true))], withTableName)
+            buildQuery(.locations, [saved, "created_at", Country.getQuery(.saved(true)), Profile.getQuery(.minimal(true))], withTableName)
         case .topLocations:
-            return "check_ins_count, \(buildQuery(.locations, [saved], false))"
+            "check_ins_count, \(buildQuery(.locations, [saved], false))"
         }
     }
 

@@ -2,12 +2,12 @@ import Foundation
 import Models
 
 extension CheckIn: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, rating, review, check_in_at, is_nostalgic, created_at"
+    private static let saved = "id, rating, review, check_in_at, is_nostalgic, created_at"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .joined(withTableName):
-            return buildQuery(
+            buildQuery(
                 .checkIns,
                 [
                     saved,
@@ -25,7 +25,7 @@ extension CheckIn: Queryable {
                 withTableName
             )
         case let .image(withTableName):
-            return buildQuery(
+            buildQuery(
                 .checkInImages,
                 [ImageEntity.getQuery(.saved(nil)), "check_ins!inner(id, created_by)"],
                 withTableName
@@ -40,12 +40,12 @@ extension CheckIn: Queryable {
 }
 
 extension Models.Notification.CheckInTaggedProfiles: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id"
+    private static let saved = "id"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .joined(withTableName):
-            return buildQuery(
+            buildQuery(
                 .checkInTaggedProfiles,
                 [saved, CheckIn.getQuery(.joined(true))],
                 withTableName

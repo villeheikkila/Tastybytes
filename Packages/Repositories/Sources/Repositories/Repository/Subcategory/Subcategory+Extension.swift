@@ -2,20 +2,20 @@ import Foundation
 import Models
 
 extension Subcategory: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name, is_verified"
+    private static let saved = "id, name, is_verified"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.subcategories, [saved], withTableName)
+            buildQuery(.subcategories, [saved], withTableName)
         case let .detailed(withTableName):
-            return buildQuery(
+            buildQuery(
                 .subcategories,
                 [saved, Category.getQuery(.saved(true)), modificationInfoFragment],
                 withTableName
             )
         case let .joinedCategory(withTableName):
-            return buildQuery(.subcategories, [saved, Category.getQuery(.saved(true))], withTableName)
+            buildQuery(.subcategories, [saved, Category.getQuery(.saved(true))], withTableName)
         }
     }
 

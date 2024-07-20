@@ -2,10 +2,10 @@ import Foundation
 import Models
 
 extension Models.Category: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name, icon"
+    private static let saved = "id, name, icon"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .saved(withTableName):
             buildQuery(.categories, [saved], withTableName)
         case let .joinedSubcaategoriesServingStyles(withTableName):

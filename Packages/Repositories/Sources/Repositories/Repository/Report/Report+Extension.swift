@@ -2,10 +2,10 @@ import Foundation
 import Models
 
 extension Report: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, message, created_at"
+    private static let saved = "id, message, created_at"
 
-        return switch queryType {
+    static func getQuery(_ queryType: QueryType) -> String {
+        switch queryType {
         case let .joined(withTableName):
             buildQuery(
                 .reports,

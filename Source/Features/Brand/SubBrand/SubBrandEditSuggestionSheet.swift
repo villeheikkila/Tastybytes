@@ -31,11 +31,11 @@ struct SubBrandEditSuggestionSheet: View {
     private var isBrandUpdate: Bool {
         brand?.id != subBrand.brand.id
     }
-    
+
     private var isIncludesBrandNameUpdate: Bool {
         includesBrandName != subBrand.includesBrandName
     }
-    
+
     private var isUpdate: Bool {
         isValidNameUpdate || isBrandUpdate || isIncludesBrandNameUpdate
     }
@@ -56,7 +56,8 @@ struct SubBrandEditSuggestionSheet: View {
                                 brandOwner: subBrand.brand.brandOwner,
                                 brand: $brand,
                                 mode: .select
-                            )))
+                            ))
+                    )
                 }
             }
             .customListRowBackground()
@@ -86,7 +87,7 @@ struct SubBrandEditSuggestionSheet: View {
             try await repository.subBrand
                 .createEditSuggestion(
                     subBrand: subBrand,
-                    brand: isBrandUpdate ?  brand : nil,
+                    brand: isBrandUpdate ? brand : nil,
                     name: isValidNameUpdate ? name : nil,
                     includesBrandName: isIncludesBrandNameUpdate ? includesBrandName : nil
                 )

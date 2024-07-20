@@ -2,12 +2,12 @@ import Foundation
 import Models
 
 extension ServingStyle: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "id, name"
+    private static let saved = "id, name"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.servingStyles, [saved], withTableName)
+            buildQuery(.servingStyles, [saved], withTableName)
         }
     }
 

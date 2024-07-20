@@ -2,16 +2,12 @@ import Foundation
 import Models
 
 extension Friend: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let joined =
-            """
-              id, status, sender:user_id_1 (\(Profile.getQuery(.minimal(false)))),\
-              receiver:user_id_2 (\(Profile.getQuery(.minimal(false))))
-            """
+    private static let saved = "id, status"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .joined(withTableName):
-            return buildQuery(.friends, [joined], withTableName)
+            buildQuery(.friends, [saved, buildQuery(name: "sender", foreignKey: "user_id_1", [Profile.getQuery(.minimal(false))]), buildQuery(name: "receiver", foreignKey: "user_id_2", [Profile.getQuery(.minimal(false))])], withTableName)
         }
     }
 

@@ -2,14 +2,14 @@ import Foundation
 import Models
 
 extension SubscriptionGroup: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "name, group_id"
+    private static let saved = "name, group_id"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.subscriptionGroups, [saved], withTableName)
+            buildQuery(.subscriptionGroups, [saved], withTableName)
         case let .joined(withTableName):
-            return buildQuery(
+            buildQuery(
                 .subscriptionGroups,
                 [saved, SubscriptionProduct.getQuery(.saved(true))],
                 withTableName
@@ -24,12 +24,12 @@ extension SubscriptionGroup: Queryable {
 }
 
 extension SubscriptionProduct: Queryable {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let saved = "name, product_id, group_id, priority"
+    private static let saved = "name, product_id, group_id, priority"
 
+    static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            return buildQuery(.subscriptionProducts, [saved], withTableName)
+            buildQuery(.subscriptionProducts, [saved], withTableName)
         }
     }
 
