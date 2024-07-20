@@ -7,7 +7,7 @@ extension Product: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            buildQuery(.products, [saved], withTableName)
+            buildQuery(.products, [saved, ImageEntity.getQuery(.saved(.productLogos))], withTableName)
         case let .joinedBrandSubcategories(withTableName):
             buildQuery(
                 .products,

@@ -39,7 +39,7 @@ enum Screen: Hashable, Sendable {
     case reports(ReportFilter? = nil)
     case locationAdmin
     case error(reason: String)
-    case companyEditSuggestion(company: Binding<Company.Detailed>)
+    case companyEditSuggestion(company: Binding<Company.Detailed?>)
     case categoryServingStyle(category: Models.Category.Detailed)
     case barcodeManagement(product: Binding<Product.Detailed?>)
     case productList(products: [Product.Joined])
@@ -57,7 +57,7 @@ enum Screen: Hashable, Sendable {
     case profileReports(contributionsModel: ContributionsModel)
     case profileEditSuggestions(contributionsModel: ContributionsModel)
     case profileDuplicateSuggestions(contributionsModel: ContributionsModel)
-    case subsidiaries(company: Binding<Company.Detailed>)
+    case subsidiaries(company: Binding<Company.Detailed?>)
 
     @MainActor
     @ViewBuilder

@@ -235,20 +235,6 @@ public extension Brand {
             case updatedAt = "updated_at"
         }
 
-        public init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity], editSuggestions: [Brand.EditSuggestion], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
-            self.id = id
-            self.name = name
-            self.isVerified = isVerified
-            self.brandOwner = brandOwner
-            self.subBrands = subBrands
-            self.logos = logos
-            self.editSuggestions = editSuggestions
-            self.createdBy = createdBy
-            self.createdAt = createdAt
-            self.updatedBy = updatedBy
-            self.updatedAt = updatedAt
-        }
-
         public func copyWith(
             name: String? = nil,
             isVerified: Bool? = nil,

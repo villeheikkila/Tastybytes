@@ -77,7 +77,7 @@ struct CompanyScreen: View {
             Section("brand.title") {
                 ForEach(sortedBrands) { brand in
                     RouterLink(
-                        open: .screen(.brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company.saved, brand: brand))
+                        open: .screen(.brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: .init(company: company), brand: brand))
                         )) {
                             CompanyBrandRow(brand: brand)
                         }
@@ -93,12 +93,12 @@ struct CompanyScreen: View {
     private var navigationBarMenu: some View {
         Menu {
             ControlGroup {
-                CompanyShareLinkView(company: company.saved)
+                CompanyShareLinkView(company: company)
                 if profileEnvironmentModel.hasPermission(.canCreateBrands) {
                     RouterLink(
                         "brand.title",
                         systemImage: "plus",
-                        open: .sheet(.brandPicker(brandOwner: company.saved, brand: .constant(nil), mode: .new(onCreate: { brand in
+                        open: .sheet(.brandPicker(brandOwner: company, brand: .constant(nil), mode: .new(onCreate: { brand in
                             withAnimation {
                                 company = company.copyWith(brands: company.brands + [.init(newBrand: brand)])
                             }
@@ -110,13 +110,13 @@ struct CompanyScreen: View {
             RouterLink(
                 "labels.editSuggestion",
                 systemImage: "pencil",
-                open: .sheet(.companyEditSuggestion(company: company.saved, onSuccess: {
+                open: .sheet(.companyEditSuggestion(company: company, onSuccess: {
                     router.open(.toast(.success("company.editSuggestion.success.toast")))
                 }))
             )
-            ReportButton(entity: .company(company.saved))
+            ReportButton(entity: .company(.init(company: company)))
             Divider()
-            AdminRouterLink(open: .sheet(.companyAdmin(company: company.saved, onUpdate: {
+            AdminRouterLink(open: .sheet(.companyAdmin(id: company.id, onUpdate: {
                 await getCompanyData(withHaptics: true)
                 router.open(.toast(.success("company.update.success.toast")))
             }, onDelete: {

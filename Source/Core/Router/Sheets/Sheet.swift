@@ -10,7 +10,7 @@ enum Sheet: Identifiable, Equatable {
     case productFilter(initialFilter: Product.Filter?, sections: [ProductFilterSheet.Sections], onApply: (_ filter: Product.Filter?) -> Void)
     case nameTag(onSuccess: (_ profileId: Profile.Id) -> Void)
     case companyPicker(filterCompanies: [Company] = [], onSelect: (_ company: Company) -> Void)
-    case brandPicker(brandOwner: Company, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandPickerSheet.Mode)
+    case brandPicker(brandOwner: any CompanyProtocol, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandPickerSheet.Mode)
     case subcategoryPicker(subcategories: Binding<[Subcategory]>, category: Models.Category.JoinedSubcategoriesServingStyles)
     case subBrandPicker(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
@@ -26,7 +26,7 @@ enum Sheet: Identifiable, Equatable {
     case subcategoryAdmin(subcategory: SubcategoryProtocol, onSubmit: (_ subcategoryName: String) async -> Void)
     case subcategoryCreation(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case categoryCreation(onSubmit: (_ newCategoryName: String) async -> Void)
-    case companyEditSuggestion(company: Company, onSuccess: () -> Void)
+    case companyEditSuggestion(company: any CompanyProtocol, onSuccess: () -> Void)
     case profilePicker(mode: ProfilePickerSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
     case categoryPicker(category: Binding<Models.Category.JoinedSubcategoriesServingStyles?>)
@@ -37,7 +37,7 @@ enum Sheet: Identifiable, Equatable {
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
     case webView(link: WebViewLink)
-    case companyAdmin(company: Company, onUpdate: () async -> Void, onDelete: () -> Void)
+    case companyAdmin(id: Company.Id, onUpdate: () async -> Void, onDelete: () -> Void)
     case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case profileAdmin(profile: Profile, onDelete: (_ profile: Profile) -> Void)
     case productAdmin(id: Product.Id, onDelete: () -> Void, onUpdate: () async -> Void)
@@ -94,8 +94,8 @@ enum Sheet: Identifiable, Equatable {
             SubcategoryCreationSheet(category: category, onSubmit: onSubmit)
         case let .categoryCreation(onSubmit: onSubmit):
             CategoryCreationSheet(onSubmit: onSubmit)
-        case let .companyAdmin(company, onUpdate, onDelete):
-            CompanyAdminSheet(company: company, onUpdate: onUpdate, onDelete: onDelete)
+        case let .companyAdmin(id, onUpdate, onDelete):
+            CompanyAdminSheet(id: id, onUpdate: onUpdate, onDelete: onDelete)
         case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
             CompanyEditSuggestionSheet(company: company, onSuccess: onSuccess)
         case let .profilePicker(mode: mode, onSubmit: onSubmit):

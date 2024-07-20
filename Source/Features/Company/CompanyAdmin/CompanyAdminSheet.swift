@@ -14,24 +14,22 @@ struct CompanyAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var showDeleteCompanyConfirmationDialog = false
-    @State private var company: Company.Detailed
+    @State private var company: Company.Detailed?
     @State private var name = ""
     @State private var selectedLogo: PhotosPickerItem?
 
+    let id: Company.Id
     let onUpdate: () async -> Void
     let onDelete: () -> Void
-
-    init(company: Company, onUpdate: @escaping () async -> Void, onDelete: @escaping () -> Void) {
-        _company = State(initialValue: .init(company: company))
-        _name = State(initialValue: company.name)
-        self.onUpdate = onUpdate
-        self.onDelete = onDelete
+    
+    private var isValidNameUpdate: Bool {
+        name.isValidLength(.normal(allowEmpty: false)) && name != company?.name
     }
 
     var body: some View {
         Form {
-            if state == .populated {
-                content
+            if let company {
+                content(company: company)
             }
         }
         .scrollContentBackground(.hidden)
@@ -58,7 +56,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    @ViewBuilder private var content: some View {
+    @ViewBuilder private func content(company: Company.Detailed) -> some View {
         Section("company.admin.section.company") {
             RouterLink(open: .screen(.company(.init(company: company)))) {
                 CompanyEntityView(company: company)
@@ -96,13 +94,13 @@ struct CompanyAdminSheet: View {
             AsyncButton("labels.edit", action: {
                 await editCompany()
             })
-            .disabled(!name.isValidLength(.normal(allowEmpty: false)) || name == company.name)
+            .disabled(!isValidNameUpdate)
         }
     }
 
     private func loadData() async {
         do {
-            let company = try await repository.company.getDetailed(id: company.id)
+            let company = try await repository.company.getDetailed(id: id)
             withAnimation {
                 self.company = company
                 state = .populated
@@ -116,8 +114,8 @@ struct CompanyAdminSheet: View {
 
     private func verifyCompany(isVerified: Bool) async {
         do {
-            try await repository.company.verification(id: company.id, isVerified: isVerified)
-            company = company.copyWith(isVerified: isVerified)
+            try await repository.company.verification(id: id, isVerified: isVerified)
+            company = company?.copyWith(isVerified: isVerified)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -127,9 +125,9 @@ struct CompanyAdminSheet: View {
 
     private func editCompany() async {
         do {
-            let company = try await repository.company.update(updateRequest: Company.UpdateRequest(id: company.id, name: name))
+            let company = try await repository.company.update(updateRequest: Company.UpdateRequest(id: id, name: name))
             withAnimation {
-                self.company = .init(company: .init(company: company))
+                self.company = company
             }
             router.open(.toast(.success()))
             await onUpdate()
@@ -153,9 +151,10 @@ struct CompanyAdminSheet: View {
     }
 
     private func uploadLogo(_ data: Data) async {
+        guard let company else { return }
         do {
-            let imageEntity = try await repository.company.uploadLogo(companyId: company.id, data: data)
-            company = company.copyWith(logos: company.logos + [imageEntity])
+            let imageEntity = try await repository.company.uploadLogo(companyId: id, data: data)
+            self.company = company.copyWith(logos: company.logos + [imageEntity])
             logger.info("Succesfully uploaded company logo: \(imageEntity.file)")
         } catch {
             guard !error.isCancelled else { return }
@@ -165,10 +164,11 @@ struct CompanyAdminSheet: View {
     }
 
     private func deleteLogo(_ entity: ImageEntity) async {
+        guard let company else { return }
         do {
             try await repository.imageEntity.delete(from: .companyLogos, entity: entity)
             withAnimation {
-                company = company.copyWith(logos: company.logos.removing(entity))
+                self.company = company.copyWith(logos: company.logos.removing(entity))
             }
         } catch {
             guard !error.isCancelled else { return }
@@ -182,14 +182,14 @@ struct CompanySubsidiaryScreen: View {
     private let logger = Logger(category: "CompanySubsidiaryScreen")
     @Environment(Repository.self) private var repository
     @State private var companyToAttach: Company?
-    @Binding var company: Company.Detailed
+    @Binding var company: Company.Detailed?
 
-    private var subsidaries: [Company] {
-        company.subsidiaries
+    private var subsidiaries: [Company] {
+        company?.subsidiaries ?? []
     }
-
+    
     var body: some View {
-        List(subsidaries) { subsidiary in
+        List(subsidiaries) { subsidiary in
             RouterLink(open: .screen(.company(subsidiary))) {
                 CompanyEntityView(company: subsidiary)
             }
@@ -200,7 +200,7 @@ struct CompanySubsidiaryScreen: View {
         .navigationTitle("subsidiaries.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
-            if subsidaries.isEmpty {
+            if subsidiaries.isEmpty {
                 ContentUnavailableView(" subsidaries.empty.title", systemImage: "tray")
             }
         }
@@ -208,29 +208,31 @@ struct CompanySubsidiaryScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .primaryAction) {
-            RouterLink("subsidiaries.pickCompany", systemImage: "plus", open: .sheet(.companyPicker(filterCompanies: company.subsidiaries + [.init(company: company)], onSelect: { company in
-                companyToAttach = company
-            })))
-            .labelStyle(.iconOnly)
-            .confirmationDialog("subsidiaries.makeSubsidiaryOf.confirmation.title",
-                                isPresented: $companyToAttach.isNotNull(),
-                                titleVisibility: .visible,
-                                presenting: companyToAttach)
-            { presenting in
-                AsyncButton(
-                    "subsidiaries.makeSubsidiaryOf.confirmation.label \(presenting.name) \(company.name)",
-                    action: {
-                        await makeCompanySubsidiaryOf(presenting)
-                    }
-                )
+            if let company {
+                RouterLink("subsidiaries.pickCompany", systemImage: "plus", open: .sheet(.companyPicker(filterCompanies: subsidiaries + [.init(company: company)], onSelect: { company in
+                    companyToAttach = company
+                })))
+                .labelStyle(.iconOnly)
+                .confirmationDialog("subsidiaries.makeSubsidiaryOf.confirmation.title",
+                                    isPresented: $companyToAttach.isNotNull(),
+                                    titleVisibility: .visible,
+                                    presenting: companyToAttach)
+                { presenting in
+                    AsyncButton(
+                        "subsidiaries.makeSubsidiaryOf.confirmation.label \(presenting.name) \(company.name)",
+                        action: {
+                            await makeCompanySubsidiaryOf(subsidiaryOf: company, presenting)
+                        }
+                    )
+                }
             }
         }
     }
 
-    func makeCompanySubsidiaryOf(_ company: Company) async {
+    func makeCompanySubsidiaryOf(subsidiaryOf: Company.Detailed, _ company: Company) async {
         do {
-            try await repository.company.makeCompanySubsidiaryOf(company: company, subsidiaryOf: self.company)
-            self.company = self.company.copyWith(subsidiaries: self.company.subsidiaries + [company])
+            try await repository.company.makeCompanySubsidiaryOf(company: company, subsidiaryOf: subsidiaryOf)
+            self.company = subsidiaryOf.copyWith(subsidiaries: subsidiaryOf.subsidiaries + [company])
         } catch {
             logger.error("Failed to make company a subsidiary")
         }

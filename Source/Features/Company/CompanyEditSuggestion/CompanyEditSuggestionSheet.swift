@@ -9,12 +9,12 @@ struct CompanyEditSuggestionSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
-    @State private var company: Company
+    @State private var company: any CompanyProtocol
     @State private var newCompanyName = ""
 
     let onSuccess: () async -> Void
 
-    init(company: Company, onSuccess: @escaping () async -> Void) {
+    init(company: any CompanyProtocol, onSuccess: @escaping () async -> Void) {
         _company = State(initialValue: company)
         _newCompanyName = State(initialValue: company.name)
         self.onSuccess = onSuccess

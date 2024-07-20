@@ -5,7 +5,7 @@ public protocol CompanyLogoProtocol {
     var logos: [ImageEntity] { get }
 }
 
-public protocol CompanyProtocol: Hashable, Codable, Sendable, CompanyLogoProtocol {
+public protocol CompanyProtocol: Hashable, Sendable, CompanyLogoProtocol {
     var id: Company.Id { get }
     var name: String { get }
     var isVerified: Bool { get }
@@ -72,32 +72,6 @@ public extension Company {
         public let createdAt: Date
         public let updatedBy: Profile?
         public let updatedAt: Date?
-
-        public init(company: Company) {
-            id = company.id
-            name = company.name
-            isVerified = company.isVerified
-            logos = company.logos
-            createdBy = nil
-            createdAt = Date.now
-            updatedAt = nil
-            updatedBy = nil
-            editSuggestions = []
-            subsidiaries = []
-        }
-
-        init(id: Company.Id, name: String, isVerified: Bool, logos: [ImageEntity], editSuggestions: [Company.EditSuggestion], subsidiaries: [Company], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
-            self.id = id
-            self.name = name
-            self.isVerified = isVerified
-            self.logos = logos
-            self.editSuggestions = editSuggestions
-            self.subsidiaries = subsidiaries
-            self.createdBy = createdBy
-            self.createdAt = createdAt
-            self.updatedBy = updatedBy
-            self.updatedAt = updatedAt
-        }
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -195,7 +169,7 @@ public extension Company {
         }
     }
 
-    struct Joined: Identifiable, Hashable, Codable, Sendable, CompanyLogoProtocol {
+    struct Joined: Identifiable, Hashable, Codable, Sendable, CompanyProtocol, CompanyLogoProtocol {
         public let id: Company.Id
         public let name: String
         public let subsidiaries: [Company]
@@ -210,10 +184,6 @@ public extension Company {
             case subsidiaries = "companies"
             case brands
             case logos = "company_logos"
-        }
-
-        public var saved: Company {
-            .init(id: id, name: name, logos: logos, isVerified: isVerified)
         }
 
         public func copyWith(

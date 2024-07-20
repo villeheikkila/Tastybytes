@@ -39,11 +39,7 @@ struct BrandAdminSheet: View {
     }
 
     private var isValidUpdate: Bool {
-        if let brand {
-            isValidNameUpdate || isValidBrandOwnerUpdate
-        } else {
-            false
-        }
+        isValidNameUpdate || isValidBrandOwnerUpdate
     }
 
     var body: some View {
