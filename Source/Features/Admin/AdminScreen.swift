@@ -25,7 +25,12 @@ struct AdminScreen: View {
                     count: adminEnvironmentModel.editSuggestions.count,
                     open: .screen(.editSuggestionsAdmin)
                 )
-                RouterLink("report.admin.navigationTitle", systemImage: "exclamationmark.bubble", open: .screen(.reports()))
+                RouterLink(
+                    "report.admin.navigationTitle",
+                    systemImage: "exclamationmark.bubble",
+                    count: adminEnvironmentModel.reports.count,
+                    open: .screen(.reports())
+                )
             }
 
             Section("admin.section.management.title") {

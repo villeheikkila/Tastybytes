@@ -11,12 +11,16 @@ public final class AdminEnvironmentModel {
 
     public var events = [AdminEvent]()
     public var unverified = [VerifiableEntity]()
-    public var roles = [Role]()
     public var editSuggestions = [EditSuggestion]()
+    public var reports = [Report]()
 
     public var notificationCount: Int {
-        events.count + unverified.count + editSuggestions.count
+        events.count + unverified.count + editSuggestions.count + reports.count
     }
+    
+    public var roles = [Role]()
+
+
 
     private let repository: Repository
 
@@ -29,8 +33,9 @@ public final class AdminEnvironmentModel {
         async let roles = repository.role.getRoles()
         async let unverified: Void = loadUnverifiedEntities()
         async let editSuggestions: Void = loadEditSuggestions()
+        async let reports: Void = loadReports()
         do {
-            let (events, roles, _, _) = try await (events, roles, unverified, editSuggestions)
+            let (events, roles, _, _, _) = try await (events, roles, unverified, editSuggestions, reports)
             self.events = events
             self.roles = roles
         } catch {
@@ -144,6 +149,18 @@ public final class AdminEnvironmentModel {
             logger.error("Failed to load edit suggestion entities. Error: \(error) (\(#file):\(#line))")
         }
     }
+    
+    // Reports
+    private func loadReports() async {
+        do {
+            let reports = try await repository.report.getAll(nil)
+            self.reports = reports
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Loading reports failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
 }
 
 public extension EditSuggestion {
