@@ -64,15 +64,28 @@ extension RouterLink where LabelView == Text {
     }
 }
 
-extension RouterLink where LabelView == HStack<TupleView<(Text, Spacer, Text)>> {
+extension RouterLink where LabelView == HStack<TupleView<(Text, Spacer, RouterLinkBadgeView)>> {
     init(_ label: LocalizedStringKey, count: Int, open: Router.Open) {
         self.init(open: open) {
             HStack {
                 Text(label)
                 Spacer()
-                Text(count == 0 ? "" : count.formatted())
-                    .foregroundStyle(.yellow)
+                RouterLinkBadgeView(count: count)
             }
+        }
+    }
+}
+
+struct RouterLinkBadgeView: View {
+    let count: Int
+
+    var body: some View {
+        if count > 0 {
+            Text(count.formatted())
+                .foregroundStyle(.white)
+                .font(.system(size: 14))
+                .frame(width: 24, height: 24, alignment: .center)
+                .background(.red, in: .circle)
         }
     }
 }
@@ -103,14 +116,13 @@ extension RouterLink where LabelView == Label<Text, Image> {
     }
 }
 
-extension RouterLink where LabelView == HStack<TupleView<(Label<Text, Image>, Spacer, Text)>> {
+extension RouterLink where LabelView == HStack<TupleView<(Label<Text, Image>, Spacer, RouterLinkBadgeView)>> {
     init(_ label: LocalizedStringKey, systemImage: String, count: Int, open: Router.Open) {
         self.init(open: open) {
             HStack {
                 Label(label, systemImage: systemImage)
                 Spacer()
-                Text(count == 0 ? "" : count.formatted())
-                    .foregroundStyle(.yellow)
+                RouterLinkBadgeView(count: count)
             }
         }
     }

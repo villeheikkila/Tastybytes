@@ -297,6 +297,7 @@
 		5CF4948D2C4D014300B374AD /* VerifiableEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF4948C2C4D014300B374AD /* VerifiableEntityView.swift */; };
 		5CF494902C4D082C00B374AD /* AdminEvent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF4948F2C4D082C00B374AD /* AdminEvent+Extensions.swift */; };
 		5CF494922C4D08B000B374AD /* AdminEventEventEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF494912C4D08B000B374AD /* AdminEventEventEntityView.swift */; };
+		5CF494942C4D1BD000B374AD /* ReportAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF494932C4D1BD000B374AD /* ReportAdminScreen.swift */; };
 		C94722DD2AD1859D006DE096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94722DC2AD1859D006DE096 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -633,6 +634,7 @@
 		5CF4948C2C4D014300B374AD /* VerifiableEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableEntityView.swift; sourceTree = "<group>"; };
 		5CF4948F2C4D082C00B374AD /* AdminEvent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdminEvent+Extensions.swift"; sourceTree = "<group>"; };
 		5CF494912C4D08B000B374AD /* AdminEventEventEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEventEventEntityView.swift; sourceTree = "<group>"; };
+		5CF494932C4D1BD000B374AD /* ReportAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportAdminScreen.swift; sourceTree = "<group>"; };
 		C923F3622AD2EE250041D01D /* Platform.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Platform.xcconfig; sourceTree = "<group>"; };
 		C93791A22AD5DD1200665F50 /* Project-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Project-Development.xcconfig"; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1101,6 +1103,7 @@
 				5C0F3D892B9511D100307648 /* ReportScreen.swift */,
 				5C68D76A2B965FBE00D88229 /* ReportEntity+Extension.swift */,
 				5C06BEBB2C4B13E50030FC74 /* ProfileReportScreen.swift */,
+				5CF494932C4D1BD000B374AD /* ReportAdminScreen.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -2030,6 +2033,7 @@
 				5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */,
 				5C9058052B2894BE00EC157B /* ProductDuplicateScreen.swift in Sources */,
 				5C68D76F2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift in Sources */,
+				5CF494942C4D1BD000B374AD /* ReportAdminScreen.swift in Sources */,
 				5C974CD12C04EA0B00CFE98A /* OverlayButton+View.swift in Sources */,
 				5CEEA3132C3B30A60009B3F5 /* SubBrandListScreen.swift in Sources */,
 				5CAADF0B2B5C566F00D956C1 /* ProductLogoView.swift in Sources */,

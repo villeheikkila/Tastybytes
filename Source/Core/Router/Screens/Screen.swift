@@ -57,6 +57,7 @@ enum Screen: Hashable, Sendable {
     case profileEditSuggestions(contributionsModel: ContributionsModel)
     case subsidiaries(company: Binding<Company.Detailed?>)
     case editSuggestionsAdmin
+    case reportsAdmin
 
     @MainActor
     @ViewBuilder
@@ -170,6 +171,8 @@ enum Screen: Hashable, Sendable {
             CompanySubsidiaryScreen(company: company)
         case .editSuggestionsAdmin:
             EditSuggestionAdminScreen()
+        case .reportsAdmin:
+            ReportAdminScreen()
         }
     }
 
@@ -256,6 +259,7 @@ enum Screen: Hashable, Sendable {
             (.appIcon, .appIcon),
             (.blockedUsers, .blockedUsers),
             (.about, .about),
+            (.reportsAdmin, .reportsAdmin),
             (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin), (.profileEditSuggestions, .profileEditSuggestions), (
                 .profileReports, .profileReports
             ):
@@ -418,6 +422,8 @@ enum Screen: Hashable, Sendable {
             hasher.combine(company.wrappedValue)
         case .editSuggestionsAdmin:
             hasher.combine("editSuggestionsAdmin")
+        case .reportsAdmin:
+            hasher.combine("reportsAdmin")
         }
     }
 }

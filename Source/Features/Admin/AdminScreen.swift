@@ -29,9 +29,10 @@ struct AdminScreen: View {
                     "report.admin.navigationTitle",
                     systemImage: "exclamationmark.bubble",
                     count: adminEnvironmentModel.reports.count,
-                    open: .screen(.reports())
+                    open: .screen(.reportsAdmin)
                 )
             }
+            .foregroundColor(.primary)
 
             Section("admin.section.management.title") {
                 RouterLink("admin.category.title", systemImage: "rectangle.stack", open: .screen(.categoryAdmin))
@@ -39,8 +40,12 @@ struct AdminScreen: View {
                 RouterLink("admin.locations.title", systemImage: "mappin.square", open: .screen(.locationAdmin))
                 RouterLink("admin.profiles.title", systemImage: "person", open: .screen(.profilesAdmin))
             }
+            .foregroundColor(.primary)
         }
         .listStyle(.insetGrouped)
+        .refreshable {
+            await adminEnvironmentModel.initialize()
+        }
         .navigationBarTitle("admin.navigationTitle")
     }
 }

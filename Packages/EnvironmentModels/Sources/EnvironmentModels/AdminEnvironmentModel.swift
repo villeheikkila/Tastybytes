@@ -17,10 +17,8 @@ public final class AdminEnvironmentModel {
     public var notificationCount: Int {
         events.count + unverified.count + editSuggestions.count + reports.count
     }
-    
+
     public var roles = [Role]()
-
-
 
     private let repository: Repository
 
@@ -149,9 +147,9 @@ public final class AdminEnvironmentModel {
             logger.error("Failed to load edit suggestion entities. Error: \(error) (\(#file):\(#line))")
         }
     }
-    
+
     // Reports
-    private func loadReports() async {
+    public func loadReports() async {
         do {
             let reports = try await repository.report.getAll(nil)
             self.reports = reports
@@ -161,6 +159,15 @@ public final class AdminEnvironmentModel {
         }
     }
 
+    public func deleteReport(_ report: Report) async {
+        do {
+            try await repository.report.delete(id: report.id)
+            reports = reports.removing(reports)
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
 }
 
 public extension EditSuggestion {
