@@ -292,6 +292,8 @@ public extension Brand {
     }
 
     struct EditSuggestion: Codable, Sendable, Identifiable, Hashable, Resolvable, CreationInfo {
+        public typealias Id = Tagged<Brand.EditSuggestion, Int>
+
         public let id: Brand.EditSuggestion.Id
         public let brand: Brand
         public let name: String?
@@ -323,6 +325,8 @@ public extension Brand {
         enum CodingKeys: String, CodingKey {
             case name, brandId = "brand_id", brandOwnerId = "brand_owner_id"
         }
+
+        typealias Id = Tagged<Brand.EditSuggestion, Int>
     }
 
     struct VerifyRequest: Codable, Sendable {

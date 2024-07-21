@@ -107,7 +107,6 @@ extension Profile.Contributions: Queryable {
                     Company.EditSuggestion.getQuery(.joined(true)),
                     Brand.EditSuggestion.getQuery(.joined(true)),
                     SubBrand.EditSuggestion.getQuery(.joined(true)),
-                    Product.DuplicateSuggestion.getQuery(.joined(true)),
                 ],
                 withTableName
             )

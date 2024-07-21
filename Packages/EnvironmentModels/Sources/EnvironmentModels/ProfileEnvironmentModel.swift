@@ -6,11 +6,13 @@ import Repositories
 import SwiftUI
 
 public enum ProfileState: Sendable {
-    case loading, populated, error([Error])
+    case loading, populated(Profile.Extended), error([Error])
 
     public static func == (lhs: ProfileState, rhs: ProfileState) -> Bool {
         switch (lhs, rhs) {
-        case (.loading, .loading), (.populated, .populated):
+        case let (.populated(lhsProfile), .populated(rhsProfile)):
+            lhsProfile == rhsProfile
+        case (.loading, .loading):
             true
         case let (.error(lhsErrors), .error(rhsErrors)):
             lhsErrors.count == rhsErrors.count && lhsErrors.elementsEqual(rhsErrors, by: { $0.localizedDescription == $1.localizedDescription })
@@ -156,9 +158,8 @@ public final class ProfileEnvironmentModel {
         return permissions.contains(where: { $0.name == permission.rawValue })
     }
 
-    public func hasRole(_ role: RoleName) -> Bool {
-        guard let roles = extendedProfile?.roles else { return false }
-        return roles.contains(where: { $0.name == role.rawValue })
+    public func hasRole(_: RoleName) -> Bool {
+        extendedProfile?.hasRole(.admin) ?? false
     }
 
     public func hasChanged(username: String, firstName: String, lastName: String) -> Bool {
@@ -179,7 +180,7 @@ public final class ProfileEnvironmentModel {
             checkInTagNotifications = extendedProfile.settings.sendTaggedCheckInNotifications
             sendCommentNotifications = extendedProfile.settings.sendCommentNotifications
             appIcon = .currentAppIcon
-            profileState = .populated
+            profileState = .populated(extendedProfile)
             logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
         }
 
@@ -206,8 +207,8 @@ public final class ProfileEnvironmentModel {
         }
         guard !isPreviouslyLoaded else { return }
         withAnimation {
-            profileState = if errors.isEmpty {
-                .populated
+            profileState = if errors.isEmpty, let extendedProfile {
+                .populated(extendedProfile)
             } else {
                 .error(errors)
             }

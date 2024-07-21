@@ -13,7 +13,7 @@ public final class FriendEnvironmentModel {
     public var isRefreshing = false
     public var state: ScreenState = .loading
 
-    public var profile: Profile?
+    public var profile: Profile.Extended?
 
     private let repository: Repository
 
@@ -126,7 +126,7 @@ public final class FriendEnvironmentModel {
         }
     }
 
-    public func initialize(profile: Profile) async {
+    public func initialize(profile: Profile.Extended) async {
         logger.info("Initializing friend manager")
         self.profile = profile
         await refresh()

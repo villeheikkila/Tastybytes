@@ -25,7 +25,6 @@ struct AdminScreen: View {
                     count: adminEnvironmentModel.editSuggestions.count,
                     open: .screen(.editSuggestionsAdmin)
                 )
-                RouterLink("admin.duplicates.title", systemImage: "plus.square.on.square", open: .screen(.duplicateProducts(filter: .all)))
                 RouterLink("report.admin.navigationTitle", systemImage: "exclamationmark.bubble", open: .screen(.reports()))
             }
 

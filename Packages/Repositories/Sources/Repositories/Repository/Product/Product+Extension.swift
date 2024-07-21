@@ -70,11 +70,6 @@ extension Product: Queryable {
                     Product.Barcode.getQuery(.joinedCreator(true)),
                     Product.EditSuggestion.getQuery(.joined(true)),
                     Product.Variant.getQuery(.joined(true)),
-                    buildQuery(
-                        name: "product_duplicate_suggestions",
-                        foreignKey: "product_duplicate_suggestions!product_duplicate_suggestion_product_id_fkey",
-                        [Product.DuplicateSuggestion.getQuery(.joined(false))]
-                    ),
                     Report.getQuery(.joined(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                     modificationInfoFragment,
@@ -119,7 +114,8 @@ extension Product.EditSuggestion: Queryable {
                 .productEditSuggestions,
                 [
                     saved,
-                    Product.getQuery(.joinedBrandSubcategories(true)),
+                    buildQuery(name: "products", foreignKey: "products!product_edit_suggestions_product_id_fkey", [Product.getQuery(.joinedBrandSubcategories(false))]),
+                    buildQuery(name: "duplicate_of", foreignKey: "fk_duplicate_product_id", [Product.getQuery(.joinedBrandSubcategories(false))]),
                     Profile.getQuery(.minimal(true)),
                     Category.getQuery(.saved(true)),
                     SubBrand.getQuery(.joinedBrand(true)),
@@ -153,33 +149,6 @@ extension Product.EditSuggestion.SubcategoryEditSuggestion: Queryable {
     }
 
     enum QueryType {
-        case joined(_ withTableName: Bool)
-    }
-}
-
-extension Product.DuplicateSuggestion: Queryable {
-    private static let saved = "id, created_at"
-
-    static func getQuery(_ queryType: QueryType) -> String {
-        switch queryType {
-        case let .saved(withTableName):
-            buildQuery(.productDuplicateSuggestions, [saved], withTableName)
-        case let .joined(withTableName):
-            buildQuery(
-                .productDuplicateSuggestions,
-                [
-                    saved,
-                    Profile.getQuery(.minimal(true)),
-                    buildQuery(name: "product", foreignKey: "product_id", [Product.getQuery(.joinedBrandSubcategoriesCreator(false))]),
-                    buildQuery(name: "duplicate", foreignKey: "duplicate_of_product_id", [Product.getQuery(.joinedBrandSubcategoriesCreator(false))]),
-                ],
-                withTableName
-            )
-        }
-    }
-
-    enum QueryType {
-        case saved(_ withTableName: Bool)
         case joined(_ withTableName: Bool)
     }
 }

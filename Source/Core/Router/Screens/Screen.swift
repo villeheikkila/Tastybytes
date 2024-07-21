@@ -26,7 +26,6 @@ enum Screen: Hashable, Sendable {
     case productFeed(Product.FeedType)
     case flavorAdmin
     case verification
-    case duplicateProducts(filter: MarkedAsDuplicateFilter)
     case categoryAdmin
     case profileSettings
     case privacySettings
@@ -56,7 +55,6 @@ enum Screen: Hashable, Sendable {
     case subBrandEditSuggestions(subBrand: Binding<SubBrand.Detailed?>)
     case profileReports(contributionsModel: ContributionsModel)
     case profileEditSuggestions(contributionsModel: ContributionsModel)
-    case profileDuplicateSuggestions(contributionsModel: ContributionsModel)
     case subsidiaries(company: Binding<Company.Detailed?>)
     case editSuggestionsAdmin
 
@@ -108,8 +106,6 @@ enum Screen: Hashable, Sendable {
             FlavorAdminScreen()
         case .verification:
             VerificationScreen()
-        case let .duplicateProducts(filter):
-            DuplicateProductScreen(filter: filter)
         case .categoryAdmin:
             CategoryAdminScreen()
         case .profileSettings:
@@ -170,8 +166,6 @@ enum Screen: Hashable, Sendable {
             ProfileReportScreen(contributionsModel: contributionsModel)
         case let .profileEditSuggestions(contributionsModel):
             EditSuggestionsProfileScreen(contributionsModel: contributionsModel)
-        case let .profileDuplicateSuggestions(contributionsModel):
-            ProfileDuplicateSuggestionScreen(contributionsModel: contributionsModel)
         case let .subsidiaries(company):
             CompanySubsidiaryScreen(company: company)
         case .editSuggestionsAdmin:
@@ -254,7 +248,6 @@ enum Screen: Hashable, Sendable {
             (.currentUserFriends, .currentUserFriends),
             (.flavorAdmin, .flavorAdmin),
             (.verification, .verification),
-            (.duplicateProducts, .duplicateProducts),
             (.categoryAdmin, .categoryAdmin),
             (.profileSettings, .profileSettings),
             (.privacySettings, .privacySettings),
@@ -265,7 +258,7 @@ enum Screen: Hashable, Sendable {
             (.about, .about),
             (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin), (.profileEditSuggestions, .profileEditSuggestions), (
                 .profileReports, .profileReports
-            ), (.profileDuplicateSuggestions, .profileDuplicateSuggestions):
+            ):
             true
         default:
             false
@@ -340,9 +333,6 @@ enum Screen: Hashable, Sendable {
             hasher.combine("flavorManagement")
         case .verification:
             hasher.combine("verification")
-        case let .duplicateProducts(filter):
-            hasher.combine("duplicateProducts")
-            hasher.combine(filter)
         case .categoryAdmin:
             hasher.combine("categoryManagement")
         case .profileSettings:
@@ -423,8 +413,6 @@ enum Screen: Hashable, Sendable {
             hasher.combine("profileReports")
         case .profileEditSuggestions:
             hasher.combine("profileEditSuggestions")
-        case .profileDuplicateSuggestions:
-            hasher.combine("profileDuplicateSuggestions")
         case let .subsidiaries(company):
             hasher.combine("subsidiaries")
             hasher.combine(company.wrappedValue)

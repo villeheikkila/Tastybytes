@@ -57,19 +57,6 @@ public final class ContributionsModel {
             logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
         }
     }
-
-    public func deleteDuplicateSuggestion(_ duplicateSuggestion: DuplicateSuggestion) async {
-        do {
-            switch duplicateSuggestion {
-            case let .product(duplicateSuggestion):
-                try await repository.product.deleteProductDuplicateSuggestion(duplicateSuggestion)
-            }
-            contributions = contributions?.copyWith(duplicateSuggestions: contributions?.duplicateSuggestions.removing(duplicateSuggestion))
-        } catch {
-            guard !error.isCancelled else { return }
-            logger.error("Failed to delete a duplicate suggestion")
-        }
-    }
 }
 
 struct ContributionsScreen: View {
@@ -137,13 +124,6 @@ private struct ContributionsInnerScreen: View {
                     "editSuggestions.navigationTitle",
                     count: contributions.editSuggestions.count,
                     open: .screen(.profileEditSuggestions(contributionsModel: contributionsModel))
-                )
-            }
-            if !contributions.duplicateSuggestions.isEmpty {
-                RouterLink(
-                    "duplicateSuggestions.navigationTitle",
-                    count: contributions.duplicateSuggestions.count,
-                    open: .screen(.profileDuplicateSuggestions(contributionsModel: contributionsModel))
                 )
             }
         }

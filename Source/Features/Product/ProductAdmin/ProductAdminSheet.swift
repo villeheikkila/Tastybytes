@@ -75,12 +75,6 @@ struct ProductAdminSheet: View {
                 count: product.variants.count,
                 open: .screen(.productVariants(variants: product.variants))
             )
-            RouterLink(
-                "admin.duplicates.title",
-                systemImage: "plus.square.on.square",
-                count: product.duplicates.count,
-                open: .screen(.duplicateProducts(filter: .id(product.id)))
-            )
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", count: product.reports.count, open: .screen(.reports(.product(product.id))))
         }
         .buttonStyle(.plain)

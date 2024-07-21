@@ -141,7 +141,7 @@ public final class AdminEnvironmentModel {
 
             editSuggestions = companies + products + brands + subBrands
         } catch {
-            logger.error("Failed to load unverified entities. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load edit suggestion entities. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

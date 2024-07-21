@@ -35,7 +35,6 @@ enum Database {
         case friends
         case permissions
         case productBarcodes = "product_barcodes"
-        case productDuplicateSuggestions = "product_duplicate_suggestions"
         case productEditSuggestionSubcategories = "product_edit_suggestion_subcategories"
         case productVariants = "product_variants"
         case productsSubcategories = "products_subcategories"

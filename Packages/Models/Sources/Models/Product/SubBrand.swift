@@ -186,6 +186,8 @@ public extension SubBrand {
     }
 
     struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
+        public typealias Id = Tagged<SubBrand.EditSuggestion, Int>
+
         public let id: SubBrand.EditSuggestion.Id
         public let subBrand: SubBrand.JoinedBrand
         public let createdAt: Date

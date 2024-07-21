@@ -64,6 +64,5 @@ public enum PermissionName: String, Codable, Equatable, Sendable {
     case canDeleteSuggestions = "can_delete_suggestions"
     case canDeleteCheckInImages = "can_delete_check_in_images"
     case canDeleteCategory = "can_delete_category"
-    case canDeleteProductDuplicateSuggestions = "can_delete_product_duplicate_suggestions"
     case canCommentOnCheckIns = "can_comment_on_check_ins"
 }

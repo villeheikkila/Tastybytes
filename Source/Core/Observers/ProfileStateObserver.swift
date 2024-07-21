@@ -9,15 +9,11 @@ struct ProfileStateObserver<Content: View>: View {
 
     var body: some View {
         switch profileEnvironmentModel.profileState {
-        case .populated:
+        case let .populated(profile):
             content()
                 .task {
-                    await friendEnvironmentModel.initialize(profile: profileEnvironmentModel.profile)
-                }
-                .task {
-                    if profileEnvironmentModel.hasRole(.admin) {
-                        await adminEnvironmentModel.initialize()
-                    }
+                    await friendEnvironmentModel.initialize(profile: profile)
+                    await adminEnvironmentModel.initialize()
                 }
         case .loading:
             EmptyView()

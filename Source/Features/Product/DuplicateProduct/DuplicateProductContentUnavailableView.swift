@@ -3,11 +3,11 @@ import SwiftUI
 struct DuplicateProductContentUnavailableView: View {
     let productName: String
 
-    private var title: String {
+    private var title: LocalizedStringKey {
         "Find a duplicate of\n \(productName)"
     }
 
-    private var description: String {
+    private var description: LocalizedStringKey {
         "Your request will be reviewed and products will be combined if appropriate."
     }
 

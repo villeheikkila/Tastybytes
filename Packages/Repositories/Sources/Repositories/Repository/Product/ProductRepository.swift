@@ -1,17 +1,11 @@
 import Foundation
 import Models
 
-public enum MarkedAsDuplicateFilter: Sendable, Hashable {
-    case id(Product.Id)
-    case all
-}
-
 public protocol ProductRepository: Sendable {
     func search(searchTerm: String, filter: Product.Filter?) async throws -> [Product.Joined]
     func search(barcode: Barcode) async throws -> [Product.Joined]
     func getById(id: Product.Id) async throws -> Product.Joined
     func getDetailed(id: Product.Id) async throws -> Product.Detailed
-    func deleteProductDuplicateSuggestion(_ duplicateSuggestion: Product.DuplicateSuggestion) async throws
     func getByProfile(id: Profile.Id) async throws -> [Product.Joined]
     func getFeed(_ type: Product.FeedType, from: Int, to: Int, categoryFilterId: Models.Category.Id?) async throws -> [Product.Joined]
     func delete(id: Product.Id) async throws
@@ -23,7 +17,6 @@ public protocol ProductRepository: Sendable {
     func addToWishlist(productId: Product.Id) async throws
     func uploadLogo(productId: Product.Id, data: Data) async throws -> ImageEntity
     func getSummaryById(id: Product.Id) async throws -> Summary
-    func getMarkedAsDuplicateProducts(filter: MarkedAsDuplicateFilter) async throws -> [Product.DuplicateSuggestion]
     func getCreatedByUserId(id: Profile.Id) async throws -> [Product.Joined]
     func mergeProducts(productId: Product.Id, toProductId: Product.Id) async throws
     func markAsDuplicate(productId: Product.Id, duplicateOfProductId: Product.Id) async throws

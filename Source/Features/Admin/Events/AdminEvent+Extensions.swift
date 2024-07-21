@@ -24,8 +24,6 @@ extension AdminEvent {
             .screen(.company(editSuggestion.company))
         case let .report(report):
             report.entity.open
-        case let .productDuplicateSuggestion(duplicateProductSuggestion):
-            .screen(.product(duplicateProductSuggestion.product))
         }
     }
 
@@ -51,8 +49,6 @@ extension AdminEvent {
             "admin.event.companyEditSuggestionCreated.title"
         case .report:
             "admin.event.reportCreated.title"
-        case .productDuplicateSuggestion:
-            "admin.event.productDuplicateSuggestionCreated.title"
         }
     }
 }

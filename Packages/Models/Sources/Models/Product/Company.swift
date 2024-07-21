@@ -225,6 +225,8 @@ public extension CompanyLogoProtocol {
 
 public extension Company {
     struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
+        public typealias Id = Tagged<Company.EditSuggestion, Int>
+
         public let id: Company.EditSuggestion.Id
         public let name: String?
         public let company: Company

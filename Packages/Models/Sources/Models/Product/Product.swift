@@ -43,24 +43,6 @@ public extension Product {
 }
 
 public extension Product {
-    struct DuplicateSuggestion: Codable, Hashable, Sendable, Identifiable, CreationInfo {
-        public let id: Product.DuplicateSuggestion.Id
-        public let createdAt: Date
-        public let createdBy: Profile
-        public let product: Product.Joined
-        public let duplicate: Product.Joined
-
-        enum CodingKeys: String, CodingKey {
-            case id
-            case createdAt = "created_at"
-            case createdBy = "profiles"
-            case product
-            case duplicate
-        }
-    }
-}
-
-public extension Product {
     struct SearchParams: Codable, Sendable {
         public let searchTerm: String
         public let categoryName: String?
@@ -96,8 +78,11 @@ public extension Product {
     }
 
     struct EditSuggestion: Identifiable, Codable, Hashable, Sendable, Resolvable, CreationInfo {
+        public typealias Id = Tagged<Product.EditSuggestion, Int>
+
         public let id: Product.EditSuggestion.Id
         public let product: Product.Joined
+        public let duplicateOf: Product.Joined?
         public let createdAt: Date
         public let createdBy: Profile
         public let name: String?
@@ -111,6 +96,7 @@ public extension Product {
         enum CodingKeys: String, CodingKey {
             case id
             case product = "products"
+            case duplicateOf = "duplicate_of"
             case createdAt = "created_at"
             case createdBy = "profiles"
             case name
@@ -126,6 +112,7 @@ public extension Product {
             .init(
                 id: id,
                 product: product,
+                duplicateOf: duplicateOf,
                 createdAt: createdAt,
                 createdBy: createdBy,
                 name: name,
@@ -580,7 +567,6 @@ public extension Product {
         public let editSuggestions: [EditSuggestion]
         public let variants: [Product.Variant]
         public let reports: [Report]
-        public let duplicates: [Product.DuplicateSuggestion]
         public let isDiscontinued: Bool
         public let logos: [ImageEntity]
         public let createdBy: Profile?
@@ -600,7 +586,6 @@ public extension Product {
             case editSuggestions = "product_edit_suggestions"
             case variants = "product_variants"
             case reports
-            case duplicates = "product_duplicate_suggestions"
             case isDiscontinued = "is_discontinued"
             case logos = "product_logos"
             case createdBy = "created_by"
@@ -622,7 +607,6 @@ public extension Product {
                 editSuggestions: editSuggestions,
                 variants: variants,
                 reports: reports,
-                duplicates: duplicates,
                 isDiscontinued: product.isDiscontinued,
                 logos: logos,
                 createdBy: createdBy,
@@ -643,7 +627,6 @@ public extension Product {
             editSuggestions: [Product.EditSuggestion]? = nil,
             variants: [Product.Variant]? = nil,
             reports: [Report]? = nil,
-            duplicates: [Product.DuplicateSuggestion]? = nil,
             isDiscontinued: Bool? = nil,
             logos: [ImageEntity]? = nil
         ) -> Self {
@@ -659,7 +642,6 @@ public extension Product {
                 editSuggestions: editSuggestions ?? self.editSuggestions,
                 variants: variants ?? self.variants,
                 reports: reports ?? self.reports,
-                duplicates: duplicates ?? self.duplicates,
                 isDiscontinued: isDiscontinued ?? self.isDiscontinued,
                 logos: logos ?? self.logos,
                 createdBy: createdBy,

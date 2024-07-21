@@ -194,39 +194,11 @@ struct SupabaseProductRepository: ProductRepository {
 
     func markAsDuplicate(productId: Product.Id, duplicateOfProductId: Product.Id) async throws {
         try await client
-            .from(.productDuplicateSuggestions)
+            .from(.productEditSuggestions)
             .insert(Product.DuplicateRequest(productId: productId, duplicateOfProductId: duplicateOfProductId),
                     returning: .none)
             .execute()
             .value
-    }
-
-    func getMarkedAsDuplicateProducts(filter: MarkedAsDuplicateFilter) async throws -> [Product.DuplicateSuggestion] {
-        let query = client
-            .from(.productDuplicateSuggestions)
-            .select(Product.DuplicateSuggestion.getQuery(.joined(false)))
-
-        let filtered = switch filter {
-        case .all:
-            query
-        case let .id(id):
-            query.eq("product_id", value: id.rawValue)
-        }
-
-        return try await filtered.order("created_at", ascending: false)
-            .execute()
-            .value
-    }
-
-    func deleteProductDuplicateSuggestion(_ duplicateSuggestion: Product.DuplicateSuggestion) async throws {
-        try await client
-            .from(.productDuplicateSuggestions)
-            .delete()
-            .eq("product_id", value: duplicateSuggestion.product.id.rawValue)
-            .eq("duplicate_of_product_id", value: duplicateSuggestion.duplicate.id.rawValue)
-            .select()
-            .single()
-            .execute()
     }
 
     func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async throws {

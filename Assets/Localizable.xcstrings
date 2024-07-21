@@ -252,10 +252,8 @@
         }
       }
     },
-    "admin.duplicates.empty.title" : {
-
-    },
     "admin.duplicates.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -351,6 +349,7 @@
       }
     },
     "admin.event.productDuplicateSuggestionCreated.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2675,10 +2674,8 @@
         }
       }
     },
-    "duplicateSuggestions.empty.title" : {
-
-    },
     "duplicateSuggestions.navigationTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2717,6 +2714,9 @@
           }
         }
       }
+    },
+    "Find a duplicate of\n %@" : {
+
     },
     "flavor.add.labels" : {
       "localizations" : {
@@ -3925,12 +3925,6 @@
           }
         }
       }
-    },
-    "product.admin.editSuggestion.delete.description" : {
-
-    },
-    "product.admin.editSuggestion.delete.label" : {
-
     },
     "product.admin.editSuggestion.navigationTitle" : {
 
@@ -5955,6 +5949,9 @@
           }
         }
       }
+    },
+    "Your request will be reviewed and products will be combined if appropriate." : {
+
     }
   },
   "version" : "1.0"

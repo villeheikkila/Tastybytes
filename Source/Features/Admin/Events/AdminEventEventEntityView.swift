@@ -27,8 +27,6 @@ struct AdminEventEventEntityView: View {
             CompanyEditSuggestionEntityView(editSuggestion: editSuggestion)
         case let .report(report):
             ReportEntityView(entity: report.entity)
-        case let .productDuplicateSuggestion(productDuplicateSuggestion):
-            DuplicateProductSuggestionEntityView(duplicateProductSuggestion: productDuplicateSuggestion)
         }
     }
 }
