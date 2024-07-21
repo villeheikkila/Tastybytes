@@ -95,7 +95,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         try await client
             .from(segment.table)
             .select(CheckIn.getQuery(.joined(false)))
-            .eq("location_id", value: locationId.rawValue)
+            .or("location_id.eq.\(locationId.rawValue),purchase_location_id.eq.\(locationId.rawValue)")
             .order("created_at", ascending: false)
             .range(from: from, to: to)
             .execute()

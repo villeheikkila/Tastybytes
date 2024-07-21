@@ -30,12 +30,10 @@ struct BrandPickerSheet: View {
     }
 
     var body: some View {
-        List {
-            ForEach(filteredBrands) { brand in
-                BrandSheetRowView(brand: brand) { brand in
-                    self.brand = brand
-                    dismiss()
-                }
+        List(filteredBrands) { brand in
+            BrandSheetRowView(brand: brand) { brand in
+                self.brand = brand
+                dismiss()
             }
         }
         .listStyle(.plain)

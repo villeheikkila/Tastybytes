@@ -29,12 +29,10 @@ struct SubBrandPickerSheet: View {
     }
 
     var body: some View {
-        List {
-            ForEach(filteredSubBrands) { subBrand in
-                SubBrandSheetRowView(subBrand: subBrand) { _ in
-                    self.subBrand = subBrand
-                    dismiss()
-                }
+        List(filteredSubBrands) { subBrand in
+            SubBrandSheetRowView(subBrand: subBrand) { _ in
+                self.subBrand = subBrand
+                dismiss()
             }
         }
         .listStyle(.plain)

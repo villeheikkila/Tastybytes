@@ -48,12 +48,12 @@ struct LocationInnerScreen: View {
         }
         .listStyle(.plain)
         .refreshable {
-            await getLocationData(isRefresh: true)
+            await load(isRefresh: true)
         }
         .checkInCardLoadedFrom(.location(location))
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await getLocationData(isRefresh: true)
+                await load(isRefresh: true)
             }
         }
         .navigationTitle(location.name)
@@ -62,7 +62,7 @@ struct LocationInnerScreen: View {
             toolbarContent
         }
         .initialTask {
-            await getLocationData()
+            await load()
         }
     }
 
@@ -88,7 +88,7 @@ struct LocationInnerScreen: View {
         }
     }
 
-    private func getLocationData(isRefresh: Bool = false) async {
+    private func load(isRefresh: Bool = false) async {
         async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let summaryPromise = repository.location.getSummaryById(id: location.id)
 
