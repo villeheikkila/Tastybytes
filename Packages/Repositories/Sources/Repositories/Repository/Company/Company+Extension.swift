@@ -27,6 +27,7 @@ extension Company: Queryable {
                     ImageEntity.getQuery(.saved(.companyLogos)),
                     Company.EditSuggestion.getQuery(.joined(true)),
                     Company.getQuery(.saved(true)),
+                    Report.getQuery(.joined(true)),
                     modificationInfoFragment,
                 ],
                 withTableName

@@ -19,7 +19,7 @@ struct SubBrandAdminSheet: View {
     @State private var state: ScreenState = .loading
     @State private var newSubBrandName: String
     @State private var includesBrandName: Bool
-    @State private var subBrand: SubBrand.Detailed?
+    @State private var subBrand = SubBrand.Detailed()
     @State private var id: SubBrand.Id
 
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
@@ -35,24 +35,18 @@ struct SubBrandAdminSheet: View {
     }
 
     private var canUpdate: Bool {
-        if let subBrand {
-            (subBrand
-                .name != newSubBrandName && newSubBrandName
-                .isValidLength(.normal(allowEmpty: false))) || includesBrandName != subBrand.includesBrandName
-        } else {
-            false
-        }
+        (subBrand
+            .name != newSubBrandName && newSubBrandName
+            .isValidLength(.normal(allowEmpty: false))) || includesBrandName != subBrand.includesBrandName
     }
 
     private var subBrandsToMergeTo: [SubBrand.JoinedProduct] {
-        brand.subBrands.filter { $0.name != nil && $0.id != subBrand?.id }
+        brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }
     }
 
     var body: some View {
         Form {
-            if let subBrand {
-                content(subBrand: subBrand)
-            }
+            content
         }
         .scrollContentBackground(.hidden)
         .overlay {
@@ -71,7 +65,7 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    @ViewBuilder private func content(subBrand: SubBrand.Detailed) -> some View {
+    @ViewBuilder private var content: some View {
         Section("subBrand.admin.section.subBrand") {
             RouterLink(open: .screen(.subBrand(.init(brand: brand, subBrand: subBrand)))) {
                 SubBrandEntityView(brand: brand, subBrand: subBrand)
@@ -145,13 +139,12 @@ struct SubBrandAdminSheet: View {
     }
 
     private func verifySubBrand(isVerified: Bool) async {
-        guard let subBrand else { return }
         do {
             try await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified)
             let updatedSubBrand = SubBrand.JoinedProduct(subBrand: subBrand).copyWith(
                 isVerified: isVerified
             )
-            self.subBrand = self.subBrand?.copyWith(isVerified: isVerified)
+            subBrand = subBrand.copyWith(isVerified: isVerified)
             let updatedSubBrands = brand.subBrands.replacingWithId(id, with: updatedSubBrand)
             brand = brand.copyWith(subBrands: updatedSubBrands)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -180,11 +173,10 @@ struct SubBrandAdminSheet: View {
     }
 
     private func editSubBrand() async {
-        guard let subBrand else { return }
         do {
             let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: id, name: newSubBrandName, includesBrandName: includesBrandName)))
             router.open(.toast(.success("subBrand.updated.toast")))
-            self.subBrand = subBrand.copyWith(name: updated.name, includesBrandName: includesBrandName)
+            subBrand = subBrand.copyWith(name: updated.name, includesBrandName: includesBrandName)
             let updatedSubBrands = brand.subBrands.replacingWithId(id, with: SubBrand.JoinedProduct(subBrand: subBrand).copyWith(name: updated.name, includesBrandName: includesBrandName))
             brand = brand.copyWith(subBrands: updatedSubBrands)
         } catch {
@@ -248,14 +240,10 @@ extension SubBrandProtocol {
 }
 
 struct SubBrandEditSuggestionsScreen: View {
-    @Binding var subBrand: SubBrand.Detailed?
-
-    private var editSuggestions: [SubBrand.EditSuggestion] {
-        subBrand?.editSuggestions ?? []
-    }
+    @Binding var subBrand: SubBrand.Detailed
 
     var body: some View {
-        List(editSuggestions) { editSuggestion in
+        List(subBrand.editSuggestions) { editSuggestion in
             SubBrandEditSuggestionEntityView(editSuggestion: editSuggestion)
         }
         .navigationTitle("subBrand.editSuggestion.navigationTitle")

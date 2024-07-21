@@ -13,14 +13,10 @@ struct BarcodeManagementScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
 
-    @Binding var product: Product.Detailed?
-
-    var barcodes: [Product.Barcode.JoinedWithCreator] {
-        product?.barcodes ?? []
-    }
+    @Binding var product: Product.Detailed
 
     var body: some View {
-        List(barcodes) { barcode in
+        List(product.barcodes) { barcode in
             BarcodeManagementRowView(barcode: barcode)
                 .contextMenu {
                     DeleteButtonView(action: {
@@ -32,7 +28,7 @@ struct BarcodeManagementScreen: View {
         }
         .listStyle(.plain)
         .overlay {
-            if let product, product.barcodes.isEmpty {
+            if product.barcodes.isEmpty {
                 ContentUnavailableView("barcode.management.empty.title", systemImage: "barcode")
             }
         }
@@ -43,16 +39,14 @@ struct BarcodeManagementScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        if let product {
-            ToolbarItemGroup(placement: .primaryAction) {
-                RouterLink(
-                    "discover.barcode.scan",
-                    systemImage: "barcode.viewfinder",
-                    open: .sheet(.barcodeScanner(onComplete: { barcode in
-                        await addBarcodeToProduct(product: product, barcode)
-                    }))
-                )
-            }
+        ToolbarItemGroup(placement: .primaryAction) {
+            RouterLink(
+                "discover.barcode.scan",
+                systemImage: "barcode.viewfinder",
+                open: .sheet(.barcodeScanner(onComplete: { barcode in
+                    await addBarcodeToProduct(product: product, barcode)
+                }))
+            )
         }
     }
 
@@ -74,11 +68,10 @@ struct BarcodeManagementScreen: View {
     }
 
     private func deleteBarcode(_ barcode: Product.Barcode.JoinedWithCreator) async {
-        guard let product else { return }
         do {
             try await repository.productBarcode.delete(id: barcode.id)
             let updated = product.barcodes.removing(barcode)
-            self.product = product.copyWith(barcodes: updated)
+            product = product.copyWith(barcodes: updated)
             feedbackEnvironmentModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }

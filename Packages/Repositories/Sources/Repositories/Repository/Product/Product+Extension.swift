@@ -68,7 +68,7 @@ extension Product: Queryable {
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.joinedCategory(true)),
                     Product.Barcode.getQuery(.joinedCreator(true)),
-                    Product.EditSuggestion.getQuery(.joined(true)),
+                    buildQuery(name: "product_edit_suggestions", foreignKey: "product_edit_suggestions!product_edit_suggestions_product_id_fkey", [Product.EditSuggestion.getQuery(.joined(false))]),
                     Product.Variant.getQuery(.joined(true)),
                     Report.getQuery(.joined(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),

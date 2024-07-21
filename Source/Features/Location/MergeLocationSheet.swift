@@ -17,10 +17,10 @@ struct MergeLocationSheet: View {
     @State private var searchTerm = ""
     @State private var searchTask: Task<Void, Never>?
 
-    let location: Location
-    let onMerge: ((_ newLocation: Location) async -> Void)?
+    let location: Location.Detailed
+    let onMerge: ((_ newLocation: Location.Detailed) async -> Void)?
 
-    init(location: Location, onMerge: ((_: Location) async -> Void)? = nil) {
+    init(location: Location.Detailed, onMerge: ((_: Location.Detailed) async -> Void)? = nil) {
         self.location = location
         self.onMerge = onMerge
     }
@@ -31,7 +31,11 @@ struct MergeLocationSheet: View {
 
     var body: some View {
         List(shownLocations) { mergeToLocation in
-            MergeLocationSheetRow(location: mergeToLocation, mergeToLocation: location, mergeLocation: mergeLocation)
+            MergeLocationSheetRow(
+                mergeToLocation: mergeToLocation,
+                locationToMerge: location,
+                mergeLocation: mergeLocation
+            )
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
@@ -55,9 +59,10 @@ struct MergeLocationSheet: View {
     private func mergeLocation(_ to: Location) async {
         do {
             try await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id)
+            let location = try await repository.location.getDetailed(id: to.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             if let onMerge {
-                await onMerge(to)
+                await onMerge(location)
             }
             dismiss()
         } catch {
@@ -83,17 +88,17 @@ struct MergeLocationSheet: View {
 struct MergeLocationSheetRow: View {
     @State private var showMergeToConfirmation = false
 
-    let location: Location
     let mergeToLocation: Location
+    let locationToMerge: Location.Detailed
     let mergeLocation: (_ location: Location) async -> Void
 
     var body: some View {
-        LocationRow(location: location, currentLocation: nil, onSelect: { _ in showMergeToConfirmation = true })
+        LocationRow(location: mergeToLocation, currentLocation: nil, onSelect: { _ in showMergeToConfirmation = true })
             .confirmationDialog(
                 "location.merge.confirmation.description",
                 isPresented: $showMergeToConfirmation,
                 titleVisibility: .visible,
-                presenting: location
+                presenting: mergeToLocation
             ) { presenting in
                 AsyncButton(
                     "location.merge.confirmation.label \(mergeToLocation.name) \(presenting.name)",

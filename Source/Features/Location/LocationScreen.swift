@@ -47,6 +47,7 @@ struct LocationInnerScreen: View {
             }
         }
         .listStyle(.plain)
+        .animation(.default, value: location)
         .refreshable {
             await load(isRefresh: true)
         }
@@ -74,10 +75,8 @@ struct LocationInnerScreen: View {
                 Divider()
                 ReportButton(entity: .location(location))
                 Divider()
-                AdminRouterLink(open: .sheet(.locationAdmin(location: location, onEdit: { location in
-                    withAnimation {
-                        self.location = location
-                    }
+                AdminRouterLink(open: .sheet(.locationAdmin(id: location.id, onEdit: { location in
+                    self.location = location
                 }, onDelete: { _ in
                     router.removeLast()
                 })))

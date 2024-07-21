@@ -18,7 +18,7 @@ struct BrandAdminSheet: View {
     @State private var showDeleteBrandConfirmationDialog = false
     @State private var name: String = ""
     @State private var brandOwner: Company?
-    @State private var brand: Brand.Detailed?
+    @State private var brand = Brand.Detailed()
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
 
@@ -27,12 +27,12 @@ struct BrandAdminSheet: View {
     let onDelete: BrandUpdateCallback
 
     private var isValidNameUpdate: Bool {
-        name.isValidLength(.normal(allowEmpty: false)) && brand?.name != name
+        name.isValidLength(.normal(allowEmpty: false)) && brand.name != name
     }
 
     private var isValidBrandOwnerUpdate: Bool {
-        if let brandOwner, let currentBrandOwner = brand?.brandOwner {
-            brandOwner.id == currentBrandOwner.id
+        if let brandOwner {
+            brandOwner.id == brand.brandOwner.id
         } else {
             false
         }
@@ -44,8 +44,8 @@ struct BrandAdminSheet: View {
 
     var body: some View {
         Form {
-            if let brand {
-                content(brand: brand)
+            if state == .populated {
+                content
             }
         }
         .scrollContentBackground(.hidden)
@@ -72,7 +72,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    @ViewBuilder private func content(brand: Brand.Detailed) -> some View {
+    @ViewBuilder private var content: some View {
         Section("brand.admin.section.brand") {
             RouterLink(open: .screen(.brand(.init(brand: brand)))) {
                 BrandEntityView(brand: brand)
@@ -118,13 +118,11 @@ struct BrandAdminSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
-        if let brand {
-            ToolbarItem(placement: .primaryAction) {
-                AsyncButton("labels.edit") {
-                    await editBrand(brand: brand)
-                }
-                .disabled(!isValidUpdate)
+        ToolbarItem(placement: .primaryAction) {
+            AsyncButton("labels.edit") {
+                await editBrand(brand: brand)
             }
+            .disabled(!isValidUpdate)
         }
     }
 
@@ -145,10 +143,9 @@ struct BrandAdminSheet: View {
     }
 
     private func verifyBrand(isVerified: Bool) async {
-        guard let brand else { return }
         do {
             try await repository.brand.verification(id: brand.id, isVerified: isVerified)
-            self.brand = brand.copyWith(isVerified: isVerified)
+            brand = brand.copyWith(isVerified: isVerified)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -176,11 +173,10 @@ struct BrandAdminSheet: View {
     }
 
     private func uploadLogo(data: Data) async {
-        guard let brand else { return }
         do {
             let imageEntity = try await repository.brand.uploadLogo(brandId: brand.id, data: data)
             withAnimation {
-                self.brand = brand.copyWith(logos: brand.logos + [imageEntity])
+                brand = brand.copyWith(logos: brand.logos + [imageEntity])
             }
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
             await onUpdate(.init(brand: brand))
@@ -192,11 +188,10 @@ struct BrandAdminSheet: View {
     }
 
     private func deleteLogo(entity: ImageEntity) async {
-        guard let brand else { return }
         do {
             try await repository.imageEntity.delete(from: .brandLogos, entity: entity)
             withAnimation {
-                self.brand = brand.copyWith(logos: brand.logos.removing(entity))
+                brand = brand.copyWith(logos: brand.logos.removing(entity))
             }
         } catch {
             guard !error.isCancelled else { return }

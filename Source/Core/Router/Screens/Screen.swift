@@ -38,24 +38,24 @@ enum Screen: Hashable, Sendable {
     case reports(ReportFilter? = nil)
     case locationAdmin
     case error(reason: String)
-    case companyEditSuggestion(company: Binding<Company.Detailed?>)
+    case companyEditSuggestion(company: Binding<Company.Detailed>)
     case categoryServingStyle(category: Models.Category.Detailed)
-    case barcodeManagement(product: Binding<Product.Detailed?>)
+    case barcodeManagement(product: Binding<Product.Detailed>)
     case productList(products: [Product.Joined])
     case companyList(companies: [Company])
     case brandList(brands: [Brand])
     case subBrandList(subBrands: [SubBrand.JoinedBrand])
     case barcodeList(barcodes: [Product.Barcode.Joined])
     case profilesAdmin
-    case roleSuperAdminPicker(profile: Binding<Profile.Detailed?>, roles: [Role])
-    case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed?>)
+    case roleSuperAdminPicker(profile: Binding<Profile.Detailed>, roles: [Role])
+    case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed>)
     case adminEvent
-    case productEditSuggestion(product: Binding<Product.Detailed?>)
+    case productEditSuggestion(product: Binding<Product.Detailed>)
     case productVariants(variants: [Product.Variant])
-    case subBrandEditSuggestions(subBrand: Binding<SubBrand.Detailed?>)
+    case subBrandEditSuggestions(subBrand: Binding<SubBrand.Detailed>)
     case profileReports(contributionsModel: ContributionsModel)
     case profileEditSuggestions(contributionsModel: ContributionsModel)
-    case subsidiaries(company: Binding<Company.Detailed?>)
+    case subsidiaries(company: Binding<Company.Detailed>)
     case editSuggestionsAdmin
     case reportsAdmin
 
@@ -395,9 +395,7 @@ enum Screen: Hashable, Sendable {
             hasher.combine("profilesAdmin")
         case let .roleSuperAdminPicker(profile, roles):
             hasher.combine("roleSuperAdminPicker")
-            if let profile = profile.wrappedValue {
-                hasher.combine(profile)
-            }
+            hasher.combine(profile.wrappedValue)
             hasher.combine(roles)
         case let .brandEditSuggestionAdmin(brand):
             hasher.combine("brandEditSuggestionAdmin")

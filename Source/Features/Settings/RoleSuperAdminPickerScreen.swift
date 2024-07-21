@@ -10,7 +10,7 @@ struct RoleSuperAdminPickerScreen: View {
     @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
     @Environment(Repository.self) private var repository
 
-    @Binding var profile: Profile.Detailed?
+    @Binding var profile: Profile.Detailed
     let roles: [Role]
 
     var body: some View {
@@ -28,12 +28,12 @@ struct RolePickerRowView: View {
     @Environment(Repository.self) private var repository
     @State private var showConfirmationDialogForAddingPermission = false
     @State private var showConfirmationDialogForRemovingPermission = false
-    @Binding var profile: Profile.Detailed?
+    @Binding var profile: Profile.Detailed
 
     let role: Role
 
     private var isSelected: Bool {
-        profile?.roles.map(\.id).contains(role.id) ?? false
+        profile.roles.map(\.id).contains(role.id)
     }
 
     var body: some View {
@@ -64,7 +64,7 @@ struct RolePickerRowView: View {
             .disabled(role.name == RoleName.superAdmin.rawValue)
         }
         .confirmationDialog(
-            "Are you sure you want to remove \(role.label) role from \(profile?.preferredName ?? "-")",
+            "Are you sure you want to remove \(role.label) role from \(profile.preferredName)",
             isPresented: $showConfirmationDialogForRemovingPermission,
             titleVisibility: .visible,
             presenting: role
@@ -74,7 +74,7 @@ struct RolePickerRowView: View {
             })
         }
         .confirmationDialog(
-            "Are you sure you want to give \(profile?.preferredName ?? "-") the \(role.label). Giving user access to destructive features can be dangerous",
+            "Are you sure you want to give \(profile.preferredName) the \(role.label). Giving user access to destructive features can be dangerous",
             isPresented: $showConfirmationDialogForAddingPermission,
             titleVisibility: .visible,
             presenting: role
@@ -86,10 +86,9 @@ struct RolePickerRowView: View {
     }
 
     private func removeRoleFromProfile(_ role: Role) async {
-        guard let profile else { return }
         do {
             try await repository.role.removeProfileFromProfile(profile: profile.profile, role: role)
-            self.profile = profile.copyWith(roles: profile.roles.removing(role))
+            profile = profile.copyWith(roles: profile.roles.removing(role))
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to load roles. Error: \(error) (\(#file):\(#line))")
@@ -97,10 +96,9 @@ struct RolePickerRowView: View {
     }
 
     private func addRoleForProfile(_ role: Role) async {
-        guard let profile else { return }
         do {
             try await repository.role.addProfileForProfile(profile: profile.profile, role: role)
-            self.profile = profile.copyWith(roles: profile.roles + [role])
+            profile = profile.copyWith(roles: profile.roles + [role])
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to load roles. Error: \(error) (\(#file):\(#line))")

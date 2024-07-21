@@ -62,6 +62,12 @@ public extension Brand {
     }
 
     struct JoinedCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
+        public let id: Brand.Id
+        public let name: String
+        public let isVerified: Bool
+        public let brandOwner: Company
+        public let logos: [ImageEntity]
+
         public init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company, logos: [ImageEntity]) {
             self.id = id
             self.name = name
@@ -78,11 +84,13 @@ public extension Brand {
             logos = brand.logos
         }
 
-        public let id: Brand.Id
-        public let name: String
-        public let isVerified: Bool
-        public let brandOwner: Company
-        public let logos: [ImageEntity]
+        public init() {
+            id = .init(rawValue: 0)
+            name = ""
+            isVerified = false
+            brandOwner = .init(company: .init())
+            logos = []
+        }
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -204,7 +212,7 @@ public extension Brand {
         }
     }
 
-    struct Detailed: Identifiable, Hashable, Codable, Sendable, BrandProtocol, ModificationInfo {
+    struct Detailed: Identifiable, Hashable, Decodable, Sendable, BrandProtocol, ModificationInfo {
         public let id: Brand.Id
         public let name: String
         public let isVerified: Bool
@@ -212,6 +220,7 @@ public extension Brand {
         public let subBrands: [SubBrand.JoinedProduct]
         public let logos: [ImageEntity]
         public let editSuggestions: [EditSuggestion]
+        public let reports: [Report]
         public let createdBy: Profile?
         public let createdAt: Date
         public let updatedBy: Profile?
@@ -219,6 +228,36 @@ public extension Brand {
 
         public var productCount: Int {
             subBrands.flatMap(\.products).count
+        }
+
+        init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity], editSuggestions: [Brand.EditSuggestion], reports: [Report], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
+            self.id = id
+            self.name = name
+            self.isVerified = isVerified
+            self.brandOwner = brandOwner
+            self.subBrands = subBrands
+            self.logos = logos
+            self.editSuggestions = editSuggestions
+            self.reports = reports
+            self.createdBy = createdBy
+            self.createdAt = createdAt
+            self.updatedBy = updatedBy
+            self.updatedAt = updatedAt
+        }
+
+        public init() {
+            id = Brand.Id(rawValue: 0)
+            name = ""
+            isVerified = false
+            brandOwner = .init(id: Company.Id(rawValue: 0), name: "", isVerified: false)
+            subBrands = []
+            logos = []
+            editSuggestions = []
+            reports = []
+            createdBy = nil
+            createdAt = Date.now
+            updatedBy = nil
+            updatedAt = nil
         }
 
         enum CodingKeys: String, CodingKey {
@@ -229,6 +268,7 @@ public extension Brand {
             case subBrands = "sub_brands"
             case logos = "brand_logos"
             case editSuggestions = "brand_edit_suggestions"
+            case reports
             case createdBy = "created_by"
             case createdAt = "created_at"
             case updatedBy = "updated_by"
@@ -241,7 +281,8 @@ public extension Brand {
             brandOwner: Company? = nil,
             subBrands: [SubBrand.JoinedProduct]? = nil,
             logos: [ImageEntity]? = nil,
-            editSuggestions: [Brand.EditSuggestion]? = nil
+            editSuggestions: [Brand.EditSuggestion]? = nil,
+            reports: [Report]? = nil
         ) -> Self {
             .init(
                 id: id,
@@ -251,6 +292,7 @@ public extension Brand {
                 subBrands: subBrands ?? self.subBrands,
                 logos: logos ?? self.logos,
                 editSuggestions: editSuggestions ?? self.editSuggestions,
+                reports: reports ?? self.reports,
                 createdBy: createdBy,
                 createdAt: createdAt,
                 updatedBy: updatedBy,

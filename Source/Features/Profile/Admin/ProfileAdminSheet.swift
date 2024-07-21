@@ -11,7 +11,7 @@ struct ProfileAdminSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var detailedProfile: Profile.Detailed?
+    @State private var detailedProfile = Profile.Detailed()
     @State private var summary: ProfileSummary?
 
     let profile: Profile
@@ -27,8 +27,8 @@ struct ProfileAdminSheet: View {
 
     var body: some View {
         Form {
-            if state == .populated, let detailedProfile, let summary {
-                content(detailedProfile, summary)
+            if state == .populated, let summary {
+                content(summary: summary)
             }
         }
         .scrollContentBackground(.hidden)
@@ -42,7 +42,7 @@ struct ProfileAdminSheet: View {
         }
     }
 
-    @ViewBuilder private func content(_ detailedProfile: Profile.Detailed, _ summary: ProfileSummary) -> some View {
+    @ViewBuilder private func content(summary: ProfileSummary) -> some View {
         Section("profile.admin.section.profile") {
             RouterLink(open: .screen(.profile(profile))) {
                 ProfileEntityView(profile: profile)

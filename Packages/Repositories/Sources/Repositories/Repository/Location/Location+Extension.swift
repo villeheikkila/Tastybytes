@@ -9,7 +9,16 @@ extension Location: Queryable {
         case let .joined(withTableName):
             buildQuery(.locations, [saved, Country.getQuery(.saved(true))], withTableName)
         case let .detailed(withTableName):
-            buildQuery(.locations, [saved, "created_at", Country.getQuery(.saved(true)), Profile.getQuery(.minimal(true))], withTableName)
+            buildQuery(
+                .locations,
+                [
+                    saved,
+                    Country.getQuery(.saved(true)),
+                    Report.getQuery(.joined(true)),
+                    modificationInfoFragment,
+                ],
+                withTableName
+            )
         case .topLocations:
             "check_ins_count, \(buildQuery(.locations, [saved], false))"
         }

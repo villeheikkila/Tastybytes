@@ -30,7 +30,7 @@ enum Sheet: Identifiable, Equatable {
     case profilePicker(mode: ProfilePickerSheet.Mode, onSubmit: () -> Void)
     case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>, isNostalgic: Binding<Bool>)
     case categoryPicker(category: Binding<Models.Category.JoinedSubcategoriesServingStyles?>)
-    case mergeLocation(location: Location, onMerge: ((_ newLocation: Location) async -> Void)? = nil)
+    case mergeLocation(location: Location.Detailed, onMerge: ((_ newLocation: Location.Detailed) async -> Void)? = nil)
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
     case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
@@ -38,7 +38,7 @@ enum Sheet: Identifiable, Equatable {
     case profileDeleteConfirmation
     case webView(link: WebViewLink)
     case companyAdmin(id: Company.Id, onUpdate: () async -> Void, onDelete: () -> Void)
-    case locationAdmin(location: Location, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
+    case locationAdmin(id: Location.Id, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
     case profileAdmin(profile: Profile, onDelete: (_ profile: Profile) -> Void)
     case productAdmin(id: Product.Id, onDelete: () -> Void, onUpdate: () async -> Void)
     case checkInAdmin(checkIn: CheckIn, onDelete: () -> Void)
@@ -117,8 +117,8 @@ enum Sheet: Identifiable, Equatable {
             CheckInImageSheet(checkIn: checkIn, onDeleteImage: onDeleteImage)
         case .profileDeleteConfirmation:
             AccountDeletedScreen()
-        case let .locationAdmin(location, onEdit, onDelete):
-            LocationAdminSheet(location: location, onEdit: onEdit, onDelete: onDelete)
+        case let .locationAdmin(id, onEdit, onDelete):
+            LocationAdminSheet(id: id, onEdit: onEdit, onDelete: onDelete)
         case let .webView(link):
             WebViewSheet(link: link)
         case let .locationSearch(initialLocation, initialSearchTerm, onSelect):
@@ -244,8 +244,8 @@ enum Sheet: Identifiable, Equatable {
             "check_in_image_\(checkIn.hashValue)"
         case .profileDeleteConfirmation:
             "profile_delete_confirmation"
-        case let .locationAdmin(location, _, _):
-            "location_admin_\(location)"
+        case let .locationAdmin(id, _, _):
+            "location_admin_\(id)"
         case let .webView(link):
             "webview_\(link)"
         case let .locationSearch(initialLocation, initialSearchTerm, _):

@@ -5,19 +5,15 @@ import Repositories
 import SwiftUI
 
 struct CompanyEditSuggestionScreen: View {
-    @Binding var company: Company.Detailed?
-
-    private var editSuggestions: [Company.EditSuggestion] {
-        company?.editSuggestions ?? []
-    }
+    @Binding var company: Company.Detailed
 
     var body: some View {
-        List(editSuggestions) { editSuggestion in
+        List(company.editSuggestions) { editSuggestion in
             CompanyEditSuggestionRow(company: $company, editSuggestion: editSuggestion)
         }
         .listStyle(.plain)
         .overlay {
-            if editSuggestions.isEmpty {
+            if company.editSuggestions.isEmpty {
                 ContentUnavailableView("admin.noEditSuggestions.title", systemImage: "tray")
             }
         }
@@ -32,7 +28,8 @@ struct CompanyEditSuggestionRow: View {
     @Environment(Router.self) private var router
     @State private var showApplyConfirmationDialog = false
     @State private var showDeleteConfirmationDialog = false
-    @Binding var company: Company.Detailed?
+
+    @Binding var company: Company.Detailed
     let editSuggestion: Company.EditSuggestion
 
     var body: some View {
@@ -55,7 +52,7 @@ struct CompanyEditSuggestionRow: View {
                 presenting: editSuggestion
             ) { presenting in
                 AsyncButton(
-                    "company.admin.editSuggestion.apply.label \(company?.name ?? "") \(presenting.name ?? "-")",
+                    "company.admin.editSuggestion.apply.label \(company.name) \(presenting.name ?? "-")",
                     action: {
                         await resolveEditSuggestion(presenting)
                     }
@@ -80,11 +77,10 @@ struct CompanyEditSuggestionRow: View {
     }
 
     private func deleteEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
-        guard let company else { return }
         do {
             try await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion)
             withAnimation {
-                self.company = company.copyWith(editSuggestions: company.editSuggestions.removing(editSuggestion))
+                company = company.copyWith(editSuggestions: company.editSuggestions.removing(editSuggestion))
             }
         } catch {
             guard !error.isCancelled else { return }
@@ -94,11 +90,10 @@ struct CompanyEditSuggestionRow: View {
     }
 
     private func resolveEditSuggestion(_ editSuggestion: Company.EditSuggestion) async {
-        guard let company else { return }
         do {
             try await repository.company.resolveEditSuggestion(editSuggestion: editSuggestion)
             withAnimation {
-                self.company = company.copyWith(name: editSuggestion.name, editSuggestions: company.editSuggestions.replacing(editSuggestion, with: editSuggestion.copyWith(resolvedAt: Date.now)))
+                company = company.copyWith(name: editSuggestion.name, editSuggestions: company.editSuggestions.replacing(editSuggestion, with: editSuggestion.copyWith(resolvedAt: Date.now)))
             }
             router.removeLast()
         } catch {

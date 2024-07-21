@@ -19,7 +19,7 @@ struct LocationAdminScreen: View {
     var body: some View {
         List(filteredLocations) { location in
             LocationRow(location: location, currentLocation: nil) { location in
-                router.open(.sheet(.locationAdmin(location: location, onEdit: { edited in
+                router.open(.sheet(.locationAdmin(id: location.id, onEdit: { edited in
                     withAnimation {
                         locations = locations.replacing(location, with: edited)
                     }

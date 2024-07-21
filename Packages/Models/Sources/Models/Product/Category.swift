@@ -33,6 +33,12 @@ public struct Category: Identifiable, Codable, Hashable, Sendable, CategoryProto
         name = category.name
         icon = category.icon
     }
+
+    public init() {
+        id = .init(rawValue: 0)
+        name = ""
+        icon = nil
+    }
 }
 
 public extension Category {

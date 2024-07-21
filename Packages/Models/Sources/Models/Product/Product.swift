@@ -594,6 +594,46 @@ public extension Product {
             case updatedAt = "updated_at"
         }
 
+        init(id: Product.Id, name: String? = nil, description: String? = nil, isVerified: Bool, subBrand: SubBrand.JoinedBrand, category: Category, subcategories: [Subcategory.JoinedCategory], barcodes: [Product.Barcode.JoinedWithCreator], editSuggestions: [Product.EditSuggestion], variants: [Product.Variant], reports: [Report], isDiscontinued: Bool, logos: [ImageEntity], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
+            self.id = id
+            self.name = name
+            self.description = description
+            self.isVerified = isVerified
+            self.subBrand = subBrand
+            self.category = category
+            self.subcategories = subcategories
+            self.barcodes = barcodes
+            self.editSuggestions = editSuggestions
+            self.variants = variants
+            self.reports = reports
+            self.isDiscontinued = isDiscontinued
+            self.logos = logos
+            self.createdBy = createdBy
+            self.createdAt = createdAt
+            self.updatedBy = updatedBy
+            self.updatedAt = updatedAt
+        }
+
+        public init() {
+            id = .init(rawValue: 0)
+            name = nil
+            description = nil
+            isVerified = false
+            subBrand = .init()
+            category = .init()
+            subcategories = []
+            barcodes = []
+            editSuggestions = []
+            variants = []
+            reports = []
+            isDiscontinued = false
+            logos = []
+            createdBy = nil
+            createdAt = Date.now
+            updatedBy = nil
+            updatedAt = nil
+        }
+
         public func mergeWith(product: Product.Joined) -> Product.Detailed {
             .init(
                 id: id,

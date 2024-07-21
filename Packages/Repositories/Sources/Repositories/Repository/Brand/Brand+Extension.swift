@@ -29,6 +29,7 @@ extension Brand: Queryable {
                     Company.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.brandLogos)),
                     Brand.EditSuggestion.getQuery(.joined(true)),
+                    Report.getQuery(.joined(true)),
                     modificationInfoFragment,
                 ],
                 withTableName

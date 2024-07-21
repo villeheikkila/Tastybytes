@@ -61,13 +61,14 @@ public extension Company {
 }
 
 public extension Company {
-    struct Detailed: Identifiable, Codable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, ModificationInfo {
+    struct Detailed: Identifiable, Decodable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, ModificationInfo {
         public let id: Company.Id
         public let name: String
         public let isVerified: Bool
         public let logos: [ImageEntity]
         public let editSuggestions: [EditSuggestion]
         public let subsidiaries: [Company]
+        public let reports: [Report]
         public let createdBy: Profile?
         public let createdAt: Date
         public let updatedBy: Profile?
@@ -80,10 +81,39 @@ public extension Company {
             case isVerified = "is_verified"
             case editSuggestions = "company_edit_suggestions"
             case subsidiaries = "companies"
+            case reports
             case createdBy = "created_by"
             case createdAt = "created_at"
             case updatedBy = "updated_by"
             case updatedAt = "updated_at"
+        }
+
+        init(id: Company.Id, name: String, isVerified: Bool, logos: [ImageEntity], editSuggestions: [Company.EditSuggestion], subsidiaries: [Company], reports: [Report], createdBy: Profile? = nil, createdAt: Date, updatedBy: Profile? = nil, updatedAt: Date? = nil) {
+            self.id = id
+            self.name = name
+            self.isVerified = isVerified
+            self.logos = logos
+            self.editSuggestions = editSuggestions
+            self.subsidiaries = subsidiaries
+            self.reports = reports
+            self.createdBy = createdBy
+            self.createdAt = createdAt
+            self.updatedBy = updatedBy
+            self.updatedAt = updatedAt
+        }
+
+        public init() {
+            id = Company.Id(rawValue: 0)
+            name = ""
+            isVerified = false
+            logos = []
+            editSuggestions = []
+            subsidiaries = []
+            reports = []
+            createdBy = nil
+            createdAt = Date.now
+            updatedBy = nil
+            updatedAt = nil
         }
 
         public func copyWith(
@@ -92,7 +122,8 @@ public extension Company {
             isVerified: Bool? = nil,
             logos: [ImageEntity]? = nil,
             editSuggestions: [EditSuggestion]? = nil,
-            subsidiaries: [Company]? = nil
+            subsidiaries: [Company]? = nil,
+            reports: [Report]? = nil
         ) -> Self {
             .init(
                 id: id ?? self.id,
@@ -101,6 +132,7 @@ public extension Company {
                 logos: logos ?? self.logos,
                 editSuggestions: editSuggestions ?? self.editSuggestions,
                 subsidiaries: subsidiaries ?? self.subsidiaries,
+                reports: reports ?? self.reports,
                 createdBy: createdBy,
                 createdAt: createdAt,
                 updatedBy: updatedBy,

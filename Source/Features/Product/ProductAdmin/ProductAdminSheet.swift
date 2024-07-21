@@ -14,7 +14,7 @@ struct ProductAdminSheet: View {
     @State private var state: ScreenState = .loading
     @State private var showDeleteProductConfirmationDialog = false
     @State private var logos: [ImageEntity] = []
-    @State private var product: Product.Detailed?
+    @State private var product = Product.Detailed()
 
     let id: Product.Id
     let onDelete: () -> Void
@@ -22,8 +22,8 @@ struct ProductAdminSheet: View {
 
     var body: some View {
         List {
-            if state == .populated, let product {
-                content(product: product)
+            if state == .populated {
+                content
             }
         }
         .scrollContentBackground(.hidden)
@@ -41,7 +41,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    @ViewBuilder private func content(product: Product.Detailed) -> some View {
+    @ViewBuilder private var content: some View {
         Section("product.admin.section.product") {
             RouterLink(open: .screen(.product(.init(product: product)))) {
                 ProductEntityView(product: product)
@@ -82,7 +82,7 @@ struct ProductAdminSheet: View {
 
         Section {
             RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(.init(product: product), onEdit: { updatedProduct in
-                self.product = product.mergeWith(product: updatedProduct)
+                product = product.mergeWith(product: updatedProduct)
             }))))
             RouterLink("product.mergeTo.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .mergeDuplicate, product: .init(product: product))))
         }
@@ -120,11 +120,10 @@ struct ProductAdminSheet: View {
     }
 
     private func verifyProduct(isVerified: Bool) async {
-        guard let product else { return }
         do {
             try await repository.product.verification(id: id, isVerified: isVerified)
             feedbackEnvironmentModel.trigger(.notification(.success))
-            self.product = product.copyWith(isVerified: isVerified)
+            product = product.copyWith(isVerified: isVerified)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

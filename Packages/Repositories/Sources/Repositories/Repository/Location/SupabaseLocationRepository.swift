@@ -25,7 +25,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func getDetailed(id: Location.Id) async throws -> Location {
+    func getDetailed(id: Location.Id) async throws -> Location.Detailed {
         try await client
             .from(.locations)
             .select(Location.getQuery(.detailed(false)))
@@ -117,7 +117,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func update(request: Location.UpdateLocationRequest) async throws -> Location {
+    func update(request: Location.UpdateLocationRequest) async throws -> Location.Detailed {
         try await client
             .rpc(fn: .updateLocation, params: request)
             .select(Location.getQuery(.detailed(false)))

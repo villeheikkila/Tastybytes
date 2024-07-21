@@ -201,6 +201,20 @@ public extension Profile {
             self.avatars = avatars
         }
 
+        public init() {
+            id = .init(rawValue: UUID())
+            username = nil
+            firstName = nil
+            lastName = nil
+            joinedAt = Date.now
+            isPrivate = false
+            isOnboarded = false
+            rawPreferredName = nil
+            nameDisplay = .username
+            roles = []
+            avatars = []
+        }
+
         public func copyWith(
             username: String? = nil,
             firstName: String? = nil,

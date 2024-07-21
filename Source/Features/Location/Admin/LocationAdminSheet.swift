@@ -11,22 +11,20 @@ struct LocationAdminSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var state: ScreenState = .loading
-    @State private var location: Location
+    @State private var location = Location.Detailed()
 
+    let id: Location.Id
     let onEdit: (_ location: Location) async -> Void
     let onDelete: (_ location: Location) async -> Void
 
-    init(location: Location, onEdit: @escaping (_ location: Location) async -> Void, onDelete: @escaping (_ location: Location) async -> Void) {
-        _location = State(initialValue: location)
-        self.onEdit = onEdit
-        self.onDelete = onDelete
-    }
-
     var body: some View {
         Form {
-            content
+            if state == .populated {
+                content
+            }
         }
         .scrollContentBackground(.hidden)
+        .animation(.default, value: location)
         .navigationTitle("location.admin.location.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -39,25 +37,26 @@ struct LocationAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("location.admin.section.location") {
-            LocationEntityView(location: location)
+            LocationEntityView(location: .init(location: location))
         }
         .customListRowBackground()
         CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)
         Section("admin.section.details") {
-            LabeledIdView(id: location.id.uuidString)
+            LabeledIdView(id: id.uuidString)
             LabeledContent("location.mapKitIdentifier.label", value: "\(location.mapKitIdentifier ?? "-")")
                 .textSelection(.enabled)
         }
         .customListRowBackground()
         Section {
             RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.location(location.id))))
-            RouterLink("location.admin.changeLocation.label", systemImage: "map", open: .sheet(.locationSearch(initialLocation: location, initialSearchTerm: location.name, onSelect: { location in
+            RouterLink("location.admin.changeLocation.label", systemImage: "map", open: .sheet(.locationSearch(initialLocation: .init(location: location), initialSearchTerm: location.name, onSelect: { location in
+                let loc = self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier)
                 Task {
-                    await updateLocation(self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier))
+                    await updateLocation(loc)
                 }
             })))
             RouterLink("location.admin.merge.label", systemImage: "arrow.triangle.merge", open: .sheet(.mergeLocation(location: location, onMerge: { newLocation in
-                await onDelete(location)
+                await onDelete(.init(location: location))
                 withAnimation {
                     location = newLocation
                 }
@@ -82,35 +81,32 @@ struct LocationAdminSheet: View {
 
     private func loadData() async {
         do {
-            let location = try await repository.location.getDetailed(id: location.id)
-            withAnimation {
-                self.location = location
-                state = .populated
-            }
-            await onEdit(location)
+            let location = try await repository.location.getDetailed(id: id)
+            self.location = location
+            state = .populated
+            await onEdit(.init(location: location))
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
-            logger.error("Failed to update location: '\(location.id)'. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load location: '\(id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    private func updateLocation(_ location: Location) async {
-        do { let location = try await repository.location.update(request: .init(id: location.id, mapKitIdentifier: location.mapKitIdentifier))
-            withAnimation {
-                self.location = location
-            }
-            await onEdit(location)
+    private func updateLocation(_ location: Location.Detailed) async {
+        do {
+            let location = try await repository.location.update(request: .init(id: id, mapKitIdentifier: location.mapKitIdentifier))
+            self.location = location
+            await onEdit(.init(location: location))
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to update location: '\(location.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    private func deleteLocation(_ location: Location) async {
+    private func deleteLocation(_ location: Location.Detailed) async {
         do {
-            try await repository.location.delete(id: location.id)
-            await onDelete(location)
+            try await repository.location.delete(id: id)
+            await onDelete(.init(location: location))
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

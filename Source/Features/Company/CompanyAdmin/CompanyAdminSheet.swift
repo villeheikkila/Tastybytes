@@ -14,7 +14,7 @@ struct CompanyAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var showDeleteCompanyConfirmationDialog = false
-    @State private var company: Company.Detailed?
+    @State private var company = Company.Detailed()
     @State private var name = ""
     @State private var selectedLogo: PhotosPickerItem?
 
@@ -23,13 +23,13 @@ struct CompanyAdminSheet: View {
     let onDelete: () -> Void
 
     private var isValidNameUpdate: Bool {
-        name.isValidLength(.normal(allowEmpty: false)) && name != company?.name
+        name.isValidLength(.normal(allowEmpty: false)) && name != company.name
     }
 
     var body: some View {
         Form {
-            if let company {
-                content(company: company)
+            if state == .populated {
+                content
             }
         }
         .scrollContentBackground(.hidden)
@@ -56,7 +56,7 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    @ViewBuilder private func content(company: Company.Detailed) -> some View {
+    @ViewBuilder private var content: some View {
         Section("company.admin.section.company") {
             RouterLink(open: .screen(.company(.init(company: company)))) {
                 CompanyEntityView(company: company)
@@ -115,7 +115,7 @@ struct CompanyAdminSheet: View {
     private func verifyCompany(isVerified: Bool) async {
         do {
             try await repository.company.verification(id: id, isVerified: isVerified)
-            company = company?.copyWith(isVerified: isVerified)
+            company = company.copyWith(isVerified: isVerified)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -151,10 +151,9 @@ struct CompanyAdminSheet: View {
     }
 
     private func uploadLogo(_ data: Data) async {
-        guard let company else { return }
         do {
             let imageEntity = try await repository.company.uploadLogo(companyId: id, data: data)
-            self.company = company.copyWith(logos: company.logos + [imageEntity])
+            company = company.copyWith(logos: company.logos + [imageEntity])
             logger.info("Succesfully uploaded company logo: \(imageEntity.file)")
         } catch {
             guard !error.isCancelled else { return }
@@ -164,11 +163,10 @@ struct CompanyAdminSheet: View {
     }
 
     private func deleteLogo(_ entity: ImageEntity) async {
-        guard let company else { return }
         do {
             try await repository.imageEntity.delete(from: .companyLogos, entity: entity)
             withAnimation {
-                self.company = company.copyWith(logos: company.logos.removing(entity))
+                company = company.copyWith(logos: company.logos.removing(entity))
             }
         } catch {
             guard !error.isCancelled else { return }
@@ -182,14 +180,10 @@ struct CompanySubsidiaryScreen: View {
     private let logger = Logger(category: "CompanySubsidiaryScreen")
     @Environment(Repository.self) private var repository
     @State private var companyToAttach: Company?
-    @Binding var company: Company.Detailed?
-
-    private var subsidiaries: [Company] {
-        company?.subsidiaries ?? []
-    }
+    @Binding var company: Company.Detailed
 
     var body: some View {
-        List(subsidiaries) { subsidiary in
+        List(company.subsidiaries) { subsidiary in
             RouterLink(open: .screen(.company(subsidiary))) {
                 CompanyEntityView(company: subsidiary)
             }
@@ -200,7 +194,7 @@ struct CompanySubsidiaryScreen: View {
         .navigationTitle("subsidiaries.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
-            if subsidiaries.isEmpty {
+            if company.subsidiaries.isEmpty {
                 ContentUnavailableView(" subsidaries.empty.title", systemImage: "tray")
             }
         }
@@ -208,23 +202,21 @@ struct CompanySubsidiaryScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .primaryAction) {
-            if let company {
-                RouterLink("subsidiaries.pickCompany", systemImage: "plus", open: .sheet(.companyPicker(filterCompanies: subsidiaries + [.init(company: company)], onSelect: { company in
-                    companyToAttach = company
-                })))
-                .labelStyle(.iconOnly)
-                .confirmationDialog("subsidiaries.makeSubsidiaryOf.confirmation.title",
-                                    isPresented: $companyToAttach.isNotNull(),
-                                    titleVisibility: .visible,
-                                    presenting: companyToAttach)
-                { presenting in
-                    AsyncButton(
-                        "subsidiaries.makeSubsidiaryOf.confirmation.label \(presenting.name) \(company.name)",
-                        action: {
-                            await makeCompanySubsidiaryOf(subsidiaryOf: company, presenting)
-                        }
-                    )
-                }
+            RouterLink("subsidiaries.pickCompany", systemImage: "plus", open: .sheet(.companyPicker(filterCompanies: company.subsidiaries + [.init(company: company)], onSelect: { company in
+                companyToAttach = company
+            })))
+            .labelStyle(.iconOnly)
+            .confirmationDialog("subsidiaries.makeSubsidiaryOf.confirmation.title",
+                                isPresented: $companyToAttach.isNotNull(),
+                                titleVisibility: .visible,
+                                presenting: companyToAttach)
+            { presenting in
+                AsyncButton(
+                    "subsidiaries.makeSubsidiaryOf.confirmation.label \(presenting.name) \(company.name)",
+                    action: {
+                        await makeCompanySubsidiaryOf(subsidiaryOf: company, presenting)
+                    }
+                )
             }
         }
     }
