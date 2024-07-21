@@ -32,4 +32,5 @@ public protocol ProductRepository: Sendable {
     func verification(id: Product.Id, isVerified: Bool) async throws
     func deleteEditSuggestion(editSuggestion: Product.EditSuggestion) async throws
     func resolveEditSuggestion(editSuggestion: Product.EditSuggestion) async throws
+    func getEditSuggestions() async throws -> [Product.EditSuggestion]
 }

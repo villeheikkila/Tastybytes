@@ -1,7 +1,7 @@
 import Foundation
 import Tagged
 
-public protocol SubBrandProtocol {
+public protocol SubBrandProtocol: Verifiable {
     var id: SubBrand.Id { get }
     var name: String? { get }
     var includesBrandName: Bool { get }

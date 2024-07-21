@@ -1,7 +1,7 @@
 import Foundation
 import Tagged
 
-public protocol BrandProtocol {
+public protocol BrandProtocol: Verifiable {
     var id: Brand.Id { get }
     var name: String { get }
     var logos: [ImageEntity] { get }

@@ -166,4 +166,12 @@ struct SupabaseBrandRepository: BrandRepository {
             .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
+
+    func getEditSuggestions() async throws -> [Models.Brand.EditSuggestion] {
+        try await client
+            .from(.brandEditSuggestions)
+            .select(Brand.EditSuggestion.getQuery(.joined(false)))
+            .execute()
+            .value
+    }
 }

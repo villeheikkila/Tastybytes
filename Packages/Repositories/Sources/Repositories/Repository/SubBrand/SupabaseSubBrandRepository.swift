@@ -117,4 +117,12 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             .execute()
             .value
     }
+
+    func getEditSuggestions() async throws -> [SubBrand.EditSuggestion] {
+        try await client
+            .from(.subBrandEditSuggestion)
+            .select(SubBrand.EditSuggestion.getQuery(.joined(false)))
+            .execute()
+            .value
+    }
 }

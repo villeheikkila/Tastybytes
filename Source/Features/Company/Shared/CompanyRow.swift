@@ -14,7 +14,6 @@ struct CompanyResultRow: View {
 }
 
 struct CompanyEntityView: View {
-    @Environment(\.verificationBadgeVisibility) private var verificationBadgeVisibility
     let company: any CompanyProtocol
 
     var body: some View {
@@ -24,9 +23,7 @@ struct CompanyEntityView: View {
                 Text(company.name)
                     .foregroundStyle(.primary)
                 Spacer()
-                if verificationBadgeVisibility == .visible, company.isVerified {
-                    VerifiedBadgeView()
-                }
+                VerifiedBadgeView(verifiable: company)
             }
         }
     }

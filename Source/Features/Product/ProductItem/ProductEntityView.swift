@@ -33,10 +33,7 @@ struct ProductEntityView: View {
                     Text(product.formatted(.fullName))
                         .font(.headline)
                         .textSelection(.enabled)
-                    if verificationBadgeVisibility == .visible, product.isVerified {
-                        VerifiedBadgeView()
-                    }
-
+                    VerifiedBadgeView(verifiable: product)
                     Spacer()
                     if isCheckedIn, extras.contains(.checkInCheck) {
                         Label("checkIn.checkedIn.label", systemImage: "checkmark.circle")

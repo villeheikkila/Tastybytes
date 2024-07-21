@@ -36,6 +36,7 @@ struct CheckInCardCheckIn: View {
                         }
                     }
                     .routerLinkDisabled(checkInCardLoadedFrom.isLoadedFromLocation(purchaseLocation))
+                    .buttonStyle(.plain)
                 }
             }
         }

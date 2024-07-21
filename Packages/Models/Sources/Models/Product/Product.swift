@@ -1,11 +1,15 @@
 import Foundation
 import Tagged
 
+public protocol Verifiable {
+    var isVerified: Bool { get }
+}
+
 public protocol ProductLogoProtocol {
     var logos: [ImageEntity] { get }
 }
 
-public protocol ProductProtocol: ProductLogoProtocol {
+public protocol ProductProtocol: ProductLogoProtocol, Verifiable {
     var id: Product.Id { get }
     var name: String? { get }
     var description: String? { get }
@@ -16,7 +20,7 @@ public protocol ProductProtocol: ProductLogoProtocol {
     var isDiscontinued: Bool { get }
 }
 
-public struct Product: Identifiable, Codable, Hashable, Sendable {
+public struct Product: Identifiable, Codable, Hashable, Sendable, Verifiable {
     public let id: Product.Id
     public let name: String?
     public let description: String?

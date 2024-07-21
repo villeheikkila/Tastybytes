@@ -5,7 +5,7 @@ public protocol CompanyLogoProtocol {
     var logos: [ImageEntity] { get }
 }
 
-public protocol CompanyProtocol: Hashable, Sendable, CompanyLogoProtocol {
+public protocol CompanyProtocol: Hashable, Sendable, CompanyLogoProtocol, Verifiable {
     var id: Company.Id { get }
     var name: String { get }
     var isVerified: Bool { get }

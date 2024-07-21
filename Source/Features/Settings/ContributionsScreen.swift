@@ -38,16 +38,7 @@ public final class ContributionsModel {
 
     public func deleteEditSuggestion(_ editSuggestion: EditSuggestion) async {
         do {
-            switch editSuggestion {
-            case let .product(editSuggestion):
-                try await repository.product.deleteEditSuggestion(editSuggestion: editSuggestion)
-            case let .company(editSuggestion):
-                try await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion)
-            case let .brand(editSuggestion):
-                try await repository.brand.deleteEditSuggestion(editSuggestion: editSuggestion)
-            case let .subBrand(editSuggestion):
-                try await repository.subBrand.deleteEditSuggestion(editSuggestion: editSuggestion)
-            }
+            try await editSuggestion.deleteSuggestion(repository: repository, editSuggestion)
             contributions = contributions?.copyWith(
                 editSuggestions: contributions?.editSuggestions.removing(editSuggestion)
             )

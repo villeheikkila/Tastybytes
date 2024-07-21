@@ -280,4 +280,12 @@ struct SupabaseProductRepository: ProductRepository {
             .eq("id", value: editSuggestion.id.rawValue)
             .execute()
     }
+
+    func getEditSuggestions() async throws -> [Product.EditSuggestion] {
+        try await client
+            .from(.productEditSuggestions)
+            .select(Product.EditSuggestion.getQuery(.joined(false)))
+            .execute()
+            .value
+    }
 }

@@ -2,7 +2,7 @@ import Extensions
 import Foundation
 import Tagged
 
-public protocol SubcategoryProtocol {
+public protocol SubcategoryProtocol: Verifiable {
     var id: Subcategory.Id { get }
     var name: String { get }
     var isVerified: Bool { get }

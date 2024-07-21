@@ -177,4 +177,12 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .execute()
             .value
     }
+
+    func getEditSuggestions() async throws -> [Company.EditSuggestion] {
+        try await client
+            .from(.companyEditSuggestions)
+            .select(Company.EditSuggestion.getQuery(.joined(false)))
+            .execute()
+            .value
+    }
 }

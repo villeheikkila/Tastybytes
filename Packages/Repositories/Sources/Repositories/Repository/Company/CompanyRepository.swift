@@ -17,4 +17,5 @@ public protocol CompanyRepository: Sendable {
     func getSummaryById(id: Company.Id) async throws -> Summary
     func uploadLogo(companyId: Company.Id, data: Data) async throws -> ImageEntity
     func makeCompanySubsidiaryOf(company: any CompanyProtocol, subsidiaryOf: any CompanyProtocol) async throws
+    func getEditSuggestions() async throws -> [Company.EditSuggestion]
 }

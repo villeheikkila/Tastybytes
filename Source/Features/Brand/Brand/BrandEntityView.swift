@@ -2,7 +2,6 @@ import Models
 import SwiftUI
 
 struct BrandEntityView: View {
-    @Environment(\.verificationBadgeVisibility) private var verificationBadgeVisibility
     let brandOwner: Company?
     let brand: BrandProtocol
 
@@ -26,9 +25,7 @@ struct BrandEntityView: View {
                 HStack {
                     Text(brand.name)
                     Spacer()
-                    if verificationBadgeVisibility == .visible, brand.isVerified {
-                        VerifiedBadgeView()
-                    }
+                    VerifiedBadgeView(verifiable: brand)
                 }
             }
         }

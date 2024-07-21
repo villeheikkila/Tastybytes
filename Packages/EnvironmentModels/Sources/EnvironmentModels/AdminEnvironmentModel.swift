@@ -12,9 +12,10 @@ public final class AdminEnvironmentModel {
     public var events = [AdminEvent]()
     public var unverified = [VerifiableEntity]()
     public var roles = [Role]()
+    public var editSuggestions = [EditSuggestion]()
 
     public var notificationCount: Int {
-        events.count + unverified.count
+        events.count + unverified.count + editSuggestions.count
     }
 
     private let repository: Repository
@@ -27,8 +28,9 @@ public final class AdminEnvironmentModel {
         async let events = repository.admin.getAdminEventFeed()
         async let roles = repository.role.getRoles()
         async let unverified: Void = loadUnverifiedEntities()
+        async let editSuggestions: Void = loadEditSuggestions()
         do {
-            let (events, roles, _) = try await (events, roles, unverified)
+            let (events, roles, _, _) = try await (events, roles, unverified, editSuggestions)
             self.events = events
             self.roles = roles
         } catch {
@@ -104,6 +106,57 @@ public final class AdminEnvironmentModel {
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    // Edit suggestions
+    public func deleteEditSuggestion(_ editSuggestion: EditSuggestion) async {
+        do {
+            try await editSuggestion.deleteSuggestion(repository: repository, editSuggestion)
+            editSuggestions = editSuggestions.removing(editSuggestion)
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to delete an edit suggestions")
+        }
+    }
+
+    public func loadEditSuggestions() async {
+        do {
+            async let companyEditSuggestionsPromise = repository.company.getEditSuggestions()
+            async let productEditSuggestionsPromise = repository.product.getEditSuggestions()
+            async let brandEditSuggestionsPromise = repository.brand.getEditSuggestions()
+            async let subBrandEditSuggestionsPromise = repository.subBrand.getEditSuggestions()
+
+            let (companyEditSuggestions, productEditSuggestions, brandEditSuggestions, subBrandEditSuggestions) = try await (
+                companyEditSuggestionsPromise,
+                productEditSuggestionsPromise,
+                brandEditSuggestionsPromise,
+                subBrandEditSuggestionsPromise
+            )
+
+            let companies: [EditSuggestion] = companyEditSuggestions.map { .company($0) }
+            let products: [EditSuggestion] = productEditSuggestions.map { .product($0) }
+            let brands: [EditSuggestion] = brandEditSuggestions.map { .brand($0) }
+            let subBrands: [EditSuggestion] = subBrandEditSuggestions.map { .subBrand($0) }
+
+            editSuggestions = companies + products + brands + subBrands
+        } catch {
+            logger.error("Failed to load unverified entities. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+public extension EditSuggestion {
+    func deleteSuggestion(repository: Repository, _ editSuggestion: Self) async throws {
+        switch self {
+        case let .product(editSuggestion):
+            try await repository.product.deleteEditSuggestion(editSuggestion: editSuggestion)
+        case let .company(editSuggestion):
+            try await repository.company.deleteEditSuggestion(editSuggestion: editSuggestion)
+        case let .brand(editSuggestion):
+            try await repository.brand.deleteEditSuggestion(editSuggestion: editSuggestion)
+        case let .subBrand(editSuggestion):
+            try await repository.subBrand.deleteEditSuggestion(editSuggestion: editSuggestion)
         }
     }
 }

@@ -16,17 +16,3 @@ struct CompanyListScreen: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-public enum VerificationBadgeVisibility: Sendable {
-    case hidden, visible
-}
-
-public extension EnvironmentValues {
-    @Entry var verificationBadgeVisibility: VerificationBadgeVisibility = .hidden
-}
-
-public extension View {
-    func verificationBadgeVisibility(_ visibility: VerificationBadgeVisibility) -> some View {
-        environment(\.verificationBadgeVisibility, visibility)
-    }
-}

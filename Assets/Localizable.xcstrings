@@ -265,6 +265,16 @@
         }
       }
     },
+    "admin.editsSuggestions.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Suggestions"
+          }
+        }
+      }
+    },
     "admin.editSuggestion.apply.description" : {
 
     },
@@ -566,7 +576,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verification"
+            "value" : "Unverified"
           }
         }
       }
