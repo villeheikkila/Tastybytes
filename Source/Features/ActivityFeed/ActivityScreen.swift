@@ -37,6 +37,7 @@ struct ActivityScreen: View {
                 }
             }
             .listStyle(.plain)
+            .animation(.default, value: checkIns)
             .scrollIndicators(.hidden)
             .refreshable {
                 await fetchFeedItems(reset: true, onPageLoad: false)
@@ -89,16 +90,11 @@ struct ActivityScreen: View {
     }
 
     private func onCreateCheckIn(_ checkIn: CheckIn) {
-        withAnimation {
-            checkIns.insert(checkIn, at: 0)
-        }
+        checkIns.insert(checkIn, at: 0)
     }
 
     private func onCheckInUpdate(_ checkIn: CheckIn) {
-        guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
-        withAnimation {
-            checkIns[index] = checkIn
-        }
+        checkIns = checkIns.replacingWithId(checkIn.id, with: checkIn)
     }
 
     private func onLoadMore() {

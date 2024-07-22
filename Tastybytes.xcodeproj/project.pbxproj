@@ -208,6 +208,8 @@
 		5C90AF752C15C44C00BA3202 /* ScreenContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */; };
 		5C9583872B41EE0000A2A03B /* View+InjectSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9583862B41EE0000A2A03B /* View+InjectSheets.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C95DC1C2C46D82E00E2184C /* RoleSuperAdminPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95DC1B2C46D82E00E2184C /* RoleSuperAdminPickerScreen.swift */; };
+		5C95FE702C4E905500CC2B0A /* SubBrandEditSuggestionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95FE6F2C4E905500CC2B0A /* SubBrandEditSuggestionScreen.swift */; };
+		5C95FE722C4E90B100CC2B0A /* SubBrandEditSuggestionEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95FE712C4E90B100CC2B0A /* SubBrandEditSuggestionEntityView.swift */; };
 		5C974CCD2C04E9B500CFE98A /* CheckInImageManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */; };
 		5C974CCF2C04E9E600CFE98A /* LocationInputButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCE2C04E9E600CFE98A /* LocationInputButtonView.swift */; };
 		5C974CD12C04EA0B00CFE98A /* OverlayButton+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */; };
@@ -543,6 +545,8 @@
 		5C90AF742C15C44C00BA3202 /* ScreenContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenContentUnavailableView.swift; sourceTree = "<group>"; };
 		5C9583862B41EE0000A2A03B /* View+InjectSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+InjectSheets.swift"; sourceTree = "<group>"; };
 		5C95DC1B2C46D82E00E2184C /* RoleSuperAdminPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleSuperAdminPickerScreen.swift; sourceTree = "<group>"; };
+		5C95FE6F2C4E905500CC2B0A /* SubBrandEditSuggestionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandEditSuggestionScreen.swift; sourceTree = "<group>"; };
+		5C95FE712C4E90B100CC2B0A /* SubBrandEditSuggestionEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandEditSuggestionEntityView.swift; sourceTree = "<group>"; };
 		5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageManagementView.swift; sourceTree = "<group>"; };
 		5C974CCE2C04E9E600CFE98A /* LocationInputButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputButtonView.swift; sourceTree = "<group>"; };
 		5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverlayButton+View.swift"; sourceTree = "<group>"; };
@@ -916,6 +920,8 @@
 		5C82E8942B2F749700F2B369 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5C87DA462C43F60900711393 /* ProfileAvatarPickerSectionView.swift */,
+				5C87DA442C43F5E900711393 /* ProfileInfoSettingSectionsView.swift */,
 				5C82E8952B2F74BF00F2B369 /* CheckInStatisticView.swift */,
 				5C82E8A32B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift */,
 				5C82E8992B2F799300F2B369 /* PrivateProfileSign.swift */,
@@ -937,14 +943,6 @@
 				5C90579B2B2894BE00EC157B /* ProductScreen.swift */,
 			);
 			path = Screen;
-			sourceTree = "<group>";
-		};
-		5C87DA482C457E0800711393 /* Admin 2 */ = {
-			isa = PBXGroup;
-			children = (
-				5C87DA4B2C457E3000711393 /* ProfileAdminScreen.swift */,
-			);
-			path = "Admin 2";
 			sourceTree = "<group>";
 		};
 		5C885F102B28740800F17C78 /* Packages */ = {
@@ -1153,6 +1151,8 @@
 			isa = PBXGroup;
 			children = (
 				5C90577B2B2894BE00EC157B /* SubBrandAdminSheet.swift */,
+				5C95FE6F2C4E905500CC2B0A /* SubBrandEditSuggestionScreen.swift */,
+				5C95FE712C4E90B100CC2B0A /* SubBrandEditSuggestionEntityView.swift */,
 			);
 			path = SubBrandAdmin;
 			sourceTree = "<group>";
@@ -1260,9 +1260,6 @@
 		5C9057A12B2894BE00EC157B /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				5C87DA482C457E0800711393 /* Admin 2 */,
-				5C87DA462C43F60900711393 /* ProfileAvatarPickerSectionView.swift */,
-				5C87DA442C43F5E900711393 /* ProfileInfoSettingSectionsView.swift */,
 				5CD2EE1F2C36D93F009AA949 /* Admin */,
 				5CEC64062B854B20008050B4 /* Statistics */,
 				5C90574D2B2894BE00EC157B /* NameTag */,
@@ -1629,6 +1626,7 @@
 		5CD2EE1F2C36D93F009AA949 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
+				5C87DA4B2C457E3000711393 /* ProfileAdminScreen.swift */,
 				5CD2EE202C36D947009AA949 /* ProfileAdminSheet.swift */,
 			);
 			path = Admin;
@@ -2060,6 +2058,7 @@
 				5C90581E2B2894BE00EC157B /* ErrorScreen.swift in Sources */,
 				5C9583872B41EE0000A2A03B /* View+InjectSheets.swift in Sources */,
 				5CAADF032B5C4F2300D956C1 /* DiscoverProductLinks.swift in Sources */,
+				5C95FE722C4E90B100CC2B0A /* SubBrandEditSuggestionEntityView.swift in Sources */,
 				5C9058232B2894BE00EC157B /* TaggedInCheckInNotificationView.swift in Sources */,
 				5C4FC6342BA5F8910025DB83 /* CheckInImageSheet.swift in Sources */,
 				5C07F27F2B51F00600D8740B /* PhaseObserver.swift in Sources */,
@@ -2090,6 +2089,7 @@
 				5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */,
 				5C90582B2B2894BE00EC157B /* CategoryAdminScreen.swift in Sources */,
 				5CAADF092B5C548700D956C1 /* DiscoverProductAssignBarcode.swift in Sources */,
+				5C95FE702C4E905500CC2B0A /* SubBrandEditSuggestionScreen.swift in Sources */,
 				5CD2EE2C2C37E161009AA949 /* ProductAdminSheet.swift in Sources */,
 				5C07F2792B51EBB800D8740B /* BrandShareLinkView.swift in Sources */,
 				5C9058022B2894BE00EC157B /* SubscriptionStoreContent.swift in Sources */,

@@ -182,7 +182,7 @@ public extension Profile {
 }
 
 public extension Profile {
-    struct Detailed: Identifiable, Decodable, Sendable, Hashable, AvatarURL, WithReports, ProfileProtocol {
+    struct Detailed: Identifiable, Decodable, Sendable, Hashable, AvatarURL, ProfileProtocol {
         public let id: Profile.Id
         public let username: String?
         public let firstName: String?

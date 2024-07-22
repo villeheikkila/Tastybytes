@@ -6,16 +6,13 @@ public enum AdminEventError: Error {
 }
 
 public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
-    public enum Event: Sendable, Hashable {
+    public enum Content: Sendable, Hashable {
         case company(Company)
         case product(Product.Joined)
         case subBrand(SubBrand.JoinedBrand)
         case brand(Brand)
         case profile(Profile)
-        case productEditSuggestion(Product.EditSuggestion)
-        case brandEditSuggestion(Brand.EditSuggestion)
-        case subBrandEditSuggestion(SubBrand.EditSuggestion)
-        case companyEditSuggestion(Company.EditSuggestion)
+        case editSuggestion(EditSuggestion)
         case report(Report)
     }
 
@@ -23,7 +20,7 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
     public let reviewedAt: Date?
     public let reviewedBy: Profile?
     public let createdAt: Date
-    public let event: Event
+    public let content: Content
 
     private enum CodingKeys: String, CodingKey {
         case id
@@ -61,7 +58,7 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
         let companyEditSuggestion = try container.decodeIfPresent(Company.EditSuggestion.self, forKey: .companyEditSuggestion)
         let report = try container.decodeIfPresent(Report.self, forKey: .report)
 
-        event = if let company {
+        content = if let company {
             .company(company)
         } else if let product {
             .product(product)
@@ -72,13 +69,13 @@ public struct AdminEvent: Identifiable, Sendable, Decodable, Hashable {
         } else if let profile {
             .profile(profile)
         } else if let productEditSuggestion {
-            .productEditSuggestion(productEditSuggestion)
+            .editSuggestion(.product(productEditSuggestion))
         } else if let brandEditSuggestion {
-            .brandEditSuggestion(brandEditSuggestion)
+            .editSuggestion(.brand(brandEditSuggestion))
         } else if let subBrandEditSuggestion {
-            .subBrandEditSuggestion(subBrandEditSuggestion)
+            .editSuggestion(.subBrand(subBrandEditSuggestion))
         } else if let companyEditSuggestion {
-            .companyEditSuggestion(companyEditSuggestion)
+            .editSuggestion(.company(companyEditSuggestion))
         } else if let report {
             .report(report)
         } else {

@@ -125,7 +125,7 @@ public struct Location: Identifiable, Codable, Hashable, Sendable {
 }
 
 public extension Location {
-    struct Detailed: Identifiable, Decodable, Hashable, Sendable, ModificationInfo, WithReports {
+    struct Detailed: Identifiable, Decodable, Hashable, Sendable, ModificationInfo {
         public let id: Location.Id
         public let mapKitIdentifier: String?
         public let name: String

@@ -7,6 +7,9 @@ import Repositories
 import SwiftUI
 
 struct LocationAdminSheet: View {
+    typealias OnEditCallback = (_ location: Location.Detailed) async -> Void
+    typealias OnDeleteCallback = (_ location: Location.Detailed) async -> Void
+
     let logger = Logger(category: "LocationAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(Repository.self) private var repository
@@ -15,8 +18,8 @@ struct LocationAdminSheet: View {
     @State private var location = Location.Detailed()
 
     let id: Location.Id
-    let onEdit: (_ location: Location) async -> Void
-    let onDelete: (_ location: Location) async -> Void
+    let onEdit: OnEditCallback
+    let onDelete: OnDeleteCallback
 
     var body: some View {
         Form {
@@ -54,7 +57,7 @@ struct LocationAdminSheet: View {
                 systemImage: "exclamationmark.bubble",
                 count: location.reports.count,
                 open: .screen(
-                    .withReportsAdmin(reports: $location.map(getter: { location in
+                    .reports(reports: $location.map(getter: { location in
                         location.reports
                     }, setter: { reports in
                         location.copyWith(reports: reports)
@@ -68,7 +71,7 @@ struct LocationAdminSheet: View {
                 }
             })))
             RouterLink("location.admin.merge.label", systemImage: "arrow.triangle.merge", open: .sheet(.mergeLocation(location: location, onMerge: { newLocation in
-                await onDelete(.init(location: location))
+                await onDelete(location)
                 location = newLocation
             })))
         }
@@ -94,7 +97,7 @@ struct LocationAdminSheet: View {
             let location = try await repository.location.getDetailed(id: id)
             self.location = location
             state = .populated
-            await onEdit(.init(location: location))
+            await onEdit(location)
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
@@ -106,7 +109,7 @@ struct LocationAdminSheet: View {
         do {
             let location = try await repository.location.update(request: .init(id: id, mapKitIdentifier: location.mapKitIdentifier))
             self.location = location
-            await onEdit(.init(location: location))
+            await onEdit(location)
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to update location: '\(location.id)'. Error: \(error) (\(#file):\(#line))")
@@ -116,7 +119,7 @@ struct LocationAdminSheet: View {
     private func deleteLocation(_ location: Location.Detailed) async {
         do {
             try await repository.location.delete(id: id)
-            await onDelete(.init(location: location))
+            await onDelete(location)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

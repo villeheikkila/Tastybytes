@@ -1,10 +1,6 @@
 import Foundation
 import Tagged
 
-public protocol WithReports: Hashable {
-    var reports: [Report] { get }
-}
-
 public protocol CompanyLogoProtocol {
     var logos: [ImageEntity] { get }
 }
@@ -65,7 +61,7 @@ public extension Company {
 }
 
 public extension Company {
-    struct Detailed: Identifiable, Decodable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, WithReports, ModificationInfo {
+    struct Detailed: Identifiable, Decodable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, ModificationInfo {
         public let id: Company.Id
         public let name: String
         public let isVerified: Bool

@@ -15,7 +15,7 @@ enum Sheet: Identifiable, Equatable {
     case subBrandPicker(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: ProductDuplicateScreen.Mode, product: Product.Joined)
-    case brandAdmin(id: Brand.Id, onUpdate: BrandAdminSheet.BrandUpdateCallback, onDelete: BrandAdminSheet.BrandUpdateCallback)
+    case brandAdmin(id: Brand.Id, onUpdate: BrandAdminSheet.BrandUpdateCallback = { _ in }, onDelete: BrandAdminSheet.BrandUpdateCallback = { _ in })
     case subBrandAdmin(brand: Binding<Brand.JoinedSubBrandsProductsCompany>, subBrand: SubBrand.JoinedProduct)
     case friendPicker(taggedFriends: Binding<[Profile]>)
     case flavorPicker(pickedFlavors: Binding<[Flavor]>)
@@ -37,13 +37,17 @@ enum Sheet: Identifiable, Equatable {
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
     case webView(link: WebViewLink)
-    case companyAdmin(id: Company.Id, onUpdate: () async -> Void, onDelete: () -> Void)
-    case locationAdmin(id: Location.Id, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
-    case profileAdmin(id: Profile.Id, onDelete: (_ profile: Profile.Detailed) -> Void)
-    case productAdmin(id: Product.Id, onDelete: () -> Void, onUpdate: () async -> Void)
-    case checkInAdmin(id: CheckIn.Id, onDelete: () -> Void)
-    case checkInCommentAdmin(id: CheckInComment.Id, onDelete: (_ comment: CheckInComment.Id) -> Void)
-    case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: (_ comment: ImageEntity) async -> Void)
+    case companyAdmin(id: Company.Id, onUpdate: CompanyAdminSheet.OnUpdateCallback = {}, onDelete: CompanyAdminSheet.OnDeleteCallback = {})
+    case locationAdmin(id: Location.Id, onEdit: LocationAdminSheet.OnEditCallback, onDelete: LocationAdminSheet.OnDeleteCallback)
+    case profileAdmin(id: Profile.Id, onDelete: ProfileAdminSheet.OnDeleteCallback = { _ in })
+    case productAdmin(
+        id: Product.Id,
+        onDelete: ProductAdminSheet.OnDeleteCallback = {},
+        onUpdate: ProductAdminSheet.OnUpdateCallback = {}
+    )
+    case checkInAdmin(id: CheckIn.Id, onDelete: CheckInAdminSheet.OnDeleteCallback = {})
+    case checkInCommentAdmin(id: CheckInComment.Id, onDelete: CheckInCommentAdminSheet.OnDeleteCallback)
+    case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: CheckInImageAdminSheet.OnDeleteCallback = { _ in })
     case categoryAdmin(category: Models.Category.JoinedSubcategoriesServingStyles)
     case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
     case subBrandEditSuggestion(brand: Brand.JoinedSubBrands, subBrand: SubBrand.JoinedBrand, onSuccess: () -> Void)

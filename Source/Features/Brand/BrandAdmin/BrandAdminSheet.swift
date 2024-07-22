@@ -106,7 +106,7 @@ struct BrandAdminSheet: View {
                 systemImage: "exclamationmark.bubble",
                 count: brand.reports.count,
                 open: .screen(
-                    .withReportsAdmin(reports: $brand.map(getter: { location in
+                    .reports(reports: $brand.map(getter: { location in
                         location.reports
                     }, setter: { reports in
                         brand.copyWith(reports: reports)

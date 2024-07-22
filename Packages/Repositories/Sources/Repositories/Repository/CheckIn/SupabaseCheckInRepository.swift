@@ -19,7 +19,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
 
         return try await range
-            .order("check_in_at", ascending: false)
+            .order("id", ascending: false)
             .execute()
             .value
     }

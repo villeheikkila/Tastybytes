@@ -8,6 +8,9 @@ import Repositories
 import SwiftUI
 
 struct CompanyAdminSheet: View {
+    typealias OnUpdateCallback = () async -> Void
+    typealias OnDeleteCallback = () -> Void
+
     private let logger = Logger(category: "CompanyAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
@@ -19,8 +22,8 @@ struct CompanyAdminSheet: View {
     @State private var selectedLogo: PhotosPickerItem?
 
     let id: Company.Id
-    let onUpdate: () async -> Void
-    let onDelete: () -> Void
+    let onUpdate: OnUpdateCallback
+    let onDelete: OnDeleteCallback
 
     private var isValidNameUpdate: Bool {
         name.isValidLength(.normal(allowEmpty: false)) && name != company.name
@@ -83,7 +86,7 @@ struct CompanyAdminSheet: View {
                 systemImage: "exclamationmark.bubble",
                 count: company.reports.count,
                 open: .screen(
-                    .withReportsAdmin(reports: $company.map(getter: { location in
+                    .reports(reports: $company.map(getter: { location in
                         location.reports
                     }, setter: { reports in
                         company.copyWith(reports: reports)

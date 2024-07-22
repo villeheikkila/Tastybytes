@@ -35,7 +35,7 @@ enum Screen: Hashable, Sendable {
     case blockedUsers
     case contributions(Profile.Id)
     case about
-    case reports(ReportFilter? = nil)
+    case reports(reports: Binding<[Report]>)
     case locationAdmin
     case error(reason: String)
     case companyEditSuggestion(company: Binding<Company.Detailed>)
@@ -58,7 +58,6 @@ enum Screen: Hashable, Sendable {
     case subsidiaries(company: Binding<Company.Detailed>)
     case editSuggestionsAdmin
     case reportsAdmin
-    case withReportsAdmin(reports: Binding<[Report]>)
 
     @MainActor
     @ViewBuilder
@@ -126,8 +125,8 @@ enum Screen: Hashable, Sendable {
             ContributionsScreen(id: id)
         case .about:
             AboutScreen()
-        case let .reports(filter):
-            ReportScreen(filter: filter)
+        case let .reports(reports):
+            ReportsScreen(reports: reports)
         case let .error(reason):
             ErrorScreen(reason: reason)
         case .locationAdmin:
@@ -174,8 +173,6 @@ enum Screen: Hashable, Sendable {
             EditSuggestionAdminScreen()
         case .reportsAdmin:
             ReportAdminScreen()
-        case let .withReportsAdmin(reports):
-            WithReportsScreen(reports: reports)
         }
     }
 
@@ -219,8 +216,8 @@ enum Screen: Hashable, Sendable {
             lhsProfile == rhsProfile
         case let (.productFeed(lhsFeed), .productFeed(rhsFeed)):
             lhsFeed == rhsFeed
-        case let (.reports(lhsFilter), .reports(rhsFilter)):
-            lhsFilter == rhsFilter
+        case let (.reports(lhsReports), .reports(rhsReports)):
+            lhsReports.wrappedValue == rhsReports.wrappedValue
         case let (.error(lhsReason), .error(rhsReason)):
             lhsReason == rhsReason
         case let (.companyEditSuggestion(lhsCompany), .companyEditSuggestion(rhsCompany)):
@@ -358,9 +355,9 @@ enum Screen: Hashable, Sendable {
             hasher.combine("contributions")
         case .about:
             hasher.combine("about")
-        case let .reports(filter):
+        case let .reports(reports):
             hasher.combine("reports")
-            hasher.combine(filter)
+            hasher.combine(reports.wrappedValue)
         case .locationAdmin:
             hasher.combine("locationManagement")
         case let .error(reason):
@@ -425,9 +422,6 @@ enum Screen: Hashable, Sendable {
             hasher.combine("editSuggestionsAdmin")
         case .reportsAdmin:
             hasher.combine("reportsAdmin")
-        case let .withReportsAdmin(withReports):
-            hasher.combine("withReportsAdmin")
-            hasher.combine(withReports.wrappedValue)
         }
     }
 }

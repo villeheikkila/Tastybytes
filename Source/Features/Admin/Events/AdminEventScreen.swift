@@ -34,7 +34,7 @@ struct AdminEventRowView: View {
     var body: some View {
         Section {
             RouterLink(open: event.open) {
-                AdminEventEventEntityView(event: event.event)
+                AdminEventContentEntityView(content: event.content)
             }
             .buttonStyle(.plain)
         } header: {

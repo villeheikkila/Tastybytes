@@ -42,9 +42,7 @@ struct CheckInListContentView: View {
     private func deleteCheckIn(_ checkIn: CheckIn) async {
         do {
             try await repository.checkIn.delete(id: checkIn.id)
-            withAnimation {
-                checkIns.remove(object: checkIn)
-            }
+            checkIns.remove(object: checkIn)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init(title: "checkIn.delete.failure.alert")))

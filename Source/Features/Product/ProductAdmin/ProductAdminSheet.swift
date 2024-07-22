@@ -6,6 +6,8 @@ import Repositories
 import SwiftUI
 
 struct ProductAdminSheet: View {
+    typealias OnDeleteCallback = () -> Void
+    typealias OnUpdateCallback = () async -> Void
     let logger = Logger(category: "ProductAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -17,8 +19,8 @@ struct ProductAdminSheet: View {
     @State private var product = Product.Detailed()
 
     let id: Product.Id
-    let onDelete: () -> Void
-    let onUpdate: () async -> Void
+    let onDelete: OnDeleteCallback
+    let onUpdate: OnUpdateCallback
 
     var body: some View {
         List {
@@ -80,7 +82,7 @@ struct ProductAdminSheet: View {
                 systemImage: "exclamationmark.bubble",
                 count: product.reports.count,
                 open: .screen(
-                    .withReportsAdmin(reports: $product.map(getter: { location in
+                    .reports(reports: $product.map(getter: { location in
                         location.reports
                     }, setter: { reports in
                         product.copyWith(reports: reports)

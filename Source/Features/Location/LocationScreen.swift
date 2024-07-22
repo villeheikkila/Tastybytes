@@ -76,7 +76,7 @@ struct LocationInnerScreen: View {
                 ReportButton(entity: .location(location))
                 Divider()
                 AdminRouterLink(open: .sheet(.locationAdmin(id: location.id, onEdit: { location in
-                    self.location = location
+                    self.location = .init(location: location)
                 }, onDelete: { _ in
                     router.removeLast()
                 })))

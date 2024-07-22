@@ -106,7 +106,7 @@ struct SubBrandAdminSheet: View {
                 systemImage: "exclamationmark.bubble",
                 count: subBrand.reports.count,
                 open: .screen(
-                    .withReportsAdmin(reports: $subBrand.map(getter: { location in
+                    .reports(reports: $subBrand.map(getter: { location in
                         location.reports
                     }, setter: { reports in
                         subBrand.copyWith(reports: reports)
@@ -246,30 +246,6 @@ extension SubBrandProtocol {
             name
         } else {
             String(localized: "subBrand.defaultSubBrand.label")
-        }
-    }
-}
-
-struct SubBrandEditSuggestionsScreen: View {
-    @Binding var subBrand: SubBrand.Detailed
-
-    var body: some View {
-        List(subBrand.editSuggestions) { editSuggestion in
-            SubBrandEditSuggestionEntityView(editSuggestion: editSuggestion)
-        }
-        .navigationTitle("subBrand.editSuggestion.navigationTitle")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct SubBrandEditSuggestionEntityView: View {
-    let editSuggestion: SubBrand.EditSuggestion
-
-    var body: some View {
-        VStack {
-            if let name = editSuggestion.name {
-                Text(name)
-            }
         }
     }
 }

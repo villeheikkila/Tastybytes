@@ -4,6 +4,8 @@ import Repositories
 import SwiftUI
 
 struct CheckInAdminSheet: View {
+    typealias OnDeleteCallback = () -> Void
+
     private let logger = Logger(category: "CheckInAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(Router.self) private var router
@@ -12,7 +14,7 @@ struct CheckInAdminSheet: View {
     @State private var checkIn = CheckIn.Detailed()
 
     let id: CheckIn.Id
-    let onDelete: () -> Void
+    let onDelete: OnDeleteCallback
 
     var body: some View {
         Form {
@@ -55,7 +57,7 @@ struct CheckInAdminSheet: View {
                 systemImage: "exclamationmark.bubble",
                 count: checkIn.reports.count,
                 open: .screen(
-                    .withReportsAdmin(reports: $checkIn.map(getter: { _ in
+                    .reports(reports: $checkIn.map(getter: { _ in
                         checkIn.reports
                     }, setter: { reports in
                         checkIn.copyWith(reports: reports)

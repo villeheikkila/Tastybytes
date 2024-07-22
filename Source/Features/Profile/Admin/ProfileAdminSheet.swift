@@ -6,6 +6,7 @@ import Repositories
 import SwiftUI
 
 struct ProfileAdminSheet: View {
+    typealias OnDeleteCallback = (_ profile: Profile.Detailed) -> Void
     let logger = Logger(category: "ProfileAdminSheet")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Repository.self) private var repository
@@ -15,7 +16,7 @@ struct ProfileAdminSheet: View {
     @State private var summary: ProfileSummary?
 
     let id: Profile.Id
-    let onDelete: (_ profile: Profile.Detailed) -> Void
+    let onDelete: OnDeleteCallback
 
     private var isProfileDeletable: Bool {
         if let summary {
@@ -74,7 +75,7 @@ struct ProfileAdminSheet: View {
                 systemImage: "exclamationmark.bubble",
                 count: profile.reports.count,
                 open: .screen(
-                    .withReportsAdmin(reports: $profile.map(getter: { location in
+                    .reports(reports: $profile.map(getter: { location in
                         location.reports
                     }, setter: { reports in
                         profile.copyWith(reports: reports)

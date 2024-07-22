@@ -570,7 +570,7 @@ public extension Product {
         }
     }
 
-    struct Detailed: Identifiable, Hashable, Decodable, Sendable, ModificationInfo, ProductProtocol, WithReports {
+    struct Detailed: Identifiable, Hashable, Decodable, Sendable, ModificationInfo, ProductProtocol {
         public let id: Product.Id
         public let name: String?
         public let description: String?

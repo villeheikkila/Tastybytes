@@ -7,7 +7,7 @@ struct VerificationScreen: View {
 
     var body: some View {
         List(adminEnvironmentModel.unverified) { unverifiedEntity in
-            VerifiableEntityView(verifiableEntity: unverifiedEntity)
+            VerifiableEntityView(entity: unverifiedEntity)
                 .swipeActions {
                     AsyncButton("labels.verify", systemImage: "checkmark", action: {
                         await adminEnvironmentModel.verifyEntity(unverifiedEntity)

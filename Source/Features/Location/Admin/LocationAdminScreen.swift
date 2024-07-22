@@ -20,12 +20,13 @@ struct LocationAdminScreen: View {
         List(filteredLocations) { location in
             LocationRow(location: location, currentLocation: nil) { location in
                 router.open(.sheet(.locationAdmin(id: location.id, onEdit: { edited in
+                    let updatedLocation = Location(location: edited)
                     withAnimation {
-                        locations = locations.replacing(location, with: edited)
+                        locations = locations.replacing(location, with: updatedLocation)
                     }
                 }, onDelete: { deleted in
                     withAnimation {
-                        locations = locations.removing(deleted)
+                        locations = locations.removingWithId(deleted.id)
                     }
                 })))
             }

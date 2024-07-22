@@ -5,6 +5,8 @@ import Repositories
 import SwiftUI
 
 struct CheckInImageAdminSheet: View {
+    typealias OnDeleteCallback = (_ comment: ImageEntity) async -> Void
+
     private let logger = Logger(category: "CheckInImageAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
@@ -14,7 +16,7 @@ struct CheckInImageAdminSheet: View {
 
     let checkIn: CheckIn
     let imageEntity: ImageEntity
-    let onDelete: (_ comment: ImageEntity) async -> Void
+    let onDelete: OnDeleteCallback
 
     private var imageUrl: URL? {
         imageEntity.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
@@ -51,7 +53,6 @@ struct CheckInImageAdminSheet: View {
         }
         .customListRowBackground()
         Section {
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.checkInImage(imageEntity.id))))
             if let imageUrl {
                 Link(destination: imageUrl) {
                     Label("labels.url", systemImage: "arrow.up.forward")

@@ -152,7 +152,7 @@ public extension SubBrand {
         }
     }
 
-    struct Detailed: Identifiable, Hashable, Decodable, Sendable, SubBrandProtocol, ModificationInfo, WithReports {
+    struct Detailed: Identifiable, Hashable, Decodable, Sendable, SubBrandProtocol, ModificationInfo {
         public let id: SubBrand.Id
         public let name: String?
         public let includesBrandName: Bool

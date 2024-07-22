@@ -2,11 +2,11 @@ import Models
 import Swift
 import SwiftUI
 
-struct AdminEventEventEntityView: View {
-    let event: AdminEvent.Event
+struct AdminEventContentEntityView: View {
+    let content: AdminEvent.Content
 
     var body: some View {
-        switch event {
+        switch content {
         case let .company(company):
             CompanyEntityView(company: company)
         case let .product(product):
@@ -17,14 +17,8 @@ struct AdminEventEventEntityView: View {
             BrandEntityView(brand: brand)
         case let .profile(profile):
             ProfileEntityView(profile: profile)
-        case let .productEditSuggestion(editSuggestion):
-            ProductEditSuggestionEntityView(editSuggestion: editSuggestion)
-        case let .brandEditSuggestion(editSuggestion):
-            BrandEditSuggestionEntityView(editSuggestion: editSuggestion)
-        case let .subBrandEditSuggestion(editSuggestion):
-            SubBrandEditSuggestionEntityView(editSuggestion: editSuggestion)
-        case let .companyEditSuggestion(editSuggestion):
-            CompanyEditSuggestionEntityView(editSuggestion: editSuggestion)
+        case let .editSuggestion(editSuggestion):
+            EditSuggestionEntityView(editSuggestion: editSuggestion)
         case let .report(report):
             ReportEntityView(entity: report.entity)
         }
