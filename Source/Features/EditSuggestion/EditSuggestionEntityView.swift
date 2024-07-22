@@ -23,13 +23,13 @@ extension EditSuggestion {
     var open: Router.Open {
         switch self {
         case let .product(editSuggestion):
-            .sheet(.productAdmin(id: editSuggestion.product.id))
+            .sheet(.productAdmin(id: editSuggestion.product.id, open: .editSuggestions(editSuggestion.id)))
         case let .brand(editSuggestion):
-            .sheet(.brandAdmin(id: editSuggestion.brand.id))
+            .sheet(.brandAdmin(id: editSuggestion.brand.id, open: .editSuggestions(editSuggestion.id)))
         case let .subBrand(editSuggestion):
-            .sheet(.brandAdmin(id: editSuggestion.subBrand.brand.id))
+            .sheet(.subBrandAdmin(id: editSuggestion.subBrand.id, open: .editSuggestions(editSuggestion.id)))
         case let .company(editSuggestion):
-            .sheet(.companyAdmin(id: editSuggestion.company.id))
+            .sheet(.companyAdmin(id: editSuggestion.company.id, open: .editSuggestions(editSuggestion.id)))
         }
     }
 }

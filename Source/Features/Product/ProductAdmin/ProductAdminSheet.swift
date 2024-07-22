@@ -8,6 +8,12 @@ import SwiftUI
 struct ProductAdminSheet: View {
     typealias OnDeleteCallback = () -> Void
     typealias OnUpdateCallback = () async -> Void
+
+    enum Open {
+        case report(Report.Id)
+        case editSuggestions(Product.EditSuggestion.Id)
+    }
+
     let logger = Logger(category: "ProductAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
@@ -17,10 +23,23 @@ struct ProductAdminSheet: View {
     @State private var showDeleteProductConfirmationDialog = false
     @State private var logos: [ImageEntity] = []
     @State private var product = Product.Detailed()
+    @State private var open: Open?
 
     let id: Product.Id
     let onDelete: OnDeleteCallback
     let onUpdate: OnUpdateCallback
+
+    init(
+        id: Product.Id,
+        open: Open? = nil,
+        onDelete: @escaping OnDeleteCallback,
+        onUpdate: @escaping OnUpdateCallback
+    ) {
+        self.open = open
+        self.id = id
+        self.onDelete = onDelete
+        self.onUpdate = onUpdate
+    }
 
     var body: some View {
         List {
@@ -121,9 +140,22 @@ struct ProductAdminSheet: View {
     private func loadData() async {
         do {
             let product = try await repository.product.getDetailed(id: id)
-            withAnimation {
-                self.product = product
-                state = .populated
+            self.product = product
+            state = .populated
+
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $product.map(getter: { location in
+                            location.reports
+                        }, setter: { reports in
+                            product.copyWith(reports: reports)
+                        }))))
+                case let .editSuggestions(id):
+                    router.open(.screen(.productEditSuggestion(product: $product)))
+                }
+                self.open = nil
             }
         } catch {
             guard !error.isCancelled else { return }

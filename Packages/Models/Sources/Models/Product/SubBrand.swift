@@ -65,12 +65,12 @@ public extension SubBrand {
             self.brand = .init(brand: brand)
         }
 
-        public init(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.Detailed) {
+        public init(subBrand: SubBrand.Detailed) {
             id = subBrand.id
             name = subBrand.name
             isVerified = subBrand.isVerified
             includesBrandName = subBrand.includesBrandName
-            self.brand = .init(brand: brand)
+            brand = .init(brand: subBrand.brand)
         }
 
         public init() {
@@ -158,6 +158,7 @@ public extension SubBrand {
         public let includesBrandName: Bool
         public let isVerified: Bool
         public let products: [Product.JoinedCategory]
+        public let brand: Brand.JoinedCompany
         public let editSuggestions: [SubBrand.EditSuggestion]
         public let reports: [Report]
         public let createdAt: Date
@@ -165,12 +166,26 @@ public extension SubBrand {
         public let updatedAt: Date?
         public let updatedBy: Profile?
 
-        init(id: SubBrand.Id, name: String? = nil, includesBrandName: Bool, isVerified: Bool, products: [Product.JoinedCategory], editSuggestions: [SubBrand.EditSuggestion], reports: [Report], createdAt: Date, createdBy: Profile? = nil, updatedAt: Date? = nil, updatedBy: Profile? = nil) {
+        init(
+            id: SubBrand.Id,
+            name: String? = nil,
+            includesBrandName: Bool,
+            isVerified: Bool,
+            products: [Product.JoinedCategory],
+            brand: Brand.JoinedCompany,
+            editSuggestions: [SubBrand.EditSuggestion],
+            reports: [Report],
+            createdAt: Date,
+            createdBy: Profile? = nil,
+            updatedAt: Date? = nil,
+            updatedBy: Profile? = nil
+        ) {
             self.id = id
             self.name = name
             self.includesBrandName = includesBrandName
             self.isVerified = isVerified
             self.products = products
+            self.brand = brand
             self.editSuggestions = editSuggestions
             self.reports = reports
             self.createdAt = createdAt
@@ -185,6 +200,7 @@ public extension SubBrand {
             includesBrandName = false
             isVerified = false
             products = []
+            brand = .init()
             editSuggestions = []
             reports = []
             createdAt = Date.now
@@ -199,6 +215,7 @@ public extension SubBrand {
             case isVerified = "is_verified"
             case includesBrandName = "includes_brand_name"
             case products
+            case brand = "brands"
             case editSuggestions = "sub_brand_edit_suggestions"
             case reports
             case createdBy = "created_by"
@@ -207,13 +224,14 @@ public extension SubBrand {
             case updatedAt = "updated_at"
         }
 
-        public func copyWith(name: String? = nil, includesBrandName: Bool? = nil, isVerified: Bool? = nil, products: [Product.JoinedCategory]? = nil, editSuggestions: [SubBrand.EditSuggestion]? = nil, reports: [Report]? = nil) -> Self {
+        public func copyWith(name: String? = nil, includesBrandName: Bool? = nil, isVerified: Bool? = nil, products: [Product.JoinedCategory]? = nil, brand: Brand.JoinedCompany? = nil, editSuggestions: [SubBrand.EditSuggestion]? = nil, reports: [Report]? = nil) -> Self {
             .init(
                 id: id,
                 name: name ?? self.name,
                 includesBrandName: includesBrandName ?? self.includesBrandName,
                 isVerified: isVerified ?? self.isVerified,
                 products: products ?? self.products,
+                brand: brand ?? self.brand,
                 editSuggestions: editSuggestions ?? self.editSuggestions,
                 reports: reports ?? self.reports,
                 createdAt: createdAt,

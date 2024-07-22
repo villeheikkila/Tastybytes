@@ -84,6 +84,14 @@ public extension Brand {
             logos = brand.logos
         }
 
+        init(brand: Brand.JoinedCompany) {
+            id = brand.id
+            name = brand.name
+            isVerified = brand.isVerified
+            brandOwner = brand.brandOwner
+            logos = brand.logos
+        }
+
         public init() {
             id = .init(rawValue: 0)
             name = ""

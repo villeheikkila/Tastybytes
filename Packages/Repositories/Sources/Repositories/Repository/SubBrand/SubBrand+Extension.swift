@@ -27,6 +27,7 @@ extension SubBrand: Queryable {
                     saved,
                     Product.getQuery(.joinedBrandSubcategories(true)),
                     SubBrand.EditSuggestion.getQuery(.joined(true)),
+                    Brand.getQuery(.joinedCompany(true)),
                     Report.getQuery(.joined(true)),
                     modificationInfoFragment,
                 ],

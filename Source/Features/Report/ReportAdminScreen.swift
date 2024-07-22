@@ -8,12 +8,17 @@ struct ReportAdminScreen: View {
 
     var body: some View {
         List(adminEnvironmentModel.reports) { report in
-            ReportReaderRowView(report: report)
+            ReportAdminRowView(report: report)
                 .swipeActions {
-                    AsyncButton("labels.delete", systemImage: "trash") {
-                        await adminEnvironmentModel.deleteReport(report)
-                    }
-                    .tint(.red)
+                    AsyncButton("report.admin.resolve.label", systemImage: "checkmark", action: {
+                        await adminEnvironmentModel.resolveReport(report)
+                    })
+                    AsyncButton(
+                        "labels.delete",
+                        systemImage: "trash",
+                        role: .destructive,
+                        action: { await adminEnvironmentModel.deleteReport(report) }
+                    )
                 }
         }
         .refreshable {
@@ -27,5 +32,15 @@ struct ReportAdminScreen: View {
         }
         .navigationTitle("report.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+struct ReportAdminRowView: View {
+    let report: Report
+
+    var body: some View {
+        RouterLink(open: report.open) {
+            ReportEntityView(report: report)
+        }
     }
 }

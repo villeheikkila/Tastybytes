@@ -3,7 +3,7 @@ import EnvironmentModels
 import Models
 import SwiftUI
 
-public extension Report.Entity {
+public extension Report.Content {
     var navigationTitle: LocalizedStringKey {
         switch self {
         case .product:

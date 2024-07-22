@@ -10,7 +10,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
     public let message: String?
     public let createdAt: Date
     public let createdBy: Profile
-    public let entity: Entity
+    public let content: Content
     public let resolvedAt: Date?
 
     public init(from decoder: Decoder) throws {
@@ -31,7 +31,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         let profile = try values.decodeIfPresent(Profile.self, forKey: .checkIn)
         let location = try values.decodeIfPresent(Location.self, forKey: .location)
 
-        entity = if let checkIn {
+        content = if let checkIn {
             .checkIn(checkIn)
         } else if let company {
             .company(company)
@@ -50,7 +50,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         } else if let location {
             .location(location)
         } else {
-            .company(.init(id: 1, name: "", isVerified: true))
+            throw ReportError.unknownEntity
         }
     }
 
@@ -71,7 +71,7 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         case resolvedAt = "resolved_at"
     }
 
-    public enum Entity: Hashable, Sendable {
+    public enum Content: Hashable, Sendable {
         case product(Product.Joined)
         case company(Company)
         case brand(Brand.JoinedSubBrandsProductsCompany)
@@ -101,7 +101,7 @@ public extension Report {
         public let profileId: Profile.Id?
         public let locationId: Location.Id?
 
-        public init(message: String, entity: Entity) {
+        public init(message: String, entity: Content) {
             self.message = message
 
             switch entity {

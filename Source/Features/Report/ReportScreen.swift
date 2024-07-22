@@ -14,7 +14,18 @@ struct ReportsScreen: View {
 
     var body: some View {
         List(reports) { report in
-            ReportScreenRow(report: report, deleteReport: deleteReport, resolveReport: resolveReport)
+            ReportScreenRow(report: report)
+                .swipeActions {
+                    AsyncButton("report.admin.resolve.label", systemImage: "checkmark", action: {
+                        await resolveReport(report)
+                    })
+                    AsyncButton(
+                        "labels.delete",
+                        systemImage: "trash",
+                        role: .destructive,
+                        action: { await deleteReport(report) }
+                    )
+                }
         }
         .listStyle(.plain)
         .animation(.default, value: reports)
@@ -53,41 +64,9 @@ struct ReportsScreen: View {
 struct ReportScreenRow: View {
     let report: Report
 
-    let deleteReport: (_ report: Report) async -> Void
-    let resolveReport: (_ report: Report) async -> Void
-
     var body: some View {
-        RouterLink(open: report.entity.open) {
-            VStack(alignment: .leading, spacing: 4) {
-                HStack(alignment: .center) {
-                    Avatar(profile: report.createdBy)
-                        .avatarSize(.medium)
-                    Text(report.createdBy.preferredName)
-                        .font(.caption).bold()
-                        .foregroundColor(.primary)
-                    Spacer()
-                    Text(report.createdAt.formatted(.customRelativetime))
-                        .font(.caption)
-                }
-                ReportEntityView(entity: report.entity)
-                if let message = report.message {
-                    VStack(alignment: .leading) {
-                        Text("report.section.report.title").bold()
-                        Text(message).font(.callout)
-                    }
-                }
-            }
-        }
-        .swipeActions {
-            AsyncButton("report.admin.resolve.label", systemImage: "checkmark", action: {
-                await resolveReport(report)
-            })
-            AsyncButton(
-                "labels.delete",
-                systemImage: "trash",
-                role: .destructive,
-                action: { await deleteReport(report) }
-            )
+        RouterLink(open: report.content.open) {
+            ReportEntityView(report: report)
         }
     }
 }

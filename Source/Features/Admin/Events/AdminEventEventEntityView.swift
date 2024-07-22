@@ -20,7 +20,7 @@ struct AdminEventContentEntityView: View {
         case let .editSuggestion(editSuggestion):
             EditSuggestionEntityView(editSuggestion: editSuggestion)
         case let .report(report):
-            ReportEntityView(entity: report.entity)
+            ReportContentEntityView(content: report.content)
         }
     }
 }

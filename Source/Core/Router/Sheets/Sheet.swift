@@ -4,7 +4,7 @@ import Models
 import SwiftUI
 
 enum Sheet: Identifiable, Equatable {
-    case report(Report.Entity)
+    case report(Report.Content)
     case checkIn(CheckInSheet.Action)
     case barcodeScanner(onComplete: (_ barcode: Barcode) async -> Void)
     case productFilter(initialFilter: Product.Filter?, sections: [ProductFilterSheet.Sections], onApply: (_ filter: Product.Filter?) -> Void)
@@ -15,8 +15,20 @@ enum Sheet: Identifiable, Equatable {
     case subBrandPicker(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
     case duplicateProduct(mode: ProductDuplicateScreen.Mode, product: Product.Joined)
-    case brandAdmin(id: Brand.Id, onUpdate: BrandAdminSheet.BrandUpdateCallback = { _ in }, onDelete: BrandAdminSheet.BrandUpdateCallback = { _ in })
-    case subBrandAdmin(brand: Binding<Brand.JoinedSubBrandsProductsCompany>, subBrand: SubBrand.JoinedProduct)
+    case brandAdmin(
+        id: Brand.Id,
+        open: BrandAdminSheet.Open? = nil,
+        onUpdate: BrandAdminSheet.OnUpdateCallback = { _ in
+        },
+        onDelete: BrandAdminSheet.OnDeleteCallback = { _ in }
+    )
+    case subBrandAdmin(
+        id: SubBrand.Id,
+        open: SubBrandAdminSheet.Open? = nil,
+        onUpdate: SubBrandAdminSheet.OnUpdateCallback = { _ in
+        },
+        onDelete: SubBrandAdminSheet.OnDeleteCallback = { _ in }
+    )
     case friendPicker(taggedFriends: Binding<[Profile]>)
     case flavorPicker(pickedFlavors: Binding<[Flavor]>)
     case checkInLocationSearch(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: Binding<Location?>, onSelect: (_ location: Location) -> Void)
@@ -37,16 +49,17 @@ enum Sheet: Identifiable, Equatable {
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
     case webView(link: WebViewLink)
-    case companyAdmin(id: Company.Id, onUpdate: CompanyAdminSheet.OnUpdateCallback = {}, onDelete: CompanyAdminSheet.OnDeleteCallback = {})
-    case locationAdmin(id: Location.Id, onEdit: LocationAdminSheet.OnEditCallback, onDelete: LocationAdminSheet.OnDeleteCallback)
+    case companyAdmin(id: Company.Id, open: CompanyAdminSheet.Open? = nil, onUpdate: CompanyAdminSheet.OnUpdateCallback = {}, onDelete: CompanyAdminSheet.OnDeleteCallback = {})
+    case locationAdmin(id: Location.Id, onEdit: LocationAdminSheet.OnEditCallback = { _ in }, onDelete: LocationAdminSheet.OnDeleteCallback = { _ in })
     case profileAdmin(id: Profile.Id, onDelete: ProfileAdminSheet.OnDeleteCallback = { _ in })
     case productAdmin(
         id: Product.Id,
+        open: ProductAdminSheet.Open? = nil,
         onDelete: ProductAdminSheet.OnDeleteCallback = {},
         onUpdate: ProductAdminSheet.OnUpdateCallback = {}
     )
     case checkInAdmin(id: CheckIn.Id, onDelete: CheckInAdminSheet.OnDeleteCallback = {})
-    case checkInCommentAdmin(id: CheckInComment.Id, onDelete: CheckInCommentAdminSheet.OnDeleteCallback)
+    case checkInCommentAdmin(id: CheckInComment.Id, onDelete: CheckInCommentAdminSheet.OnDeleteCallback = { _ in })
     case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: CheckInImageAdminSheet.OnDeleteCallback = { _ in })
     case categoryAdmin(category: Models.Category.JoinedSubcategoriesServingStyles)
     case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
@@ -56,8 +69,8 @@ enum Sheet: Identifiable, Equatable {
     @MainActor
     @ViewBuilder var view: some View {
         switch self {
-        case let .report(entity):
-            ReportSheet(entity: entity)
+        case let .report(content):
+            ReportSheet(reportContent: content)
         case let .checkIn(action):
             CheckInSheet(action: action)
         case let .barcodeScanner(onComplete: onComplete):
@@ -78,10 +91,10 @@ enum Sheet: Identifiable, Equatable {
             ProductMutationView(mode: mode)
         case let .duplicateProduct(mode: mode, product: product):
             ProductDuplicateScreen(mode: mode, product: product)
-        case let .brandAdmin(id, onUpdate, onDelete):
-            BrandAdminSheet(id: id, onUpdate: onUpdate, onDelete: onDelete)
-        case let .subBrandAdmin(brand: brand, subBrand: subBrand):
-            SubBrandAdminSheet(brand: brand, subBrand: subBrand)
+        case let .brandAdmin(id, open, onUpdate, onDelete):
+            BrandAdminSheet(id: id, open: open, onUpdate: onUpdate, onDelete: onDelete)
+        case let .subBrandAdmin(id, open, onUpdate, onDelete):
+            SubBrandAdminSheet(id: id, open: open, onUpdate: onUpdate, onDelete: onDelete)
         case let .friendPicker(taggedFriends: taggedFriends):
             FriendPickerSheet(taggedFriends: taggedFriends)
         case let .flavorPicker(pickedFlavors: pickedFlavors):
@@ -98,8 +111,8 @@ enum Sheet: Identifiable, Equatable {
             SubcategoryCreationSheet(category: category, onSubmit: onSubmit)
         case let .categoryCreation(onSubmit: onSubmit):
             CategoryCreationSheet(onSubmit: onSubmit)
-        case let .companyAdmin(id, onUpdate, onDelete):
-            CompanyAdminSheet(id: id, onUpdate: onUpdate, onDelete: onDelete)
+        case let .companyAdmin(id, open, onUpdate, onDelete):
+            CompanyAdminSheet(id: id, open: open, onUpdate: onUpdate, onDelete: onDelete)
         case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
             CompanyEditSuggestionSheet(company: company, onSuccess: onSuccess)
         case let .profilePicker(mode: mode, onSubmit: onSubmit):
@@ -129,8 +142,8 @@ enum Sheet: Identifiable, Equatable {
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
         case let .profileAdmin(id, onDelete):
             ProfileAdminSheet(id: id, onDelete: onDelete)
-        case let .productAdmin(id, onDelete, onUpdate):
-            ProductAdminSheet(id: id, onDelete: onDelete, onUpdate: onUpdate)
+        case let .productAdmin(id, open, onDelete, onUpdate):
+            ProductAdminSheet(id: id, open: open, onDelete: onDelete, onUpdate: onUpdate)
         case let .checkInAdmin(id, onDelete):
             CheckInAdminSheet(id: id, onDelete: onDelete)
         case let .checkInCommentAdmin(id, onDelete):
@@ -206,10 +219,10 @@ enum Sheet: Identifiable, Equatable {
             "edit_product_\(mode)"
         case .duplicateProduct:
             "duplicate_product"
-        case let .brandAdmin(id, _, _):
+        case let .brandAdmin(id, _, _, _):
             "brand_admin_\(id)"
-        case let .subBrandAdmin(_, subBrand):
-            "sub_brand_admin_\(subBrand.hashValue)"
+        case let .subBrandAdmin(id, _, _, _):
+            "sub_brand_admin_\(id)"
         case .friendPicker:
             "friends"
         case .flavorPicker:
@@ -226,7 +239,7 @@ enum Sheet: Identifiable, Equatable {
             "add_subcategory"
         case let .subcategoryAdmin(subcategory, _):
             "edit_subcategory_\(subcategory.id)"
-        case let .companyAdmin(company, _, _):
+        case let .companyAdmin(company, _, _, _):
             "edit_company_\(company.hashValue)"
         case .companyEditSuggestion:
             "company_edit_suggestion"
@@ -256,7 +269,7 @@ enum Sheet: Identifiable, Equatable {
             "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
         case let .profileAdmin(id, _):
             "profile_admin_sheet_\(id)"
-        case let .productAdmin(id, _, _):
+        case let .productAdmin(id, _, _, _):
             "product_admin_\(id)"
         case let .checkInAdmin(id, _):
             "check_in_admin_\(id)"

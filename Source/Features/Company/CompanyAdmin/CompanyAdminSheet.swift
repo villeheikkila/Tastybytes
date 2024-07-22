@@ -11,6 +11,11 @@ struct CompanyAdminSheet: View {
     typealias OnUpdateCallback = () async -> Void
     typealias OnDeleteCallback = () -> Void
 
+    enum Open {
+        case report(Report.Id)
+        case editSuggestions(Company.EditSuggestion.Id)
+    }
+
     private let logger = Logger(category: "CompanyAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
@@ -22,6 +27,7 @@ struct CompanyAdminSheet: View {
     @State private var selectedLogo: PhotosPickerItem?
 
     let id: Company.Id
+    let open: Open?
     let onUpdate: OnUpdateCallback
     let onDelete: OnDeleteCallback
 
@@ -36,6 +42,7 @@ struct CompanyAdminSheet: View {
             }
         }
         .scrollContentBackground(.hidden)
+        .animation(.default, value: company)
         .overlay {
             ScreenStateOverlayView(state: state) {
                 await loadData()
@@ -90,8 +97,7 @@ struct CompanyAdminSheet: View {
                         location.reports
                     }, setter: { reports in
                         company.copyWith(reports: reports)
-                    }))
-                )
+                    })))
             )
             RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", count: company.editSuggestions.unresolvedCount, open: .screen(.companyEditSuggestion(company: $company)))
         }
@@ -114,15 +120,27 @@ struct CompanyAdminSheet: View {
 
     private func loadData() async {
         do {
+            print("IDXXX \(id)")
             let company = try await repository.company.getDetailed(id: id)
-            withAnimation {
-                self.company = company
-                state = .populated
+            self.company = company
+            state = .populated
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $company.map(getter: { location in
+                            location.reports
+                        }, setter: { reports in
+                            company.copyWith(reports: reports)
+                        }))))
+                case let .editSuggestions(id):
+                    router.open(.screen(.companyEditSuggestion(company: $company)))
+                }
             }
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
-            logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load company. Error: \(error) (\(#file):\(#line))")
         }
     }
 

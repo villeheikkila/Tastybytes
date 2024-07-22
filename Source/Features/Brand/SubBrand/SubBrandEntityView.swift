@@ -15,6 +15,11 @@ struct SubBrandEntityView: View {
         self.subBrand = subBrand
     }
 
+    init(subBrand: SubBrand.Detailed) {
+        brand = subBrand.brand
+        self.subBrand = subBrand
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
             BrandEntityView(brand: brand)

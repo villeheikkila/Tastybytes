@@ -162,10 +162,20 @@ public final class AdminEnvironmentModel {
     public func deleteReport(_ report: Report) async {
         do {
             try await repository.report.delete(id: report.id)
-            reports = reports.removing(reports)
+            reports = reports.removing(report)
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func resolveReport(_ report: Report) async {
+        do {
+            try await repository.report.resolve(id: report.id)
+            reports = reports.removing(report)
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to resolve report \(report.id). Error: \(error) (\(#file):\(#line))")
         }
     }
 }

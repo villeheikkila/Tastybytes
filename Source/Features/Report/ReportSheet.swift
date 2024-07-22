@@ -13,14 +13,14 @@ struct ReportSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var reasonText = ""
 
-    let entity: Report.Entity
+    let reportContent: Report.Content
 
     var body: some View {
         Form {
             content
         }
         .scrollContentBackground(.hidden)
-        .navigationTitle(entity.navigationTitle)
+        .navigationTitle(reportContent.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
@@ -30,7 +30,7 @@ struct ReportSheet: View {
     @ViewBuilder private var content: some View {
         Group {
             Section("report.section.content.title") {
-                ReportEntityView(entity: entity)
+                ReportContentEntityView(content: reportContent)
             }
             Section("report.section.report.title") {
                 TextField("report.section.report.reason.label", text: $reasonText, axis: .vertical)
@@ -52,7 +52,7 @@ struct ReportSheet: View {
 
     private func submitReport() async {
         do {
-            try await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity))
+            try await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: reportContent))
             dismiss()
             router.open(.toast(.success("report.submit.success.toast")))
         } catch {

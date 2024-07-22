@@ -303,7 +303,7 @@ struct SubBrandSectionHeaderView: View {
                 })))
                 ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))
                 Divider()
-                AdminRouterLink(open: .sheet(.subBrandAdmin(brand: $brand, subBrand: subBrand)))
+                AdminRouterLink(open: .sheet(.subBrandAdmin(id: subBrand.id)))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
                     .labelStyle(.iconOnly)

@@ -5,19 +5,19 @@ extension AdminEvent {
     var open: Router.Open {
         switch content {
         case let .company(company):
-            .screen(.company(company))
+            .sheet(.companyAdmin(id: company.id))
         case let .product(product):
-            .screen(.product(product))
+            .sheet(.productAdmin(id: product.id))
         case let .subBrand(subBrand):
-            .navigatablePath(.brand(id: subBrand.brand.id))
+            .sheet(.subBrandAdmin(id: subBrand.id))
         case let .brand(brand):
-            .navigatablePath(.brand(id: brand.id))
+            .sheet(.brandAdmin(id: brand.id))
         case let .profile(profile):
-            .screen(.profile(profile))
+            .sheet(.profileAdmin(id: profile.id))
         case let .editSuggestion(editSuggestion):
             editSuggestion.open
         case let .report(report):
-            report.entity.open
+            report.content.open
         }
     }
 

@@ -8,7 +8,13 @@ import Repositories
 import SwiftUI
 
 struct SubBrandAdminSheet: View {
-    typealias UpdateSubBrandCallback = (_ subBrand: SubBrand.JoinedProduct) async -> Void
+    typealias OnUpdateCallback = (_ subBrand: SubBrand.Detailed) async -> Void
+    typealias OnDeleteCallback = (_ subBrand: SubBrand.Id) async -> Void
+
+    enum Open {
+        case report(Report.Id)
+        case editSuggestions(SubBrand.EditSuggestion.Id)
+    }
 
     private let logger = Logger(category: "SubBrandAdminSheet")
     @Environment(Repository.self) private var repository
@@ -17,21 +23,20 @@ struct SubBrandAdminSheet: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var newSubBrandName: String
-    @State private var includesBrandName: Bool
+    @State private var newSubBrandName: String = ""
+    @State private var includesBrandName: Bool = false
     @State private var subBrand = SubBrand.Detailed()
     @State private var id: SubBrand.Id
+    @State private var open: Open?
 
-    @Binding var brand: Brand.JoinedSubBrandsProductsCompany
+    private let onUpdate: OnUpdateCallback
+    private let onDelete: OnDeleteCallback
 
-    init(
-        brand: Binding<Brand.JoinedSubBrandsProductsCompany>,
-        subBrand: SubBrandProtocol
-    ) {
-        _id = State(initialValue: subBrand.id)
-        _brand = brand
-        _newSubBrandName = State(initialValue: subBrand.name ?? "")
-        _includesBrandName = State(initialValue: subBrand.includesBrandName)
+    init(id: SubBrand.Id, open: Open?, onUpdate: @escaping OnUpdateCallback, onDelete: @escaping OnDeleteCallback) {
+        _id = State(initialValue: id)
+        _open = State(initialValue: open)
+        self.onUpdate = onUpdate
+        self.onDelete = onDelete
     }
 
     private var canUpdate: Bool {
@@ -40,13 +45,11 @@ struct SubBrandAdminSheet: View {
             .isValidLength(.normal(allowEmpty: false))) || includesBrandName != subBrand.includesBrandName
     }
 
-    private var subBrandsToMergeTo: [SubBrand.JoinedProduct] {
-        brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }
-    }
-
     var body: some View {
         Form {
-            content
+            if state.isPopulated {
+                content
+            }
         }
         .scrollContentBackground(.hidden)
         .overlay {
@@ -67,8 +70,8 @@ struct SubBrandAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("subBrand.admin.section.subBrand") {
-            RouterLink(open: .screen(.subBrand(.init(brand: brand, subBrand: subBrand)))) {
-                SubBrandEntityView(brand: brand, subBrand: subBrand)
+            RouterLink(open: .screen(.subBrand(.init(subBrand: subBrand)))) {
+                SubBrandEntityView(subBrand: subBrand)
             }
         }
         .customListRowBackground()
@@ -78,16 +81,16 @@ struct SubBrandAdminSheet: View {
             Toggle("subBrand.includesBrandName.toggle.label", isOn: $includesBrandName)
         }
         .customListRowBackground()
-        if !subBrandsToMergeTo.isEmpty {
-            Section("subBrand.mergeToAnotherSubBrand.title") {
-                ForEach(subBrandsToMergeTo) { subBrand in
-                    EditSubBrandMergeToRowView(subBrand: subBrand) { mergeTo in
-                        await mergeToSubBrand(mergeTo: mergeTo)
-                    }
-                }
-            }
-            .customListRowBackground()
-        }
+//        if !subBrandsToMergeTo.isEmpty {
+//            Section("subBrand.mergeToAnotherSubBrand.title") {
+//                ForEach(subBrandsToMergeTo) { subBrand in
+//                    EditSubBrandMergeToRowView(subBrand: subBrand) { mergeTo in
+//                        await mergeToSubBrand(mergeTo: mergeTo)
+//                    }
+//                }
+//            }
+//            .customListRowBackground()
+//        }
         Section("labels.info") {
             LabeledIdView(id: subBrand.id.rawValue.formatted())
             LabeledContent("brand.admin.product.count", value: subBrand.products.count.formatted())
@@ -141,7 +144,23 @@ struct SubBrandAdminSheet: View {
         state = .loading
         do {
             subBrand = try await repository.subBrand.getDetailed(id: id)
+            newSubBrandName = subBrand.name ?? ""
+            includesBrandName = subBrand.includesBrandName
             state = .populated
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $subBrand.map(getter: { location in
+                            location.reports
+                        }, setter: { reports in
+                            subBrand.copyWith(reports: reports)
+                        }))))
+                case let .editSuggestions(id):
+                    router.open(.screen(.subBrandEditSuggestions(subBrand: $subBrand)))
+                }
+                self.open = nil
+            }
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
@@ -152,12 +171,8 @@ struct SubBrandAdminSheet: View {
     private func verifySubBrand(isVerified: Bool) async {
         do {
             try await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified)
-            let updatedSubBrand = SubBrand.JoinedProduct(subBrand: subBrand).copyWith(
-                isVerified: isVerified
-            )
             subBrand = subBrand.copyWith(isVerified: isVerified)
-            let updatedSubBrands = brand.subBrands.replacingWithId(id, with: updatedSubBrand)
-            brand = brand.copyWith(subBrands: updatedSubBrands)
+            await onUpdate(subBrand)
             feedbackEnvironmentModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
@@ -171,10 +186,8 @@ struct SubBrandAdminSheet: View {
             // TODO: This is completely wrong
             // try await repository.subBrand
             //    .update(updateRequest: .brand(.init(id: id, brandId: mergeTo.id)))
-            withAnimation {
-                brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(id))
-            }
             id = mergeTo.id
+            await onDelete(subBrand.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
@@ -186,10 +199,9 @@ struct SubBrandAdminSheet: View {
     private func editSubBrand() async {
         do {
             let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: id, name: newSubBrandName, includesBrandName: includesBrandName)))
-            router.open(.toast(.success("subBrand.updated.toast")))
             subBrand = subBrand.copyWith(name: updated.name, includesBrandName: includesBrandName)
-            let updatedSubBrands = brand.subBrands.replacingWithId(id, with: SubBrand.JoinedProduct(subBrand: subBrand).copyWith(name: updated.name, includesBrandName: includesBrandName))
-            brand = brand.copyWith(subBrands: updatedSubBrands)
+            await onUpdate(subBrand)
+            router.open(.toast(.success("subBrand.updated.toast")))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -201,9 +213,7 @@ struct SubBrandAdminSheet: View {
         do {
             try await repository.subBrand.delete(id: subBrand.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
-            withAnimation {
-                brand = brand.copyWith(subBrands: brand.subBrands.removingWithId(subBrand.id))
-            }
+            await onDelete(subBrand.id)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

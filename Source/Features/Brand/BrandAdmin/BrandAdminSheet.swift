@@ -8,7 +8,14 @@ import Repositories
 import SwiftUI
 
 struct BrandAdminSheet: View {
-    typealias BrandUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
+    typealias OnUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
+    typealias OnDeleteCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
+
+    enum Open {
+        case report(Report.Id)
+        case editSuggestions(Brand.EditSuggestion.Id)
+    }
+
     private let logger = Logger(category: "BrandAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
@@ -23,8 +30,9 @@ struct BrandAdminSheet: View {
     @State private var selectedLogo: PhotosPickerItem?
 
     let id: Brand.Id
-    let onUpdate: BrandUpdateCallback
-    let onDelete: BrandUpdateCallback
+    let open: Open?
+    let onUpdate: OnUpdateCallback
+    let onDelete: OnDeleteCallback
 
     private var isValidNameUpdate: Bool {
         name.isValidLength(.normal(allowEmpty: false)) && brand.name != name
@@ -141,11 +149,22 @@ struct BrandAdminSheet: View {
     private func loadData() async {
         do {
             let brand = try await repository.brand.getDetailed(id: id)
-            withAnimation {
-                self.brand = brand
-                brandOwner = brand.brandOwner
-                name = brand.name
-                state = .populated
+            self.brand = brand
+            brandOwner = brand.brandOwner
+            name = brand.name
+            state = .populated
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $brand.map(getter: { location in
+                            location.reports
+                        }, setter: { reports in
+                            brand.copyWith(reports: reports)
+                        }))))
+                case let .editSuggestions(id):
+                    router.open(.screen(.brandEditSuggestionAdmin(brand: $brand)))
+                }
             }
         } catch {
             guard !error.isCancelled else { return }

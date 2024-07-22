@@ -40,23 +40,8 @@ struct EditSuggestionRowView: View {
 
     var body: some View {
         Section {
-            switch editSuggestion {
-            case let .product(editSuggestion):
-                RouterLink(open: .sheet(.productAdmin(id: editSuggestion.product.id, onDelete: {}, onUpdate: {}))) {
-                    ProductEditSuggestionEntityView(editSuggestion: editSuggestion)
-                }
-            case let .brand(editSuggestion):
-                RouterLink(open: .sheet(.brandAdmin(id: editSuggestion.brand.id, onUpdate: { _ in }, onDelete: { _ in }))) {
-                    BrandEditSuggestionEntityView(editSuggestion: editSuggestion)
-                }
-            case let .subBrand(editSuggestion):
-                RouterLink(open: .sheet(.brandAdmin(id: editSuggestion.subBrand.brand.id, onUpdate: { _ in }, onDelete: { _ in }))) {
-                    SubBrandEditSuggestionEntityView(editSuggestion: editSuggestion)
-                }
-            case let .company(editSuggestion):
-                RouterLink(open: .sheet(.companyAdmin(id: editSuggestion.company.id, onUpdate: {}, onDelete: {}))) {
-                    CompanyEditSuggestionEntityView(editSuggestion: editSuggestion)
-                }
+            RouterLink(open: editSuggestion.open) {
+                EditSuggestionEntityView(editSuggestion: editSuggestion)
             }
         }
     }
