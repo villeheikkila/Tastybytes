@@ -18,7 +18,7 @@ struct ProfileTopLocationsScreen: View {
         }
         .listStyle(.plain)
         .overlay {
-            if state == .populated, locations.isEmpty {
+            if state.isPopulated, locations.isEmpty {
                 ContentUnavailableView("profileTopLocations.empty.title", systemImage: "tray")
             } else {
                 ScreenStateOverlayView(state: state) {
@@ -33,7 +33,7 @@ struct ProfileTopLocationsScreen: View {
 
     private func loadData() async {
         do {
-            let locations = try await repository.profile.getNumberOfCheckInsByLocation(userId: profile.id)
+            let locations = try await repository.profile.getNumberOfCheckInsByLocation(id: profile.id)
             withAnimation {
                 self.locations = locations
                 state = .populated

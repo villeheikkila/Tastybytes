@@ -19,7 +19,12 @@ extension Profile: Queryable {
         case let .detailed(withTableName):
             buildQuery(
                 .profiles,
-                [saved, Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
+                [
+                    saved,
+                    Role.getQuery(.joined(true)),
+                    ImageEntity.getQuery(.saved(.profileAvatars)),
+                    buildQuery(name: "reports", foreignKey: "reports_profile_id_fkey", [Report.getQuery(.joined(false))]),
+                ],
                 withTableName
             )
         }

@@ -1,6 +1,10 @@
 import Foundation
 import Tagged
 
+public protocol WithReports: Hashable {
+    var reports: [Report] { get }
+}
+
 public protocol CompanyLogoProtocol {
     var logos: [ImageEntity] { get }
 }
@@ -61,7 +65,7 @@ public extension Company {
 }
 
 public extension Company {
-    struct Detailed: Identifiable, Decodable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, ModificationInfo {
+    struct Detailed: Identifiable, Decodable, Hashable, Sendable, CompanyLogoProtocol, CompanyProtocol, WithReports, ModificationInfo {
         public let id: Company.Id
         public let name: String
         public let isVerified: Bool
@@ -117,7 +121,6 @@ public extension Company {
         }
 
         public func copyWith(
-            id: Company.Id? = nil,
             name: String? = nil,
             isVerified: Bool? = nil,
             logos: [ImageEntity]? = nil,
@@ -126,7 +129,7 @@ public extension Company {
             reports: [Report]? = nil
         ) -> Self {
             .init(
-                id: id ?? self.id,
+                id: id,
                 name: name ?? self.name,
                 isVerified: isVerified ?? self.isVerified,
                 logos: logos ?? self.logos,

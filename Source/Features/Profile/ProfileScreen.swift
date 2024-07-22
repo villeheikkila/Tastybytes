@@ -43,7 +43,7 @@ struct ProfileScreen: View {
                 Divider()
                 ReportButton(entity: .profile(profile))
                 Divider()
-                AdminRouterLink(open: .sheet(.profileAdmin(profile: profile, onDelete: { _ in
+                AdminRouterLink(open: .sheet(.profileAdmin(id: profile.id, onDelete: { _ in
                     router.removeLast()
                 })))
             } label: {

@@ -66,7 +66,7 @@ struct BrandScreen: View {
     var body: some View {
         ScrollViewReader { proxy in
             List {
-                if state == .populated {
+                if state.isPopulated {
                     content
                 }
             }
@@ -75,7 +75,7 @@ struct BrandScreen: View {
                 await getBrandData(withHaptics: true)
             }
             .overlay {
-                if state == .populated, brand.subBrands.count == 1, let products = brand.subBrands.first?.products, products.isEmpty {
+                if state.isPopulated, brand.subBrands.count == 1, let products = brand.subBrands.first?.products, products.isEmpty {
                     ContentUnavailableView("brand.screen.empty.title", systemImage: "tray")
                 } else {
                     ScreenStateOverlayView(state: state, errorDescription: "brand.screen.failedToLoad \(brand.name)", errorAction: {

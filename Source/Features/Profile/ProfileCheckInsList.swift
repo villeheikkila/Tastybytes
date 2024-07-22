@@ -101,7 +101,7 @@ struct ProfileCheckInsListInnerView: View {
                         await checkInLoader.fetchFeedItems(reset: true, showCheckInsFrom: .you)
                     }
                 }
-            } else if state == .populated, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
+            } else if state.isPopulated, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
                 EmptyActivityFeedView()
             }
         }

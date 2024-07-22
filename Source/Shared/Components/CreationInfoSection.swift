@@ -14,11 +14,7 @@ struct CreationInfoSection: View {
                         VStack(alignment: .leading) {
                             Text(createdBy.preferredName)
                             if let createdAt {
-                                Text(createdAt, format:
-                                    .dateTime
-                                        .year()
-                                        .month(.wide)
-                                        .day())
+                                Text(createdAt.formatted())
                                     .foregroundColor(.secondary)
                             }
                         }
@@ -26,11 +22,7 @@ struct CreationInfoSection: View {
                     }
                 }
             } else if let createdAt {
-                Text(createdAt, format:
-                    .dateTime
-                        .year()
-                        .month(.wide)
-                        .day())
+                Text(createdAt.formatted())
                     .foregroundColor(.secondary)
             }
         }
@@ -39,62 +31,63 @@ struct CreationInfoSection: View {
 }
 
 struct ModificationInfoView: View {
-    let modificationInfo: ModificationInfo
+    let createdBy: Profile?
+    let createdAt: Date
+    let updatedBy: Profile?
+    let updatedAt: Date?
+
+    init(modificationInfo: ModificationInfo) {
+        createdAt = modificationInfo.createdAt
+        createdBy = modificationInfo.createdBy
+        updatedBy = modificationInfo.updatedBy
+        updatedAt = modificationInfo.updatedAt
+    }
+
+    init(modificationInfo: ModificationInfoCascaded) {
+        createdAt = modificationInfo.createdAt
+        createdBy = modificationInfo.createdBy
+        updatedBy = modificationInfo.updatedBy
+        updatedAt = modificationInfo.updatedAt
+    }
 
     var body: some View {
         Section("admin.section.createdBy") {
-            if let createdBy = modificationInfo.createdBy {
+            if let createdBy {
                 RouterLink(open: .screen(.profile(createdBy))) {
                     HStack {
                         Avatar(profile: createdBy)
                         VStack(alignment: .leading) {
                             Text(createdBy.preferredName)
-                            Text(modificationInfo.createdAt, format:
-                                .dateTime
-                                    .year()
-                                    .month(.wide)
-                                    .day())
+                            Text(createdAt.formatted())
                                 .foregroundColor(.secondary)
                         }
                         Spacer()
                     }
                 }
             } else {
-                Text(modificationInfo.createdAt, format:
-                    .dateTime
-                        .year()
-                        .month(.wide)
-                        .day())
+                Text(createdAt.formatted())
                     .foregroundColor(.secondary)
             }
         }
         .buttonStyle(.plain)
         .customListRowBackground()
 
-        if let updatedAt = modificationInfo.updatedAt {
+        if let updatedAt {
             Section("admin.section.updatedBy") {
-                if let updatedBy = modificationInfo.updatedBy {
+                if let updatedBy {
                     RouterLink(open: .screen(.profile(updatedBy))) {
                         HStack {
                             Avatar(profile: updatedBy)
                             VStack(alignment: .leading) {
                                 Text(updatedBy.preferredName)
-                                Text(updatedAt, format:
-                                    .dateTime
-                                        .year()
-                                        .month(.wide)
-                                        .day())
+                                Text(updatedAt.formatted())
                                     .foregroundColor(.secondary)
                             }
                             Spacer()
                         }
                     }
                 } else {
-                    Text(updatedAt, format:
-                        .dateTime
-                            .year()
-                            .month(.wide)
-                            .day())
+                    Text(updatedAt.formatted())
                         .foregroundColor(.secondary)
                 }
             }

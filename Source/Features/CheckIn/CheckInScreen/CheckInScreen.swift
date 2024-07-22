@@ -27,7 +27,7 @@ struct CheckInScreen: View {
     var body: some View {
         ScrollViewReader { scrollProxy in
             List {
-                if state == .populated {
+                if state.isPopulated {
                     content
                 }
             }
@@ -44,7 +44,7 @@ struct CheckInScreen: View {
                 await loadCheckInData(withHaptics: true)
             }
             .safeAreaInset(edge: .bottom, alignment: .trailing, content: {
-                if state == .populated, profileEnvironmentModel.hasPermission(.canCommentOnCheckIns) {
+                if state.isPopulated, profileEnvironmentModel.hasPermission(.canCommentOnCheckIns) {
                     CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField, onSubmitted: { comment in
                         try? await Task.sleep(nanoseconds: 100_000_000)
                         scrollProxy.scrollTo(comment.id, anchor: .top)
@@ -190,7 +190,7 @@ struct CheckInScreen: View {
                 Divider()
                 ReportButton(entity: .checkIn(checkIn))
                 Divider()
-                AdminRouterLink(open: .sheet(.checkInAdmin(checkIn: checkIn, onDelete: {
+                AdminRouterLink(open: .sheet(.checkInAdmin(id: checkIn.id, onDelete: {
                     router.removeLast()
                 })))
             } label: {

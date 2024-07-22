@@ -38,7 +38,7 @@ struct ProfileProductListView: View {
                 return "rating.topEntries.label"
             }
         }
-        return state == .populated ? "profileProductList.navigationTitle \(filteredProducts.count.formatted())" : "profileProductList.navigationTitle"
+        return state.isPopulated ? "profileProductList.navigationTitle \(filteredProducts.count.formatted())" : "profileProductList.navigationTitle"
     }
 
     private var filteredProducts: [Product.Joined] {

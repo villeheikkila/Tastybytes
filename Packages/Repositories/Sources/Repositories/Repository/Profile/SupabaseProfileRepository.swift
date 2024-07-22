@@ -81,22 +81,22 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getCategoryStatistics(userId: Profile.Id) async throws -> [CategoryStatistics] {
+    func getCategoryStatistics(id: Profile.Id) async throws -> [CategoryStatistics] {
         try await client
             .rpc(
                 fn: .getCategoryStats,
-                params: CategoryStatistics.CategoryStatisticsParams(id: userId)
+                params: CategoryStatistics.CategoryStatisticsParams(id: id)
             )
             .select(CategoryStatistics.getQuery(.value))
             .execute()
             .value
     }
 
-    func getSubcategoryStatistics(userId: Profile.Id, categoryId: Models.Category.Id) async throws -> [SubcategoryStatistics] {
+    func getSubcategoryStatistics(id: Profile.Id, categoryId: Models.Category.Id) async throws -> [SubcategoryStatistics] {
         try await client
             .rpc(
                 fn: .getSubcategoryStats,
-                params: SubcategoryStatistics.SubcategoryStatisticsParams(userId: userId, categoryId: categoryId)
+                params: SubcategoryStatistics.SubcategoryStatisticsParams(userId: id, categoryId: categoryId)
             )
             .select(SubcategoryStatistics.getQuery(.value))
             .execute()
@@ -117,12 +117,12 @@ struct SupabaseProfileRepository: ProfileRepository {
         return string
     }
 
-    func deleteUserAsSuperAdmin(_ profile: Profile) async throws {
+    func deleteUserAsSuperAdmin(_ id: Profile.Id) async throws {
         struct DeleteRequestParam: Encodable {
             let id: Profile.Id
 
-            public init(profile: Profile) {
-                id = profile.id
+            public init(id: Profile.Id) {
+                self.id = id
             }
 
             enum CodingKeys: String, CodingKey {
@@ -131,7 +131,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
 
         try await client
-            .rpc(fn: .deleteUserAsSuperAdmin, params: DeleteRequestParam(profile: profile))
+            .rpc(fn: .deleteUserAsSuperAdmin, params: DeleteRequestParam(id: id))
             .execute()
     }
 
@@ -197,16 +197,16 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getNumberOfCheckInsByLocation(userId: Profile.Id) async throws -> [Profile.TopLocations] {
+    func getNumberOfCheckInsByLocation(id: Profile.Id) async throws -> [Profile.TopLocations] {
         struct Request: Encodable {
-            let profileId: Profile.Id
+            let id: Profile.Id
 
             enum CodingKeys: String, CodingKey {
-                case profileId = "p_profile_id"
+                case id = "p_profile_id"
             }
         }
         return try await client
-            .rpc(fn: .getNumberOfCheckInsByLocation, params: Request(profileId: userId))
+            .rpc(fn: .getNumberOfCheckInsByLocation, params: Request(id: id))
             .select(Location.getQuery(.topLocations))
             .limit(20)
             .order("check_ins_count", ascending: false)

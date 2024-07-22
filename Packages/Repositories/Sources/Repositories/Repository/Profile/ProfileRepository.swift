@@ -13,11 +13,11 @@ public protocol ProfileRepository: Sendable {
     func deleteCurrentAccount() async throws
     func updateSettings(update: Profile.SettingsUpdateRequest) async throws -> Profile.Settings
     func getContributions(id: Profile.Id) async throws -> Profile.Contributions
-    func getCategoryStatistics(userId: Profile.Id) async throws -> [CategoryStatistics]
-    func getSubcategoryStatistics(userId: Profile.Id, categoryId: Models.Category.Id) async throws -> [SubcategoryStatistics]
+    func getCategoryStatistics(id: Profile.Id) async throws -> [CategoryStatistics]
+    func getSubcategoryStatistics(id: Profile.Id, categoryId: Models.Category.Id) async throws -> [SubcategoryStatistics]
     func getTimePeriodStatistics(userId: Profile.Id, timePeriod: StatisticsTimePeriod) async throws -> TimePeriodStatistic
     func checkIfUsernameIsAvailable(username: String) async throws -> Bool
     func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async throws -> [CheckInsPerDay]
-    func getNumberOfCheckInsByLocation(userId: Profile.Id) async throws -> [Profile.TopLocations]
-    func deleteUserAsSuperAdmin(_ profile: Profile) async throws
+    func getNumberOfCheckInsByLocation(id: Profile.Id) async throws -> [Profile.TopLocations]
+    func deleteUserAsSuperAdmin(_ id: Profile.Id) async throws
 }

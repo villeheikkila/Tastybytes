@@ -529,6 +529,21 @@ public extension Product {
             averageRating = nil
         }
 
+        public init() {
+            id = .init(rawValue: 0)
+            name = ""
+            description = nil
+            isVerified = false
+            subBrand = .init()
+            subcategories = []
+            category = .init()
+            barcodes = []
+            isDiscontinued = false
+            logos = []
+            currentUserCheckIns = nil
+            averageRating = nil
+        }
+
         public func copyWith(
             name: String? = nil,
             description: String? = nil,
@@ -555,7 +570,7 @@ public extension Product {
         }
     }
 
-    struct Detailed: Identifiable, Hashable, Decodable, Sendable, ModificationInfo, ProductProtocol {
+    struct Detailed: Identifiable, Hashable, Decodable, Sendable, ModificationInfo, ProductProtocol, WithReports {
         public let id: Product.Id
         public let name: String?
         public let description: String?

@@ -44,11 +44,12 @@ struct BrandAdminSheet: View {
 
     var body: some View {
         Form {
-            if state == .populated {
+            if state.isPopulated {
                 content
             }
         }
         .scrollContentBackground(.hidden)
+        .animation(.default, value: brand)
         .navigationTitle("brand.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
@@ -100,7 +101,18 @@ struct BrandAdminSheet: View {
         }
         .customListRowBackground()
         Section {
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.brand(brand.id))))
+            RouterLink(
+                "admin.section.reports.title",
+                systemImage: "exclamationmark.bubble",
+                count: brand.reports.count,
+                open: .screen(
+                    .withReportsAdmin(reports: $brand.map(getter: { location in
+                        location.reports
+                    }, setter: { reports in
+                        brand.copyWith(reports: reports)
+                    }))
+                )
+            )
             RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", count: brand.editSuggestions.unresolvedCount, open: .screen(.brandEditSuggestionAdmin(brand: $brand)))
         }
         .customListRowBackground()

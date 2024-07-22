@@ -16,6 +16,7 @@ public enum ActivityFeedQueryType: Sendable {
 public protocol CheckInRepository: Sendable {
     func getActivityFeed(query: ActivityFeedQueryType) async throws -> [CheckIn]
     func getById(id: CheckIn.Id) async throws -> CheckIn
+    func getDetailed(id: CheckIn.Id) async throws -> CheckIn.Detailed
     func getByProfileId(id: Profile.Id, queryType: CheckInQueryType) async throws -> [CheckIn]
     func getByProductId(id: Product.Id, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn]
     func getByLocation(locationId: Location.Id, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn]
@@ -24,7 +25,7 @@ public protocol CheckInRepository: Sendable {
     func create(newCheckInParams: CheckIn.NewRequest) async throws -> CheckIn
     func update(updateCheckInParams: CheckIn.UpdateRequest) async throws -> CheckIn
     func delete(id: CheckIn.Id) async throws
-    func deleteAsModerator(checkIn: CheckIn) async throws
+    func deleteAsModerator(id: CheckIn.Id) async throws
     func getSummaryByProfileId(id: Profile.Id) async throws -> ProfileSummary
     func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?) async throws -> ImageEntity
 }

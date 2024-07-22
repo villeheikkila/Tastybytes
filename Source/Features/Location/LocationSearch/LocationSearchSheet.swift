@@ -34,7 +34,7 @@ struct LocationSearchSheet: View {
 
     var body: some View {
         List {
-            if state == .populated {
+            if state.isPopulated {
                 ForEach(searchResults) { location in
                     LocationRow(location: location, currentLocation: nil, onSelect: { location in
                         onSelect(location)

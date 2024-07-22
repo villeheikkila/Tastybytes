@@ -49,7 +49,7 @@ struct ActivityWatchTabContent: View {
                 ContentUnavailableView {
                     Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
                 }
-            } else if state == .populated, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
+            } else if state.isPopulated, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
                 EmptyActivityFeedView()
             }
         }

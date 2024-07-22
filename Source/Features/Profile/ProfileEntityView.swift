@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct ProfileEntityView: View {
-    let profile: Profile
+    let profile: ProfileProtocol
 
     var body: some View {
         HStack(alignment: .center) {

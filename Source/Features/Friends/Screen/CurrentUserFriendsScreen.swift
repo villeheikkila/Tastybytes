@@ -37,7 +37,7 @@ struct CurrentUserFriendsScreen: View {
             oldValue && !newValue
         }
         .overlay {
-            if friendEnvironmentModel.state == .populated {
+            if friendEnvironmentModel.state.isPopulated {
                 if friendEnvironmentModel.friends.isEmpty {
                     ContentUnavailableView {
                         Label("friends.contentUnavailable.noFriends", systemImage: "person.3")

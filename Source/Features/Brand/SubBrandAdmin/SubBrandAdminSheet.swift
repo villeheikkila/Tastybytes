@@ -101,7 +101,18 @@ struct SubBrandAdminSheet: View {
                 count: subBrand.editSuggestions.unresolvedCount,
                 open: .screen(.subBrandEditSuggestions(subBrand: $subBrand))
             )
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.subBrand(subBrand.id))))
+            RouterLink(
+                "admin.section.reports.title",
+                systemImage: "exclamationmark.bubble",
+                count: subBrand.reports.count,
+                open: .screen(
+                    .withReportsAdmin(reports: $subBrand.map(getter: { location in
+                        location.reports
+                    }, setter: { reports in
+                        subBrand.copyWith(reports: reports)
+                    }))
+                )
+            )
         }
         .customListRowBackground()
         Section {

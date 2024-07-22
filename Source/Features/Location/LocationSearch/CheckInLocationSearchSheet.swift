@@ -48,7 +48,7 @@ struct CheckInLocationSearchSheet: View {
 
     var body: some View {
         List {
-            if state == .populated {
+            if state.isPopulated {
                 content
             }
         }

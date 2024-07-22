@@ -1,4 +1,5 @@
 import Components
+import Extensions
 import MapKit
 import Models
 import OSLog
@@ -19,7 +20,7 @@ struct LocationAdminSheet: View {
 
     var body: some View {
         Form {
-            if state == .populated {
+            if state.isPopulated {
                 content
             }
         }
@@ -31,7 +32,7 @@ struct LocationAdminSheet: View {
             toolbarContent
         }
         .task {
-            await loadData()
+            await load()
         }
     }
 
@@ -48,7 +49,18 @@ struct LocationAdminSheet: View {
         }
         .customListRowBackground()
         Section {
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.location(location.id))))
+            RouterLink(
+                "admin.section.reports.title",
+                systemImage: "exclamationmark.bubble",
+                count: location.reports.count,
+                open: .screen(
+                    .withReportsAdmin(reports: $location.map(getter: { location in
+                        location.reports
+                    }, setter: { reports in
+                        location.copyWith(reports: reports)
+                    }))
+                )
+            )
             RouterLink("location.admin.changeLocation.label", systemImage: "map", open: .sheet(.locationSearch(initialLocation: .init(location: location), initialSearchTerm: location.name, onSelect: { location in
                 let loc = self.location.copyWith(mapKitIdentifier: location.mapKitIdentifier)
                 Task {
@@ -57,9 +69,7 @@ struct LocationAdminSheet: View {
             })))
             RouterLink("location.admin.merge.label", systemImage: "arrow.triangle.merge", open: .sheet(.mergeLocation(location: location, onMerge: { newLocation in
                 await onDelete(.init(location: location))
-                withAnimation {
-                    location = newLocation
-                }
+                location = newLocation
             })))
         }
         .customListRowBackground()
@@ -79,7 +89,7 @@ struct LocationAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func loadData() async {
+    private func load() async {
         do {
             let location = try await repository.location.getDetailed(id: id)
             self.location = location

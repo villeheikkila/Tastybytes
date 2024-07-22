@@ -39,10 +39,10 @@ enum Sheet: Identifiable, Equatable {
     case webView(link: WebViewLink)
     case companyAdmin(id: Company.Id, onUpdate: () async -> Void, onDelete: () -> Void)
     case locationAdmin(id: Location.Id, onEdit: (_ location: Location) async -> Void, onDelete: (_ location: Location) async -> Void)
-    case profileAdmin(profile: Profile, onDelete: (_ profile: Profile) -> Void)
+    case profileAdmin(id: Profile.Id, onDelete: (_ profile: Profile.Detailed) -> Void)
     case productAdmin(id: Product.Id, onDelete: () -> Void, onUpdate: () async -> Void)
-    case checkInAdmin(checkIn: CheckIn, onDelete: () -> Void)
-    case checkInCommentAdmin(checkIn: CheckIn, checkInComment: CheckInComment, onDelete: (_ comment: CheckInComment) -> Void)
+    case checkInAdmin(id: CheckIn.Id, onDelete: () -> Void)
+    case checkInCommentAdmin(id: CheckInComment.Id, onDelete: (_ comment: CheckInComment.Id) -> Void)
     case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: (_ comment: ImageEntity) async -> Void)
     case categoryAdmin(category: Models.Category.JoinedSubcategoriesServingStyles)
     case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
@@ -123,14 +123,14 @@ enum Sheet: Identifiable, Equatable {
             WebViewSheet(link: link)
         case let .locationSearch(initialLocation, initialSearchTerm, onSelect):
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
-        case let .profileAdmin(profile, onDelete):
-            ProfileAdminSheet(profile: profile, onDelete: onDelete)
+        case let .profileAdmin(id, onDelete):
+            ProfileAdminSheet(id: id, onDelete: onDelete)
         case let .productAdmin(id, onDelete, onUpdate):
             ProductAdminSheet(id: id, onDelete: onDelete, onUpdate: onUpdate)
-        case let .checkInAdmin(checkIn, onDelete):
-            CheckInAdminSheet(checkIn: checkIn, onDelete: onDelete)
-        case let .checkInCommentAdmin(checkIn, checkInComment, onDelete):
-            CheckInCommentAdminSheet(checkIn: checkIn, comment: checkInComment, onDelete: onDelete)
+        case let .checkInAdmin(id, onDelete):
+            CheckInAdminSheet(id: id, onDelete: onDelete)
+        case let .checkInCommentAdmin(id, onDelete):
+            CheckInCommentAdminSheet(id: id, onDelete: onDelete)
         case let .checkInImageAdmin(checkIn, imageEntity, onDelete):
             CheckInImageAdminSheet(checkIn: checkIn, imageEntity: imageEntity, onDelete: onDelete)
         case let .categoryAdmin(category):
@@ -241,7 +241,7 @@ enum Sheet: Identifiable, Equatable {
         case let .editComment(checkInComment, _):
             "edit_comment_\(checkInComment.hashValue)"
         case let .checkInImage(checkIn, _):
-            "check_in_image_\(checkIn.hashValue)"
+            "check_in_image_\(checkIn.id)"
         case .profileDeleteConfirmation:
             "profile_delete_confirmation"
         case let .locationAdmin(id, _, _):
@@ -250,14 +250,14 @@ enum Sheet: Identifiable, Equatable {
             "webview_\(link)"
         case let .locationSearch(initialLocation, initialSearchTerm, _):
             "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
-        case let .profileAdmin(profile, _):
-            "profile_admin_sheet_\(profile)"
+        case let .profileAdmin(id, _):
+            "profile_admin_sheet_\(id)"
         case let .productAdmin(id, _, _):
             "product_admin_\(id)"
-        case let .checkInAdmin(checkIn, _):
-            "check_in_admin_\(checkIn)"
-        case let .checkInCommentAdmin(checkIn, checkInComment, _):
-            "check_in_comment_admin_\(checkIn)_\(checkInComment)"
+        case let .checkInAdmin(id, _):
+            "check_in_admin_\(id)"
+        case let .checkInCommentAdmin(id, _):
+            "check_in_comment_admin_\(id)"
         case let .checkInImageAdmin(checkIn, imageEntity, _):
             "check_in_image_admin_\(checkIn)_\(imageEntity)"
         case let .categoryAdmin(category):

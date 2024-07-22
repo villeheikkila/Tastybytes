@@ -20,7 +20,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
         }
         .listStyle(.plain)
         .overlay {
-            if state == .populated, categoryStatistics.isEmpty {
+            if state.isPopulated, categoryStatistics.isEmpty {
                 ContentUnavailableView("profileStatistics.uniqueByCategory.empty.title", systemImage: "tray")
             } else {
                 ScreenStateOverlayView(state: state, errorDescription: "profileStatistics.uniqueByCategory.screen.failedToLoad", errorAction: {
@@ -39,7 +39,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
 
     private func loadStatistics() async {
         do {
-            let categoryStatistics = try await repository.profile.getCategoryStatistics(userId: profile.id)
+            let categoryStatistics = try await repository.profile.getCategoryStatistics(id: profile.id)
             withAnimation {
                 self.categoryStatistics = categoryStatistics
                 state = .populated
@@ -80,7 +80,7 @@ struct SubcategoryStatisticsView: View {
 
     var body: some View {
         Section {
-            if state == .populated {
+            if state.isPopulated {
                 SubcategoryStatisticsRow(profile: profile, category: category.category, subcategory: nil)
                 ForEach(subcategoryStatistics) { subcategory in
                     SubcategoryStatisticsRow(profile: profile, category: category.category, subcategory: subcategory)
@@ -98,7 +98,7 @@ struct SubcategoryStatisticsView: View {
 
     private func loadSubcategoryStatistics() async {
         do {
-            let subcategoryStatistics = try await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id)
+            let subcategoryStatistics = try await repository.profile.getSubcategoryStatistics(id: profile.id, categoryId: category.id)
             withAnimation {
                 self.subcategoryStatistics = subcategoryStatistics
                 state = .populated

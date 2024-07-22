@@ -252,17 +252,6 @@
         }
       }
     },
-    "admin.duplicates.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duplicates"
-          }
-        }
-      }
-    },
     "admin.editsSuggestions.title" : {
       "localizations" : {
         "en" : {
@@ -344,17 +333,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Product was created"
-          }
-        }
-      }
-    },
-    "admin.event.productDuplicateSuggestionCreated.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duplicate product suggestion was submitted"
           }
         }
       }
@@ -2670,17 +2648,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search for a duplicate product"
-          }
-        }
-      }
-    },
-    "duplicateSuggestions.navigationTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duplicate Suggestions"
           }
         }
       }

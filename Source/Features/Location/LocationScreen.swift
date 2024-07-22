@@ -37,7 +37,7 @@ struct LocationInnerScreen: View {
 
     var body: some View {
         List {
-            if state == .populated {
+            if state.isPopulated {
                 LocationScreenHeader(location: location, summary: summary)
                 CheckInListSegmentPickerView(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
                 CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {

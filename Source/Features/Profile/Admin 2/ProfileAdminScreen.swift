@@ -22,8 +22,8 @@ struct ProfilesAdminScreen: View {
             }
             .swipeActions {
                 Button("profile.admin.navigationTitle", systemImage: "wrench.and.screwdriver") {
-                    router.open(.sheet(.profileAdmin(profile: profile, onDelete: { profile in
-                        profiles = profiles.removing(profile)
+                    router.open(.sheet(.profileAdmin(id: profile.id, onDelete: { profile in
+                        profiles = profiles.removingWithId(profile.id)
                     })))
                 }
             }

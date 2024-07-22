@@ -15,4 +15,8 @@ public enum ScreenState: Equatable {
             false
         }
     }
+
+    public var isPopulated: Bool {
+        self == .populated
+    }
 }

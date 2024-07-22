@@ -6,6 +6,51 @@ import OSLog
 import Repositories
 import SwiftUI
 
+struct WithReportsScreen: View {
+    private let logger = Logger(category: "WithReportsScreen")
+    @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
+    @State private var state: ScreenState = .loading
+    @Binding var reports: [Report]
+
+    var body: some View {
+        List(reports) { report in
+            ReportScreenRow(report: report, deleteReport: deleteReport, resolveReport: resolveReport)
+        }
+        .listStyle(.plain)
+        .animation(.default, value: reports)
+        .overlay {
+            if reports.isEmpty {
+                ContentUnavailableView("report.admin.isEmpty.title", systemImage: "tray")
+            }
+        }
+        .navigationTitle("report.admin.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func deleteReport(_ report: Report) async {
+        do {
+            try await repository.report.delete(id: report.id)
+            reports = reports.removing(report)
+        } catch {
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to delete report \(report.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    private func resolveReport(_ report: Report) async {
+        do {
+            try await repository.report.resolve(id: report.id)
+            reports = reports.removing(report)
+        } catch {
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Failed to resolve report \(report.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
 struct ReportScreen: View {
     private let logger = Logger(category: "ReportScreen")
     @Environment(Repository.self) private var repository

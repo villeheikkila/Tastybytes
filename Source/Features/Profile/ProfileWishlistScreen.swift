@@ -38,7 +38,7 @@ struct ProfileWishlistScreen: View {
             await loadProducts()
         }
         .overlay {
-            if state == .populated {
+            if state.isPopulated {
                 if products.isEmpty {
                     ContentUnavailableView {
                         Label("wishlist.empty.title", systemImage: "list.star")

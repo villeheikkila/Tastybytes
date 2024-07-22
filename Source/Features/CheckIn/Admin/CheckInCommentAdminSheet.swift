@@ -9,41 +9,64 @@ struct CheckInCommentAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
+    @State private var state: ScreenState = .loading
+    @State private var checkInComment = CheckInComment.Detailed()
 
-    let checkIn: CheckIn
-    let comment: CheckInComment
-    let onDelete: (_ comment: CheckInComment) -> Void
+    let id: CheckInComment.Id
+    let onDelete: (_ comment: CheckInComment.Id) -> Void
 
     var body: some View {
         Form {
-            content
+            if state.isPopulated {
+                content
+            }
         }
         .scrollContentBackground(.hidden)
+        .animation(.default, value: checkInComment)
+        .overlay {
+            ScreenStateOverlayView(state: state) {
+                await load()
+            }
+        }
         .navigationTitle("comment.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
+        .initialTask {
+            await load()
+        }
     }
 
     @ViewBuilder private var content: some View {
         Section("checkIn.admin.section.checkIn") {
-            RouterLink(open: .screen(.checkIn(checkIn))) {
-                CheckInCommentEntityView(comment: comment)
+            RouterLink(open: .screen(.checkIn(checkInComment.checkIn))) {
+                CheckInCommentEntityView(comment: checkInComment)
             }
         }
         .customListRowBackground()
-        CreationInfoSection(createdBy: comment.profile, createdAt: comment.createdAt)
+        CreationInfoSection(createdBy: checkInComment.profile, createdAt: checkInComment.createdAt)
         Section("admin.section.details") {
-            LabeledIdView(id: comment.id.rawValue.formatted())
+            LabeledIdView(id: checkInComment.id.rawValue.formatted())
         }
         .customListRowBackground()
         Section {
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.comment(comment.id))))
+            RouterLink(
+                "admin.section.reports.title",
+                systemImage: "exclamationmark.bubble",
+                count: checkInComment.reports.count,
+                open: .screen(
+                    .withReportsAdmin(reports: $checkInComment.map(getter: { _ in
+                        checkInComment.reports
+                    }, setter: { reports in
+                        checkInComment.copyWith(reports: reports)
+                    }))
+                )
+            )
         }
         .customListRowBackground()
         Section {
-            ConfirmedDeleteButtonView(presenting: comment, action: deleteCommentAsModerator, description: "comment.deleteAsModerator.confirmation.description", label: "comment.deleteAsModerator.confirmation.label \(comment.profile.preferredName)", isDisabled: false)
+            ConfirmedDeleteButtonView(presenting: checkInComment, action: deleteCommentAsModerator, description: "comment.deleteAsModerator.confirmation.description", label: "comment.deleteAsModerator.confirmation.label \(checkInComment.profile.preferredName)", isDisabled: false)
         }
         .customListRowBackground()
     }
@@ -52,10 +75,21 @@ struct CheckInCommentAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func deleteCommentAsModerator(_ comment: CheckInComment) async {
+    private func load() async {
         do {
-            try await repository.checkInComment.deleteAsModerator(comment: comment)
-            onDelete(comment)
+            checkInComment = try await repository.checkInComment.getDetailed(id: id)
+            state = .populated
+        } catch {
+            guard !error.isCancelled else { return }
+            state = .error([error])
+            logger.error("Failed to load detailed check-in comment. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    private func deleteCommentAsModerator(_ comment: CheckInComment.Detailed) async {
+        do {
+            try await repository.checkInComment.deleteAsModerator(id: comment.id)
+            onDelete(id)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

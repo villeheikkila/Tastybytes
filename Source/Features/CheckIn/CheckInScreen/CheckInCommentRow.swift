@@ -34,9 +34,9 @@ struct CheckInCommentRowView: View {
                     showTranslator = true
                 }
                 Divider()
-                AdminRouterLink(open: .sheet(.checkInCommentAdmin(checkIn: checkIn, checkInComment: comment, onDelete: { comment in
+                AdminRouterLink(open: .sheet(.checkInCommentAdmin(id: comment.id, onDelete: { id in
                     withAnimation {
-                        checkInComments.remove(object: comment)
+                        checkInComments = checkInComments.removingWithId(id)
                     }
                 })))
             }

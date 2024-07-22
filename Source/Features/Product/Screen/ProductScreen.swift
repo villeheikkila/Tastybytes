@@ -55,7 +55,7 @@ struct ProductInnerScreen: View {
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         List {
-            if state == .populated {
+            if state.isPopulated {
                 content
             }
         }

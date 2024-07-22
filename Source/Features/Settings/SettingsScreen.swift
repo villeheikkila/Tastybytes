@@ -67,7 +67,7 @@ struct SettingsScreen: View {
                 "contributions.title",
                 systemName: "plus",
                 color: .teal,
-                open: .screen(.contributions(profileEnvironmentModel.profile))
+                open: .screen(.contributions(profileEnvironmentModel.profile.id))
             )
             RouterLink("about.title", systemName: "at", color: .blue, open: .screen(.about))
         } footer: {

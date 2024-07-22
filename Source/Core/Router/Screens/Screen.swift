@@ -33,7 +33,7 @@ enum Screen: Hashable, Sendable {
     case notificationSettingsScreen
     case appIcon
     case blockedUsers
-    case contributions(Profile)
+    case contributions(Profile.Id)
     case about
     case reports(ReportFilter? = nil)
     case locationAdmin
@@ -58,6 +58,7 @@ enum Screen: Hashable, Sendable {
     case subsidiaries(company: Binding<Company.Detailed>)
     case editSuggestionsAdmin
     case reportsAdmin
+    case withReportsAdmin(reports: Binding<[Report]>)
 
     @MainActor
     @ViewBuilder
@@ -121,8 +122,8 @@ enum Screen: Hashable, Sendable {
             AppIconScreen()
         case .blockedUsers:
             BlockedUsersScreen()
-        case let .contributions(profile):
-            ContributionsScreen(profile: profile)
+        case let .contributions(id):
+            ContributionsScreen(id: id)
         case .about:
             AboutScreen()
         case let .reports(filter):
@@ -173,6 +174,8 @@ enum Screen: Hashable, Sendable {
             EditSuggestionAdminScreen()
         case .reportsAdmin:
             ReportAdminScreen()
+        case let .withReportsAdmin(reports):
+            WithReportsScreen(reports: reports)
         }
     }
 
@@ -422,6 +425,9 @@ enum Screen: Hashable, Sendable {
             hasher.combine("editSuggestionsAdmin")
         case .reportsAdmin:
             hasher.combine("reportsAdmin")
+        case let .withReportsAdmin(withReports):
+            hasher.combine("withReportsAdmin")
+            hasher.combine(withReports.wrappedValue)
         }
     }
 }

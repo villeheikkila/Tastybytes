@@ -27,7 +27,7 @@ struct ActivityScreen: View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
         ScrollViewReader { proxy in
             List {
-                if state == .populated {
+                if state.isPopulated {
                     CheckInListContentView(checkIns: $checkIns, onCheckInUpdate: onCheckInUpdate, onCreateCheckIn: { checkIn in
                         onCreateCheckIn(checkIn)
                         try? await Task.sleep(nanoseconds: 100_000_000)
@@ -46,7 +46,7 @@ struct ActivityScreen: View {
                 oldValue && !newValue
             }
             .overlay {
-                if state == .populated {
+                if state.isPopulated {
                     if checkIns.isEmpty, !isLoading {
                         EmptyActivityFeedView()
                     }

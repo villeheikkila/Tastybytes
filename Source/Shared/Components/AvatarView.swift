@@ -12,7 +12,7 @@ public struct AvatarView: View {
         self.id = id
     }
 
-    public init(profile: Profile, baseUrl: URL) {
+    public init(profile: ProfileProtocol, baseUrl: URL) {
         avatarUrl = profile.getAvatarUrl(baseUrl: baseUrl)
         id = profile.id
     }

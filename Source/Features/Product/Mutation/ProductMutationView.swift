@@ -64,7 +64,7 @@ struct ProductMutationView: View {
 
     var body: some View {
         Form {
-            if state == .populated {
+            if state.isPopulated {
                 content
             }
         }

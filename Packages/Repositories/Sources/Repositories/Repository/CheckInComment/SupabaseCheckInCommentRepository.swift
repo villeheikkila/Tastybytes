@@ -44,11 +44,22 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
             .execute()
     }
 
-    func deleteAsModerator(comment: CheckInComment) async throws {
+    func getDetailed(id: CheckInComment.Id) async throws -> CheckInComment.Detailed {
+        try await client
+            .from(.checkInComments)
+            .select(CheckInComment.getQuery(.detailed(false)))
+            .eq("id", value: id.rawValue)
+            .limit(1)
+            .single()
+            .execute()
+            .value
+    }
+
+    func deleteAsModerator(id: CheckInComment.Id) async throws {
         try await client
             .rpc(
                 fn: .deleteCheckInCommentAsModerator,
-                params: CheckInComment.DeleteAsAdminRequest(comment: comment)
+                params: CheckInComment.DeleteAsAdminRequest(id: id)
             )
             .execute()
     }

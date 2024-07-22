@@ -27,7 +27,7 @@ struct CompanyScreen: View {
 
     var body: some View {
         List {
-            if state == .populated {
+            if state.isPopulated {
                 content
             }
         }
@@ -36,7 +36,7 @@ struct CompanyScreen: View {
             await getCompanyData(withHaptics: true)
         }
         .overlay {
-            if state == .populated, company.brands.isEmpty {
+            if state.isPopulated, company.brands.isEmpty {
                 ContentUnavailableView("company.screen.empty.title", systemImage: "tray")
             } else {
                 ScreenStateOverlayView(state: state, errorDescription: "company.screen.failedToLoad \(company.name)") {

@@ -11,11 +11,11 @@ struct ProfileAdminSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var detailedProfile = Profile.Detailed()
+    @State private var profile = Profile.Detailed()
     @State private var summary: ProfileSummary?
 
-    let profile: Profile
-    let onDelete: (_ profile: Profile) -> Void
+    let id: Profile.Id
+    let onDelete: (_ profile: Profile.Detailed) -> Void
 
     private var isProfileDeletable: Bool {
         if let summary {
@@ -27,11 +27,12 @@ struct ProfileAdminSheet: View {
 
     var body: some View {
         Form {
-            if state == .populated, let summary {
+            if state.isPopulated, let summary {
                 content(summary: summary)
             }
         }
         .scrollContentBackground(.hidden)
+        .animation(.default, value: profile)
         .navigationTitle("profile.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -44,23 +45,23 @@ struct ProfileAdminSheet: View {
 
     @ViewBuilder private func content(summary: ProfileSummary) -> some View {
         Section("profile.admin.section.profile") {
-            RouterLink(open: .screen(.profile(profile))) {
+            RouterLink(open: .screen(.profile(.init(profile: profile)))) {
                 ProfileEntityView(profile: profile)
             }
         }
         .customListRowBackground()
         Section("admin.section.details") {
-            LabeledIdView(id: profile.id.uuidString)
+            LabeledIdView(id: id.uuidString)
             LabeledContent("profile.admin.joinedAt.label", value: profile.joinedAt.formatted(.dateTime
                     .year()
                     .month(.wide)
                     .day()))
-            LabeledContent("settings.profile.username", value: detailedProfile.username ?? "-")
-            LabeledContent("settings.profile.firstName", value: detailedProfile.firstName ?? "-")
-            LabeledContent("settings.profile.lastName", value: detailedProfile.lastName ?? "-")
-            LabeledContent("profile.admin.avatars.count", value: detailedProfile.avatars.count.formatted())
+            LabeledContent("settings.profile.username", value: profile.username ?? "-")
+            LabeledContent("settings.profile.firstName", value: profile.firstName ?? "-")
+            LabeledContent("settings.profile.lastName", value: profile.lastName ?? "-")
+            LabeledContent("profile.admin.avatars.count", value: profile.avatars.count.formatted())
             Toggle("profile.admin.isOnboarded", isOn: .init(get: {
-                detailedProfile.isOnboarded
+                profile.isOnboarded
             }, set: { _ in }))
                 .disabled(true)
             LabeledContent("profile.uniqueCheckIns", value: summary.uniqueCheckIns.formatted())
@@ -68,13 +69,24 @@ struct ProfileAdminSheet: View {
         }
         .customListRowBackground()
         Section {
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.profile(profile.id))))
-            RouterLink("contributions.title", systemImage: "plus", open: .screen(.contributions(profile)))
+            RouterLink(
+                "admin.section.reports.title",
+                systemImage: "exclamationmark.bubble",
+                count: profile.reports.count,
+                open: .screen(
+                    .withReportsAdmin(reports: $profile.map(getter: { location in
+                        location.reports
+                    }, setter: { reports in
+                        profile.copyWith(reports: reports)
+                    }))
+                )
+            )
+            RouterLink("contributions.title", systemImage: "plus", open: .screen(.contributions(id)))
             if profileEnvironmentModel.hasRole(.superAdmin) {
                 RouterLink(
                     "profile.rolePickerSheet.navigationTitle",
                     systemImage: "lock",
-                    open: .screen(.roleSuperAdminPicker(profile: $detailedProfile, roles: detailedProfile.roles))
+                    open: .screen(.roleSuperAdminPicker(profile: $profile, roles: profile.roles))
                 )
             }
         }
@@ -97,19 +109,19 @@ struct ProfileAdminSheet: View {
 
     private func load() async {
         do {
-            detailedProfile = try await repository.profile.getDetailed(id: profile.id)
-            summary = try await repository.checkIn.getSummaryByProfileId(id: profile.id)
+            profile = try await repository.profile.getDetailed(id: id)
+            summary = try await repository.checkIn.getSummaryByProfileId(id: id)
             state = .populated
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])
-            logger.error("Failed to delete profile. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load profile data. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    private func delete(_ profile: Profile) async {
+    private func delete(_ profile: Profile.Detailed) async {
         do {
-            try await repository.profile.deleteUserAsSuperAdmin(profile)
+            try await repository.profile.deleteUserAsSuperAdmin(profile.id)
             onDelete(profile)
             dismiss()
         } catch {

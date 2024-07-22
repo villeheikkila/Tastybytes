@@ -8,7 +8,15 @@ public protocol AvatarURL {
     var avatars: [ImageEntity] { get }
 }
 
-public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
+public protocol ProfileProtocol {
+    var id: Profile.Id { get }
+    var preferredName: String { get }
+    var isPrivate: Bool { get }
+    var joinedAt: Date { get }
+    var avatars: [ImageEntity] { get }
+}
+
+public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL, ProfileProtocol {
     public let id: Profile.Id
     private let rawPreferredName: String?
     public var preferredName: String {
@@ -25,6 +33,22 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
         self.isPrivate = isPrivate
         self.joinedAt = joinedAt
         self.avatars = avatars
+    }
+
+    public init(profile: Profile.Detailed) {
+        id = profile.id
+        rawPreferredName = profile.preferredName
+        isPrivate = profile.isPrivate
+        joinedAt = profile.joinedAt
+        avatars = profile.avatars
+    }
+
+    public init() {
+        id = .init(rawValue: UUID())
+        rawPreferredName = nil
+        isPrivate = false
+        joinedAt = Date.now
+        avatars = []
     }
 
     enum CodingKeys: String, CodingKey, CaseIterable {
@@ -51,7 +75,7 @@ public extension Profile {
 }
 
 public extension Profile {
-    struct Extended: Identifiable, Codable, Sendable, Hashable, AvatarURL {
+    struct Extended: Identifiable, Codable, Sendable, Hashable, AvatarURL, ProfileProtocol {
         public let id: Profile.Id
         public let username: String?
         public let firstName: String?
@@ -158,7 +182,7 @@ public extension Profile {
 }
 
 public extension Profile {
-    struct Detailed: Identifiable, Codable, Sendable, Hashable, AvatarURL {
+    struct Detailed: Identifiable, Decodable, Sendable, Hashable, AvatarURL, WithReports, ProfileProtocol {
         public let id: Profile.Id
         public let username: String?
         public let firstName: String?
@@ -174,6 +198,7 @@ public extension Profile {
         public let nameDisplay: NameDisplay
         public let roles: [Role]
         public let avatars: [ImageEntity]
+        public let reports: [Report]
 
         public init(
             id: Profile.Id,
@@ -186,7 +211,8 @@ public extension Profile {
             roles: [Role],
             avatars: [ImageEntity],
             firstName: String? = nil,
-            lastName: String? = nil
+            lastName: String? = nil,
+            reports: [Report]
         ) {
             self.id = id
             self.username = username
@@ -199,6 +225,7 @@ public extension Profile {
             self.nameDisplay = nameDisplay
             self.roles = roles
             self.avatars = avatars
+            self.reports = reports
         }
 
         public init() {
@@ -213,6 +240,7 @@ public extension Profile {
             nameDisplay = .username
             roles = []
             avatars = []
+            reports = []
         }
 
         public func copyWith(
@@ -225,7 +253,8 @@ public extension Profile {
             preferredName: String? = nil,
             nameDisplay: Profile.NameDisplay? = nil,
             roles: [Role]? = nil,
-            avatars: [ImageEntity]? = nil
+            avatars: [ImageEntity]? = nil,
+            reports: [Report]? = nil
         ) -> Self {
             .init(
                 id: id,
@@ -238,7 +267,8 @@ public extension Profile {
                 roles: roles ?? self.roles,
                 avatars: avatars ?? self.avatars,
                 firstName: firstName ?? self.firstName,
-                lastName: lastName ?? self.lastName
+                lastName: lastName ?? self.lastName,
+                reports: reports ?? self.reports
             )
         }
 
@@ -264,6 +294,7 @@ public extension Profile {
             case nameDisplay = "name_display"
             case roles
             case avatars = "profile_avatars"
+            case reports
         }
     }
 }
@@ -481,7 +512,7 @@ public extension Profile {
     }
 }
 
-public extension AvatarURL {
+public extension ProfileProtocol {
     func getAvatarUrl(baseUrl: URL) -> URL? {
         guard let imageEntity = avatars.first else { return nil }
         return imageEntity.getLogoUrl(baseUrl: baseUrl)

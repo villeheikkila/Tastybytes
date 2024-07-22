@@ -14,17 +14,17 @@ public final class ContributionsModel {
     public var contributionsState: ScreenState = .loading
 
     private let repository: Repository
-    private let profile: Profile
+    private let id: Profile.Id
 
-    public init(repository: Repository, profile: Profile) {
+    public init(repository: Repository, id: Profile.Id) {
         self.repository = repository
-        self.profile = profile
+        self.id = id
     }
 
     public func loadContributions(refresh: Bool = false) async {
         guard contributions == nil || refresh else { return }
         do {
-            let contributions = try await repository.profile.getContributions(id: profile.id)
+            let contributions = try await repository.profile.getContributions(id: id)
             withAnimation {
                 self.contributions = contributions
                 contributionsState = .populated
@@ -61,21 +61,18 @@ public final class ContributionsModel {
 
 struct ContributionsScreen: View {
     @Environment(Repository.self) private var repository
-    let profile: Profile
+    let id: Profile.Id
 
     var body: some View {
-        ContributionsInnerScreen(repository: repository, profile: profile)
+        ContributionsInnerScreen(repository: repository, id: id)
     }
 }
 
 private struct ContributionsInnerScreen: View {
     @State private var contributionsModel: ContributionsModel
 
-    let profile: Profile
-
-    init(repository: Repository, profile: Profile) {
-        _contributionsModel = State(wrappedValue: ContributionsModel(repository: repository, profile: profile))
-        self.profile = profile
+    init(repository: Repository, id: Profile.Id) {
+        _contributionsModel = State(wrappedValue: ContributionsModel(repository: repository, id: id))
     }
 
     var body: some View {

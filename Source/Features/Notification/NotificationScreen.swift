@@ -51,7 +51,7 @@ struct NotificationScreen: View {
             notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
         }
         .overlay {
-            if notificationEnvironmentModel.state == .populated {
+            if notificationEnvironmentModel.state.isPopulated {
                 if showContentUnavailableView {
                     ContentUnavailableView {
                         Label(

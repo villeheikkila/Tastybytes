@@ -58,6 +58,17 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
+    func getDetailed(id: CheckIn.Id) async throws -> CheckIn.Detailed {
+        try await client
+            .from(.checkIns)
+            .select(CheckIn.getQuery(.detailed(false)))
+            .eq("id", value: id.rawValue)
+            .limit(1)
+            .single()
+            .execute()
+            .value
+    }
+
     func getByProductId(id: Product.Id, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn] {
         try await client
             .from(segment.table)
@@ -141,9 +152,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .execute()
     }
 
-    func deleteAsModerator(checkIn: CheckIn) async throws {
+    func deleteAsModerator(id: CheckIn.Id) async throws {
         try await client
-            .rpc(fn: .deleteCheckInAsModerator, params: CheckIn.DeleteAsAdminRequest(checkIn: checkIn))
+            .rpc(fn: .deleteCheckInAsModerator, params: CheckIn.DeleteAsAdminRequest(id: id))
             .execute()
     }
 

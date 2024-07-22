@@ -64,7 +64,7 @@ struct CheckInImageSheet: View {
                     Button("labels.delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = currentImage })
                 }
                 Divider()
-                ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
+                // ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
                 Divider()
                 AdminRouterLink(open: .sheet(.checkInImageAdmin(checkIn: checkIn, imageEntity: currentImage, onDelete: { imageEntity in
                     withAnimation {

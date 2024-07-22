@@ -22,7 +22,7 @@ struct ProductAdminSheet: View {
 
     var body: some View {
         List {
-            if state == .populated {
+            if state.isPopulated {
                 content
             }
         }
@@ -75,7 +75,18 @@ struct ProductAdminSheet: View {
                 count: product.variants.count,
                 open: .screen(.productVariants(variants: product.variants))
             )
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", count: product.reports.count, open: .screen(.reports(.product(product.id))))
+            RouterLink(
+                "admin.section.reports.title",
+                systemImage: "exclamationmark.bubble",
+                count: product.reports.count,
+                open: .screen(
+                    .withReportsAdmin(reports: $product.map(getter: { location in
+                        location.reports
+                    }, setter: { reports in
+                        product.copyWith(reports: reports)
+                    }))
+                )
+            )
         }
         .buttonStyle(.plain)
         .customListRowBackground()

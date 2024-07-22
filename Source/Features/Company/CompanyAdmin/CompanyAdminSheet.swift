@@ -28,7 +28,7 @@ struct CompanyAdminSheet: View {
 
     var body: some View {
         Form {
-            if state == .populated {
+            if state.isPopulated {
                 content
             }
         }
@@ -78,7 +78,18 @@ struct CompanyAdminSheet: View {
                 count: company.subsidiaries.count,
                 open: .screen(.subsidiaries(company: $company))
             )
-            RouterLink("admin.section.reports.title", systemImage: "exclamationmark.bubble", open: .screen(.reports(.company(company.id))))
+            RouterLink(
+                "admin.section.reports.title",
+                systemImage: "exclamationmark.bubble",
+                count: company.reports.count,
+                open: .screen(
+                    .withReportsAdmin(reports: $company.map(getter: { location in
+                        location.reports
+                    }, setter: { reports in
+                        company.copyWith(reports: reports)
+                    }))
+                )
+            )
             RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", count: company.editSuggestions.unresolvedCount, open: .screen(.companyEditSuggestion(company: $company)))
         }
         .customListRowBackground()

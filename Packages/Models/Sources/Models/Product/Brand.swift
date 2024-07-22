@@ -212,7 +212,7 @@ public extension Brand {
         }
     }
 
-    struct Detailed: Identifiable, Hashable, Decodable, Sendable, BrandProtocol, ModificationInfo {
+    struct Detailed: Identifiable, Hashable, Decodable, Sendable, BrandProtocol, ModificationInfo, WithReports {
         public let id: Brand.Id
         public let name: String
         public let isVerified: Bool

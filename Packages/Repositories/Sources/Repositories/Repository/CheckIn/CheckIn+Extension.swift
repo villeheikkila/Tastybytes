@@ -2,7 +2,7 @@ import Foundation
 import Models
 
 extension CheckIn: Queryable {
-    private static let saved = "id, rating, review, check_in_at, is_nostalgic, created_at"
+    private static let saved = "id, rating, review, check_in_at, is_nostalgic"
 
     static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
@@ -11,7 +11,7 @@ extension CheckIn: Queryable {
                 .checkIns,
                 [
                     saved,
-                    Profile.getQuery(.minimal(true)),
+                    buildQuery(name: "profiles", foreignKey: "created_by", [Profile.getQuery(.minimal(false))]),
                     Product.getQuery(.joinedBrandSubcategories(true)),
                     CheckInReaction.getQuery(.joinedProfile(true)),
                     buildQuery(.checkInTaggedProfiles, [Profile.getQuery(.minimal(true))], true),
@@ -21,6 +21,25 @@ extension CheckIn: Queryable {
                     buildQuery(name: "locations", foreignKey: "location_id", [Location.getQuery(.joined(false))]),
                     buildQuery(name: "purchase_location", foreignKey: "purchase_location_id", [Location.getQuery(.joined(false))]),
                     ImageEntity.getQuery(.saved(.checkInImages)),
+                ],
+                withTableName
+            )
+        case let .detailed(withTableName):
+            buildQuery(
+                .checkIns,
+                [
+                    saved,
+                    Product.getQuery(.joinedBrandSubcategories(true)),
+                    CheckInReaction.getQuery(.joinedProfile(true)),
+                    buildQuery(.checkInTaggedProfiles, [Profile.getQuery(.minimal(true))], true),
+                    buildQuery(.checkInFlavors, [Flavor.getQuery(.saved(true))], true),
+                    buildQuery(.productVariants, ["id", Company.getQuery(.saved(true))], true),
+                    ServingStyle.getQuery(.saved(true)),
+                    buildQuery(name: "locations", foreignKey: "location_id", [Location.getQuery(.joined(false))]),
+                    buildQuery(name: "purchase_location", foreignKey: "purchase_location_id", [Location.getQuery(.joined(false))]),
+                    ImageEntity.getQuery(.saved(.checkInImages)),
+                    Report.getQuery(.joined(true)),
+                    modificationInfoFragment,
                 ],
                 withTableName
             )
@@ -35,6 +54,7 @@ extension CheckIn: Queryable {
 
     enum QueryType {
         case joined(_ withTableName: Bool)
+        case detailed(_ withTableName: Bool)
         case image(_ withTableName: Bool)
     }
 }
