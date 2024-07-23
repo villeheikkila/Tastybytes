@@ -10,7 +10,9 @@ struct ReportsScreen: View {
     private let logger = Logger(category: "ReportsScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
+
     @Binding var reports: [Report]
+    let initialReport: Report.Id?
 
     var body: some View {
         List(reports) { report in

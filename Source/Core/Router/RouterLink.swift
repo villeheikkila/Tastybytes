@@ -64,28 +64,18 @@ extension RouterLink where LabelView == Text {
     }
 }
 
-extension RouterLink where LabelView == HStack<TupleView<(Text, Spacer, RouterLinkBadgeView)>> {
-    init(_ label: LocalizedStringKey, count: Int, open: Router.Open) {
+extension RouterLink where LabelView == BadgeRouterLinkView {
+    init(_ label: LocalizedStringKey, badge: Int, open: Router.Open) {
         self.init(open: open) {
-            HStack {
-                Text(label)
-                Spacer()
-                RouterLinkBadgeView(count: count)
-            }
+            BadgeRouterLinkView(label: label, systemImage: nil, badge: badge)
         }
     }
 }
 
-struct RouterLinkBadgeView: View {
-    let count: Int
-
-    var body: some View {
-        if count > 0 {
-            Text(count.formatted())
-                .foregroundStyle(.white)
-                .font(.system(size: 14))
-                .frame(width: 24, height: 24, alignment: .center)
-                .background(.red, in: .circle)
+extension RouterLink where LabelView == RouterLinkCountView {
+    init(_ label: LocalizedStringKey, count: Int, open: Router.Open) {
+        self.init(open: open) {
+            RouterLinkCountView(label: label, systemImage: nil, count: count)
         }
     }
 }
@@ -116,14 +106,18 @@ extension RouterLink where LabelView == Label<Text, Image> {
     }
 }
 
-extension RouterLink where LabelView == HStack<TupleView<(Label<Text, Image>, Spacer, RouterLinkBadgeView)>> {
+extension RouterLink where LabelView == RouterLinkCountView {
     init(_ label: LocalizedStringKey, systemImage: String, count: Int, open: Router.Open) {
         self.init(open: open) {
-            HStack {
-                Label(label, systemImage: systemImage)
-                Spacer()
-                RouterLinkBadgeView(count: count)
-            }
+            RouterLinkCountView(label: label, systemImage: systemImage, count: count)
+        }
+    }
+}
+
+extension RouterLink where LabelView == BadgeRouterLinkView {
+    init(_ label: LocalizedStringKey, systemImage: String, badge: Int, open: Router.Open) {
+        self.init(open: open) {
+            BadgeRouterLinkView(label: label, systemImage: systemImage, badge: badge)
         }
     }
 }
@@ -133,5 +127,61 @@ extension RouterLink where LabelView == LinkIconLabelView {
         self.init(open: open, label: {
             LinkIconLabelView(titleKey: titleKey, systemName: systemName, color: color)
         })
+    }
+}
+
+struct BadgeRouterLinkView: View {
+    let label: LocalizedStringKey
+    let systemImage: String?
+    let badge: Int
+
+    var body: some View {
+        HStack {
+            Group {
+                if let systemImage {
+                    Label(label, systemImage: systemImage)
+                } else {
+                    Text(label)
+                }
+            }
+            .foregroundStyle(.primary)
+            Spacer()
+            RouterLinkBadgeView(badge: badge)
+        }
+    }
+}
+
+struct RouterLinkCountView: View {
+    let label: LocalizedStringKey
+    let systemImage: String?
+    let count: Int
+
+    var body: some View {
+        HStack {
+            Group {
+                if let systemImage {
+                    Label(label, systemImage: systemImage)
+                } else {
+                    Text(label)
+                }
+            }
+            .foregroundStyle(.primary)
+            Spacer()
+            Text(count.formatted())
+        }
+    }
+}
+
+struct RouterLinkBadgeView: View {
+    let badge: Int
+
+    var body: some View {
+        if badge > 0 {
+            Text(badge.formatted())
+                .foregroundStyle(.white)
+                .font(.system(size: 14))
+                .frame(width: 24, height: 24, alignment: .center)
+                .background(.red, in: .circle)
+        }
     }
 }

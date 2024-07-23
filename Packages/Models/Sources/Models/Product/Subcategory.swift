@@ -98,11 +98,33 @@ public extension Subcategory {
         public let id: Subcategory.Id
         public let name: String
         public let isVerified: Bool
-        public let category: Category
+        public let category: Category.JoinedSubcategoriesServingStyles
         public let createdAt: Date
         public let createdBy: Profile?
         public let updatedAt: Date?
         public let updatedBy: Profile?
+
+        init(id: Subcategory.Id, name: String, isVerified: Bool, category: Category.JoinedSubcategoriesServingStyles, createdAt: Date, createdBy: Profile? = nil, updatedAt: Date? = nil, updatedBy: Profile? = nil) {
+            self.id = id
+            self.name = name
+            self.isVerified = isVerified
+            self.category = category
+            self.createdAt = createdAt
+            self.createdBy = createdBy
+            self.updatedAt = updatedAt
+            self.updatedBy = updatedBy
+        }
+
+        public init() {
+            id = .init(rawValue: 0)
+            name = ""
+            isVerified = false
+            category = .init()
+            createdAt = Date.now
+            createdBy = nil
+            updatedAt = nil
+            updatedBy = nil
+        }
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -118,7 +140,7 @@ public extension Subcategory {
         public func copyWith(
             name: String? = nil,
             isVerified: Bool? = nil,
-            category: Category? = nil
+            category: Category.JoinedSubcategoriesServingStyles? = nil
         ) -> Self {
             .init(
                 id: id,

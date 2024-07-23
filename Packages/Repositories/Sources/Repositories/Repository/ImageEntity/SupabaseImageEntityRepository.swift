@@ -15,11 +15,11 @@ struct SupabaseImageEntityRepository: ImageEntityRepository {
             .value
     }
 
-    func delete(from: ImageCategory, entity: ImageEntity) async throws {
+    func delete(from: ImageCategory, id: ImageEntity.Id) async throws {
         try await client
             .from(from.table)
             .delete()
-            .eq("id", value: entity.id.rawValue)
+            .eq("id", value: id.rawValue)
             .execute()
     }
 }

@@ -132,7 +132,6 @@ struct ProductInnerScreen: View {
                     }
                 }
                 Divider()
-                RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(product)))
                 RouterLink(
                     "subBrand.screen.open",
                     systemImage: "cart",
@@ -159,9 +158,9 @@ struct ProductInnerScreen: View {
                 )
                 ReportButton(entity: .product(product))
                 Divider()
-                AdminRouterLink(open: .sheet(.productAdmin(id: product.id, onDelete: {
+                AdminRouterLink(open: .sheet(.productAdmin(id: product.id, onDelete: { _ in
                     router.removeLast()
-                }, onUpdate: {
+                }, onUpdate: { _ in
                     await getProductData()
                 })))
             } label: {

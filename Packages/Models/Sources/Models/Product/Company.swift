@@ -38,6 +38,13 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtoco
         isVerified = company.isVerified
         logos = company.logos
     }
+    
+    public init() {
+        id = .init(rawValue: 0)
+        name = ""
+        isVerified = false
+        logos = []
+    }
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -103,7 +110,7 @@ public extension Company {
         }
 
         public init() {
-            id = Company.Id(rawValue: 0)
+            id = .init(rawValue: 0)
             name = ""
             isVerified = false
             logos = []

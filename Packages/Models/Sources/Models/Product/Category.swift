@@ -77,6 +77,14 @@ public extension Category {
             servingStyles = category.servingStyles
         }
 
+        public init() {
+            id = .init(rawValue: 0)
+            name = ""
+            icon = nil
+            subcategories = []
+            servingStyles = []
+        }
+
         public func copyWith(
             id: Category.Id? = nil,
             name: String? = nil,
@@ -108,6 +116,30 @@ public extension Category {
         public let createdBy: Profile?
         public let updatedAt: Date?
         public let updatedBy: Profile?
+
+        init(id: Category.Id, name: String, icon: String? = nil, subcategories: [Subcategory], servingStyles: [ServingStyle], createdAt: Date, createdBy: Profile? = nil, updatedAt: Date? = nil, updatedBy: Profile? = nil) {
+            self.id = id
+            self.name = name
+            self.icon = icon
+            self.subcategories = subcategories
+            self.servingStyles = servingStyles
+            self.createdAt = createdAt
+            self.createdBy = createdBy
+            self.updatedAt = updatedAt
+            self.updatedBy = updatedBy
+        }
+
+        public init() {
+            id = 0
+            name = ""
+            icon = nil
+            subcategories = []
+            servingStyles = []
+            createdAt = Date.now
+            createdBy = nil
+            updatedAt = nil
+            updatedBy = nil
+        }
 
         enum CodingKeys: String, CodingKey {
             case id

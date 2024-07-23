@@ -6,34 +6,38 @@ import Repositories
 import SwiftUI
 
 struct SubcategoryAdminSheet: View {
+    typealias OnEditCallback = (_ subcategoryName: String) async -> Void
+
     private var logger = Logger(category: "SubcategoryAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var subcategoryName = ""
-    @State private var category: Models.Category.JoinedSubcategoriesServingStyles?
-    @State private var subcategory: Subcategory.Detailed?
+    @State private var category: Models.Category.JoinedSubcategoriesServingStyles? = nil
+    @State private var subcategory = Subcategory.Detailed()
 
     let id: Subcategory.Id
-    let onSubmit: (_ subcategoryName: String) async -> Void
+    let onEdit: OnEditCallback
 
-    init(subcategory: SubcategoryProtocol, onSubmit: @escaping (_ subcategoryName: String) async -> Void) {
-        id = subcategory.id
-        _subcategoryName = State(wrappedValue: subcategory.name)
-        self.onSubmit = onSubmit
+    init(
+        id: Subcategory.Id,
+        onEdit: @escaping OnEditCallback
+    ) {
+        self.id = id
+        self.onEdit = onEdit
     }
 
     var body: some View {
         Form {
-            if let subcategory {
-                content(subcategory: subcategory)
+            if state.isPopulated {
+                content
             }
         }
         .scrollContentBackground(.hidden)
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await load()
+                await initialize()
             }
         }
         .animation(.default, value: subcategory)
@@ -42,12 +46,12 @@ struct SubcategoryAdminSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task {
-            await load()
+        .initialTask {
+            await initialize()
         }
     }
 
-    @ViewBuilder func content(subcategory: Subcategory.Detailed) -> some View {
+    @ViewBuilder var content: some View {
         Section("subcategory.admin.subcategory") {
             VStack {
                 Text(subcategory.name)
@@ -69,9 +73,7 @@ struct SubcategoryAdminSheet: View {
             LabeledIdView(id: subcategory.id.rawValue.formatted())
             VerificationAdminToggleView(isVerified: subcategory.isVerified) { isVerified in
                 await appEnvironmentModel.verifySubcategory(subcategory, isVerified: isVerified) {
-                    withAnimation {
-                        self.subcategory = subcategory.copyWith(isVerified: isVerified)
-                    }
+                    subcategory = subcategory.copyWith(isVerified: isVerified)
                 }
             }
         }
@@ -87,20 +89,20 @@ struct SubcategoryAdminSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
-        if let subcategory {
-            ToolbarItem(placement: .primaryAction) { [subcategoryName] in
-                AsyncButton("labels.edit", action: {
-                    await appEnvironmentModel.editSubcategory(.init(id: subcategory.id, name: subcategory.name))
-                    await onSubmit(subcategoryName)
-                })
-                .disabled((subcategoryName.isEmpty || subcategory.name == subcategoryName) && subcategory.category.id == category?.id)
-            }
+        ToolbarItem(placement: .primaryAction) { [subcategoryName] in
+            AsyncButton("labels.edit", action: {
+                await appEnvironmentModel.editSubcategory(.init(id: subcategory.id, name: subcategory.name))
+                await onEdit(subcategoryName)
+            })
+            .disabled((subcategoryName.isEmpty || subcategory.name == subcategoryName) && subcategory.category.id == category?.id)
         }
     }
 
-    private func load() async {
+    private func initialize() async {
         do {
             subcategory = try await repository.subcategory.getDetailed(id: id)
+            subcategoryName = subcategory.name
+            category = subcategory.category
             state = .populated
         } catch {
             guard !error.isCancelled else { return }

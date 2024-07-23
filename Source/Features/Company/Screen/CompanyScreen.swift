@@ -116,10 +116,10 @@ struct CompanyScreen: View {
             )
             ReportButton(entity: .company(.init(company: company)))
             Divider()
-            AdminRouterLink(open: .sheet(.companyAdmin(id: company.id, onUpdate: {
+            AdminRouterLink(open: .sheet(.companyAdmin(id: company.id, onUpdate: { _ in
                 await getCompanyData(withHaptics: true)
                 router.open(.toast(.success("company.update.success.toast")))
-            }, onDelete: {
+            }, onDelete: { _ in
                 router.removeLast()
             })))
         } label: {

@@ -10,25 +10,25 @@ struct AdminScreen: View {
                 RouterLink(
                     "admin.events.title",
                     systemImage: "bell.badge",
-                    count: adminEnvironmentModel.events.count,
+                    badge: adminEnvironmentModel.events.count,
                     open: .screen(.adminEvent)
                 )
                 RouterLink(
                     "admin.verification.title",
                     systemImage: "checkmark.seal",
-                    count: adminEnvironmentModel.unverified.count,
+                    badge: adminEnvironmentModel.unverified.count,
                     open: .screen(.verification)
                 )
                 RouterLink(
                     "admin.editsSuggestions.title",
                     systemImage: "slider.horizontal.2.square.on.square",
-                    count: adminEnvironmentModel.editSuggestions.count,
+                    badge: adminEnvironmentModel.editSuggestions.count,
                     open: .screen(.editSuggestionsAdmin)
                 )
                 RouterLink(
                     "report.admin.navigationTitle",
                     systemImage: "exclamationmark.bubble",
-                    count: adminEnvironmentModel.reports.count,
+                    badge: adminEnvironmentModel.reports.count,
                     open: .screen(.reportsAdmin)
                 )
             }

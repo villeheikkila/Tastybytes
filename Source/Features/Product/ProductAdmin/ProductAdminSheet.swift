@@ -6,8 +6,8 @@ import Repositories
 import SwiftUI
 
 struct ProductAdminSheet: View {
-    typealias OnDeleteCallback = () -> Void
-    typealias OnUpdateCallback = () async -> Void
+    typealias OnDeleteCallback = (Product.Id) -> Void
+    typealias OnUpdateCallback = (Product.Detailed) async -> Void
 
     enum Open {
         case report(Report.Id)
@@ -23,9 +23,9 @@ struct ProductAdminSheet: View {
     @State private var showDeleteProductConfirmationDialog = false
     @State private var logos: [ImageEntity] = []
     @State private var product = Product.Detailed()
-    @State private var open: Open?
 
     let id: Product.Id
+    let open: Open?
     let onDelete: OnDeleteCallback
     let onUpdate: OnUpdateCallback
 
@@ -50,7 +50,7 @@ struct ProductAdminSheet: View {
         .scrollContentBackground(.hidden)
         .animation(.default, value: product)
         .overlay {
-            ScreenStateOverlayView(state: state, errorAction: loadData)
+            ScreenStateOverlayView(state: state, errorAction: initialize)
         }
         .navigationTitle("product.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
@@ -58,7 +58,7 @@ struct ProductAdminSheet: View {
             toolbarContent
         }
         .initialTask {
-            await loadData()
+            await initialize()
         }
     }
 
@@ -73,6 +73,38 @@ struct ProductAdminSheet: View {
         ModificationInfoView(modificationInfo: product)
         Section("admin.section.details") {
             LabeledIdView(id: product.id.rawValue.formatted())
+            LabeledContent("subBrand.label") {
+                RouterLink(product.subBrand.name ?? "-",
+                           open: .sheet(.subBrandAdmin(id: product.subBrand.id, onUpdate: { subBrand in
+                               product = product.copyWith(subBrand: .init(subBrand: subBrand))
+                               await onUpdate(product)
+                           })))
+            }
+            LabeledContent("brand.label") {
+                RouterLink(product.subBrand.brand.name,
+                           open: .sheet(.brandAdmin(id: product.subBrand.brand.id, onUpdate: { brand in
+                               product = product.copyWith(subBrand: product.subBrand.copyWith(brand: .init(brand: brand)))
+                               await onUpdate(product)
+                           })))
+            }
+            LabeledContent("brandOwner.label") {
+                RouterLink(
+                    product.subBrand.brand.brandOwner.name,
+                    open: .sheet(
+                        .companyAdmin(
+                            id: product.subBrand.brand.brandOwner.id,
+                            onUpdate: { company in
+                                product = product
+                                    .copyWith(
+                                        subBrand: product.subBrand
+                                            .copyWith(brand: product.subBrand.brand.copyWith(brandOwner: .init(company: company)))
+                                    )
+                                await onUpdate(product)
+                            }
+                        )
+                    )
+                )
+            }
             VerificationAdminToggleView(isVerified: product.isVerified, action: verifyProduct)
         }
         .customListRowBackground()
@@ -99,7 +131,7 @@ struct ProductAdminSheet: View {
             RouterLink(
                 "admin.section.reports.title",
                 systemImage: "exclamationmark.bubble",
-                count: product.reports.count,
+                badge: product.reports.count,
                 open: .screen(
                     .reports(reports: $product.map(getter: { location in
                         location.reports
@@ -137,7 +169,7 @@ struct ProductAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func loadData() async {
+    private func initialize() async {
         do {
             let product = try await repository.product.getDetailed(id: id)
             self.product = product
@@ -151,11 +183,10 @@ struct ProductAdminSheet: View {
                             location.reports
                         }, setter: { reports in
                             product.copyWith(reports: reports)
-                        }))))
+                        }), initialReport: id)))
                 case let .editSuggestions(id):
-                    router.open(.screen(.productEditSuggestion(product: $product)))
+                    router.open(.screen(.productEditSuggestion(product: $product, initialEditSuggestion: id)))
                 }
-                self.open = nil
             }
         } catch {
             guard !error.isCancelled else { return }
@@ -180,7 +211,7 @@ struct ProductAdminSheet: View {
         do {
             try await repository.product.delete(id: product.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
-            onDelete()
+            onDelete(product.id)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }
@@ -191,7 +222,7 @@ struct ProductAdminSheet: View {
 
     private func deleteLogo(entity: ImageEntity) async {
         do {
-            try await repository.imageEntity.delete(from: .productLogos, entity: entity)
+            try await repository.imageEntity.delete(from: .productLogos, id: entity.id)
             withAnimation {
                 logos.remove(object: entity)
             }

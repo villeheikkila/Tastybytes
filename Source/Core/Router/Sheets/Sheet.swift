@@ -18,16 +18,14 @@ enum Sheet: Identifiable, Equatable {
     case brandAdmin(
         id: Brand.Id,
         open: BrandAdminSheet.Open? = nil,
-        onUpdate: BrandAdminSheet.OnUpdateCallback = { _ in
-        },
-        onDelete: BrandAdminSheet.OnDeleteCallback = { _ in }
+        onUpdate: BrandAdminSheet.OnUpdateCallback = noop,
+        onDelete: BrandAdminSheet.OnDeleteCallback = noop
     )
     case subBrandAdmin(
         id: SubBrand.Id,
         open: SubBrandAdminSheet.Open? = nil,
-        onUpdate: SubBrandAdminSheet.OnUpdateCallback = { _ in
-        },
-        onDelete: SubBrandAdminSheet.OnDeleteCallback = { _ in }
+        onUpdate: SubBrandAdminSheet.OnUpdateCallback = noop,
+        onDelete: SubBrandAdminSheet.OnDeleteCallback = noop
     )
     case friendPicker(taggedFriends: Binding<[Profile]>)
     case flavorPicker(pickedFlavors: Binding<[Flavor]>)
@@ -35,7 +33,7 @@ enum Sheet: Identifiable, Equatable {
     case locationSearch(initialLocation: Location?, initialSearchTerm: String?, onSelect: (_ location: Location) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
     case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>, onSelect: (_ servingStyle: ServingStyle) async -> Void)
-    case subcategoryAdmin(subcategory: SubcategoryProtocol, onSubmit: (_ subcategoryName: String) async -> Void)
+    case subcategoryAdmin(id: Subcategory.Id, onEdit: SubcategoryAdminSheet.OnEditCallback = noop)
     case subcategoryCreation(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case categoryCreation(onSubmit: (_ newCategoryName: String) async -> Void)
     case companyEditSuggestion(company: any CompanyProtocol, onSuccess: () -> Void)
@@ -49,19 +47,32 @@ enum Sheet: Identifiable, Equatable {
     case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
     case webView(link: WebViewLink)
-    case companyAdmin(id: Company.Id, open: CompanyAdminSheet.Open? = nil, onUpdate: CompanyAdminSheet.OnUpdateCallback = {}, onDelete: CompanyAdminSheet.OnDeleteCallback = {})
-    case locationAdmin(id: Location.Id, onEdit: LocationAdminSheet.OnEditCallback = { _ in }, onDelete: LocationAdminSheet.OnDeleteCallback = { _ in })
-    case profileAdmin(id: Profile.Id, onDelete: ProfileAdminSheet.OnDeleteCallback = { _ in })
+    case companyAdmin(id: Company.Id, open: CompanyAdminSheet.Open? = nil, onUpdate: CompanyAdminSheet.OnUpdateCallback = noop, onDelete: CompanyAdminSheet.OnDeleteCallback = noop)
+    case locationAdmin(id: Location.Id, open: LocationAdminSheet.Open? = nil, onEdit: LocationAdminSheet.OnEditCallback = noop, onDelete: LocationAdminSheet.OnDeleteCallback = noop)
+    case profileAdmin(id: Profile.Id, open: ProfileAdminSheet.Open? = nil, onDelete: ProfileAdminSheet.OnDeleteCallback = noop)
     case productAdmin(
         id: Product.Id,
         open: ProductAdminSheet.Open? = nil,
-        onDelete: ProductAdminSheet.OnDeleteCallback = {},
-        onUpdate: ProductAdminSheet.OnUpdateCallback = {}
+        onDelete: ProductAdminSheet.OnDeleteCallback = noop,
+        onUpdate: ProductAdminSheet.OnUpdateCallback = noop
     )
-    case checkInAdmin(id: CheckIn.Id, onDelete: CheckInAdminSheet.OnDeleteCallback = {})
-    case checkInCommentAdmin(id: CheckInComment.Id, onDelete: CheckInCommentAdminSheet.OnDeleteCallback = { _ in })
-    case checkInImageAdmin(checkIn: CheckIn, imageEntity: ImageEntity, onDelete: CheckInImageAdminSheet.OnDeleteCallback = { _ in })
-    case categoryAdmin(category: Models.Category.JoinedSubcategoriesServingStyles)
+    case checkInAdmin(
+        id: CheckIn.Id,
+        open: CheckInAdminSheet.Open? = nil,
+        onUpdate: CheckInAdminSheet.OnUpdateCallback = noop,
+        onDelete: CheckInAdminSheet.OnDeleteCallback = noop
+    )
+    case checkInCommentAdmin(
+        id: CheckInComment.Id,
+        open: CheckInCommentAdminSheet.Open? = nil,
+        onDelete: CheckInCommentAdminSheet.OnDeleteCallback = noop
+    )
+    case checkInImageAdmin(
+        id: ImageEntity.Id,
+        open: CheckInImageAdminSheet.Open? = nil,
+        onDelete: CheckInImageAdminSheet.OnDeleteCallback = noop
+    )
+    case categoryAdmin(id: Models.Category.Id)
     case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
     case subBrandEditSuggestion(brand: Brand.JoinedSubBrands, subBrand: SubBrand.JoinedBrand, onSuccess: () -> Void)
     case settings
@@ -105,8 +116,8 @@ enum Sheet: Identifiable, Equatable {
             NewFlavorSheet(onSubmit: onSubmit)
         case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):
             ServingStyleManagementSheet(pickedServingStyles: pickedServingStyles, onSelect: onSelect)
-        case let .subcategoryAdmin(subcategory: subcategory, onSubmit: onSubmit):
-            SubcategoryAdminSheet(subcategory: subcategory, onSubmit: onSubmit)
+        case let .subcategoryAdmin(id: id, onEdit):
+            SubcategoryAdminSheet(id: id, onEdit: onEdit)
         case let .subcategoryCreation(category: category, onSubmit: onSubmit):
             SubcategoryCreationSheet(category: category, onSubmit: onSubmit)
         case let .categoryCreation(onSubmit: onSubmit):
@@ -134,24 +145,24 @@ enum Sheet: Identifiable, Equatable {
             CheckInImageSheet(checkIn: checkIn, onDeleteImage: onDeleteImage)
         case .profileDeleteConfirmation:
             AccountDeletedScreen()
-        case let .locationAdmin(id, onEdit, onDelete):
-            LocationAdminSheet(id: id, onEdit: onEdit, onDelete: onDelete)
+        case let .locationAdmin(id, open: open, onEdit, onDelete):
+            LocationAdminSheet(id: id, open: open, onEdit: onEdit, onDelete: onDelete)
         case let .webView(link):
             WebViewSheet(link: link)
         case let .locationSearch(initialLocation, initialSearchTerm, onSelect):
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
-        case let .profileAdmin(id, onDelete):
-            ProfileAdminSheet(id: id, onDelete: onDelete)
+        case let .profileAdmin(id, open, onDelete):
+            ProfileAdminSheet(id: id, open: open, onDelete: onDelete)
         case let .productAdmin(id, open, onDelete, onUpdate):
             ProductAdminSheet(id: id, open: open, onDelete: onDelete, onUpdate: onUpdate)
-        case let .checkInAdmin(id, onDelete):
-            CheckInAdminSheet(id: id, onDelete: onDelete)
-        case let .checkInCommentAdmin(id, onDelete):
-            CheckInCommentAdminSheet(id: id, onDelete: onDelete)
-        case let .checkInImageAdmin(checkIn, imageEntity, onDelete):
-            CheckInImageAdminSheet(checkIn: checkIn, imageEntity: imageEntity, onDelete: onDelete)
-        case let .categoryAdmin(category):
-            CategoryAdminSheet(category: category)
+        case let .checkInAdmin(id, open, onUpdate, onDelete):
+            CheckInAdminSheet(id: id, open: open, onUpdate: onUpdate, onDelete: onDelete)
+        case let .checkInCommentAdmin(id, open, onDelete):
+            CheckInCommentAdminSheet(id: id, open: open, onDelete: onDelete)
+        case let .checkInImageAdmin(id, open, onDelete):
+            CheckInImageAdminSheet(id: id, open: open, onDelete: onDelete)
+        case let .categoryAdmin(id):
+            CategoryAdminSheet(id: id)
         case let .brandEditSuggestion(brand, onSuccess):
             BrandEditSuggestionSheet(brand: brand, onSuccess: onSuccess)
         case let .subBrandEditSuggestion(brand, subBrand, onSuccess):
@@ -237,8 +248,8 @@ enum Sheet: Identifiable, Equatable {
             "add_category"
         case .subcategoryCreation:
             "add_subcategory"
-        case let .subcategoryAdmin(subcategory, _):
-            "edit_subcategory_\(subcategory.id)"
+        case let .subcategoryAdmin(id, _):
+            "edit_subcategory_\(id)"
         case let .companyAdmin(company, _, _, _):
             "edit_company_\(company.hashValue)"
         case .companyEditSuggestion:
@@ -261,24 +272,24 @@ enum Sheet: Identifiable, Equatable {
             "check_in_image_\(checkIn.id)"
         case .profileDeleteConfirmation:
             "profile_delete_confirmation"
-        case let .locationAdmin(id, _, _):
+        case let .locationAdmin(id, _, _, _):
             "location_admin_\(id)"
         case let .webView(link):
             "webview_\(link)"
         case let .locationSearch(initialLocation, initialSearchTerm, _):
             "location_search_\(String(describing: initialLocation))_\(initialSearchTerm ?? "")"
-        case let .profileAdmin(id, _):
+        case let .profileAdmin(id, _, _):
             "profile_admin_sheet_\(id)"
         case let .productAdmin(id, _, _, _):
             "product_admin_\(id)"
-        case let .checkInAdmin(id, _):
+        case let .checkInAdmin(id, _, _, _):
             "check_in_admin_\(id)"
-        case let .checkInCommentAdmin(id, _):
+        case let .checkInCommentAdmin(id, _, _):
             "check_in_comment_admin_\(id)"
         case let .checkInImageAdmin(checkIn, imageEntity, _):
-            "check_in_image_admin_\(checkIn)_\(imageEntity)"
-        case let .categoryAdmin(category):
-            "category_admin_\(category)"
+            "check_in_image_admin_\(checkIn)_\(String(describing: imageEntity))"
+        case let .categoryAdmin(id):
+            "category_admin_\(id)"
         case let .brandEditSuggestion(brand, _):
             "brand_edit_suggestion_\(brand)"
         case let .subBrandEditSuggestion(brand, subBrand, _):

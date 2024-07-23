@@ -35,10 +35,10 @@ enum Screen: Hashable, Sendable {
     case blockedUsers
     case contributions(Profile.Id)
     case about
-    case reports(reports: Binding<[Report]>)
+    case reports(reports: Binding<[Report]>, initialReport: Report.Id? = nil)
     case locationAdmin
     case error(reason: String)
-    case companyEditSuggestion(company: Binding<Company.Detailed>)
+    case companyEditSuggestion(company: Binding<Company.Detailed>, initialEditSuggestion: Company.EditSuggestion.Id? = nil)
     case categoryServingStyle(category: Models.Category.Detailed)
     case barcodeManagement(product: Binding<Product.Detailed>)
     case productList(products: [Product.Joined])
@@ -48,16 +48,18 @@ enum Screen: Hashable, Sendable {
     case barcodeList(barcodes: [Product.Barcode.Joined])
     case profilesAdmin
     case roleSuperAdminPicker(profile: Binding<Profile.Detailed>, roles: [Role])
-    case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed>)
+    case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed>, initialEditSuggestion: Brand.EditSuggestion.Id? = nil)
     case adminEvent
-    case productEditSuggestion(product: Binding<Product.Detailed>)
+    case productEditSuggestion(product: Binding<Product.Detailed>, initialEditSuggestion: Product.EditSuggestion.Id? = nil)
     case productVariants(variants: [Product.Variant])
-    case subBrandEditSuggestions(subBrand: Binding<SubBrand.Detailed>)
+    case subBrandEditSuggestions(subBrand: Binding<SubBrand.Detailed>, initialEditSuggestion: SubBrand.EditSuggestion.Id? = nil)
     case profileReports(contributionsModel: ContributionsModel)
     case profileEditSuggestions(contributionsModel: ContributionsModel)
     case subsidiaries(company: Binding<Company.Detailed>)
     case editSuggestionsAdmin
     case reportsAdmin
+    case productListAdmin(products: Binding<[Product.Joined]>)
+    case subBrandListAdmin(brand: Brand, subBrands: Binding<[SubBrand.JoinedProduct]>)
 
     @MainActor
     @ViewBuilder
@@ -125,14 +127,14 @@ enum Screen: Hashable, Sendable {
             ContributionsScreen(id: id)
         case .about:
             AboutScreen()
-        case let .reports(reports):
-            ReportsScreen(reports: reports)
+        case let .reports(reports, initialReport):
+            ReportsScreen(reports: reports, initialReport: initialReport)
         case let .error(reason):
             ErrorScreen(reason: reason)
         case .locationAdmin:
             LocationAdminScreen()
-        case let .companyEditSuggestion(company):
-            CompanyEditSuggestionScreen(company: company)
+        case let .companyEditSuggestion(company, initialEditSuggestion):
+            CompanyEditSuggestionScreen(company: company, initialEditSuggestion: initialEditSuggestion)
         case let .categoryServingStyle(category: category):
             CategoryServingStyleAdminSheet(category: category)
         case let .barcodeManagement(product):
@@ -153,16 +155,16 @@ enum Screen: Hashable, Sendable {
             ProfilesAdminScreen()
         case let .roleSuperAdminPicker(profile, roles):
             RoleSuperAdminPickerScreen(profile: profile, roles: roles)
-        case let .brandEditSuggestionAdmin(brand: brand):
-            BrandEditSuggestionAdminScreen(brand: brand)
+        case let .brandEditSuggestionAdmin(brand, initialEditSuggestion):
+            BrandEditSuggestionScreen(brand: brand, initialEditSuggestion: initialEditSuggestion)
         case .adminEvent:
             AdminEventScreen()
-        case let .productEditSuggestion(product: product):
-            ProductEditSuggestionScreen(product: product)
+        case let .productEditSuggestion(product: product, initialEditSuggestion):
+            ProductEditSuggestionScreen(product: product, initialEditSuggestion: initialEditSuggestion)
         case let .productVariants(variants):
             ProductVariantsScreen(variants: variants)
-        case let .subBrandEditSuggestions(subBrand):
-            SubBrandEditSuggestionsScreen(subBrand: subBrand)
+        case let .subBrandEditSuggestions(subBrand, initialEditSuggestion):
+            SubBrandEditSuggestionsScreen(subBrand: subBrand, initialEditSuggestion: initialEditSuggestion)
         case let .profileReports(contributionsModel):
             ProfileReportScreen(contributionsModel: contributionsModel)
         case let .profileEditSuggestions(contributionsModel):
@@ -173,6 +175,10 @@ enum Screen: Hashable, Sendable {
             EditSuggestionAdminScreen()
         case .reportsAdmin:
             ReportAdminScreen()
+        case let .productListAdmin(products):
+            ProductListAdminScreen(products: products)
+        case let .subBrandListAdmin(brand, subBrands):
+            SubBrandListAdminScreen(brand: brand, subBrands: subBrands)
         }
     }
 
@@ -216,12 +222,12 @@ enum Screen: Hashable, Sendable {
             lhsProfile == rhsProfile
         case let (.productFeed(lhsFeed), .productFeed(rhsFeed)):
             lhsFeed == rhsFeed
-        case let (.reports(lhsReports), .reports(rhsReports)):
-            lhsReports.wrappedValue == rhsReports.wrappedValue
+        case let (.reports(lhsReports, lhsInitialReport), .reports(rhsReports, rhsInitialReport)):
+            lhsReports.wrappedValue == rhsReports.wrappedValue && lhsInitialReport == rhsInitialReport
         case let (.error(lhsReason), .error(rhsReason)):
             lhsReason == rhsReason
-        case let (.companyEditSuggestion(lhsCompany), .companyEditSuggestion(rhsCompany)):
-            lhsCompany.wrappedValue == rhsCompany.wrappedValue
+        case let (.companyEditSuggestion(lhsCompany, lhsInitialEditSuggestion), .companyEditSuggestion(rhsCompany, rhsInitialEditSuggestion)):
+            lhsCompany.wrappedValue == rhsCompany.wrappedValue && lhsInitialEditSuggestion == rhsInitialEditSuggestion
         case let (.barcodeManagement(lhsProduct), .barcodeManagement(rhsProduct)):
             lhsProduct.wrappedValue == rhsProduct.wrappedValue
         case let (.productList(lhsProduct), .productList(rhsProduct)):
@@ -236,16 +242,20 @@ enum Screen: Hashable, Sendable {
             lhsBarcodes == rhsBarcodes
         case let (.roleSuperAdminPicker(lhsProfile, lhsRoles), .roleSuperAdminPicker(rhsProfile, rhsRoles)):
             lhsProfile.wrappedValue == rhsProfile.wrappedValue && lhsRoles == rhsRoles
-        case let (.brandEditSuggestionAdmin(lhsBrand), .brandEditSuggestionAdmin(rhsBrand)):
-            lhsBrand.wrappedValue == rhsBrand.wrappedValue
-        case let (.productEditSuggestion(lhsProduct), .productEditSuggestion(rhsProduct)):
-            lhsProduct.wrappedValue == rhsProduct.wrappedValue
+        case let (.brandEditSuggestionAdmin(lhsBrand, lhsInitialEditSuggestion), .brandEditSuggestionAdmin(rhsBrand, rhsInitialEditSuggestion)):
+            lhsBrand.wrappedValue == rhsBrand.wrappedValue && lhsInitialEditSuggestion == rhsInitialEditSuggestion
+        case let (.productEditSuggestion(lhsProduct, lhsInitialEditSuggestion), .productEditSuggestion(rhsProduct, rhsInitialEditSuggestion)):
+            lhsProduct.wrappedValue == rhsProduct.wrappedValue && lhsInitialEditSuggestion == rhsInitialEditSuggestion
         case let (.productVariants(lhsVariants), .productVariants(rhsVariants)):
             lhsVariants == rhsVariants
-        case let (.subBrandEditSuggestions(lhsSubBrands), .subBrandEditSuggestions(rhsSubBrands)):
-            lhsSubBrands.wrappedValue == rhsSubBrands.wrappedValue
+        case let (.subBrandEditSuggestions(lhsSubBrands, lhsInitialEditSuggestion), .subBrandEditSuggestions(rhsSubBrands, rhsInitialEditSuggestion)):
+            lhsSubBrands.wrappedValue == rhsSubBrands.wrappedValue && lhsInitialEditSuggestion == rhsInitialEditSuggestion
         case let (.contributions(lhsProfile), .contributions(rhsProfile)):
             lhsProfile == rhsProfile
+        case let (.productListAdmin(lshProducts), .productListAdmin(rhsProducts)):
+            lshProducts.wrappedValue == rhsProducts.wrappedValue
+        case let (.subBrandListAdmin(lhsBrand, lhsSubBrands), .subBrandListAdmin(rhsBrand, rhsSubBrands)):
+            lhsBrand == rhsBrand && lhsSubBrands.wrappedValue == rhsSubBrands.wrappedValue
         case
             (.editSuggestionsAdmin, .editSuggestionsAdmin),
             (.currentUserFriends, .currentUserFriends),
@@ -355,17 +365,19 @@ enum Screen: Hashable, Sendable {
             hasher.combine("contributions")
         case .about:
             hasher.combine("about")
-        case let .reports(reports):
+        case let .reports(reports, initialReport):
             hasher.combine("reports")
             hasher.combine(reports.wrappedValue)
+            hasher.combine(initialReport)
         case .locationAdmin:
             hasher.combine("locationManagement")
         case let .error(reason):
             hasher.combine("error")
             hasher.combine(reason)
-        case let .companyEditSuggestion(company):
+        case let .companyEditSuggestion(company, initialEditSuggestion):
             hasher.combine("companyEditSuggestion")
             hasher.combine(company.wrappedValue)
+            hasher.combine(initialEditSuggestion)
         case let .categoryServingStyle(category):
             hasher.combine("categoryServingStyle")
             hasher.combine(category)
@@ -397,20 +409,23 @@ enum Screen: Hashable, Sendable {
             hasher.combine("roleSuperAdminPicker")
             hasher.combine(profile.wrappedValue)
             hasher.combine(roles)
-        case let .brandEditSuggestionAdmin(brand):
+        case let .brandEditSuggestionAdmin(brand, initialEditSuggestion):
             hasher.combine("brandEditSuggestionAdmin")
             hasher.combine(brand.wrappedValue)
+            hasher.combine(initialEditSuggestion)
         case .adminEvent:
             hasher.combine("adminEvent")
-        case let .productEditSuggestion(product):
+        case let .productEditSuggestion(product, initialEditSuggestion):
             hasher.combine("productEditSuggestion")
             hasher.combine(product.wrappedValue)
+            hasher.combine(initialEditSuggestion)
         case let .productVariants(variants: variants):
             hasher.combine("productVariants")
             hasher.combine(variants)
-        case let .subBrandEditSuggestions(subBrand: subBrand):
+        case let .subBrandEditSuggestions(subBrand, initialEditSuggestion):
             hasher.combine("subBrandEditSuggestions")
             hasher.combine(subBrand.wrappedValue)
+            hasher.combine(initialEditSuggestion)
         case .profileReports:
             hasher.combine("profileReports")
         case .profileEditSuggestions:
@@ -422,6 +437,13 @@ enum Screen: Hashable, Sendable {
             hasher.combine("editSuggestionsAdmin")
         case .reportsAdmin:
             hasher.combine("reportsAdmin")
+        case let .productListAdmin(products):
+            hasher.combine("productListAdmin")
+            hasher.combine(products.wrappedValue)
+        case let .subBrandListAdmin(brand, subBrands):
+            hasher.combine("subBrandListAdmin")
+            hasher.combine(brand)
+            hasher.combine(subBrands.wrappedValue)
         }
     }
 }

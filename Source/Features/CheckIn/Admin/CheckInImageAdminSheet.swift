@@ -5,26 +5,34 @@ import Repositories
 import SwiftUI
 
 struct CheckInImageAdminSheet: View {
-    typealias OnDeleteCallback = (_ comment: ImageEntity) async -> Void
+    typealias OnDeleteCallback = (_ id: ImageEntity.Id) async -> Void
+
+    enum Open {
+        case report(Report.Id)
+    }
 
     private let logger = Logger(category: "CheckInImageAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
+    @State private var state: ScreenState = .loading
     @State private var imageDetails: ImageDetails?
+    @State private var checkInImage = ImageEntity.Detailed()
 
-    let checkIn: CheckIn
-    let imageEntity: ImageEntity
+    let id: ImageEntity.Id
+    let open: Open?
     let onDelete: OnDeleteCallback
 
     private var imageUrl: URL? {
-        imageEntity.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
+        checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
     }
 
     var body: some View {
         Form {
-            content
+            if state.isPopulated {
+                content
+            }
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("checkInImage.admin.navigationTitle")
@@ -33,26 +41,23 @@ struct CheckInImageAdminSheet: View {
             toolbarContent
         }
         .initialTask {
-            await loadImageAndDetails()
+            await initialize()
         }
     }
 
     @ViewBuilder private var content: some View {
         Section("checkInImage.admin.section.checkIn") {
-            CheckInImageEntityView(imageEntity: .init(checkIn: checkIn, imageEntity: imageEntity))
+            CheckInImageEntityView(imageEntity: checkInImage)
         }
         .customListRowBackground()
-        CreationInfoSection(createdBy: checkIn.profile, createdAt: imageEntity.createdAt)
+        CreationInfoSection(createdBy: checkInImage.createdBy, createdAt: checkInImage.createdAt)
         Section("admin.section.details") {
-            LabeledIdView(id: imageEntity.id.rawValue.formatted())
+            LabeledIdView(id: checkInImage.id.rawValue.formatted())
             if let imageDetails {
                 LabeledContent("labels.width", value: imageDetails.size.width.formatted())
                 LabeledContent("labels.height", value: imageDetails.size.height.formatted())
                 LabeledContent("labels.megaBytes", value: imageDetails.fileSize.formatted(.byteCount(style: .file)))
             }
-        }
-        .customListRowBackground()
-        Section {
             if let imageUrl {
                 Link(destination: imageUrl) {
                     Label("labels.url", systemImage: "arrow.up.forward")
@@ -61,7 +66,22 @@ struct CheckInImageAdminSheet: View {
         }
         .customListRowBackground()
         Section {
-            ConfirmedDeleteButtonView(presenting: imageEntity, action: deleteImage, description: "checkInImage.deleteAsModerator.confirmation.description", label: "checkInImage.deleteAsModerator.confirmation.label", isDisabled: false)
+            RouterLink(
+                "admin.section.reports.title",
+                systemImage: "exclamationmark.bubble",
+                badge: checkInImage.reports.count,
+                open: .screen(
+                    .reports(reports: $checkInImage.map(getter: { location in
+                        location.reports
+                    }, setter: { reports in
+                        checkInImage.copyWith(reports: reports)
+                    }))
+                )
+            )
+        }
+        .customListRowBackground()
+        Section {
+            ConfirmedDeleteButtonView(presenting: checkInImage, action: deleteImage, description: "checkInImage.deleteAsModerator.confirmation.description", label: "checkInImage.deleteAsModerator.confirmation.label", isDisabled: false)
         }
         .customListRowBackground()
     }
@@ -70,9 +90,12 @@ struct CheckInImageAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func loadImageAndDetails() async {
-        guard let imageUrl else { return }
+    private func initialize() async {
         do {
+            checkInImage = try await repository.checkIn.getDetailedCheckInImage(id: id)
+            guard let imageUrl = checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) else {
+                throw ImageEntity.EntityError.failedToFormUrl
+            }
             let (data, _) = try await URLSession.shared.data(from: imageUrl)
 
             guard let image = UIImage(data: data) else {
@@ -84,16 +107,28 @@ struct CheckInImageAdminSheet: View {
             let fileSize = data.count
 
             imageDetails = ImageDetails(size: size, resolution: resolution, fileSize: fileSize)
-
+            state = .populated
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $checkInImage.map(getter: { profile in
+                            profile.reports
+                        }, setter: { reports in
+                            checkInImage.copyWith(reports: reports)
+                        }), initialReport: id)))
+                }
+            }
         } catch {
+            state = .error([error])
             logger.error("Failed to get image metadata'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    private func deleteImage(_ imageEntity: ImageEntity) async {
+    private func deleteImage(_ imageEntity: ImageEntity.Detailed) async {
         do {
-            try await repository.imageEntity.delete(from: .checkInImages, entity: imageEntity)
-            await onDelete(imageEntity)
+            try await repository.imageEntity.delete(from: .checkInImages, id: imageEntity.id)
+            await onDelete(imageEntity.id)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

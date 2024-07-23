@@ -109,7 +109,7 @@ struct CheckInImageManagementView: View {
 
     private func deleteImage(_ entity: ImageEntity) async {
         do {
-            try await repository.imageEntity.delete(from: .checkInImages, entity: entity)
+            try await repository.imageEntity.delete(from: .checkInImages, id: entity.id)
             withAnimation {
                 images.remove(object: entity)
             }

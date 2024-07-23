@@ -8,8 +8,8 @@ import Repositories
 import SwiftUI
 
 struct CompanyAdminSheet: View {
-    typealias OnUpdateCallback = () async -> Void
-    typealias OnDeleteCallback = () -> Void
+    typealias OnUpdateCallback = (Company.Detailed) async -> Void
+    typealias OnDeleteCallback = (Company.Id) -> Void
 
     enum Open {
         case report(Report.Id)
@@ -45,7 +45,7 @@ struct CompanyAdminSheet: View {
         .animation(.default, value: company)
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await loadData()
+                await initialize()
             }
         }
         .navigationTitle("company.admin.navigationTitle")
@@ -54,7 +54,7 @@ struct CompanyAdminSheet: View {
             toolbarContent
         }
         .initialTask {
-            await loadData()
+            await initialize()
         }
         .task(id: selectedLogo) {
             guard let selectedLogo else { return }
@@ -91,7 +91,7 @@ struct CompanyAdminSheet: View {
             RouterLink(
                 "admin.section.reports.title",
                 systemImage: "exclamationmark.bubble",
-                count: company.reports.count,
+                badge: company.reports.count,
                 open: .screen(
                     .reports(reports: $company.map(getter: { location in
                         location.reports
@@ -99,7 +99,7 @@ struct CompanyAdminSheet: View {
                         company.copyWith(reports: reports)
                     })))
             )
-            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", count: company.editSuggestions.unresolvedCount, open: .screen(.companyEditSuggestion(company: $company)))
+            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", badge: company.editSuggestions.unresolvedCount, open: .screen(.companyEditSuggestion(company: $company)))
         }
         .customListRowBackground()
         Section {
@@ -118,11 +118,11 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    private func loadData() async {
+    private func initialize() async {
         do {
-            print("IDXXX \(id)")
             let company = try await repository.company.getDetailed(id: id)
             self.company = company
+            name = company.name
             state = .populated
             if let open {
                 switch open {
@@ -132,9 +132,9 @@ struct CompanyAdminSheet: View {
                             location.reports
                         }, setter: { reports in
                             company.copyWith(reports: reports)
-                        }))))
+                        }), initialReport: id)))
                 case let .editSuggestions(id):
-                    router.open(.screen(.companyEditSuggestion(company: $company)))
+                    router.open(.screen(.companyEditSuggestion(company: $company, initialEditSuggestion: id)))
                 }
             }
         } catch {
@@ -158,11 +158,9 @@ struct CompanyAdminSheet: View {
     private func editCompany() async {
         do {
             let company = try await repository.company.update(updateRequest: Company.UpdateRequest(id: id, name: name))
-            withAnimation {
-                self.company = company
-            }
+            self.company = company
             router.open(.toast(.success()))
-            await onUpdate()
+            await onUpdate(company)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -173,7 +171,7 @@ struct CompanyAdminSheet: View {
     private func deleteCompany(_ company: Company.Detailed) async {
         do {
             try await repository.company.delete(id: company.id)
-            onDelete()
+            onDelete(company.id)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }
@@ -196,10 +194,8 @@ struct CompanyAdminSheet: View {
 
     private func deleteLogo(_ entity: ImageEntity) async {
         do {
-            try await repository.imageEntity.delete(from: .companyLogos, entity: entity)
-            withAnimation {
-                company = company.copyWith(logos: company.logos.removing(entity))
-            }
+            try await repository.imageEntity.delete(from: .companyLogos, id: entity.id)
+            company = company.copyWith(logos: company.logos.removing(entity))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

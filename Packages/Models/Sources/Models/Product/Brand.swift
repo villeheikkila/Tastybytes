@@ -14,6 +14,13 @@ public struct Brand: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
     public let isVerified: Bool
     public let logos: [ImageEntity]
 
+    public init(brand: BrandProtocol) {
+        id = brand.id
+        name = brand.name
+        isVerified = brand.isVerified
+        logos = brand.logos
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -28,6 +35,12 @@ public extension Brand {
 
 public extension Brand {
     struct JoinedSubBrands: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
+        public let id: Brand.Id
+        public let name: String
+        public let isVerified: Bool
+        public let subBrands: [SubBrand]
+        public let logos: [ImageEntity]
+
         public init(id: Brand.Id, name: String, isVerified: Bool, subBrands: [SubBrand], logos: [ImageEntity]) {
             self.id = id
             self.name = name
@@ -35,12 +48,6 @@ public extension Brand {
             self.subBrands = subBrands
             self.logos = logos
         }
-
-        public let id: Brand.Id
-        public let name: String
-        public let isVerified: Bool
-        public let subBrands: [SubBrand]
-        public let logos: [ImageEntity]
 
         public init(brand: Brand.JoinedSubBrandsProductsCompany) {
             self.init(
@@ -76,7 +83,7 @@ public extension Brand {
             self.logos = logos
         }
 
-        init(brand: Brand.JoinedSubBrandsProductsCompany) {
+        public init(brand: Brand.JoinedSubBrandsProductsCompany) {
             id = brand.id
             name = brand.name
             isVerified = brand.isVerified
@@ -84,7 +91,7 @@ public extension Brand {
             logos = brand.logos
         }
 
-        init(brand: Brand.JoinedCompany) {
+        public init(brand: Brand.Detailed) {
             id = brand.id
             name = brand.name
             isVerified = brand.isVerified
@@ -106,6 +113,21 @@ public extension Brand {
             case isVerified = "is_verified"
             case brandOwner = "companies"
             case logos = "brand_logos"
+        }
+
+        public func copyWith(
+            name: String? = nil,
+            isVerified: Bool? = nil,
+            brandOwner: Company? = nil,
+            logos: [ImageEntity]? = nil
+        ) -> Self {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                isVerified: isVerified ?? self.isVerified,
+                brandOwner: brandOwner ?? self.brandOwner,
+                logos: logos ?? self.logos
+            )
         }
     }
 
@@ -254,10 +276,10 @@ public extension Brand {
         }
 
         public init() {
-            id = Brand.Id(rawValue: 0)
+            id = .init(rawValue: 0)
             name = ""
             isVerified = false
-            brandOwner = .init(id: Company.Id(rawValue: 0), name: "", isVerified: false)
+            brandOwner = .init()
             subBrands = []
             logos = []
             editSuggestions = []

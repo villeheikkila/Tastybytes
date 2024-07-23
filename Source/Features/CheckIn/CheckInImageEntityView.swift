@@ -5,7 +5,7 @@ import SwiftUI
 
 struct CheckInImageEntityView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    let imageEntity: ImageEntity.JoinedCheckIn
+    let imageEntity: ImageEntityUrl
 
     private let height = 300.0
 

@@ -177,7 +177,9 @@ struct BrandScreen: View {
                 })))
                 ReportButton(entity: .brand(brand))
                 Divider()
-                AdminRouterLink(open: .sheet(.brandAdmin(id: brand.id, onUpdate: { updatedBrand in brand = updatedBrand }, onDelete: { _ in
+                AdminRouterLink(open: .sheet(.brandAdmin(id: brand.id, onUpdate: { updatedBrand in
+                    brand = .init(brand: updatedBrand)
+                }, onDelete: { _ in
                     router.removeLast()
                 })))
             } label: {

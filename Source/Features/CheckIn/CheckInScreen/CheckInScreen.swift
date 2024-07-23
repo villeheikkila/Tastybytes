@@ -81,8 +81,8 @@ struct CheckInScreen: View {
     }
 
     private var header: some View {
-        CheckInCard(checkIn: checkIn, onDeleteImage: { deletedImageEntity in
-            checkIn = checkIn.copyWith(images: checkIn.images.removing(deletedImageEntity))
+        CheckInCard(checkIn: checkIn, onDeleteImage: { id in
+            checkIn = checkIn.copyWith(images: checkIn.images.removingWithId(id))
         })
         .contextMenu {
             ControlGroup {
@@ -190,7 +190,7 @@ struct CheckInScreen: View {
                 Divider()
                 ReportButton(entity: .checkIn(checkIn))
                 Divider()
-                AdminRouterLink(open: .sheet(.checkInAdmin(id: checkIn.id, onDelete: {
+                AdminRouterLink(open: .sheet(.checkInAdmin(id: checkIn.id, onDelete: { _ in
                     router.removeLast()
                 })))
             } label: {

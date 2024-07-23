@@ -70,7 +70,7 @@ public extension SubBrand {
             name = subBrand.name
             isVerified = subBrand.isVerified
             includesBrandName = subBrand.includesBrandName
-            brand = .init(brand: subBrand.brand)
+            brand = subBrand.brand
         }
 
         public init() {
@@ -95,6 +95,21 @@ public extension SubBrand {
             case (nil, _): true
             case (_?, nil): false
             }
+        }
+
+        public func copyWith(
+            name: String?? = nil,
+            includesBrandName: Bool? = nil,
+            isVerified: Bool? = nil,
+            brand: Brand.JoinedCompany? = nil
+        ) -> Self {
+            .init(
+                id: id,
+                name: name ?? self.name,
+                includesBrandName: includesBrandName ?? self.includesBrandName,
+                isVerified: isVerified ?? self.isVerified,
+                brand: brand ?? self.brand
+            )
         }
     }
 
@@ -195,7 +210,7 @@ public extension SubBrand {
         }
 
         public init() {
-            id = SubBrand.Id(rawValue: 0)
+            id = .init(rawValue: 0)
             name = ""
             includesBrandName = false
             isVerified = false

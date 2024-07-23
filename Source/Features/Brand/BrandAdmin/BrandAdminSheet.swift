@@ -8,8 +8,8 @@ import Repositories
 import SwiftUI
 
 struct BrandAdminSheet: View {
-    typealias OnUpdateCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
-    typealias OnDeleteCallback = (_ updatedBrand: Brand.JoinedSubBrandsProductsCompany) async -> Void
+    typealias OnUpdateCallback = (_ updatedBrand: Brand.Detailed) async -> Void
+    typealias OnDeleteCallback = (_ updatedBrand: Brand.Detailed) async -> Void
 
     enum Open {
         case report(Report.Id)
@@ -62,14 +62,14 @@ struct BrandAdminSheet: View {
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await loadData()
+                await initialize()
             }
         }
         .toolbar {
             toolbarContent
         }
-        .task {
-            await loadData()
+        .initialTask {
+            await initialize()
         }
         .task(id: selectedLogo) {
             guard let selectedLogo else { return }
@@ -101,10 +101,33 @@ struct BrandAdminSheet: View {
         EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
         Section("labels.info") {
             LabeledIdView(id: brand.id.rawValue.formatted())
-            LabeledContent("brand.admin.subBrand.count", value: brand.subBrands.count.formatted())
-            LabeledContent("brand.admin.products.count", value: brand.subBrands.reduce(0) { result, subBrand in
-                result + subBrand.products.count
-            }.formatted())
+            LabeledContent("brandOwner.label") {
+                RouterLink(
+                    brand.brandOwner.name,
+                    open: .sheet(
+                        .companyAdmin(
+                            id: brand.brandOwner.id,
+                            onUpdate: { company in
+                                brand = brand.copyWith(brandOwner: .init(company: company))
+                                await onUpdate(brand)
+                            }
+                        )
+                    )
+                )
+            }
+            RouterLink(
+                "brand.admin.subBrands.label",
+                count: brand.subBrands.count,
+                open: .screen(
+                    .subBrandListAdmin(
+                        brand: .init(brand: brand),
+                        subBrands: $brand.map(getter: { _ in brand.subBrands }, setter: { subBrands in
+                            brand.copyWith(subBrands: subBrands)
+                        })
+                    )
+                )
+            )
+            LabeledContent("brand.admin.products.count", value: brand.productCount.formatted())
             VerificationAdminToggleView(isVerified: brand.isVerified, action: verifyBrand)
         }
         .customListRowBackground()
@@ -112,7 +135,7 @@ struct BrandAdminSheet: View {
             RouterLink(
                 "admin.section.reports.title",
                 systemImage: "exclamationmark.bubble",
-                count: brand.reports.count,
+                badge: brand.reports.count,
                 open: .screen(
                     .reports(reports: $brand.map(getter: { location in
                         location.reports
@@ -121,7 +144,7 @@ struct BrandAdminSheet: View {
                     }))
                 )
             )
-            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", count: brand.editSuggestions.unresolvedCount, open: .screen(.brandEditSuggestionAdmin(brand: $brand)))
+            RouterLink("admin.section.editSuggestions.title", systemImage: "square.and.pencil", badge: brand.editSuggestions.unresolvedCount, open: .screen(.brandEditSuggestionAdmin(brand: $brand)))
         }
         .customListRowBackground()
         Section {
@@ -146,7 +169,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    private func loadData() async {
+    private func initialize() async {
         do {
             let brand = try await repository.brand.getDetailed(id: id)
             self.brand = brand
@@ -161,9 +184,9 @@ struct BrandAdminSheet: View {
                             location.reports
                         }, setter: { reports in
                             brand.copyWith(reports: reports)
-                        }))))
+                        }), initialReport: id)))
                 case let .editSuggestions(id):
-                    router.open(.screen(.brandEditSuggestionAdmin(brand: $brand)))
+                    router.open(.screen(.brandEditSuggestionAdmin(brand: $brand, initialEditSuggestion: id)))
                 }
             }
         } catch {
@@ -195,7 +218,7 @@ struct BrandAdminSheet: View {
             )
             router.open(.toast(.success("brand.edit.success.toast")))
             self.brand = brand
-            await onUpdate(.init(brand: brand))
+            await onUpdate(brand)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -210,7 +233,7 @@ struct BrandAdminSheet: View {
                 brand = brand.copyWith(logos: brand.logos + [imageEntity])
             }
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
-            await onUpdate(.init(brand: brand))
+            await onUpdate(brand)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -220,7 +243,7 @@ struct BrandAdminSheet: View {
 
     private func deleteLogo(entity: ImageEntity) async {
         do {
-            try await repository.imageEntity.delete(from: .brandLogos, entity: entity)
+            try await repository.imageEntity.delete(from: .brandLogos, id: entity.id)
             withAnimation {
                 brand = brand.copyWith(logos: brand.logos.removing(entity))
             }
@@ -234,12 +257,32 @@ struct BrandAdminSheet: View {
     private func deleteBrand(_ brand: Brand.Detailed) async {
         do {
             try await repository.brand.delete(id: brand.id)
-            await onDelete(.init(brand: brand))
+            await onDelete(brand)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete brand. Error: \(error) (\(#file):\(#line))")
         }
+    }
+}
+
+struct SubBrandListAdminScreen: View {
+    let brand: Brand
+    @Binding var subBrands: [SubBrand.JoinedProduct]
+
+    var body: some View {
+        List(subBrands) { subBrand in
+            RouterLink(open: .sheet(.subBrandAdmin(id: subBrand.id, onUpdate: { subBrand in
+                subBrands = subBrands.replacingWithId(subBrand.id, with: .init(subBrand: subBrand))
+            }, onDelete: { id in
+                subBrands = subBrands.removingWithId(id)
+            }))) {
+                SubBrandEntityView(brand: brand, subBrand: subBrand)
+            }
+        }
+        .listStyle(.plain)
+        .navigationTitle("subBrandListAdmin.navigationTitle")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

@@ -23,7 +23,7 @@ struct SubBrandAdminSheet: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var newSubBrandName: String = ""
+    @State private var name: String = ""
     @State private var includesBrandName: Bool = false
     @State private var subBrand = SubBrand.Detailed()
     @State private var id: SubBrand.Id
@@ -41,7 +41,7 @@ struct SubBrandAdminSheet: View {
 
     private var canUpdate: Bool {
         (subBrand
-            .name != newSubBrandName && newSubBrandName
+            .name != name && name
             .isValidLength(.normal(allowEmpty: false))) || includesBrandName != subBrand.includesBrandName
     }
 
@@ -54,7 +54,7 @@ struct SubBrandAdminSheet: View {
         .scrollContentBackground(.hidden)
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await loadData(id: id)
+                await initialize(id: id)
             }
         }
         .navigationTitle("subBrand.admin.navigationTitle")
@@ -64,7 +64,9 @@ struct SubBrandAdminSheet: View {
             toolbarContent
         }
         .task(id: id) {
-            await loadData(id: id)
+            if subBrand.id != id {
+                await initialize(id: id)
+            }
         }
     }
 
@@ -77,7 +79,7 @@ struct SubBrandAdminSheet: View {
         .customListRowBackground()
         ModificationInfoView(modificationInfo: subBrand)
         Section("admin.section.details") {
-            LabeledTextFieldView(title: "labels.name", text: $newSubBrandName)
+            LabeledTextFieldView(title: "labels.name", text: $name)
             Toggle("subBrand.includesBrandName.toggle.label", isOn: $includesBrandName)
         }
         .customListRowBackground()
@@ -93,7 +95,36 @@ struct SubBrandAdminSheet: View {
 //        }
         Section("labels.info") {
             LabeledIdView(id: subBrand.id.rawValue.formatted())
-            LabeledContent("brand.admin.product.count", value: subBrand.products.count.formatted())
+            LabeledContent("brand.label") {
+                RouterLink(subBrand.brand.name,
+                           open: .sheet(.brandAdmin(id: subBrand.brand.id, onUpdate: { brand in
+                               subBrand = subBrand.copyWith(brand: .init(brand: brand))
+                               await onUpdate(subBrand)
+                           })))
+            }
+            LabeledContent("brandOwner.label") {
+                RouterLink(
+                    subBrand.brand.brandOwner.name,
+                    open: .sheet(
+                        .companyAdmin(
+                            id: subBrand.brand.brandOwner.id,
+                            onUpdate: { company in
+                                subBrand = subBrand.copyWith(brand: subBrand.brand.copyWith(brandOwner: .init(company: company)))
+                                await onUpdate(subBrand)
+                            }
+                        )
+                    )
+                )
+            }
+            RouterLink(
+                "brand.admin.product.count",
+                count: subBrand.products.count,
+                open: .screen(.productListAdmin(products: $subBrand.map(getter: { _ in
+                    subBrand.products.map { .init(product: $0, subBrand: subBrand) }
+                }, setter: { products in
+                    subBrand.copyWith(products: products.map { .init(product: $0) })
+                })))
+            )
             VerificationAdminToggleView(isVerified: subBrand.isVerified, action: verifySubBrand)
         }
         .customListRowBackground()
@@ -101,13 +132,13 @@ struct SubBrandAdminSheet: View {
             RouterLink(
                 "admin.section.editSuggestions.title",
                 systemImage: "square.and.pencil",
-                count: subBrand.editSuggestions.unresolvedCount,
+                badge: subBrand.editSuggestions.unresolvedCount,
                 open: .screen(.subBrandEditSuggestions(subBrand: $subBrand))
             )
             RouterLink(
                 "admin.section.reports.title",
                 systemImage: "exclamationmark.bubble",
-                count: subBrand.reports.count,
+                badge: subBrand.reports.count,
                 open: .screen(
                     .reports(reports: $subBrand.map(getter: { location in
                         location.reports
@@ -140,24 +171,24 @@ struct SubBrandAdminSheet: View {
         }
     }
 
-    private func loadData(id: SubBrand.Id) async {
+    private func initialize(id: SubBrand.Id) async {
         state = .loading
         do {
             subBrand = try await repository.subBrand.getDetailed(id: id)
-            newSubBrandName = subBrand.name ?? ""
+            name = subBrand.name ?? ""
             includesBrandName = subBrand.includesBrandName
             state = .populated
             if let open {
                 switch open {
                 case let .report(id):
                     router.open(.screen(
-                        .reports(reports: $subBrand.map(getter: { location in
-                            location.reports
+                        .reports(reports: $subBrand.map(getter: { subBrand in
+                            subBrand.reports
                         }, setter: { reports in
                             subBrand.copyWith(reports: reports)
-                        }))))
+                        }), initialReport: id)))
                 case let .editSuggestions(id):
-                    router.open(.screen(.subBrandEditSuggestions(subBrand: $subBrand)))
+                    router.open(.screen(.subBrandEditSuggestions(subBrand: $subBrand, initialEditSuggestion: id)))
                 }
                 self.open = nil
             }
@@ -198,7 +229,7 @@ struct SubBrandAdminSheet: View {
 
     private func editSubBrand() async {
         do {
-            let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: id, name: newSubBrandName, includesBrandName: includesBrandName)))
+            let updated = try await repository.subBrand.update(updateRequest: .name(.init(id: id, name: name, includesBrandName: includesBrandName)))
             subBrand = subBrand.copyWith(name: updated.name, includesBrandName: includesBrandName)
             await onUpdate(subBrand)
             router.open(.toast(.success("subBrand.updated.toast")))
@@ -259,3 +290,4 @@ extension SubBrandProtocol {
         }
     }
 }
+

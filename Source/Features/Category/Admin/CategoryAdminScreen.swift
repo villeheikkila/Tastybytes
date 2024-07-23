@@ -46,7 +46,7 @@ struct CategoryAdminRowView: View {
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
     var body: some View {
-        RouterLink(open: .sheet(.categoryAdmin(category: category))) {
+        RouterLink(open: .sheet(.categoryAdmin(id: category.id))) {
             HStack {
                 Text(category.name)
                 Spacer()

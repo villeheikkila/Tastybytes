@@ -21,14 +21,14 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         createdBy = try values.decode(Profile.self, forKey: .createdBy)
         resolvedAt = try values.decodeIfPresent(Date.self, forKey: .createdAt)
 
-        let product = try values.decodeIfPresent(Product.Joined.self, forKey: .products)
-        let company = try values.decodeIfPresent(Company.self, forKey: .companies)
-        let brand = try values.decodeIfPresent(Brand.JoinedSubBrandsProductsCompany.self, forKey: .brands)
-        let subBrand = try values.decodeIfPresent(SubBrand.JoinedBrand.self, forKey: .subBrands)
-        let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComments)
+        let product = try values.decodeIfPresent(Product.Joined.self, forKey: .product)
+        let company = try values.decodeIfPresent(Company.self, forKey: .company)
+        let brand = try values.decodeIfPresent(Brand.JoinedSubBrandsProductsCompany.self, forKey: .brand)
+        let subBrand = try values.decodeIfPresent(SubBrand.JoinedBrand.self, forKey: .subBrand)
+        let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComment)
         let checkIn = try values.decodeIfPresent(CheckIn.self, forKey: .checkIn)
-        let checkInImageEntity = try values.decodeIfPresent(ImageEntity.JoinedCheckIn.self, forKey: .checkIn)
-        let profile = try values.decodeIfPresent(Profile.self, forKey: .checkIn)
+        let checkInImageEntity = try values.decodeIfPresent(ImageEntity.JoinedCheckIn.self, forKey: .checkInImage)
+        let profile = try values.decodeIfPresent(Profile.self, forKey: .profile)
         let location = try values.decodeIfPresent(Location.self, forKey: .location)
 
         content = if let checkIn {
@@ -59,13 +59,13 @@ public struct Report: Decodable, Identifiable, Sendable, Hashable {
         case message
         case createdAt = "created_at"
         case createdBy = "created_by"
-        case products
-        case companies
-        case checkInComments = "check_in_comments"
-        case brands
-        case checkIn = "check_in"
-        case subBrands = "sub_brands"
-        case checkInImages = "check_in_images"
+        case product = "products"
+        case company = "companies"
+        case checkInComment = "check_in_comments"
+        case brand = "brands"
+        case checkIn = "check_ins"
+        case subBrand = "sub_brands"
+        case checkInImage = "check_in_images"
         case profile = "profiles"
         case location = "locations"
         case resolvedAt = "resolved_at"

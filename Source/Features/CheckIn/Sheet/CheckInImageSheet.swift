@@ -6,7 +6,7 @@ import Repositories
 import SwiftUI
 
 struct CheckInImageSheet: View {
-    typealias OnDeleteImageCallback = (_ imageEntity: ImageEntity) async -> Void
+    typealias OnDeleteImageCallback = (_ id: ImageEntity.Id) async -> Void
 
     private let logger = Logger(category: "CheckInImageSheet")
     @Environment(Repository.self) private var repository
@@ -64,13 +64,13 @@ struct CheckInImageSheet: View {
                     Button("labels.delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = currentImage })
                 }
                 Divider()
-                // ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
+                ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
                 Divider()
-                AdminRouterLink(open: .sheet(.checkInImageAdmin(checkIn: checkIn, imageEntity: currentImage, onDelete: { imageEntity in
+                AdminRouterLink(open: .sheet(.checkInImageAdmin(id: currentImage.id, onDelete: { id in
                     withAnimation {
-                        images = images.removing(imageEntity)
+                        images = images.removingWithId(id)
                     }
-                    await onDeleteImage?(imageEntity)
+                    await onDeleteImage?(id)
                 })))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")
@@ -94,11 +94,11 @@ struct CheckInImageSheet: View {
 
     private func deleteImage(_ imageEntity: ImageEntity) async {
         do {
-            try await repository.imageEntity.delete(from: .checkInImages, entity: imageEntity)
+            try await repository.imageEntity.delete(from: .checkInImages, id: imageEntity.id)
             withAnimation {
                 images = images.removing(imageEntity)
             }
-            await onDeleteImage?(imageEntity)
+            await onDeleteImage?(imageEntity.id)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

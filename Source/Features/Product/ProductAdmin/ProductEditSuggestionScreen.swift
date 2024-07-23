@@ -7,6 +7,7 @@ import SwiftUI
 
 struct ProductEditSuggestionScreen: View {
     @Binding var product: Product.Detailed
+    let initialEditSuggestion: Product.EditSuggestion.Id?
 
     var body: some View {
         List(product.editSuggestions) { editSuggestion in
@@ -20,6 +21,7 @@ struct ProductEditSuggestionScreen: View {
         }
         .navigationTitle("product.admin.editSuggestion.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
+        .scrollToPosition(id: initialEditSuggestion)
     }
 }
 

@@ -11,24 +11,21 @@ struct CategoryAdminSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var category: Models.Category.Detailed?
+    @State private var category = Models.Category.Detailed()
 
     let id: Models.Category.Id
 
-    init(category: CategoryProtocol) {
-        id = category.id
-    }
-
     var body: some View {
         Form {
-            if let category {
-                content(category: category)
+            if state.isPopulated {
+                content
             }
         }
         .scrollContentBackground(.hidden)
+        .animation(.default, value: category)
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await load()
+                await initialize()
             }
         }
         .navigationTitle("category.admin.navigationTitle")
@@ -36,12 +33,12 @@ struct CategoryAdminSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task {
-            await load()
+        .initialTask {
+            await initialize()
         }
     }
 
-    @ViewBuilder private func content(category: Models.Category.Detailed) -> some View {
+    @ViewBuilder private var content: some View {
         Section("category.admin.section.category") {
             CategoryNameView(category: category)
         }
@@ -88,7 +85,7 @@ struct CategoryAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func load() async {
+    private func initialize() async {
         do {
             category = try await repository.category.getDetailed(id: id)
             state = .populated
@@ -104,7 +101,7 @@ struct CategoryAdminSheetSubcategoryRowView: View {
     let subcategory: SubcategoryProtocol
 
     var body: some View {
-        RouterLink(open: .sheet(.subcategoryAdmin(subcategory: subcategory, onSubmit: { subcategoryName in
+        RouterLink(open: .sheet(.subcategoryAdmin(id: subcategory.id, onEdit: { subcategoryName in
             print(subcategoryName)
         }))) {
             Text(subcategory.name)

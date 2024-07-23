@@ -194,3 +194,39 @@ public extension View {
         modifier(DismissKeyboardOnBackgroundTapModifier())
     }
 }
+
+struct ScrollToPosition<ID: Hashable>: ViewModifier {
+    let id: ID?
+    let anchor: UnitPoint
+    let delay: TimeInterval
+
+    @State private var hasScrolled = false
+
+    func body(content: Content) -> some View {
+        ScrollViewReader { proxy in
+            content
+                .task {
+                    await scrollToPosition(proxy: proxy)
+                }
+        }
+    }
+
+    private func scrollToPosition(proxy: ScrollViewProxy) async {
+        guard !hasScrolled, let id else { return }
+        try? await Task.sleep(for: .milliseconds(Int(delay * 1000)))
+        withAnimation {
+            proxy.scrollTo(id, anchor: anchor)
+        }
+        hasScrolled = true
+    }
+}
+
+public extension View {
+    func scrollToPosition(
+        id: (some Hashable)?,
+        anchor: UnitPoint = .top,
+        delay: TimeInterval = 0.5
+    ) -> some View {
+        modifier(ScrollToPosition(id: id, anchor: anchor, delay: delay))
+    }
+}

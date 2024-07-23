@@ -7,15 +7,22 @@ import SwiftUI
 
 struct ProfileAdminSheet: View {
     typealias OnDeleteCallback = (_ profile: Profile.Detailed) -> Void
+
+    enum Open {
+        case report(Report.Id)
+    }
+
     let logger = Logger(category: "ProfileAdminSheet")
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var profile = Profile.Detailed()
     @State private var summary: ProfileSummary?
 
     let id: Profile.Id
+    let open: Open?
     let onDelete: OnDeleteCallback
 
     private var isProfileDeletable: Bool {
@@ -39,8 +46,8 @@ struct ProfileAdminSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task {
-            await load()
+        .initialTask {
+            await initialize()
         }
     }
 
@@ -73,7 +80,7 @@ struct ProfileAdminSheet: View {
             RouterLink(
                 "admin.section.reports.title",
                 systemImage: "exclamationmark.bubble",
-                count: profile.reports.count,
+                badge: profile.reports.count,
                 open: .screen(
                     .reports(reports: $profile.map(getter: { location in
                         location.reports
@@ -108,11 +115,22 @@ struct ProfileAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func load() async {
+    private func initialize() async {
         do {
             profile = try await repository.profile.getDetailed(id: id)
             summary = try await repository.checkIn.getSummaryByProfileId(id: id)
             state = .populated
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $profile.map(getter: { profile in
+                            profile.reports
+                        }, setter: { reports in
+                            profile.copyWith(reports: reports)
+                        }), initialReport: id)))
+                }
+            }
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])

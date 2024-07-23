@@ -36,7 +36,7 @@ struct AdminEventRowView: View {
             RouterLink(open: event.open) {
                 AdminEventContentEntityView(content: event.content)
             }
-            .buttonStyle(.plain)
+            .foregroundColor(.primary)
         } header: {
             Text(event.sectionTitle)
         } footer: {

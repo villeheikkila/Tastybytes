@@ -7,6 +7,10 @@ import SwiftUI
 struct CheckInCommentAdminSheet: View {
     typealias OnDeleteCallback = (_ comment: CheckInComment.Id) -> Void
 
+    enum Open {
+        case report(Report.Id)
+    }
+
     private let logger = Logger(category: "CheckInCommentAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(Router.self) private var router
@@ -15,6 +19,7 @@ struct CheckInCommentAdminSheet: View {
     @State private var checkInComment = CheckInComment.Detailed()
 
     let id: CheckInComment.Id
+    let open: Open?
     let onDelete: OnDeleteCallback
 
     var body: some View {
@@ -27,7 +32,7 @@ struct CheckInCommentAdminSheet: View {
         .animation(.default, value: checkInComment)
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await load()
+                await initialize()
             }
         }
         .navigationTitle("comment.admin.navigationTitle")
@@ -36,7 +41,7 @@ struct CheckInCommentAdminSheet: View {
             toolbarContent
         }
         .initialTask {
-            await load()
+            await initialize()
         }
     }
 
@@ -56,7 +61,7 @@ struct CheckInCommentAdminSheet: View {
             RouterLink(
                 "admin.section.reports.title",
                 systemImage: "exclamationmark.bubble",
-                count: checkInComment.reports.count,
+                badge: checkInComment.reports.count,
                 open: .screen(
                     .reports(reports: $checkInComment.map(getter: { _ in
                         checkInComment.reports
@@ -77,10 +82,21 @@ struct CheckInCommentAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func load() async {
+    private func initialize() async {
         do {
             checkInComment = try await repository.checkInComment.getDetailed(id: id)
             state = .populated
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $checkInComment.map(getter: { profile in
+                            profile.reports
+                        }, setter: { reports in
+                            checkInComment.copyWith(reports: reports)
+                        }), initialReport: id)))
+                }
+            }
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])

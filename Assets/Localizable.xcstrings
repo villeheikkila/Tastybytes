@@ -950,7 +950,7 @@
         }
       }
     },
-    "brand.admin.subBrand.count" : {
+    "brand.admin.subBrands.label" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1063,6 +1063,16 @@
         }
       }
     },
+    "brand.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand"
+          }
+        }
+      }
+    },
     "brand.list.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -1135,6 +1145,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brand"
+          }
+        }
+      }
+    },
+    "brandOwner.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brand Owner"
           }
         }
       }
@@ -1554,6 +1575,9 @@
           }
         }
       }
+    },
+    "checkIn.label" : {
+
     },
     "checkIn.legacy.label" : {
       "localizations" : {
@@ -4264,6 +4288,9 @@
         }
       }
     },
+    "productListAdmin.navigationTitle" : {
+
+    },
     "products.title" : {
       "localizations" : {
         "en" : {
@@ -5407,6 +5434,16 @@
         }
       }
     },
+    "subBrand.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brand"
+          }
+        }
+      }
+    },
     "subBrand.list.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -5433,17 +5470,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Merge %1$@ to %2$@"
-          }
-        }
-      }
-    },
-    "subBrand.mergeToAnotherSubBrand.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Merge to another sub-brand"
           }
         }
       }
@@ -5497,6 +5523,9 @@
           }
         }
       }
+    },
+    "subBrandListAdmin.navigationTitle" : {
+
     },
     "subcategory.add" : {
       "localizations" : {

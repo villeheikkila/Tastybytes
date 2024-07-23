@@ -10,6 +10,10 @@ struct LocationAdminSheet: View {
     typealias OnEditCallback = (_ location: Location.Detailed) async -> Void
     typealias OnDeleteCallback = (_ location: Location.Detailed) async -> Void
 
+    enum Open {
+        case report(Report.Id)
+    }
+
     let logger = Logger(category: "LocationAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(Repository.self) private var repository
@@ -18,6 +22,7 @@ struct LocationAdminSheet: View {
     @State private var location = Location.Detailed()
 
     let id: Location.Id
+    let open: Open?
     let onEdit: OnEditCallback
     let onDelete: OnDeleteCallback
 
@@ -34,8 +39,8 @@ struct LocationAdminSheet: View {
         .toolbar {
             toolbarContent
         }
-        .task {
-            await load()
+        .initialTask {
+            await initialize()
         }
     }
 
@@ -55,7 +60,7 @@ struct LocationAdminSheet: View {
             RouterLink(
                 "admin.section.reports.title",
                 systemImage: "exclamationmark.bubble",
-                count: location.reports.count,
+                badge: location.reports.count,
                 open: .screen(
                     .reports(reports: $location.map(getter: { location in
                         location.reports
@@ -92,12 +97,23 @@ struct LocationAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func load() async {
+    private func initialize() async {
         do {
             let location = try await repository.location.getDetailed(id: id)
             self.location = location
             state = .populated
             await onEdit(location)
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $location.map(getter: { profile in
+                            profile.reports
+                        }, setter: { reports in
+                            location.copyWith(reports: reports)
+                        }), initialReport: id)))
+                }
+            }
         } catch {
             guard !error.isCancelled else { return }
             state = .error([error])

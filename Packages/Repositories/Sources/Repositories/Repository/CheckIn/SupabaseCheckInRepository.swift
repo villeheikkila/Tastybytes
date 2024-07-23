@@ -80,6 +80,17 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
+    func getDetailedCheckInImage(id: ImageEntity.Id) async throws -> ImageEntity.Detailed {
+        try await client
+            .from(.checkInImages)
+            .select(CheckIn.getQuery(.imageDetailed(false)))
+            .eq("id", value: id.rawValue)
+            .limit(1)
+            .single()
+            .execute()
+            .value
+    }
+
     func getCheckInImages(id: Profile.Id, from: Int, to: Int) async throws -> [ImageEntity.JoinedCheckIn] {
         try await client
             .from(.checkInImages)

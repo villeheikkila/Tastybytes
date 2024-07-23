@@ -4,7 +4,12 @@ import Repositories
 import SwiftUI
 
 struct CheckInAdminSheet: View {
-    typealias OnDeleteCallback = () -> Void
+    typealias OnUpdateCallback = (CheckIn.Detailed) -> Void
+    typealias OnDeleteCallback = (CheckIn.Id) -> Void
+
+    enum Open {
+        case report(Report.Id)
+    }
 
     private let logger = Logger(category: "CheckInAdminSheet")
     @Environment(\.dismiss) private var dismiss
@@ -14,6 +19,8 @@ struct CheckInAdminSheet: View {
     @State private var checkIn = CheckIn.Detailed()
 
     let id: CheckIn.Id
+    let open: Open?
+    let onUpdate: OnUpdateCallback
     let onDelete: OnDeleteCallback
 
     var body: some View {
@@ -26,7 +33,7 @@ struct CheckInAdminSheet: View {
         .animation(.default, value: checkIn)
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await load()
+                await initialize()
             }
         }
         .navigationTitle("checkIn.admin.navigationTitle")
@@ -35,7 +42,7 @@ struct CheckInAdminSheet: View {
             toolbarContent
         }
         .initialTask {
-            await load()
+            await initialize()
         }
     }
 
@@ -49,13 +56,25 @@ struct CheckInAdminSheet: View {
         ModificationInfoView(modificationInfo: checkIn)
         Section("admin.section.details") {
             LabeledIdView(id: checkIn.id.rawValue.formatted())
+            LabeledContent("checkIn.label") {
+                RouterLink(
+                    checkIn.product.formatted(.fullName),
+                    open: .sheet(.productAdmin(id: checkIn.product.id, onDelete: { _ in
+                        dismiss()
+                        onDelete(checkIn.id)
+                    }, onUpdate: { product in
+                        checkIn = checkIn.copyWith(product: .init(product: product))
+                        onUpdate(checkIn)
+                    }))
+                )
+            }
         }
         .customListRowBackground()
         Section {
             RouterLink(
                 "admin.section.reports.title",
                 systemImage: "exclamationmark.bubble",
-                count: checkIn.reports.count,
+                badge: checkIn.reports.count,
                 open: .screen(
                     .reports(reports: $checkIn.map(getter: { _ in
                         checkIn.reports
@@ -82,10 +101,21 @@ struct CheckInAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func load() async {
+    private func initialize() async {
         do {
             checkIn = try await repository.checkIn.getDetailed(id: id)
             state = .populated
+            if let open {
+                switch open {
+                case let .report(id):
+                    router.open(.screen(
+                        .reports(reports: $checkIn.map(getter: { profile in
+                            profile.reports
+                        }, setter: { reports in
+                            checkIn.copyWith(reports: reports)
+                        }), initialReport: id)))
+                }
+            }
         } catch {
             guard !error.isCancelled else { return }
             state = .loading
@@ -97,7 +127,7 @@ struct CheckInAdminSheet: View {
         do {
             try await repository.checkIn.deleteAsModerator(id: id)
             router.removeLast()
-            onDelete()
+            onDelete(checkIn.id)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

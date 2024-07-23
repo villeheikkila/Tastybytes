@@ -9,6 +9,7 @@ struct SubBrandEditSuggestionsScreen: View {
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @Binding var subBrand: SubBrand.Detailed
+    let initialEditSuggestion: SubBrand.EditSuggestion.Id?
 
     var body: some View {
         List(subBrand.editSuggestions) { editSuggestion in
@@ -21,6 +22,7 @@ struct SubBrandEditSuggestionsScreen: View {
         }
         .navigationTitle("subBrand.editSuggestion.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
+        .scrollToPosition(id: initialEditSuggestion)
     }
 
     private func onDelete(_ editSuggestion: SubBrand.EditSuggestion) async {

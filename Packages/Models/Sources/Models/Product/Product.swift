@@ -483,6 +483,21 @@ public extension Product {
             isDiscontinued = product.isDiscontinued
         }
 
+        public init(product: Product.JoinedCategory, subBrand: SubBrand.Detailed) {
+            id = product.id
+            name = product.name
+            description = product.description
+            isVerified = product.isVerified
+            self.subBrand = .init(subBrand: subBrand)
+            subcategories = product.subcategories
+            category = product.category
+            barcodes = []
+            currentUserCheckIns = nil
+            averageRating = nil
+            isDiscontinued = product.isDiscontinued
+            logos = product.logos
+        }
+
         public init(
             product: Product.JoinedCategory,
             subBrand: SubBrand.JoinedProduct,
@@ -790,6 +805,17 @@ public extension Product {
             case category = "categories"
             case subcategories
             case logos = "product_logos"
+        }
+
+        public init(product: Product.Joined) {
+            id = product.id
+            name = product.name
+            description = product.description
+            isVerified = product.isVerified
+            category = product.category
+            subcategories = product.subcategories
+            isDiscontinued = product.isDiscontinued
+            logos = product.logos
         }
 
         public init(

@@ -49,6 +49,17 @@ extension CheckIn: Queryable {
                 [ImageEntity.getQuery(.saved(nil)), "check_ins!inner(id, created_by)"],
                 withTableName
             )
+        case let .imageDetailed(withTableName):
+            buildQuery(
+                .checkInImages,
+                [
+                    ImageEntity.getQuery(.saved(nil)),
+                    CheckIn.getQuery(.joined(true)),
+                    Report.getQuery(.joined(true)),
+                    Profile.getQuery(.minimal(true)),
+                ],
+                withTableName
+            )
         }
     }
 
@@ -56,6 +67,7 @@ extension CheckIn: Queryable {
         case joined(_ withTableName: Bool)
         case detailed(_ withTableName: Bool)
         case image(_ withTableName: Bool)
+        case imageDetailed(_ withTableName: Bool)
     }
 }
 

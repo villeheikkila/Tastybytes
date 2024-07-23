@@ -17,7 +17,7 @@ extension AdminEvent {
         case let .editSuggestion(editSuggestion):
             editSuggestion.open
         case let .report(report):
-            report.content.open
+            report.open
         }
     }
 

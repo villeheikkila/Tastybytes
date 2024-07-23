@@ -4,12 +4,13 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct BrandEditSuggestionAdminScreen: View {
+struct BrandEditSuggestionScreen: View {
     @Binding var brand: Brand.Detailed
+    let initialEditSuggestion: Brand.EditSuggestion.Id?
 
     var body: some View {
         List(brand.editSuggestions) { editSuggestion in
-            BrandEditSuggestionAdminRow(brand: $brand, editSuggestion: editSuggestion)
+            BrandEditSuggestionRow(brand: $brand, editSuggestion: editSuggestion)
         }
         .listStyle(.plain)
         .overlay {
@@ -19,10 +20,11 @@ struct BrandEditSuggestionAdminScreen: View {
         }
         .navigationTitle("company.admin.editSuggestion.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
+        .scrollToPosition(id: initialEditSuggestion)
     }
 }
 
-struct BrandEditSuggestionAdminRow: View {
+struct BrandEditSuggestionRow: View {
     private let logger = Logger(category: "CompanyEditSuggestionRow")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
