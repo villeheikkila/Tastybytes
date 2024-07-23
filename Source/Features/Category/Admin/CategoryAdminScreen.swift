@@ -41,8 +41,6 @@ struct CategoryAdminScreen: View {
 }
 
 struct CategoryAdminRowView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
     var body: some View {

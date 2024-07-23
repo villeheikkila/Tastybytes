@@ -6,8 +6,8 @@ import Repositories
 import SwiftUI
 
 struct ProductAdminSheet: View {
-    typealias OnDeleteCallback = (Product.Id) -> Void
     typealias OnUpdateCallback = (Product.Detailed) async -> Void
+    typealias OnDeleteCallback = (Product.Id) -> Void
 
     enum Open {
         case report(Report.Id)
@@ -26,20 +26,8 @@ struct ProductAdminSheet: View {
 
     let id: Product.Id
     let open: Open?
-    let onDelete: OnDeleteCallback
     let onUpdate: OnUpdateCallback
-
-    init(
-        id: Product.Id,
-        open: Open? = nil,
-        onDelete: @escaping OnDeleteCallback,
-        onUpdate: @escaping OnUpdateCallback
-    ) {
-        self.open = open
-        self.id = id
-        self.onDelete = onDelete
-        self.onUpdate = onUpdate
-    }
+    let onDelete: OnDeleteCallback
 
     var body: some View {
         List {

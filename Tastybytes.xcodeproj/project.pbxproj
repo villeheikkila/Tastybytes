@@ -54,6 +54,8 @@
 		5C511D852BA792DF00F95290 /* CheckInListLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C511D842BA792DF00F95290 /* CheckInListLoadingIndicator.swift */; };
 		5C511D872BA7952100F95290 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C511D862BA7952100F95290 /* Pagination.swift */; };
 		5C5270572B821D6C0062AB18 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */; };
+		5C58906B2C502D5F00C0CBE6 /* BrandsAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C58906A2C502D5F00C0CBE6 /* BrandsAdminScreen.swift */; };
+		5C58906D2C5030C000C0CBE6 /* ProductsAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C58906C2C5030C000C0CBE6 /* ProductsAdminScreen.swift */; };
 		5C6337402C47D53700390B38 /* BrandEditSuggestionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63373F2C47D53700390B38 /* BrandEditSuggestionSheet.swift */; };
 		5C6337422C47F2A200390B38 /* BrandEditSuggestionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6337412C47F2A200390B38 /* BrandEditSuggestionScreen.swift */; };
 		5C6337452C491E5C00390B38 /* AdminEventScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6337442C491E5C00390B38 /* AdminEventScreen.swift */; };
@@ -213,6 +215,7 @@
 		5C95FE742C4EF71500CC2B0A /* ReportEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95FE732C4EF71500CC2B0A /* ReportEntityView.swift */; };
 		5C95FE772C4FDD3F00CC2B0A /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95FE762C4FDD3F00CC2B0A /* Noop.swift */; };
 		5C95FE792C4FEA3D00CC2B0A /* ProductListAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95FE782C4FEA3D00CC2B0A /* ProductListAdminScreen.swift */; };
+		5C95FE7B2C50244D00CC2B0A /* CompaniesAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95FE7A2C50244D00CC2B0A /* CompaniesAdminScreen.swift */; };
 		5C974CCD2C04E9B500CFE98A /* CheckInImageManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */; };
 		5C974CCF2C04E9E600CFE98A /* LocationInputButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CCE2C04E9E600CFE98A /* LocationInputButtonView.swift */; };
 		5C974CD12C04EA0B00CFE98A /* OverlayButton+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */; };
@@ -393,6 +396,8 @@
 		5C511D842BA792DF00F95290 /* CheckInListLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListLoadingIndicator.swift; sourceTree = "<group>"; };
 		5C511D862BA7952100F95290 /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		5C58906A2C502D5F00C0CBE6 /* BrandsAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandsAdminScreen.swift; sourceTree = "<group>"; };
+		5C58906C2C5030C000C0CBE6 /* ProductsAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsAdminScreen.swift; sourceTree = "<group>"; };
 		5C63373F2C47D53700390B38 /* BrandEditSuggestionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEditSuggestionSheet.swift; sourceTree = "<group>"; };
 		5C6337412C47F2A200390B38 /* BrandEditSuggestionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEditSuggestionScreen.swift; sourceTree = "<group>"; };
 		5C6337442C491E5C00390B38 /* AdminEventScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEventScreen.swift; sourceTree = "<group>"; };
@@ -553,6 +558,7 @@
 		5C95FE732C4EF71500CC2B0A /* ReportEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEntityView.swift; sourceTree = "<group>"; };
 		5C95FE762C4FDD3F00CC2B0A /* Noop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Noop.swift; sourceTree = "<group>"; };
 		5C95FE782C4FEA3D00CC2B0A /* ProductListAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListAdminScreen.swift; sourceTree = "<group>"; };
+		5C95FE7A2C50244D00CC2B0A /* CompaniesAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesAdminScreen.swift; sourceTree = "<group>"; };
 		5C974CCC2C04E9B500CFE98A /* CheckInImageManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageManagementView.swift; sourceTree = "<group>"; };
 		5C974CCE2C04E9E600CFE98A /* LocationInputButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputButtonView.swift; sourceTree = "<group>"; };
 		5C974CD02C04EA0B00CFE98A /* OverlayButton+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverlayButton+View.swift"; sourceTree = "<group>"; };
@@ -1214,6 +1220,7 @@
 		5C9057952B2894BE00EC157B /* Brand */ = {
 			isa = PBXGroup;
 			children = (
+				5C58906A2C502D5F00C0CBE6 /* BrandsAdminScreen.swift */,
 				5CAADF0E2B5C634700D956C1 /* Brand */,
 				5C9057742B2894BE00EC157B /* SubBrand */,
 				5C90577A2B2894BE00EC157B /* SubBrandAdmin */,
@@ -1249,6 +1256,7 @@
 				5C9057AF2B2894BE00EC157B /* Feed */,
 				5CC276312B31F01B001032CE /* Mutation */,
 				5C82E8AA2B2F95ED00F2B369 /* Screen */,
+				5C58906C2C5030C000C0CBE6 /* ProductsAdminScreen.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -1346,6 +1354,7 @@
 				5C9057522B2894BE00EC157B /* CompanyAdmin */,
 				5C9057472B2894BE00EC157B /* SearchSheet */,
 				5CEEA30E2C3B2E9D0009B3F5 /* CompanyListScreen.swift */,
+				5C95FE7A2C50244D00CC2B0A /* CompaniesAdminScreen.swift */,
 			);
 			path = Company;
 			sourceTree = "<group>";
@@ -1911,6 +1920,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C58906B2C502D5F00C0CBE6 /* BrandsAdminScreen.swift in Sources */,
 				5C6337452C491E5C00390B38 /* AdminEventScreen.swift in Sources */,
 				5CD2EE212C36D947009AA949 /* ProfileAdminSheet.swift in Sources */,
 				5C4FC6402BA70C110025DB83 /* WebView.swift in Sources */,
@@ -2073,6 +2083,7 @@
 				5C95FE722C4E90B100CC2B0A /* SubBrandEditSuggestionEntityView.swift in Sources */,
 				5C9058232B2894BE00EC157B /* TaggedInCheckInNotificationView.swift in Sources */,
 				5C4FC6342BA5F8910025DB83 /* CheckInImageSheet.swift in Sources */,
+				5C58906D2C5030C000C0CBE6 /* ProductsAdminScreen.swift in Sources */,
 				5C07F27F2B51F00600D8740B /* PhaseObserver.swift in Sources */,
 				5CD3C0DD2B814B910049E563 /* RatingView.swift in Sources */,
 				5C511D7D2BA78E5800F95290 /* AuthenticationScreenWatchOSContent.swift in Sources */,
@@ -2100,6 +2111,7 @@
 				5C9057F02B2894BE00EC157B /* FriendSheet.swift in Sources */,
 				5C82E8AC2B2F95F500F2B369 /* ProductScreenLoadedFromBarcodeOverlay.swift in Sources */,
 				5C90582B2B2894BE00EC157B /* CategoryAdminScreen.swift in Sources */,
+				5C95FE7B2C50244D00CC2B0A /* CompaniesAdminScreen.swift in Sources */,
 				5CAADF092B5C548700D956C1 /* DiscoverProductAssignBarcode.swift in Sources */,
 				5C95FE702C4E905500CC2B0A /* SubBrandEditSuggestionScreen.swift in Sources */,
 				5CD2EE2C2C37E161009AA949 /* ProductAdminSheet.swift in Sources */,

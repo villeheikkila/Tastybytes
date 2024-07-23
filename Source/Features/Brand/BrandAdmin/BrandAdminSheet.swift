@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BrandAdminSheet: View {
     typealias OnUpdateCallback = (_ updatedBrand: Brand.Detailed) async -> Void
-    typealias OnDeleteCallback = (_ updatedBrand: Brand.Detailed) async -> Void
+    typealias OnDeleteCallback = (_ updatedBrand: Brand.Id) async -> Void
 
     enum Open {
         case report(Report.Id)
@@ -257,7 +257,7 @@ struct BrandAdminSheet: View {
     private func deleteBrand(_ brand: Brand.Detailed) async {
         do {
             try await repository.brand.delete(id: brand.id)
-            await onDelete(brand)
+            await onDelete(brand.id)
             dismiss()
         } catch {
             guard !error.isCancelled else { return }

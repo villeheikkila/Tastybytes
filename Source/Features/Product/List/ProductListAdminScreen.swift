@@ -6,10 +6,10 @@ struct ProductListAdminScreen: View {
 
     var body: some View {
         List(products) { product in
-            RouterLink(open: .sheet(.productAdmin(id: product.id, onDelete: { id in
-                products = products.removingWithId(id)
-            }, onUpdate: { product in
+            RouterLink(open: .sheet(.productAdmin(id: product.id, onUpdate: { product in
                 products = products.replacingWithId(product.id, with: .init(product: product))
+            }, onDelete: { id in
+                products = products.removingWithId(id)
             }))) {
                 ProductEntityView(product: product)
             }
@@ -19,4 +19,3 @@ struct ProductListAdminScreen: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-

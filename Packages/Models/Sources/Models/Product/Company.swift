@@ -38,7 +38,7 @@ public struct Company: Identifiable, Codable, Hashable, Sendable, CompanyProtoco
         isVerified = company.isVerified
         logos = company.logos
     }
-    
+
     public init() {
         id = .init(rawValue: 0)
         name = ""

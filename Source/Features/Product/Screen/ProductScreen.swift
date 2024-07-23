@@ -158,10 +158,10 @@ struct ProductInnerScreen: View {
                 )
                 ReportButton(entity: .product(product))
                 Divider()
-                AdminRouterLink(open: .sheet(.productAdmin(id: product.id, onDelete: { _ in
-                    router.removeLast()
-                }, onUpdate: { _ in
+                AdminRouterLink(open: .sheet(.productAdmin(id: product.id, onUpdate: { _ in
                     await getProductData()
+                }, onDelete: { _ in
+                    router.removeLast()
                 })))
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")

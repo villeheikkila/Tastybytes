@@ -59,12 +59,12 @@ struct CheckInAdminSheet: View {
             LabeledContent("checkIn.label") {
                 RouterLink(
                     checkIn.product.formatted(.fullName),
-                    open: .sheet(.productAdmin(id: checkIn.product.id, onDelete: { _ in
-                        dismiss()
-                        onDelete(checkIn.id)
-                    }, onUpdate: { product in
+                    open: .sheet(.productAdmin(id: checkIn.product.id, onUpdate: { product in
                         checkIn = checkIn.copyWith(product: .init(product: product))
                         onUpdate(checkIn)
+                    }, onDelete: { _ in
+                        dismiss()
+                        onDelete(checkIn.id)
                     }))
                 )
             }

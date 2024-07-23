@@ -6,6 +6,7 @@ public protocol BrandRepository: Sendable {
     func getJoinedById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsProductsCompany
     func getDetailed(id: Brand.Id) async throws -> Brand.Detailed
     func getByBrandOwnerId(brandOwnerId: Company.Id) async throws -> [Brand.JoinedSubBrands]
+    func getAll() async throws -> [Brand.JoinedCompany]
     func getUnverified() async throws -> [Brand.JoinedSubBrandsProductsCompany]
     func getSummaryById(id: Brand.Id) async throws -> Summary
     func insert(newBrand: Brand.NewRequest) async throws -> Brand.JoinedSubBrands

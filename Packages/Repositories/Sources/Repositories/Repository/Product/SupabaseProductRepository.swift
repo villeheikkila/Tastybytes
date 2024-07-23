@@ -100,6 +100,14 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
+    func getAll() async throws -> [Product.Joined] {
+        try await client
+            .from(.products)
+            .select(Product.getQuery(.joinedBrandSubcategories(false)))
+            .execute()
+            .value
+    }
+
     func checkIfOnWishlist(id: Product.Id) async throws -> Bool {
         try await client
             .rpc(

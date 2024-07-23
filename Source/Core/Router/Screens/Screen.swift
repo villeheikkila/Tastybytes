@@ -60,6 +60,9 @@ enum Screen: Hashable, Sendable {
     case reportsAdmin
     case productListAdmin(products: Binding<[Product.Joined]>)
     case subBrandListAdmin(brand: Brand, subBrands: Binding<[SubBrand.JoinedProduct]>)
+    case companiesAdmin
+    case brandsAdmin
+    case productsAdmin
 
     @MainActor
     @ViewBuilder
@@ -179,6 +182,12 @@ enum Screen: Hashable, Sendable {
             ProductListAdminScreen(products: products)
         case let .subBrandListAdmin(brand, subBrands):
             SubBrandListAdminScreen(brand: brand, subBrands: subBrands)
+        case .companiesAdmin:
+            CompaniesAdminScreen()
+        case .brandsAdmin:
+            BrandsAdminScreen()
+        case .productsAdmin:
+            ProductsAdminScreen()
         }
     }
 
@@ -268,8 +277,11 @@ enum Screen: Hashable, Sendable {
             (.notificationSettingsScreen, .notificationSettingsScreen),
             (.appIcon, .appIcon),
             (.blockedUsers, .blockedUsers),
+            (.companiesAdmin, .companiesAdmin),
             (.about, .about),
             (.reportsAdmin, .reportsAdmin),
+            (.productsAdmin, .productsAdmin),
+            (.brandsAdmin, .brandsAdmin),
             (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin), (.profileEditSuggestions, .profileEditSuggestions), (
                 .profileReports, .profileReports
             ):
@@ -444,6 +456,12 @@ enum Screen: Hashable, Sendable {
             hasher.combine("subBrandListAdmin")
             hasher.combine(brand)
             hasher.combine(subBrands.wrappedValue)
+        case .companiesAdmin:
+            hasher.combine("companiesAdmin")
+        case .brandsAdmin:
+            hasher.combine("brandsAdmin")
+        case .productsAdmin:
+            hasher.combine("productsAdmin")
         }
     }
 }

@@ -7,6 +7,7 @@ public protocol ProductRepository: Sendable {
     func getById(id: Product.Id) async throws -> Product.Joined
     func getDetailed(id: Product.Id) async throws -> Product.Detailed
     func getByProfile(id: Profile.Id) async throws -> [Product.Joined]
+    func getAll() async throws -> [Product.Joined]
     func getFeed(_ type: Product.FeedType, from: Int, to: Int, categoryFilterId: Models.Category.Id?) async throws -> [Product.Joined]
     func delete(id: Product.Id) async throws
     func create(newProductParams: Product.NewRequest) async throws -> Product.Joined

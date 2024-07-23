@@ -1160,6 +1160,16 @@
         }
       }
     },
+    "brandsAdmin.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brands"
+          }
+        }
+      }
+    },
     "brandScreen.groupProductsBy" : {
       "localizations" : {
         "en" : {
@@ -2027,6 +2037,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Send the comment"
+          }
+        }
+      }
+    },
+    "companiesAdmin.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Companies"
           }
         }
       }
@@ -4292,6 +4312,16 @@
 
     },
     "products.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products"
+          }
+        }
+      }
+    },
+    "productsAdmin.navigationTitle" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {

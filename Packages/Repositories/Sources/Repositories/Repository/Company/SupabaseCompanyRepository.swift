@@ -17,6 +17,14 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
+    func getAll() async throws -> [Company] {
+        try await client
+            .from(.companies)
+            .select(Company.getQuery(.saved(false)))
+            .execute()
+            .value
+    }
+
     func getJoinedById(id: Company.Id) async throws -> Company.Joined {
         try await client
             .from(.companies)

@@ -37,6 +37,9 @@ struct AdminScreen: View {
             Section("admin.section.management.title") {
                 RouterLink("admin.category.title", systemImage: "rectangle.stack", open: .screen(.categoryAdmin))
                 RouterLink("flavor.navigationTitle", systemImage: "face.smiling", open: .screen(.flavorAdmin))
+                RouterLink("companiesAdmin.navigationTitle", systemImage: "briefcase", open: .screen(.companiesAdmin))
+                RouterLink("brandsAdmin.navigationTitle", systemImage: "tag", open: .screen(.brandsAdmin))
+                RouterLink("productsAdmin.navigationTitle", systemImage: "cart", open: .screen(.productsAdmin))
                 RouterLink("admin.locations.title", systemImage: "mappin.square", open: .screen(.locationAdmin))
                 RouterLink("admin.profiles.title", systemImage: "person", open: .screen(.profilesAdmin))
             }

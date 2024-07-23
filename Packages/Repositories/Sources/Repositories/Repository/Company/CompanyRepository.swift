@@ -3,6 +3,7 @@ import Models
 
 public protocol CompanyRepository: Sendable {
     func getById(id: Company.Id) async throws -> Company
+    func getAll() async throws -> [Company]
     func getJoinedById(id: Company.Id) async throws -> Company.Joined
     func getDetailed(id: Company.Id) async throws -> Company.Detailed
     func getUnverified() async throws -> [Company]

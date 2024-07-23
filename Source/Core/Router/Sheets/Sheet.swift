@@ -53,8 +53,8 @@ enum Sheet: Identifiable, Equatable {
     case productAdmin(
         id: Product.Id,
         open: ProductAdminSheet.Open? = nil,
-        onDelete: ProductAdminSheet.OnDeleteCallback = noop,
-        onUpdate: ProductAdminSheet.OnUpdateCallback = noop
+        onUpdate: ProductAdminSheet.OnUpdateCallback = noop,
+        onDelete: ProductAdminSheet.OnDeleteCallback = noop
     )
     case checkInAdmin(
         id: CheckIn.Id,
@@ -153,8 +153,8 @@ enum Sheet: Identifiable, Equatable {
             LocationSearchSheet(initialLocation: initialLocation, initialSearchTerm: initialSearchTerm, onSelect: onSelect)
         case let .profileAdmin(id, open, onDelete):
             ProfileAdminSheet(id: id, open: open, onDelete: onDelete)
-        case let .productAdmin(id, open, onDelete, onUpdate):
-            ProductAdminSheet(id: id, open: open, onDelete: onDelete, onUpdate: onUpdate)
+        case let .productAdmin(id, open, onUpdate, onDelete):
+            ProductAdminSheet(id: id, open: open, onUpdate: onUpdate, onDelete: onDelete)
         case let .checkInAdmin(id, open, onUpdate, onDelete):
             CheckInAdminSheet(id: id, open: open, onUpdate: onUpdate, onDelete: onDelete)
         case let .checkInCommentAdmin(id, open, onDelete):

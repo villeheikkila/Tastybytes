@@ -28,6 +28,14 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
+    func getAll() async throws -> [Brand.JoinedCompany] {
+        try await client
+            .from(.brands)
+            .select(Brand.getQuery(.joinedCompany(false)))
+            .execute()
+            .value
+    }
+
     func getDetailed(id: Brand.Id) async throws -> Brand.Detailed {
         try await client
             .from(.brands)
