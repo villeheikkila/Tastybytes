@@ -5,7 +5,7 @@ internal import Supabase
 struct SupabaseLocationRepository: LocationRepository {
     let client: SupabaseClient
 
-    func insert(location: Location) async throws -> Location {
+    func insert(location: Location.Saved) async throws -> Location.Saved {
         try await client
             .rpc(fn: .getLocationInsertIfNotExist, params: location.newLocationRequest)
             .select(Location.getQuery(.joined(false)))
@@ -14,7 +14,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func getById(id: Location.Id) async throws -> Location {
+    func getById(id: Location.Id) async throws -> Location.Saved {
         try await client
             .from(.locations)
             .select(Location.getQuery(.joined(false)))
@@ -36,7 +36,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func getCheckInLocations(userId _: Profile.Id) async throws -> [Location] {
+    func getCheckInLocations(userId _: Profile.Id) async throws -> [Location.Saved] {
         try await client
             .from(.viewRecentLocationsFromCurrentUser)
             .select(Location.getQuery(.joined(false)))
@@ -45,7 +45,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func getRecentLocations(category: Location.RecentLocation) async throws -> [Location] {
+    func getRecentLocations(category: Location.RecentLocation) async throws -> [Location.Saved] {
         try await client
             .from(category.view)
             .select(Location.getQuery(.joined(false)))
@@ -55,7 +55,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func getSuggestions(location: Location.SuggestionParams) async throws -> [Location] {
+    func getSuggestions(location: Location.SuggestionParams) async throws -> [Location.Saved] {
         try await client
             .rpc(fn: .getLocationSuggestions, params: location)
             .select(Location.getQuery(.joined(false)))
@@ -80,7 +80,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .execute()
     }
 
-    func search(searchTerm: String) async throws -> [Location] {
+    func search(searchTerm: String) async throws -> [Location.Saved] {
         try await client
             .from(.locations)
             .select(Location.getQuery(.joined(false)))
@@ -108,7 +108,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .execute()
     }
 
-    func getLocations() async throws -> [Location] {
+    func getLocations() async throws -> [Location.Saved] {
         try await client
             .from(.locations)
             .select(Location.getQuery(.detailed(false)))

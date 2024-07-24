@@ -51,9 +51,9 @@ extension CheckInCard {
         case product
         case profile(Profile)
         case activity(Profile)
-        case location(Location)
+        case location(Location.Saved)
 
-        func isLoadedFromLocation(_ location: Location) -> Bool {
+        func isLoadedFromLocation(_ location: Location.Saved) -> Bool {
             switch self {
             case let .location(fromLocation):
                 fromLocation == location

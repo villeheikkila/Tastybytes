@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-extension AdminEvent {
+extension AdminEvent.Joined {
     var open: Router.Open {
         switch content {
         case let .company(company):

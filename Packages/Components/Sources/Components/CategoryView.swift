@@ -2,11 +2,15 @@ import Models
 import SwiftUI
 
 public struct CategoryView: View {
-    let category: Models.Category
+    let category: Models.Category.Saved
     let subcategories: [SubcategoryProtocol]
-    let servingStyle: ServingStyle?
+    let servingStyle: ServingStyle.Saved?
 
-    public init(category: Models.Category, subcategories: [SubcategoryProtocol], servingStyle: ServingStyle? = nil) {
+    public init(
+        category: Models.Category.Saved,
+        subcategories: [SubcategoryProtocol],
+        servingStyle: ServingStyle.Saved? = nil
+    ) {
         self.category = category
         self.subcategories = subcategories
         self.servingStyle = servingStyle
@@ -27,7 +31,11 @@ public struct CategoryView: View {
 
 #Preview {
     CategoryView(
-        category: Category(id: 0, name: "beverage", icon: "🥤"),
-        subcategories: [Subcategory(id: 0, name: "BCAA", isVerified: true)], servingStyle: .init(id: 1, name: "Can")
+        category: .init(id: 0, name: "beverage", icon: "🥤"),
+        subcategories: [Subcategory.Saved(id: 0, name: "BCAA", isVerified: true)],
+        servingStyle: .init(
+            id: 1,
+            name: "Can"
+        )
     )
 }

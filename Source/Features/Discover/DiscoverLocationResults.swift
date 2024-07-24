@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct DiscoverLocationResults: View {
-    let locations: [Location]
+    let locations: [Location.Saved]
 
     var body: some View {
         ForEach(locations) { location in

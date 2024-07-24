@@ -20,7 +20,7 @@ public final class ImageUploadEnvironmentModel {
 
     public func uploadCheckInImage(checkIn: CheckIn, images: [UIImage]) {
         Task(priority: .userInitiated) {
-            var uploadedImages = [ImageEntity]()
+            var uploadedImages = [ImageEntity.Saved]()
             for image in images {
                 let blurHash: String? = if let hash = image.resize(to: 100)?.blurHash(numberOfComponents: (5, 5)) {
                     BlurHash(hash: hash, height: image.size.height, width: image.size.width).encoded

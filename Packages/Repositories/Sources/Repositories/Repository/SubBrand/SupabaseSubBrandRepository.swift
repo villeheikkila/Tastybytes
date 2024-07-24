@@ -4,7 +4,7 @@ internal import Supabase
 struct SupabaseSubBrandRepository: SubBrandRepository {
     let client: SupabaseClient
 
-    func insert(newSubBrand: SubBrand.NewRequest) async throws -> SubBrand {
+    func insert(newSubBrand: SubBrand.NewRequest) async throws -> SubBrand.Saved {
         try await client
             .from(.subBrands)
             .insert(newSubBrand, returning: .representation)
@@ -25,7 +25,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             .value
     }
 
-    func update(updateRequest: SubBrand.Update) async throws -> SubBrand {
+    func update(updateRequest: SubBrand.Update) async throws -> SubBrand.Saved {
         let baseQuery = client
             .from(.subBrands)
 
@@ -82,15 +82,15 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             .execute()
     }
 
-    func createEditSuggestion(subBrand: SubBrandProtocol, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) async throws {
+    func createEditSuggestion(id: SubBrand.Id, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) async throws {
         struct SubBrandEditSuggestionRequest: Encodable {
             let subBrandId: SubBrand.Id
             let includesBrandName: Bool?
             let name: String?
             let brandId: Brand.Id?
 
-            init(subBrand: SubBrandProtocol, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) {
-                subBrandId = subBrand.id
+            init(id: SubBrand.Id, brand: BrandProtocol?, name: String?, includesBrandName: Bool?) {
+                subBrandId = id
                 self.includesBrandName = includesBrandName
                 self.name = name
                 brandId = brand?.id
@@ -108,7 +108,7 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
             .from(.subBrandEditSuggestion)
             .insert(
                 SubBrandEditSuggestionRequest(
-                    subBrand: subBrand,
+                    id: id,
                     brand: brand,
                     name: name,
                     includesBrandName: includesBrandName

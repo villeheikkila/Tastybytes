@@ -11,11 +11,11 @@ struct ServingStyleManagementSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var servingStyles = [ServingStyle]()
+    @State private var servingStyles = [ServingStyle.Saved]()
     @State private var newServingStyleName = ""
-    @Binding var pickedServingStyles: [ServingStyle]
+    @Binding var pickedServingStyles: [ServingStyle.Saved]
 
-    let onSelect: (_ servingStyle: ServingStyle) async -> Void
+    let onSelect: (_ servingStyle: ServingStyle.Saved) async -> Void
 
     var body: some View {
         List {
@@ -25,7 +25,7 @@ struct ServingStyleManagementSheet: View {
             Section("servingStyle.name.add.title") {
                 TextField("servingStyle.name.placeholder", text: $newServingStyleName)
                 AsyncButton("labels.create") {
-                    await createServingStyle()
+                    await createServingStyle(name: newServingStyleName)
                 }
                 .disabled(!newServingStyleName.isValidLength(.normal(allowEmpty: false)))
             }
@@ -56,10 +56,9 @@ struct ServingStyleManagementSheet: View {
         }
     }
 
-    private func createServingStyle() async {
+    private func createServingStyle(name: String) async {
         do {
-            let servingStyle = try await repository.servingStyle.insert(
-                servingStyle: ServingStyle.NewRequest(name: newServingStyleName))
+            let servingStyle = try await repository.servingStyle.insert(name: name)
             withAnimation {
                 servingStyles.append(servingStyle)
                 newServingStyleName = ""
@@ -71,7 +70,7 @@ struct ServingStyleManagementSheet: View {
         }
     }
 
-    private func deleteServingStyle(_ servingStyle: ServingStyle) async {
+    private func deleteServingStyle(_ servingStyle: ServingStyle.Saved) async {
         do {
             try await repository.servingStyle.delete(id: servingStyle.id)
             withAnimation {
@@ -85,10 +84,10 @@ struct ServingStyleManagementSheet: View {
         }
     }
 
-    private func editServingStyle(_ servingStyle: ServingStyle, _ updatedServingStyle: ServingStyle) async {
+    private func editServingStyle(_ servingStyle: ServingStyle.Saved, _ updatedServingStyle: ServingStyle.Saved) async {
         do {
             let servingStyle = try await repository.servingStyle
-                .update(update: ServingStyle.UpdateRequest(id: updatedServingStyle.id, name: updatedServingStyle.name))
+                .update(id: updatedServingStyle.id, name: updatedServingStyle.name)
             withAnimation {
                 servingStyles.replace(servingStyle, with: updatedServingStyle)
             }
@@ -109,11 +108,11 @@ struct ServingStyleManagementRow: View {
         }
     }
 
-    let servingStyle: ServingStyle
-    @Binding var pickedServingStyles: [ServingStyle]
-    let deleteServingStyle: (_ servingStyle: ServingStyle) async -> Void
-    let editServingStyle: (_ servingStyle: ServingStyle, _ updatedServingStyle: ServingStyle) async -> Void
-    let onSelect: (_ servingStyle: ServingStyle) async -> Void
+    let servingStyle: ServingStyle.Saved
+    @Binding var pickedServingStyles: [ServingStyle.Saved]
+    let deleteServingStyle: (_ servingStyle: ServingStyle.Saved) async -> Void
+    let editServingStyle: (_ servingStyle: ServingStyle.Saved, _ updatedServingStyle: ServingStyle.Saved) async -> Void
+    let onSelect: (_ servingStyle: ServingStyle.Saved) async -> Void
 
     var body: some View {
         AsyncButton(

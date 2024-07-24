@@ -2,9 +2,9 @@ import Models
 import SwiftUI
 
 public struct FlavorsView: View {
-    let flavors: [Flavor]
+    let flavors: [Flavor.Saved]
 
-    public init(flavors: [Flavor]) {
+    public init(flavors: [Flavor.Saved]) {
         self.flavors = flavors
     }
 

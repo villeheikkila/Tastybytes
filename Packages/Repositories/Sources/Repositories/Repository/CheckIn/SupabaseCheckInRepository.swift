@@ -179,7 +179,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?) async throws -> ImageEntity {
+    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?) async throws -> ImageEntity.Saved {
         let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
         let path = "\(userId.uuidString.lowercased())/\(fileName)"
 
@@ -195,7 +195,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func updateImageBlurHash(file: String, blurHash: String) async throws -> ImageEntity {
+    func updateImageBlurHash(file: String, blurHash: String) async throws -> ImageEntity.Saved {
         try await client
             .rpc(fn: .updateCheckInImageBlurHash, params: UpdateCheckInImageBlurHashParams(file: file, blurHash: blurHash))
             .select(ImageEntity.getQuery(.saved(nil)))

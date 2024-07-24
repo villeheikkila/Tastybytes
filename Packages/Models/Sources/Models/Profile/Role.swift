@@ -1,4 +1,4 @@
-import Tagged
+public import Tagged
 
 public struct Role: Identifiable, Codable, Hashable, Sendable {
     public let id: Role.Id

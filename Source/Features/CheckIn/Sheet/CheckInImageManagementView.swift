@@ -19,9 +19,9 @@ struct CheckInImageManagementView: View {
     @State private var showCamera = false
 
     @Binding var newImages: [UIImage]
-    @Binding var images: [ImageEntity]
+    @Binding var images: [ImageEntity.Saved]
     @Binding var checkInAt: Date
-    @Binding var locationFromImage: Location?
+    @Binding var locationFromImage: Location.Saved?
 
     var totalImages: Int {
         images.count + newImages.count
@@ -104,10 +104,10 @@ struct CheckInImageManagementView: View {
     func getLocationFromCoordinate(coordinate: CLLocationCoordinate2D) async {
         let countryCode = try? await coordinate.getISOCountryCode()
         let country = appEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
-        locationFromImage = Location(coordinate: coordinate, countryCode: countryCode, country: country)
+        locationFromImage = .init(coordinate: coordinate, countryCode: countryCode, country: country)
     }
 
-    private func deleteImage(_ entity: ImageEntity) async {
+    private func deleteImage(_ entity: ImageEntity.Saved) async {
         do {
             try await repository.imageEntity.delete(from: .checkInImages, id: entity.id)
             withAnimation {

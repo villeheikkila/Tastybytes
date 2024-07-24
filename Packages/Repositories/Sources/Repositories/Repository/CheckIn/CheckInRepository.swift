@@ -4,7 +4,7 @@ import Models
 public enum CheckInQueryType: Sendable {
     case paginated(Int, Int)
     case dateRange(Int, Int, ClosedRange<Date>)
-    case location(Int, Int, Location)
+    case location(Int, Int, Location.Saved)
     case all
 }
 
@@ -28,5 +28,5 @@ public protocol CheckInRepository: Sendable {
     func delete(id: CheckIn.Id) async throws
     func deleteAsModerator(id: CheckIn.Id) async throws
     func getSummaryByProfileId(id: Profile.Id) async throws -> ProfileSummary
-    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?) async throws -> ImageEntity
+    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?) async throws -> ImageEntity.Saved
 }

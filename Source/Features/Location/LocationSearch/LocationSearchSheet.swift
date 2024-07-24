@@ -10,13 +10,13 @@ struct LocationSearchSheet: View {
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var searchResults = [Location]()
+    @State private var searchResults = [Location.Saved]()
     @State private var searchTerm: String
-    @State private var initialLocation: Location?
+    @State private var initialLocation: Location.Saved?
 
-    let onSelect: (_ location: Location) -> Void
+    let onSelect: (_ location: Location.Saved) -> Void
 
-    init(initialLocation: Location?, initialSearchTerm: String?, onSelect: @escaping (_ location: Location) -> Void) {
+    init(initialLocation: Location.Saved?, initialSearchTerm: String?, onSelect: @escaping (_ location: Location.Saved) -> Void) {
         self.onSelect = onSelect
         searchTerm = initialSearchTerm ?? ""
         _initialLocation = State(initialValue: initialLocation)
@@ -84,7 +84,7 @@ struct LocationSearchSheet: View {
     }
 
     private nonisolated func searchLocationsNatural(query: String?, center: CLLocationCoordinate2D, radius: CLLocationDistance)
-        async throws -> [Location]
+        async throws -> [Location.Saved]
     {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
@@ -92,7 +92,7 @@ struct LocationSearchSheet: View {
         request.region = .init(center: center, latitudinalMeters: radius, longitudinalMeters: radius)
         let search = MKLocalSearch(request: request)
         let response = try await search.start()
-        return response.mapItems.map { Location(mapItem: $0) }
+        return response.mapItems.map { .init(mapItem: $0) }
     }
 
     func loadInitialData() async {

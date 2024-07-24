@@ -12,18 +12,18 @@ struct FriendsScreen: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var state: ScreenState = .loading
-    @State private var friends: [Friend]
+    @State private var friends: [Friend.Saved]
     @State private var searchTerm = ""
     @State private var isRefreshing = false
 
     let profile: Profile
 
-    init(profile: Profile, initialFriends: [Friend]? = []) {
+    init(profile: Profile, initialFriends: [Friend.Saved]? = []) {
         self.profile = profile
         _friends = State(wrappedValue: initialFriends ?? [])
     }
 
-    private var filteredFriends: [Friend] {
+    private var filteredFriends: [Friend.Saved] {
         if searchTerm.isEmpty {
             friends
         } else {

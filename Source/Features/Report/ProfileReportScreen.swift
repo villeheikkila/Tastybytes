@@ -9,7 +9,7 @@ import SwiftUI
 struct ProfileReportScreen: View {
     let contributionsModel: ContributionsModel
 
-    var reports: [Report] {
+    var reports: [Report.Joined] {
         contributionsModel.contributions?.reports ?? []
     }
 
@@ -35,7 +35,7 @@ struct ProfileReportScreen: View {
 }
 
 struct ReportReaderRowView: View {
-    let report: Report
+    let report: Report.Joined
 
     var body: some View {
         Section {

@@ -4,9 +4,9 @@ import SwiftUI
 
 public struct LocationShareLinkView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    let location: Location
+    let location: Location.Saved
 
-    public init(location: Location) {
+    public init(location: Location.Saved) {
         self.location = location
     }
 

@@ -18,14 +18,14 @@ struct ProductMutationView: View {
     @FocusState private var focusedField: Focusable?
     @State private var primaryActionTask: Task<Void, Never>?
     @State private var state: ScreenState = .loading
-    @State private var subcategories = [Subcategory]()
+    @State private var subcategories = [Subcategory.Saved]()
     @State private var category: Models.Category.JoinedSubcategoriesServingStyles? {
         didSet {
             subcategories = []
         }
     }
 
-    @State private var brandOwner: Company? {
+    @State private var brandOwner: Company.Saved? {
         didSet {
             brand = nil
             subBrand = nil

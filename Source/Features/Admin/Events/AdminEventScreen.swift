@@ -29,7 +29,7 @@ struct AdminEventScreen: View {
 
 struct AdminEventRowView: View {
     @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
-    let event: AdminEvent
+    let event: AdminEvent.Joined
 
     var body: some View {
         Section {

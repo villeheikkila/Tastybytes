@@ -11,7 +11,7 @@ import SwiftUI
 
 struct LocationScreen: View {
     @Environment(Repository.self) private var repository
-    let location: Location
+    let location: Location.Saved
 
     var body: some View {
         LocationInnerScreen(repository: repository, location: location)
@@ -25,10 +25,10 @@ struct LocationInnerScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var summary: Summary?
-    @State private var location: Location
+    @State private var location: Location.Saved
     @State private var checkInLoader: CheckInListLoader
 
-    init(repository: Repository, location: Location) {
+    init(repository: Repository, location: Location.Saved) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
             try await repository.checkIn.getByLocation(locationId: location.id, segment: segment, from: from, to: to)
         }, id: "LocationScreen"))
@@ -108,7 +108,7 @@ struct LocationInnerScreen: View {
 }
 
 struct LocationScreenHeader: View {
-    let location: Location
+    let location: Location.Saved
     let summary: Summary?
 
     var body: some View {
@@ -131,7 +131,7 @@ struct LocationScreenHeader: View {
 }
 
 struct LocationScreenMap: View {
-    let location: Location
+    let location: Location.Saved
 
     var body: some View {
         if let coordinate = location.location?.coordinate {
@@ -152,7 +152,7 @@ struct LocationScreenMap: View {
 }
 
 struct LocationToolbarItem: ToolbarContent {
-    var location: Location
+    var location: Location.Saved
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .principal) {

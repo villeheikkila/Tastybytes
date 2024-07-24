@@ -5,8 +5,8 @@ import SwiftUI
 struct CheckInCardProduct: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
     let product: Product.Joined
-    let productVariant: Product.Variant?
-    let servingStyle: ServingStyle?
+    let productVariant: Product.Variant.JoinedCompany?
+    let servingStyle: ServingStyle.Saved?
 
     var body: some View {
         RouterLink(open: .screen(.product(product))) {

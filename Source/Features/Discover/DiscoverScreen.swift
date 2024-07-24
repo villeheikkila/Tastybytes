@@ -20,8 +20,8 @@ struct DiscoverScreen: View {
     @State private var searchResultKey: SearchKey?
     @State private var products = [Product.Joined]()
     @State private var profiles = [Profile]()
-    @State private var companies = [Company]()
-    @State private var locations = [Location]()
+    @State private var companies = [Company.Saved]()
+    @State private var locations = [Location.Saved]()
     // Search State
     @State private var error: Error?
     // Barcode

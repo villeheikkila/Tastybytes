@@ -6,7 +6,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
     let client: SupabaseClient
     let imageEntityRepository: ImageEntityRepository
 
-    func getById(id: Company.Id) async throws -> Company {
+    func getById(id: Company.Id) async throws -> Company.Saved {
         try await client
             .from(.companies)
             .select(Company.getQuery(.saved(false)))
@@ -17,10 +17,11 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func getAll() async throws -> [Company] {
+    func getAll() async throws -> [Company.Saved] {
         try await client
             .from(.companies)
             .select(Company.getQuery(.saved(false)))
+            .order("created_at", ascending: false)
             .execute()
             .value
     }
@@ -47,7 +48,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func insert(newCompany: Company.NewRequest) async throws -> Company {
+    func insert(newCompany: Company.NewRequest) async throws -> Company.Saved {
         try await client
             .from(.companies)
             .insert(newCompany, returning: .representation)
@@ -57,7 +58,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func uploadLogo(companyId: Company.Id, data: Data) async throws -> ImageEntity {
+    func uploadLogo(companyId: Company.Id, data: Data) async throws -> ImageEntity.Saved {
         let fileName = "\(companyId)_\(Date.now.timeIntervalSince1970).jpeg"
 
         try await client
@@ -68,7 +69,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         return try await imageEntityRepository.getByFileName(from: .companyLogos, fileName: fileName)
     }
 
-    func getUnverified() async throws -> [Company] {
+    func getUnverified() async throws -> [Company.Saved] {
         try await client
             .from(.companies)
             .select(Company.getQuery(.saved(false)))
@@ -127,7 +128,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .execute()
     }
 
-    func search(filterCompanies: [Company] = [], searchTerm: String) async throws -> [Company] {
+    func search(filterCompanies: [Company.Saved] = [], searchTerm: String) async throws -> [Company.Saved] {
         let searchString = searchTerm
             .split(separator: " ")
             .map { "\($0.trimmingCharacters(in: .whitespaces)):*" }
@@ -144,7 +145,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
 //            query.not("id", operator: .in, value: filterCompanies.map(\.id))
 //        }
 
-        let value: [Company] = try await query
+        let value: [Company.Saved] = try await query
             .textSearch("name", query: searchString)
             .execute()
             .value
@@ -166,20 +167,11 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func makeCompanySubsidiaryOf(company: any CompanyProtocol, subsidiaryOf: any CompanyProtocol) async throws {
-        struct UpdateRequest: Codable, Sendable {
-            public init(company: any CompanyProtocol, subsidiaryOf: any CompanyProtocol) {
-                id = company.id
-                subsidiary_of = subsidiaryOf.id
-            }
-
-            public let id: Company.Id
-            public let subsidiary_of: Company.Id
-        }
+    func makeCompanySubsidiaryOf(id: Company.Id, subsidiaryOfId: Company.Id) async throws {
         try await client
             .from(.companies)
-            .update(UpdateRequest(company: company, subsidiaryOf: subsidiaryOf))
-            .eq("id", value: company.id.rawValue)
+            .update(["id": id, "subsidiary_of": subsidiaryOfId])
+            .eq("id", value: id.rawValue)
             .select(Company.getQuery(.detailed(false)))
             .single()
             .execute()
@@ -190,6 +182,13 @@ struct SupabaseCompanyRepository: CompanyRepository {
         try await client
             .from(.companyEditSuggestions)
             .select(Company.EditSuggestion.getQuery(.joined(false)))
+            .execute()
+            .value
+    }
+
+    func mergeCompanies(id: Company.Id, mergeToId: Company.Id) async throws {
+        try await client
+            .rpc(fn: .mergeCompanies, params: ["p_company_id": id, "p_merge_to_company_id": mergeToId])
             .execute()
             .value
     }

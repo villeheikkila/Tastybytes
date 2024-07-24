@@ -21,7 +21,7 @@ public struct SubcategoryLabelView: View {
 
 #Preview {
     VStack {
-        CategoryNameView(category: Category(id: 0, name: "beverage", icon: "🥤"))
-        SubcategoryLabelView(subcategory: Subcategory(id: 0, name: "BCAA", isVerified: true))
+        CategoryNameView(category: Category.Saved(id: 0, name: "beverage", icon: "🥤"))
+        SubcategoryLabelView(subcategory: Subcategory.Saved(id: 0, name: "BCAA", isVerified: true))
     }
 }

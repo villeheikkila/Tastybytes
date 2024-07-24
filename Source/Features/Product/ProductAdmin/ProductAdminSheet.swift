@@ -21,13 +21,25 @@ struct ProductAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var showDeleteProductConfirmationDialog = false
-    @State private var logos: [ImageEntity] = []
+    @State private var logos: [ImageEntity.Saved] = []
     @State private var product = Product.Detailed()
 
-    let id: Product.Id
-    let open: Open?
-    let onUpdate: OnUpdateCallback
-    let onDelete: OnDeleteCallback
+    @State private var id: Product.Id
+    @State private var open: Open?
+    private let onUpdate: OnUpdateCallback
+    private let onDelete: OnDeleteCallback
+
+    init(
+        id: Product.Id,
+        open: Open?,
+        onUpdate: @escaping OnUpdateCallback,
+        onDelete: @escaping OnDeleteCallback
+    ) {
+        _id = State(initialValue: id)
+        _open = State(initialValue: open)
+        self.onUpdate = onUpdate
+        self.onDelete = onDelete
+    }
 
     var body: some View {
         List {
@@ -35,18 +47,23 @@ struct ProductAdminSheet: View {
                 content
             }
         }
+        .refreshable {
+            await initialize(id: id)
+        }
         .scrollContentBackground(.hidden)
         .animation(.default, value: product)
         .overlay {
-            ScreenStateOverlayView(state: state, errorAction: initialize)
+            ScreenStateOverlayView(state: state) {
+                await initialize(id: id)
+            }
         }
         .navigationTitle("product.admin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
-        .initialTask {
-            await initialize()
+        .initialTask(id: id) {
+            await initialize(id: id)
         }
     }
 
@@ -93,10 +110,16 @@ struct ProductAdminSheet: View {
                     )
                 )
             }
-            VerificationAdminToggleView(isVerified: product.isVerified, action: verifyProduct)
+            VerificationAdminToggleView(isVerified: product.isVerified, action: { isVerified in
+                await verifyProduct(id: id, isVerified: isVerified)
+            })
         }
         .customListRowBackground()
-        EditLogoSection(logos: logos, onUpload: uploadData, onDelete: deleteLogo)
+        EditLogoSection(logos: logos, onUpload: { data in
+            await uploadData(id: id, data: data)
+        }, onDelete: { entity in
+            await deleteLogo(id: id, entity: entity)
+        })
         Section("admin.section.contributions.label") {
             RouterLink(
                 "barcode.management.open",
@@ -105,16 +128,16 @@ struct ProductAdminSheet: View {
                 open: .screen(.barcodeManagement(product: $product))
             )
             RouterLink(
-                "admin.section.editSuggestions.title",
-                systemImage: "pencil",
-                count: product.editSuggestions.unresolvedCount,
-                open: .screen(.productEditSuggestion(product: $product))
-            )
-            RouterLink(
                 "product.admin.variants.navigationTitle",
                 systemImage: "square.stack",
                 count: product.variants.count,
                 open: .screen(.productVariants(variants: product.variants))
+            )
+            RouterLink(
+                "admin.section.editSuggestions.title",
+                systemImage: "pencil",
+                badge: product.editSuggestions.unresolvedCount,
+                open: .screen(.productEditSuggestion(product: $product))
             )
             RouterLink(
                 "admin.section.reports.title",
@@ -136,12 +159,12 @@ struct ProductAdminSheet: View {
             RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(.init(product: product), onEdit: { updatedProduct in
                 product = product.mergeWith(product: updatedProduct)
             }))))
-            RouterLink("product.mergeTo.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .mergeDuplicate, product: .init(product: product))))
         }
         .buttonStyle(.plain)
         .customListRowBackground()
 
         Section {
+            MergeProductsButtonView(product: product, onMerge: mergeProducts)
             ConfirmedDeleteButtonView(
                 presenting: product,
                 action: deleteProduct,
@@ -157,7 +180,7 @@ struct ProductAdminSheet: View {
         ToolbarDismissAction()
     }
 
-    private func initialize() async {
+    private func initialize(id: Product.Id) async {
         do {
             let product = try await repository.product.getDetailed(id: id)
             self.product = product
@@ -175,6 +198,7 @@ struct ProductAdminSheet: View {
                 case let .editSuggestions(id):
                     router.open(.screen(.productEditSuggestion(product: $product, initialEditSuggestion: id)))
                 }
+                self.open = nil
             }
         } catch {
             guard !error.isCancelled else { return }
@@ -183,7 +207,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    private func verifyProduct(isVerified: Bool) async {
+    private func verifyProduct(id: Product.Id, isVerified: Bool) async {
         do {
             try await repository.product.verification(id: id, isVerified: isVerified)
             feedbackEnvironmentModel.trigger(.notification(.success))
@@ -208,7 +232,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    private func deleteLogo(entity: ImageEntity) async {
+    private func deleteLogo(id: Product.Id, entity: ImageEntity.Saved) async {
         do {
             try await repository.imageEntity.delete(from: .productLogos, id: entity.id)
             withAnimation {
@@ -221,7 +245,7 @@ struct ProductAdminSheet: View {
         }
     }
 
-    private func uploadData(data: Data) async {
+    private func uploadData(id: Product.Id, data: Data) async {
         do {
             let imageEntity = try await repository.product.uploadLogo(productId: id, data: data)
             logos.append(imageEntity)
@@ -230,16 +254,46 @@ struct ProductAdminSheet: View {
             logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
+
+    private func mergeProducts(id: Product.Id, _ mergeToId: Product.Id) async {
+        do {
+            try await repository.product.mergeProducts(productId: id, toProductId: mergeToId)
+            self.id = mergeToId
+            feedbackEnvironmentModel.trigger(.notification(.success))
+        } catch {
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Merging product \(product.id) to \(id) failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
 }
 
-struct ProductVariantsScreen: View {
-    let variants: [Product.Variant]
+struct MergeProductsButtonView: View {
+    @State private var mergeToProduct: Product.Joined?
+
+    let product: Product.Detailed
+    let onMerge: (_ id: Product.Id, _ mergeTo: Product.Id) async -> Void
 
     var body: some View {
-        List(variants) { variant in
-            Text(variant.id.rawValue.formatted())
+        RouterLink(
+            "product.admin.mergeProducts.label",
+            systemImage: "arrow.triangle.merge",
+            open: .sheet(.productPicker(product: $mergeToProduct))
+        )
+        .foregroundColor(.primary)
+        .confirmationDialog(
+            "product.admin.mergeProducts.description",
+            isPresented: $mergeToProduct.isNotNull(),
+            titleVisibility: .visible,
+            presenting: mergeToProduct
+        ) { presenting in
+            AsyncButton(
+                "product.admin.mergeProducts.apply \(product.name ?? "-") \(presenting.name ?? "-")",
+                action: {
+                    await onMerge(product.id, presenting.id)
+                }
+            )
+            .tint(.green)
         }
-        .navigationTitle("product.admin.variants.navigationTitle")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

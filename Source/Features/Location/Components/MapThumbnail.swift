@@ -6,7 +6,7 @@ struct MapThumbnail: View {
     @State private var showFullSizedMap = false
     @State private var image: UIImage?
 
-    let location: Location
+    let location: Location.Saved
     let coordinate: CLLocationCoordinate2D
     let distance: Measurement<UnitLength>?
 
@@ -64,7 +64,7 @@ struct MapThumbnail: View {
 
 struct MapPopOver: View {
     @Environment(\.dismiss) private var dismiss
-    let location: Location
+    let location: Location.Saved
     let coordinate: CLLocationCoordinate2D
     let distance: Measurement<UnitLength>?
 

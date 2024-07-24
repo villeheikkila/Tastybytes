@@ -16,7 +16,7 @@ public protocol ProductRepository: Sendable {
     func removeFromWishlist(productId: Product.Id) async throws
     func getWishlistItems(profileId: Profile.Id) async throws -> [ProfileWishlist.Joined]
     func addToWishlist(productId: Product.Id) async throws
-    func uploadLogo(productId: Product.Id, data: Data) async throws -> ImageEntity
+    func uploadLogo(productId: Product.Id, data: Data) async throws -> ImageEntity.Saved
     func getSummaryById(id: Product.Id) async throws -> Summary
     func getCreatedByUserId(id: Profile.Id) async throws -> [Product.Joined]
     func mergeProducts(productId: Product.Id, toProductId: Product.Id) async throws

@@ -12,7 +12,7 @@ struct CategoryServingStyleAdminSheet: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var servingStyles: [ServingStyle]
+    @State private var servingStyles: [ServingStyle.Saved]
 
     let category: Models.Category.Detailed
 
@@ -48,7 +48,7 @@ struct CategoryServingStyleAdminSheet: View {
         }
     }
 
-    private func addServingStyleToCategory(_ servingStyle: ServingStyle) async {
+    private func addServingStyleToCategory(_ servingStyle: ServingStyle.Saved) async {
         do {
             try await repository.category.addServingStyle(categoryId: category.id, servingStyleId: servingStyle.id)
             withAnimation {
@@ -61,7 +61,7 @@ struct CategoryServingStyleAdminSheet: View {
         }
     }
 
-    private func deleteServingStyle(_ servingStyle: ServingStyle) async {
+    private func deleteServingStyle(_ servingStyle: ServingStyle.Saved) async {
         do {
             try await repository.category.deleteServingStyle(categoryId: category.id, servingStyleId: servingStyle.id)
             withAnimation {
@@ -80,8 +80,8 @@ struct CategoryServingStyleRow: View {
     @State private var showDeleteServingStyleConfirmation = false
 
     let category: Models.Category.Detailed
-    let servingStyle: ServingStyle
-    let deleteServingStyle: (_ servingStyle: ServingStyle) async -> Void
+    let servingStyle: ServingStyle.Saved
+    let deleteServingStyle: (_ servingStyle: ServingStyle.Saved) async -> Void
 
     var body: some View {
         HStack {

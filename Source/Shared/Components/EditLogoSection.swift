@@ -11,9 +11,9 @@ struct EditLogoSection: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var selectedLogo: PhotosPickerItem?
 
-    let logos: [ImageEntity]
+    let logos: [ImageEntity.Saved]
     let onUpload: (Data) async -> Void
-    let onDelete: (ImageEntity) async -> Void
+    let onDelete: (ImageEntity.Saved) async -> Void
 
     var body: some View {
         Section {

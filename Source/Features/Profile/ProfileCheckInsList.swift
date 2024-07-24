@@ -10,7 +10,7 @@ import SwiftUI
 
 enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
     case dateRange(ClosedRange<Date>)
-    case location(Location)
+    case location(Location.Saved)
 
     var navigationTitle: String {
         switch self {

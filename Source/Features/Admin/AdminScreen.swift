@@ -35,7 +35,7 @@ struct AdminScreen: View {
             .foregroundColor(.primary)
 
             Section("admin.section.management.title") {
-                RouterLink("admin.category.title", systemImage: "rectangle.stack", open: .screen(.categoryAdmin))
+                RouterLink("admin.category.title", systemImage: "rectangle.stack", open: .screen(.categoriesAdmin))
                 RouterLink("flavor.navigationTitle", systemImage: "face.smiling", open: .screen(.flavorAdmin))
                 RouterLink("companiesAdmin.navigationTitle", systemImage: "briefcase", open: .screen(.companiesAdmin))
                 RouterLink("brandsAdmin.navigationTitle", systemImage: "tag", open: .screen(.brandsAdmin))

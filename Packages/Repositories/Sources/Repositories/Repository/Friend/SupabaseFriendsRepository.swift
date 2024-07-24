@@ -5,7 +5,7 @@ internal import Supabase
 struct SupabaseFriendsRepository: FriendRepository {
     let client: SupabaseClient
 
-    func getByUserId(userId: Profile.Id, status: Friend.Status?) async throws -> [Friend] {
+    func getByUserId(userId: Profile.Id, status: Friend.Status?) async throws -> [Friend.Saved] {
         var queryBuilder = client
             .from(.friends)
             .select(Friend.getQuery(.joined(false)))
@@ -28,7 +28,7 @@ struct SupabaseFriendsRepository: FriendRepository {
             .value
     }
 
-    func insert(newFriend: Friend.NewRequest) async throws -> Friend {
+    func insert(newFriend: Friend.NewRequest) async throws -> Friend.Saved {
         try await client
             .from(.friends)
             .insert(newFriend, returning: .representation)
@@ -38,7 +38,7 @@ struct SupabaseFriendsRepository: FriendRepository {
             .value
     }
 
-    func update(id: Friend.Id, friendUpdate: Friend.UpdateRequest) async throws -> Friend {
+    func update(id: Friend.Id, friendUpdate: Friend.UpdateRequest) async throws -> Friend.Saved {
         try await client
             .from(.friends)
             .update(friendUpdate, returning: .representation)

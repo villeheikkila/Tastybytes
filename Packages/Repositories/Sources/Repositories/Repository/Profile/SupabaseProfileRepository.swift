@@ -150,7 +150,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         return try await query.execute().value
     }
 
-    func uploadAvatar(userId: Profile.Id, data: Data) async throws -> ImageEntity {
+    func uploadAvatar(userId: Profile.Id, data: Data) async throws -> ImageEntity.Saved {
         let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
         let path = "\(userId.uuidString.lowercased())/\(fileName)"
 

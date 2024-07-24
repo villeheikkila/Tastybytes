@@ -104,6 +104,7 @@ struct SupabaseProductRepository: ProductRepository {
         try await client
             .from(.products)
             .select(Product.getQuery(.joinedBrandSubcategories(false)))
+            .order("created_at", ascending: false)
             .execute()
             .value
     }
@@ -162,7 +163,7 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func uploadLogo(productId: Product.Id, data: Data) async throws -> ImageEntity {
+    func uploadLogo(productId: Product.Id, data: Data) async throws -> ImageEntity.Saved {
         let fileName = "\(productId)_\(Date.now.timeIntervalSince1970).jpeg"
 
         try await client
@@ -203,7 +204,7 @@ struct SupabaseProductRepository: ProductRepository {
     func markAsDuplicate(productId: Product.Id, duplicateOfProductId: Product.Id) async throws {
         try await client
             .from(.productEditSuggestions)
-            .insert(Product.DuplicateRequest(productId: productId, duplicateOfProductId: duplicateOfProductId),
+            .insert(["product_id": productId.rawValue, "duplicate_of_product_id": duplicateOfProductId.rawValue],
                     returning: .none)
             .execute()
             .value
@@ -237,7 +238,7 @@ struct SupabaseProductRepository: ProductRepository {
 
     func getSummaryById(id: Product.Id) async throws -> Summary {
         try await client
-            .rpc(fn: .getProductSummary, params: Product.SummaryRequest(id: id))
+            .rpc(fn: .getProductSummary, params: ["p_product_id": id.rawValue])
             .select()
             .limit(1)
             .single()

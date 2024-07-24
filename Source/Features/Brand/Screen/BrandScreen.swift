@@ -269,7 +269,7 @@ private struct ProductsByCategory: Identifiable {
         category.id
     }
 
-    let category: Models.Category
+    let category: Models.Category.Saved
     var products: [Product.Joined]
 }
 

@@ -1,11 +1,11 @@
 import CoreLocation
 import Extensions
 import Foundation
-import Tagged
+public import Tagged
 
 public protocol AvatarURL {
     var id: Profile.Id { get }
-    var avatars: [ImageEntity] { get }
+    var avatars: [ImageEntity.Saved] { get }
 }
 
 public protocol ProfileProtocol {
@@ -13,7 +13,7 @@ public protocol ProfileProtocol {
     var preferredName: String { get }
     var isPrivate: Bool { get }
     var joinedAt: Date { get }
-    var avatars: [ImageEntity] { get }
+    var avatars: [ImageEntity.Saved] { get }
 }
 
 public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL, ProfileProtocol {
@@ -25,9 +25,9 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL, Pro
 
     public let isPrivate: Bool
     public let joinedAt: Date
-    public let avatars: [ImageEntity]
+    public let avatars: [ImageEntity.Saved]
 
-    public init(id: Profile.Id, preferredName: String?, isPrivate: Bool, joinedAt: Date, avatars: [ImageEntity]) {
+    public init(id: Profile.Id, preferredName: String?, isPrivate: Bool, joinedAt: Date, avatars: [ImageEntity.Saved]) {
         self.id = id
         rawPreferredName = preferredName
         self.isPrivate = isPrivate
@@ -59,7 +59,7 @@ public struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL, Pro
         case avatars = "profile_avatars"
     }
 
-    public func copyWith(preferredName: String? = nil, isPrivate: Bool? = nil, joinedAt: Date? = nil, avatars: [ImageEntity]? = nil) -> Self {
+    public func copyWith(preferredName: String? = nil, isPrivate: Bool? = nil, joinedAt: Date? = nil, avatars: [ImageEntity.Saved]? = nil) -> Self {
         .init(
             id: id,
             preferredName: preferredName ?? self.preferredName,
@@ -91,7 +91,7 @@ public extension Profile {
         public let nameDisplay: NameDisplay
         public let roles: [Role]
         public let settings: Profile.Settings
-        public let avatars: [ImageEntity]
+        public let avatars: [ImageEntity.Saved]
 
         public init(
             id: Profile.Id,
@@ -103,7 +103,7 @@ public extension Profile {
             nameDisplay: Profile.NameDisplay,
             roles: [Role],
             settings: Profile.Settings,
-            avatars: [ImageEntity],
+            avatars: [ImageEntity.Saved],
             firstName: String? = nil,
             lastName: String? = nil
         ) {
@@ -132,7 +132,7 @@ public extension Profile {
             nameDisplay: Profile.NameDisplay? = nil,
             roles: [Role]? = nil,
             settings: Profile.Settings? = nil,
-            avatars: [ImageEntity]? = nil
+            avatars: [ImageEntity.Saved]? = nil
         ) -> Self {
             .init(
                 id: id,
@@ -197,8 +197,8 @@ public extension Profile {
 
         public let nameDisplay: NameDisplay
         public let roles: [Role]
-        public let avatars: [ImageEntity]
-        public let reports: [Report]
+        public let avatars: [ImageEntity.Saved]
+        public let reports: [Report.Joined]
 
         public init(
             id: Profile.Id,
@@ -209,10 +209,10 @@ public extension Profile {
             preferredName: String?,
             nameDisplay: Profile.NameDisplay,
             roles: [Role],
-            avatars: [ImageEntity],
+            avatars: [ImageEntity.Saved],
             firstName: String? = nil,
             lastName: String? = nil,
-            reports: [Report]
+            reports: [Report.Joined]
         ) {
             self.id = id
             self.username = username
@@ -253,8 +253,8 @@ public extension Profile {
             preferredName: String? = nil,
             nameDisplay: Profile.NameDisplay? = nil,
             roles: [Role]? = nil,
-            avatars: [ImageEntity]? = nil,
-            reports: [Report]? = nil
+            avatars: [ImageEntity.Saved]? = nil,
+            reports: [Report.Joined]? = nil
         ) -> Self {
             .init(
                 id: id,
@@ -426,8 +426,8 @@ public struct CategoryStatistics: Identifiable, Codable, Sendable, CategoryProto
         }
     }
 
-    public var category: Category {
-        Category(id: id, name: name, icon: icon)
+    public var category: Category.Saved {
+        Category.Saved(id: id, name: name, icon: icon)
     }
 }
 
@@ -480,8 +480,8 @@ public struct SubcategoryStatistics: Identifiable, Codable, Sendable {
         }
     }
 
-    public var subcategory: Subcategory {
-        Subcategory(id: id, name: name, isVerified: true)
+    public var subcategory: Subcategory.Saved {
+        Subcategory.Saved(id: id, name: name, isVerified: true)
     }
 }
 
@@ -568,7 +568,7 @@ public extension Profile {
             case latitude
         }
 
-        public var loc: Location {
+        public var loc: Location.Saved {
             .init(id: id, mapKitIdentifier: nil, name: name, title: title, location: location, countryCode: countryCode, country: nil, source: "")
         }
 
@@ -589,11 +589,11 @@ public extension Profile {
 public extension Profile {
     struct Contributions: Decodable, Sendable {
         public let products: [Product.Joined]
-        public let companies: [Company]
+        public let companies: [Company.Saved]
         public let brands: [Brand]
         public let subBrands: [SubBrand.JoinedBrand]
         public let barcodes: [Product.Barcode.Joined]
-        public let reports: [Report]
+        public let reports: [Report.Joined]
         public let editSuggestions: [EditSuggestion]
 
         enum CodingKeys: String, CodingKey {
@@ -611,11 +611,11 @@ public extension Profile {
 
         public init(
             products: [Product.Joined],
-            companies: [Company],
+            companies: [Company.Saved],
             brands: [Brand],
             subBrands: [SubBrand.JoinedBrand],
             barcodes: [Product.Barcode.Joined],
-            reports: [Report],
+            reports: [Report.Joined],
             editSuggestions: [EditSuggestion]
         ) {
             self.products = products
@@ -630,11 +630,11 @@ public extension Profile {
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             products = try container.decode([Product.Joined].self, forKey: .products)
-            companies = try container.decode([Company].self, forKey: .companies)
+            companies = try container.decode([Company.Saved].self, forKey: .companies)
             brands = try container.decode([Brand].self, forKey: .brands)
             subBrands = try container.decode([SubBrand.JoinedBrand].self, forKey: .subBrands)
             barcodes = try container.decode([Product.Barcode.Joined].self, forKey: .barcodes)
-            reports = try container.decode([Report].self, forKey: .reports)
+            reports = try container.decode([Report.Joined].self, forKey: .reports)
             let productEditSuggestions: [EditSuggestion] = try container.decode([Product.EditSuggestion].self, forKey: .productEditSuggestions).map { .product($0) }
             let companyEditSuggestions: [EditSuggestion] = try container.decode([Company.EditSuggestion].self, forKey: .companyEditSuggestions).map { .company($0) }
             let brandEditSuggestions: [EditSuggestion] = try container.decode([Brand.EditSuggestion].self, forKey: .brandEditSuggestions).map { .brand($0) }
@@ -645,11 +645,11 @@ public extension Profile {
 
         public func copyWith(
             products: [Product.Joined]? = nil,
-            companies: [Company]? = nil,
+            companies: [Company.Saved]? = nil,
             brands: [Brand]? = nil,
             subBrands: [SubBrand.JoinedBrand]? = nil,
             barcodes: [Product.Barcode.Joined]? = nil,
-            reports: [Report]? = nil,
+            reports: [Report.Joined]? = nil,
             editSuggestions: [EditSuggestion]? = nil
         ) -> Self {
             .init(

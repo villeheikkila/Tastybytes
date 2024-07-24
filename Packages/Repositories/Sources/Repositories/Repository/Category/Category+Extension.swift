@@ -8,7 +8,7 @@ extension Models.Category: Queryable {
         switch queryType {
         case let .saved(withTableName):
             buildQuery(.categories, [saved], withTableName)
-        case let .joinedSubcaategoriesServingStyles(withTableName):
+        case let .joinedSubcategoriesServingStyles(withTableName):
             buildQuery(
                 .categories,
                 [saved, Subcategory.getQuery(.detailed(true)), ServingStyle.getQuery(.saved(true))],
@@ -30,7 +30,7 @@ extension Models.Category: Queryable {
 
     enum QueryType {
         case saved(_ withTableName: Bool)
-        case joinedSubcaategoriesServingStyles(_ withTableName: Bool)
+        case joinedSubcategoriesServingStyles(_ withTableName: Bool)
         case detailed(_ withTableName: Bool)
     }
 }

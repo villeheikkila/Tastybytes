@@ -112,6 +112,7 @@ enum Database {
         case getNumberOfCheckInsByLocation = "fnc__get_number_of_check_ins_by_location"
         case deleteUserAsSuperAdmin = "fnc__delete_user_as_super_admin"
         case markAdminEventAsReviewed = "fnc__mark_admin_event_as_reviewed"
+        case mergeCompanies = "fnc__merge_companies"
     }
 }
 

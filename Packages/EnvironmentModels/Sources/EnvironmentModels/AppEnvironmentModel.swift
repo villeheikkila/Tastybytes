@@ -98,7 +98,7 @@ public final class AppEnvironmentModel {
         }
     }
 
-    public var flavors: [Flavor] {
+    public var flavors: [Flavor.Saved] {
         get {
             access(keyPath: \.flavors)
             return UserDefaults.read(forKey: .appDataFlavors) ?? []
@@ -248,7 +248,7 @@ public final class AppEnvironmentModel {
     // Flavors
     public func addFlavor(name: String) async {
         do {
-            let newFlavor = try await repository.flavor.insert(newFlavor: Flavor.NewRequest(name: name))
+            let newFlavor = try await repository.flavor.insert(name: name)
             withAnimation {
                 flavors.append(newFlavor)
             }
@@ -259,7 +259,7 @@ public final class AppEnvironmentModel {
         }
     }
 
-    public func deleteFlavor(_ flavor: Flavor) async {
+    public func deleteFlavor(_ flavor: Flavor.Saved) async {
         do {
             try await repository.flavor.delete(id: flavor.id)
             withAnimation {
@@ -321,7 +321,7 @@ public final class AppEnvironmentModel {
 
     public func addCategory(name: String) async {
         do {
-            let category = try await repository.category.insert(newCategory: Models.Category.NewRequest(name: name))
+            let category = try await repository.category.insert(name: name)
             categories.append(category)
         } catch {
             guard !error.isCancelled else { return }
@@ -330,7 +330,7 @@ public final class AppEnvironmentModel {
         }
     }
 
-    public func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String, onCreate: ((Subcategory) -> Void)? = nil) async {
+    public func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String, onCreate: ((Subcategory.Saved) -> Void)? = nil) async {
         do {
             let newSubcategory = try await repository.subcategory
                 .insert(newSubcategory: Subcategory.NewRequest(name: name, category: category))

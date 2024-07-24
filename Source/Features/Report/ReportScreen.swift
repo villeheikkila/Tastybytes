@@ -11,7 +11,7 @@ struct ReportsScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
 
-    @Binding var reports: [Report]
+    @Binding var reports: [Report.Joined]
     let initialReport: Report.Id?
 
     var body: some View {
@@ -40,7 +40,7 @@ struct ReportsScreen: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private func deleteReport(_ report: Report) async {
+    private func deleteReport(_ report: Report.Joined) async {
         do {
             try await repository.report.delete(id: report.id)
             reports = reports.removing(report)
@@ -51,7 +51,7 @@ struct ReportsScreen: View {
         }
     }
 
-    private func resolveReport(_ report: Report) async {
+    private func resolveReport(_ report: Report.Joined) async {
         do {
             try await repository.report.resolve(id: report.id)
             reports = reports.removing(report)
@@ -64,7 +64,7 @@ struct ReportsScreen: View {
 }
 
 struct ReportScreenRow: View {
-    let report: Report
+    let report: Report.Joined
 
     var body: some View {
         RouterLink(open: report.content.open) {

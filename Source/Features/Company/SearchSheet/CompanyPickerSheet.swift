@@ -12,7 +12,7 @@ struct CompanyPickerSheet: View {
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var searchResults = [Company]()
+    @State private var searchResults = [Company.Saved]()
     @State private var status: Status?
     @State private var companyName = ""
     @State private var isLoading = false
@@ -24,12 +24,12 @@ struct CompanyPickerSheet: View {
         }
     }
 
-    let filterCompanies: [Company]
-    let onSelect: (_ company: Company) -> Void
+    let filterCompanies: [Company.Saved]
+    let onSelect: (_ company: Company.Saved) -> Void
 
     init(
-        filterCompanies: [Company] = [],
-        onSelect: @escaping (_: Company) -> Void
+        filterCompanies: [Company.Saved] = [],
+        onSelect: @escaping (_: Company.Saved) -> Void
     ) {
         self.filterCompanies = filterCompanies
         self.onSelect = onSelect
@@ -132,7 +132,7 @@ struct CompanyPickerSheet: View {
         }
     }
 
-    private func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) async {
+    private func createNewCompany(onSuccess: @escaping (_ company: Company.Saved) -> Void) async {
         do {
             let newCompany = try await repository.company.insert(newCompany: .init(name: companyName))
             router.open(.toast(.success("company.create.success.toast")))

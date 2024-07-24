@@ -1,6 +1,6 @@
 import Extensions
 import Foundation
-import Tagged
+public import Tagged
 
 public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let id: CheckIn.Id
@@ -12,11 +12,11 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     public let checkInReactions: [CheckInReaction]
     public let taggedProfiles: [CheckInTaggedProfile]
     public let flavors: [CheckInFlavor]
-    public let variant: Product.Variant?
-    public let servingStyle: ServingStyle?
-    public let location: Location?
-    public let purchaseLocation: Location?
-    public let images: [ImageEntity]
+    public let variant: Product.Variant.JoinedCompany?
+    public let servingStyle: ServingStyle.Saved?
+    public let location: Location.Saved?
+    public let purchaseLocation: Location.Saved?
+    public let images: [ImageEntity.Saved]
     public let isNostalgic: Bool
 
     public init(
@@ -29,11 +29,11 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         checkInReactions: [CheckInReaction],
         taggedProfiles: [CheckInTaggedProfile],
         flavors: [CheckInFlavor],
-        variant: Product.Variant? = nil,
-        servingStyle: ServingStyle? = nil,
-        location: Location? = nil,
-        purchaseLocation: Location? = nil,
-        images: [ImageEntity],
+        variant: Product.Variant.JoinedCompany? = nil,
+        servingStyle: ServingStyle.Saved? = nil,
+        location: Location.Saved? = nil,
+        purchaseLocation: Location.Saved? = nil,
+        images: [ImageEntity.Saved],
         isNostalgic: Bool = false
     ) {
         self.id = id
@@ -102,12 +102,12 @@ public struct CheckIn: Identifiable, Hashable, Codable, Sendable {
         checkInReactions: [CheckInReaction]? = nil,
         taggedProfiles: [CheckInTaggedProfile]? = nil,
         flavors: [CheckInFlavor]? = nil,
-        variant: Product.Variant? = nil,
-        servingStyle: ServingStyle? = nil,
-        location: Location? = nil,
-        purchaseLocation: Location? = nil,
+        variant: Product.Variant.JoinedCompany? = nil,
+        servingStyle: ServingStyle.Saved? = nil,
+        location: Location.Saved? = nil,
+        purchaseLocation: Location.Saved? = nil,
         isNostalgic: Bool? = nil,
-        images: [ImageEntity]? = nil
+        images: [ImageEntity.Saved]? = nil
     ) -> Self {
         .init(
             id: id,
@@ -157,13 +157,13 @@ public extension CheckIn {
         public let checkInReactions: [CheckInReaction]
         public let taggedProfiles: [CheckInTaggedProfile]
         public let flavors: [CheckInFlavor]
-        public let variant: Product.Variant?
-        public let servingStyle: ServingStyle?
-        public let location: Location?
-        public let purchaseLocation: Location?
-        public let images: [ImageEntity]
+        public let variant: Product.Variant.JoinedCompany?
+        public let servingStyle: ServingStyle.Saved?
+        public let location: Location.Saved?
+        public let purchaseLocation: Location.Saved?
+        public let images: [ImageEntity.Saved]
         public let isNostalgic: Bool
-        public let reports: [Report]
+        public let reports: [Report.Joined]
         public let createdAt: Date
         public let createdBy: Profile
         public let updatedAt: Date?
@@ -200,13 +200,13 @@ public extension CheckIn {
             checkInReactions: [CheckInReaction],
             taggedProfiles: [CheckInTaggedProfile],
             flavors: [CheckInFlavor],
-            variant: Product.Variant? = nil,
-            servingStyle: ServingStyle? = nil,
-            location: Location? = nil,
-            purchaseLocation: Location? = nil,
-            images: [ImageEntity],
+            variant: Product.Variant.JoinedCompany? = nil,
+            servingStyle: ServingStyle.Saved? = nil,
+            location: Location.Saved? = nil,
+            purchaseLocation: Location.Saved? = nil,
+            images: [ImageEntity.Saved],
             isNostalgic: Bool = false,
-            reports: [Report],
+            reports: [Report.Joined],
             createdAt: Date,
             createdBy: Profile,
             updatedAt: Date?,
@@ -263,13 +263,13 @@ public extension CheckIn {
             checkInReactions: [CheckInReaction]? = nil,
             taggedProfiles: [CheckInTaggedProfile]? = nil,
             flavors: [CheckInFlavor]? = nil,
-            variant: Product.Variant? = nil,
-            servingStyle: ServingStyle? = nil,
-            location: Location? = nil,
-            purchaseLocation: Location? = nil,
+            variant: Product.Variant.JoinedCompany? = nil,
+            servingStyle: ServingStyle.Saved? = nil,
+            location: Location.Saved? = nil,
+            purchaseLocation: Location.Saved? = nil,
             isNostalgic: Bool? = nil,
-            images: [ImageEntity]? = nil,
-            reports: [Report]? = nil
+            images: [ImageEntity.Saved]? = nil,
+            reports: [Report.Joined]? = nil
         ) -> Self {
             .init(
                 id: id,
@@ -310,7 +310,7 @@ public extension CheckIn {
     }
 
     struct CheckInFlavor: Codable, Sendable, Hashable {
-        public let flavor: Flavor
+        public let flavor: Flavor.Saved
 
         enum CodingKeys: String, CodingKey {
             case flavor = "flavors"
@@ -370,12 +370,12 @@ public extension CheckIn {
             product: Product.Joined,
             review: String?,
             taggedFriends: [Profile],
-            servingStyle: ServingStyle?,
-            manufacturer: Company?,
-            flavors: [Flavor],
+            servingStyle: ServingStyle.Saved?,
+            manufacturer: Company.Saved?,
+            flavors: [Flavor.Saved],
             rating: Double,
-            location: Location?,
-            purchaseLocation: Location?,
+            location: Location.Saved?,
+            purchaseLocation: Location.Saved?,
             checkInAt: Date?,
             isNostalgic: Bool
         ) {
@@ -427,12 +427,12 @@ public extension CheckIn {
             product: Product.Joined,
             review: String?,
             taggedFriends: [Profile],
-            servingStyle: ServingStyle?,
-            manufacturer: Company?,
-            flavors: [Flavor],
+            servingStyle: ServingStyle.Saved?,
+            manufacturer: Company.Saved?,
+            flavors: [Flavor.Saved],
             rating: Double,
-            location: Location?,
-            purchaseLocation: Location?,
+            location: Location.Saved?,
+            purchaseLocation: Location.Saved?,
             checkInAt: Date?,
             isNostalgic: Bool
         ) {

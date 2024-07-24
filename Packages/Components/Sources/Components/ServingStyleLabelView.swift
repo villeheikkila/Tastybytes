@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 public struct ServingStyleLabelView: View {
-    let servingStyle: ServingStyle
+    let servingStyle: ServingStyle.Saved
 
     public var body: some View {
         HStack {
@@ -20,5 +20,5 @@ public struct ServingStyleLabelView: View {
 }
 
 #Preview {
-    ServingStyleLabelView(servingStyle: ServingStyle(id: 0, name: "bottle"))
+    ServingStyleLabelView(servingStyle: ServingStyle.Saved(id: 0, name: "bottle"))
 }

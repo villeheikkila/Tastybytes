@@ -8,7 +8,7 @@ import SwiftUI
 @Observable
 public final class NotificationEnvironmentModel {
     private let logger = Logger(category: "NotificationEnvironmentModel")
-    public var notifications = [Models.Notification]()
+    public var notifications = [Models.Notification.Joined]()
     public var isRefreshing = false
     public var task: Task<Void, Never>?
 
@@ -87,7 +87,7 @@ public final class NotificationEnvironmentModel {
         do {
             try await repository.notification.deleteAll()
             withAnimation {
-                self.notifications = [Models.Notification]()
+                self.notifications = [Models.Notification.Joined]()
                 self.unreadCount = 0
             }
         } catch {
@@ -169,7 +169,7 @@ public final class NotificationEnvironmentModel {
         }
     }
 
-    public func markAsRead(_ notification: Models.Notification) async {
+    public func markAsRead(_ notification: Models.Notification.Joined) async {
         do {
             let updatedNotification = try await repository.notification.markRead(id: notification.id)
             notifications.replace(notification, with: updatedNotification)
@@ -194,7 +194,7 @@ public final class NotificationEnvironmentModel {
         }
     }
 
-    public func deleteNotification(notification: Models.Notification) async {
+    public func deleteNotification(notification: Models.Notification.Joined) async {
         do {
             try await repository.notification.delete(id: notification.id)
             withAnimation {

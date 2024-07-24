@@ -13,7 +13,7 @@ struct ProductFilterSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
-    @State private var subcategoryFilter: Subcategory?
+    @State private var subcategoryFilter: Subcategory.Saved?
     @State private var sortBy: Product.Filter.SortBy?
     @State private var onlyNonCheckedIn = false
 
@@ -59,7 +59,7 @@ struct ProductFilterSheet: View {
                     }
                     .pickerStyle(.navigationLink)
                     Picker(selection: $subcategoryFilter) {
-                        Text("labels.selectAll").tag(Subcategory?(nil))
+                        Text("labels.selectAll").tag(Subcategory.Saved?(nil))
                         if let categoryFilter {
                             ForEach(categoryFilter.subcategories) { subcategory in
                                 Text(subcategory.name).tag(Optional(subcategory))

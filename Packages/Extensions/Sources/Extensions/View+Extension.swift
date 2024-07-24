@@ -165,6 +165,10 @@ public extension View {
     func initialTask(_ action: @escaping () async -> Void) -> some View {
         modifier(InitialTask(action: action))
     }
+
+    func initialTask(id: some Equatable, _ action: @escaping () async -> Void) -> some View {
+        modifier(InitialTaskWithID(id: id, action: action))
+    }
 }
 
 private struct InitialTask: ViewModifier {
@@ -175,6 +179,20 @@ private struct InitialTask: ViewModifier {
         content.task {
             guard isInitial else { return }
             isInitial = false
+            await action()
+        }
+    }
+}
+
+private struct InitialTaskWithID<ID: Equatable>: ViewModifier {
+    let id: ID
+    let action: () async -> Void
+    @State private var lastInitializedId: ID?
+
+    func body(content: Content) -> some View {
+        content.task(id: id) {
+            guard id != lastInitializedId else { return }
+            lastInitializedId = id
             await action()
         }
     }

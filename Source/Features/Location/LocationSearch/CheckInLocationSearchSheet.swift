@@ -18,18 +18,23 @@ struct CheckInLocationSearchSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var storeLocationTask: Task<Void, Never>?
-    @State private var searchResults = [Location]()
-    @State private var recentLocations = [Location]()
-    @State private var nearbyLocations = [Location]()
+    @State private var searchResults = [Location.Saved]()
+    @State private var recentLocations = [Location.Saved]()
+    @State private var nearbyLocations = [Location.Saved]()
     @State private var searchTerm = ""
-    @Binding private var initialLocation: Location?
+    @Binding private var initialLocation: Location.Saved?
     @State private var currentLocation: CLLocation?
 
     let category: Location.RecentLocation
     let title: LocalizedStringKey
-    let onSelect: (_ location: Location) -> Void
+    let onSelect: (_ location: Location.Saved) -> Void
 
-    init(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: Binding<Location?>, onSelect: @escaping (_ location: Location) -> Void) {
+    init(
+        category: Location.RecentLocation,
+        title: LocalizedStringKey,
+        initialLocation: Binding<Location.Saved?>,
+        onSelect: @escaping (_ location: Location.Saved) -> Void
+    ) {
         self.title = title
         self.onSelect = onSelect
         self.category = category
@@ -127,7 +132,7 @@ struct CheckInLocationSearchSheet: View {
         }
     }
 
-    private func storeLocation(_ location: Location) {
+    private func storeLocation(_ location: Location.Saved) {
         guard storeLocationTask == nil else { return }
         defer { storeLocationTask = nil }
         storeLocationTask = Task {
@@ -143,7 +148,7 @@ struct CheckInLocationSearchSheet: View {
     }
 
     private nonisolated func searchLocationsNatural(query: String?, center: CLLocationCoordinate2D, radius: CLLocationDistance)
-        async throws -> [Location]
+        async throws -> [Location.Saved]
     {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
@@ -151,16 +156,16 @@ struct CheckInLocationSearchSheet: View {
         request.region = .init(center: center, latitudinalMeters: radius, longitudinalMeters: radius)
         let search = MKLocalSearch(request: request)
         let response = try await search.start()
-        return response.mapItems.map { Location(mapItem: $0) }
+        return response.mapItems.map { Location.Saved(mapItem: $0) }
     }
 
     private nonisolated func searchLocations(center: CLLocationCoordinate2D, radius: CLLocationDistance)
-        async throws -> [Location]
+        async throws -> [Location.Saved]
     {
         let request = MKLocalPointsOfInterestRequest(center: center, radius: radius)
         let search = MKLocalSearch(request: request)
         let response = try await search.start()
-        return response.mapItems.map { Location(mapItem: $0) }
+        return response.mapItems.map { Location.Saved(mapItem: $0) }
     }
 
     private func loadInitialData() async {
@@ -185,9 +190,9 @@ struct CheckInLocationSearchSheet: View {
 }
 
 struct LocationRow: View {
-    let location: Location
+    let location: Location.Saved
     let currentLocation: CLLocation?
-    let onSelect: (_ location: Location) -> Void
+    let onSelect: (_ location: Location.Saved) -> Void
 
     var distance: Measurement<UnitLength>? {
         guard let currentLocation, let clLocation = location.location else { return nil }
@@ -224,7 +229,7 @@ struct LocationRow: View {
 }
 
 struct InitialLocationOverlay: View {
-    @Binding var initialLocation: Location?
+    @Binding var initialLocation: Location.Saved?
 
     var body: some View {
         if let coordinate = initialLocation?.location?.coordinate {

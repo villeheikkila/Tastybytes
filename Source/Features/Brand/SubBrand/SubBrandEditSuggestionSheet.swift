@@ -86,7 +86,7 @@ struct SubBrandEditSuggestionSheet: View {
         do {
             try await repository.subBrand
                 .createEditSuggestion(
-                    subBrand: subBrand,
+                    id: subBrand.id,
                     brand: isBrandUpdate ? brand : nil,
                     name: isValidNameUpdate ? name : nil,
                     includesBrandName: isIncludesBrandNameUpdate ? includesBrandName : nil

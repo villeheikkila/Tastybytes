@@ -4,7 +4,7 @@ internal import Supabase
 struct SupabaseServingStyleRepository: ServingStyleRepository {
     let client: SupabaseClient
 
-    func getAll() async throws -> [ServingStyle] {
+    func getAll() async throws -> [ServingStyle.Saved] {
         try await client
             .from(.servingStyles)
             .select(ServingStyle.getQuery(.saved(false)))
@@ -12,10 +12,10 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
             .value
     }
 
-    func insert(servingStyle: ServingStyle.NewRequest) async throws -> ServingStyle {
+    func insert(name: String) async throws -> ServingStyle.Saved {
         try await client
             .from(.servingStyles)
-            .insert(servingStyle, returning: .representation)
+            .insert(["name": name], returning: .representation)
             .select(ServingStyle.getQuery(.saved(false)))
             .single()
             .execute()
@@ -30,13 +30,14 @@ struct SupabaseServingStyleRepository: ServingStyleRepository {
             .execute()
     }
 
-    func update(update: ServingStyle.UpdateRequest) async throws -> ServingStyle {
+    func update(id: ServingStyle.Id, name: String) async throws -> ServingStyle.Saved {
         try await client
             .from(.servingStyles)
             .update(
-                update,
+                ["name": name],
                 returning: .representation
             )
+            .eq("id", value: id.rawValue)
             .select(ServingStyle.getQuery(.saved(false)))
             .single()
             .execute()

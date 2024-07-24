@@ -53,7 +53,7 @@ extension Report.Content {
     }
 }
 
-extension Report {
+extension Report.Joined {
     var open: Router.Open {
         switch content {
         case let .brand(brand):

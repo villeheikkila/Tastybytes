@@ -13,10 +13,10 @@ struct CheckInImageSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var currentImage: ImageEntity
-    @State private var showDeleteConfirmationFor: ImageEntity?
+    @State private var currentImage: ImageEntity.Saved
+    @State private var showDeleteConfirmationFor: ImageEntity.Saved?
     let checkIn: CheckIn
-    @State private var images: [ImageEntity]
+    @State private var images: [ImageEntity.Saved]
 
     let onDeleteImage: OnDeleteImageCallback?
 
@@ -61,7 +61,9 @@ struct CheckInImageSheet: View {
                     SaveToPhotoGalleryButtonView(imageUrl: imageUrl)
                 }
                 if profileEnvironmentModel.profile.id == checkIn.profile.id {
-                    Button("labels.delete", systemImage: "trash", role: .destructive, action: { showDeleteConfirmationFor = currentImage })
+                    Button("labels.delete", systemImage: "trash", role: .destructive, action: {
+                        showDeleteConfirmationFor = currentImage
+                    })
                 }
                 Divider()
                 ReportButton(entity: .checkInImage(.init(checkIn: checkIn, imageEntity: currentImage)))
@@ -92,7 +94,7 @@ struct CheckInImageSheet: View {
         ToolbarDismissAction()
     }
 
-    private func deleteImage(_ imageEntity: ImageEntity) async {
+    private func deleteImage(_ imageEntity: ImageEntity.Saved) async {
         do {
             try await repository.imageEntity.delete(from: .checkInImages, id: imageEntity.id)
             withAnimation {

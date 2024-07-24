@@ -12,8 +12,8 @@ struct MergeLocationSheet: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(\.dismiss) private var dismiss
-    @State private var locations = [Location]()
-    @State private var mergeToLocation: Location?
+    @State private var locations = [Location.Saved]()
+    @State private var mergeToLocation: Location.Saved?
     @State private var searchTerm = ""
     @State private var searchTask: Task<Void, Never>?
 
@@ -25,7 +25,7 @@ struct MergeLocationSheet: View {
         self.onMerge = onMerge
     }
 
-    var shownLocations: [Location] {
+    var shownLocations: [Location.Saved] {
         locations.filter { $0.id != location.id }
     }
 
@@ -56,7 +56,7 @@ struct MergeLocationSheet: View {
         ToolbarDismissAction()
     }
 
-    private func mergeLocation(_ to: Location) async {
+    private func mergeLocation(_ to: Location.Saved) async {
         do {
             try await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id)
             let location = try await repository.location.getDetailed(id: to.id)
@@ -88,9 +88,9 @@ struct MergeLocationSheet: View {
 struct MergeLocationSheetRow: View {
     @State private var showMergeToConfirmation = false
 
-    let mergeToLocation: Location
+    let mergeToLocation: Location.Saved
     let locationToMerge: Location.Detailed
-    let mergeLocation: (_ location: Location) async -> Void
+    let mergeLocation: (_ location: Location.Saved) async -> Void
 
     var body: some View {
         LocationRow(location: mergeToLocation, currentLocation: nil, onSelect: { _ in showMergeToConfirmation = true })

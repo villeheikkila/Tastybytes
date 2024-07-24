@@ -9,12 +9,12 @@ enum Sheet: Identifiable, Equatable {
     case barcodeScanner(onComplete: (_ barcode: Barcode) async -> Void)
     case productFilter(initialFilter: Product.Filter?, sections: [ProductFilterSheet.Sections], onApply: (_ filter: Product.Filter?) -> Void)
     case nameTag(onSuccess: (_ profileId: Profile.Id) -> Void)
-    case companyPicker(filterCompanies: [Company] = [], onSelect: (_ company: Company) -> Void)
+    case companyPicker(filterCompanies: [Company.Saved] = [], onSelect: (_ company: Company.Saved) -> Void)
     case brandPicker(brandOwner: any CompanyProtocol, brand: Binding<Brand.JoinedSubBrands?>, mode: BrandPickerSheet.Mode)
-    case subcategoryPicker(subcategories: Binding<[Subcategory]>, category: Models.Category.JoinedSubcategoriesServingStyles)
+    case subcategoryPicker(subcategories: Binding<[Subcategory.Saved]>, category: Models.Category.JoinedSubcategoriesServingStyles)
     case subBrandPicker(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
     case product(_ mode: ProductMutationView.Mode)
-    case duplicateProduct(mode: ProductDuplicateScreen.Mode, product: Product.Joined)
+    case productPicker(product: Binding<Product.Joined?>)
     case brandAdmin(
         id: Brand.Id,
         open: BrandAdminSheet.Open? = nil,
@@ -28,11 +28,19 @@ enum Sheet: Identifiable, Equatable {
         onDelete: SubBrandAdminSheet.OnDeleteCallback = noop
     )
     case friendPicker(taggedFriends: Binding<[Profile]>)
-    case flavorPicker(pickedFlavors: Binding<[Flavor]>)
-    case checkInLocationSearch(category: Location.RecentLocation, title: LocalizedStringKey, initialLocation: Binding<Location?>, onSelect: (_ location: Location) -> Void)
-    case locationSearch(initialLocation: Location?, initialSearchTerm: String?, onSelect: (_ location: Location) -> Void)
+    case flavorPicker(pickedFlavors: Binding<[Flavor.Saved]>)
+    case checkInLocationSearch(
+        category: Location.RecentLocation,
+        title: LocalizedStringKey,
+        initialLocation: Binding<Location.Saved?>,
+        onSelect: (_ location: Location.Saved) -> Void
+    )
+    case locationSearch(initialLocation: Location.Saved?, initialSearchTerm: String?, onSelect: (_ location: Location.Saved) -> Void)
     case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
-    case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>, onSelect: (_ servingStyle: ServingStyle) async -> Void)
+    case servingStyleManagement(
+        pickedServingStyles: Binding<[ServingStyle.Saved]>,
+        onSelect: (_ servingStyle: ServingStyle.Saved) async -> Void
+    )
     case subcategoryAdmin(id: Subcategory.Id, onEdit: SubcategoryAdminSheet.OnEditCallback = noop)
     case subcategoryCreation(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
     case categoryCreation(onSubmit: (_ newCategoryName: String) async -> Void)
@@ -100,8 +108,8 @@ enum Sheet: Identifiable, Equatable {
             CompanyPickerSheet(filterCompanies: filterCompanies, onSelect: onSelect)
         case let .product(mode):
             ProductMutationView(mode: mode)
-        case let .duplicateProduct(mode: mode, product: product):
-            ProductDuplicateScreen(mode: mode, product: product)
+        case let .productPicker(product: product):
+            ProductPickerSheet(product: product)
         case let .brandAdmin(id, open, onUpdate, onDelete):
             BrandAdminSheet(id: id, open: open, onUpdate: onUpdate, onDelete: onDelete)
         case let .subBrandAdmin(id, open, onUpdate, onDelete):
@@ -228,8 +236,8 @@ enum Sheet: Identifiable, Equatable {
             "subcategory"
         case let .product(mode):
             "edit_product_\(mode)"
-        case .duplicateProduct:
-            "duplicate_product"
+        case let .productPicker(product):
+            "duplicate_product_\(String(describing: product.wrappedValue))"
         case let .brandAdmin(id, _, _, _):
             "brand_admin_\(id)"
         case let .subBrandAdmin(id, _, _, _):

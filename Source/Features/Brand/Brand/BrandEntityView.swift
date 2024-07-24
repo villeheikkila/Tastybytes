@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct BrandEntityView: View {
-    let brandOwner: Company?
+    let brandOwner: Company.Saved?
     let brand: BrandProtocol
 
     init(brand: Brand.JoinedSubBrandsProductsCompany) {

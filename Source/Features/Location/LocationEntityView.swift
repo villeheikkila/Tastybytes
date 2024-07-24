@@ -3,7 +3,7 @@ import Models
 import SwiftUI
 
 struct LocationEntityView: View {
-    let location: Location
+    let location: Location.Saved
 
     var body: some View {
         VStack {

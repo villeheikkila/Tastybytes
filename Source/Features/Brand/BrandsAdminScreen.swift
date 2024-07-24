@@ -25,6 +25,14 @@ struct BrandsAdminScreen: View {
         }
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .refreshable {
+            await initialize()
+        }
+        .overlay {
+            ScreenStateOverlayView(state: state) {
+                await initialize()
+            }
+        }
         .navigationTitle("brandsAdmin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .initialTask {

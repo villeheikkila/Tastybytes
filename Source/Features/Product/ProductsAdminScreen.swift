@@ -23,6 +23,11 @@ struct ProductsAdminScreen: View {
         }
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .overlay {
+            ScreenStateOverlayView(state: state) {
+                await initialize()
+            }
+        }
         .navigationTitle("productsAdmin.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: searchTerm, task: {

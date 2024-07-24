@@ -5,7 +5,7 @@ internal import Supabase
 struct SupabaseAdminRepository: AdminRepository {
     let client: SupabaseClient
 
-    func getAdminEventFeed() async throws -> [AdminEvent] {
+    func getAdminEventFeed() async throws -> [AdminEvent.Joined] {
         try await client
             .from(.adminEvents)
             .select(AdminEvent.getQuery(.joined(false)))
@@ -15,9 +15,9 @@ struct SupabaseAdminRepository: AdminRepository {
             .value
     }
 
-    func markAdminEventAsReviewed(event: AdminEvent) async throws {
+    func markAdminEventAsReviewed(id: AdminEvent.Id) async throws {
         try await client
-            .rpc(fn: .markAdminEventAsReviewed, params: ["p_event_id": event.id])
+            .rpc(fn: .markAdminEventAsReviewed, params: ["p_event_id": id])
             .execute()
     }
 }

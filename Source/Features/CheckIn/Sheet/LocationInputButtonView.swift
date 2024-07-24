@@ -4,9 +4,9 @@ import SwiftUI
 struct LocationInputButtonView: View {
     let category: Location.RecentLocation
     let title: LocalizedStringKey
-    @Binding var selection: Location?
-    @Binding var initialLocation: Location?
-    let onSelect: (_ location: Location) -> Void
+    @Binding var selection: Location.Saved?
+    @Binding var initialLocation: Location.Saved?
+    let onSelect: (_ location: Location.Saved) -> Void
 
     var body: some View {
         RouterLink(

@@ -1,5 +1,5 @@
 import Foundation
-import Tagged
+public import Tagged
 
 public protocol CheckInCommentProtocol {
     var id: CheckInComment.Id { get }
@@ -55,7 +55,7 @@ public extension CheckInComment {
         public let id: CheckInComment.Id
         public let content: String
         public let checkIn: CheckIn
-        public let reports: [Report]
+        public let reports: [Report.Joined]
         public let createdAt: Date
         public let createdBy: Profile
         public let updatedAt: Date?
@@ -65,7 +65,7 @@ public extension CheckInComment {
             createdBy
         }
 
-        init(id: CheckInComment.Id, content: String, checkIn: CheckIn, reports: [Report], createdAt: Date, createdBy: Profile, updatedAt: Date?, updatedBy: Profile?) {
+        init(id: CheckInComment.Id, content: String, checkIn: CheckIn, reports: [Report.Joined], createdAt: Date, createdBy: Profile, updatedAt: Date?, updatedBy: Profile?) {
             self.id = id
             self.content = content
             self.checkIn = checkIn
@@ -99,7 +99,7 @@ public extension CheckInComment {
         }
 
         public func copyWith(
-            reports: [Report]? = nil
+            reports: [Report.Joined]? = nil
         ) -> Self {
             .init(
                 id: id,

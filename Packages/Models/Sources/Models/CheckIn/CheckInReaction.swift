@@ -1,4 +1,4 @@
-import Tagged
+public import Tagged
 
 public struct CheckInReaction: Identifiable, Codable, Hashable, Sendable {
     public let id: CheckInReaction.Id

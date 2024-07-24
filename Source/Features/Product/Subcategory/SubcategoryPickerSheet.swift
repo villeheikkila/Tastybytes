@@ -11,24 +11,24 @@ struct SubcategoryPickerSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Binding var subcategories: [Subcategory]
+    @Binding var subcategories: [Subcategory.Saved]
     @State private var newSubcategoryName = ""
     @State private var searchTerm = ""
 
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
-    private var availableSubcategories: [Subcategory] {
+    private var availableSubcategories: [Subcategory.Saved] {
         appEnvironmentModel.categories
             .first(where: { $0.id == category.id })?
             .subcategories
             .sorted() ?? []
     }
 
-    private var filteredSubcategories: [Subcategory] {
+    private var filteredSubcategories: [Subcategory.Saved] {
         availableSubcategories.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
-    private var sortedSubcategories: [Subcategory] {
+    private var sortedSubcategories: [Subcategory.Saved] {
         filteredSubcategories.sorted { subcategories.contains($0) && !subcategories.contains($1) }
     }
 

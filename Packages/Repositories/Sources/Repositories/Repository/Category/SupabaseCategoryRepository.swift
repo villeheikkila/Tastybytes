@@ -7,7 +7,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
     func getAllWithSubcategoriesServingStyles() async throws -> [Models.Category.JoinedSubcategoriesServingStyles] {
         try await client
             .from(.categories)
-            .select(Models.Category.getQuery(.joinedSubcaategoriesServingStyles(false)))
+            .select(Models.Category.getQuery(.joinedSubcategoriesServingStyles(false)))
             .order("name")
             .execute()
             .value
@@ -25,11 +25,11 @@ struct SupabaseCategoryRepository: CategoryRepository {
             .value
     }
 
-    func insert(newCategory: Category.NewRequest) async throws -> Models.Category.JoinedSubcategoriesServingStyles {
+    func insert(name: String) async throws -> Models.Category.JoinedSubcategoriesServingStyles {
         try await client
             .from(.categories)
-            .insert(newCategory, returning: .representation)
-            .select(Models.Category.getQuery(.joinedSubcaategoriesServingStyles(false)))
+            .insert(["name": name], returning: .representation)
+            .select(Models.Category.getQuery(.joinedSubcategoriesServingStyles(false)))
             .single()
             .execute()
             .value
@@ -38,7 +38,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
     func addServingStyle(categoryId: Category.Id, servingStyleId: ServingStyle.Id) async throws {
         try await client
             .from(.servingStyles)
-            .insert(Category.NewServingStyleRequest(categoryId: categoryId, servingStyleId: servingStyleId.rawValue))
+            .insert(["category_id": categoryId.rawValue, "serving_style_id": servingStyleId.rawValue])
             .execute()
     }
 

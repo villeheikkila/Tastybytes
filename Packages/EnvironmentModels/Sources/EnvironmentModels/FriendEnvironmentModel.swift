@@ -8,7 +8,7 @@ import SwiftUI
 @Observable
 public final class FriendEnvironmentModel {
     private let logger = Logger(category: "FriendsScreen")
-    public var friends = [Friend]()
+    public var friends = [Friend.Saved]()
     public var alertError: AlertEvent?
     public var isRefreshing = false
     public var state: ScreenState = .loading
@@ -26,15 +26,15 @@ public final class FriendEnvironmentModel {
         return friends.filter { $0.status == .accepted }.compactMap { $0.getFriend(userId: profile.id) }
     }
 
-    public var blockedUsers: [Friend] {
+    public var blockedUsers: [Friend.Saved] {
         friends.filter { $0.status == .blocked }
     }
 
-    public var acceptedOrPendingFriends: [Friend] {
+    public var acceptedOrPendingFriends: [Friend.Saved] {
         friends.filter { $0.status != .blocked }
     }
 
-    public var pendingFriends: [Friend] {
+    public var pendingFriends: [Friend.Saved] {
         friends.filter { $0.status == .pending }
     }
 
@@ -54,7 +54,7 @@ public final class FriendEnvironmentModel {
         }
     }
 
-    public func updateFriendRequest(friend: Friend, newStatus: Friend.Status) async {
+    public func updateFriendRequest(friend: Friend.Saved, newStatus: Friend.Status) async {
         do {
             let updatedFriend = try await repository.friend.update(id: friend.id, friendUpdate: .init(
                 sender: friend.sender,
@@ -73,7 +73,7 @@ public final class FriendEnvironmentModel {
         }
     }
 
-    public func removeFriendRequest(_ friend: Friend) async {
+    public func removeFriendRequest(_ friend: Friend.Saved) async {
         do {
             try await repository.friend.delete(id: friend.id)
             withAnimation {
@@ -96,12 +96,12 @@ public final class FriendEnvironmentModel {
         return friends.contains(where: { $0.status == .accepted && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    public func isPendingUserApproval(_ friend: Profile) -> Friend? {
+    public func isPendingUserApproval(_ friend: Profile) -> Friend.Saved? {
         guard let profile else { return nil }
         return friends.first(where: { $0.status == .pending && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    public func isPendingCurrentUserApproval(_ friend: Profile) -> Friend? {
+    public func isPendingCurrentUserApproval(_ friend: Profile) -> Friend.Saved? {
         guard profile != nil else { return nil }
         return friends.first(where: { $0.status == .pending && $0.sender == friend })
     }
@@ -132,7 +132,7 @@ public final class FriendEnvironmentModel {
         await refresh()
     }
 
-    public func unblockUser(_ friend: Friend) async {
+    public func unblockUser(_ friend: Friend.Saved) async {
         do {
             try await repository.friend.delete(id: friend.id)
             withAnimation {

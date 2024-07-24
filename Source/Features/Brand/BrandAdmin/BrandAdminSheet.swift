@@ -24,7 +24,7 @@ struct BrandAdminSheet: View {
     @State private var state: ScreenState = .loading
     @State private var showDeleteBrandConfirmationDialog = false
     @State private var name: String = ""
-    @State private var brandOwner: Company?
+    @State private var brandOwner: Company.Saved?
     @State private var brand = Brand.Detailed()
     @State private var newCompanyName = ""
     @State private var selectedLogo: PhotosPickerItem?
@@ -241,7 +241,7 @@ struct BrandAdminSheet: View {
         }
     }
 
-    private func deleteLogo(entity: ImageEntity) async {
+    private func deleteLogo(entity: ImageEntity.Saved) async {
         do {
             try await repository.imageEntity.delete(from: .brandLogos, id: entity.id)
             withAnimation {

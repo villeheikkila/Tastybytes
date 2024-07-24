@@ -4,7 +4,7 @@ import Models
 import SwiftUI
 
 struct FriendRequestNotificationView: View {
-    let friend: Friend
+    let friend: Friend.Saved
     let createdAt: Date
     let seenAt: Date?
 

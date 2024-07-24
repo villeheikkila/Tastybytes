@@ -7,8 +7,8 @@ enum Screen: Hashable, Sendable {
     case productFromBarcode(Product.Joined, Barcode)
     case profile(Profile)
     case checkIn(CheckIn)
-    case location(Location)
-    case company(Company)
+    case location(Location.Saved)
+    case company(Company.Saved)
     case brand(Brand.JoinedSubBrandsProductsCompany)
     case brandById(id: Brand.Id, initialScrollPosition: SubBrand.JoinedBrand? = nil)
     case fetchBrand(Brand.JoinedCompany)
@@ -26,7 +26,7 @@ enum Screen: Hashable, Sendable {
     case productFeed(Product.FeedType)
     case flavorAdmin
     case verification
-    case categoryAdmin
+    case categoriesAdmin
     case profileSettings
     case privacySettings
     case accountSettings
@@ -35,14 +35,14 @@ enum Screen: Hashable, Sendable {
     case blockedUsers
     case contributions(Profile.Id)
     case about
-    case reports(reports: Binding<[Report]>, initialReport: Report.Id? = nil)
+    case reports(reports: Binding<[Report.Joined]>, initialReport: Report.Id? = nil)
     case locationAdmin
     case error(reason: String)
     case companyEditSuggestion(company: Binding<Company.Detailed>, initialEditSuggestion: Company.EditSuggestion.Id? = nil)
     case categoryServingStyle(category: Models.Category.Detailed)
     case barcodeManagement(product: Binding<Product.Detailed>)
     case productList(products: [Product.Joined])
-    case companyList(companies: [Company])
+    case companyList(companies: [Company.Saved])
     case brandList(brands: [Brand])
     case subBrandList(subBrands: [SubBrand.JoinedBrand])
     case barcodeList(barcodes: [Product.Barcode.Joined])
@@ -51,7 +51,8 @@ enum Screen: Hashable, Sendable {
     case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed>, initialEditSuggestion: Brand.EditSuggestion.Id? = nil)
     case adminEvent
     case productEditSuggestion(product: Binding<Product.Detailed>, initialEditSuggestion: Product.EditSuggestion.Id? = nil)
-    case productVariants(variants: [Product.Variant])
+    case productVariants(variants: [Product.Variant.JoinedCompany])
+    case companyProductVariants(variants: [Product.Variant.JoinedProduct])
     case subBrandEditSuggestions(subBrand: Binding<SubBrand.Detailed>, initialEditSuggestion: SubBrand.EditSuggestion.Id? = nil)
     case profileReports(contributionsModel: ContributionsModel)
     case profileEditSuggestions(contributionsModel: ContributionsModel)
@@ -109,11 +110,11 @@ enum Screen: Hashable, Sendable {
         case let .productFeed(feed):
             ProductFeedScreen(feed: feed)
         case .flavorAdmin:
-            FlavorAdminScreen()
+            FlavorsAdminScreen()
         case .verification:
             VerificationScreen()
-        case .categoryAdmin:
-            CategoryAdminScreen()
+        case .categoriesAdmin:
+            CategoriesAdminScreen()
         case .profileSettings:
             ProfileSettingsScreen()
         case .accountSettings:
@@ -173,7 +174,7 @@ enum Screen: Hashable, Sendable {
         case let .profileEditSuggestions(contributionsModel):
             EditSuggestionsProfileScreen(contributionsModel: contributionsModel)
         case let .subsidiaries(company):
-            CompanySubsidiaryScreen(company: company)
+            CompanySubsidiaryAdminScreen(company: company)
         case .editSuggestionsAdmin:
             EditSuggestionAdminScreen()
         case .reportsAdmin:
@@ -188,6 +189,8 @@ enum Screen: Hashable, Sendable {
             BrandsAdminScreen()
         case .productsAdmin:
             ProductsAdminScreen()
+        case let .companyProductVariants(variants):
+            CompanyProductVariantsScreen(variants: variants)
         }
     }
 
@@ -261,6 +264,8 @@ enum Screen: Hashable, Sendable {
             lhsSubBrands.wrappedValue == rhsSubBrands.wrappedValue && lhsInitialEditSuggestion == rhsInitialEditSuggestion
         case let (.contributions(lhsProfile), .contributions(rhsProfile)):
             lhsProfile == rhsProfile
+        case let (.companyProductVariants(lhsVariants), .companyProductVariants(rhsVariants)):
+            lhsVariants == rhsVariants
         case let (.productListAdmin(lshProducts), .productListAdmin(rhsProducts)):
             lshProducts.wrappedValue == rhsProducts.wrappedValue
         case let (.subBrandListAdmin(lhsBrand, lhsSubBrands), .subBrandListAdmin(rhsBrand, rhsSubBrands)):
@@ -270,7 +275,7 @@ enum Screen: Hashable, Sendable {
             (.currentUserFriends, .currentUserFriends),
             (.flavorAdmin, .flavorAdmin),
             (.verification, .verification),
-            (.categoryAdmin, .categoryAdmin),
+            (.categoriesAdmin, .categoriesAdmin),
             (.profileSettings, .profileSettings),
             (.privacySettings, .privacySettings),
             (.accountSettings, .accountSettings),
@@ -359,7 +364,7 @@ enum Screen: Hashable, Sendable {
             hasher.combine("flavorManagement")
         case .verification:
             hasher.combine("verification")
-        case .categoryAdmin:
+        case .categoriesAdmin:
             hasher.combine("categoryManagement")
         case .profileSettings:
             hasher.combine("profileSettings")
@@ -462,6 +467,9 @@ enum Screen: Hashable, Sendable {
             hasher.combine("brandsAdmin")
         case .productsAdmin:
             hasher.combine("productsAdmin")
+        case let .companyProductVariants(variants):
+            hasher.combine("companyProductVariants")
+            hasher.combine(variants)
         }
     }
 }

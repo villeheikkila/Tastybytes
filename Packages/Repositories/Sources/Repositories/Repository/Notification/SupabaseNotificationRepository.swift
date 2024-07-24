@@ -4,7 +4,7 @@ internal import Supabase
 struct SupabaseNotificationRepository: NotificationRepository {
     let client: SupabaseClient
 
-    func getAll(afterId: Notification.Id? = nil) async throws -> [Models.Notification] {
+    func getAll(afterId: Notification.Id? = nil) async throws -> [Models.Notification.Joined] {
         try await client
             .from(.notifications)
             .select(Notification.getQuery(.joined))
@@ -46,7 +46,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .value
     }
 
-    func markRead(id: Notification.Id) async throws -> Notification {
+    func markRead(id: Notification.Id) async throws -> Notification.Joined {
         try await client
             .rpc(fn: .markNotificationAsRead, params: Notification.MarkReadRequest(id: id))
             .select(Notification.getQuery(.joined))
@@ -56,7 +56,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .value
     }
 
-    func markAllRead() async throws -> [Models.Notification] {
+    func markAllRead() async throws -> [Models.Notification.Joined] {
         try await client
             .rpc(fn: .markAllNotificationRead)
             .select(Notification.getQuery(.joined))
@@ -64,7 +64,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .value
     }
 
-    func markAllFriendRequestsAsRead() async throws -> [Models.Notification] {
+    func markAllFriendRequestsAsRead() async throws -> [Models.Notification.Joined] {
         try await client
             .rpc(fn: .markFriendRequestNotificationAsRead)
             .select(Notification.getQuery(.joined))
@@ -72,7 +72,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .value
     }
 
-    func markAllCheckInNotificationsAsRead(checkInId: CheckIn.Id) async throws -> [Models.Notification] {
+    func markAllCheckInNotificationsAsRead(checkInId: CheckIn.Id) async throws -> [Models.Notification.Joined] {
         try await client
             .rpc(
                 fn: .markCheckInNotificationAsRead,

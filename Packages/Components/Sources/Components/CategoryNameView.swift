@@ -35,5 +35,5 @@ public struct CategoryNameView: View {
 }
 
 #Preview {
-    CategoryNameView(category: Category(id: 0, name: "beverage", icon: "🥤"))
+    CategoryNameView(category: Category.Saved(id: 0, name: "beverage", icon: "🥤"))
 }

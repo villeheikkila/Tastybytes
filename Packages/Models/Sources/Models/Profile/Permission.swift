@@ -1,4 +1,4 @@
-import Tagged
+public import Tagged
 
 public struct Permission: Identifiable, Codable, Hashable, Sendable {
     public let id: Permission.Id

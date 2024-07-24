@@ -32,6 +32,7 @@ struct SupabaseBrandRepository: BrandRepository {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.joinedCompany(false)))
+            .order("created_at", ascending: false)
             .execute()
             .value
     }
@@ -81,7 +82,7 @@ struct SupabaseBrandRepository: BrandRepository {
         try await client
             .rpc(
                 fn: .isBrandLikedByCurrentUser,
-                params: BrandLike.CheckIfLikedRequest(id: id)
+                params: ["p_brand_id": id.rawValue]
             )
             .single()
             .execute()
@@ -91,7 +92,7 @@ struct SupabaseBrandRepository: BrandRepository {
     func likeBrand(brandId: Brand.Id) async throws {
         try await client
             .from(.brandLikes)
-            .insert(BrandLike.New(brandId: brandId))
+            .insert(["brand_id": brandId])
             .single()
             .execute()
     }
@@ -148,7 +149,7 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func uploadLogo(brandId: Brand.Id, data: Data) async throws -> ImageEntity {
+    func uploadLogo(brandId: Brand.Id, data: Data) async throws -> ImageEntity.Saved {
         let fileName = "\(brandId)_\(Date.now.timeIntervalSince1970).jpeg"
 
         try await client

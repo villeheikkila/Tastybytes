@@ -6,7 +6,7 @@ import SwiftUI
 struct CheckInCardHeader: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
     let profile: Profile
-    let location: Location?
+    let location: Location.Saved?
 
     var body: some View {
         RouterLink(open: .screen(.profile(profile))) {

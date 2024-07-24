@@ -28,6 +28,7 @@ extension Company: Queryable {
                     Company.EditSuggestion.getQuery(.joined(true)),
                     Company.getQuery(.saved(true)),
                     Report.getQuery(.joined(true)),
+                    Product.Variant.getQuery(.joinedProduct(true)),
                     modificationInfoFragment,
                 ],
                 withTableName

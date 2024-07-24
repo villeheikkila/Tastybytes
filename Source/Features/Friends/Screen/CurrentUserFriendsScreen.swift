@@ -14,7 +14,7 @@ struct CurrentUserFriendsScreen: View {
 
     let showToolbar: Bool
 
-    private var filteredFriends: [Friend] {
+    private var filteredFriends: [Friend.Saved] {
         if searchTerm.isEmpty {
             friendEnvironmentModel.acceptedOrPendingFriends
         } else {
@@ -103,7 +103,7 @@ struct CurrentUserFriendListRow: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @State private var showFriendDeleteConfirmation = false
 
-    let friend: Friend
+    let friend: Friend.Saved
 
     var body: some View {
         FriendListItemView(profile: friend.getFriend(userId: profileEnvironmentModel.profile.id)) {

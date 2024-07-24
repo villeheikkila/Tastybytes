@@ -40,7 +40,7 @@ struct CategoryAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("category.admin.section.category") {
-            CategoryNameView(category: category)
+            CategoryEntityView(category: category)
         }
         .customListRowBackground()
 

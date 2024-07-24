@@ -4,7 +4,7 @@ internal import Supabase
 struct SupabaseFlavorRepository: FlavorRepository {
     let client: SupabaseClient
 
-    func getAll() async throws -> [Flavor] {
+    func getAll() async throws -> [Flavor.Saved] {
         try await client
             .from(.flavors)
             .select(Flavor.getQuery(.saved(false)))
@@ -13,10 +13,10 @@ struct SupabaseFlavorRepository: FlavorRepository {
             .value
     }
 
-    func insert(newFlavor: Flavor.NewRequest) async throws -> Flavor {
+    func insert(name: String) async throws -> Flavor.Saved {
         try await client
             .from(.flavors)
-            .insert(newFlavor, returning: .representation)
+            .insert(["name": name], returning: .representation)
             .select(Flavor.getQuery(.saved(false)))
             .single()
             .execute()

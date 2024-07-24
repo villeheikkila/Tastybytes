@@ -69,7 +69,7 @@ extension Product: Queryable {
                     Subcategory.getQuery(.joinedCategory(true)),
                     Product.Barcode.getQuery(.joinedCreator(true)),
                     buildQuery(name: "product_edit_suggestions", foreignKey: "product_edit_suggestions!product_edit_suggestions_product_id_fkey", [Product.EditSuggestion.getQuery(.joined(false))]),
-                    Product.Variant.getQuery(.joined(true)),
+                    Product.Variant.getQuery(.joinedCompany(true)),
                     Report.getQuery(.joined(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                     modificationInfoFragment,
@@ -94,13 +94,16 @@ extension Product.Variant: Queryable {
 
     static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
-        case let .joined(withTableName):
+        case let .joinedCompany(withTableName):
             buildQuery(.productVariants, [saved, Company.getQuery(.saved(true))], withTableName)
+        case let .joinedProduct(withTableName):
+            buildQuery(.productVariants, [saved, Product.getQuery(.joinedBrandSubcategories(true))], withTableName)
         }
     }
 
     enum QueryType {
-        case joined(_ withTableName: Bool)
+        case joinedCompany(_ withTableName: Bool)
+        case joinedProduct(_ withTableName: Bool)
     }
 }
 

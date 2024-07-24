@@ -6,9 +6,9 @@ import SwiftUI
 struct NotificationScreen: View {
     @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var filter: NotificationType?
+    @State private var filter: Models.Notification.Kind?
 
-    private var filteredNotifications: [Models.Notification] {
+    private var filteredNotifications: [Models.Notification.Joined] {
         notificationEnvironmentModel.notifications.filter { notification in
             if filter == nil {
                 return true
@@ -108,7 +108,7 @@ struct NotificationScreen: View {
                 Label("labels.showAll", systemImage: "bell.fill")
             }
             Divider()
-            ForEach(NotificationType.allCases) { type in
+            ForEach(Notification.Kind.allCases) { type in
                 Button(type.label, systemImage: type.systemImage) {
                     withAnimation {
                         filter = type
@@ -119,7 +119,7 @@ struct NotificationScreen: View {
     }
 }
 
-extension Models.Notification {
+extension Models.Notification.Joined {
     @ViewBuilder
     var view: some View {
         switch content {
@@ -137,7 +137,7 @@ extension Models.Notification {
     }
 }
 
-extension NotificationType {
+extension Models.Notification.Kind {
     var contentUnavailableViewProps: ContentUnavailableViewProps {
         switch self {
         case .checkInComment:
@@ -181,7 +181,7 @@ struct ContentUnavailableViewProps {
     }
 }
 
-public extension NotificationType {
+public extension Models.Notification.Kind {
     var label: LocalizedStringKey {
         switch self {
         case .message:

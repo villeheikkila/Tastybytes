@@ -9,10 +9,10 @@ import SwiftUI
 public final class AdminEnvironmentModel {
     private let logger = Logger(category: "AdminEnvironmentModel")
 
-    public var events = [AdminEvent]()
+    public var events = [AdminEvent.Joined]()
     public var unverified = [VerifiableEntity]()
     public var editSuggestions = [EditSuggestion]()
-    public var reports = [Report]()
+    public var reports = [Report.Joined]()
 
     public var notificationCount: Int {
         events.count + unverified.count + editSuggestions.count + reports.count
@@ -58,9 +58,9 @@ public final class AdminEnvironmentModel {
         }
     }
 
-    public func markAsReviewed(_ event: AdminEvent) async {
+    public func markAsReviewed(_ event: AdminEvent.Joined) async {
         do {
-            try await repository.admin.markAdminEventAsReviewed(event: event)
+            try await repository.admin.markAdminEventAsReviewed(id: event.id)
             events = events.removing(event)
         } catch {
             logger.error("Failed to mark admin event as reviewed")
@@ -159,7 +159,7 @@ public final class AdminEnvironmentModel {
         }
     }
 
-    public func deleteReport(_ report: Report) async {
+    public func deleteReport(_ report: Report.Joined) async {
         do {
             try await repository.report.delete(id: report.id)
             reports = reports.removing(report)
@@ -169,7 +169,7 @@ public final class AdminEnvironmentModel {
         }
     }
 
-    public func resolveReport(_ report: Report) async {
+    public func resolveReport(_ report: Report.Joined) async {
         do {
             try await repository.report.resolve(id: report.id)
             reports = reports.removing(report)

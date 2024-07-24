@@ -18,22 +18,22 @@ struct CheckInSheet: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var primaryActionTask: Task<Void, Never>?
-    @State private var servingStyles = [ServingStyle]()
+    @State private var servingStyles = [ServingStyle.Saved]()
     // check-in properties
-    @State private var pickedFlavors = [Flavor]()
+    @State private var pickedFlavors = [Flavor.Saved]()
     @State private var review: String = ""
     @State private var rating: Double = 0
-    @State private var manufacturer: Company?
-    @State private var servingStyle: ServingStyle?
+    @State private var manufacturer: Company.Saved?
+    @State private var servingStyle: ServingStyle.Saved?
     @State private var taggedFriends = [Profile]()
-    @State private var location: Location?
-    @State private var locationFromImage: Location?
-    @State private var purchaseLocation: Location?
+    @State private var location: Location.Saved?
+    @State private var locationFromImage: Location.Saved?
+    @State private var purchaseLocation: Location.Saved?
     @State private var checkInAt: Date = .now
     @State private var isLegacyCheckIn: Bool
     @State private var isNostalgic: Bool
     @State private var newImages = [UIImage]()
-    @State private var images: [ImageEntity]
+    @State private var images: [ImageEntity.Saved]
 
     let action: Action
     let product: Product.Joined
@@ -114,7 +114,7 @@ struct CheckInSheet: View {
         Section("checkIn.section.additionalInformation.title") {
             if !servingStyles.isEmpty {
                 Picker(selection: $servingStyle) {
-                    Text("servingStyle.unselected").tag(ServingStyle?(nil))
+                    Text("servingStyle.unselected").tag(ServingStyle.Saved?(nil))
                     ForEach(servingStyles) { servingStyle in
                         Text(servingStyle.label).tag(Optional(servingStyle))
                     }
@@ -236,26 +236,27 @@ struct CheckInSheet: View {
                 return
             }
         case let .update(checkIn, onUpdate):
-            do { let updatedCheckIn = try await repository.checkIn.update(updateCheckInParams: .init(
-                checkIn: checkIn,
-                product: product,
-                review: review,
-                taggedFriends: taggedFriends,
-                servingStyle: servingStyle,
-                manufacturer: manufacturer,
-                flavors: pickedFlavors,
-                rating: rating,
-                location: location,
-                purchaseLocation: purchaseLocation,
-                checkInAt: isLegacyCheckIn ? nil : checkInAt,
-                isNostalgic: isNostalgic
-            ))
-            imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
-            if let onUpdate {
-                await onUpdate(updatedCheckIn.copyWith(images: images))
-            }
-            feedbackEnvironmentModel.trigger(.notification(.success))
-            dismiss()
+            do {
+                let updatedCheckIn = try await repository.checkIn.update(updateCheckInParams: .init(
+                    checkIn: checkIn,
+                    product: product,
+                    review: review,
+                    taggedFriends: taggedFriends,
+                    servingStyle: servingStyle,
+                    manufacturer: manufacturer,
+                    flavors: pickedFlavors,
+                    rating: rating,
+                    location: location,
+                    purchaseLocation: purchaseLocation,
+                    checkInAt: isLegacyCheckIn ? nil : checkInAt,
+                    isNostalgic: isNostalgic
+                ))
+                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
+                if let onUpdate {
+                    await onUpdate(updatedCheckIn.copyWith(images: images))
+                }
+                feedbackEnvironmentModel.trigger(.notification(.success))
+                dismiss()
             } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init(title: "checkIn.errors.failedToUpdateCheckIn.title", retry: {

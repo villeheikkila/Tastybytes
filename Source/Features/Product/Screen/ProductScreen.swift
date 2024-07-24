@@ -150,7 +150,6 @@ struct ProductInnerScreen: View {
                 }
 
                 Divider()
-                RouterLink("product.markAsDuplicate.label", systemImage: "doc.on.doc", open: .sheet(.duplicateProduct(mode: .reportDuplicate, product: product)))
                 RouterLink(
                     "product.editSuggestion.label",
                     systemImage: "pencil",

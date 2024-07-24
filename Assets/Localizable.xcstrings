@@ -2124,6 +2124,36 @@
         }
       }
     },
+    "company.admin.mergeCompanies.apply %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge %1$@  to %2$@"
+          }
+        }
+      }
+    },
+    "company.admin.mergeCompanies.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to merge these two companies? All related entities will be combined"
+          }
+        }
+      }
+    },
+    "company.admin.mergeCompanies.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge Companies"
+          }
+        }
+      }
+    },
     "company.admin.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -2637,6 +2667,7 @@
       }
     },
     "duplicateProduct.markAsDuplicate.label %@ %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2647,6 +2678,7 @@
       }
     },
     "duplicateProduct.markAsDuplicate.navigationTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2657,6 +2689,7 @@
       }
     },
     "duplicateProduct.mergeDuplicates.label %@ %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2667,6 +2700,7 @@
       }
     },
     "duplicateProduct.mergeDuplicates.navigationTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2677,6 +2711,7 @@
       }
     },
     "duplicateProduct.mergeTo.description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2687,6 +2722,7 @@
       }
     },
     "duplicateProduct.search.prompt" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2725,9 +2761,6 @@
           }
         }
       }
-    },
-    "Find a duplicate of\n %@" : {
-
     },
     "flavor.add.labels" : {
       "localizations" : {
@@ -3940,6 +3973,36 @@
     "product.admin.editSuggestion.navigationTitle" : {
 
     },
+    "product.admin.mergeProducts.apply %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge %1$@ to %2$@"
+          }
+        }
+      }
+    },
+    "product.admin.mergeProducts.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to merge these products? Some data is always lost"
+          }
+        }
+      }
+    },
+    "product.admin.mergeProducts.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge Products"
+          }
+        }
+      }
+    },
     "product.admin.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -4203,6 +4266,7 @@
       }
     },
     "product.markAsDuplicate.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4213,6 +4277,7 @@
       }
     },
     "product.mergeTo.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4278,6 +4343,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name of the product"
+          }
+        }
+      }
+    },
+    "product.picker.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a Product"
+          }
+        }
+      }
+    },
+    "product.picker.search.prompt" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a product by name, brand or the company"
           }
         }
       }
@@ -5598,6 +5683,7 @@
       }
     },
     "subcategory.admin.category" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5976,9 +6062,6 @@
           }
         }
       }
-    },
-    "Your request will be reviewed and products will be combined if appropriate." : {
-
     }
   },
   "version" : "1.0"

@@ -11,7 +11,7 @@ struct BrandEditSuggestionSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var newBrandName: String
-    @State private var brandOwner: Company
+    @State private var brandOwner: Company.Saved
 
     let onSuccess: () async -> Void
 

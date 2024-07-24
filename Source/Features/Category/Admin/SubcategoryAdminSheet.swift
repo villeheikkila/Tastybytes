@@ -14,7 +14,6 @@ struct SubcategoryAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var subcategoryName = ""
-    @State private var category: Models.Category.JoinedSubcategoriesServingStyles? = nil
     @State private var subcategory = Subcategory.Detailed()
 
     let id: Subcategory.Id
@@ -53,9 +52,7 @@ struct SubcategoryAdminSheet: View {
 
     @ViewBuilder var content: some View {
         Section("subcategory.admin.subcategory") {
-            VStack {
-                Text(subcategory.name)
-            }
+            SubCategoryEntityView(subcategory: subcategory)
         }
         .customListRowBackground()
 
@@ -63,9 +60,6 @@ struct SubcategoryAdminSheet: View {
 
         Section("admin.section.details") {
             LabeledTextFieldView(title: "subcategory.admin.name", text: $subcategoryName)
-            LabeledContent("subcategory.admin.category") {
-                RouterLink(category?.name ?? subcategory.category.name, open: .sheet(.categoryPicker(category: $category)))
-            }
         }
         .customListRowBackground()
 
@@ -94,7 +88,7 @@ struct SubcategoryAdminSheet: View {
                 await appEnvironmentModel.editSubcategory(.init(id: subcategory.id, name: subcategory.name))
                 await onEdit(subcategoryName)
             })
-            .disabled((subcategoryName.isEmpty || subcategory.name == subcategoryName) && subcategory.category.id == category?.id)
+            .disabled(subcategoryName.isEmpty || subcategory.name == subcategoryName)
         }
     }
 
@@ -102,7 +96,6 @@ struct SubcategoryAdminSheet: View {
         do {
             subcategory = try await repository.subcategory.getDetailed(id: id)
             subcategoryName = subcategory.name
-            category = subcategory.category
             state = .populated
         } catch {
             guard !error.isCancelled else { return }

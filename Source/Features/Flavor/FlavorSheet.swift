@@ -8,12 +8,12 @@ struct FlavorPickerSheet: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
-    @Binding var pickedFlavors: [Flavor]
+    @Binding var pickedFlavors: [Flavor.Saved]
     @State private var searchTerm = ""
 
     private let maxFlavors = 4
 
-    private var filteredFlavors: [Flavor] {
+    private var filteredFlavors: [Flavor.Saved] {
         appEnvironmentModel.flavors.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
@@ -21,7 +21,7 @@ struct FlavorPickerSheet: View {
         !searchTerm.isEmpty && filteredFlavors.isEmpty
     }
 
-    private var availableFlavours: [Flavor] {
+    private var availableFlavours: [Flavor.Saved] {
         appEnvironmentModel.flavors
     }
 

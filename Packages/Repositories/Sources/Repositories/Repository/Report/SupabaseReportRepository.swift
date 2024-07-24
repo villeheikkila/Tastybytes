@@ -5,7 +5,7 @@ internal import Supabase
 struct SupabaseReportRepository: ReportRepository {
     let client: SupabaseClient
 
-    func getAll(_ filter: ReportFilter? = nil) async throws -> [Report] {
+    func getAll(_ filter: ReportFilter? = nil) async throws -> [Report.Joined] {
         let query = client
             .from(.reports)
             .select(Report.getQuery(.joined(false)))
@@ -57,7 +57,7 @@ struct SupabaseReportRepository: ReportRepository {
             .execute()
     }
 
-    func resolve(id: Report.Id) async throws -> Report {
+    func resolve(id: Report.Id) async throws -> Report.Joined {
         try await client
             .from(.reports)
             .update(Report.ResolveRequest(resolvedAt: Date.now))

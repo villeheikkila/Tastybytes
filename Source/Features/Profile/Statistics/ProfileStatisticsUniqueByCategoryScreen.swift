@@ -113,7 +113,7 @@ struct SubcategoryStatisticsView: View {
 
 struct SubcategoryStatisticsRow: View {
     let profile: Profile
-    let category: Models.Category
+    let category: Models.Category.Saved
     let subcategory: SubcategoryStatistics?
 
     var body: some View {

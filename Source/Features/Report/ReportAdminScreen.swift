@@ -36,7 +36,7 @@ struct ReportAdminScreen: View {
 }
 
 struct ReportAdminRowView: View {
-    let report: Report
+    let report: Report.Joined
 
     var body: some View {
         RouterLink(open: report.open) {

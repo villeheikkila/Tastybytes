@@ -16,11 +16,11 @@ struct SubBrandPickerSheet: View {
 
     let brandWithSubBrands: Brand.JoinedSubBrands
 
-    private var sortedSubBrands: [SubBrand] {
+    private var sortedSubBrands: [SubBrand.Saved] {
         brandWithSubBrands.subBrands.sorted().filter { $0.name != nil }
     }
 
-    private var filteredSubBrands: [SubBrand] {
+    private var filteredSubBrands: [SubBrand.Saved] {
         sortedSubBrands.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
@@ -69,7 +69,7 @@ struct CreateSubBrandView: View {
     @Environment(Router.self) private var router
 
     let brandWithSubBrands: Brand.JoinedSubBrands
-    let onCreate: (_: SubBrand) -> Void
+    let onCreate: (SubBrand.Saved) -> Void
 
     private var isValidName: Bool {
         subBrandName.isValidLength(.normal(allowEmpty: false))

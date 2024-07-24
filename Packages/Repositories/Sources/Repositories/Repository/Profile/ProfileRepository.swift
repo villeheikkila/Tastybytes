@@ -9,7 +9,7 @@ public protocol ProfileRepository: Sendable {
     func update(update: Profile.UpdateRequest) async throws -> Profile.Extended
     func currentUserExport() async throws -> String
     func search(searchTerm: String, currentUserId: Profile.Id?) async throws -> [Profile]
-    func uploadAvatar(userId: Profile.Id, data: Data) async throws -> ImageEntity
+    func uploadAvatar(userId: Profile.Id, data: Data) async throws -> ImageEntity.Saved
     func deleteCurrentAccount() async throws
     func updateSettings(update: Profile.SettingsUpdateRequest) async throws -> Profile.Settings
     func getContributions(id: Profile.Id) async throws -> Profile.Contributions

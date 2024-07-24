@@ -4,7 +4,7 @@ internal import Supabase
 struct SupabaseImageEntityRepository: ImageEntityRepository {
     let client: SupabaseClient
 
-    func getByFileName(from: ImageCategory, fileName: String) async throws -> ImageEntity {
+    func getByFileName(from: ImageCategory, fileName: String) async throws -> ImageEntity.Saved {
         try await client
             .from(from.table)
             .select(ImageEntity.getQuery(.saved(nil)))

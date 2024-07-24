@@ -48,7 +48,7 @@ public final class ContributionsModel {
         }
     }
 
-    public func deleteReportSuggestion(_ report: Report) async {
+    public func deleteReportSuggestion(_ report: Report.Joined) async {
         do {
             try await repository.report.delete(id: report.id)
             contributions = contributions?.copyWith(reports: contributions?.reports.removing(report))

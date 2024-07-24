@@ -4,7 +4,7 @@ internal import Supabase
 struct SupabaseSubcategoryRepository: SubcategoryRepository {
     let client: SupabaseClient
 
-    func insert(newSubcategory: Subcategory.NewRequest) async throws -> Subcategory {
+    func insert(newSubcategory: Subcategory.NewRequest) async throws -> Subcategory.Saved {
         try await client
             .from(.subcategories)
             .insert(newSubcategory, returning: .representation)

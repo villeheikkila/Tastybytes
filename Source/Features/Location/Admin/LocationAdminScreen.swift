@@ -9,10 +9,10 @@ struct LocationAdminScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
-    @State private var locations = [Location]()
+    @State private var locations = [Location.Saved]()
     @State private var searchTerm = ""
 
-    private var filteredLocations: [Location] {
+    private var filteredLocations: [Location.Saved] {
         locations.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
@@ -20,7 +20,7 @@ struct LocationAdminScreen: View {
         List(filteredLocations) { location in
             LocationRow(location: location, currentLocation: nil) { location in
                 router.open(.sheet(.locationAdmin(id: location.id, onEdit: { edited in
-                    let updatedLocation = Location(location: edited)
+                    let updatedLocation = Location.Saved(location: edited)
                     withAnimation {
                         locations = locations.replacing(location, with: updatedLocation)
                     }

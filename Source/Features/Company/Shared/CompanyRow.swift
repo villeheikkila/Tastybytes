@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct CompanyResultRow: View {
-    let company: Company
+    let company: Company.Saved
     let action: () -> Void
 
     var body: some View {

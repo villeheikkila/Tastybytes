@@ -4,7 +4,7 @@ import Models
 import SwiftUI
 
 struct ReportEntityView: View {
-    let report: Report
+    let report: Report.Joined
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {

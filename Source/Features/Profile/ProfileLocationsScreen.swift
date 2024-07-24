@@ -10,8 +10,8 @@ struct ProfileLocationsScreen: View {
     private let logger = Logger(category: "ProfileLocationsScreen")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
-    @State private var checkInLocations = [Location]()
-    @State private var selectedLocation: Location?
+    @State private var checkInLocations = [Location.Saved]()
+    @State private var selectedLocation: Location.Saved?
 
     let profile: Profile
 
