@@ -13,10 +13,10 @@ public extension Report {
         case company(Company.Saved)
         case brand(Brand.JoinedSubBrandsProductsCompany)
         case subBrand(SubBrand.JoinedBrand)
-        case checkIn(CheckIn)
-        case comment(CheckInComment.Joined)
+        case checkIn(CheckIn.Joined)
+        case comment(CheckIn.Comment.Joined)
         case checkInImage(ImageEntity.JoinedCheckIn)
-        case profile(Profile)
+        case profile(Profile.Saved)
         case location(Location.Saved)
     }
 }

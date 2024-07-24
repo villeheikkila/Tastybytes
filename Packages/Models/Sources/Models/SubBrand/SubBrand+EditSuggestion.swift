@@ -8,8 +8,8 @@ public extension SubBrand {
         public let id: SubBrand.EditSuggestion.Id
         public let subBrand: SubBrand.JoinedBrand
         public let createdAt: Date
-        public let createdBy: Profile
-        public let brand: Brand?
+        public let createdBy: Profile.Saved
+        public let brand: Brand.Saved?
         public let name: String?
         public let includesBrandName: Bool?
         public let resolvedAt: Date?

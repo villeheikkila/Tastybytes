@@ -9,9 +9,9 @@ public extension Subcategory {
         public let isVerified: Bool
         public let category: Category.Saved
         public let createdAt: Date
-        public let createdBy: Profile?
+        public let createdBy: Profile.Saved?
         public let updatedAt: Date?
-        public let updatedBy: Profile?
+        public let updatedBy: Profile.Saved?
 
         init(
             id: Subcategory.Id,
@@ -19,9 +19,9 @@ public extension Subcategory {
             isVerified: Bool,
             category: Category.Saved,
             createdAt: Date,
-            createdBy: Profile? = nil,
+            createdBy: Profile.Saved? = nil,
             updatedAt: Date? = nil,
-            updatedBy: Profile? = nil
+            updatedBy: Profile.Saved? = nil
         ) {
             self.id = id
             self.name = name

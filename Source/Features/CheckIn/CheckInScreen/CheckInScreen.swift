@@ -15,12 +15,12 @@ struct CheckInScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState private var focusedField: CheckInLeaveComment.Focusable?
     @State private var state: ScreenState = .loading
-    @State private var checkIn: CheckIn
-    @State private var checkInComments = [CheckInComment]()
+    @State private var checkIn: CheckIn.Joined
+    @State private var checkInComments = [CheckIn.Comment.Saved]()
     @State private var showDeleteConfirmation = false
-    @State private var toDeleteCheckInAsModerator: CheckIn?
+    @State private var toDeleteCheckInAsModerator: CheckIn.Joined?
 
-    init(checkIn: CheckIn) {
+    init(checkIn: CheckIn.Joined) {
         _checkIn = State(wrappedValue: checkIn)
     }
 
@@ -235,7 +235,7 @@ struct CheckInScreen: View {
         state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
-    private func deleteCheckIn(_ checkIn: CheckIn) async {
+    private func deleteCheckIn(_ checkIn: CheckIn.Joined) async {
         do {
             try await repository.checkIn.delete(id: checkIn.id)
             feedbackEnvironmentModel.trigger(.notification(.success))

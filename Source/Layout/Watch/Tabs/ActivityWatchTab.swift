@@ -63,7 +63,7 @@ struct ActivityWatchTabContent: View {
 }
 
 struct CheckInWatchListItemView: View {
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
 
     var fullProductName: String {
         let productName = checkIn.product.formatted(.fullName)

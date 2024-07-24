@@ -10,7 +10,7 @@ struct ProfileTopLocationsScreen: View {
     @State private var state: ScreenState = .loading
     @State private var locations = [Profile.TopLocations]()
 
-    let profile: Profile
+    let profile: Profile.Saved
 
     var body: some View {
         List(locations) { location in
@@ -48,7 +48,7 @@ struct ProfileTopLocationsScreen: View {
 
 struct TopLocationRow: View {
     let location: Profile.TopLocations
-    let profile: Profile
+    let profile: Profile.Saved
 
     var body: some View {
         RouterLink(open: .screen(.profileCheckIns(profile, .location(location.loc)))) {

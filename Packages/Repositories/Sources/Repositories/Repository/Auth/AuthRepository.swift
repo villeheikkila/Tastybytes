@@ -3,7 +3,7 @@ import Models
 internal import Supabase
 
 public protocol AuthRepository: Sendable {
-    func getUser() async throws -> Models.User
+    func getUser() async throws -> Profile.Account
     func signInFromUrl(url: URL) async throws
     func logOut() async throws
     func sendEmailVerification(email: String) async throws

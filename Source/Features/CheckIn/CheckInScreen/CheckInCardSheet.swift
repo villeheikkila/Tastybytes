@@ -10,10 +10,10 @@ struct CheckInCommentEditSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var editCommentText = ""
 
-    let checkInComment: CheckInComment
-    @Binding var checkInComments: [CheckInComment]
+    let checkInComment: CheckIn.Comment.Saved
+    @Binding var checkInComments: [CheckIn.Comment.Saved]
 
-    init(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>) {
+    init(checkInComment: CheckIn.Comment.Saved, checkInComments: Binding<[CheckIn.Comment.Saved]>) {
         _editCommentText = State(initialValue: checkInComment.content)
         _checkInComments = checkInComments
         self.checkInComment = checkInComment

@@ -268,7 +268,7 @@ struct BrandAdminSheet: View {
 }
 
 struct SubBrandListAdminScreen: View {
-    let brand: Brand
+    let brand: Brand.Saved
     @Binding var subBrands: [SubBrand.JoinedProduct]
 
     var body: some View {

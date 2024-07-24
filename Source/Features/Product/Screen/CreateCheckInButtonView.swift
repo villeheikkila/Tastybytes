@@ -8,7 +8,7 @@ import SwiftUI
 struct CreateCheckInButtonView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     let product: Product.Joined
-    let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
+    let onCreateCheckIn: (_ checkIn: CheckIn.Joined) async -> Void
 
     var body: some View {
         if profileEnvironmentModel.hasPermission(.canCreateCheckIns) {

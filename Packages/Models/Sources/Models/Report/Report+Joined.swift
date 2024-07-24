@@ -10,7 +10,7 @@ public extension Report {
         public let id: Report.Id
         public let message: String?
         public let createdAt: Date
-        public let createdBy: Profile
+        public let createdBy: Profile.Saved
         public let content: Content
         public let resolvedAt: Date?
 
@@ -19,17 +19,17 @@ public extension Report {
             id = try values.decode(Report.Id.self, forKey: .id)
             message = try values.decodeIfPresent(String.self, forKey: .message)
             createdAt = try values.decode(Date.self, forKey: .createdAt)
-            createdBy = try values.decode(Profile.self, forKey: .createdBy)
+            createdBy = try values.decode(Profile.Saved.self, forKey: .createdBy)
             resolvedAt = try values.decodeIfPresent(Date.self, forKey: .createdAt)
 
             let product = try values.decodeIfPresent(Product.Joined.self, forKey: .product)
             let company = try values.decodeIfPresent(Company.Saved.self, forKey: .company)
             let brand = try values.decodeIfPresent(Brand.JoinedSubBrandsProductsCompany.self, forKey: .brand)
             let subBrand = try values.decodeIfPresent(SubBrand.JoinedBrand.self, forKey: .subBrand)
-            let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComment)
-            let checkIn = try values.decodeIfPresent(CheckIn.self, forKey: .checkIn)
+            let checkInComment = try values.decodeIfPresent(CheckIn.Comment.Joined.self, forKey: .checkInComment)
+            let checkIn = try values.decodeIfPresent(CheckIn.Joined.self, forKey: .checkIn)
             let checkInImageEntity = try values.decodeIfPresent(ImageEntity.JoinedCheckIn.self, forKey: .checkInImage)
-            let profile = try values.decodeIfPresent(Profile.self, forKey: .profile)
+            let profile = try values.decodeIfPresent(Profile.Saved.self, forKey: .profile)
             let location = try values.decodeIfPresent(Location.Saved.self, forKey: .location)
 
             content = if let checkIn {

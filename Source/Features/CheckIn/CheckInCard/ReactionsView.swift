@@ -11,13 +11,13 @@ struct ReactionsView: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @State private var checkInReactions = [CheckInReaction]()
+    @State private var checkInReactions = [CheckIn.Reaction.Saved]()
     @State private var isLoading = false
     @State private var task: Task<Void, Never>?
 
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
 
-    init(checkIn: CheckIn) {
+    init(checkIn: CheckIn.Joined) {
         self.checkIn = checkIn
         _checkInReactions = State(initialValue: checkIn.checkInReactions)
     }
@@ -75,7 +75,7 @@ struct ReactionsView: View {
         } else {
             do {
                 let checkInReaction = try await repository.checkInReactions
-                    .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
+                    .insert(newCheckInReaction: CheckIn.Reaction.NewRequest(checkInId: checkIn.id))
                 withAnimation {
                     checkInReactions.append(checkInReaction)
                 }

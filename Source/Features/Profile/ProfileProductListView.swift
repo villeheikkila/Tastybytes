@@ -13,10 +13,10 @@ struct ProfileProductListView: View {
     @State private var searchTerm = ""
     @State private var productFilter: Product.Filter?
 
-    let profile: Profile
+    let profile: Profile.Saved
     let locked: Bool
 
-    init(profile: Profile, locked: Bool, productFilter: Product.Filter? = nil) {
+    init(profile: Profile.Saved, locked: Bool, productFilter: Product.Filter? = nil) {
         self.profile = profile
         self.locked = locked
         _productFilter = State(initialValue: productFilter)

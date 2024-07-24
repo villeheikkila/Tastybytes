@@ -55,7 +55,7 @@ struct BlockedUsersScreen: View {
 }
 
 struct BlockedUserListItemView: View {
-    let profile: Profile
+    let profile: Profile.Saved
     let onUnblockUser: () async -> Void
 
     var body: some View {

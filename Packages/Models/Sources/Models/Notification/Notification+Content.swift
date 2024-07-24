@@ -1,9 +1,9 @@
 public extension Notification {
-     enum Content: Hashable, Sendable {
+    enum Content: Hashable, Sendable {
         case message(String)
         case friendRequest(Friend.Saved)
-        case taggedCheckIn(CheckIn)
-        case checkInReaction(CheckInReaction.JoinedCheckIn)
-        case checkInComment(CheckInComment.Joined)
+        case taggedCheckIn(CheckIn.Joined)
+        case checkInReaction(CheckIn.Reaction.JoinedCheckIn)
+        case checkInComment(CheckIn.Comment.Joined)
     }
 }

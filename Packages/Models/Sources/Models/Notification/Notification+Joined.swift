@@ -7,21 +7,21 @@ public extension Notification {
         public let createdAt: Date
         public let seenAt: Date?
         public let content: Content
-        
+
         init(id: Notification.Id, createdAt: Date, seenAt: Date? = nil, content: Notification.Content) {
             self.id = id
             self.createdAt = createdAt
             self.seenAt = seenAt
             self.content = content
         }
-        
+
         public var isFriendRequest: Bool {
             if case .friendRequest = content {
                 return true
             }
             return false
         }
-        
+
         public func copyWith(createdAt: Date? = nil, seenAt: Date?? = nil,
                              content: Content? = nil) -> Self
         {
@@ -30,7 +30,7 @@ public extension Notification {
                   seenAt: seenAt ?? self.seenAt,
                   content: content ?? self.content)
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case id
             case message
@@ -51,8 +51,8 @@ public extension Notification {
             let message = try values.decodeIfPresent(String.self, forKey: .message)
             let friendRequest = try values.decodeIfPresent(Friend.Saved.self, forKey: .friendRequest)
             let taggedCheckIn = try values.decodeIfPresent(CheckInTaggedProfiles.self, forKey: .taggedCheckIn)
-            let checkInReaction = try values.decodeIfPresent(CheckInReaction.JoinedCheckIn.self, forKey: .checkInReaction)
-            let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComments)
+            let checkInReaction = try values.decodeIfPresent(CheckIn.Reaction.JoinedCheckIn.self, forKey: .checkInReaction)
+            let checkInComment = try values.decodeIfPresent(CheckIn.Comment.Joined.self, forKey: .checkInComments)
 
             content = if let message {
                 .message(message)

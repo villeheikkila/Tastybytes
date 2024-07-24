@@ -15,7 +15,7 @@ struct ProfilePickerSheet: View {
     @State private var state: ScreenState = .populated
     @State private var searchTerm: String = ""
     @State private var searchedFor: String?
-    @State private var searchResults = [Profile]()
+    @State private var searchResults = [Profile.Saved]()
 
     let mode: Mode
     let onSubmit: () -> Void

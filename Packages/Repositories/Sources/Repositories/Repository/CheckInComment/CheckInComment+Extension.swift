@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-extension CheckInComment: Queryable {
+extension CheckIn.Comment: Queryable {
     private static let saved = "id, content"
 
     static func getQuery(_ queryType: QueryType) -> String {

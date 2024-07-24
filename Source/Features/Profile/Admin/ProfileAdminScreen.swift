@@ -8,10 +8,10 @@ struct ProfilesAdminScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var state: ScreenState = .loading
-    @State private var profiles = [Profile]()
+    @State private var profiles = [Profile.Saved]()
     @State private var searchTerm = ""
 
-    private var filteredProfiles: [Profile] {
+    private var filteredProfiles: [Profile.Saved] {
         profiles.filteredBySearchTerm(by: \.preferredName, searchTerm: searchTerm)
     }
 

@@ -19,7 +19,7 @@ struct DiscoverScreen: View {
     // Search Result
     @State private var searchResultKey: SearchKey?
     @State private var products = [Product.Joined]()
-    @State private var profiles = [Profile]()
+    @State private var profiles = [Profile.Saved]()
     @State private var companies = [Company.Saved]()
     @State private var locations = [Location.Saved]()
     // Search State

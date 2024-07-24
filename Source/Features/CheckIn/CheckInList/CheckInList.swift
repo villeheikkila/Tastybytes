@@ -7,11 +7,11 @@ import Repositories
 import SwiftUI
 
 struct CheckInListSegmentPickerView: View {
-    @Binding var showCheckInsFrom: CheckInSegment
+    @Binding var showCheckInsFrom: CheckIn.Segment
 
     var body: some View {
         Picker("checkIn.segment.picker.title", selection: $showCheckInsFrom) {
-            ForEach(CheckInSegment.allCases, id: \.self) { segment in
+            ForEach(CheckIn.Segment.allCases, id: \.self) { segment in
                 Text(segment.label)
             }
         }
@@ -23,7 +23,7 @@ struct CheckInListSegmentPickerView: View {
     }
 }
 
-extension CheckInSegment {
+extension CheckIn.Segment {
     var emptyContentView: some View {
         switch self {
         case .everyone:

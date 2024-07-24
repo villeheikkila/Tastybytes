@@ -7,12 +7,12 @@ public extension ImageEntity {
         public let file: String
         public let bucket: String
         public let blurHash: BlurHash?
-        public let checkIn: CheckIn
+        public let checkIn: CheckIn.Joined
         public let reports: [Report.Joined]
         public let createdAt: Date
-        public let createdBy: Profile
+        public let createdBy: Profile.Saved
 
-        init(id: ImageEntity.Id, file: String, bucket: String, blurHash: BlurHash? = nil, checkIn: CheckIn, reports: [Report.Joined], createdAt: Date, createdBy: Profile) {
+        init(id: ImageEntity.Id, file: String, bucket: String, blurHash: BlurHash? = nil, checkIn: CheckIn.Joined, reports: [Report.Joined], createdAt: Date, createdBy: Profile.Saved) {
             self.id = id
             self.file = file
             self.bucket = bucket

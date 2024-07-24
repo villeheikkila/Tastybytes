@@ -4,9 +4,9 @@ import SwiftUI
 
 public struct CheckInShareLinkView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
 
-    public init(checkIn: CheckIn) {
+    public init(checkIn: CheckIn.Joined) {
         self.checkIn = checkIn
     }
 

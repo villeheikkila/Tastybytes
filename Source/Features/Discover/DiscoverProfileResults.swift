@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct DiscoverProfileResults: View {
-    let profiles: [Profile]
+    let profiles: [Profile.Saved]
 
     var body: some View {
         ForEach(profiles) { profile in

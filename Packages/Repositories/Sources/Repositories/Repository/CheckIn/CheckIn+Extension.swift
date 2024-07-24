@@ -13,7 +13,7 @@ extension CheckIn: Queryable {
                     saved,
                     buildQuery(name: "profiles", foreignKey: "created_by", [Profile.getQuery(.minimal(false))]),
                     Product.getQuery(.joinedBrandSubcategories(true)),
-                    CheckInReaction.getQuery(.joinedProfile(true)),
+                    CheckIn.Reaction.getQuery(.joinedProfile(true)),
                     buildQuery(.checkInTaggedProfiles, [Profile.getQuery(.minimal(true))], true),
                     buildQuery(.checkInFlavors, [Flavor.getQuery(.saved(true))], true),
                     buildQuery(.productVariants, ["id", Company.getQuery(.saved(true))], true),
@@ -30,7 +30,7 @@ extension CheckIn: Queryable {
                 [
                     saved,
                     Product.getQuery(.joinedBrandSubcategories(true)),
-                    CheckInReaction.getQuery(.joinedProfile(true)),
+                    CheckIn.Reaction.getQuery(.joinedProfile(true)),
                     buildQuery(.checkInTaggedProfiles, [Profile.getQuery(.minimal(true))], true),
                     buildQuery(.checkInFlavors, [Flavor.getQuery(.saved(true))], true),
                     buildQuery(.productVariants, ["id", Company.getQuery(.saved(true))], true),
@@ -90,7 +90,7 @@ extension Models.Notification.CheckInTaggedProfiles: Queryable {
     }
 }
 
-extension CheckInSegment {
+extension CheckIn.Segment {
     var table: Database.Table {
         switch self {
         case .everyone:

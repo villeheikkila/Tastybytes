@@ -136,7 +136,7 @@ public final class NotificationEnvironmentModel {
         }
     }
 
-    public func markCheckInAsRead(checkIn: CheckIn) async {
+    public func markCheckInAsRead(checkIn: CheckIn.Joined) async {
         let containsCheckIn = notifications.contains(where: { notification in
             switch notification.content {
             case let .checkInReaction(cir):

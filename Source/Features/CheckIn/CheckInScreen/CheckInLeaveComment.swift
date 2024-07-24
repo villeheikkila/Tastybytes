@@ -9,10 +9,10 @@ struct CheckInLeaveComment: View {
     @Environment(Repository.self) private var repository
     @State private var commentText: String = ""
 
-    let checkIn: CheckIn
-    @Binding var checkInComments: [CheckInComment]
+    let checkIn: CheckIn.Joined
+    @Binding var checkInComments: [CheckIn.Comment.Saved]
     @FocusState var focusedField: Focusable?
-    let onSubmitted: (_ comment: CheckInComment) async -> Void
+    let onSubmitted: (_ comment: CheckIn.Comment.Saved) async -> Void
 
     var body: some View {
         HStack(alignment: .center) {

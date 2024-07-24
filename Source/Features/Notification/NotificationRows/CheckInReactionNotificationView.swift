@@ -3,7 +3,7 @@ import Models
 import SwiftUI
 
 struct CheckInReactionNotificationView: View {
-    let checkInReaction: CheckInReaction.JoinedCheckIn
+    let checkInReaction: CheckIn.Reaction.JoinedCheckIn
     let createdAt: Date
     let seenAt: Date?
 

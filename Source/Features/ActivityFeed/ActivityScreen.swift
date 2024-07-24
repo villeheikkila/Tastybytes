@@ -21,7 +21,7 @@ struct ActivityScreen: View {
     @State private var isInitialLoad = true
     @State private var page = 0
     // Check-ins
-    @State private var checkIns = [CheckIn]()
+    @State private var checkIns = [CheckIn.Joined]()
 
     var body: some View {
         @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
@@ -89,11 +89,11 @@ struct ActivityScreen: View {
         }
     }
 
-    private func onCreateCheckIn(_ checkIn: CheckIn) {
+    private func onCreateCheckIn(_ checkIn: CheckIn.Joined) {
         checkIns.insert(checkIn, at: 0)
     }
 
-    private func onCheckInUpdate(_ checkIn: CheckIn) {
+    private func onCheckInUpdate(_ checkIn: CheckIn.Joined) {
         checkIns = checkIns.replacingWithId(checkIn.id, with: checkIn)
     }
 

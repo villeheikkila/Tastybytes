@@ -12,9 +12,9 @@ public extension SubBrand {
         public let editSuggestions: [SubBrand.EditSuggestion]
         public let reports: [Report.Joined]
         public let createdAt: Date
-        public let createdBy: Profile?
+        public let createdBy: Profile.Saved?
         public let updatedAt: Date?
-        public let updatedBy: Profile?
+        public let updatedBy: Profile.Saved?
 
         init(
             id: SubBrand.Id,
@@ -26,9 +26,9 @@ public extension SubBrand {
             editSuggestions: [SubBrand.EditSuggestion],
             reports: [Report.Joined],
             createdAt: Date,
-            createdBy: Profile? = nil,
+            createdBy: Profile.Saved? = nil,
             updatedAt: Date? = nil,
-            updatedBy: Profile? = nil
+            updatedBy: Profile.Saved? = nil
         ) {
             self.id = id
             self.name = name

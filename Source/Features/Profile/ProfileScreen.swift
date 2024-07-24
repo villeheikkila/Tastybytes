@@ -8,7 +8,7 @@ struct ProfileScreen: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
 
-    let profile: Profile
+    let profile: Profile.Saved
 
     var body: some View {
         ProfileView(

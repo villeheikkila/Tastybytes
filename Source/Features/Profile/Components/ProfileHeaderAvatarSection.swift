@@ -11,7 +11,7 @@ struct ProfileHeaderAvatarSection: View {
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @Binding var showPicker: Bool
-    @Binding var profile: Profile
+    @Binding var profile: Profile.Saved
 
     let isCurrentUser: Bool
     let showInFull: Bool

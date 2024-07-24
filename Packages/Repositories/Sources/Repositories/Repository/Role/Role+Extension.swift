@@ -17,7 +17,7 @@ extension Role: Queryable {
 }
 
 struct RolesPermissions: Sendable, Codable {
-    let roles: [Role]
+    let roles: [Role.Joined]
 }
 
 extension RolesPermissions: Queryable {

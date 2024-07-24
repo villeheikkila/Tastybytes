@@ -6,7 +6,7 @@ import SwiftUI
 
 struct CheckInCard: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
 
     var body: some View {
@@ -49,8 +49,8 @@ extension CheckInCard {
     enum LoadedFrom: Equatable {
         case checkIn
         case product
-        case profile(Profile)
-        case activity(Profile)
+        case profile(Profile.Saved)
+        case activity(Profile.Saved)
         case location(Location.Saved)
 
         func isLoadedFromLocation(_ location: Location.Saved) -> Bool {
@@ -62,7 +62,7 @@ extension CheckInCard {
             }
         }
 
-        func isLoadedFromProfile(_ profile: Profile) -> Bool {
+        func isLoadedFromProfile(_ profile: Profile.Saved) -> Bool {
             switch self {
             case let .profile(fromProfile):
                 fromProfile == profile

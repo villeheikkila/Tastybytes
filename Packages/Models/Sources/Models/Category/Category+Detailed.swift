@@ -9,9 +9,9 @@ public extension Category {
         public let subcategories: [Subcategory.Saved]
         public let servingStyles: [ServingStyle.Saved]
         public let createdAt: Date
-        public let createdBy: Profile?
+        public let createdBy: Profile.Saved?
         public let updatedAt: Date?
-        public let updatedBy: Profile?
+        public let updatedBy: Profile.Saved?
 
         init(
             id: Category.Id,
@@ -20,9 +20,9 @@ public extension Category {
             subcategories: [Subcategory.Saved],
             servingStyles: [ServingStyle.Saved],
             createdAt: Date,
-            createdBy: Profile? = nil,
+            createdBy: Profile.Saved? = nil,
             updatedAt: Date? = nil,
-            updatedBy: Profile? = nil
+            updatedBy: Profile.Saved? = nil
         ) {
             self.id = id
             self.name = name

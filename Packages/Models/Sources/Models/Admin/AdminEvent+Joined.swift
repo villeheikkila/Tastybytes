@@ -9,7 +9,7 @@ public extension AdminEvent {
     struct Joined: Identifiable, Sendable, Decodable, Hashable {
         public let id: AdminEvent.Id
         public let reviewedAt: Date?
-        public let reviewedBy: Profile?
+        public let reviewedBy: Profile.Saved?
         public let createdAt: Date
         public let content: Content
 
@@ -36,13 +36,13 @@ public extension AdminEvent {
             id = try container.decode(AdminEvent.Id.self, forKey: .id)
             createdAt = try container.decode(Date.self, forKey: .createdAt)
             reviewedAt = try container.decodeIfPresent(Date.self, forKey: .reviewedAt)
-            reviewedBy = try container.decodeIfPresent(Profile.self, forKey: .reviewedBy)
+            reviewedBy = try container.decodeIfPresent(Profile.Saved.self, forKey: .reviewedBy)
 
             let company = try container.decodeIfPresent(Company.Saved.self, forKey: .company)
             let product = try container.decodeIfPresent(Product.Joined.self, forKey: .product)
             let subBrand = try container.decodeIfPresent(SubBrand.JoinedBrand.self, forKey: .subBrand)
-            let brand = try container.decodeIfPresent(Brand.self, forKey: .brand)
-            let profile = try container.decodeIfPresent(Profile.self, forKey: .profile)
+            let brand = try container.decodeIfPresent(Brand.Saved.self, forKey: .brand)
+            let profile = try container.decodeIfPresent(Profile.Saved.self, forKey: .profile)
             let productEditSuggestion = try container.decodeIfPresent(Product.EditSuggestion.self, forKey: .productEditSuggestion)
             let brandEditSuggestion = try container.decodeIfPresent(Brand.EditSuggestion.self, forKey: .brandEditSuggestion)
             let subBrandEditSuggestion = try container.decodeIfPresent(SubBrand.EditSuggestion.self, forKey: .subBrandEditSuggestion)
@@ -81,8 +81,8 @@ public extension AdminEvent {
         case company(Company.Saved)
         case product(Product.Joined)
         case subBrand(SubBrand.JoinedBrand)
-        case brand(Brand)
-        case profile(Profile)
+        case brand(Brand.Saved)
+        case profile(Profile.Saved)
         case editSuggestion(EditSuggestion)
         case report(Report.Joined)
     }

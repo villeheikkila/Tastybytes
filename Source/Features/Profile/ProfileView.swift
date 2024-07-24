@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(Repository.self) private var repository
-    let profile: Profile
+    let profile: Profile.Saved
     let isCurrentUser: Bool
 
     var body: some View {
@@ -25,7 +25,7 @@ struct ProfileInnerView: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
-    @State private var profile: Profile
+    @State private var profile: Profile.Saved
     @State private var profileSummary: ProfileSummary?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoading = false
@@ -42,7 +42,7 @@ struct ProfileInnerView: View {
     private let isCurrentUser: Bool
     private let isShownInFull: Bool
 
-    init(repository: Repository, profile: Profile, isCurrentUser: Bool) {
+    init(repository: Repository, profile: Profile.Saved, isCurrentUser: Bool) {
         _profile = State(initialValue: profile)
         self.isCurrentUser = isCurrentUser
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in

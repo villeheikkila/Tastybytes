@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct ProfileLinksSection: View {
-    let profile: Profile
+    let profile: Profile.Saved
     let isCurrentUser: Bool
 
     var body: some View {

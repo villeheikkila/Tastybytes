@@ -4,11 +4,11 @@ import Models
 import SwiftUI
 
 struct FriendListItemView<RootView: View>: View {
-    let profile: Profile
+    let profile: Profile.Saved
     let view: () -> RootView?
 
     init(
-        profile: Profile,
+        profile: Profile.Saved,
         @ViewBuilder view: @escaping () -> RootView? = { nil }
     ) {
         self.view = view

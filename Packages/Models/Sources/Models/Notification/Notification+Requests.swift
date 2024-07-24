@@ -4,7 +4,7 @@ public import Tagged
 public extension Notification {
     struct CheckInTaggedProfiles: Identifiable, Codable {
         public let id: Notification.Id
-        public let checkIn: CheckIn
+        public let checkIn: CheckIn.Joined
 
         enum CodingKeys: String, CodingKey {
             case id

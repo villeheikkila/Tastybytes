@@ -14,8 +14,8 @@ public extension Location {
         public let source: String
         public let reports: [Report.Joined]
         public let createdAt: Date
-        public let createdBy: Profile?
-        public let updatedBy: Profile?
+        public let createdBy: Profile.Saved?
+        public let updatedBy: Profile.Saved?
         public let updatedAt: Date?
 
         enum CodingKeys: String, CodingKey {
@@ -46,8 +46,8 @@ public extension Location {
             source: String,
             reports: [Report.Joined],
             createdAt: Date,
-            createdBy: Profile?,
-            updatedBy: Profile?,
+            createdBy: Profile.Saved?,
+            updatedBy: Profile.Saved?,
             updatedAt: Date?
         ) {
             self.id = id
@@ -94,9 +94,9 @@ public extension Location {
             country = try container.decode(Country.self, forKey: .country)
             source = try container.decode(String.self, forKey: .source)
             reports = try container.decode([Report.Joined].self, forKey: .reports)
-            createdBy = try container.decodeIfPresent(Profile.self, forKey: .createdBy)
+            createdBy = try container.decodeIfPresent(Profile.Saved.self, forKey: .createdBy)
             createdAt = try container.decode(Date.self, forKey: .createdAt)
-            updatedBy = try container.decodeIfPresent(Profile.self, forKey: .updatedBy)
+            updatedBy = try container.decodeIfPresent(Profile.Saved.self, forKey: .updatedBy)
             updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
         }
 

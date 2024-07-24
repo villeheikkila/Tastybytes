@@ -8,7 +8,7 @@ public extension Company {
         public let id: Company.EditSuggestion.Id
         public let name: String?
         public let company: Company.Saved
-        public let createdBy: Profile
+        public let createdBy: Profile.Saved
         public let createdAt: Date
         public let resolvedAt: Date?
 

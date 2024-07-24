@@ -1,7 +1,7 @@
 import Foundation
 import Models
 
-extension CheckInReaction: Queryable {
+extension CheckIn.Reaction: Queryable {
     private static let saved = "id"
 
     static func getQuery(_ queryType: QueryType) -> String {

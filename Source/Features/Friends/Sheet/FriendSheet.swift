@@ -8,13 +8,13 @@ struct FriendPickerSheet: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
-    @Binding var taggedFriends: [Profile]
+    @Binding var taggedFriends: [Profile.Saved]
 
-    private var shownProfiles: [Profile] {
+    private var shownProfiles: [Profile.Saved] {
         friendEnvironmentModel.acceptedFriends.filteredBySearchTerm(by: \.preferredName, searchTerm: searchTerm)
     }
 
-    private var sortedShownProfiles: [Profile] {
+    private var sortedShownProfiles: [Profile.Saved] {
         shownProfiles.sorted { taggedFriends.contains($0) && !taggedFriends.contains($1) }
     }
 

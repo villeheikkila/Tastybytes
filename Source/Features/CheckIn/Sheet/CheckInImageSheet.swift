@@ -15,12 +15,12 @@ struct CheckInImageSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var currentImage: ImageEntity.Saved
     @State private var showDeleteConfirmationFor: ImageEntity.Saved?
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
     @State private var images: [ImageEntity.Saved]
 
     let onDeleteImage: OnDeleteImageCallback?
 
-    init(checkIn: CheckIn, onDeleteImage: OnDeleteImageCallback?) {
+    init(checkIn: CheckIn.Joined, onDeleteImage: OnDeleteImageCallback?) {
         self.checkIn = checkIn
         _images = State(initialValue: checkIn.images)
         currentImage = if let firstImage = checkIn.images.first {
@@ -110,7 +110,7 @@ struct CheckInImageSheet: View {
 }
 
 struct CheckInImageCheckInSectionView: View {
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
 
     var body: some View {
         VStack {

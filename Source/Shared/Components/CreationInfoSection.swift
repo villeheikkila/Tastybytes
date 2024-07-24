@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct CreationInfoSection: View {
-    let createdBy: Profile?
+    let createdBy: Profile.Saved?
     let createdAt: Date?
 
     var body: some View {
@@ -31,9 +31,9 @@ struct CreationInfoSection: View {
 }
 
 struct ModificationInfoView: View {
-    let createdBy: Profile?
+    let createdBy: Profile.Saved?
     let createdAt: Date
-    let updatedBy: Profile?
+    let updatedBy: Profile.Saved?
     let updatedAt: Date?
 
     init(modificationInfo: ModificationInfo) {

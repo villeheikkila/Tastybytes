@@ -9,7 +9,7 @@ import SwiftUI
 public final class ImageUploadEnvironmentModel {
     private let logger = Logger(category: "ImageUploadEnvironmentModel")
 
-    public var uploadedImageForCheckIn: CheckIn?
+    public var uploadedImageForCheckIn: CheckIn.Joined?
     public var alertError: AlertEvent?
 
     private let repository: Repository
@@ -18,7 +18,7 @@ public final class ImageUploadEnvironmentModel {
         self.repository = repository
     }
 
-    public func uploadCheckInImage(checkIn: CheckIn, images: [UIImage]) {
+    public func uploadCheckInImage(checkIn: CheckIn.Joined, images: [UIImage]) {
         Task(priority: .userInitiated) {
             var uploadedImages = [ImageEntity.Saved]()
             for image in images {

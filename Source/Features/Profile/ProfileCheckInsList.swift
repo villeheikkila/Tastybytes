@@ -21,7 +21,7 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
         }
     }
 
-    func fetcher(repository: Repository, profile: Profile) -> CheckInListLoader.Fetcher {
+    func fetcher(repository: Repository, profile: Profile.Saved) -> CheckInListLoader.Fetcher {
         switch self {
         case let .dateRange(dateRange):
             { from, to, _ in
@@ -54,7 +54,7 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
 
 struct ProfileCheckInsList: View {
     @Environment(Repository.self) private var repository
-    let profile: Profile
+    let profile: Profile.Saved
     let filter: ProfileCheckInListFilter
 
     var body: some View {
@@ -70,10 +70,10 @@ struct ProfileCheckInsListInnerView: View {
     @State private var checkInLoader: CheckInListLoader
     @State private var state: ScreenState = .loading
 
-    let profile: Profile
+    let profile: Profile.Saved
     let filter: ProfileCheckInListFilter
 
-    init(repository: Repository, profile: Profile, filter: ProfileCheckInListFilter) {
+    init(repository: Repository, profile: Profile.Saved, filter: ProfileCheckInListFilter) {
         self.profile = profile
         self.filter = filter
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: filter.fetcher(repository: repository, profile: profile), id: "ProfileCheckIns"))

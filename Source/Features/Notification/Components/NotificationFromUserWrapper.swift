@@ -3,7 +3,7 @@ import Models
 import SwiftUI
 
 struct NotificationFromUserWrapper<Content: View>: View {
-    let profile: Profile
+    let profile: Profile.Saved
     let createdAt: Date
     @ViewBuilder let content: () -> Content
 

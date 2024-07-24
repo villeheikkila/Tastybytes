@@ -4,7 +4,7 @@ import SwiftUI
 
 struct CheckInCardTaggedFriends: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
-    let taggedProfiles: [Profile]
+    let taggedProfiles: [Profile.Saved]
 
     var body: some View {
         if !taggedProfiles.isEmpty {

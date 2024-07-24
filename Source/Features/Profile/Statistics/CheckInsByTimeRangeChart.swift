@@ -4,7 +4,7 @@ import SwiftUI
 
 struct CheckInsByTimeRangeChart: View {
     @Environment(Router.self) private var router
-    let profile: Profile
+    let profile: Profile.Saved
     let checkInsTimeBuckets: [CheckInsTimeBucket]
 
     var body: some View {

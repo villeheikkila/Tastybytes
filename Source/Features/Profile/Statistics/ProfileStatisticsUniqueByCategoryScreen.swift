@@ -12,7 +12,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
     @State private var state: ScreenState = .loading
     @State private var categoryStatistics = [CategoryStatistics]()
 
-    let profile: Profile
+    let profile: Profile.Saved
 
     var body: some View {
         List(categoryStatistics) { category in
@@ -53,7 +53,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
 }
 
 struct ProfileStatisticsUniqueByCategoryRow: View {
-    let profile: Profile
+    let profile: Profile.Saved
     let category: CategoryStatistics
 
     var body: some View {
@@ -75,7 +75,7 @@ struct SubcategoryStatisticsView: View {
     @State private var state: ScreenState = .loading
     @State private var subcategoryStatistics = [SubcategoryStatistics]()
 
-    let profile: Profile
+    let profile: Profile.Saved
     let category: CategoryStatistics
 
     var body: some View {
@@ -112,7 +112,7 @@ struct SubcategoryStatisticsView: View {
 }
 
 struct SubcategoryStatisticsRow: View {
-    let profile: Profile
+    let profile: Profile.Saved
     let category: Models.Category.Saved
     let subcategory: SubcategoryStatistics?
 

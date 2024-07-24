@@ -6,7 +6,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
     let imageEntityRepository: ImageEntityRepository
 
-    func getActivityFeed(query: ActivityFeedQueryType) async throws -> [CheckIn] {
+    func getActivityFeed(query: ActivityFeedQueryType) async throws -> [CheckIn.Joined] {
         let partialQuery = client
             .from(.viewActivityFeed)
             .select(CheckIn.getQuery(.joined(false)))
@@ -24,7 +24,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getByProfileId(id: Profile.Id, queryType: CheckInQueryType) async throws -> [CheckIn] {
+    func getByProfileId(id: Profile.Id, queryType: CheckInQueryType) async throws -> [CheckIn.Joined] {
         let queryBuilder = client
             .from(.checkIns)
             .select(CheckIn.getQuery(.joined(false)))
@@ -69,7 +69,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getByProductId(id: Product.Id, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn] {
+    func getByProductId(id: Product.Id, segment: CheckIn.Segment, from: Int, to: Int) async throws -> [CheckIn.Joined] {
         try await client
             .from(segment.table)
             .select(CheckIn.getQuery(.joined(false)))
@@ -113,7 +113,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getByLocation(locationId: Location.Id, segment: CheckInSegment, from: Int, to: Int) async throws -> [CheckIn] {
+    func getByLocation(locationId: Location.Id, segment: CheckIn.Segment, from: Int, to: Int) async throws -> [CheckIn.Joined] {
         try await client
             .from(segment.table)
             .select(CheckIn.getQuery(.joined(false)))
@@ -124,7 +124,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getById(id: CheckIn.Id) async throws -> CheckIn {
+    func getById(id: CheckIn.Id) async throws -> CheckIn.Joined {
         try await client
             .from(.checkIns)
             .select(CheckIn.getQuery(.joined(false)))
@@ -135,7 +135,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func create(newCheckInParams: CheckIn.NewRequest) async throws -> CheckIn {
+    func create(newCheckInParams: CheckIn.NewRequest) async throws -> CheckIn.Joined {
         try await client
             .rpc(fn: .createCheckIn, params: newCheckInParams)
             .select(CheckIn.getQuery(.joined(false)))
@@ -145,7 +145,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func update(updateCheckInParams: CheckIn.UpdateRequest) async throws -> CheckIn {
+    func update(updateCheckInParams: CheckIn.UpdateRequest) async throws -> CheckIn.Joined {
         try await client
             .rpc(fn: .updateCheckIn, params: updateCheckInParams)
             .select(CheckIn.getQuery(.joined(false)))
@@ -216,7 +216,7 @@ struct UpdateCheckInImageBlurHashParams: Codable {
 }
 
 public enum CheckInImageQueryType: Sendable {
-    case profile(Profile)
+    case profile(Profile.Saved)
     case product(Product.Joined)
 
     var column: String {

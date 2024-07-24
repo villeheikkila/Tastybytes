@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-public extension CheckInSegment {
+public extension CheckIn.Segment {
     var label: LocalizedStringKey {
         switch self {
         case .everyone: "checkIn.segment.everyone"

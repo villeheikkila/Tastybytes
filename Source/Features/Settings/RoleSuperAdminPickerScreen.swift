@@ -11,7 +11,7 @@ struct RoleSuperAdminPickerScreen: View {
     @Environment(Repository.self) private var repository
 
     @Binding var profile: Profile.Detailed
-    let roles: [Role]
+    let roles: [Role.Joined]
 
     var body: some View {
         List(adminEnvironmentModel.roles) { role in
@@ -30,7 +30,7 @@ struct RolePickerRowView: View {
     @State private var showConfirmationDialogForRemovingPermission = false
     @Binding var profile: Profile.Detailed
 
-    let role: Role
+    let role: Role.Joined
 
     private var isSelected: Bool {
         profile.roles.map(\.id).contains(role.id)
@@ -61,7 +61,7 @@ struct RolePickerRowView: View {
                         .opacity(isSelected ? 1 : 0)
                 }
             }
-            .disabled(role.name == RoleName.superAdmin.rawValue)
+            .disabled(role.name == Role.Name.superAdmin.rawValue)
         }
         .confirmationDialog(
             "Are you sure you want to remove \(role.label) role from \(profile.preferredName)",
@@ -85,7 +85,7 @@ struct RolePickerRowView: View {
         }
     }
 
-    private func removeRoleFromProfile(_ role: Role) async {
+    private func removeRoleFromProfile(_ role: Role.Joined) async {
         do {
             try await repository.role.removeProfileFromProfile(profile: profile.profile, role: role)
             profile = profile.copyWith(roles: profile.roles.removing(role))
@@ -95,7 +95,7 @@ struct RolePickerRowView: View {
         }
     }
 
-    private func addRoleForProfile(_ role: Role) async {
+    private func addRoleForProfile(_ role: Role.Joined) async {
         do {
             try await repository.role.addProfileForProfile(profile: profile.profile, role: role)
             profile = profile.copyWith(roles: profile.roles + [role])

@@ -9,7 +9,7 @@ public extension Product {
         public let product: Product.Joined
         public let duplicateOf: Product.Joined?
         public let createdAt: Date
-        public let createdBy: Profile
+        public let createdBy: Profile.Saved
         public let name: String?
         public let description: String?
         public let category: Category.Saved?

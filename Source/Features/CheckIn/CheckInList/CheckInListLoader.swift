@@ -8,8 +8,8 @@ import SwiftUI
 @MainActor
 @Observable
 final class CheckInListLoader {
-    typealias OnLoadComplete = (_ checkIns: [CheckIn]) async -> Void
-    typealias Fetcher = (_ from: Int, _ to: Int, _ segment: CheckInSegment) async throws -> [CheckIn]
+    typealias OnLoadComplete = (_ checkIns: [CheckIn.Joined]) async -> Void
+    typealias Fetcher = (_ from: Int, _ to: Int, _ segment: CheckIn.Segment) async throws -> [CheckIn.Joined]
     private let logger = Logger(category: "CheckInLoader")
 
     var loadingCheckInsOnAppearTask: Task<Void, Error>?
@@ -19,8 +19,8 @@ final class CheckInListLoader {
     var isLoading = false
     var page = 0
     // Check-ins
-    var checkIns = [CheckIn]()
-    var showCheckInsFrom: CheckInSegment {
+    var checkIns = [CheckIn.Joined]()
+    var showCheckInsFrom: CheckIn.Segment {
         didSet {
             onSegmentChange()
         }
@@ -34,7 +34,7 @@ final class CheckInListLoader {
     let id: String
     let pageSize: Int
 
-    init(fetcher: @escaping Fetcher, id: String, pageSize: Int = 10, showCheckInsFrom: CheckInSegment = .everyone) {
+    init(fetcher: @escaping Fetcher, id: String, pageSize: Int = 10, showCheckInsFrom: CheckIn.Segment = .everyone) {
         self.fetcher = fetcher
         self.id = id
         self.pageSize = pageSize
@@ -52,13 +52,13 @@ final class CheckInListLoader {
         await fetchFeedItems(showCheckInsFrom: showCheckInsFrom)
     }
 
-    func onCreateCheckIn(_ checkIn: CheckIn) {
+    func onCreateCheckIn(_ checkIn: CheckIn.Joined) {
         withAnimation {
             checkIns.insert(checkIn, at: 0)
         }
     }
 
-    func onCheckInUpdate(_ checkIn: CheckIn) {
+    func onCheckInUpdate(_ checkIn: CheckIn.Joined) {
         guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
         withAnimation {
             checkIns[index] = checkIn
@@ -92,7 +92,7 @@ final class CheckInListLoader {
         }
     }
 
-    func fetchFeedItems(reset: Bool = false, showCheckInsFrom: CheckInSegment) async {
+    func fetchFeedItems(reset: Bool = false, showCheckInsFrom: CheckIn.Segment) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: pageSize)
         isLoading = true
         errorContentUnavailable = nil

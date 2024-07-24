@@ -18,7 +18,7 @@ public final class AdminEnvironmentModel {
         events.count + unverified.count + editSuggestions.count + reports.count
     }
 
-    public var roles = [Role]()
+    public var roles = [Role.Joined]()
 
     private let repository: Repository
 

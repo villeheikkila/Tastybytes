@@ -6,7 +6,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     let client: SupabaseClient
     let imageEntityRepository: ImageEntityRepository
 
-    func getById(id: Profile.Id) async throws -> Profile {
+    func getById(id: Profile.Id) async throws -> Profile.Saved {
         try await client
             .from(.profiles)
             .select(Profile.getQuery(.minimal(false)))
@@ -28,7 +28,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getAll() async throws -> [Profile] {
+    func getAll() async throws -> [Profile.Saved] {
         try await client
             .from(.profiles)
             .select(Profile.getQuery(.minimal(false)))
@@ -135,7 +135,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .execute()
     }
 
-    func search(searchTerm: String, currentUserId: Profile.Id? = nil) async throws -> [Profile] {
+    func search(searchTerm: String, currentUserId: Profile.Id? = nil) async throws -> [Profile.Saved] {
         let query = client
             .from(.profiles)
             .select(Profile.getQuery(.minimal(false)))

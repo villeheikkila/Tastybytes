@@ -6,7 +6,7 @@ import TipKit
 struct RatingChartView: View {
     @Environment(Router.self) private var router
     @State private var selection: String?
-    let profile: Profile
+    let profile: Profile.Saved
     let profileSummary: ProfileSummary?
 
     var ratings: [KeyPath<ProfileSummary, Int>] = [

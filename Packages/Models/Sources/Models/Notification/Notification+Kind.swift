@@ -3,7 +3,7 @@ public extension Notification {
         public var id: Self {
             self
         }
-        
+
         case message, friendRequest, taggedCheckIn, checkInReaction, checkInComment
     }
 }

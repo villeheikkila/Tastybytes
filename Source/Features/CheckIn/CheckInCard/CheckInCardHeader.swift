@@ -5,7 +5,7 @@ import SwiftUI
 
 struct CheckInCardHeader: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
-    let profile: Profile
+    let profile: Profile.Saved
     let location: Location.Saved?
 
     var body: some View {

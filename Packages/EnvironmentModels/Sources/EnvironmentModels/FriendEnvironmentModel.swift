@@ -21,7 +21,7 @@ public final class FriendEnvironmentModel {
         self.repository = repository
     }
 
-    public var acceptedFriends: [Profile] {
+    public var acceptedFriends: [Profile.Saved] {
         guard let profile else { return [] }
         return friends.filter { $0.status == .accepted }.compactMap { $0.getFriend(userId: profile.id) }
     }
@@ -86,22 +86,22 @@ public final class FriendEnvironmentModel {
         }
     }
 
-    public func hasNoFriendStatus(friend: Profile) -> Bool {
+    public func hasNoFriendStatus(friend: Profile.Saved) -> Bool {
         guard let profile else { return false }
         return !friends.contains(where: { $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    public func isFriend(_ friend: Profile) -> Bool {
+    public func isFriend(_ friend: Profile.Saved) -> Bool {
         guard let profile else { return false }
         return friends.contains(where: { $0.status == .accepted && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    public func isPendingUserApproval(_ friend: Profile) -> Friend.Saved? {
+    public func isPendingUserApproval(_ friend: Profile.Saved) -> Friend.Saved? {
         guard let profile else { return nil }
         return friends.first(where: { $0.status == .pending && $0.getFriend(userId: profile.id).id == friend.id })
     }
 
-    public func isPendingCurrentUserApproval(_ friend: Profile) -> Friend.Saved? {
+    public func isPendingCurrentUserApproval(_ friend: Profile.Saved) -> Friend.Saved? {
         guard profile != nil else { return nil }
         return friends.first(where: { $0.status == .pending && $0.sender == friend })
     }
@@ -146,7 +146,7 @@ public final class FriendEnvironmentModel {
         }
     }
 
-    public func blockUser(user: Profile, onSuccess: @escaping () -> Void) async {
+    public func blockUser(user: Profile.Saved, onSuccess: @escaping () -> Void) async {
         guard let profile else { return }
         if let friend = friends.first(where: { $0.getFriend(userId: profile.id) == user }) {
             await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)

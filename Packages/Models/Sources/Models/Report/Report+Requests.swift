@@ -6,7 +6,7 @@ public extension Report {
         public let checkInId: CheckIn.Id?
         public let productId: Product.Id?
         public let companyId: Company.Id?
-        public let checkInCommentId: CheckInComment.Id?
+        public let checkInCommentId: CheckIn.Comment.Id?
         public let brandId: Brand.Id?
         public let subBrandId: SubBrand.Id?
         public let checkInImageId: ImageEntity.Id?

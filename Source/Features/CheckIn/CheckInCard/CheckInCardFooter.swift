@@ -6,7 +6,7 @@ struct CheckInCardFooter: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
     @Environment(Router.self) private var router
 
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
 
     var body: some View {
         HStack {

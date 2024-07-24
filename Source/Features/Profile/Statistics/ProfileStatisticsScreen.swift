@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct ProfileStatisticsScreen: View {
-    let profile: Profile
+    let profile: Profile.Saved
 
     var body: some View {
         List {

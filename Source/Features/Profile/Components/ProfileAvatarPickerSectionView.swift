@@ -30,7 +30,7 @@ struct ProfileAvatarPickerSectionView: View {
 struct ProfileAvatarPickerView: View {
     @Environment(\.avatarSize) private var avatarSize
     @Binding var showAvatarPicker: Bool
-    let profile: Profile
+    let profile: Profile.Saved
     let allowEdit: Bool
 
     var body: some View {

@@ -14,7 +14,7 @@ struct ProfileWishlistScreen: View {
     @State private var products: [Product.Joined] = []
     @State private var searchTerm = ""
 
-    let profile: Profile
+    let profile: Profile.Saved
 
     var body: some View {
         List(products) { product in

@@ -5,7 +5,7 @@ import SwiftUI
 
 struct CheckInImageReelView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
 
     private let imageHeight: Double = 200

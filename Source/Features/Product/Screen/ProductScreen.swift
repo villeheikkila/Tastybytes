@@ -176,7 +176,7 @@ struct ProductInnerScreen: View {
         }
     }
 
-    private func onCreateCheckIn(checkIn: CheckIn) async {
+    private func onCreateCheckIn(checkIn: CheckIn.Joined) async {
         checkInLoader.onCreateCheckIn(checkIn)
         do {
             let summary = try await repository.product.getSummaryById(id: product.id)

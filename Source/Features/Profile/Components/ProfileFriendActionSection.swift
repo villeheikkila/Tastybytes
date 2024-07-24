@@ -6,7 +6,7 @@ import SwiftUI
 struct ProfileFriendActionSection: View {
     @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
 
-    let profile: Profile
+    let profile: Profile.Saved
 
     var body: some View {
         HStack {

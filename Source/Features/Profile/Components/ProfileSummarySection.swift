@@ -6,7 +6,7 @@ import SwiftUI
 struct ProfileSummarySection: View {
     @Environment(Router.self) private var router
 
-    let profile: Profile
+    let profile: Profile.Saved
     let profileSummary: ProfileSummary?
 
     var body: some View {

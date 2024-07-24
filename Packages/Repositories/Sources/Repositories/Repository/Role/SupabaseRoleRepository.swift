@@ -5,7 +5,7 @@ internal import Supabase
 struct SupabaseRoleRepository: RoleRepository {
     let client: SupabaseClient
 
-    func getRoles() async throws -> [Role] {
+    func getRoles() async throws -> [Role.Joined] {
         try await client
             .from(.roles)
             .select(Role.getQuery(.joined(false)))
@@ -13,7 +13,7 @@ struct SupabaseRoleRepository: RoleRepository {
             .value
     }
 
-    func removeProfileFromProfile(profile: Profile, role: Role) async throws {
+    func removeProfileFromProfile(profile: Profile.Saved, role: Role.Joined) async throws {
         try await client
             .from(.profilesRoles)
             .delete()
@@ -23,12 +23,12 @@ struct SupabaseRoleRepository: RoleRepository {
             .value
     }
 
-    func addProfileForProfile(profile: Profile, role: Role) async throws {
+    func addProfileForProfile(profile: Profile.Saved, role: Role.Joined) async throws {
         struct AddPermissionRequest: Encodable {
             let roleId: Role.Id
             let profileId: Profile.Id
 
-            init(role: Role, profile: Profile) {
+            init(role: Role.Joined, profile: Profile.Saved) {
                 roleId = role.id
                 profileId = profile.id
             }

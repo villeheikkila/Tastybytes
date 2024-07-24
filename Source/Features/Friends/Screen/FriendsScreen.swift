@@ -16,9 +16,9 @@ struct FriendsScreen: View {
     @State private var searchTerm = ""
     @State private var isRefreshing = false
 
-    let profile: Profile
+    let profile: Profile.Saved
 
-    init(profile: Profile, initialFriends: [Friend.Saved]? = []) {
+    init(profile: Profile.Saved, initialFriends: [Friend.Saved]? = []) {
         self.profile = profile
         _friends = State(wrappedValue: initialFriends ?? [])
     }

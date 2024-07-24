@@ -13,7 +13,7 @@ struct ProfileLocationsScreen: View {
     @State private var checkInLocations = [Location.Saved]()
     @State private var selectedLocation: Location.Saved?
 
-    let profile: Profile
+    let profile: Profile.Saved
 
     var body: some View {
         Map(initialPosition: MapCameraPosition

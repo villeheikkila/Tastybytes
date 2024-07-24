@@ -29,7 +29,7 @@ public extension Friend {
             case senderId = "user_id_1", receiverId = "user_id_2", status
         }
 
-        public init(sender: Profile, receiver: Profile, status: Status) {
+        public init(sender: Profile.Saved, receiver: Profile.Saved, status: Status) {
             senderId = sender.id
             receiverId = receiver.id
             self.status = status.rawValue

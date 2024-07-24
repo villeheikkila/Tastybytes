@@ -25,7 +25,7 @@ struct CheckInSheet: View {
     @State private var rating: Double = 0
     @State private var manufacturer: Company.Saved?
     @State private var servingStyle: ServingStyle.Saved?
-    @State private var taggedFriends = [Profile]()
+    @State private var taggedFriends = [Profile.Saved]()
     @State private var location: Location.Saved?
     @State private var locationFromImage: Location.Saved?
     @State private var purchaseLocation: Location.Saved?
@@ -276,8 +276,8 @@ extension CheckInSheet {
     }
 
     enum Action: Hashable {
-        case create(product: Product.Joined, onCreation: ((_ checkIn: CheckIn) async -> Void)?)
-        case update(checkIn: CheckIn, onUpdate: ((_ checkIn: CheckIn) async -> Void)?)
+        case create(product: Product.Joined, onCreation: ((_ checkIn: CheckIn.Joined) async -> Void)?)
+        case update(checkIn: CheckIn.Joined, onUpdate: ((_ checkIn: CheckIn.Joined) async -> Void)?)
 
         static func == (lhs: Action, rhs: Action) -> Bool {
             switch (lhs, rhs) {

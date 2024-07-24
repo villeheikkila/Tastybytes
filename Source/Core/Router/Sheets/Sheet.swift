@@ -27,7 +27,7 @@ enum Sheet: Identifiable, Equatable {
         onUpdate: SubBrandAdminSheet.OnUpdateCallback = noop,
         onDelete: SubBrandAdminSheet.OnDeleteCallback = noop
     )
-    case friendPicker(taggedFriends: Binding<[Profile]>)
+    case friendPicker(taggedFriends: Binding<[Profile.Saved]>)
     case flavorPicker(pickedFlavors: Binding<[Flavor.Saved]>)
     case checkInLocationSearch(
         category: Location.RecentLocation,
@@ -51,8 +51,8 @@ enum Sheet: Identifiable, Equatable {
     case mergeLocation(location: Location.Detailed, onMerge: ((_ newLocation: Location.Detailed) async -> Void)? = nil)
     case subscribe
     case sendEmail(email: Binding<Email>, callback: SendMailCallback)
-    case editComment(checkInComment: CheckInComment, checkInComments: Binding<[CheckInComment]>)
-    case checkInImage(checkIn: CheckIn, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
+    case editComment(checkInComment: CheckIn.Comment.Saved, checkInComments: Binding<[CheckIn.Comment.Saved]>)
+    case checkInImage(checkIn: CheckIn.Joined, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?)
     case profileDeleteConfirmation
     case webView(link: WebViewLink)
     case companyAdmin(id: Company.Id, open: CompanyAdminSheet.Open? = nil, onUpdate: CompanyAdminSheet.OnUpdateCallback = noop, onDelete: CompanyAdminSheet.OnDeleteCallback = noop)
@@ -71,7 +71,7 @@ enum Sheet: Identifiable, Equatable {
         onDelete: CheckInAdminSheet.OnDeleteCallback = noop
     )
     case checkInCommentAdmin(
-        id: CheckInComment.Id,
+        id: CheckIn.Comment.Id,
         open: CheckInCommentAdminSheet.Open? = nil,
         onDelete: CheckInCommentAdminSheet.OnDeleteCallback = noop
     )

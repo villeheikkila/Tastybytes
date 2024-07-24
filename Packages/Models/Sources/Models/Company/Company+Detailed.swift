@@ -11,9 +11,9 @@ public extension Company {
         public let subsidiaries: [Company.Saved]
         public let reports: [Report.Joined]
         public let productVariants: [Product.Variant.JoinedProduct]
-        public let createdBy: Profile?
+        public let createdBy: Profile.Saved?
         public let createdAt: Date
-        public let updatedBy: Profile?
+        public let updatedBy: Profile.Saved?
         public let updatedAt: Date?
 
         enum CodingKeys: String, CodingKey {
@@ -40,9 +40,9 @@ public extension Company {
             subsidiaries: [Company.Saved],
             reports: [Report.Joined],
             productVariants: [Product.Variant.JoinedProduct],
-            createdBy: Profile? = nil,
+            createdBy: Profile.Saved? = nil,
             createdAt: Date,
-            updatedBy: Profile? = nil,
+            updatedBy: Profile.Saved? = nil,
             updatedAt: Date? = nil
         ) {
             self.id = id

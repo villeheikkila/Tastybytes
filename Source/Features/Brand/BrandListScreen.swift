@@ -5,7 +5,7 @@ import SwiftUI
 struct BrandListScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    let brands: [Brand]
+    let brands: [Brand.Saved]
 
     var body: some View {
         List(brands) { brand in

@@ -9,10 +9,10 @@ extension Models.Notification: Queryable {
         case .joined:
             buildQuery(.notifications, [
                 saved,
-                CheckInReaction.getQuery(.joinedProfileCheckIn(true)),
+                CheckIn.Reaction.getQuery(.joinedProfileCheckIn(true)),
                 Notification.CheckInTaggedProfiles.getQuery(.joined(true)),
                 Friend.getQuery(.joined(true)),
-                CheckInComment.getQuery(.joinedCheckIn(true)),
+                CheckIn.Comment.getQuery(.joinedCheckIn(true)),
             ], false)
         }
     }

@@ -5,7 +5,7 @@ import Repositories
 import SwiftUI
 
 struct CheckInCommentAdminSheet: View {
-    typealias OnDeleteCallback = (_ comment: CheckInComment.Id) -> Void
+    typealias OnDeleteCallback = (_ comment: CheckIn.Comment.Id) -> Void
 
     enum Open {
         case report(Report.Id)
@@ -16,9 +16,9 @@ struct CheckInCommentAdminSheet: View {
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
-    @State private var checkInComment = CheckInComment.Detailed()
+    @State private var checkInComment = CheckIn.Comment.Detailed()
 
-    let id: CheckInComment.Id
+    let id: CheckIn.Comment.Id
     let open: Open?
     let onDelete: OnDeleteCallback
 
@@ -104,7 +104,7 @@ struct CheckInCommentAdminSheet: View {
         }
     }
 
-    private func deleteCommentAsModerator(_ comment: CheckInComment.Detailed) async {
+    private func deleteCommentAsModerator(_ comment: CheckIn.Comment.Detailed) async {
         do {
             try await repository.checkInComment.deleteAsModerator(id: comment.id)
             onDelete(id)

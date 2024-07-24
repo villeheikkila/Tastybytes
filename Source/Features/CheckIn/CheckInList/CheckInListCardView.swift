@@ -10,10 +10,10 @@ struct CheckInListCardView: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var showDeleteConfirmation = false
 
-    let checkIn: CheckIn
-    let onUpdate: (_ checkIn: CheckIn) async -> Void
-    let onDelete: (_ checkIn: CheckIn) async -> Void
-    let onCreate: (_ checkIn: CheckIn) async -> Void
+    let checkIn: CheckIn.Joined
+    let onUpdate: (_ checkIn: CheckIn.Joined) async -> Void
+    let onDelete: (_ checkIn: CheckIn.Joined) async -> Void
+    let onCreate: (_ checkIn: CheckIn.Joined) async -> Void
 
     var body: some View {
         CheckInCard(checkIn: checkIn, onDeleteImage: { id in

@@ -5,10 +5,10 @@ import SwiftUI
 
 public struct CheckInEntityView: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
     let hideHeader: Bool
 
-    init(checkIn: CheckIn, hideHeader: Bool = false) {
+    init(checkIn: CheckIn.Joined, hideHeader: Bool = false) {
         self.checkIn = checkIn
         self.hideHeader = hideHeader
     }

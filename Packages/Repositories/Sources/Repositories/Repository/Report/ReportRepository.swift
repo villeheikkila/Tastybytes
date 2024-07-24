@@ -6,7 +6,7 @@ public enum ReportFilter: Sendable, Codable, Hashable {
     case product(Product.Id)
     case company(Company.Id)
     case brand(Brand.Id)
-    case comment(CheckInComment.Id)
+    case comment(CheckIn.Comment.Id)
     case subBrand(SubBrand.Id)
     case checkInImage(ImageEntity.Id)
     case profile(Profile.Id)

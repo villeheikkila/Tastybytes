@@ -3,7 +3,7 @@ import Models
 import SwiftUI
 
 struct TaggedInCheckInNotificationView: View {
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
     let createdAt: Date
     let seenAt: Date?
 

@@ -5,24 +5,24 @@ import SwiftUI
 enum Screen: Hashable, Sendable {
     case product(Product.Joined)
     case productFromBarcode(Product.Joined, Barcode)
-    case profile(Profile)
-    case checkIn(CheckIn)
+    case profile(Profile.Saved)
+    case checkIn(CheckIn.Joined)
     case location(Location.Saved)
     case company(Company.Saved)
     case brand(Brand.JoinedSubBrandsProductsCompany)
     case brandById(id: Brand.Id, initialScrollPosition: SubBrand.JoinedBrand? = nil)
     case fetchBrand(Brand.JoinedCompany)
     case subBrand(SubBrand.JoinedBrand)
-    case profileProducts(Profile)
-    case profileWishlist(Profile)
-    case profileProductsByFilter(Profile, Product.Filter)
-    case profileStatistics(Profile)
-    case profileStatisticsUniqueProducts(Profile)
-    case profileStatisticsTopLocations(Profile)
-    case profileLocations(Profile)
-    case profileCheckIns(Profile, ProfileCheckInListFilter)
+    case profileProducts(Profile.Saved)
+    case profileWishlist(Profile.Saved)
+    case profileProductsByFilter(Profile.Saved, Product.Filter)
+    case profileStatistics(Profile.Saved)
+    case profileStatisticsUniqueProducts(Profile.Saved)
+    case profileStatisticsTopLocations(Profile.Saved)
+    case profileLocations(Profile.Saved)
+    case profileCheckIns(Profile.Saved, ProfileCheckInListFilter)
     case currentUserFriends
-    case friends(Profile)
+    case friends(Profile.Saved)
     case productFeed(Product.FeedType)
     case flavorAdmin
     case verification
@@ -43,11 +43,11 @@ enum Screen: Hashable, Sendable {
     case barcodeManagement(product: Binding<Product.Detailed>)
     case productList(products: [Product.Joined])
     case companyList(companies: [Company.Saved])
-    case brandList(brands: [Brand])
+    case brandList(brands: [Brand.Saved])
     case subBrandList(subBrands: [SubBrand.JoinedBrand])
     case barcodeList(barcodes: [Product.Barcode.Joined])
     case profilesAdmin
-    case roleSuperAdminPicker(profile: Binding<Profile.Detailed>, roles: [Role])
+    case roleSuperAdminPicker(profile: Binding<Profile.Detailed>, roles: [Role.Joined])
     case brandEditSuggestionAdmin(brand: Binding<Brand.Detailed>, initialEditSuggestion: Brand.EditSuggestion.Id? = nil)
     case adminEvent
     case productEditSuggestion(product: Binding<Product.Detailed>, initialEditSuggestion: Product.EditSuggestion.Id? = nil)
@@ -60,7 +60,7 @@ enum Screen: Hashable, Sendable {
     case editSuggestionsAdmin
     case reportsAdmin
     case productListAdmin(products: Binding<[Product.Joined]>)
-    case subBrandListAdmin(brand: Brand, subBrands: Binding<[SubBrand.JoinedProduct]>)
+    case subBrandListAdmin(brand: Brand.Saved, subBrands: Binding<[SubBrand.JoinedProduct]>)
     case companiesAdmin
     case brandsAdmin
     case productsAdmin

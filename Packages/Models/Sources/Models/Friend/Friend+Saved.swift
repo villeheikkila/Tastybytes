@@ -4,8 +4,8 @@ public import Tagged
 public extension Friend {
     struct Saved: Identifiable, Codable, Hashable, Sendable {
         public let id: Friend.Id
-        public let sender: Profile
-        public let receiver: Profile
+        public let sender: Profile.Saved
+        public let receiver: Profile.Saved
         public let status: Status
         public let blockedBy: Profile.Id?
 
@@ -17,7 +17,7 @@ public extension Friend {
             case blockedBy = "blocked_by"
         }
 
-        public func getFriend(userId: Profile.Id?) -> Profile {
+        public func getFriend(userId: Profile.Id?) -> Profile.Saved {
             if sender.id == userId {
                 receiver
             } else {

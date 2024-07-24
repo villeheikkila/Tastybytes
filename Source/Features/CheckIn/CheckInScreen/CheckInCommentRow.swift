@@ -14,9 +14,9 @@ struct CheckInCommentRowView: View {
     @State private var showDeleteAsModeratorConfirmationDialog = false
     @State private var showTranslator = false
 
-    let checkIn: CheckIn
-    let comment: CheckInComment
-    @Binding var checkInComments: [CheckInComment]
+    let checkIn: CheckIn.Joined
+    let comment: CheckIn.Comment.Saved
+    @Binding var checkInComments: [CheckIn.Comment.Saved]
 
     var body: some View {
         CheckInCommentEntityView(comment: comment)
@@ -42,7 +42,7 @@ struct CheckInCommentRowView: View {
             }
     }
 
-    private func deleteComment(_ comment: CheckInComment) async {
+    private func deleteComment(_ comment: CheckIn.Comment.Saved) async {
         do {
             try await repository.checkInComment.deleteById(id: comment.id)
             withAnimation {

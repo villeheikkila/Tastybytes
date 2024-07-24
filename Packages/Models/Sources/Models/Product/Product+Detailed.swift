@@ -16,9 +16,9 @@ public extension Product {
         public let reports: [Report.Joined]
         public let isDiscontinued: Bool
         public let logos: [ImageEntity.Saved]
-        public let createdBy: Profile?
+        public let createdBy: Profile.Saved?
         public let createdAt: Date
-        public let updatedBy: Profile?
+        public let updatedBy: Profile.Saved?
         public let updatedAt: Date?
 
         enum CodingKeys: String, CodingKey, Sendable {
@@ -55,9 +55,9 @@ public extension Product {
             reports: [Report.Joined],
             isDiscontinued: Bool,
             logos: [ImageEntity.Saved],
-            createdBy: Profile? = nil,
+            createdBy: Profile.Saved? = nil,
             createdAt: Date,
-            updatedBy: Profile? = nil,
+            updatedBy: Profile.Saved? = nil,
             updatedAt: Date? = nil
         ) {
             self.id = id

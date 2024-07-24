@@ -4,7 +4,7 @@ import SwiftUI
 
 struct CheckInCardCheckIn: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
-    let checkIn: CheckIn
+    let checkIn: CheckIn.Joined
 
     var body: some View {
         RouterLink(open: .screen(.checkIn(checkIn))) {

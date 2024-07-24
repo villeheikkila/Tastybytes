@@ -103,7 +103,7 @@ public final class ProfileEnvironmentModel {
     }
 
     // Getters that are only available after authentication, calling these before authentication causes an app crash
-    public var profile: Profile {
+    public var profile: Profile.Saved {
         if let extendedProfile {
             extendedProfile.profile
         } else {
@@ -152,14 +152,14 @@ public final class ProfileEnvironmentModel {
     }
 
     // Access Control
-    public func hasPermission(_ permission: PermissionName) -> Bool {
+    public func hasPermission(_ permission: Permission.Name) -> Bool {
         guard let roles = extendedProfile?.roles else { return false }
         let permissions = roles.flatMap(\.permissions)
         return permissions.contains(where: { $0.name == permission.rawValue })
     }
 
-    public func hasRole(_: RoleName) -> Bool {
-        extendedProfile?.hasRole(.admin) ?? false
+    public func hasRole(_ role: Role.Name) -> Bool {
+        extendedProfile?.hasRole(role) ?? false
     }
 
     public func hasChanged(username: String, firstName: String, lastName: String) -> Bool {

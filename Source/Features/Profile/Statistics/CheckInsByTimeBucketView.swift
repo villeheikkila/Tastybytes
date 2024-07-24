@@ -17,7 +17,7 @@ struct CheckInsByTimeBucketView: View {
     @State private var page = 0
     @State private var dateRange: ClosedRange<Date> = Date.now ... Date.now
 
-    let profile: Profile
+    let profile: Profile.Saved
 
     private var checkInsInRange: [CheckInsPerDay] {
         checkInsPerDay.filter { checkIn in

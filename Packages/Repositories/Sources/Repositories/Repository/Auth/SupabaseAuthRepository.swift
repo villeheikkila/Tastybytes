@@ -5,9 +5,9 @@ internal import Supabase
 struct SupabaseAuthRepository: AuthRepository {
     let client: SupabaseClient
 
-    func getUser() async throws -> Models.User {
+    func getUser() async throws -> Profile.Account {
         let response = try await client.auth.session.user
-        return Models.User(id: response.id, email: response.email)
+        return .init(id: .init(rawValue: response.id), email: response.email)
     }
 
     func logOut() async throws {

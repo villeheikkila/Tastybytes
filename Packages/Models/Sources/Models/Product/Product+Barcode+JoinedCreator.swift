@@ -6,7 +6,7 @@ public extension Product.Barcode {
         public let id: Product.Barcode.Id
         public let barcode: String
         public let type: String
-        public let profile: Profile
+        public let profile: Profile.Saved
         public let createdAt: Date
 
         enum CodingKeys: String, CodingKey {

@@ -2,13 +2,13 @@ import Foundation
 import Models
 
 public protocol ProfileRepository: Sendable {
-    func getById(id: Profile.Id) async throws -> Profile
+    func getById(id: Profile.Id) async throws -> Profile.Saved
     func getDetailed(id: Profile.Id) async throws -> Profile.Detailed
-    func getAll() async throws -> [Profile]
+    func getAll() async throws -> [Profile.Saved]
     func getCurrentUser() async throws -> Profile.Extended
     func update(update: Profile.UpdateRequest) async throws -> Profile.Extended
     func currentUserExport() async throws -> String
-    func search(searchTerm: String, currentUserId: Profile.Id?) async throws -> [Profile]
+    func search(searchTerm: String, currentUserId: Profile.Id?) async throws -> [Profile.Saved]
     func uploadAvatar(userId: Profile.Id, data: Data) async throws -> ImageEntity.Saved
     func deleteCurrentAccount() async throws
     func updateSettings(update: Profile.SettingsUpdateRequest) async throws -> Profile.Settings

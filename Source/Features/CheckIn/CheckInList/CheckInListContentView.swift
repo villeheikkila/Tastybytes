@@ -10,9 +10,9 @@ struct CheckInListContentView: View {
     private let logger = Logger(category: "CheckInListContentView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Binding var checkIns: [CheckIn]
-    let onCheckInUpdate: (_ checkIn: CheckIn) async -> Void
-    let onCreateCheckIn: (_ checkIn: CheckIn) async -> Void
+    @Binding var checkIns: [CheckIn.Joined]
+    let onCheckInUpdate: (_ checkIn: CheckIn.Joined) async -> Void
+    let onCreateCheckIn: (_ checkIn: CheckIn.Joined) async -> Void
     let onLoadMore: () -> Void
 
     var body: some View {
@@ -39,7 +39,7 @@ struct CheckInListContentView: View {
         }
     }
 
-    private func deleteCheckIn(_ checkIn: CheckIn) async {
+    private func deleteCheckIn(_ checkIn: CheckIn.Joined) async {
         do {
             try await repository.checkIn.delete(id: checkIn.id)
             checkIns.remove(object: checkIn)
