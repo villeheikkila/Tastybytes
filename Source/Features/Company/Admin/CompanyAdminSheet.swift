@@ -80,7 +80,7 @@ struct CompanyAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("company.admin.section.company") {
-            RouterLink(open: .screen(.company(.init(company: company)))) {
+            RouterLink(open: .screen(.company(company.id))) {
                 CompanyEntityView(company: company)
             }
         }
@@ -217,7 +217,7 @@ struct CompanyAdminSheet: View {
 
     private func uploadLogo(id: Company.Id, _ data: Data) async {
         do {
-            let imageEntity = try await repository.company.uploadLogo(companyId: id, data: data)
+            let imageEntity = try await repository.company.uploadLogo(id: id, data: data)
             company = company.copyWith(logos: company.logos + [imageEntity])
             logger.info("Succesfully uploaded company logo: \(imageEntity.file)")
         } catch {

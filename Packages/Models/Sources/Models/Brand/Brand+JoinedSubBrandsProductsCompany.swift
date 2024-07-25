@@ -59,6 +59,15 @@ public extension Brand {
             self.logos = logos
         }
 
+        public init() {
+            id = .init(0)
+            name = ""
+            isVerified = false
+            brandOwner = .init()
+            subBrands = []
+            logos = []
+        }
+
         enum CodingKeys: String, CodingKey {
             case id
             case name

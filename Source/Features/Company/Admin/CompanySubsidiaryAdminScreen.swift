@@ -12,7 +12,7 @@ struct CompanySubsidiaryAdminScreen: View {
 
     var body: some View {
         List(company.subsidiaries) { subsidiary in
-            RouterLink(open: .screen(.company(subsidiary))) {
+            RouterLink(open: .screen(.company(subsidiary.id))) {
                 CompanyEntityView(company: subsidiary)
             }
         }

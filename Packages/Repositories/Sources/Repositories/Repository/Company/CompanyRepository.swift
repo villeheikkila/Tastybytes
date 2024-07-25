@@ -16,7 +16,7 @@ public protocol CompanyRepository: Sendable {
     func verification(id: Company.Id, isVerified: Bool) async throws
     func search(filterCompanies: [Company.Saved], searchTerm: String) async throws -> [Company.Saved]
     func getSummaryById(id: Company.Id) async throws -> Summary
-    func uploadLogo(companyId: Company.Id, data: Data) async throws -> ImageEntity.Saved
+    func uploadLogo(id: Company.Id, data: Data) async throws -> ImageEntity.Saved
     func makeCompanySubsidiaryOf(id: Company.Id, subsidiaryOfId: Company.Id) async throws
     func getEditSuggestions() async throws -> [Company.EditSuggestion]
     func mergeCompanies(id: Company.Id, mergeToId: Company.Id) async throws

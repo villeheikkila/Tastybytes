@@ -112,7 +112,7 @@ public final class FriendEnvironmentModel {
             isRefreshing = true
         }
         do {
-            let friends = try await repository.friend.getByUserId(userId: profile.id, status: .none)
+            let friends = try await repository.friend.getByUserId(id: profile.id, status: .none)
             self.friends = friends
             state = .populated
         } catch {

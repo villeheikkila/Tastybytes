@@ -10,7 +10,7 @@ struct CheckInCard: View {
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
 
     var body: some View {
-        RouterLink(open: .screen(.checkIn(checkIn))) {
+        RouterLink(open: .screen(.checkIn(checkIn.id))) {
             VStack(spacing: 4) {
                 Group {
                     CheckInCardHeader(profile: checkIn.profile, location: checkIn.location)

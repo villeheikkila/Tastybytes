@@ -19,7 +19,7 @@ struct ProfileAdminSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var profile = Profile.Detailed()
-    @State private var summary: ProfileSummary?
+    @State private var summary: Profile.Summary?
 
     let id: Profile.Id
     let open: Open?
@@ -51,7 +51,7 @@ struct ProfileAdminSheet: View {
         }
     }
 
-    @ViewBuilder private func content(summary: ProfileSummary) -> some View {
+    @ViewBuilder private func content(summary: Profile.Summary) -> some View {
         Section("profile.admin.section.profile") {
             RouterLink(open: .screen(.profile(.init(profile: profile)))) {
                 ProfileEntityView(profile: profile)

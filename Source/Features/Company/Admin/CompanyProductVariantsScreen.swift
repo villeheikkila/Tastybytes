@@ -6,7 +6,7 @@ struct CompanyProductVariantsScreen: View {
 
     var body: some View {
         List(variants) { variant in
-            CompanyProductVariantRow(variant: variant)
+            CompanyProductVariantRowView(variant: variant)
         }
         .listStyle(.plain)
         .navigationTitle("product.admin.variants.navigationTitle")
@@ -14,7 +14,7 @@ struct CompanyProductVariantsScreen: View {
     }
 }
 
-struct CompanyProductVariantRow: View {
+struct CompanyProductVariantRowView: View {
     let variant: Product.Variant.JoinedProduct
 
     var body: some View {

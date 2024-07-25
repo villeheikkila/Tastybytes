@@ -15,13 +15,7 @@ let package = Package(
         ),
     ],
     targets: [
-        .target(
-            name: "Extensions",
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency"),
-                .enableExperimentalFeature("DisableOutwardActorInference"),
-            ]
-        ),
+        .target(name: "Extensions"),
     ],
     swiftLanguageVersions: [.version("6")]
 )

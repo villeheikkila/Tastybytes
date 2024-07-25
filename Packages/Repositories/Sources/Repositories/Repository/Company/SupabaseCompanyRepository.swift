@@ -58,8 +58,8 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func uploadLogo(companyId: Company.Id, data: Data) async throws -> ImageEntity.Saved {
-        let fileName = "\(companyId)_\(Date.now.timeIntervalSince1970).jpeg"
+    func uploadLogo(id: Company.Id, data: Data) async throws -> ImageEntity.Saved {
+        let fileName = "\(id)_\(Date.now.timeIntervalSince1970).jpeg"
 
         try await client
             .storage

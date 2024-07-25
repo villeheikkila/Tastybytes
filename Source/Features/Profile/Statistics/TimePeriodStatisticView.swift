@@ -7,7 +7,7 @@ import Repositories
 import SwiftUI
 
 struct TimePeriodStatisticSegmentView: View {
-    let checkInsPerDay: [CheckInsPerDay]
+    let checkInsPerDay: [Profile.CheckInsPerDay]
 
     private var totalCheckInsPerPeriod: (totalCheckIns: Int, totalUniqueChecKins: Int) {
         checkInsPerDay.reduce((totalCheckIns: 0, totalUniqueChecKins: 0)) { value, day in

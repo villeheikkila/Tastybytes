@@ -10,7 +10,7 @@ struct CompanyEditSuggestionScreen: View {
 
     var body: some View {
         List(company.editSuggestions) { editSuggestion in
-            CompanyEditSuggestionRow(company: $company, editSuggestion: editSuggestion)
+            CompanyEditSuggestionRowView(company: $company, editSuggestion: editSuggestion)
         }
         .listStyle(.plain)
         .overlay {
@@ -24,7 +24,7 @@ struct CompanyEditSuggestionScreen: View {
     }
 }
 
-struct CompanyEditSuggestionRow: View {
+struct CompanyEditSuggestionRowView: View {
     private let logger = Logger(category: "CompanyEditSuggestionRow")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router

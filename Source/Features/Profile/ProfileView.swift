@@ -26,7 +26,7 @@ struct ProfileInnerView: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @State private var checkInLoader: CheckInListLoader
     @State private var profile: Profile.Saved
-    @State private var profileSummary: ProfileSummary?
+    @State private var profileSummary: Profile.Summary?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoading = false
     @State private var isLoadingImages = false
@@ -132,7 +132,7 @@ struct ProfileInnerView: View {
     private func getProfileData(isRefresh: Bool = false) async {
         async let productPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
         async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
-        async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile), from: 0, to: pageSize)
+        async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile.id), from: 0, to: pageSize)
         var errors = [Error]()
         do {
             let (summaryResult, imagesResult) = try await (summaryPromise, imagesPromise)
@@ -161,7 +161,7 @@ struct ProfileInnerView: View {
         isLoadingImages = true
 
         do {
-            let checkIns = try await repository.checkIn.getCheckInImages(by: .profile(profile), from: from, to: to)
+            let checkIns = try await repository.checkIn.getCheckInImages(by: .profile(profile.id), from: from, to: to)
             withAnimation {
                 checkInImages.append(contentsOf: checkIns)
             }

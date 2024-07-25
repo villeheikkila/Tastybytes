@@ -18,11 +18,11 @@ struct DuplicateProductSuggestionEntityView: View {
                 Spacer()
                 Text(editSuggestion.createdAt.formatted(.customRelativetime)).font(.caption).bold()
             }
-            RouterLink(open: .screen(.product(editSuggestion.product))) {
+            RouterLink(open: .screen(.product(editSuggestion.product.id))) {
                 ProductEntityView(product: editSuggestion.product)
             }
             if let duplicateOf = editSuggestion.duplicateOf {
-                RouterLink(open: .screen(.product(duplicateOf))) {
+                RouterLink(open: .screen(.product(duplicateOf.id))) {
                     ProductEntityView(product: duplicateOf)
                 }
             }

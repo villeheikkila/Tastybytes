@@ -64,7 +64,7 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func getAllCountries() async throws -> [Country] {
+    func getAllCountries() async throws -> [Country.Saved] {
         try await client
             .from(.countries)
             .select(Country.getQuery(.saved(false)))
@@ -99,11 +99,11 @@ struct SupabaseLocationRepository: LocationRepository {
             .value
     }
 
-    func mergeLocations(locationId: Location.Id, toLocationId: Location.Id) async throws {
+    func mergeLocations(id: Location.Id, toLocationId: Location.Id) async throws {
         try await client
             .rpc(
                 fn: .mergeLocations,
-                params: Location.MergeLocationParams(locationId: locationId, toLocationId: toLocationId)
+                params: Location.MergeLocationParams(locationId: id, toLocationId: toLocationId)
             )
             .execute()
     }

@@ -74,8 +74,7 @@ struct ReactionsView: View {
             }
         } else {
             do {
-                let checkInReaction = try await repository.checkInReactions
-                    .insert(newCheckInReaction: CheckIn.Reaction.NewRequest(checkInId: checkIn.id))
+                let checkInReaction = try await repository.checkInReactions.insert(id: checkIn.id)
                 withAnimation {
                     checkInReactions.append(checkInReaction)
                 }

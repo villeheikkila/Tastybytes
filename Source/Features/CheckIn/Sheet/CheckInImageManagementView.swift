@@ -102,8 +102,8 @@ struct CheckInImageManagementView: View {
     }
 
     func getLocationFromCoordinate(coordinate: CLLocationCoordinate2D) async {
-        let countryCode = try? await coordinate.getISOCountryCode()
-        let country = appEnvironmentModel.countries.first(where: { $0.countryCode == countryCode })
+        guard let countryCode = try? await coordinate.getISOCountryCode() else { return }
+        let country = appEnvironmentModel.countries.first(where: { $0.countryCode == .init(rawValue: countryCode) })
         locationFromImage = .init(coordinate: coordinate, countryCode: countryCode, country: country)
     }
 

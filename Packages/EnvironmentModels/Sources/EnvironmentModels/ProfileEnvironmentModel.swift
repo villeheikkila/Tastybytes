@@ -273,7 +273,7 @@ public final class ProfileEnvironmentModel {
     public func uploadAvatar(data: Data) async {
         guard let extendedProfile else { return }
         do {
-            let imageEntity = try await repository.profile.uploadAvatar(userId: extendedProfile.id, data: data)
+            let imageEntity = try await repository.profile.uploadAvatar(id: extendedProfile.id, data: data)
             self.extendedProfile = extendedProfile.copyWith(avatars: [imageEntity])
         } catch {
             guard !error.isCancelled else { return }

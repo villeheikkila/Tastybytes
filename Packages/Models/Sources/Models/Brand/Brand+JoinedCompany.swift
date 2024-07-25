@@ -37,7 +37,7 @@ public extension Brand {
             id = .init(rawValue: 0)
             name = ""
             isVerified = false
-            brandOwner = .init(company: .init())
+            brandOwner = .init()
             logos = []
         }
 

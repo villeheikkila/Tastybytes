@@ -46,7 +46,7 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
         if case let .location(location) = self {
             LocationToolbarItem(location: location)
             ToolbarItem(placement: .primaryAction) {
-                RouterLink("location.open", systemImage: "mappin.and.ellipse", open: .screen(.location(location)))
+                RouterLink("location.open", systemImage: "mappin.and.ellipse", open: .screen(.location(location.id)))
             }
         }
     }

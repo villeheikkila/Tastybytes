@@ -11,8 +11,8 @@ public extension Product.Barcode {
         public let type: String
         public let productId: Product.Id
 
-        public init(product: ProductProtocol, barcode: Barcode) {
-            productId = product.id
+        public init(id: Product.Id, barcode: Barcode) {
+            productId = id
             type = barcode.type
             self.barcode = barcode.barcode
         }

@@ -28,6 +28,7 @@ struct BrandsAdminScreen: View {
         .refreshable {
             await initialize()
         }
+        .verificationBadgeVisibility(.visible)
         .overlay {
             ScreenStateOverlayView(state: state) {
                 await initialize()

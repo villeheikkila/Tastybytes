@@ -48,7 +48,7 @@ struct CheckInAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("checkIn.admin.section.checkIn") {
-            RouterLink(open: .screen(.checkIn(.init(checkIn: checkIn)))) {
+            RouterLink(open: .screen(.checkIn(checkIn.id))) {
                 CheckInEntityView(checkIn: .init(checkIn: checkIn), hideHeader: true)
             }
         }

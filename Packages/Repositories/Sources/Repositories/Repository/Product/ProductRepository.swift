@@ -14,13 +14,13 @@ public protocol ProductRepository: Sendable {
     func getUnverified() async throws -> [Product.Joined]
     func checkIfOnWishlist(id: Product.Id) async throws -> Bool
     func removeFromWishlist(productId: Product.Id) async throws
-    func getWishlistItems(profileId: Profile.Id) async throws -> [ProfileWishlist.Joined]
+    func getWishlistItems(profileId: Profile.Id) async throws -> [Profile.Wishlist.Joined]
     func addToWishlist(productId: Product.Id) async throws
     func uploadLogo(productId: Product.Id, data: Data) async throws -> ImageEntity.Saved
     func getSummaryById(id: Product.Id) async throws -> Summary
     func getCreatedByUserId(id: Profile.Id) async throws -> [Product.Joined]
-    func mergeProducts(productId: Product.Id, toProductId: Product.Id) async throws
-    func markAsDuplicate(productId: Product.Id, duplicateOfProductId: Product.Id) async throws
+    func mergeProducts(id: Product.Id, toProductId: Product.Id) async throws
+    func markAsDuplicate(id: Product.Id, duplicateOfProductId: Product.Id) async throws
     func editProduct(productEditParams: Product.EditRequest) async throws -> Product.Joined
     func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async throws
     func verification(id: Product.Id, isVerified: Bool) async throws

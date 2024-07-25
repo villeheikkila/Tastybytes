@@ -248,7 +248,7 @@ struct DiscoverScreen: View {
                     error = nil
                 }
                 if searchResults.count == 1, let result = searchResults.first {
-                    router.open(.navigatablePath(.productWithBarcode(id: result.id, barcode: barcode)))
+                    router.open(.screen(.productFromBarcode(result.id, barcode)))
                 }
             } catch {
                 guard !error.isCancelled else { return }
@@ -324,7 +324,7 @@ struct DiscoverScreen: View {
     @ViewBuilder private var createProductButton: some View {
         Button("checkIn.action.createNew") {
             router.open(.sheet(.product(.new(barcode: barcode, onCreate: { product in
-                router.open(.screen(.product(product)))
+                router.open(.screen(.product(product.id)))
             }))))
         }
         .buttonStyle(.bordered)

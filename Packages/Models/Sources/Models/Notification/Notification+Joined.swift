@@ -22,7 +22,8 @@ public extension Notification {
             return false
         }
 
-        public func copyWith(createdAt: Date? = nil, seenAt: Date?? = nil,
+        public func copyWith(createdAt: Date? = nil,
+                             seenAt: Date? = nil,
                              content: Content? = nil) -> Self
         {
             .init(id: id,

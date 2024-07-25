@@ -83,7 +83,7 @@ struct BrandAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("brand.admin.section.brand") {
-            RouterLink(open: .screen(.brand(.init(brand: brand)))) {
+            RouterLink(open: .screen(.brand(brand.id))) {
                 BrandEntityView(brand: brand)
             }
         }
@@ -228,7 +228,7 @@ struct BrandAdminSheet: View {
 
     private func uploadLogo(data: Data) async {
         do {
-            let imageEntity = try await repository.brand.uploadLogo(brandId: brand.id, data: data)
+            let imageEntity = try await repository.brand.uploadLogo(id: brand.id, data: data)
             withAnimation {
                 brand = brand.copyWith(logos: brand.logos + [imageEntity])
             }

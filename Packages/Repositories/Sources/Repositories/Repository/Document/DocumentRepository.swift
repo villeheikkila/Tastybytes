@@ -1,5 +1,5 @@
 import Models
 
 public protocol DocumentRepository: Sendable {
-    func getAboutPage() async throws -> AboutPage
+    func getAboutPage() async throws -> Document.About.Page
 }

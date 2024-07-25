@@ -49,7 +49,7 @@ struct ProductEntityView: View {
                         .textSelection(.enabled)
                 }
 
-                RouterLink(open: .screen(.company(product.subBrand.brand.brandOwner))) {
+                RouterLink(open: .screen(.company(product.subBrand.brand.brandOwner.id))) {
                     Text(product.formatted(.brandOwner))
                         .font(.subheadline)
                         .textSelection(.enabled)

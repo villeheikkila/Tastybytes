@@ -25,10 +25,6 @@ let package = Package(
                 .product(name: "Repositories", package: "Repositories"),
                 .product(name: "Models", package: "Models"),
                 .product(name: "Extensions", package: "Extensions"),
-            ],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency"),
-                .enableExperimentalFeature("DisableOutwardActorInference"),
             ]
         ),
     ],

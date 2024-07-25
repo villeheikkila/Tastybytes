@@ -4,9 +4,9 @@ internal import Supabase
 struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     let client: SupabaseClient
 
-    func insert(newCheckInReaction: CheckIn.Reaction.NewRequest) async throws -> CheckIn.Reaction.Saved {
+    func insert(id: CheckIn.Id) async throws -> CheckIn.Reaction.Saved {
         try await client
-            .rpc(fn: .createCheckInReaction, params: newCheckInReaction)
+            .rpc(fn: .createCheckInReaction, params: ["p_check_in_id": id.rawValue])
             .select(CheckIn.Reaction.getQuery(.joinedProfile(false)))
             .limit(1)
             .single()
@@ -16,7 +16,7 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
 
     func delete(id: CheckIn.Reaction.Id) async throws {
         try await client
-            .rpc(fn: .softDeleteCheckInReaction, params: CheckIn.Reaction.DeleteRequest(id: id))
+            .rpc(fn: .softDeleteCheckInReaction, params: ["p_check_in_reaction_id": id.rawValue])
             .execute()
     }
 }

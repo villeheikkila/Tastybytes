@@ -11,7 +11,7 @@ struct DiscoverProductAddNew: View {
                 let barcodeCopy = barcode
                 barcode = nil
                 router.open(.sheet(.product(.new(barcode: barcodeCopy, onCreate: { product in
-                    router.open(.screen(.product(product)))
+                    router.open(.screen(.product(product.id)))
                 }))))
             }
             .fontWeight(.medium)

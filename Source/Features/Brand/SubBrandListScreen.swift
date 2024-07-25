@@ -9,7 +9,7 @@ struct SubBrandListScreen: View {
 
     var body: some View {
         List(subBrands) { subBrand in
-            RouterLink(open: .screen(.brandById(id: subBrand.brand.id, initialScrollPosition: subBrand))) {
+            RouterLink(open: .screen(.subBrand(brandId: subBrand.brand.id, subBrandId: subBrand.id))) {
                 SubBrandEntityView(brand: subBrand.brand, subBrand: subBrand)
             }
         }

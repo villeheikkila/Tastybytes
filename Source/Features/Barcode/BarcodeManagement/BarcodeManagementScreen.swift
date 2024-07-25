@@ -52,7 +52,7 @@ struct BarcodeManagementScreen: View {
 
     private func addBarcodeToProduct(product: Product.Detailed, _ barcode: Barcode) async {
         do {
-            let new = try await repository.productBarcode.addToProduct(product: product, barcode: barcode)
+            let new = try await repository.productBarcode.addToProduct(id: product.id, barcode: barcode)
             self.product = product.copyWith(barcodes: product.barcodes + [new])
         } catch {
             guard !error.isCancelled else { return }

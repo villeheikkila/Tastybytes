@@ -81,24 +81,24 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getCategoryStatistics(id: Profile.Id) async throws -> [CategoryStatistics] {
+    func getCategoryStatistics(id: Profile.Id) async throws -> [Profile.CategoryStatistics] {
         try await client
             .rpc(
                 fn: .getCategoryStats,
-                params: CategoryStatistics.CategoryStatisticsParams(id: id)
+                params: ["p_user_id": id.rawValue]
             )
-            .select(CategoryStatistics.getQuery(.value))
+            .select(Profile.CategoryStatistics.getQuery(.value))
             .execute()
             .value
     }
 
-    func getSubcategoryStatistics(id: Profile.Id, categoryId: Models.Category.Id) async throws -> [SubcategoryStatistics] {
+    func getSubcategoryStatistics(id: Profile.Id, categoryId: Models.Category.Id) async throws -> [Profile.SubcategoryStatistics] {
         try await client
             .rpc(
                 fn: .getSubcategoryStats,
-                params: SubcategoryStatistics.SubcategoryStatisticsParams(userId: id, categoryId: categoryId)
+                params: Profile.SubcategoryStatistics.SubcategoryStatisticsParams(userId: id, categoryId: categoryId)
             )
-            .select(SubcategoryStatistics.getQuery(.value))
+            .select(Profile.SubcategoryStatistics.getQuery(.value))
             .execute()
             .value
     }
@@ -150,9 +150,9 @@ struct SupabaseProfileRepository: ProfileRepository {
         return try await query.execute().value
     }
 
-    func uploadAvatar(userId: Profile.Id, data: Data) async throws -> ImageEntity.Saved {
+    func uploadAvatar(id: Profile.Id, data: Data) async throws -> ImageEntity.Saved {
         let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
-        let path = "\(userId.uuidString.lowercased())/\(fileName)"
+        let path = "\(id.uuidString.lowercased())/\(fileName)"
 
         try await client
             .storage
@@ -178,11 +178,11 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getTimePeriodStatistics(userId: Profile.Id, timePeriod: StatisticsTimePeriod) async throws -> TimePeriodStatistic {
+    func getTimePeriodStatistics(id: Profile.Id, timePeriod: StatisticsTimePeriod) async throws -> Profile.TimePeriodStatistic {
         try await client
             .rpc(
                 fn: .getTimePeriodStatistics,
-                params: TimePeriodStatistic.RequestParams(userId: userId, timePeriod: timePeriod)
+                params: Profile.TimePeriodStatistic.RequestParams(userId: id, timePeriod: timePeriod)
             )
             .limit(1)
             .single()
@@ -190,7 +190,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .value
     }
 
-    func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async throws -> [CheckInsPerDay] {
+    func getNumberOfCheckInsByDay(_ request: NumberOfCheckInsByDayRequest) async throws -> [Profile.CheckInsPerDay] {
         try await client
             .rpc(fn: .getNumberOfCheckInsByDay, params: request)
             .execute()

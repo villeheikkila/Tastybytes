@@ -11,7 +11,7 @@ struct CheckInsByTimeBucketView: View {
     private let logger = Logger(category: "CheckInsByTimeBucketView")
     @Environment(Repository.self) private var repository
     @State private var isLoading = false
-    @State private var checkInsPerDay = [CheckInsPerDay]()
+    @State private var checkInsPerDay = [Profile.CheckInsPerDay]()
     @State private var timePeriod: StatisticsTimePeriod = .week
 
     @State private var page = 0
@@ -19,7 +19,7 @@ struct CheckInsByTimeBucketView: View {
 
     let profile: Profile.Saved
 
-    private var checkInsInRange: [CheckInsPerDay] {
+    private var checkInsInRange: [Profile.CheckInsPerDay] {
         checkInsPerDay.filter { checkIn in
             dateRange.contains(checkIn.checkInDate)
         }

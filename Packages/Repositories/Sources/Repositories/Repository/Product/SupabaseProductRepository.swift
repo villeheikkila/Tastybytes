@@ -113,7 +113,7 @@ struct SupabaseProductRepository: ProductRepository {
         try await client
             .rpc(
                 fn: .isOnCurrentUserWishlist,
-                params: ProfileWishlist.CheckIfOnWishlist(id: id)
+                params: ["p_product_id": id.rawValue]
             )
             .single()
             .execute()
@@ -123,7 +123,7 @@ struct SupabaseProductRepository: ProductRepository {
     func addToWishlist(productId: Product.Id) async throws {
         try await client
             .from(.profileWishlistItems)
-            .insert(ProfileWishlist.New(productId: productId.rawValue))
+            .insert(["product_id": productId.rawValue])
             .single()
             .execute()
     }
@@ -136,10 +136,10 @@ struct SupabaseProductRepository: ProductRepository {
             .execute()
     }
 
-    func getWishlistItems(profileId: Profile.Id) async throws -> [ProfileWishlist.Joined] {
+    func getWishlistItems(profileId: Profile.Id) async throws -> [Profile.Wishlist.Joined] {
         try await client
             .from(.profileWishlistItems)
-            .select(ProfileWishlist.getQuery(.joined(false)))
+            .select(Profile.Wishlist.getQuery(.joined(false)))
             .eq("created_by", value: profileId.uuidString)
             .execute()
             .value
@@ -192,19 +192,19 @@ struct SupabaseProductRepository: ProductRepository {
             .value
     }
 
-    func mergeProducts(productId: Product.Id, toProductId: Product.Id) async throws {
+    func mergeProducts(id: Product.Id, toProductId: Product.Id) async throws {
         try await client
             .rpc(
                 fn: .mergeProducts,
-                params: Product.MergeProductsParams(productId: productId, toProductId: toProductId)
+                params: Product.MergeProductsParams(productId: id, toProductId: toProductId)
             )
             .execute()
     }
 
-    func markAsDuplicate(productId: Product.Id, duplicateOfProductId: Product.Id) async throws {
+    func markAsDuplicate(id: Product.Id, duplicateOfProductId: Product.Id) async throws {
         try await client
             .from(.productEditSuggestions)
-            .insert(["product_id": productId.rawValue, "duplicate_of_product_id": duplicateOfProductId.rawValue],
+            .insert(["product_id": id.rawValue, "duplicate_of_product_id": duplicateOfProductId.rawValue],
                     returning: .none)
             .execute()
             .value

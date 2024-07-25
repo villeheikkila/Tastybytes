@@ -32,23 +32,23 @@ extension Report.Content {
     var open: Router.Open {
         switch self {
         case let .brand(brand):
-            .screen(.brand(brand))
+            .screen(.brand(brand.id))
         case let .product(product):
-            .screen(.product(product))
+            .screen(.product(product.id))
         case let .company(company):
-            .screen(.company(company))
+            .screen(.company(company.id))
         case let .subBrand(subBrand):
-            .navigatablePath(.brand(id: subBrand.brand.id))
+            .screen(.subBrand(brandId: subBrand.brand.id, subBrandId: subBrand.id))
         case let .checkIn(checkIn):
-            .screen(.checkIn(checkIn))
+            .screen(.checkIn(checkIn.id))
         case let .comment(comment):
-            .navigatablePath(.checkIn(id: comment.checkIn.id))
+            .screen(.checkIn(comment.checkIn.id))
         case let .checkInImage(imageEntity):
-            .navigatablePath(.checkIn(id: imageEntity.checkIn.id))
+            .screen(.checkIn(imageEntity.checkIn.id))
         case let .profile(profile):
             .screen(.profile(profile))
         case let .location(location):
-            .screen(.location(location))
+            .screen(.location(location.id))
         }
     }
 }

@@ -18,7 +18,7 @@ struct ProfileWishlistScreen: View {
 
     var body: some View {
         List(products) { product in
-            RouterLink(open: .screen(.product(product))) {
+            RouterLink(open: .screen(.product(product.id))) {
                 ProductEntityView(product: product, extras: [.rating])
             }
             .swipeActions(allowsFullSwipe: true) {

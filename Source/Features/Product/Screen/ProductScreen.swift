@@ -9,16 +9,16 @@ import Translation
 
 struct ProductScreen: View {
     @Environment(Repository.self) private var repository
-    let product: Product.Joined
+    let id: Product.Id
     let loadedWithBarcode: Barcode?
 
-    init(product: Product.Joined, loadedWithBarcode: Barcode? = nil) {
-        self.product = product
+    init(id: Product.Id, loadedWithBarcode: Barcode? = nil) {
+        self.id = id
         self.loadedWithBarcode = loadedWithBarcode
     }
 
     var body: some View {
-        ProductInnerScreen(repository: repository, product: product, loadedWithBarcode: loadedWithBarcode)
+        ProductInnerScreen(repository: repository, id: id, loadedWithBarcode: loadedWithBarcode)
     }
 }
 
@@ -29,7 +29,7 @@ struct ProductInnerScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var product: Product.Joined
+    @State private var product = Product.Joined()
     @State private var summary: Summary?
     @State private var loadedWithBarcode: Barcode?
     @State private var showTranslator = false
@@ -44,12 +44,14 @@ struct ProductInnerScreen: View {
     @State private var isOnWishlist = false
     @State private var checkInLoader: CheckInListLoader
 
-    init(repository: Repository, product: Product.Joined, loadedWithBarcode: Barcode? = nil) {
+    private let id: Product.Id
+
+    init(repository: Repository, id: Product.Id, loadedWithBarcode: Barcode? = nil) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
-            try await repository.checkIn.getByProductId(id: product.id, segment: segment, from: from, to: to)
+            try await repository.checkIn.getByProductId(id: id, segment: segment, from: from, to: to)
         }, id: "ProductScreen"))
-        _product = State(initialValue: product)
         _loadedWithBarcode = State(initialValue: loadedWithBarcode)
+        self.id = id
     }
 
     var body: some View {
@@ -135,13 +137,13 @@ struct ProductInnerScreen: View {
                 RouterLink(
                     "subBrand.screen.open",
                     systemImage: "cart",
-                    open: .screen(.subBrand(product.subBrand))
+                    open: .screen(.subBrand(brandId: product.subBrand.brand.id, subBrandId: product.subBrand.id))
                 )
-                RouterLink("brand.screen.open", systemImage: "cart", open: .screen(.fetchBrand(product.subBrand.brand)))
+                RouterLink("brand.screen.open", systemImage: "cart", open: .screen(.brand(product.subBrand.brand.id)))
                 RouterLink(
                     "company.screen.open",
                     systemImage: "network",
-                    open: .screen(.company(product.subBrand.brand.brandOwner))
+                    open: .screen(.company(product.subBrand.brand.brandOwner.id))
                 )
                 Divider()
 
@@ -179,7 +181,7 @@ struct ProductInnerScreen: View {
     private func onCreateCheckIn(checkIn: CheckIn.Joined) async {
         checkInLoader.onCreateCheckIn(checkIn)
         do {
-            let summary = try await repository.product.getSummaryById(id: product.id)
+            let summary = try await repository.product.getSummaryById(id: id)
             self.summary = summary
         } catch {
             guard !error.isCancelled else { return }
@@ -190,9 +192,9 @@ struct ProductInnerScreen: View {
 
     private func getProductData(isRefresh: Bool = false) async {
         async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
-        async let productPromise = repository.product.getById(id: product.id)
-        async let summaryPromise = repository.product.getSummaryById(id: product.id)
-        async let wishlistPromise = repository.product.checkIfOnWishlist(id: product.id)
+        async let productPromise = repository.product.getById(id: id)
+        async let summaryPromise = repository.product.getSummaryById(id: id)
+        async let wishlistPromise = repository.product.checkIfOnWishlist(id: id)
         async let fetchImagePromise: Void = fetchImages(reset: true)
         var errors: [Error] = []
         do {
@@ -217,7 +219,7 @@ struct ProductInnerScreen: View {
 
     private func addBarcodeToProduct(_ barcode: Barcode) async {
         do {
-            try await repository.productBarcode.addToProduct(product: product, barcode: barcode)
+            try await repository.productBarcode.addToProduct(id: product.id, barcode: barcode)
             router.open(.toast(.success("barcode.add.success.toast")))
         } catch {
             guard !error.isCancelled else { return }
@@ -246,7 +248,7 @@ struct ProductInnerScreen: View {
         isLoadingCheckInImages = true
 
         do {
-            let checkIns = try await repository.checkIn.getCheckInImages(by: .product(product), from: from, to: to)
+            let checkIns = try await repository.checkIn.getCheckInImages(by: .product(product.id), from: from, to: to)
             withAnimation {
                 checkInImages.append(contentsOf: checkIns)
             }

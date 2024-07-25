@@ -13,10 +13,10 @@ struct SupabaseProductBarcodeRepository: ProductBarcodeRepository {
             .value
     }
 
-    func addToProduct(product: ProductProtocol, barcode: Barcode) async throws -> Product.Barcode.JoinedWithCreator {
+    func addToProduct(id: Product.Id, barcode: Barcode) async throws -> Product.Barcode.JoinedWithCreator {
         try await client
             .from(.productBarcodes)
-            .insert(Product.Barcode.NewRequest(product: product, barcode: barcode))
+            .insert(Product.Barcode.NewRequest(id: id, barcode: barcode))
             .select(Product.Barcode.getQuery(.joinedCreator(false)))
             .single()
             .execute()

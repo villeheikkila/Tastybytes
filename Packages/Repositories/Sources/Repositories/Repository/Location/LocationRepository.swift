@@ -11,8 +11,8 @@ public protocol LocationRepository: Sendable {
     func getSummaryById(id: Location.Id) async throws -> Summary
     func getSuggestions(location: Location.SuggestionParams) async throws -> [Location.Saved]
     func getRecentLocations(category: Location.RecentLocation) async throws -> [Location.Saved]
-    func mergeLocations(locationId: Location.Id, toLocationId: Location.Id) async throws
-    func getAllCountries() async throws -> [Country]
+    func mergeLocations(id: Location.Id, toLocationId: Location.Id) async throws
+    func getAllCountries() async throws -> [Country.Saved]
     func getLocations() async throws -> [Location.Saved]
     func update(request: Location.UpdateLocationRequest) async throws -> Location.Detailed
 }

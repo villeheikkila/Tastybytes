@@ -1,11 +1,7 @@
-public struct Country: Hashable, Codable, Sendable {
-    public let countryCode: String
-    public let name: String
-    public let emoji: String
+public import Tagged
 
-    enum CodingKeys: String, CodingKey {
-        case countryCode = "country_code"
-        case name
-        case emoji
-    }
+public enum Country {}
+
+public extension Country {
+    typealias Id = Tagged<Country, String>
 }

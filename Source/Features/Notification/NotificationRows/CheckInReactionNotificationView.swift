@@ -8,7 +8,7 @@ struct CheckInReactionNotificationView: View {
     let seenAt: Date?
 
     var body: some View {
-        RouterLink(open: .screen(.checkIn(checkInReaction.checkIn))) {
+        RouterLink(open: .screen(.checkIn(checkInReaction.checkIn.id))) {
             NotificationFromUserWrapper(profile: checkInReaction.profile, createdAt: createdAt) {
                 Text("checkIn.notifications.userReactedToYourCheckIn.body \(checkInReaction.profile.preferredName) \(checkInReaction.checkIn.product.formatted(.full))")
             }

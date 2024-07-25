@@ -33,10 +33,6 @@ let package = Package(
                 .product(name: "BrightroomUI", package: "Brightroom"),
                 .product(name: "BrightroomUIPhotosCrop", package: "Brightroom"),
                 .product(name: "BlurHashViews", package: "blurhashviews"),
-            ],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency"),
-                .enableExperimentalFeature("DisableOutwardActorInference"),
             ]
         ),
     ],

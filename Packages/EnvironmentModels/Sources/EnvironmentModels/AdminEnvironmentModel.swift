@@ -151,8 +151,7 @@ public final class AdminEnvironmentModel {
     // Reports
     public func loadReports() async {
         do {
-            let reports = try await repository.report.getAll(nil)
-            self.reports = reports
+            reports = try await repository.report.getAll()
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Loading reports failed. Error: \(error) (\(#file):\(#line))")

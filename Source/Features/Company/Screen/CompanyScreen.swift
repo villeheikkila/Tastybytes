@@ -14,12 +14,10 @@ struct CompanyScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
     @State private var state: ScreenState = .loading
-    @State private var company: Company.Joined
+    @State private var company = Company.Joined()
     @State private var summary: Summary?
 
-    init(company: any CompanyProtocol) {
-        _company = State(wrappedValue: .init(company: company))
-    }
+    let id: Company.Id
 
     var sortedBrands: [Brand.JoinedSubBrandsProducts] {
         company.brands.sorted { lhs, rhs in lhs.productCount > rhs.productCount }
@@ -77,9 +75,9 @@ struct CompanyScreen: View {
             Section("brand.title") {
                 ForEach(sortedBrands) { brand in
                     RouterLink(
-                        open: .screen(.brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: .init(company: company), brand: brand))
+                        open: .screen(.brand(brand.id)
                         )) {
-                            CompanyBrandRow(brand: brand)
+                            CompanyBrandRowView(brand: brand)
                         }
                         .alignmentGuide(.listRowSeparatorLeading) { _ in
                             0
@@ -116,7 +114,7 @@ struct CompanyScreen: View {
             )
             ReportButton(entity: .company(.init(company: company)))
             Divider()
-            AdminRouterLink(open: .sheet(.companyAdmin(id: company.id, onUpdate: { _ in
+            AdminRouterLink(open: .sheet(.companyAdmin(id: id, onUpdate: { _ in
                 await getCompanyData(withHaptics: true)
                 router.open(.toast(.success("company.update.success.toast")))
             }, onDelete: { _ in
@@ -129,8 +127,8 @@ struct CompanyScreen: View {
     }
 
     private func getCompanyData(withHaptics: Bool = false) async {
-        async let companyPromise = repository.company.getJoinedById(id: company.id)
-        async let summaryPromise = repository.company.getSummaryById(id: company.id)
+        async let companyPromise = repository.company.getJoinedById(id: id)
+        async let summaryPromise = repository.company.getSummaryById(id: id)
         var errors = [Error]()
         do {
             let (companyResult, summaryResult) = try await (

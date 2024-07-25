@@ -7,7 +7,7 @@ public extension Location {
         public let title: String?
         public let location: CLLocation?
         public let countryCode: String?
-        public let country: Country?
+        public let country: Country.Saved?
         public let mapKitIdentifier: String?
 
         public init(location: Location.Saved) {

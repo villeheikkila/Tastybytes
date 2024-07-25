@@ -7,7 +7,7 @@ struct ProfileSummarySection: View {
     @Environment(Router.self) private var router
 
     let profile: Profile.Saved
-    let profileSummary: ProfileSummary?
+    let profileSummary: Profile.Summary?
 
     var body: some View {
         HStack {

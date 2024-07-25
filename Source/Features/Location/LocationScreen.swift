@@ -11,10 +11,10 @@ import SwiftUI
 
 struct LocationScreen: View {
     @Environment(Repository.self) private var repository
-    let location: Location.Saved
+    let id: Location.Id
 
     var body: some View {
-        LocationInnerScreen(repository: repository, location: location)
+        LocationInnerScreen(repository: repository, id: id)
     }
 }
 
@@ -25,25 +25,22 @@ struct LocationInnerScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @State private var state: ScreenState = .loading
     @State private var summary: Summary?
-    @State private var location: Location.Saved
+    @State private var location = Location.Saved()
     @State private var checkInLoader: CheckInListLoader
 
-    init(repository: Repository, location: Location.Saved) {
+    let id: Location.Id
+
+    init(repository: Repository, id: Location.Id) {
         _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
-            try await repository.checkIn.getByLocation(locationId: location.id, segment: segment, from: from, to: to)
+            try await repository.checkIn.getByLocation(id: id, segment: segment, from: from, to: to)
         }, id: "LocationScreen"))
-        _location = State(initialValue: location)
+        self.id = id
     }
 
     var body: some View {
         List {
             if state.isPopulated {
-                LocationScreenHeader(location: location, summary: summary)
-                CheckInListSegmentPickerView(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-                CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
-                    checkInLoader.onLoadMore()
-                })
-                CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+                content
             }
         }
         .listStyle(.plain)
@@ -67,6 +64,15 @@ struct LocationInnerScreen: View {
         }
     }
 
+    @ViewBuilder private var content: some View {
+        LocationScreenHeader(location: location, summary: summary)
+        CheckInListSegmentPickerView(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
+        CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
+            checkInLoader.onLoadMore()
+        })
+        CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+    }
+
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         LocationToolbarItem(location: location)
         ToolbarItemGroup(placement: .topBarTrailing) {
@@ -75,7 +81,7 @@ struct LocationInnerScreen: View {
                 Divider()
                 ReportButton(entity: .location(location))
                 Divider()
-                AdminRouterLink(open: .sheet(.locationAdmin(id: location.id, onEdit: { location in
+                AdminRouterLink(open: .sheet(.locationAdmin(id: id, onEdit: { location in
                     self.location = .init(location: location)
                 }, onDelete: { _ in
                     router.removeLast()
@@ -89,11 +95,13 @@ struct LocationInnerScreen: View {
 
     private func load(isRefresh: Bool = false) async {
         async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
-        async let summaryPromise = repository.location.getSummaryById(id: location.id)
+        async let locationPromise = repository.location.getById(id: id)
+        async let summaryPromise = repository.location.getSummaryById(id: id)
 
         do {
-            let (_, summaryResult) = try await (loadInitialCheckInsPromise, summaryPromise)
+            let (locationResult, _, summaryResult) = try await (locationPromise, loadInitialCheckInsPromise, summaryPromise)
             withAnimation {
+                location = locationResult
                 summary = summaryResult
                 state = .populated
             }

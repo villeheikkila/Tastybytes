@@ -86,7 +86,7 @@ struct FriendsScreen: View {
     }
 
     private func loadFriends() async {
-        do { let friends = try await repository.friend.getByUserId(userId: profile.id, status: .accepted)
+        do { let friends = try await repository.friend.getByUserId(id: profile.id, status: .accepted)
             withAnimation {
                 self.friends = friends
                 state = .populated

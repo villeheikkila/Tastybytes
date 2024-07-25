@@ -15,7 +15,7 @@ struct CheckInImageCellView: View {
 
     var body: some View {
         HStack {
-            RouterLink(open: .navigatablePath(.checkIn(id: checkInImage.checkIn.id))) {
+            RouterLink(open: .screen(.checkIn(checkInImage.checkIn.id))) {
                 RemoteImageView(url: checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
                     image
                         .resizable()

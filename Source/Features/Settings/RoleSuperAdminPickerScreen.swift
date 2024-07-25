@@ -87,7 +87,7 @@ struct RolePickerRowView: View {
 
     private func removeRoleFromProfile(_ role: Role.Joined) async {
         do {
-            try await repository.role.removeProfileFromProfile(profile: profile.profile, role: role)
+            try await repository.role.removeRoleFromProfile(profile: profile.profile, role: role)
             profile = profile.copyWith(roles: profile.roles.removing(role))
         } catch {
             guard !error.isCancelled else { return }
@@ -97,7 +97,7 @@ struct RolePickerRowView: View {
 
     private func addRoleForProfile(_ role: Role.Joined) async {
         do {
-            try await repository.role.addProfileForProfile(profile: profile.profile, role: role)
+            try await repository.role.addRoleForProfile(profile: profile.profile, role: role)
             profile = profile.copyWith(roles: profile.roles + [role])
         } catch {
             guard !error.isCancelled else { return }

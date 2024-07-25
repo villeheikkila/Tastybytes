@@ -23,14 +23,14 @@ struct DiscoverProductRow: View {
         )
         .swipeActions {
             RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIn in
-                router.open(.screen(.checkIn(checkIn)))
+                router.open(.screen(.checkIn(checkIn.id)))
             })))).tint(.green)
         }
         .contentShape(.rect)
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
             if barcode == nil || product.barcodes.contains(where: { $0.isSameAs(barcode) }) {
-                router.open(.screen(.product(product)))
+                router.open(.screen(.product(product.id)))
             } else {
                 showAddBarcodeToConfirmationDialog = true
             }
@@ -59,10 +59,10 @@ struct DiscoverProductRow: View {
     private func addBarcodeToProduct(_ addBarcodeTo: Product.Joined) async {
         guard let barcode else { return }
         do {
-            try await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode)
+            try await repository.productBarcode.addToProduct(id: addBarcodeTo.id, barcode: barcode)
             self.barcode = nil
             router.open(.toast(.success("checkIn.addBarcode.success.toast")))
-            router.open(.screen(.product(addBarcodeTo)))
+            router.open(.screen(.product(addBarcodeTo.id)))
         } catch {
             guard !error.isCancelled else { return }
             guard !error.isDuplicate else {

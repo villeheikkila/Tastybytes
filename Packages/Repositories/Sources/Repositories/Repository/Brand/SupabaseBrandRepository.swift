@@ -58,11 +58,11 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func getByBrandOwnerId(brandOwnerId: Company.Id) async throws -> [Brand.JoinedSubBrands] {
+    func getByBrandOwnerId(id: Company.Id) async throws -> [Brand.JoinedSubBrands] {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.joinedSubBrands(false)))
-            .eq("brand_owner_id", value: brandOwnerId.rawValue)
+            .eq("brand_owner_id", value: id.rawValue)
             .order("name")
             .execute()
             .value
@@ -89,19 +89,19 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func likeBrand(brandId: Brand.Id) async throws {
+    func likeBrand(id: Brand.Id) async throws {
         try await client
             .from(.brandLikes)
-            .insert(["brand_id": brandId])
+            .insert(["brand_id": id])
             .single()
             .execute()
     }
 
-    func unlikeBrand(brandId: Brand.Id) async throws {
+    func unlikeBrand(id: Brand.Id) async throws {
         try await client
             .from(.brandLikes)
             .delete()
-            .eq("brand_id", value: brandId.rawValue)
+            .eq("brand_id", value: id.rawValue)
             .execute()
     }
 
@@ -149,8 +149,8 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func uploadLogo(brandId: Brand.Id, data: Data) async throws -> ImageEntity.Saved {
-        let fileName = "\(brandId)_\(Date.now.timeIntervalSince1970).jpeg"
+    func uploadLogo(id: Brand.Id, data: Data) async throws -> ImageEntity.Saved {
+        let fileName = "\(id)_\(Date.now.timeIntervalSince1970).jpeg"
 
         try await client
             .storage

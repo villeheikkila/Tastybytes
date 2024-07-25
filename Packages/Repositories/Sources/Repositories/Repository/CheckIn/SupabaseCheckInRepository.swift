@@ -113,11 +113,11 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getByLocation(locationId: Location.Id, segment: CheckIn.Segment, from: Int, to: Int) async throws -> [CheckIn.Joined] {
+    func getByLocation(id: Location.Id, segment: CheckIn.Segment, from: Int, to: Int) async throws -> [CheckIn.Joined] {
         try await client
             .from(segment.table)
             .select(CheckIn.getQuery(.joined(false)))
-            .or("location_id.eq.\(locationId.rawValue),purchase_location_id.eq.\(locationId.rawValue)")
+            .or("location_id.eq.\(id.rawValue),purchase_location_id.eq.\(id.rawValue)")
             .order("created_at", ascending: false)
             .range(from: from, to: to)
             .execute()
@@ -169,9 +169,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .execute()
     }
 
-    func getSummaryByProfileId(id: Profile.Id) async throws -> ProfileSummary {
+    func getSummaryByProfileId(id: Profile.Id) async throws -> Profile.Summary {
         try await client
-            .rpc(fn: .getProfileSummary, params: ProfileSummary.GetRequest(profileId: id))
+            .rpc(fn: .getProfileSummary, params: ["p_uid": id.rawValue])
             .select()
             .limit(1)
             .single()
@@ -216,8 +216,8 @@ struct UpdateCheckInImageBlurHashParams: Codable {
 }
 
 public enum CheckInImageQueryType: Sendable {
-    case profile(Profile.Saved)
-    case product(Product.Joined)
+    case profile(Profile.Id)
+    case product(Product.Id)
 
     var column: String {
         switch self {
@@ -230,10 +230,10 @@ public enum CheckInImageQueryType: Sendable {
 
     var id: String {
         switch self {
-        case let .profile(profile):
-            profile.id.uuidString
-        case let .product(product):
-            String(product.id)
+        case let .profile(id):
+            id.uuidString
+        case let .product(id):
+            String(id)
         }
     }
 }

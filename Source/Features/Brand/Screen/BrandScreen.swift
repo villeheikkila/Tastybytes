@@ -12,31 +12,15 @@ struct BrandScreen: View {
     @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @Environment(Router.self) private var router
-    @State private var brand: Brand.JoinedSubBrandsProductsCompany
+    @State private var brand = Brand.JoinedSubBrandsProductsCompany()
     @State private var summary: Summary?
     @State private var isLikedByCurrentUser = false
     @State private var productGrouping: GroupProductsBy = .subBrand
     @State private var showProductGroupingPicker = false
     @State private var state: ScreenState = .loading
 
-    let initialScrollPosition: SubBrand.JoinedBrand?
-
-    init(
-        brand: Brand.JoinedSubBrandsProductsCompany,
-        initialScrollPosition: SubBrand.JoinedBrand? = nil
-    ) {
-        _brand = State(wrappedValue: brand)
-        self.initialScrollPosition = initialScrollPosition
-    }
-
-    init(
-        brandId: Brand.Id,
-        initialScrollPosition: SubBrand.JoinedBrand? = nil
-    ) {
-        // fake data
-        _brand = State(wrappedValue: .init(id: brandId, name: "", isVerified: true, brandOwner: .init(id: 0, name: "", isVerified: true), subBrands: []))
-        self.initialScrollPosition = initialScrollPosition
-    }
+    let id: Brand.Id
+    let initialScrollPosition: SubBrand.Id?
 
     private var sortedSubBrands: [SubBrand.JoinedProduct] {
         brand.subBrands
@@ -158,7 +142,7 @@ struct BrandScreen: View {
                     BrandShareLinkView(brand: brand)
                     if profileEnvironmentModel.hasPermission(.canCreateProducts) {
                         RouterLink("brand.addProduct.menu.label", systemImage: "plus", open: .sheet(.product(.addToBrand(brand, onCreate: { product in
-                            router.open(.screen(.product(product), removeLast: true))
+                            router.open(.screen(.product(product.id), removeLast: true))
                         }))))
                     }
                     Button("brand.product.groupBy.label", systemImage: "list.bullet.indent") {
@@ -169,7 +153,7 @@ struct BrandScreen: View {
                 RouterLink(
                     "company.screen.open",
                     systemImage: "network",
-                    open: .screen(.company(brand.brandOwner))
+                    open: .screen(.company(brand.brandOwner.id))
                 )
                 Divider()
                 RouterLink("labels.editSuggestion", systemImage: "pencil", open: .sheet(.brandEditSuggestion(brand: brand, onSuccess: {
@@ -177,7 +161,7 @@ struct BrandScreen: View {
                 })))
                 ReportButton(entity: .brand(brand))
                 Divider()
-                AdminRouterLink(open: .sheet(.brandAdmin(id: brand.id, onUpdate: { updatedBrand in
+                AdminRouterLink(open: .sheet(.brandAdmin(id: id, onUpdate: { updatedBrand in
                     brand = .init(brand: updatedBrand)
                 }, onDelete: { _ in
                     router.removeLast()
@@ -204,10 +188,9 @@ struct BrandScreen: View {
     }
 
     private func getBrandData(withHaptics: Bool = false, proxy: ScrollViewProxy? = nil) async {
-        let brandId = brand.id
-        async let summaryPromise = repository.brand.getSummaryById(id: brandId)
-        async let brandPromise = repository.brand.getJoinedById(id: brandId)
-        async let isLikedPromisePromise = repository.brand.isLikedByCurrentUser(id: brandId)
+        async let summaryPromise = repository.brand.getSummaryById(id: id)
+        async let brandPromise = repository.brand.getJoinedById(id: id)
+        async let isLikedPromisePromise = repository.brand.isLikedByCurrentUser(id: id)
         if withHaptics {
             feedbackEnvironmentModel.trigger(.impact(intensity: .low))
         }
@@ -233,14 +216,14 @@ struct BrandScreen: View {
 
         if let initialScrollPosition, let proxy {
             try? await Task.sleep(for: .milliseconds(100))
-            proxy.scrollTo(initialScrollPosition.id, anchor: .top)
+            proxy.scrollTo(initialScrollPosition, anchor: .top)
         }
     }
 
     private func toggleLike() async {
         if isLikedByCurrentUser {
             do {
-                try await repository.brand.unlikeBrand(brandId: brand.id)
+                try await repository.brand.unlikeBrand(id: id)
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 withAnimation {
                     isLikedByCurrentUser = false
@@ -251,7 +234,7 @@ struct BrandScreen: View {
             }
         } else {
             do {
-                try await repository.brand.likeBrand(brandId: brand.id)
+                try await repository.brand.likeBrand(id: id)
                 feedbackEnvironmentModel.trigger(.notification(.success))
                 withAnimation {
                     isLikedByCurrentUser = true
@@ -295,7 +278,7 @@ struct SubBrandSectionHeaderView: View {
                         "brand.createProduct.label",
                         systemImage: "plus",
                         open: .sheet(.product(.addToSubBrand(brand, subBrand, onCreate: { newProduct in
-                            router.open(.screen(.product(newProduct), removeLast: true))
+                            router.open(.screen(.product(newProduct.id), removeLast: true))
                         })))
                     )
                 }

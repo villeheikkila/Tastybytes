@@ -72,7 +72,7 @@ struct SubBrandAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("subBrand.admin.section.subBrand") {
-            RouterLink(open: .screen(.subBrand(.init(subBrand: subBrand)))) {
+            RouterLink(open: .screen(.subBrand(brandId: subBrand.brand.id, subBrandId: subBrand.id))) {
                 SubBrandEntityView(subBrand: subBrand)
             }
         }

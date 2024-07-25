@@ -76,20 +76,20 @@ public extension Product {
             onlyUnrated = nil
         }
 
-        public func copyWith(category: Models.Category.JoinedSubcategoriesServingStyles?) -> Filter {
-            Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
+        public func copyWith(category: Models.Category.JoinedSubcategoriesServingStyles?) -> Self {
+            .init(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
         }
 
-        public func copyWith(subcategory: Subcategory.Saved?) -> Filter {
-            Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
+        public func copyWith(subcategory: Subcategory.Saved?) -> Self {
+            .init(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
         }
 
-        public func copyWith(onlyNonCheckedIn: Bool) -> Filter {
-            Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
+        public func copyWith(onlyNonCheckedIn: Bool) -> Self {
+            .init(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
         }
 
-        public func copyWith(sortBy: SortBy?) -> Filter {
-            Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
+        public func copyWith(sortBy: SortBy?) -> Self {
+            .init(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
         }
     }
 }

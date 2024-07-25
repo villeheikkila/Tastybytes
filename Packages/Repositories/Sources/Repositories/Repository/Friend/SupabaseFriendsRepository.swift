@@ -5,17 +5,17 @@ internal import Supabase
 struct SupabaseFriendsRepository: FriendRepository {
     let client: SupabaseClient
 
-    func getByUserId(userId: Profile.Id, status: Friend.Status?) async throws -> [Friend.Saved] {
+    func getByUserId(id: Profile.Id, status: Friend.Status?) async throws -> [Friend.Saved] {
         var queryBuilder = client
             .from(.friends)
             .select(Friend.getQuery(.joined(false)))
-            .or("user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
+            .or("user_id_1.eq.\(id),user_id_2.eq.\(id)")
 
         if let status {
             switch status {
             case .blocked:
                 queryBuilder = queryBuilder.eq("status", value: status.rawValue)
-                    .eq("blocked_by", value: userId.rawValue)
+                    .eq("blocked_by", value: id.rawValue)
             case .accepted:
                 queryBuilder = queryBuilder.eq("status", value: status.rawValue)
             default:

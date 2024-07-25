@@ -23,10 +23,6 @@ let package = Package(
             name: "Models", dependencies: [
                 .product(name: "Extensions", package: "Extensions"),
                 .product(name: "Tagged", package: "swift-tagged"),
-            ],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency"),
-                .enableExperimentalFeature("DisableOutwardActorInference"),
             ]
         ),
     ],

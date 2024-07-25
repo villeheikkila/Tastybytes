@@ -6,7 +6,7 @@ struct DiscoverLocationResults: View {
 
     var body: some View {
         ForEach(locations) { location in
-            RouterLink(open: .screen(.location(location))) {
+            RouterLink(open: .screen(.location(location.id))) {
                 HStack {
                     if let coordinate = location.location?.coordinate {
                         MapThumbnail(location: location, coordinate: coordinate, distance: nil)

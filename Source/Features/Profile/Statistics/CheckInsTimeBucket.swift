@@ -15,7 +15,7 @@ struct CheckInsTimeBucket: Identifiable {
         )
     }
 
-    static func getBuckets(checkInsPerDay: [CheckInsPerDay],
+    static func getBuckets(checkInsPerDay: [Profile.CheckInsPerDay],
                            timePeriod: StatisticsTimePeriod,
                            dateRange: ClosedRange<Date>) -> [Self]
     {

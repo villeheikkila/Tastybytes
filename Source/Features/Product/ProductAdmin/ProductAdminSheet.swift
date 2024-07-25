@@ -69,7 +69,7 @@ struct ProductAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("product.admin.section.product") {
-            RouterLink(open: .screen(.product(.init(product: product)))) {
+            RouterLink(open: .screen(.product(product.id))) {
                 ProductEntityView(product: product)
             }
             .buttonStyle(.plain)
@@ -257,7 +257,7 @@ struct ProductAdminSheet: View {
 
     private func mergeProducts(id: Product.Id, _ mergeToId: Product.Id) async {
         do {
-            try await repository.product.mergeProducts(productId: id, toProductId: mergeToId)
+            try await repository.product.mergeProducts(id: id, toProductId: mergeToId)
             self.id = mergeToId
             feedbackEnvironmentModel.trigger(.notification(.success))
         } catch {

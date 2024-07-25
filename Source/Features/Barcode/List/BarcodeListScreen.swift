@@ -18,7 +18,7 @@ struct BarcodeListRowView: View {
     let barcode: Product.Barcode.Joined
 
     var body: some View {
-        RouterLink(open: .screen(.product(barcode.product))) {
+        RouterLink(open: .screen(.product(barcode.product.id))) {
             VStack(alignment: .leading, spacing: 8) {
                 ProductEntityView(product: barcode.product)
                 Text(barcode.barcode)

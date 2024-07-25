@@ -9,7 +9,7 @@ struct CheckInCardProduct: View {
     let servingStyle: ServingStyle.Saved?
 
     var body: some View {
-        RouterLink(open: .screen(.product(product))) {
+        RouterLink(open: .screen(.product(product.id))) {
             HStack(spacing: 4) {
                 VStack(alignment: .leading, spacing: 4) {
                     CategoryView(
@@ -29,7 +29,7 @@ struct CheckInCardProduct: View {
                     }
 
                     HStack {
-                        RouterLink(open: .screen(.company(product.subBrand.brand.brandOwner))) {
+                        RouterLink(open: .screen(.company(product.subBrand.brand.brandOwner.id))) {
                             Text(product.formatted(.brandOwner))
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
@@ -39,7 +39,7 @@ struct CheckInCardProduct: View {
                         if let manufacturer = productVariant?.manufacturer,
                            manufacturer.id != product.subBrand.brand.brandOwner.id
                         {
-                            RouterLink(open: .screen(.company(manufacturer))) {
+                            RouterLink(open: .screen(.company(manufacturer.id))) {
                                 Text("(\(manufacturer.name))")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)

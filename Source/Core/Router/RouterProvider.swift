@@ -4,32 +4,11 @@ import Repositories
 import SwiftUI
 
 struct RouterProvider<Content: View>: View {
-    @Environment(Repository.self) private var repository
-
-    let enableRoutingFromURLs: Bool
-    @ViewBuilder let content: () -> Content
-
-    var body: some View {
-        RouterInnerProvider(repository: repository, enableRoutingFromURLs: enableRoutingFromURLs, content: content)
-    }
-}
-
-private struct RouterInnerProvider<Content: View>: View {
     @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @State private var router: Router
+    @State private var router = Router()
 
     let enableRoutingFromURLs: Bool
     @ViewBuilder let content: () -> Content
-
-    init(
-        repository: Repository,
-        enableRoutingFromURLs: Bool,
-        content: @escaping () -> Content
-    ) {
-        _router = State(wrappedValue: Router(repository: repository))
-        self.enableRoutingFromURLs = enableRoutingFromURLs
-        self.content = content
-    }
 
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -49,11 +28,32 @@ private struct RouterInnerProvider<Content: View>: View {
         }))
         .if(enableRoutingFromURLs) { view in
             view.onOpenURL { url in
-                if let detailPage = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
-                    router.open(.navigatablePath(detailPage, resetStack: true))
+                if let path = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
+                    router.open(path.open)
                 }
             }
         }
         .environment(router)
+    }
+}
+
+extension NavigatablePath {
+    var open: Router.Open {
+        switch self {
+        case let .product(id):
+            .screen(.product(id))
+        case let .productWithBarcode(id, barcode):
+            .screen(.productFromBarcode(id, barcode))
+        case let .checkIn(id):
+            .screen(.checkIn(id))
+        case let .company(id):
+            .screen(.company(id))
+        case let .brand(id):
+            .screen(.brand(id))
+        case let .profile(id):
+            .screen(.profileById(id))
+        case let .location(id):
+            .screen(.location(id))
+        }
     }
 }

@@ -7,9 +7,9 @@ struct RatingChartView: View {
     @Environment(Router.self) private var router
     @State private var selection: String?
     let profile: Profile.Saved
-    let profileSummary: ProfileSummary?
+    let profileSummary: Profile.Summary?
 
-    var ratings: [KeyPath<ProfileSummary, Int>] = [
+    var ratings: [KeyPath<Profile.Summary, Int>] = [
         \.rating1,
         \.rating2,
         \.rating3,

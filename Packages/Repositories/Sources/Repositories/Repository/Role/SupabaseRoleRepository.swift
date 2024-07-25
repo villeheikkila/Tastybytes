@@ -13,7 +13,7 @@ struct SupabaseRoleRepository: RoleRepository {
             .value
     }
 
-    func removeProfileFromProfile(profile: Profile.Saved, role: Role.Joined) async throws {
+    func removeRoleFromProfile(profile: Profile.Saved, role: Role.Joined) async throws {
         try await client
             .from(.profilesRoles)
             .delete()
@@ -23,7 +23,7 @@ struct SupabaseRoleRepository: RoleRepository {
             .value
     }
 
-    func addProfileForProfile(profile: Profile.Saved, role: Role.Joined) async throws {
+    func addRoleForProfile(profile: Profile.Saved, role: Role.Joined) async throws {
         struct AddPermissionRequest: Encodable {
             let roleId: Role.Id
             let profileId: Profile.Id

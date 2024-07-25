@@ -18,7 +18,7 @@ struct CheckInCardHeader: View {
                     .foregroundColor(.primary)
                 Spacer()
                 if let location {
-                    RouterLink(open: .screen(.location(location))) {
+                    RouterLink(open: .screen(.location(location.id))) {
                         Text(location.formatted(.withEmoji))
                             .font(.caption).bold()
                             .foregroundColor(.primary)

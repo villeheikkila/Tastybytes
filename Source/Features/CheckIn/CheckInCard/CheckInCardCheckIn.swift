@@ -7,7 +7,7 @@ struct CheckInCardCheckIn: View {
     let checkIn: CheckIn.Joined
 
     var body: some View {
-        RouterLink(open: .screen(.checkIn(checkIn))) {
+        RouterLink(open: .screen(.checkIn(checkIn.id))) {
             VStack(alignment: .leading, spacing: 4) {
                 if let rating = checkIn.rating {
                     HStack {
@@ -29,7 +29,7 @@ struct CheckInCardCheckIn: View {
                 FlavorsView(flavors: checkIn.flavors.map(\.flavor))
 
                 if let purchaseLocation = checkIn.purchaseLocation {
-                    RouterLink(open: .screen(.location(purchaseLocation))) {
+                    RouterLink(open: .screen(.location(purchaseLocation.id))) {
                         HStack {
                             Text("checkIn.location.purchasedFrom __\(purchaseLocation.name)__")
                             Spacer()

@@ -21,7 +21,7 @@ struct LocationEntityView: View {
                 .frame(height: 150)
                 .listRowSeparator(.hidden)
             }
-            RouterLink(open: .screen(.location(location))) {
+            RouterLink(open: .screen(.location(location.id))) {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(location.name)

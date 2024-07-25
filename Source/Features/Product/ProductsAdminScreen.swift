@@ -41,6 +41,7 @@ struct ProductsAdminScreen: View {
     private func initialize() async {
         do {
             products = try await repository.product.getAll()
+            filteredProducts = await filter()
             state = .populated
         } catch {
             state = .error([error])

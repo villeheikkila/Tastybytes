@@ -47,3 +47,14 @@ public extension Company.Joined {
         brands = []
     }
 }
+
+public extension Company.Joined {
+    init() {
+        id = .init(rawValue: 0)
+        name = ""
+        isVerified = false
+        logos = []
+        subsidiaries = []
+        brands = []
+    }
+}

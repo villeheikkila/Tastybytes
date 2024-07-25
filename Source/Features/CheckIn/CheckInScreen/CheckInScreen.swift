@@ -15,14 +15,12 @@ struct CheckInScreen: View {
     @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
     @FocusState private var focusedField: CheckInLeaveComment.Focusable?
     @State private var state: ScreenState = .loading
-    @State private var checkIn: CheckIn.Joined
+    @State private var checkIn = CheckIn.Joined()
     @State private var checkInComments = [CheckIn.Comment.Saved]()
     @State private var showDeleteConfirmation = false
     @State private var toDeleteCheckInAsModerator: CheckIn.Joined?
 
-    init(checkIn: CheckIn.Joined) {
-        _checkIn = State(wrappedValue: checkIn)
-    }
+    let id: CheckIn.Id
 
     var body: some View {
         ScrollViewReader { scrollProxy in
@@ -108,40 +106,40 @@ struct CheckInScreen: View {
                         "checkIn.add.label",
                         systemImage: "pencil",
                         open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: { checkIn in
-                            router.open(.screen(.checkIn(checkIn)))
+                            router.open(.screen(.checkIn(checkIn.id)))
                         })))
                     )
                 }
             }
             Divider()
-            RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product)))
+            RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product.id)))
             RouterLink(
                 "company.screen.open",
                 systemImage: "network",
-                open: .screen(.company(checkIn.product.subBrand.brand.brandOwner))
+                open: .screen(.company(checkIn.product.subBrand.brand.brandOwner.id))
             )
             RouterLink(
                 "brand.screen.open",
                 systemImage: "cart",
-                open: .screen(.fetchBrand(checkIn.product.subBrand.brand))
+                open: .screen(.brand(checkIn.product.subBrand.brand.id))
             )
             RouterLink(
                 "subBrand.screen.open",
                 systemImage: "cart",
-                open: .screen(.subBrand(checkIn.product.subBrand))
+                open: .screen(.subBrand(brandId: checkIn.product.subBrand.brand.id, subBrandId: checkIn.product.subBrand.id))
             )
             if let location = checkIn.location {
                 RouterLink(
                     "location.open",
                     systemImage: "network",
-                    open: .screen(.location(location))
+                    open: .screen(.location(location.id))
                 )
             }
             if let purchaseLocation = checkIn.purchaseLocation {
                 RouterLink(
                     "location.open.purchaseLocation",
                     systemImage: "network",
-                    open: .screen(.location(purchaseLocation))
+                    open: .screen(.location(purchaseLocation.id))
                 )
             }
             Divider()
@@ -176,16 +174,16 @@ struct CheckInScreen: View {
                 RouterLink(
                     "company.screen.open",
                     systemImage: "network",
-                    open: .screen(.company(checkIn.product.subBrand.brand.brandOwner))
+                    open: .screen(.company(checkIn.product.subBrand.brand.brandOwner.id))
                 )
-                RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product)))
+                RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product.id)))
                 RouterLink(
-                    "brand.screen.open", systemImage: "cart", open: .screen(.fetchBrand(checkIn.product.subBrand.brand))
+                    "brand.screen.open", systemImage: "cart", open: .screen(.brand(checkIn.product.subBrand.brand.id))
                 )
                 RouterLink(
                     "subBrand.screen.open",
                     systemImage: "cart",
-                    open: .screen(.subBrand(checkIn.product.subBrand))
+                    open: .screen(.subBrand(brandId: checkIn.product.subBrand.brand.id, subBrandId: checkIn.product.subBrand.id))
                 )
                 Divider()
                 ReportButton(entity: .checkIn(checkIn))
@@ -213,8 +211,8 @@ struct CheckInScreen: View {
     }
 
     private func loadCheckInData(withHaptics: Bool = false) async {
-        async let checkInPromise = repository.checkIn.getById(id: checkIn.id)
-        async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: checkIn.id)
+        async let checkInPromise = repository.checkIn.getById(id: id)
+        async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: id)
         async let markCheckInAsReadPromise: Void = notificationEnvironmentModel.markCheckInAsRead(
             checkIn: checkIn)
         var errors = [Error]()

@@ -77,7 +77,7 @@ struct BrandPickerSheet: View {
 
     private func loadBrands(_ brandOwner: any CompanyProtocol) async {
         do {
-            let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id)
+            let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(id: brandOwner.id)
             self.brandsWithSubBrands = brandsWithSubBrands
         } catch {
             guard !error.isCancelled else { return }

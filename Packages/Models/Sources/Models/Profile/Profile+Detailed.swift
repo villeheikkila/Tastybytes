@@ -11,14 +11,14 @@ public extension Profile {
         public let isPrivate: Bool
         public let isOnboarded: Bool
         private let rawPreferredName: String?
-        public var preferredName: String {
-            rawPreferredName ?? ""
-        }
-
         public let nameDisplay: NameDisplay
         public let roles: [Role.Joined]
         public let avatars: [ImageEntity.Saved]
         public let reports: [Report.Joined]
+
+        public var preferredName: String {
+            rawPreferredName ?? ""
+        }
 
         public init(
             id: Profile.Id,

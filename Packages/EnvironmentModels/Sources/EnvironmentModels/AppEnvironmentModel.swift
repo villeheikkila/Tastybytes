@@ -111,7 +111,7 @@ public final class AppEnvironmentModel {
         }
     }
 
-    public var countries: [Country] {
+    public var countries: [Country.Saved] {
         get {
             access(keyPath: \.countries)
             return UserDefaults.read(forKey: .appDataCountries) ?? []
@@ -137,7 +137,7 @@ public final class AppEnvironmentModel {
         }
     }
 
-    public var aboutPage: AboutPage? {
+    public var aboutPage: Document.About.Page? {
         get {
             access(keyPath: \.aboutPage)
             return UserDefaults.read(forKey: .appDataAboutPage)

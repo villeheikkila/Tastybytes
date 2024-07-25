@@ -13,7 +13,7 @@ struct SubBrandEditSuggestionsScreen: View {
 
     var body: some View {
         List(subBrand.editSuggestions) { editSuggestion in
-            SubBrandEditSuggestionRow(editSuggestion: editSuggestion, onDelete: onDelete)
+            SubBrandEditSuggestionRowView(editSuggestion: editSuggestion, onDelete: onDelete)
         }
         .overlay {
             if subBrand.editSuggestions.isEmpty {
@@ -37,7 +37,7 @@ struct SubBrandEditSuggestionsScreen: View {
     }
 }
 
-struct SubBrandEditSuggestionRow: View {
+struct SubBrandEditSuggestionRowView: View {
     @State private var showDeleteConfirmationDialog = false
     let editSuggestion: SubBrand.EditSuggestion
     let onDelete: (_ editSuggestion: SubBrand.EditSuggestion) async -> Void

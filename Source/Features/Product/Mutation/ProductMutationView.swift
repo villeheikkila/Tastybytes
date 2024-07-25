@@ -312,7 +312,7 @@ struct ProductMutationView: View {
         switch mode {
         case let .edit(initialProduct, _), let .editSuggestion(initialProduct):
             do {
-                let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
+                let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(id: initialProduct.subBrand.brand.brandOwner.id)
                 category = appEnvironmentModel.categories.first(where: { category in
                     category.id == initialProduct.category.id
                 })

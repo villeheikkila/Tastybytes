@@ -10,7 +10,7 @@ public extension Location {
         public let title: String?
         public let location: CLLocation?
         public let countryCode: String?
-        public let country: Country?
+        public let country: Country.Saved?
         public let source: String
         public let reports: [Report.Joined]
         public let createdAt: Date
@@ -42,7 +42,7 @@ public extension Location {
             title: String?,
             location: CLLocation?,
             countryCode: String?,
-            country: Country?,
+            country: Country.Saved?,
             source: String,
             reports: [Report.Joined],
             createdAt: Date,
@@ -91,7 +91,7 @@ public extension Location {
             let latitude = try container.decode(Double.self, forKey: .latitude)
             location = CLLocation(latitude: latitude, longitude: longitude)
             countryCode = try container.decode(String.self, forKey: .countryCode)
-            country = try container.decode(Country.self, forKey: .country)
+            country = try container.decode(Country.Saved.self, forKey: .country)
             source = try container.decode(String.self, forKey: .source)
             reports = try container.decode([Report.Joined].self, forKey: .reports)
             createdBy = try container.decodeIfPresent(Profile.Saved.self, forKey: .createdBy)
@@ -107,7 +107,7 @@ public extension Location {
             title: String?? = nil,
             location: CLLocation? = nil,
             countryCode: String? = nil,
-            country: Country? = nil,
+            country: Country.Saved? = nil,
             source: String? = nil,
             reports: [Report.Joined]? = nil
         ) -> Self {

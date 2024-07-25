@@ -15,7 +15,7 @@ struct ProfileHeaderAvatarSection: View {
 
     let isCurrentUser: Bool
     let showInFull: Bool
-    let profileSummary: ProfileSummary?
+    let profileSummary: Profile.Summary?
 
     var body: some View {
         HStack(alignment: .center) {

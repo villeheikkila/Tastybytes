@@ -20,7 +20,7 @@ struct CurrentProfileScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarLeading) {
             RouterLink("nameTag.show.label", systemImage: "qrcode", open: .sheet(.nameTag(onSuccess: { profileId in
-                router.open(.navigatablePath(.profile(id: profileId)))
+                router.open(.screen(.profileById(profileId)))
             })))
         }
         ToolbarItemGroup(placement: .topBarTrailing) {

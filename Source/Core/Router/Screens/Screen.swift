@@ -3,16 +3,15 @@ import Repositories
 import SwiftUI
 
 enum Screen: Hashable, Sendable {
-    case product(Product.Joined)
-    case productFromBarcode(Product.Joined, Barcode)
+    case product(Product.Id)
+    case productFromBarcode(Product.Id, Barcode)
     case profile(Profile.Saved)
-    case checkIn(CheckIn.Joined)
-    case location(Location.Saved)
-    case company(Company.Saved)
-    case brand(Brand.JoinedSubBrandsProductsCompany)
-    case brandById(id: Brand.Id, initialScrollPosition: SubBrand.JoinedBrand? = nil)
-    case fetchBrand(Brand.JoinedCompany)
-    case subBrand(SubBrand.JoinedBrand)
+    case profileById(Profile.Id)
+    case checkIn(CheckIn.Id)
+    case location(Location.Id)
+    case company(Company.Id)
+    case brand(Brand.Id)
+    case subBrand(brandId: Brand.Id, subBrandId: SubBrand.Id)
     case profileProducts(Profile.Saved)
     case profileWishlist(Profile.Saved)
     case profileProductsByFilter(Profile.Saved, Product.Filter)
@@ -69,18 +68,16 @@ enum Screen: Hashable, Sendable {
     @ViewBuilder
     var view: some View {
         switch self {
-        case let .company(company):
-            CompanyScreen(company: company)
-        case let .subBrand(subBrand):
-            BrandScreen(brand: .init(subBrand: subBrand), initialScrollPosition: subBrand)
-        case let .brand(brand):
-            BrandScreen(brand: brand)
-        case let .fetchBrand(brand):
-            BrandScreen(brand: .init(brand: brand))
+        case let .company(id):
+            CompanyScreen(id: id)
+        case let .subBrand(brandId, subBrandId):
+            BrandScreen(id: brandId, initialScrollPosition: subBrandId)
+        case let .brand(id):
+            BrandScreen(id: id, initialScrollPosition: nil)
         case .currentUserFriends:
             CurrentUserFriendsScreen(showToolbar: true)
-        case let .location(location):
-            LocationScreen(location: location)
+        case let .location(id):
+            LocationScreen(id: id)
         case let .profileProducts(profile):
             ProfileProductListView(profile: profile, locked: false)
         case let .profileStatistics(profile):
@@ -95,16 +92,18 @@ enum Screen: Hashable, Sendable {
             ProfileCheckInsList(profile: profile, filter: filter)
         case let .profileStatisticsTopLocations(profile):
             ProfileTopLocationsScreen(profile: profile)
-        case let .checkIn(checkIn):
-            CheckInScreen(checkIn: checkIn)
+        case let .checkIn(id):
+            CheckInScreen(id: id)
         case let .profile(profile):
             ProfileScreen(profile: profile)
+        case let .profileById(id):
+            ProfileScreen(id: id)
         case let .profileProductsByFilter(profile, filter):
             ProfileProductListView(profile: profile, locked: true, productFilter: filter)
-        case let .product(product):
-            ProductScreen(product: product)
-        case let .productFromBarcode(product, barcode):
-            ProductScreen(product: product, loadedWithBarcode: barcode)
+        case let .product(id):
+            ProductScreen(id: id)
+        case let .productFromBarcode(id, barcode):
+            ProductScreen(id: id, loadedWithBarcode: barcode)
         case let .friends(profile):
             FriendsScreen(profile: profile)
         case let .productFeed(feed):
@@ -153,8 +152,6 @@ enum Screen: Hashable, Sendable {
             SubBrandListScreen(subBrands: subBrands)
         case let .barcodeList(barcodes: barcodes):
             BarcodeListScreen(barcodes: barcodes)
-        case let .brandById(id, initialScrollPosition):
-            BrandScreen(brandId: id, initialScrollPosition: initialScrollPosition)
         case .profilesAdmin:
             ProfilesAdminScreen()
         case let .roleSuperAdminPicker(profile, roles):
@@ -210,10 +207,8 @@ enum Screen: Hashable, Sendable {
             lhsCompany == rhsCompany
         case let (.brand(lhsBrand), .brand(rhsBrand)):
             lhsBrand == rhsBrand
-        case let (.fetchBrand(lhsBrand), .fetchBrand(rhsBrand)):
-            lhsBrand == rhsBrand
-        case let (.subBrand(lhsSubBrand), .subBrand(rhsSubBrand)):
-            lhsSubBrand == rhsSubBrand
+        case let (.subBrand(lhsBrand, lhsSubBrand), .subBrand(rhsBrand, rhsSubBrand)):
+            lhsBrand == rhsBrand && lhsSubBrand == rhsSubBrand
         case let (.profileProducts(lhsProfile), .profileProducts(rhsProfile)):
             lhsProfile == rhsProfile
         case let (.profileWishlist(lhsProfile), .profileWishlist(rhsProfile)):
@@ -268,6 +263,8 @@ enum Screen: Hashable, Sendable {
             lhsVariants == rhsVariants
         case let (.productListAdmin(lshProducts), .productListAdmin(rhsProducts)):
             lshProducts.wrappedValue == rhsProducts.wrappedValue
+        case let (.profileById(lhsId), .profileById(rhsId)):
+            lhsId == rhsId
         case let (.subBrandListAdmin(lhsBrand, lhsSubBrands), .subBrandListAdmin(rhsBrand, rhsSubBrands)):
             lhsBrand == rhsBrand && lhsSubBrands.wrappedValue == rhsSubBrands.wrappedValue
         case
@@ -320,18 +317,19 @@ enum Screen: Hashable, Sendable {
         case let .brand(brand):
             hasher.combine("brand")
             hasher.combine(brand)
-        case let .fetchBrand(brand):
-            hasher.combine("fetchBrand")
-            hasher.combine(brand)
-        case let .subBrand(subBrand):
+        case let .subBrand(brandId, subBrandId):
             hasher.combine("fetchSubBrand")
-            hasher.combine(subBrand)
+            hasher.combine(subBrandId)
+            hasher.combine(brandId)
         case let .profileProducts(profile):
             hasher.combine("profileProducts")
             hasher.combine(profile)
         case let .profileWishlist(profile):
             hasher.combine("profileWishlist")
             hasher.combine(profile)
+        case let .profileById(id):
+            hasher.combine("profileById")
+            hasher.combine(id)
         case let .profileProductsByFilter(profile, filter):
             hasher.combine("profileProductsByFilter")
             hasher.combine(profile)
@@ -416,10 +414,6 @@ enum Screen: Hashable, Sendable {
         case let .barcodeList(barcodes: barcodes):
             hasher.combine("barcodeList")
             hasher.combine(barcodes)
-        case let .brandById(id, initialScrollPosition):
-            hasher.combine("brandById")
-            hasher.combine(id)
-            hasher.combine(initialScrollPosition)
         case .profilesAdmin:
             hasher.combine("profilesAdmin")
         case let .roleSuperAdminPicker(profile, roles):

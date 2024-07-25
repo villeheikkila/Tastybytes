@@ -28,10 +28,6 @@ let package = Package(
                 .product(name: "Supabase", package: "supabase-swift"),
                 .product(name: "Models", package: "Models"),
                 .product(name: "Extensions", package: "Extensions"),
-            ],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency"),
-                .enableExperimentalFeature("DisableOutwardActorInference"),
             ]
         ),
     ],

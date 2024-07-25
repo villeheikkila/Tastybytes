@@ -10,7 +10,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
     private let logger = Logger(category: "ProfileStatisticsUniqueByCategoryScreen")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
-    @State private var categoryStatistics = [CategoryStatistics]()
+    @State private var categoryStatistics = [Profile.CategoryStatistics]()
 
     let profile: Profile.Saved
 
@@ -54,7 +54,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
 
 struct ProfileStatisticsUniqueByCategoryRow: View {
     let profile: Profile.Saved
-    let category: CategoryStatistics
+    let category: Profile.CategoryStatistics
 
     var body: some View {
         DisclosureGroup(content: {
@@ -73,10 +73,10 @@ struct SubcategoryStatisticsView: View {
     private let logger = Logger(category: "SubcategoryStatisticsView")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
-    @State private var subcategoryStatistics = [SubcategoryStatistics]()
+    @State private var subcategoryStatistics = [Profile.SubcategoryStatistics]()
 
     let profile: Profile.Saved
-    let category: CategoryStatistics
+    let category: Profile.CategoryStatistics
 
     var body: some View {
         Section {
@@ -114,7 +114,7 @@ struct SubcategoryStatisticsView: View {
 struct SubcategoryStatisticsRow: View {
     let profile: Profile.Saved
     let category: Models.Category.Saved
-    let subcategory: SubcategoryStatistics?
+    let subcategory: Profile.SubcategoryStatistics?
 
     var body: some View {
         RouterLink(open: .screen(.profileProductsByFilter(

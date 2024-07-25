@@ -10,8 +10,19 @@ public extension Location {
         public let title: String?
         public let location: CLLocation?
         public let countryCode: String?
-        public let country: Country?
+        public let country: Country.Saved?
         public let source: String
+
+        public init() {
+            id = Location.Id(rawValue: UUID())
+            mapKitIdentifier = nil
+            name = ""
+            title = nil
+            location = nil
+            countryCode = nil
+            country = nil
+            source = ""
+        }
 
         public init(mapItem: MKMapItem) {
             id = Location.Id(rawValue: UUID())
@@ -24,7 +35,7 @@ public extension Location {
             source = "apple"
         }
 
-        public init(coordinate: CLLocationCoordinate2D, countryCode: String?, country: Country?) {
+        public init(coordinate: CLLocationCoordinate2D, countryCode: String?, country: Country.Saved?) {
             id = Location.Id(rawValue: UUID())
             name = "Lat: \(coordinate.latitude.formatted(.number.precision(.fractionLength(2))))°, Lon: \(coordinate.longitude.formatted(.number.precision(.fractionLength(2))))° \(country?.name ?? "")"
             title = nil
@@ -36,7 +47,7 @@ public extension Location {
         }
 
         public init(id: Location.Id, mapKitIdentifier: String?, name: String, title: String?, location: CLLocation?, countryCode: String?,
-                    country: Country?, source: String)
+                    country: Country.Saved?, source: String)
         {
             self.id = id
             self.name = name
@@ -72,7 +83,7 @@ public extension Location {
             let latitude = try container.decode(Double.self, forKey: .latitude)
             location = CLLocation(latitude: latitude, longitude: longitude)
             countryCode = try container.decode(String.self, forKey: .countryCode)
-            country = try container.decode(Country.self, forKey: .country)
+            country = try container.decode(Country.Saved.self, forKey: .country)
             source = try container.decode(String.self, forKey: .source)
         }
 
@@ -105,7 +116,7 @@ public extension Location {
             title: String?? = nil,
             location: CLLocation? = nil,
             countryCode: String? = nil,
-            country: Country? = nil,
+            country: Country.Saved? = nil,
             source: String? = nil
         ) -> Self {
             .init(

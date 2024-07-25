@@ -58,7 +58,7 @@ struct MergeLocationSheet: View {
 
     private func mergeLocation(_ to: Location.Saved) async {
         do {
-            try await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id)
+            try await repository.location.mergeLocations(id: location.id, toLocationId: to.id)
             let location = try await repository.location.getDetailed(id: to.id)
             feedbackEnvironmentModel.trigger(.notification(.success))
             if let onMerge {

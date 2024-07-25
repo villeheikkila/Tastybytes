@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct CompanyBrandRow: View {
+struct CompanyBrandRowView: View {
     let brand: Brand.JoinedSubBrandsProducts
 
     var body: some View {

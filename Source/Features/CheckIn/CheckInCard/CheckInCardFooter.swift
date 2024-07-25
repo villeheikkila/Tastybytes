@@ -10,7 +10,7 @@ struct CheckInCardFooter: View {
 
     var body: some View {
         HStack {
-            RouterLink(open: .screen(.checkIn(checkIn))) {
+            RouterLink(open: .screen(.checkIn(checkIn.id))) {
                 HStack {
                     CheckInDateView(checkInAt: checkIn.checkInAt)
                     Spacer()

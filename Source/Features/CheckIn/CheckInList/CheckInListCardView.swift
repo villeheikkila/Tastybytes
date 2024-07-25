@@ -48,36 +48,36 @@ struct CheckInListCardView: View {
             RouterLink(
                 "checkIn.screen.open",
                 systemImage: "checkmark.circle",
-                open: .screen(.checkIn(checkIn))
+                open: .screen(.checkIn(checkIn.id))
             )
-            RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product)))
+            RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product.id)))
             RouterLink(
                 "company.screen.open",
                 systemImage: "network",
-                open: .screen(.company(checkIn.product.subBrand.brand.brandOwner))
+                open: .screen(.company(checkIn.product.subBrand.brand.brandOwner.id))
             )
             RouterLink(
                 "brand.screen.open",
                 systemImage: "cart",
-                open: .screen(.fetchBrand(checkIn.product.subBrand.brand))
+                open: .screen(.brand(checkIn.product.subBrand.brand.id))
             )
             RouterLink(
                 "subBrand.screen.open",
                 systemImage: "cart",
-                open: .screen(.subBrand(checkIn.product.subBrand))
+                open: .screen(.subBrand(brandId: checkIn.product.subBrand.brand.id, subBrandId: checkIn.product.subBrand.id))
             )
             if let location = checkIn.location {
                 RouterLink(
                     "location.open",
                     systemImage: "network",
-                    open: .screen(.location(location))
+                    open: .screen(.location(location.id))
                 )
             }
             if let purchaseLocation = checkIn.purchaseLocation {
                 RouterLink(
                     "location.open.purchaseLocation",
                     systemImage: "network",
-                    open: .screen(.location(purchaseLocation))
+                    open: .screen(.location(purchaseLocation.id))
                 )
             }
             Divider()
