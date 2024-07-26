@@ -9,6 +9,7 @@ public enum AppState: Sendable, Equatable {
     case tooOldAppVersion
     case operational
     case loading
+    case underMaintenance
 
     public static func == (lhs: AppState, rhs: AppState) -> Bool {
         switch (lhs, rhs) {
@@ -49,27 +50,6 @@ enum AppDataKey: String, CaseIterable {
     case appDataSubscriptionGroup = "app_data_subcategories"
     case profileData = "profile_data"
     case profileDeleted = "profile_deleted"
-}
-
-extension UserDefaults {
-    static func set(value: some Codable, forKey key: AppDataKey) {
-        let data = try? JSONEncoder().encode(value)
-        UserDefaults.standard.setValue(data, forKey: key.rawValue)
-    }
-
-    static func read<Element: Codable>(forKey key: AppDataKey) -> Element? {
-        guard let data = UserDefaults.standard.data(forKey: key.rawValue) else { return nil }
-        let element = try? JSONDecoder().decode(Element.self, from: data)
-        return element
-    }
-
-    static func clearUserDefaults() {
-        let userDefaults = UserDefaults.standard
-        for key in AppDataKey.allCases {
-            userDefaults.removeObject(forKey: key.rawValue)
-        }
-        userDefaults.synchronize()
-    }
 }
 
 @MainActor
@@ -209,8 +189,9 @@ public final class AppModel {
     public func initialize(reset: Bool = false) async {
         defer { isInitializing = false }
         guard !isInitializing else { return }
+        isInitializing = true
         let startTime = DispatchTime.now()
-        let isPreviouslyInitialied = aboutPage != nil && subscriptionGroup != nil && appConfig != nil && !countries.isEmpty && !flavors.isEmpty && !categories.isEmpty
+        let isPreviouslyInitialied = state == .loading && aboutPage != nil && subscriptionGroup != nil && appConfig != nil && !countries.isEmpty && !flavors.isEmpty && !categories.isEmpty
 
         logger.notice("\(reset || isPreviouslyInitialied ? "Refreshing" : "Initializing") app data")
         if !reset, isPreviouslyInitialied, state == .loading {
@@ -231,7 +212,10 @@ public final class AppModel {
         do {
             let appConfig = try await appConfigPromise
             self.appConfig = appConfig
-            if appConfig.minimumSupportedVersion > infoPlist.appVersion {
+            if appConfig.isUnderMaintenance {
+                state = .underMaintenance
+                return
+            } else if appConfig.minimumSupportedVersion > infoPlist.appVersion {
                 let config = infoPlist.appVersion.prettyString
                 logger.error("App is too old to run against the latest API, app version \(config)")
                 state = .tooOldAppVersion

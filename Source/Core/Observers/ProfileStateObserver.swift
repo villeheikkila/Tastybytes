@@ -13,7 +13,9 @@ struct ProfileStateObserver<Content: View>: View {
             content()
                 .task {
                     await friendModel.initialize(profile: profile)
-                    await adminModel.initialize()
+                    if profileModel.hasRole(.admin) {
+                        await adminModel.initialize()
+                    }
                 }
         case .loading:
             EmptyView()

@@ -585,6 +585,36 @@
         }
       }
     },
+    "app.underMaintenance.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We're currently performing some updates to improve your experience. The app will be back online shortly. Thank you for your patience."
+          }
+        }
+      }
+    },
+    "app.underMaintenance.refreshButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload"
+          }
+        }
+      }
+    },
+    "app.underMaintenance.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App is under maintenance"
+          }
+        }
+      }
+    },
     "app.unsupportedVersion.description" : {
       "localizations" : {
         "en" : {

@@ -1,5 +1,5 @@
 {
-  "originHash" : "910173b02d13c4ee403b89f5c0e6ffadb4385d6dd712fff61e9fc16257c7b391",
+  "originHash" : "92db2bdd243e5f5dfe8e2608495d0c7af5c1c28f643f385cf64429931b0eca4b",
   "pins" : [
     {
       "identity" : "blurhashviews",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke.git",
       "state" : {
-        "revision" : "311016d972aa751ae8ab0cd5897422ebe7db0501",
-        "version" : "12.7.3"
+        "revision" : "0ead44350d2737db384908569c012fe67c421e4d",
+        "version" : "12.8.0"
       }
     },
     {
@@ -80,6 +80,15 @@
       "state" : {
         "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
         "version" : "509.1.1"
+      }
+    },
+    {
+      "identity" : "swift-tagged",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-tagged",
+      "state" : {
+        "revision" : "3907a9438f5b57d317001dc99f3f11b46882272b",
+        "version" : "0.10.0"
       }
     },
     {

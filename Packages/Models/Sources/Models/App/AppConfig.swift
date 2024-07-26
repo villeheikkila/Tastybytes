@@ -9,6 +9,7 @@ public struct AppConfig: Hashable, Codable, Sendable {
     public let copyrightHolder: String
     public let copyrightTimeRange: String
     public let minimumSupportedVersion: AppVersion
+    public let isUnderMaintenance: Bool
 
     enum CodingKeys: String, CodingKey {
         case appId = "app_id"
@@ -19,6 +20,7 @@ public struct AppConfig: Hashable, Codable, Sendable {
         case copyrightHolder = "copyright_holder"
         case copyrightTimeRange = "copyright_time_range"
         case minimumSupportedVersion = "minimum_supported_version"
+        case isUnderMaintenance = "is_under_maintenance"
     }
 
     public var appleStoreUrl: URL? {

@@ -16,6 +16,29 @@ enum UserDefaultsKey: String, CaseIterable {
     case profileDeleted = "profile_deleted"
 }
 
+
+extension UserDefaults {
+    static func set(value: some Codable, forKey key: AppDataKey) {
+        let data = try? JSONEncoder().encode(value)
+        UserDefaults.standard.setValue(data, forKey: key.rawValue)
+    }
+
+    static func read<Element: Codable>(forKey key: AppDataKey) -> Element? {
+        guard let data = UserDefaults.standard.data(forKey: key.rawValue) else { return nil }
+        let element = try? JSONDecoder().decode(Element.self, from: data)
+        return element
+    }
+
+    static func clearUserDefaults() {
+        let userDefaults = UserDefaults.standard
+        for key in AppDataKey.allCases {
+            userDefaults.removeObject(forKey: key.rawValue)
+        }
+        userDefaults.synchronize()
+    }
+}
+
+
 extension UserDefaults {
     func set(value: some Codable, forKey key: UserDefaultsKey) {
         let data = try? JSONEncoder().encode(value)
