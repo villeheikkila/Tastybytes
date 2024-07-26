@@ -1,15 +1,15 @@
-import EnvironmentModels
+
 import Extensions
 import SwiftUI
 
 struct AppUnsupportedVersionState: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
 
     var body: some View {
         ContentUnavailableView("app.unsupportedVersion.title", systemImage: "arrow.triangle.2.circlepath", description: Text("app.unsupportedVersion.description"))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(alignment: .bottom) {
-                if let appleStoreUrl = appEnvironmentModel.appConfig?.appleStoreUrl {
+                if let appleStoreUrl = appModel.appConfig?.appleStoreUrl {
                     Link(destination: appleStoreUrl) {
                         Text("app.unsupportedVersion.openAppStore.label")
                     }

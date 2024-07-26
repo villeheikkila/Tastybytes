@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -9,26 +9,26 @@ struct AdminEventScreen: View {
     let logger = Logger(category: "AdminEventScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
+    @Environment(AdminModel.self) private var adminModel
 
     var body: some View {
-        List(adminEnvironmentModel.events) { event in
+        List(adminModel.events) { event in
             AdminEventRowView(event: event)
         }
         .refreshable {
-            await adminEnvironmentModel.loadAdminEventFeed()
+            await adminModel.loadAdminEventFeed()
         }
-        .animation(.default, value: adminEnvironmentModel.events)
+        .animation(.default, value: adminModel.events)
         .navigationTitle("admin.events.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            await adminEnvironmentModel.loadAdminEventFeed()
+            await adminModel.loadAdminEventFeed()
         }
     }
 }
 
 struct AdminEventRowView: View {
-    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
+    @Environment(AdminModel.self) private var adminModel
     let event: AdminEvent.Joined
 
     var body: some View {
@@ -45,7 +45,7 @@ struct AdminEventRowView: View {
         .contentShape(.rect)
         .swipeActions {
             AsyncButton("labels.ok", systemImage: "checkmark") {
-                await adminEnvironmentModel.markAsReviewed(event)
+                await adminModel.markAsReviewed(event)
             }
             .tint(.green)
         }

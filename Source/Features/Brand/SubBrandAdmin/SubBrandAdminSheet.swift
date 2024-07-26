@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -19,8 +19,8 @@ struct SubBrandAdminSheet: View {
     private let logger = Logger(category: "SubBrandAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var name: String = ""
@@ -194,7 +194,7 @@ struct SubBrandAdminSheet: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load detailed sub-brand information. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -204,7 +204,7 @@ struct SubBrandAdminSheet: View {
             try await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified)
             subBrand = subBrand.copyWith(isVerified: isVerified)
             await onUpdate(subBrand)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -219,7 +219,7 @@ struct SubBrandAdminSheet: View {
             //    .update(updateRequest: .brand(.init(id: id, brandId: mergeTo.id)))
             id = mergeTo.id
             await onDelete(subBrand.id)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -243,7 +243,7 @@ struct SubBrandAdminSheet: View {
     private func deleteSubBrand(_ subBrand: SubBrand.Detailed) async {
         do {
             try await repository.subBrand.delete(id: subBrand.id)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
             await onDelete(subBrand.id)
             dismiss()
         } catch {

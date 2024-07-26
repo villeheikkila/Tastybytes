@@ -63,6 +63,9 @@ enum Screen: Hashable, Sendable {
     case companiesAdmin
     case brandsAdmin
     case productsAdmin
+    case privacyPolicy
+    case termsOfService
+    case includedLibraries
 
     @MainActor
     @ViewBuilder
@@ -97,7 +100,7 @@ enum Screen: Hashable, Sendable {
         case let .profile(profile):
             ProfileScreen(profile: profile)
         case let .profileById(id):
-            ProfileScreen(id: id)
+            ProfileByIdScreen(id: id)
         case let .profileProductsByFilter(profile, filter):
             ProfileProductListView(profile: profile, locked: true, productFilter: filter)
         case let .product(id):
@@ -188,6 +191,12 @@ enum Screen: Hashable, Sendable {
             ProductsAdminScreen()
         case let .companyProductVariants(variants):
             CompanyProductVariantsScreen(variants: variants)
+        case .privacyPolicy:
+            PrivacyPolicyScreen()
+        case .termsOfService:
+            TermsOfServiceScreen()
+        case .includedLibraries:
+            IncludedLibrariesScreen()
         }
     }
 
@@ -283,6 +292,9 @@ enum Screen: Hashable, Sendable {
             (.about, .about),
             (.reportsAdmin, .reportsAdmin),
             (.productsAdmin, .productsAdmin),
+            (.privacyPolicy, .privacyPolicy),
+            (.termsOfService, .termsOfService),
+            (.includedLibraries, .includedLibraries),
             (.brandsAdmin, .brandsAdmin),
             (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin), (.profileEditSuggestions, .profileEditSuggestions), (
                 .profileReports, .profileReports
@@ -464,6 +476,12 @@ enum Screen: Hashable, Sendable {
         case let .companyProductVariants(variants):
             hasher.combine("companyProductVariants")
             hasher.combine(variants)
+        case .privacyPolicy:
+            hasher.combine("privacyPolicy")
+        case .termsOfService:
+            hasher.combine("termsOfService")
+        case .includedLibraries:
+            hasher.combine("includedLibraries")
         }
     }
 }

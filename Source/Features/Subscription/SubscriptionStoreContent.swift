@@ -1,10 +1,10 @@
-import EnvironmentModels
+
 import Models
 import StoreKit
 import SwiftUI
 
 struct SubscriptionStoreContentView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
 
     let subscriptionGroupName: String
 
@@ -29,7 +29,7 @@ struct SubscriptionStoreContentView: View {
     }
 
     private var title: some View {
-        Text("\(appEnvironmentModel.infoPlist.appName) \(subscriptionGroupName)")
+        Text("\(appModel.infoPlist.appName) \(subscriptionGroupName)")
             .font(.largeTitle.bold())
     }
 

@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,7 +10,7 @@ struct BarcodeManagementScreen: View {
     private let logger = Logger(category: "BarcodeManagementScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(\.dismiss) private var dismiss
 
     @Binding var product: Product.Detailed
@@ -72,7 +72,7 @@ struct BarcodeManagementScreen: View {
             try await repository.productBarcode.delete(id: barcode.id)
             let updated = product.barcodes.removing(barcode)
             product = product.copyWith(barcodes: updated)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

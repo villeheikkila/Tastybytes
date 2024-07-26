@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -16,7 +16,7 @@ struct ProductAdminSheet: View {
 
     let logger = Logger(category: "ProductAdminSheet")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
@@ -202,7 +202,7 @@ struct ProductAdminSheet: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load detailed product. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -210,7 +210,7 @@ struct ProductAdminSheet: View {
     private func verifyProduct(id: Product.Id, isVerified: Bool) async {
         do {
             try await repository.product.verification(id: id, isVerified: isVerified)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
             product = product.copyWith(isVerified: isVerified)
         } catch {
             guard !error.isCancelled else { return }
@@ -222,7 +222,7 @@ struct ProductAdminSheet: View {
     private func deleteProduct(_ product: Product.Detailed) async {
         do {
             try await repository.product.delete(id: product.id)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
             onDelete(product.id)
             dismiss()
         } catch {
@@ -259,7 +259,7 @@ struct ProductAdminSheet: View {
         do {
             try await repository.product.mergeProducts(id: id, toProductId: mergeToId)
             self.id = mergeToId
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

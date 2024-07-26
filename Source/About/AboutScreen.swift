@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import MessageUI
 import Models
@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
     // @Environment(\.requestReview) private var requestReview
     @State private var email: Email = .init()
@@ -17,8 +17,9 @@ struct AboutScreen: View {
     var body: some View {
         List {
             header
+            about
             support
-            aboutSection
+            policy
             footer
         }
         .foregroundColor(.primary)
@@ -26,8 +27,8 @@ struct AboutScreen: View {
         .navigationTitle("about.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            email = Email(adress: appEnvironmentModel.config.feedbackEmail,
-                          subject: "Feedback for \(appEnvironmentModel.infoPlist.appName)",
+            email = Email(adress: appModel.config.feedbackEmail,
+                          subject: "Feedback for \(appModel.infoPlist.appName)",
                           body: "")
         }
     }
@@ -63,58 +64,31 @@ struct AboutScreen: View {
                 }
             }))
         )
-        AsyncButton("about.rateApp.label \(appEnvironmentModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
+        AsyncButton("about.rateApp.label \(appModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
             // requestReview()
         })
     }
 
-    @ViewBuilder private var aboutSection: some View {
-        if let aboutPage = appEnvironmentModel.aboutPage {
+    @ViewBuilder private var policy: some View {
+        Section {
+            RouterLink("privacyPolicy.link.label", systemName: "lock.shield", color: .blue, open: .screen(.privacyPolicy))
+            RouterLink("termsOfService.link.label", systemName: "doc.text", color: .gray, open: .screen(.termsOfService))
+            RouterLink(
+                "includedLibraries.link.label",
+                systemName: "square.stack.3d.up.fill",
+                color: .indigo,
+                open: .screen(.includedLibraries)
+            )
+        }
+    }
+
+    @ViewBuilder private var about: some View {
+        if let aboutPage = appModel.aboutPage {
             Section {
                 Text(aboutPage.summary)
-            }
-
-            Section {
-                if let githubUrl = URL(string: aboutPage.githubUrl) {
-                    Link(destination: githubUrl) {
-                        HStack {
-                            Image(.github)
-                                .accessibilityHidden(true)
-                                .frame(width: 18, height: 18)
-                                .padding(.leading, 5)
-                                .padding(.trailing, 15)
-
-                            Text("links.gitHub")
-                                .fontWeight(.medium)
-                        }
-                    }
-                }
                 if let portfolioUrl = URL(string: aboutPage.portfolioUrl) {
                     Link(destination: portfolioUrl) {
-                        HStack {
-                            Image(systemName: "network")
-                                .accessibilityHidden(true)
-                                .frame(width: 18, height: 18)
-                                .padding(.leading, 5)
-                                .padding(.trailing, 15)
-
-                            Text("links.portfolio")
-                                .fontWeight(.medium)
-                        }
-                    }
-                }
-                if let linkedInUrl = URL(string: aboutPage.linkedInUrl) {
-                    Link(destination: linkedInUrl) {
-                        HStack {
-                            Image(.linkedin)
-                                .accessibilityHidden(true)
-                                .frame(width: 18, height: 18)
-                                .padding(.leading, 5)
-                                .padding(.trailing, 15)
-
-                            Text("links.linkedIn")
-                                .fontWeight(.medium)
-                        }
+                        Label("links.portfolio", systemImage: "network")
                     }
                 }
             }
@@ -124,14 +98,14 @@ struct AboutScreen: View {
     @ViewBuilder private var footer: some View {
         Section {
             VStack {
-                Text("\(appEnvironmentModel.infoPlist.appName) \(appEnvironmentModel.infoPlist.appVersion.prettyString) (\(appEnvironmentModel.infoPlist.bundleVersion))")
+                Text("\(appModel.infoPlist.appName) \(appModel.infoPlist.appVersion.prettyString) (\(appModel.infoPlist.bundleVersion))")
                     .font(.caption).bold()
                 HStack {
                     Spacer()
                     HStack(alignment: .center, spacing: 2) {
                         Label("labels.copyright", systemImage: "c.circle")
                             .labelStyle(.iconOnly)
-                        if let appConfig = appEnvironmentModel.appConfig {
+                        if let appConfig = appModel.appConfig {
                             Text("\(appConfig.copyrightTimeRange) \(appConfig.copyrightHolder)")
                         }
                     }

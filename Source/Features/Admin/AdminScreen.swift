@@ -1,8 +1,8 @@
-import EnvironmentModels
+
 import SwiftUI
 
 struct AdminScreen: View {
-    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
+    @Environment(AdminModel.self) private var adminModel
 
     var body: some View {
         List {
@@ -10,25 +10,25 @@ struct AdminScreen: View {
                 RouterLink(
                     "admin.events.title",
                     systemImage: "bell.badge",
-                    badge: adminEnvironmentModel.events.count,
+                    badge: adminModel.events.count,
                     open: .screen(.adminEvent)
                 )
                 RouterLink(
                     "admin.verification.title",
                     systemImage: "checkmark.seal",
-                    badge: adminEnvironmentModel.unverified.count,
+                    badge: adminModel.unverified.count,
                     open: .screen(.verification)
                 )
                 RouterLink(
                     "admin.editsSuggestions.title",
                     systemImage: "slider.horizontal.2.square.on.square",
-                    badge: adminEnvironmentModel.editSuggestions.count,
+                    badge: adminModel.editSuggestions.count,
                     open: .screen(.editSuggestionsAdmin)
                 )
                 RouterLink(
                     "report.admin.navigationTitle",
                     systemImage: "exclamationmark.bubble",
-                    badge: adminEnvironmentModel.reports.count,
+                    badge: adminModel.reports.count,
                     open: .screen(.reportsAdmin)
                 )
             }
@@ -47,7 +47,7 @@ struct AdminScreen: View {
         }
         .listStyle(.insetGrouped)
         .refreshable {
-            await adminEnvironmentModel.initialize()
+            await adminModel.initialize()
         }
         .navigationBarTitle("admin.navigationTitle")
     }

@@ -203,6 +203,7 @@
       }
     },
     "activity.error.failedToLoad" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1962,9 +1963,6 @@
         }
       }
     },
-    "checkInList.error.failedToLoad.alert" : {
-
-    },
     "checkInsByDayChart.axisLabel.checkIns" : {
 
     },
@@ -2992,6 +2990,26 @@
         }
       }
     },
+    "includedLibraries.link.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Included Libraries"
+          }
+        }
+      }
+    },
+    "includedLibraries.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Included Libraries"
+          }
+        }
+      }
+    },
     "label.isVerified" : {
       "localizations" : {
         "en" : {
@@ -3227,6 +3245,7 @@
       }
     },
     "labels.reload" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3357,6 +3376,7 @@
       }
     },
     "links.gitHub" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3367,6 +3387,7 @@
       }
     },
     "links.linkedIn" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3966,6 +3987,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Set up your profile"
+          }
+        }
+      }
+    },
+    "privacyPolicy.link.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "privacyPolicy.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
           }
         }
       }
@@ -5889,6 +5930,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Profile"
+          }
+        }
+      }
+    },
+    "termsOfService.link.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Service"
+          }
+        }
+      }
+    },
+    "termsOfService.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Service"
           }
         }
       }

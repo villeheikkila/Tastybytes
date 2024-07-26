@@ -84,6 +84,7 @@ enum Sheet: Identifiable, Equatable {
     case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
     case subBrandEditSuggestion(brand: Brand.JoinedSubBrands, subBrand: SubBrand.JoinedBrand, onSuccess: () -> Void)
     case settings
+    case privacyPolicy
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -177,6 +178,8 @@ enum Sheet: Identifiable, Equatable {
             SubBrandEditSuggestionSheet(brand: brand, subBrand: subBrand, onSuccess: onSuccess)
         case .settings:
             SettingsScreen()
+        case .privacyPolicy:
+            PrivacyPolicySheet()
         }
     }
 
@@ -304,6 +307,8 @@ enum Sheet: Identifiable, Equatable {
             "brand_edit_suggestion_\(brand)_\(subBrand)"
         case .settings:
             "settings"
+        case .privacyPolicy:
+            "privacyPolicy"
         }
     }
 

@@ -1,6 +1,6 @@
 import Components
 import CoreLocation
-import EnvironmentModels
+
 import Extensions
 import Foundation
 import MapKit
@@ -13,8 +13,8 @@ struct CheckInLocationSearchSheet: View {
     private let logger = Logger(category: "CheckInLocationSearchSheet")
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(LocationEnvironmentModel.self) private var locationEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
+    @Environment(LocationModel.self) private var locationModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var storeLocationTask: Task<Void, Never>?
@@ -101,7 +101,7 @@ struct CheckInLocationSearchSheet: View {
                 }
                 .headerProminence(.increased)
             }
-            if locationEnvironmentModel.hasAccess, !recentLocations.isEmpty {
+            if locationModel.hasAccess, !recentLocations.isEmpty {
                 Section("location.nearBy") {
                     ForEach(nearbyLocations) { location in
                         LocationRow(location: location, currentLocation: currentLocation, onSelect: storeLocation)
@@ -172,20 +172,19 @@ struct CheckInLocationSearchSheet: View {
         if initialLocation != nil {
             await search(for: nil, centerCoordinate: centerCoordinate)
         }
-        currentLocation = await locationEnvironmentModel.getCurrentLocation()
+        currentLocation = await locationModel.getCurrentLocation()
         let coordinate = currentLocation?.coordinate ?? centerCoordinate
         async let recentLocationsPromise = repository.location.getRecentLocations(category: category)
         async let suggestionsPromise = repository.location.getSuggestions(location: .init(coordinate: coordinate))
-        var errors = [Error]()
         do {
             let (recentLocations, nearbyLocations) = try await (recentLocationsPromise, suggestionsPromise)
             self.recentLocations = recentLocations
             self.nearbyLocations = nearbyLocations
+            state = .populated
         } catch {
-            errors.append(error)
+            state = .getState(error: error, withHaptics: false, feedbackModel: feedbackModel)
             logger.error("Failed to load location suggestions. Error: \(error) (\(#file):\(#line))")
         }
-        state = .getState(errors: errors, withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 }
 

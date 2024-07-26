@@ -11,9 +11,7 @@ public struct ServingStyleLabelView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
                 .foregroundColor(.white)
-            #if !os(watchOS)
                 .background(Color(.systemGray))
-            #endif
                 .clipShape(.capsule)
         }
     }

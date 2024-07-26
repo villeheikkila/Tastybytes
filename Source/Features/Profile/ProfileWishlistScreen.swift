@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,7 +9,7 @@ import SwiftUI
 struct ProfileWishlistScreen: View {
     private let logger = Logger(category: "ProfileWishlistScreen")
     @Environment(Repository.self) private var repository
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @State private var state: ScreenState = .loading
     @State private var products: [Product.Joined] = []
     @State private var searchTerm = ""
@@ -59,7 +59,7 @@ struct ProfileWishlistScreen: View {
     private func removeFromWishlist(product: Product.Joined) async {
         do {
             try await repository.product.removeFromWishlist(productId: product.id)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
             withAnimation {
                 products.remove(object: product)
             }
@@ -79,7 +79,7 @@ struct ProfileWishlistScreen: View {
         } catch {
             guard !error.isCancelled else { return }
             if state != .populated {
-                state = .error([error])
+                state = .error(error)
             }
             logger
                 .error(

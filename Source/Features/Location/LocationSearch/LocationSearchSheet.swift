@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import MapKit
 import Models
 import OSLog
@@ -78,7 +78,7 @@ struct LocationSearchSheet: View {
                 state = .populated
             } catch {
                 logger.error("Error occured while looking up locations: \(error)")
-                state = .error([error])
+                state = .error(error)
             }
         }
     }

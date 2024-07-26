@@ -1,9 +1,9 @@
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct AppIconScreen: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var selection: AppIcon?
 
     var body: some View {
@@ -31,7 +31,7 @@ struct AppIconScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: selection) { _, newValue in
             if let newValue, newValue != AppIcon.currentAppIcon {
-                profileEnvironmentModel.setAppIcon(newValue)
+                profileModel.setAppIcon(newValue)
             }
         }
         .onAppear {

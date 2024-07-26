@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -7,9 +7,7 @@ import SwiftUI
 @main
 struct MainApp: App {
     private let logger = Logger(category: "MainApp")
-    #if !os(watchOS)
-        @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    #endif
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let infoPlist: InfoPlist
     private let repository: Repository
 
@@ -50,15 +48,11 @@ struct MainApp: App {
                             SubscriptionProvider {
                                 AuthStateObserver {
                                     ProfileStateObserver {
-                                        #if !os(watchOS)
-                                            OnboardingStateObserver {
-                                                NotificationObserver {
-                                                    TabsView()
-                                                }
+                                        OnboardingStateObserver {
+                                            NotificationObserver {
+                                                TabsView()
                                             }
-                                        #else
-                                            WatchView()
-                                        #endif
+                                        }
                                     }
                                 }
                             }

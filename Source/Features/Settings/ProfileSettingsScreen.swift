@@ -1,10 +1,10 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct ProfileSettingsScreen: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var username = ""
     @State private var firstName = ""
     @State private var lastName = ""
@@ -16,21 +16,21 @@ struct ProfileSettingsScreen: View {
     }
 
     private var canUpdate: Bool {
-        canUpdateUsername && profileEnvironmentModel.hasChanged(username: username, firstName: firstName, lastName: lastName)
+        canUpdateUsername && profileModel.hasChanged(username: username, firstName: firstName, lastName: lastName)
     }
 
     var body: some View {
         Form {
             ProfileAvatarPickerSectionView()
             ProfileInfoSettingSectionsView(usernameIsAvailable: $usernameIsAvailable, username: $username, firstName: $firstName, lastName: $lastName, isLoading: $isLoading)
-            if profileEnvironmentModel.firstName != nil, profileEnvironmentModel.lastName != nil {
+            if profileModel.firstName != nil, profileModel.lastName != nil {
                 nameVisibilitySection
             }
             Section {
                 AsyncButton(
                     "settings.profile.update",
                     action: {
-                        await profileEnvironmentModel.updateProfile(username: username, firstName: firstName, lastName: lastName)
+                        await profileModel.updateProfile(username: username, firstName: firstName, lastName: lastName)
                     }
                 ).disabled(!canUpdate)
             }
@@ -42,10 +42,10 @@ struct ProfileSettingsScreen: View {
     private var nameVisibilitySection: some View {
         Section {
             Toggle("settings.profile.useFullName.label", isOn: .init(get: {
-                profileEnvironmentModel.showFullName
+                profileModel.showFullName
             }, set: { newValue in
-                profileEnvironmentModel.showFullName = newValue
-                Task { await profileEnvironmentModel.updateDisplaySettings() }
+                profileModel.showFullName = newValue
+                Task { await profileModel.updateDisplaySettings() }
             }))
         } footer: {
             Text("settings.profile.useFullName.description")

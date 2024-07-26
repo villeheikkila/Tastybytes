@@ -33,16 +33,14 @@ public extension String? {
     }
 }
 
-#if !os(watchOS)
-    public extension String {
-        func asQRCode() async -> Data? {
-            guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
-            filter.setValue(data(using: .ascii, allowLossyConversion: false), forKey: "inputMessage")
-            guard let ciimage = filter.outputImage else { return nil }
-            return UIImage(ciImage: ciimage.transformed(by: CGAffineTransform(scaleX: 10, y: 10))).pngData()
-        }
+public extension String {
+    func asQRCode() async -> Data? {
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
+        filter.setValue(data(using: .ascii, allowLossyConversion: false), forKey: "inputMessage")
+        guard let ciimage = filter.outputImage else { return nil }
+        return UIImage(ciImage: ciimage.transformed(by: CGAffineTransform(scaleX: 10, y: 10))).pngData()
     }
-#endif
+}
 
 public extension String {
     func formatStringEveryWordCapitalized() -> String {

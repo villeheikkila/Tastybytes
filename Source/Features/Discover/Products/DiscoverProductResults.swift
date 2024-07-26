@@ -1,11 +1,11 @@
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
 import SwiftUI
 
 struct DiscoverProductResults: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     let products: [Product.Joined]
     @Binding var barcode: Barcode?
     let showContentUnavailableView: Bool

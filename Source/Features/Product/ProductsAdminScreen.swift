@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Extensions
 import Models
 import Repositories
@@ -44,7 +44,7 @@ struct ProductsAdminScreen: View {
             filteredProducts = await filter()
             state = .populated
         } catch {
-            state = .error([error])
+            state = .error(error)
         }
     }
 

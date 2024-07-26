@@ -1,10 +1,10 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct OnboardingProfileSection: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var username = ""
     @State private var firstName = ""
     @State private var lastName = ""
@@ -22,8 +22,8 @@ struct OnboardingProfileSection: View {
         }
         .safeAreaInset(edge: .bottom) {
             AsyncButton(action: {
-                await profileEnvironmentModel.updateProfile(username: username, firstName: firstName, lastName: lastName)
-                await profileEnvironmentModel.onboardingUpdate()
+                await profileModel.updateProfile(username: username, firstName: firstName, lastName: lastName)
+                await profileModel.onboardingUpdate()
             }, label: {
                 Text("labels.continue")
                     .frame(maxWidth: .infinity)

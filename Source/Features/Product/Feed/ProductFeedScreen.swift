@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -8,7 +8,7 @@ import SwiftUI
 struct ProductFeedScreen: View {
     private let logger = Logger(category: "ProductFeedView")
     @Environment(Repository.self) private var repository
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @State private var products = [Product.Joined]()
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var page = 0
@@ -18,8 +18,6 @@ struct ProductFeedScreen: View {
     @State private var loadingAdditionalItemsTask: Task<Void, Never>?
 
     let feed: Product.FeedType
-
-    private let pageSize = 10
 
     var title: LocalizedStringKey {
         if let categoryFilter {
@@ -75,7 +73,7 @@ struct ProductFeedScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarTitleMenu {
             Button(feed.label, action: { categoryFilter = nil })
-            ForEach(appEnvironmentModel.categories) { category in
+            ForEach(appModel.categories) { category in
                 Button(category.name, action: { categoryFilter = category })
             }
         }
@@ -88,7 +86,7 @@ struct ProductFeedScreen: View {
             page = 0
             isRefreshing = true
         }
-        let (from, to) = getPagination(page: page, size: pageSize)
+        let (from, to) = getPagination(page: page, size: appModel.rateControl.checkInPageSize)
         isLoading = true
         do { let additionalProducts = try await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id)
             guard !Task.isCancelled else { return }
@@ -104,7 +102,7 @@ struct ProductFeedScreen: View {
         } catch {
             guard !error.isCancelled else { return }
             if refresh || state != .populated {
-                state = .error([error])
+                state = .error(error)
             }
             logger.error("Fetching products failed. Error: \(error) (\(#file):\(#line))")
         }

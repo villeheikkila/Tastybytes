@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -143,7 +143,7 @@ struct ProfileProductListView: View {
         } catch {
             guard !error.isCancelled else { return }
             if state != .populated {
-                state = .error([error])
+                state = .error(error)
             }
             logger.error("Error occured while loading products. Error: \(error) (\(#file):\(#line))")
         }

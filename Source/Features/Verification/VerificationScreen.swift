@@ -1,28 +1,28 @@
 import Components
-import EnvironmentModels
+
 import SwiftUI
 
 struct VerificationScreen: View {
-    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
+    @Environment(AdminModel.self) private var adminModel
 
     var body: some View {
-        List(adminEnvironmentModel.unverified) { unverifiedEntity in
+        List(adminModel.unverified) { unverifiedEntity in
             VerifiableEntityView(entity: unverifiedEntity)
                 .swipeActions {
                     AsyncButton("labels.verify", systemImage: "checkmark", action: {
-                        await adminEnvironmentModel.verifyEntity(unverifiedEntity)
+                        await adminModel.verifyEntity(unverifiedEntity)
                     })
                     .tint(.green)
                 }
         }
-        .animation(.default, value: adminEnvironmentModel.unverified)
+        .animation(.default, value: adminModel.unverified)
         .navigationBarTitle("verification.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .refreshable {
-            await adminEnvironmentModel.loadUnverifiedEntities()
+            await adminModel.loadUnverifiedEntities()
         }
         .task {
-            await adminEnvironmentModel.loadUnverifiedEntities()
+            await adminModel.loadUnverifiedEntities()
         }
     }
 }

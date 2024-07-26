@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,9 +10,9 @@ struct CheckInScreen: View {
     private let logger = Logger(category: "CheckInScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(NotificationModel.self) private var notificationModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @FocusState private var focusedField: CheckInLeaveComment.Focusable?
     @State private var state: ScreenState = .loading
     @State private var checkIn = CheckIn.Joined()
@@ -42,7 +42,7 @@ struct CheckInScreen: View {
                 await loadCheckInData(withHaptics: true)
             }
             .safeAreaInset(edge: .bottom, alignment: .trailing, content: {
-                if state.isPopulated, profileEnvironmentModel.hasPermission(.canCommentOnCheckIns) {
+                if state.isPopulated, profileModel.hasPermission(.canCommentOnCheckIns) {
                     CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField, onSubmitted: { comment in
                         try? await Task.sleep(nanoseconds: 100_000_000)
                         scrollProxy.scrollTo(comment.id, anchor: .top)
@@ -85,7 +85,7 @@ struct CheckInScreen: View {
         .contextMenu {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
-                if checkIn.profile.id == profileEnvironmentModel.id {
+                if checkIn.profile.id == profileModel.id {
                     RouterLink(
                         "labels.edit",
                         systemImage: "pencil",
@@ -150,7 +150,7 @@ struct CheckInScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
-                if checkIn.profile.id == profileEnvironmentModel.id {
+                if checkIn.profile.id == profileModel.id {
                     ControlGroup {
                         CheckInShareLinkView(checkIn: checkIn)
                         RouterLink(
@@ -213,9 +213,8 @@ struct CheckInScreen: View {
     private func loadCheckInData(withHaptics: Bool = false) async {
         async let checkInPromise = repository.checkIn.getById(id: id)
         async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: id)
-        async let markCheckInAsReadPromise: Void = notificationEnvironmentModel.markCheckInAsRead(
+        async let markCheckInAsReadPromise: Void = notificationModel.markCheckInAsRead(
             checkIn: checkIn)
-        var errors = [Error]()
         do {
             let (checkInResult, checkInCommentResult, _) = try await (
                 checkInPromise,
@@ -225,18 +224,18 @@ struct CheckInScreen: View {
             withAnimation {
                 checkIn = checkInResult
                 checkInComments = checkInCommentResult
+                state = .populated
             }
         } catch {
-            errors.append(error)
+            state = .getState(error: error, withHaptics: withHaptics, feedbackModel: feedbackModel)
             logger.error("Failed to load check-in screen. Error: \(error) (\(#file):\(#line))")
         }
-        state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     private func deleteCheckIn(_ checkIn: CheckIn.Joined) async {
         do {
             try await repository.checkIn.delete(id: checkIn.id)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
             router.removeLast()
         } catch {
             guard !error.isCancelled else { return }

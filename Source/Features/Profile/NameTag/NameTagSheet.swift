@@ -1,11 +1,11 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct NameTagSheet: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppModel.self) private var appModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss
     @State private var showNameTagScanner = false
 
@@ -14,7 +14,7 @@ struct NameTagSheet: View {
     var body: some View {
         VStack(spacing: 20) {
             if !showNameTagScanner {
-                CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileEnvironmentModel.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl).absoluteString)
+                CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileModel.id).getUrl(baseUrl: appModel.infoPlist.baseUrl).absoluteString)
                 Button(action: { showNameTagScanner.toggle() }, label: {
                     HStack {
                         Spacer()
@@ -28,8 +28,8 @@ struct NameTagSheet: View {
                         if case let .barcode(foundBarcode) = data, let qrCode = foundBarcode.payloadStringValue {
                             let string = qrCode.components(separatedBy: "/").last
                             if let string, let profileId = Profile.Id(uuidString: string) {
-                                dismiss()
                                 onSuccess(profileId)
+                                dismiss()
                             }
                         }
                     }
@@ -54,7 +54,7 @@ struct NameTagSheet: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
         ToolbarItemGroup(placement: .topBarTrailing) {
-            ProfileShareLinkView(profile: profileEnvironmentModel.profile)
+            ProfileShareLinkView(profile: profileModel.profile)
         }
     }
 }

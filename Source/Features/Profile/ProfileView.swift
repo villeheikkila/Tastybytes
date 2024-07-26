@@ -1,6 +1,6 @@
 import Charts
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,26 +9,18 @@ import Repositories
 import SwiftUI
 
 struct ProfileView: View {
-    @Environment(Repository.self) private var repository
-    let profile: Profile.Saved
-    let isCurrentUser: Bool
-
-    var body: some View {
-        ProfileInnerView(repository: repository, profile: profile, isCurrentUser: isCurrentUser)
-    }
-}
-
-struct ProfileInnerView: View {
     private let logger = Logger(category: "ProfileView")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @State private var checkInLoader: CheckInListLoader
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(FriendModel.self) private var friendModel
+    @Environment(FeedbackModel.self) private var feedbackModel
+    @Environment(AppModel.self) private var appModel
+    @State private var checkIns = [CheckIn.Joined]()
     @State private var profile: Profile.Saved
     @State private var profileSummary: Profile.Summary?
     @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
     @State private var isLoading = false
+    @State private var isRefreshing = false
     @State private var isLoadingImages = false
     @State private var loadImagesTask: Task<Void, Never>?
     @State private var page = 0
@@ -38,21 +30,15 @@ struct ProfileInnerView: View {
     @State private var state: ScreenState = .loading
 
     private let topAnchor = 0
-    private let pageSize = 10
     private let isCurrentUser: Bool
-    private let isShownInFull: Bool
 
-    init(repository: Repository, profile: Profile.Saved, isCurrentUser: Bool) {
+    init(profile: Profile.Saved, isCurrentUser: Bool) {
         _profile = State(initialValue: profile)
         self.isCurrentUser = isCurrentUser
-        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, _ in
-            try await repository.checkIn.getByProfileId(id: profile.id, queryType: .paginated(from, to))
-        }, id: "ProfileView"))
-        isShownInFull = isCurrentUser || !profile.isPrivate
     }
 
     private var showInFull: Bool {
-        isShownInFull || friendEnvironmentModel.isFriend(profile)
+        isCurrentUser || !profile.isPrivate || friendModel.isFriend(profile)
     }
 
     var body: some View {
@@ -62,28 +48,28 @@ struct ProfileInnerView: View {
             }
         }
         .listStyle(.plain)
+        .animation(.default, value: checkIns)
         .refreshable {
-            await getProfileData(isRefresh: true)
+            await initialize(isRefresh: true)
         }
         .checkInCardLoadedFrom(.profile(profile))
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await getProfileData(isRefresh: true)
+                await initialize(isRefresh: true)
             }
         }
         .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
-        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .onDisappear {
             loadImagesTask?.cancel()
         }
         .initialTask {
-            await getProfileData()
+            await initialize()
         }
         .task(id: selectedItem) {
             guard let data = await selectedItem?.getJPEG() else { return }
-            await profileEnvironmentModel.uploadAvatar(data: data)
+            await profileModel.uploadAvatar(data: data)
             withAnimation {
-                profile = profileEnvironmentModel.profile
+                profile = profileModel.profile
             }
         }
     }
@@ -115,49 +101,44 @@ struct ProfileInnerView: View {
                 PrivateProfileSign()
                 sendFriendRequestSection
             }
-        }.listRowSeparator(.hidden)
-
-        CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
-            checkInLoader.onLoadMore()
+        }
+        .listRowSeparator(.hidden)
+        CheckInListContentView(checkIns: $checkIns, onLoadMore: {
+            await fetchFeedItems()
         })
-        CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+        CheckInListLoadingIndicatorView(isLoading: $isLoading, isRefreshing: $isRefreshing)
     }
 
     @ViewBuilder private var sendFriendRequestSection: some View {
-        if !isCurrentUser, friendEnvironmentModel.hasNoFriendStatus(friend: profile) || (friendEnvironmentModel.isPendingCurrentUserApproval(profile) != nil) {
+        if !isCurrentUser, friendModel.hasNoFriendStatus(friend: profile) || (friendModel.isPendingCurrentUserApproval(profile) != nil) {
             ProfileFriendActionSection(profile: profile)
         }
     }
 
-    private func getProfileData(isRefresh: Bool = false) async {
-        async let productPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
+    private func initialize(isRefresh: Bool = false) async {
+        async let checkInsPromise: Void = fetchFeedItems(reset: true)
         async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
-        async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile.id), from: 0, to: pageSize)
-        var errors = [Error]()
+        async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile.id), from: 0, to: appModel.rateControl.checkInPageSize)
         do {
             let (summaryResult, imagesResult) = try await (summaryPromise, imagesPromise)
+            page += 1
             withAnimation {
                 profileSummary = summaryResult
-            }
-            withAnimation {
                 imagePage = 1
                 checkInImages = imagesResult
+                isLoading = false
+                state = .populated
             }
-            page += 1
-            isLoading = false
         } catch {
-            errors.append(error)
+            state = .getState(error: error, withHaptics: isRefresh, feedbackModel: feedbackModel)
             logger.error("Fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
-        if state != .populated {
-            state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
-        }
-        await productPromise
+        await checkInsPromise
     }
 
     private func fetchImages() async {
         defer { loadImagesTask = nil }
-        let (from, to) = getPagination(page: imagePage, size: pageSize)
+        let (from, to) = getPagination(page: imagePage, size: appModel.rateControl.checkInImagePageSize)
         isLoadingImages = true
 
         do {
@@ -170,6 +151,33 @@ struct ProfileInnerView: View {
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func fetchFeedItems(reset: Bool = false) async {
+        guard !isLoading, !isRefreshing else { return }
+        if reset {
+            isRefreshing = true
+        }
+        let (from, to) = getPagination(page: reset ? 0 : page, size: appModel.rateControl.checkInPageSize)
+        isLoading = true
+        do {
+            let fetchedCheckIns = try await repository.checkIn.getByProfileId(id: profile.id, queryType: .paginated(from, to))
+            logger.info("Succesfully loaded check-ins from \(from) to \(to)")
+            if reset {
+                checkIns = fetchedCheckIns
+            } else {
+                checkIns.append(contentsOf: fetchedCheckIns)
+            }
+            page += 1
+        } catch {
+            guard !error.isCancelled else { return }
+            guard !error.isNetworkUnavailable else { return }
+            logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
+        }
+        isLoading = false
+        if reset {
+            isRefreshing = false
         }
     }
 }

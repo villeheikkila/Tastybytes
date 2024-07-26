@@ -1,6 +1,6 @@
 import Charts
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -21,25 +21,6 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
         }
     }
 
-    func fetcher(repository: Repository, profile: Profile.Saved) -> CheckInListLoader.Fetcher {
-        switch self {
-        case let .dateRange(dateRange):
-            { from, to, _ in
-                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .dateRange(from, to, dateRange))
-            }
-        case let .location(location):
-            { from, to, _ in
-                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .location(from, to, location))
-            }
-        }
-    }
-
-    @ViewBuilder var header: some View {
-        if case let .location(location) = self {
-            LocationScreenMap(location: location)
-        }
-    }
-
     @MainActor
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
@@ -53,70 +34,69 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
 }
 
 struct ProfileCheckInsList: View {
-    @Environment(Repository.self) private var repository
-    let profile: Profile.Saved
-    let filter: ProfileCheckInListFilter
-
-    var body: some View {
-        ProfileCheckInsListInnerView(repository: repository, profile: profile, filter: filter)
-    }
-}
-
-struct ProfileCheckInsListInnerView: View {
     private let logger = Logger(category: "ProfileCheckInsListInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @State private var checkInLoader: CheckInListLoader
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(AppModel.self) private var appModel
     @State private var state: ScreenState = .loading
+    @State private var checkIns = [CheckIn.Joined]()
+    @State private var isLoading = false
+    @State private var page = 0
 
     let profile: Profile.Saved
     let filter: ProfileCheckInListFilter
 
-    init(repository: Repository, profile: Profile.Saved, filter: ProfileCheckInListFilter) {
-        self.profile = profile
-        self.filter = filter
-        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: filter.fetcher(repository: repository, profile: profile), id: "ProfileCheckIns"))
-    }
-
     var body: some View {
         List {
-            filter.header
-            CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn,
-                                   onLoadMore: checkInLoader.onLoadMore)
-            CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+            if case let .location(location) = filter {
+                LocationScreenMap(location: location)
+            }
+            CheckInListContentView(checkIns: $checkIns, onLoadMore: {
+                await loadCheckIns()
+            })
+            CheckInListLoadingIndicatorView(isLoading: $isLoading)
         }
         .listStyle(.plain)
+        .animation(.default, value: checkIns)
         .scrollIndicators(.hidden)
-        .refreshable {
-            await checkInLoader.fetchFeedItems(reset: true, showCheckInsFrom: .you)
-        }
-        .checkInCardLoadedFrom(.activity(profileEnvironmentModel.profile))
+        .checkInCardLoadedFrom(.activity(profileModel.profile))
         .overlay {
-            if checkInLoader.errorContentUnavailable != nil {
-                ContentUnavailableView {
-                    Label("activity.error.failedToLoad", systemImage: "exclamationmark.triangle")
-                } actions: {
-                    AsyncButton("labels.reload") {
-                        await checkInLoader.fetchFeedItems(reset: true, showCheckInsFrom: .you)
-                    }
-                }
-            } else if state.isPopulated, checkInLoader.checkIns.isEmpty, !checkInLoader.isLoading {
-                EmptyActivityFeedView()
+            ScreenStateOverlayView(state: state) {
+                await loadCheckIns()
             }
         }
         .navigationTitle(filter.navigationTitle)
         .toolbar {
             filter.toolbar
         }
-        .onChange(of: checkInLoader.alertError) { _, alertError in
-            if let alertError {
-                router.open(.alert(alertError))
+        .initialTask {
+            await loadCheckIns()
+        }
+    }
+
+    func loadCheckIns() async {
+        guard !isLoading else { return }
+        let (from, to) = getPagination(page: page, size: appModel.rateControl.checkInPageSize)
+        isLoading = true
+        do {
+            let fetchedCheckIns = switch filter {
+            case let .dateRange(dateRange):
+                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .dateRange(from, to, dateRange))
+            case let .location(location):
+                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .location(from, to, location))
+            }
+            logger.info("Succesfully loaded check-ins from \(from) to \(to)")
+            checkIns.append(contentsOf: fetchedCheckIns)
+            state = .populated
+            page += 1
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
+            if page == 0 {
+                state = .error(error)
             }
         }
-        .initialTask {
-            await checkInLoader.loadData()
-            state = .populated
-        }
+        isLoading = false
     }
 }

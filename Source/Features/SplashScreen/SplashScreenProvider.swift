@@ -1,15 +1,15 @@
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct SplashScreenProvider<Content: View>: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         ZStack {
             content()
-            if appEnvironmentModel.splashScreenState != .finished {
+            if appModel.splashScreenState != .finished {
                 SplashScreen()
             }
         }
@@ -17,7 +17,7 @@ struct SplashScreenProvider<Content: View>: View {
 }
 
 struct SplashScreen: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @State private var dismissAnimation = false
     @State private var startFadeoutAnimation = false
     @State private var size = 0.8
@@ -25,10 +25,8 @@ struct SplashScreen: View {
 
     var body: some View {
         ZStack {
-            #if !os(watchOS)
-                Color(.systemBackground)
-                    .ignoresSafeArea()
-            #endif
+            Color(.systemBackground)
+                .ignoresSafeArea()
             VStack(spacing: 24) {
                 AppLogoView()
                     .frame(width: 120, height: 120)
@@ -49,7 +47,7 @@ struct SplashScreen: View {
     }
 
     private func updateAnimation() {
-        switch appEnvironmentModel.splashScreenState {
+        switch appModel.splashScreenState {
         case .showing:
             withAnimation(.easeIn(duration: 1)) {
                 size = 0.9
@@ -135,7 +133,7 @@ extension AppIcon {
 }
 
 struct AppNameView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let size: Double
 
     init(size: Double = 28) {
@@ -143,7 +141,7 @@ struct AppNameView: View {
     }
 
     var body: some View {
-        Text(appEnvironmentModel.infoPlist.appName)
+        Text(appModel.infoPlist.appName)
             .font(.custom("Comfortaa-Bold", size: size))
             .bold()
     }

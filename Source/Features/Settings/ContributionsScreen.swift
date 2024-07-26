@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -31,7 +31,7 @@ public final class ContributionsModel {
             }
         } catch {
             guard !error.isCancelled else { return }
-            contributionsState = .error([error])
+            contributionsState = .error(error)
             logger.error("Failed to load contributions. Error: \(error) (\(#file):\(#line))")
         }
     }

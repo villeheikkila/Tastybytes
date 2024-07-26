@@ -5,9 +5,7 @@ struct AuthenticationInput: ViewModifier {
         content
             .padding()
             .padding(5)
-        #if !os(watchOS)
             .background(Color(.systemGray6))
-        #endif
             .cornerRadius(12)
             .padding(.vertical, 5)
     }

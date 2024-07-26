@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,7 +10,7 @@ struct CompanyPickerSheet: View {
     private let logger = Logger(category: "CompanyPickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchResults = [Company.Saved]()
     @State private var status: Status?
@@ -48,7 +48,7 @@ struct CompanyPickerSheet: View {
         }
         .listStyle(.plain)
         .safeAreaInset(edge: .bottom) {
-            if status != nil, profileEnvironmentModel.hasPermission(.canCreateCompanies), !showEmptyResults {
+            if status != nil, profileModel.hasPermission(.canCreateCompanies), !showEmptyResults {
                 Form {
                     if status == .searched {
                         Section("company.create.notFound.section.title") {

@@ -14,8 +14,8 @@ struct ScreenStateOverlayView: View {
 
     var body: some View {
         switch state {
-        case let .error(errors):
-            ScreenContentUnavailableView(errors: errors, description: errorDescription, action: errorAction)
+        case let .error(error):
+            ScreenContentUnavailableView(error: error, description: errorDescription, action: errorAction)
         case .loading:
             ScreenLoadingView()
         case .populated:

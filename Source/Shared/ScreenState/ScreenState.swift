@@ -1,30 +1,29 @@
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 extension ScreenState {
-    static func updateState(currentState: ScreenState, errors: [Error]) -> Self {
-        if errors.isEmpty {
-            return .populated
-        } else if currentState != .populated {
-            return .error(errors)
+    static func updateState(currentState: ScreenState, error: Error?) -> Self {
+        if let error, !currentState.isPopulated {
+            .error(error)
+        } else {
+            .populated
         }
-        return currentState
     }
 
     @MainActor
-    static func getState(errors: [Error], withHaptics: Bool, feedbackEnvironmentModel: FeedbackEnvironmentModel) -> Self {
+    static func getState(error: Error?, withHaptics: Bool, feedbackModel: FeedbackModel) -> Self {
         withAnimation(.easeIn) {
-            if errors.isEmpty {
+            if let error {
                 if withHaptics {
-                    feedbackEnvironmentModel.trigger(.impact(intensity: .high))
+                    feedbackModel.trigger(.notification(.error))
                 }
-                return .populated
+                return .error(error)
             } else {
                 if withHaptics {
-                    feedbackEnvironmentModel.trigger(.notification(.error))
+                    feedbackModel.trigger(.impact(intensity: .high))
                 }
-                return .error(errors)
+                return .populated
             }
         }
     }

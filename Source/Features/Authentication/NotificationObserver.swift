@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import OSLog
 import Repositories
 import StoreKit
@@ -7,7 +7,7 @@ import TipKit
 
 struct NotificationObserver<Content: View>: View {
     private let logger = Logger(category: "MainContent")
-    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
+    @Environment(NotificationModel.self) private var notificationModel
     @Environment(\.scenePhase) private var phase
 
     @ViewBuilder let content: () -> Content
@@ -20,22 +20,22 @@ struct NotificationObserver<Content: View>: View {
             .onChange(of: phase) { _, newPhase in
                 if newPhase == .active {
                     Task {
-                        await notificationEnvironmentModel.getUnreadCount()
+                        await notificationModel.getUnreadCount()
                     }
                 }
             }
             .onReceive(publisher) { notification in
                 guard let userInfo = notification.userInfo, let aps = userInfo["aps"] as? [String: Any],
                       let unreadCount = aps["badge"] as? Int else { return }
-                notificationEnvironmentModel.unreadCount = unreadCount
+                notificationModel.unreadCount = unreadCount
             }
             .task {
                 if let deviceTokenForPusNotifications = await DeviceTokenActor.shared.deviceTokenForPusNotifications {
-                    await notificationEnvironmentModel.refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
+                    await notificationModel.refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
                 }
             }
             .onAppear {
-                notificationEnvironmentModel.refresh()
+                notificationModel.refresh()
             }
     }
 }

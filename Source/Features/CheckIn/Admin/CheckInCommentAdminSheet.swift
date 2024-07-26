@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -99,7 +99,7 @@ struct CheckInCommentAdminSheet: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load detailed check-in comment. Error: \(error) (\(#file):\(#line))")
         }
     }

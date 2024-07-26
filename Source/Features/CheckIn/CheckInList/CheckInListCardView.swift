@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -7,7 +7,7 @@ import Repositories
 import SwiftUI
 
 struct CheckInListCardView: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var showDeleteConfirmation = false
 
     let checkIn: CheckIn.Joined
@@ -22,7 +22,7 @@ struct CheckInListCardView: View {
         .contextMenu {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
-                if checkIn.profile.id == profileEnvironmentModel.id {
+                if checkIn.profile.id == profileModel.id {
                     RouterLink(
                         "labels.edit",
                         systemImage: "pencil",

@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import SwiftUI
@@ -10,7 +10,7 @@ struct ProductFilterSheet: View {
     }
 
     private let logger = Logger(category: "SeachFilterSheet")
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?
     @State private var subcategoryFilter: Subcategory.Saved?
@@ -51,7 +51,7 @@ struct ProductFilterSheet: View {
                 Section("category.title") {
                     Picker(selection: $categoryFilter) {
                         Text("labels.selectAll").tag(Models.Category.JoinedSubcategoriesServingStyles?(nil))
-                        ForEach(appEnvironmentModel.categories) { category in
+                        ForEach(appModel.categories) { category in
                             Text(category.name).tag(Optional(category))
                         }
                     } label: {

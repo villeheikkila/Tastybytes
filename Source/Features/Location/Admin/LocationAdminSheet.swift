@@ -116,7 +116,7 @@ struct LocationAdminSheet: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load location: '\(id)'. Error: \(error) (\(#file):\(#line))")
         }
     }

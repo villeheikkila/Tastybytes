@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import PhotosUI
@@ -9,7 +9,7 @@ import SwiftUI
 struct CheckInImageManagementView: View {
     private let logger = Logger(category: "CheckInImageManagementView")
 
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
 
@@ -31,7 +31,7 @@ struct CheckInImageManagementView: View {
         ScrollView(.horizontal) {
             LazyHStack(alignment: .center, spacing: 3) {
                 ForEach(images) { image in
-                    RemoteImageView(url: image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
+                    RemoteImageView(url: image.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl), content: { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -103,7 +103,7 @@ struct CheckInImageManagementView: View {
 
     func getLocationFromCoordinate(coordinate: CLLocationCoordinate2D) async {
         guard let countryCode = try? await coordinate.getISOCountryCode() else { return }
-        let country = appEnvironmentModel.countries.first(where: { $0.countryCode == .init(rawValue: countryCode) })
+        let country = appModel.countries.first(where: { $0.countryCode == .init(rawValue: countryCode) })
         locationFromImage = .init(coordinate: coordinate, countryCode: countryCode, country: country)
     }
 

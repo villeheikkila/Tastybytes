@@ -1,17 +1,17 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import SwiftUI
 
 struct FriendPickerSheet: View {
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(FriendModel.self) private var friendModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
     @Binding var taggedFriends: [Profile.Saved]
 
     private var shownProfiles: [Profile.Saved] {
-        friendEnvironmentModel.acceptedFriends.filteredBySearchTerm(by: \.preferredName, searchTerm: searchTerm)
+        friendModel.acceptedFriends.filteredBySearchTerm(by: \.preferredName, searchTerm: searchTerm)
     }
 
     private var sortedShownProfiles: [Profile.Saved] {
@@ -26,7 +26,7 @@ struct FriendPickerSheet: View {
         List(sortedShownProfiles, selection: $taggedFriends.map(getter: { friends in
             Set(friends.map(\.id))
         }, setter: { ids in
-            ids.compactMap { id in friendEnvironmentModel.acceptedFriends.first(where: { $0.id == id }) }
+            ids.compactMap { id in friendModel.acceptedFriends.first(where: { $0.id == id }) }
         })) { profile in
             ProfileEntityView(profile: profile)
                 .listRowBackground(Color.clear)
@@ -35,7 +35,7 @@ struct FriendPickerSheet: View {
         .scrollContentBackground(.hidden)
         .searchable(text: $searchTerm)
         .overlay {
-            if friendEnvironmentModel.acceptedFriends.isEmpty {
+            if friendModel.acceptedFriends.isEmpty {
                 ContentUnavailableView("friends.empty.title", systemImage: "tray")
             } else if showContentUnavailableView {
                 ContentUnavailableView.search(text: searchTerm)

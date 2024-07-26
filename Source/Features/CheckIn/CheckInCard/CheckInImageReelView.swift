@@ -1,10 +1,10 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct CheckInImageReelView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let checkIn: CheckIn.Joined
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
 
@@ -14,7 +14,7 @@ struct CheckInImageReelView: View {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 0) {
                 ForEach(checkIn.images) { image in
-                    if let imageUrl = image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+                    if let imageUrl = image.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
                         RouterLink(open: .sheet(.checkInImage(checkIn: checkIn, onDeleteImage: onDeleteImage))) {
                             RemoteImageBlurHashView(url: imageUrl, blurHash: image.blurHash, height: imageHeight) { image in
                                 image

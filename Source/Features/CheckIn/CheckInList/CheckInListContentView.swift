@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,18 +10,35 @@ struct CheckInListContentView: View {
     private let logger = Logger(category: "CheckInListContentView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
+    @State private var loadingCheckInsOnAppearTask: Task<Void, Error>?
     @Binding var checkIns: [CheckIn.Joined]
-    let onCheckInUpdate: (_ checkIn: CheckIn.Joined) async -> Void
-    let onCreateCheckIn: (_ checkIn: CheckIn.Joined) async -> Void
-    let onLoadMore: () -> Void
+    let onCreateCheckIn: ((_ checkIn: CheckIn.Joined) async -> Void)?
+    let onLoadMore: () async -> Void
+
+    init(
+        checkIns: Binding<[CheckIn.Joined]>,
+        onCreateCheckIn: ((_: CheckIn.Joined) async -> Void)? = nil,
+        onLoadMore: @MainActor @Sendable @escaping () async -> Void
+    ) {
+        _checkIns = checkIns
+        self.onCreateCheckIn = onCreateCheckIn
+        self.onLoadMore = onLoadMore
+    }
 
     var body: some View {
         ForEach(checkIns) { checkIn in
             CheckInListCardView(
                 checkIn: checkIn,
-                onUpdate: onCheckInUpdate,
+                onUpdate: { checkIn in
+                    checkIns = checkIns.replacingWithId(checkIn.id, with: checkIn)
+                },
                 onDelete: deleteCheckIn,
-                onCreate: onCreateCheckIn
+                onCreate: { checkIn in
+                    checkIns.insert(checkIn, at: 0)
+                    if let onCreateCheckIn {
+                        await onCreateCheckIn(checkIn)
+                    }
+                }
             )
             .listRowSeparator(.visible, edges: .bottom)
             .alignmentGuide(.listRowSeparatorLeading) { _ in
@@ -33,7 +50,12 @@ struct CheckInListContentView: View {
                 if let index = checkIns.firstIndex(of: checkIn),
                    index == checkIns.count - 8
                 {
-                    onLoadMore()
+                    guard loadingCheckInsOnAppearTask == nil else { return }
+                    loadingCheckInsOnAppearTask = Task {
+                        defer { loadingCheckInsOnAppearTask = nil }
+                        logger.info("Loading more items invoked")
+                        await onLoadMore()
+                    }
                 }
             }
         }

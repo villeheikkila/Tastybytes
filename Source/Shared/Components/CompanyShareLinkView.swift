@@ -1,13 +1,13 @@
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct CompanyShareLinkView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let company: any CompanyProtocol
 
     private var link: URL {
-        NavigatablePath.company(id: company.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl)
+        NavigatablePath.company(id: company.id).getUrl(baseUrl: appModel.infoPlist.baseUrl)
     }
 
     private var title: String {

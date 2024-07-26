@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,7 +10,7 @@ struct CategoryServingStyleAdminSheet: View {
     private let logger = Logger(category: "CategoryServingStyleAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(\.dismiss) private var dismiss
     @State private var servingStyles: [ServingStyle.Saved]
 
@@ -67,7 +67,7 @@ struct CategoryServingStyleAdminSheet: View {
             withAnimation {
                 servingStyles.remove(object: servingStyle)
             }
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

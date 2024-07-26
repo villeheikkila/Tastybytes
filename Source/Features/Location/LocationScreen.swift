@@ -1,6 +1,6 @@
 import Charts
 import Components
-import EnvironmentModels
+
 import Extensions
 import MapKit
 import Models
@@ -10,32 +10,29 @@ import Repositories
 import SwiftUI
 
 struct LocationScreen: View {
-    @Environment(Repository.self) private var repository
-    let id: Location.Id
-
-    var body: some View {
-        LocationInnerScreen(repository: repository, id: id)
-    }
-}
-
-struct LocationInnerScreen: View {
     private let logger = Logger(category: "LocationScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(AppModel.self) private var appModel
     @State private var state: ScreenState = .loading
     @State private var summary: Summary?
     @State private var location = Location.Saved()
-    @State private var checkInLoader: CheckInListLoader
+    @State private var checkIns = [CheckIn.Joined]()
+    @State private var isRefreshing = false
+    @State private var isLoading = false
+    @State private var page = 0
+    @State private var onSegmentChangeTask: Task<Void, Error>?
+    @State private var showCheckInsFrom: CheckIn.Segment = .everyone {
+        didSet {
+            onSegmentChangeTask?.cancel()
+            onSegmentChangeTask = Task {
+                await fetchCheckIns(reset: true, segment: showCheckInsFrom)
+            }
+        }
+    }
 
     let id: Location.Id
-
-    init(repository: Repository, id: Location.Id) {
-        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
-            try await repository.checkIn.getByLocation(id: id, segment: segment, from: from, to: to)
-        }, id: "LocationScreen"))
-        self.id = id
-    }
 
     var body: some View {
         List {
@@ -45,6 +42,7 @@ struct LocationInnerScreen: View {
         }
         .listStyle(.plain)
         .animation(.default, value: location)
+        .animation(.default, value: checkIns)
         .refreshable {
             await load(isRefresh: true)
         }
@@ -66,11 +64,11 @@ struct LocationInnerScreen: View {
 
     @ViewBuilder private var content: some View {
         LocationScreenHeader(location: location, summary: summary)
-        CheckInListSegmentPickerView(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-        CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: {
-            checkInLoader.onLoadMore()
+        CheckInListSegmentPickerView(showCheckInsFrom: $showCheckInsFrom)
+        CheckInListContentView(checkIns: $checkIns, onLoadMore: {
+            await fetchCheckIns(segment: showCheckInsFrom)
         })
-        CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+        CheckInListLoadingIndicatorView(isLoading: $isLoading, isRefreshing: $isRefreshing)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -93,13 +91,13 @@ struct LocationInnerScreen: View {
         }
     }
 
-    private func load(isRefresh: Bool = false) async {
-        async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
+    private func load(isRefresh _: Bool = false) async {
+        async let checkInsPromise: Void = await fetchCheckIns(reset: true, segment: .everyone)
         async let locationPromise = repository.location.getById(id: id)
         async let summaryPromise = repository.location.getSummaryById(id: id)
 
         do {
-            let (locationResult, _, summaryResult) = try await (locationPromise, loadInitialCheckInsPromise, summaryPromise)
+            let (_, locationResult, summaryResult) = try await (checkInsPromise, locationPromise, summaryPromise)
             withAnimation {
                 location = locationResult
                 summary = summaryResult
@@ -108,10 +106,29 @@ struct LocationInnerScreen: View {
         } catch {
             guard !error.isCancelled else { return }
             if state != .populated {
-                state = .error([error])
+                state = .error(error)
             }
             logger.error("Failed to get summary. Error: \(error) (\(#file):\(#line))")
         }
+    }
+
+    func fetchCheckIns(reset: Bool = false, segment: CheckIn.Segment) async {
+        let (from, to) = getPagination(page: reset ? 0 : page, size: appModel.rateControl.checkInPageSize)
+        isLoading = true
+        do {
+            let fetchedCheckIns = try await repository.checkIn.getByLocation(id: id, segment: segment, from: from, to: to)
+            if reset {
+                checkIns = fetchedCheckIns
+            } else {
+                checkIns.append(contentsOf: fetchedCheckIns)
+            }
+            page += 1
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Fetching check-ins from \(from) to \(to) failed. Error: \(error) (\(#file):\(#line))")
+            guard !error.isNetworkUnavailable else { return }
+        }
+        isLoading = false
     }
 }
 

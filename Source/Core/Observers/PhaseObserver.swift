@@ -1,24 +1,23 @@
-import EnvironmentModels
+
 import OSLog
 import SwiftUI
 
 struct PhaseObserver<Content: View>: View {
     private let logger = Logger(category: "PhaseObserver")
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(\.scenePhase) private var phase
 
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         content()
-        #if !os(watchOS)
             .onChange(of: phase) { _, newPhase in
                 switch newPhase {
                 case .active:
                     logger.info("Scene phase is active.")
                     Task {
                         guard let quickAction = await QuickActionActor.shared.readAndClearSelectedQuickAction() else { return }
-                        await UIApplication.shared.open(quickAction.getUrl(baseUrl: appEnvironmentModel.infoPlist.deepLinkBaseUrl))
+                        await UIApplication.shared.open(quickAction.getUrl(baseUrl: appModel.infoPlist.deepLinkBaseUrl))
                     }
                 case .inactive:
                     logger.info("Scene phase is inactive.")
@@ -29,6 +28,5 @@ struct PhaseObserver<Content: View>: View {
                     logger.info("Scene phase is unknown.")
                 }
             }
-        #endif
     }
 }

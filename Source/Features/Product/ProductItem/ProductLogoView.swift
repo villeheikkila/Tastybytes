@@ -1,16 +1,16 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct ProductLogoView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let product: ProductLogoProtocol
     let size: Double
 
     var logoUrl: URL? {
         guard let logo = product.logos.first else { return nil }
-        return logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
+        return logo.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl)
     }
 
     var body: some View {

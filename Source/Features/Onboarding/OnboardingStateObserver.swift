@@ -1,12 +1,12 @@
-import EnvironmentModels
+
 import SwiftUI
 
 struct OnboardingStateObserver<Content: View>: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @ViewBuilder let content: () -> Content
 
     var initialOnboardingSection: OnboardingSection? {
-        if !profileEnvironmentModel.isOnboarded {
+        if !profileModel.isOnboarded {
             return .profile
         }
         return nil

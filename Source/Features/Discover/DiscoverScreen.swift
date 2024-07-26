@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,7 +10,7 @@ struct DiscoverScreen: View {
     private let logger = Logger(category: "SearchListView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     // Search Query
     @State private var searchScope: SearchScope = .products
     @State private var searchTerm = ""
@@ -49,7 +49,7 @@ struct DiscoverScreen: View {
     }
 
     private var showAddProductViewRow: Bool {
-        searchScope == .products && searchResultKey != nil && searchKey == searchResultKey && !showContentUnavailableView && profileEnvironmentModel
+        searchScope == .products && searchResultKey != nil && searchKey == searchResultKey && !showContentUnavailableView && profileModel
             .hasPermission(.canCreateProducts)
     }
 
@@ -75,7 +75,7 @@ struct DiscoverScreen: View {
         .listStyle(.plain)
         .overlay {
             if let error, currentScopeIsEmpty {
-                ScreenContentUnavailableView(errors: [error], description: nil) {
+                ScreenContentUnavailableView(error: error, description: nil) {
                     await loadData(searchKey: searchKey, productFilter: productFilter)
                 }
             }
@@ -160,7 +160,7 @@ struct DiscoverScreen: View {
                 ).labelStyle(.iconOnly)
             }
 
-            if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
+            if profileModel.hasPermission(.canAddBarcodes) {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     RouterLink(
                         "discover.barcode.scan",

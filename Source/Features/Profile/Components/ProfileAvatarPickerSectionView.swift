@@ -1,11 +1,11 @@
 import Components
-import EnvironmentModels
+
 import Models
 import PhotosUI
 import SwiftUI
 
 struct ProfileAvatarPickerSectionView: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var showAvatarPicker = false
     @State private var selectedItem: PhotosPickerItem?
 
@@ -13,7 +13,7 @@ struct ProfileAvatarPickerSectionView: View {
         Section {
             HStack {
                 Spacer()
-                ProfileAvatarPickerView(showAvatarPicker: $showAvatarPicker, profile: profileEnvironmentModel.profile, allowEdit: true)
+                ProfileAvatarPickerView(showAvatarPicker: $showAvatarPicker, profile: profileModel.profile, allowEdit: true)
                     .avatarSize(.custom(120))
                 Spacer()
             }
@@ -22,7 +22,7 @@ struct ProfileAvatarPickerSectionView: View {
         .photosPicker(isPresented: $showAvatarPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
         .task(id: selectedItem) {
             guard let data = await selectedItem?.getJPEG() else { return }
-            await profileEnvironmentModel.uploadAvatar(data: data)
+            await profileModel.uploadAvatar(data: data)
         }
     }
 }

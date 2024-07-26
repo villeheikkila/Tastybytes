@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import PhotosUI
@@ -7,8 +7,8 @@ import SwiftUI
 
 struct EditLogoSection: View {
     private let logger = Logger(category: "EditLogoSection")
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppModel.self) private var appModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var selectedLogo: PhotosPickerItem?
 
     let logos: [ImageEntity.Saved]
@@ -18,7 +18,7 @@ struct EditLogoSection: View {
     var body: some View {
         Section {
             ForEach(logos) { logo in
-                RemoteImageView(url: logo.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
+                RemoteImageView(url: logo.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl), content: { image in
                     image.resizable()
                 }, progress: {
                     ProgressView()
@@ -36,7 +36,7 @@ struct EditLogoSection: View {
             HStack {
                 Text("logos.edit.title")
                 Spacer()
-                if profileEnvironmentModel.hasPermission(.canAddBrandLogo) {
+                if profileModel.hasPermission(.canAddBrandLogo) {
                     PhotosPicker(
                         selection: $selectedLogo,
                         matching: .images,

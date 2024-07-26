@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,7 +10,7 @@ struct MergeLocationSheet: View {
     private let logger = Logger(category: "MergeLocationSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(\.dismiss) private var dismiss
     @State private var locations = [Location.Saved]()
     @State private var mergeToLocation: Location.Saved?
@@ -60,7 +60,7 @@ struct MergeLocationSheet: View {
         do {
             try await repository.location.mergeLocations(id: location.id, toLocationId: to.id)
             let location = try await repository.location.getDetailed(id: to.id)
-            feedbackEnvironmentModel.trigger(.notification(.success))
+            feedbackModel.trigger(.notification(.success))
             if let onMerge {
                 await onMerge(location)
             }

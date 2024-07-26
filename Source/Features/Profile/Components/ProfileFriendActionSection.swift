@@ -1,10 +1,10 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct ProfileFriendActionSection: View {
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(FriendModel.self) private var friendModel
 
     let profile: Profile.Saved
 
@@ -12,16 +12,16 @@ struct ProfileFriendActionSection: View {
         HStack {
             Spacer()
             Group {
-                if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
+                if friendModel.hasNoFriendStatus(friend: profile) {
                     AsyncButton(
                         "friend.friendRequest.send.label",
-                        action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
+                        action: { await friendModel.sendFriendRequest(receiver: profile.id) }
                     )
-                } else if let friend = friendEnvironmentModel.isPendingCurrentUserApproval(profile) {
+                } else if let friend = friendModel.isPendingCurrentUserApproval(profile) {
                     AsyncButton(
                         "friend.friendRequest.accept.label",
                         action: {
-                            await friendEnvironmentModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                            await friendModel.updateFriendRequest(friend: friend, newStatus: .accepted)
                         }
                     )
                 }

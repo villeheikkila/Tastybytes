@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -163,7 +163,7 @@ struct CompanyAdminSheet: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load company. Error: \(error) (\(#file):\(#line))")
         }
     }

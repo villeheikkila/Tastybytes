@@ -1,19 +1,19 @@
-import EnvironmentModels
+
 import SwiftUI
 
 struct ProfileStateObserver<Content: View>: View {
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
-    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FriendModel.self) private var friendModel
+    @Environment(AdminModel.self) private var adminModel
+    @Environment(ProfileModel.self) private var profileModel
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        switch profileEnvironmentModel.profileState {
+        switch profileModel.profileState {
         case let .populated(profile):
             content()
                 .task {
-                    await friendEnvironmentModel.initialize(profile: profile)
-                    await adminEnvironmentModel.initialize()
+                    await friendModel.initialize(profile: profile)
+                    await adminModel.initialize()
                 }
         case .loading:
             EmptyView()
@@ -24,7 +24,7 @@ struct ProfileStateObserver<Content: View>: View {
 }
 
 struct ProfileErrorStateView: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     let errors: [Error]
 
     private var title: LocalizedStringKey {
@@ -53,7 +53,7 @@ struct ProfileErrorStateView: View {
 
     var body: some View {
         FullScreenErrorView(title: title, description: description, systemImage: systemImage, action: {
-            await profileEnvironmentModel.initialize()
+            await profileModel.initialize()
         })
     }
 }

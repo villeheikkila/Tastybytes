@@ -24,8 +24,8 @@ public enum ProfileState: Sendable {
 
 @MainActor
 @Observable
-public final class ProfileEnvironmentModel {
-    private let logger = Logger(category: "ProfileEnvironmentModel")
+public final class ProfileModel {
+    private let logger = Logger(category: "ProfileModel")
     // Auth state
     public var profileState: ProfileState = .loading
     public var authState: AuthState?
@@ -96,9 +96,7 @@ public final class ProfileEnvironmentModel {
 
     // App icon
     public func setAppIcon(_ appIcon: AppIcon) {
-        #if !os(watchOS)
-            UIApplication.shared.setAlternateIconName(appIcon == AppIcon.ramune ? nil : appIcon.rawValue)
-        #endif
+        UIApplication.shared.setAlternateIconName(appIcon == AppIcon.ramune ? nil : appIcon.rawValue)
         self.appIcon = appIcon
     }
 
@@ -330,3 +328,25 @@ public final class ProfileEnvironmentModel {
         }
     }
 }
+
+public func clearTemporaryData() {
+    let logger = Logger(category: "TempDataCleanUp")
+    // Reset tab restoration
+    UserDefaults.standard.removeObject(for: .selectedTab)
+
+    // Clear caches folder
+    let fileManager = FileManager.default
+    do {
+        let directoryContents = try fileManager.contentsOfDirectory(
+            at: URL.cachesDirectory,
+            includingPropertiesForKeys: nil,
+            options: []
+        )
+        for file in directoryContents {
+            try fileManager.removeItem(at: file)
+        }
+    } catch {
+        logger.error("Failed to delete navigation stack state restoration files. Error: \(error) (\(#file):\(#line))")
+    }
+}
+

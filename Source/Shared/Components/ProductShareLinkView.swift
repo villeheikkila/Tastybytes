@@ -1,9 +1,9 @@
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 public struct ProductShareLinkView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let product: Product.Joined
 
     public init(product: Product.Joined) {
@@ -15,7 +15,7 @@ public struct ProductShareLinkView: View {
     }
 
     private var link: URL {
-        NavigatablePath.product(id: product.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl)
+        NavigatablePath.product(id: product.id).getUrl(baseUrl: appModel.infoPlist.baseUrl)
     }
 
     public var body: some View {

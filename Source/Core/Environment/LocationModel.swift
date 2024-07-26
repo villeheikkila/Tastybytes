@@ -4,8 +4,8 @@ import OSLog
 
 @MainActor
 @Observable
-public final class LocationEnvironmentModel {
-    private let logger = Logger(category: "LocationEnvironmentModel")
+public final class LocationModel {
+    private let logger = Logger(category: "LocationModel")
     private let manager = CLLocationManager()
     private var monitoringTask: Task<Void, Never>?
 

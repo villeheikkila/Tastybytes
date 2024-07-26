@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -11,10 +11,10 @@ struct CheckInSheet: View {
     private let logger = Logger(category: "CheckInSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(AppModel.self) private var appModel
+    @Environment(CheckInUploadModel.self) private var checkInUploadModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var primaryActionTask: Task<Void, Never>?
@@ -88,7 +88,7 @@ struct CheckInSheet: View {
         }
         .onAppear {
             servingStyles =
-                appEnvironmentModel.categories.first(where: { $0.id == product.category.id })?
+                appModel.categories.first(where: { $0.id == product.category.id })?
                     .servingStyles ?? []
         }
     }
@@ -149,7 +149,7 @@ struct CheckInSheet: View {
                 }
             )
 
-            if profileEnvironmentModel.hasPermission(.canSetCheckInDate) {
+            if profileModel.hasPermission(.canSetCheckInDate) {
                 RouterLink(open: .sheet(.checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic))) {
                     Text(
                         isLegacyCheckIn
@@ -219,11 +219,11 @@ struct CheckInSheet: View {
                     checkInAt: isLegacyCheckIn ? nil : checkInAt,
                     isNostalgic: isNostalgic
                 ))
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
+                checkInUploadModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
                 if let onCreation {
                     await onCreation(newCheckIn)
                 }
-                feedbackEnvironmentModel.trigger(.notification(.success))
+                feedbackModel.trigger(.notification(.success))
                 dismiss()
             } catch {
                 guard !error.isCancelled else { return }
@@ -251,11 +251,11 @@ struct CheckInSheet: View {
                     checkInAt: isLegacyCheckIn ? nil : checkInAt,
                     isNostalgic: isNostalgic
                 ))
-                imageUploadEnvironmentModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
+                checkInUploadModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
                 if let onUpdate {
                     await onUpdate(updatedCheckIn.copyWith(images: images))
                 }
-                feedbackEnvironmentModel.trigger(.notification(.success))
+                feedbackModel.trigger(.notification(.success))
                 dismiss()
             } catch {
                 guard !error.isCancelled else { return }

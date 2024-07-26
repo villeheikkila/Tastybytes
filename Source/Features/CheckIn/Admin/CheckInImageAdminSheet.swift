@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -13,7 +13,7 @@ struct CheckInImageAdminSheet: View {
 
     private let logger = Logger(category: "CheckInImageAdminSheet")
     @Environment(\.dismiss) private var dismiss
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
@@ -25,7 +25,7 @@ struct CheckInImageAdminSheet: View {
     let onDelete: OnDeleteCallback
 
     private var imageUrl: URL? {
-        checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl)
+        checkInImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl)
     }
 
     var body: some View {
@@ -93,7 +93,7 @@ struct CheckInImageAdminSheet: View {
     private func initialize() async {
         do {
             checkInImage = try await repository.checkIn.getDetailedCheckInImage(id: id)
-            guard let imageUrl = checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) else {
+            guard let imageUrl = checkInImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) else {
                 throw ImageEntity.EntityError.failedToFormUrl
             }
             let (data, _) = try await URLSession.shared.data(from: imageUrl)
@@ -120,7 +120,7 @@ struct CheckInImageAdminSheet: View {
                 }
             }
         } catch {
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to get image metadata'. Error: \(error) (\(#file):\(#line))")
         }
     }

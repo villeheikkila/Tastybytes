@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,14 +9,14 @@ import SwiftUI
 struct CheckInImageCellView: View {
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
 
     let checkInImage: ImageEntity.JoinedCheckIn
 
     var body: some View {
         HStack {
             RouterLink(open: .screen(.checkIn(checkInImage.checkIn.id))) {
-                RemoteImageView(url: checkInImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl), content: { image in
+                RemoteImageView(url: checkInImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl), content: { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)

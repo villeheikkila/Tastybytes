@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Models
 import Repositories
 import SwiftUI
@@ -46,7 +46,7 @@ struct CompaniesAdminScreen: View {
             companies = try await repository.company.getAll()
             state = .populated
         } catch {
-            state = .error([error])
+            state = .error(error)
         }
     }
 }

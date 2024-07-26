@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,8 +9,8 @@ import SwiftUI
 struct ProfilePickerSheet: View {
     private let logger = Logger(category: "ProfilePickerSheet")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(FriendModel.self) private var friendModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .populated
     @State private var searchTerm: String = ""
@@ -30,11 +30,11 @@ struct ProfilePickerSheet: View {
                 HStack {
                     if mode == .add {
                         HStack {
-                            if !friendEnvironmentModel.friends
+                            if !friendModel.friends
                                 .contains(where: { $0.containsUser(userId: profile.id) })
                             {
                                 AsyncButton("user.addFriend.label", systemImage: "person.badge.plus", action: {
-                                    await friendEnvironmentModel.sendFriendRequest(
+                                    await friendModel.sendFriendRequest(
                                         receiver: profile.id,
                                         onSuccess: {
                                             dismiss()
@@ -48,13 +48,13 @@ struct ProfilePickerSheet: View {
                         }
                     }
                     if mode == .block {
-                        if !friendEnvironmentModel.blockedUsers
+                        if !friendModel.blockedUsers
                             .contains(where: { $0.containsUser(userId: profile.id) })
                         {
                             AsyncButton(
                                 "user.block.label",
                                 systemImage: "person.fill.xmark",
-                                action: { await friendEnvironmentModel.blockUser(user: profile, onSuccess: {
+                                action: { await friendModel.blockUser(user: profile, onSuccess: {
                                     onSubmit()
                                     dismiss()
                                 })
@@ -94,7 +94,7 @@ struct ProfilePickerSheet: View {
     private func searchUsers(searchTerm: String) async {
         state = .loading
         do {
-            let searchResults = try await repository.profile.search(searchTerm: searchTerm, currentUserId: profileEnvironmentModel.id)
+            let searchResults = try await repository.profile.search(searchTerm: searchTerm, currentUserId: profileModel.id)
             withAnimation {
                 searchedFor = searchTerm
                 self.searchResults = searchResults
@@ -102,7 +102,7 @@ struct ProfilePickerSheet: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed searching users. Error: \(error) (\(#file):\(#line))")
         }
     }

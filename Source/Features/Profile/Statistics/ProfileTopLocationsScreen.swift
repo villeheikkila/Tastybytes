@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -40,7 +40,7 @@ struct ProfileTopLocationsScreen: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed loading top location statistics. Error: \(error) (\(#file):\(#line))")
         }
     }

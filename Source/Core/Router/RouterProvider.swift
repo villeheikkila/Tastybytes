@@ -1,10 +1,10 @@
-import EnvironmentModels
+
 import Models
 import Repositories
 import SwiftUI
 
 struct RouterProvider<Content: View>: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @State private var router = Router()
 
     let enableRoutingFromURLs: Bool
@@ -28,7 +28,7 @@ struct RouterProvider<Content: View>: View {
         }))
         .if(enableRoutingFromURLs) { view in
             view.onOpenURL { url in
-                if let path = DeepLinkHandler(url: url, deeplinkSchemes: appEnvironmentModel.infoPlist.deeplinkSchemes).detailPage {
+                if let path = DeepLinkHandler(url: url, deeplinkSchemes: appModel.infoPlist.deeplinkSchemes).detailPage {
                     router.open(path.open)
                 }
             }

@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,8 +10,8 @@ import SwiftUI
 struct CompanyScreen: View {
     private let logger = Logger(category: "CompanyScreen")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(Router.self) private var router
     @State private var state: ScreenState = .loading
     @State private var company = Company.Joined()
@@ -92,7 +92,7 @@ struct CompanyScreen: View {
         Menu {
             ControlGroup {
                 CompanyShareLinkView(company: company)
-                if profileEnvironmentModel.hasPermission(.canCreateBrands) {
+                if profileModel.hasPermission(.canCreateBrands) {
                     RouterLink(
                         "brand.title",
                         systemImage: "plus",
@@ -129,7 +129,6 @@ struct CompanyScreen: View {
     private func getCompanyData(withHaptics: Bool = false) async {
         async let companyPromise = repository.company.getJoinedById(id: id)
         async let summaryPromise = repository.company.getSummaryById(id: id)
-        var errors = [Error]()
         do {
             let (companyResult, summaryResult) = try await (
                 companyPromise,
@@ -138,15 +137,15 @@ struct CompanyScreen: View {
             withAnimation {
                 company = companyResult
                 summary = summaryResult
+                state = .populated
+            }
+            if withHaptics {
+                feedbackModel.trigger(.impact(intensity: .low))
             }
         } catch {
             guard !error.isCancelled else { return }
-            errors.append(error)
+            state = .getState(error: error, withHaptics: withHaptics, feedbackModel: feedbackModel)
             logger.error("Failed to refresh data for company. Error: \(error) (\(#file):\(#line))")
         }
-        if withHaptics {
-            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
-        }
-        state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 }

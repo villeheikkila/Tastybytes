@@ -6,8 +6,8 @@ import SwiftUI
 
 @MainActor
 @Observable
-public final class ImageUploadEnvironmentModel {
-    private let logger = Logger(category: "ImageUploadEnvironmentModel")
+public final class CheckInUploadModel {
+    private let logger = Logger(category: "CheckInUploadModel")
 
     public var uploadedImageForCheckIn: CheckIn.Joined?
     public var alertError: AlertEvent?

@@ -1,36 +1,36 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct EditSuggestionAdminScreen: View {
-    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
+    @Environment(AdminModel.self) private var adminModel
 
     var body: some View {
-        List(adminEnvironmentModel.editSuggestions) { editSuggestion in
+        List(adminModel.editSuggestions) { editSuggestion in
             EditSuggestionRowView(editSuggestion: editSuggestion)
                 .swipeActions {
                     AsyncButton("labels.delete", systemImage: "trash") {
-                        await adminEnvironmentModel.deleteEditSuggestion(editSuggestion)
+                        await adminModel.deleteEditSuggestion(editSuggestion)
                     }
                     .labelStyle(.iconOnly)
                     .tint(.red)
                 }
         }
         .listStyle(.plain)
-        .animation(.default, value: adminEnvironmentModel.editSuggestions)
+        .animation(.default, value: adminModel.editSuggestions)
         .overlay {
-            if adminEnvironmentModel.editSuggestions.isEmpty {
+            if adminModel.editSuggestions.isEmpty {
                 ContentUnavailableView("editSuggestions.empty.title", systemImage: "tray")
             }
         }
         .navigationTitle("editSuggestions.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .refreshable {
-            await adminEnvironmentModel.loadEditSuggestions()
+            await adminModel.loadEditSuggestions()
         }
         .task {
-            await adminEnvironmentModel.loadEditSuggestions()
+            await adminModel.loadEditSuggestions()
         }
     }
 }

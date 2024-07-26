@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import SwiftUI
 
 struct ProfileInfoSettingSectionsView: View {
@@ -6,7 +6,7 @@ struct ProfileInfoSettingSectionsView: View {
         case username, firstName, lastName
     }
 
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
 
     @FocusState var focusedField: FocusField?
     @Binding var usernameIsAvailable: Bool
@@ -35,10 +35,10 @@ struct ProfileInfoSettingSectionsView: View {
         }
         .headerProminence(.increased)
         .task {
-            username = profileEnvironmentModel.username
-            firstName = profileEnvironmentModel.firstName ?? ""
-            lastName = profileEnvironmentModel.lastName ?? ""
-            usernameIsAvailable = await profileEnvironmentModel.checkIfUsernameIsAvailable(username: username)
+            username = profileModel.username
+            firstName = profileModel.firstName ?? ""
+            lastName = profileModel.lastName ?? ""
+            usernameIsAvailable = await profileModel.checkIfUsernameIsAvailable(username: username)
         }
         .onChange(of: username) {
             usernameIsAvailable = false
@@ -46,7 +46,7 @@ struct ProfileInfoSettingSectionsView: View {
         }
         .task(id: username, milliseconds: 300) {
             guard username.count >= 3 else { return }
-            let isAvailable = await profileEnvironmentModel
+            let isAvailable = await profileModel
                 .checkIfUsernameIsAvailable(username: username)
             withAnimation {
                 usernameIsAvailable = isAvailable

@@ -3,12 +3,12 @@ import SwiftUI
 struct ScreenContentUnavailableView: View {
     @State private var isTaskRunning = false
 
-    let errors: [Error]
+    let error: Error
     let description: LocalizedStringKey?
     let action: () async -> Void
 
     private var label: some View {
-        if errors.isNetworkUnavailable {
+        if error.isNetworkUnavailable {
             Label("screen.error.networkUnavailable", systemImage: "wifi.slash")
         } else {
             Label("screen.error.unexpectedError", systemImage: "exclamationmark.triangle")

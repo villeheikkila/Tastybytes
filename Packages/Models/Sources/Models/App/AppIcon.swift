@@ -13,11 +13,9 @@ public enum AppIcon: String, CaseIterable, Identifiable {
 
     @MainActor
     public static var currentAppIcon: Self {
-        #if !os(watchOS)
-            if let alternateAppIcon = UIApplication.shared.alternateIconName {
-                return .init(rawValue: alternateAppIcon) ?? AppIcon.ramune
-            }
-        #endif
+        if let alternateAppIcon = UIApplication.shared.alternateIconName {
+            return .init(rawValue: alternateAppIcon) ?? AppIcon.ramune
+        }
         return .ramune
     }
 }

@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Extensions
 import Models
 import Repositories
@@ -7,7 +7,7 @@ import SwiftUI
 struct LocationAdminScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @State private var state: ScreenState = .loading
     @State private var locations = [Location.Saved]()
     @State private var searchTerm = ""
@@ -56,7 +56,7 @@ struct LocationAdminScreen: View {
             }
         } catch {
             withAnimation {
-                state = .getState(errors: [error], withHaptics: false, feedbackEnvironmentModel: feedbackEnvironmentModel)
+                state = .getState(error: error, withHaptics: false, feedbackModel: feedbackModel)
             }
         }
     }

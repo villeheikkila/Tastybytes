@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -8,7 +8,7 @@ import SwiftUI
 struct CategoryAdminSheet: View {
     private let logger = Logger(category: "CategoryAdminSheet")
     @Environment(Repository.self) private var repository
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var category = Models.Category.Detailed()
@@ -65,7 +65,7 @@ struct CategoryAdminSheet: View {
                 "subcategory.add",
                 systemImage: "plus",
                 open: .sheet(.subcategoryCreation(category: category, onSubmit: { newSubcategoryName in
-                    await appEnvironmentModel.addSubcategory(category: .init(category: category), name: newSubcategoryName)
+                    await appModel.addSubcategory(category: .init(category: category), name: newSubcategoryName)
                 }))
             )
         }
@@ -73,7 +73,7 @@ struct CategoryAdminSheet: View {
 
         Section {
             ConfirmedDeleteButtonView(presenting: category, action: { _ in
-                await appEnvironmentModel.deleteCategory(.init(category: category), onDelete: {
+                await appModel.deleteCategory(.init(category: category), onDelete: {
                     dismiss()
                 })
             }, description: "category.admin.delete.confirmationDialog.title", label: "category.admin.delete.confirmationDialog.label \(category.name)", isDisabled: false)
@@ -91,7 +91,7 @@ struct CategoryAdminSheet: View {
             state = .populated
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load detailed category info. Error: \(error) (\(#file):\(#line))")
         }
     }

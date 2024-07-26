@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -8,15 +8,15 @@ import SwiftUI
 struct CategoriesAdminScreen: View {
     private let logger = Logger(category: "CategoriesAdminScreen")
     @Environment(Router.self) private var router
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
 
     var body: some View {
-        List(appEnvironmentModel.categories) { category in
+        List(appModel.categories) { category in
             CategoryAdminRowView(category: category)
         }
         .listStyle(.plain)
         .refreshable {
-            await appEnvironmentModel.initialize(reset: true)
+            await appModel.initialize(reset: true)
         }
         .navigationBarTitle("category.title")
         .navigationBarTitleDisplayMode(.inline)

@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Extensions
 import MapKit
 import Models
@@ -60,7 +60,7 @@ struct ProfileLocationsScreen: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed loading check-in locations statistics. Error: \(error) (\(#file):\(#line))")
         }
     }

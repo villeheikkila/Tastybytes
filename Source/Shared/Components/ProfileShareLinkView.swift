@@ -1,13 +1,13 @@
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 public struct ProfileShareLinkView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let profile: Profile.Saved
 
     private var link: URL {
-        NavigatablePath.profile(id: profile.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl)
+        NavigatablePath.profile(id: profile.id).getUrl(baseUrl: appModel.infoPlist.baseUrl)
     }
 
     private var title: String {

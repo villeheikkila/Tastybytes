@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,7 +10,7 @@ import Translation
 struct CheckInCommentRowView: View {
     private let logger = Logger(category: "CheckInScreen")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var showDeleteAsModeratorConfirmationDialog = false
     @State private var showTranslator = false
 
@@ -22,7 +22,7 @@ struct CheckInCommentRowView: View {
         CheckInCommentEntityView(comment: comment)
             .translationPresentation(isPresented: $showTranslator, text: comment.content)
             .contextMenu {
-                if comment.profile == profileEnvironmentModel.profile {
+                if comment.profile == profileModel.profile {
                     RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.editComment(checkInComment: comment, checkInComments: $checkInComments)))
                     AsyncButton("labels.delete", systemImage: "trash.fill", role: .destructive) {
                         await deleteComment(comment)

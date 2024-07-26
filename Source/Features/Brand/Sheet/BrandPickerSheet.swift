@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,7 +9,7 @@ import SwiftUI
 struct BrandPickerSheet: View {
     private let logger = Logger(category: "BrandPickerSheet")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
@@ -39,7 +39,7 @@ struct BrandPickerSheet: View {
         .listStyle(.plain)
         .foregroundColor(.primary)
         .safeAreaInset(edge: .bottom) {
-            if profileEnvironmentModel.hasPermission(.canCreateBrands) {
+            if profileModel.hasPermission(.canCreateBrands) {
                 Form {
                     Section("brand.addBrandForCompany.title \(brandOwner.name)") {
                         ScanTextFieldView(title: "brand.name.placeholder", text: $brandName)

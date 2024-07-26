@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,9 +9,10 @@ import SwiftUI
 struct ActivityScreen: View {
     private let logger = Logger(category: "CheckInList")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(AppModel.self) private var appModel
+    @Environment(NotificationModel.self) private var notificationModel
+    @Environment(CheckInUploadModel.self) private var checkInUploadModel
     @State private var state: ScreenState = .loading
 
     @State private var loadingCheckInsOnAppearTask: Task<Void, Error>?
@@ -24,15 +25,17 @@ struct ActivityScreen: View {
     @State private var checkIns = [CheckIn.Joined]()
 
     var body: some View {
-        @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
+        @Bindable var checkInUploadModel = checkInUploadModel
         ScrollViewReader { proxy in
             List {
                 if state.isPopulated {
-                    CheckInListContentView(checkIns: $checkIns, onCheckInUpdate: onCheckInUpdate, onCreateCheckIn: { checkIn in
-                        onCreateCheckIn(checkIn)
+                    CheckInListContentView(checkIns: $checkIns, onCreateCheckIn: { checkIn in
+                        checkIns.insert(checkIn, at: 0)
                         try? await Task.sleep(nanoseconds: 100_000_000)
                         proxy.scrollTo(checkIn.id, anchor: .top)
-                    }, onLoadMore: onLoadMore)
+                    }, onLoadMore: {
+                        await fetchFeedItems()
+                    })
                     CheckInListLoadingIndicatorView(isLoading: $isLoading, isRefreshing: $isRefreshing)
                 }
             }
@@ -42,7 +45,7 @@ struct ActivityScreen: View {
             .refreshable {
                 await fetchFeedItems(reset: true, onPageLoad: false)
             }
-            .checkInCardLoadedFrom(.activity(profileEnvironmentModel.profile))
+            .checkInCardLoadedFrom(.activity(profileModel.profile))
             .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }
@@ -65,10 +68,10 @@ struct ActivityScreen: View {
             .task {
                 await fetchFeedItems(onPageLoad: true)
             }
-            .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
+            .onChange(of: checkInUploadModel.uploadedImageForCheckIn) { _, newValue in
                 if let updatedCheckIn = newValue {
-                    imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                    onCheckInUpdate(updatedCheckIn)
+                    checkInUploadModel.uploadedImageForCheckIn = nil
+                    checkIns = checkIns.replacingWithId(updatedCheckIn.id, with: updatedCheckIn)
                 }
             }
         }
@@ -79,7 +82,7 @@ struct ActivityScreen: View {
             RouterLink("friends.navigationTitle", systemImage: "person.2", open: .screen(.currentUserFriends))
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
-                .customBadge(notificationEnvironmentModel.unreadFriendRequestCount)
+                .customBadge(notificationModel.unreadFriendRequestCount)
         }
         ToolbarItem(placement: .principal) {}
         ToolbarItemGroup(placement: .topBarTrailing) {
@@ -89,30 +92,13 @@ struct ActivityScreen: View {
         }
     }
 
-    private func onCreateCheckIn(_ checkIn: CheckIn.Joined) {
-        checkIns.insert(checkIn, at: 0)
-    }
-
-    private func onCheckInUpdate(_ checkIn: CheckIn.Joined) {
-        checkIns = checkIns.replacingWithId(checkIn.id, with: checkIn)
-    }
-
-    private func onLoadMore() {
-        guard loadingCheckInsOnAppearTask == nil else { return }
-        loadingCheckInsOnAppearTask = Task {
-            defer { loadingCheckInsOnAppearTask = nil }
-            logger.info("Loading more items invoked")
-            await fetchFeedItems()
-        }
-    }
-
     private func fetchFeedItems(reset: Bool = false, onPageLoad: Bool = false) async {
         if reset {
             isRefreshing = true
         } else {
             isLoading = true
         }
-        let (from, to) = getPagination(page: reset ? 0 : page, size: 10)
+        let (from, to) = getPagination(page: reset ? 0 : page, size: appModel.rateControl.checkInPageSize)
         let queryType: ActivityFeedQueryType = if !reset, !isInitialLoad, onPageLoad, let id = checkIns.first?.id {
             .afterId(id)
         } else {
@@ -138,7 +124,7 @@ struct ActivityScreen: View {
             guard !error.isCancelled, !Task.isCancelled else { return }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
             if state != .populated {
-                state = .error([error])
+                state = .error(error)
             }
         }
         if reset {

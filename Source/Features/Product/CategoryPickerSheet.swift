@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -7,13 +7,13 @@ import SwiftUI
 
 struct CategoryPickerSheet: View {
     private let logger = Logger(category: "CategoryPickerSheet")
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm = ""
     @Binding var category: Models.Category.JoinedSubcategoriesServingStyles?
 
     private var shownCategories: [Models.Category.JoinedSubcategoriesServingStyles] {
-        appEnvironmentModel.categories.filter { category in
+        appModel.categories.filter { category in
             searchTerm.isEmpty ||
                 category.name.contains(searchTerm) ||
                 category.subcategories.contains(where: { subcategory in
@@ -28,7 +28,7 @@ struct CategoryPickerSheet: View {
 
     var body: some View {
         List(sortedCategories, selection: $category.map(getter: { _ in category?.id }, setter: { id in
-            appEnvironmentModel.categories.first(where: { c in c.id == id })
+            appModel.categories.first(where: { c in c.id == id })
         })) { category in
             HStack {
                 if let icon = category.icon {

@@ -2,7 +2,7 @@ import SwiftUI
 
 @MainActor
 @Observable
-public final class FeedbackEnvironmentModel {
+public final class FeedbackModel {
     public var sensoryFeedback: SensoryFeedbackEvent?
 
     public init() {}
@@ -41,7 +41,7 @@ public struct SensoryFeedbackEvent: Identifiable, Equatable {
     }
 }
 
-public extension FeedbackEnvironmentModel {
+public extension FeedbackModel {
     enum ErrorType {
         case unexpected, custom(String)
     }

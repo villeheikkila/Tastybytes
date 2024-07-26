@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,8 +9,8 @@ import SwiftUI
 struct BrandScreen: View {
     private let logger = Logger(category: "BrandScreen")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(Router.self) private var router
     @State private var brand = Brand.JoinedSubBrandsProductsCompany()
     @State private var summary: Summary?
@@ -140,7 +140,7 @@ struct BrandScreen: View {
             Menu {
                 ControlGroup {
                     BrandShareLinkView(brand: brand)
-                    if profileEnvironmentModel.hasPermission(.canCreateProducts) {
+                    if profileModel.hasPermission(.canCreateProducts) {
                         RouterLink("brand.addProduct.menu.label", systemImage: "plus", open: .sheet(.product(.addToBrand(brand, onCreate: { product in
                             router.open(.screen(.product(product.id), removeLast: true))
                         }))))
@@ -192,9 +192,8 @@ struct BrandScreen: View {
         async let brandPromise = repository.brand.getJoinedById(id: id)
         async let isLikedPromisePromise = repository.brand.isLikedByCurrentUser(id: id)
         if withHaptics {
-            feedbackEnvironmentModel.trigger(.impact(intensity: .low))
+            feedbackModel.trigger(.impact(intensity: .low))
         }
-        var errors = [Error]()
         do {
             let (summaryResult, brandResult, isLikedResult) = try await (
                 summaryPromise,
@@ -205,14 +204,13 @@ struct BrandScreen: View {
                 summary = summaryResult
                 brand = brandResult
                 isLikedByCurrentUser = isLikedResult
+                state = .populated
             }
         } catch {
             guard !error.isCancelled else { return }
-            errors.append(error)
+            state = .getState(error: error, withHaptics: withHaptics, feedbackModel: feedbackModel)
             logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
         }
-
-        state = .getState(errors: errors, withHaptics: withHaptics, feedbackEnvironmentModel: feedbackEnvironmentModel)
 
         if let initialScrollPosition, let proxy {
             try? await Task.sleep(for: .milliseconds(100))
@@ -224,7 +222,7 @@ struct BrandScreen: View {
         if isLikedByCurrentUser {
             do {
                 try await repository.brand.unlikeBrand(id: id)
-                feedbackEnvironmentModel.trigger(.notification(.success))
+                feedbackModel.trigger(.notification(.success))
                 withAnimation {
                     isLikedByCurrentUser = false
                 }
@@ -235,7 +233,7 @@ struct BrandScreen: View {
         } else {
             do {
                 try await repository.brand.likeBrand(id: id)
-                feedbackEnvironmentModel.trigger(.notification(.success))
+                feedbackModel.trigger(.notification(.success))
                 withAnimation {
                     isLikedByCurrentUser = true
                 }
@@ -262,7 +260,7 @@ private enum GroupProductsBy: String, CaseIterable {
 
 struct SubBrandSectionHeaderView: View {
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @Binding var brand: Brand.JoinedSubBrandsProductsCompany
     let subBrand: SubBrand.JoinedProduct
 
@@ -273,7 +271,7 @@ struct SubBrandSectionHeaderView: View {
             }
             Spacer()
             Menu {
-                if profileEnvironmentModel.hasPermission(.canCreateProducts) {
+                if profileModel.hasPermission(.canCreateProducts) {
                     RouterLink(
                         "brand.createProduct.label",
                         systemImage: "plus",

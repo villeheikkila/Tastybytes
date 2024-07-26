@@ -6,8 +6,8 @@ import SwiftUI
 
 @MainActor
 @Observable
-final class SubscriptionEnvironmentModel {
-    private let logger = Logger(category: "SubscriptionEnvironmentModel")
+final class SubscriptionModel {
+    private let logger = Logger(category: "SubscriptionModel")
     let productSubscription = ProductSubscription()
     private var activeTransactions: Set<StoreKit.Transaction> = []
 

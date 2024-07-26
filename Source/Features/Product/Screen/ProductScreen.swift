@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -8,28 +8,15 @@ import SwiftUI
 import Translation
 
 struct ProductScreen: View {
-    @Environment(Repository.self) private var repository
-    let id: Product.Id
-    let loadedWithBarcode: Barcode?
-
-    init(id: Product.Id, loadedWithBarcode: Barcode? = nil) {
-        self.id = id
-        self.loadedWithBarcode = loadedWithBarcode
-    }
-
-    var body: some View {
-        ProductInnerScreen(repository: repository, id: id, loadedWithBarcode: loadedWithBarcode)
-    }
-}
-
-struct ProductInnerScreen: View {
     private let logger = Logger(category: "ProductScreen")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
-    @Environment(ImageUploadEnvironmentModel.self) private var imageUploadEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(FeedbackModel.self) private var feedbackModel
+    @Environment(CheckInUploadModel.self) private var checkInUploadModel
+    @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
     @State private var product = Product.Joined()
+    @State private var checkIns = [CheckIn.Joined]()
     @State private var summary: Summary?
     @State private var loadedWithBarcode: Barcode?
     @State private var showTranslator = false
@@ -42,20 +29,28 @@ struct ProductInnerScreen: View {
     @State private var state: ScreenState = .loading
     // wishlist
     @State private var isOnWishlist = false
-    @State private var checkInLoader: CheckInListLoader
+    @State private var isRefreshing = false
+    @State private var isLoading = false
+    @State private var page = 0
+    @State private var onSegmentChangeTask: Task<Void, Error>?
+    @State private var showCheckInsFrom: CheckIn.Segment = .everyone {
+        didSet {
+            onSegmentChangeTask?.cancel()
+            onSegmentChangeTask = Task {
+                await fetchCheckIns(reset: true, segment: showCheckInsFrom)
+            }
+        }
+    }
 
     private let id: Product.Id
 
-    init(repository: Repository, id: Product.Id, loadedWithBarcode: Barcode? = nil) {
-        _checkInLoader = State(initialValue: CheckInListLoader(fetcher: { from, to, segment in
-            try await repository.checkIn.getByProductId(id: id, segment: segment, from: from, to: to)
-        }, id: "ProductScreen"))
+    init(id: Product.Id, loadedWithBarcode: Barcode? = nil) {
         _loadedWithBarcode = State(initialValue: loadedWithBarcode)
         self.id = id
     }
 
     var body: some View {
-        @Bindable var imageUploadEnvironmentModel = imageUploadEnvironmentModel
+        @Bindable var checkInUploadModel = checkInUploadModel
         List {
             if state.isPopulated {
                 content
@@ -87,10 +82,10 @@ struct ProductInnerScreen: View {
         .initialTask {
             await getProductData()
         }
-        .onChange(of: imageUploadEnvironmentModel.uploadedImageForCheckIn) { _, newValue in
+        .onChange(of: checkInUploadModel.uploadedImageForCheckIn) { _, newValue in
             if let updatedCheckIn = newValue {
-                imageUploadEnvironmentModel.uploadedImageForCheckIn = nil
-                checkInLoader.onCheckInUpdate(updatedCheckIn)
+                checkInUploadModel.uploadedImageForCheckIn = nil
+                checkIns = checkIns.replacingWithId(updatedCheckIn.id, with: updatedCheckIn)
             }
         }
     }
@@ -104,10 +99,12 @@ struct ProductInnerScreen: View {
             onCreateCheckIn: onCreateCheckIn
         )
         .listRowSeparator(.hidden)
-        CheckInListSegmentPickerView(showCheckInsFrom: $checkInLoader.showCheckInsFrom)
-        CheckInListContentView(checkIns: $checkInLoader.checkIns, onCheckInUpdate: checkInLoader.onCheckInUpdate, onCreateCheckIn: checkInLoader.onCreateCheckIn, onLoadMore: checkInLoader.onLoadMore)
-            .checkInCardLoadedFrom(.product)
-        CheckInListLoadingIndicatorView(isLoading: $checkInLoader.isLoading, isRefreshing: $checkInLoader.isRefreshing)
+        CheckInListSegmentPickerView(showCheckInsFrom: $showCheckInsFrom)
+        CheckInListContentView(checkIns: $checkIns, onLoadMore: {
+            await fetchCheckIns(segment: showCheckInsFrom)
+        })
+        .checkInCardLoadedFrom(.product)
+        CheckInListLoadingIndicatorView(isLoading: $isLoading, isRefreshing: $isRefreshing)
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -121,9 +118,10 @@ struct ProductInnerScreen: View {
             Menu {
                 ControlGroup {
                     ProductShareLinkView(product: product)
-                    RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: checkInLoader.onCreateCheckIn))))
-                        .disabled(!profileEnvironmentModel.hasPermission(.canCreateCheckIns))
-                    if profileEnvironmentModel.hasPermission(.canAddBarcodes) {
+                    RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIns.insert($0, at: 0)
+                    }))))
+                    .disabled(!profileModel.hasPermission(.canCreateCheckIns))
+                    if profileModel.hasPermission(.canAddBarcodes) {
                         RouterLink(
                             "labels.add",
                             systemImage: "barcode.viewfinder",
@@ -178,8 +176,7 @@ struct ProductInnerScreen: View {
         }
     }
 
-    private func onCreateCheckIn(checkIn: CheckIn.Joined) async {
-        checkInLoader.onCreateCheckIn(checkIn)
+    private func onCreateCheckIn(checkIn _: CheckIn.Joined) async {
         do {
             let summary = try await repository.product.getSummaryById(id: id)
             self.summary = summary
@@ -191,12 +188,11 @@ struct ProductInnerScreen: View {
     }
 
     private func getProductData(isRefresh: Bool = false) async {
-        async let loadInitialCheckInsPromise: Void = checkInLoader.loadData(isRefresh: isRefresh)
+        async let loadInitialCheckInsPromise: Void = fetchCheckIns(reset: true, segment: .everyone)
         async let productPromise = repository.product.getById(id: id)
         async let summaryPromise = repository.product.getSummaryById(id: id)
         async let wishlistPromise = repository.product.checkIfOnWishlist(id: id)
         async let fetchImagePromise: Void = fetchImages(reset: true)
-        var errors: [Error] = []
         do {
             let (_, productResult, summaryResult, wishlistResult, _) = try await (loadInitialCheckInsPromise,
                                                                                   productPromise,
@@ -207,14 +203,13 @@ struct ProductInnerScreen: View {
                 product = productResult
                 summary = summaryResult
                 isOnWishlist = wishlistResult
+                state = .populated
             }
         } catch {
             guard !error.isCancelled else { return }
-            errors.append(error)
+            state = .getState(error: error, withHaptics: isRefresh, feedbackModel: feedbackModel)
             logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
         }
-
-        state = .getState(errors: errors, withHaptics: isRefresh, feedbackEnvironmentModel: feedbackEnvironmentModel)
     }
 
     private func addBarcodeToProduct(_ barcode: Barcode) async {
@@ -264,7 +259,7 @@ struct ProductInnerScreen: View {
         if isOnWishlist {
             do {
                 try await repository.product.removeFromWishlist(productId: product.id)
-                feedbackEnvironmentModel.trigger(.notification(.success))
+                feedbackModel.trigger(.notification(.success))
                 withAnimation {
                     isOnWishlist = false
                 }
@@ -274,7 +269,7 @@ struct ProductInnerScreen: View {
             }
         } else {
             do { try await repository.product.addToWishlist(productId: product.id)
-                feedbackEnvironmentModel.trigger(.notification(.success))
+                feedbackModel.trigger(.notification(.success))
                 withAnimation {
                     isOnWishlist = true
                 }
@@ -283,5 +278,24 @@ struct ProductInnerScreen: View {
                 logger.error("Adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
             }
         }
+    }
+
+    func fetchCheckIns(reset: Bool = false, segment: CheckIn.Segment) async {
+        let (from, to) = getPagination(page: reset ? 0 : page, size: appModel.rateControl.checkInPageSize)
+        isLoading = true
+        do {
+            let fetchedCheckIns = try await repository.checkIn.getByProductId(id: id, segment: segment, from: from, to: to)
+            if reset {
+                checkIns = fetchedCheckIns
+            } else {
+                checkIns.append(contentsOf: fetchedCheckIns)
+            }
+            page += 1
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Fetching check-ins from \(from) to \(to) failed. Error: \(error) (\(#file):\(#line))")
+            guard !error.isNetworkUnavailable else { return }
+        }
+        isLoading = false
     }
 }

@@ -1,28 +1,28 @@
-import EnvironmentModels
+
 import OSLog
 import StoreKit
 import SwiftUI
 
 struct SubscriptionProvider<Content: View>: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
+    @Environment(AppModel.self) private var appModel
+    @Environment(SubscriptionModel.self) private var subscriptionModel
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         Group {
-            if let subscriptionGroup = appEnvironmentModel.subscriptionGroup {
+            if let subscriptionGroup = appModel.subscriptionGroup {
                 content()
                     .subscriptionStatusTask(for: subscriptionGroup.groupId) { taskStatus in
-                        await subscriptionEnvironmentModel.onTaskStatusChange(taskStatus: taskStatus, productSubscriptions: subscriptionGroup.subscriptions)
+                        await subscriptionModel.onTaskStatusChange(taskStatus: taskStatus, productSubscriptions: subscriptionGroup.subscriptions)
                     }
                     .task {
-                        await subscriptionEnvironmentModel.initializeActiveTransactions()
+                        await subscriptionModel.initializeActiveTransactions()
                     }
                     .task {
-                        await subscriptionEnvironmentModel.productSubscription.observeTransactionUpdates()
+                        await subscriptionModel.productSubscription.observeTransactionUpdates()
                     }
                     .task {
-                        await subscriptionEnvironmentModel.productSubscription.checkForUnfinishedTransactions()
+                        await subscriptionModel.productSubscription.checkForUnfinishedTransactions()
                     }
             }
         }

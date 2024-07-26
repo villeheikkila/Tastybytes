@@ -6,8 +6,8 @@ import SwiftUI
 
 @MainActor
 @Observable
-public final class FriendEnvironmentModel {
-    private let logger = Logger(category: "FriendsScreen")
+public final class FriendModel {
+    private let logger = Logger(category: "FriendModel")
     public var friends = [Friend.Saved]()
     public var alertError: AlertEvent?
     public var isRefreshing = false
@@ -117,7 +117,7 @@ public final class FriendEnvironmentModel {
             state = .populated
         } catch {
             if state != .populated {
-                state = .error([error])
+                state = .error(error)
             }
             logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
         }

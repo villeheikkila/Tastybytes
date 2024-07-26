@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import SwiftUI
 
 enum NotificationDeliveryType: CaseIterable {
@@ -19,8 +19,8 @@ enum NotificationDeliveryType: CaseIterable {
 }
 
 struct NotificationSettingsScreen: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(NotificationModel.self) private var notificationModel
     @State private var initialValuesLoaded = false
     @State private var reactioNotificationDeliveryType: NotificationDeliveryType = .disabled
     @State private var checkInNotificationDeliveryType: NotificationDeliveryType = .disabled
@@ -65,58 +65,58 @@ struct NotificationSettingsScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: reactioNotificationDeliveryType) { _, newState in
             Task {
-                await notificationEnvironmentModel
+                await notificationModel
                     .updatePushNotificationSettingsForDevice(sendReactionNotifications: newState ==
                         .pushNotification)
-                await profileEnvironmentModel
+                await profileModel
                     .updateNotificationSettings(sendReactionNotifications: newState != .disabled)
             }
         }
         .onChange(of: checkInNotificationDeliveryType) { _, newState in
             Task {
-                await notificationEnvironmentModel
+                await notificationModel
                     .updatePushNotificationSettingsForDevice(sendTaggedCheckInNotifications: newState ==
                         .pushNotification)
-                await profileEnvironmentModel
+                await profileModel
                     .updateNotificationSettings(sendTaggedCheckInNotifications: newState != .disabled)
             }
         }
         .onChange(of: friendRequestNotificationDeliveryType) { _, newState in
             Task {
-                await notificationEnvironmentModel
+                await notificationModel
                     .updatePushNotificationSettingsForDevice(sendFriendRequestNotifications: newState ==
                         .pushNotification)
-                await profileEnvironmentModel
+                await profileModel
                     .updateNotificationSettings(sendFriendRequestNotifications: newState != .disabled)
             }
         }
         .onChange(of: checkInCommentNotificationsDeliveryType) { _, newState in
             Task {
-                await notificationEnvironmentModel
+                await notificationModel
                     .updatePushNotificationSettingsForDevice(sendCheckInCommentNotifications: newState ==
                         .pushNotification)
-                await profileEnvironmentModel
+                await profileModel
                     .updateNotificationSettings(sendCheckInCommentNotifications: newState != .disabled)
             }
         }
         .task {
             if !initialValuesLoaded {
-                reactioNotificationDeliveryType = profileEnvironmentModel
-                    .reactionNotifications ? notificationEnvironmentModel
+                reactioNotificationDeliveryType = profileModel
+                    .reactionNotifications ? notificationModel
                     .pushNotificationSettings?
                     .sendReactionNotifications ?? false ? .pushNotification : .inApp : .disabled
-                checkInNotificationDeliveryType = profileEnvironmentModel
-                    .checkInTagNotifications ? notificationEnvironmentModel
+                checkInNotificationDeliveryType = profileModel
+                    .checkInTagNotifications ? notificationModel
                     .pushNotificationSettings?
                     .sendTaggedCheckInNotifications ?? false ? .pushNotification : .inApp :
                     .disabled
-                friendRequestNotificationDeliveryType = profileEnvironmentModel
-                    .friendRequestNotifications ? notificationEnvironmentModel
+                friendRequestNotificationDeliveryType = profileModel
+                    .friendRequestNotifications ? notificationModel
                     .pushNotificationSettings?
                     .sendFriendRequestNotifications ?? false ? .pushNotification : .inApp :
                     .disabled
-                checkInCommentNotificationsDeliveryType = profileEnvironmentModel
-                    .sendCommentNotifications ? notificationEnvironmentModel
+                checkInCommentNotificationsDeliveryType = profileModel
+                    .sendCommentNotifications ? notificationModel
                     .pushNotificationSettings?
                     .sendCheckInCommentNotifications ?? false ? .pushNotification : .inApp :
                     .disabled

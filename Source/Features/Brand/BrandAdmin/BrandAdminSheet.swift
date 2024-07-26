@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -19,7 +19,7 @@ struct BrandAdminSheet: View {
     private let logger = Logger(category: "BrandAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var showDeleteBrandConfirmationDialog = false
@@ -191,7 +191,7 @@ struct BrandAdminSheet: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load detailed brand info. Error: \(error) (\(#file):\(#line))")
         }
     }

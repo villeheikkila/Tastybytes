@@ -16,3 +16,12 @@ struct WebViewSheet: View {
             .navigationBarTitleDisplayMode(.inline)
     }
 }
+
+struct WebViewLink: Identifiable {
+    var id: Int {
+        "\(url)\(title)".hashValue
+    }
+
+    let title: String
+    let url: URL
+}

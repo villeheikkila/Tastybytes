@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -10,7 +10,7 @@ struct ReactionsView: View {
     private let logger = Logger(category: "ReactionsView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var checkInReactions = [CheckIn.Reaction.Saved]()
     @State private var isLoading = false
     @State private var task: Task<Void, Never>?
@@ -23,7 +23,7 @@ struct ReactionsView: View {
     }
 
     var currentlyUserHasReacted: Bool {
-        checkInReactions.contains(where: { $0.profile.id == profileEnvironmentModel.profile.id })
+        checkInReactions.contains(where: { $0.profile.id == profileModel.profile.id })
     }
 
     var body: some View {
@@ -47,7 +47,7 @@ struct ReactionsView: View {
                         await toggleReaction()
                     }
                 }
-                .allowsHitTesting(!isLoading && profileEnvironmentModel.hasPermission(.canReactToCheckIns))
+                .allowsHitTesting(!isLoading && profileModel.hasPermission(.canReactToCheckIns))
         }
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxHeight: 24)
@@ -62,7 +62,7 @@ struct ReactionsView: View {
 
     private func toggleReaction() async {
         isLoading = true
-        if let reaction = checkInReactions.first(where: { $0.profile.id == profileEnvironmentModel.id }) {
+        if let reaction = checkInReactions.first(where: { $0.profile.id == profileModel.id }) {
             do {
                 try await repository.checkInReactions.delete(id: reaction.id)
                 withAnimation {
@@ -81,7 +81,7 @@ struct ReactionsView: View {
             } catch {
                 guard !error.isCancelled else { return }
                 router.open(.alert(.init()))
-                logger.error("Adding check-in reaction for check-in \(checkIn.id) by \(profileEnvironmentModel.id) failed: \(error.localizedDescription)")
+                logger.error("Adding check-in reaction for check-in \(checkIn.id) by \(profileModel.id) failed: \(error.localizedDescription)")
             }
         }
         isLoading = false

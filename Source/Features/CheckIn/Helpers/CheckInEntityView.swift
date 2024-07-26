@@ -1,10 +1,10 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 public struct CheckInEntityView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let checkIn: CheckIn.Joined
     let hideHeader: Bool
 
@@ -14,7 +14,7 @@ public struct CheckInEntityView: View {
     }
 
     var baseUrl: URL {
-        appEnvironmentModel.infoPlist.supabaseUrl
+        appModel.infoPlist.supabaseUrl
     }
 
     public var body: some View {

@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -13,7 +13,7 @@ struct ProfileAdminSheet: View {
     }
 
     let logger = Logger(category: "ProfileAdminSheet")
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
@@ -27,7 +27,7 @@ struct ProfileAdminSheet: View {
 
     private var isProfileDeletable: Bool {
         if let summary {
-            profileEnvironmentModel.hasRole(.superAdmin) && summary.totalCheckIns > 0
+            profileModel.hasRole(.superAdmin) && summary.totalCheckIns > 0
         } else {
             false
         }
@@ -90,7 +90,7 @@ struct ProfileAdminSheet: View {
                 )
             )
             RouterLink("contributions.title", systemImage: "plus", open: .screen(.contributions(id)))
-            if profileEnvironmentModel.hasRole(.superAdmin) {
+            if profileModel.hasRole(.superAdmin) {
                 RouterLink(
                     "profile.rolePickerSheet.navigationTitle",
                     systemImage: "lock",
@@ -133,7 +133,7 @@ struct ProfileAdminSheet: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load profile data. Error: \(error) (\(#file):\(#line))")
         }
     }

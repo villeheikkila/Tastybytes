@@ -6,8 +6,8 @@ import SwiftUI
 
 @MainActor
 @Observable
-public final class NotificationEnvironmentModel {
-    private let logger = Logger(category: "NotificationEnvironmentModel")
+public final class NotificationModel {
+    private let logger = Logger(category: "NotificationModel")
     public var notifications = [Models.Notification.Joined]()
     public var isRefreshing = false
     public var task: Task<Void, Never>?
@@ -73,7 +73,7 @@ public final class NotificationEnvironmentModel {
             } catch {
                 guard !error.isCancelled else { return }
                 if state != .populated {
-                    self.state = .error([error])
+                    self.state = .error(error)
                 }
                 logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
             }

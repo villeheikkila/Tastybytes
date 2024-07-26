@@ -1,16 +1,16 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct BrandLogoView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let brand: BrandProtocol
     let size: Double
 
     var body: some View {
         Group {
-            if let logoUrl = brand.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+            if let logoUrl = brand.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
                 RemoteImageView(url: logoUrl, content: { image in
                     image.resizable()
                 }, progress: {

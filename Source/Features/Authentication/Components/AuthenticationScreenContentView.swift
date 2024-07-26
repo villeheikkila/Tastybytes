@@ -22,7 +22,7 @@ struct AuthenticationScreenContentView: View {
             VStack(alignment: .leading, spacing: 12) {
                 SignInWithAppleView()
                     .frame(height: 52)
-                PrivacyPolicyView()
+                PrivacyPolicyLinkView()
             }
             .padding(40)
             .frame(maxWidth: 500)

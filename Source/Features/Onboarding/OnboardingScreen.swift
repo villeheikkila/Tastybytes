@@ -1,8 +1,8 @@
-import EnvironmentModels
+
 import SwiftUI
 
 struct OnboardingScreen: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var currentTab: OnboardingSection
 
     init(initialTab: OnboardingSection) {
@@ -10,7 +10,7 @@ struct OnboardingScreen: View {
     }
 
     var showProfileSection: Bool {
-        !profileEnvironmentModel.isOnboarded
+        !profileModel.isOnboarded
     }
 
     var body: some View {

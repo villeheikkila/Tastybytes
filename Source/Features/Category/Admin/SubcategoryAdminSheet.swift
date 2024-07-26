@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -10,7 +10,7 @@ struct SubcategoryAdminSheet: View {
 
     private var logger = Logger(category: "SubcategoryAdminSheet")
     @Environment(Repository.self) private var repository
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
     @State private var subcategoryName = ""
@@ -66,7 +66,7 @@ struct SubcategoryAdminSheet: View {
         Section("labels.info") {
             LabeledIdView(id: subcategory.id.rawValue.formatted())
             VerificationAdminToggleView(isVerified: subcategory.isVerified) { isVerified in
-                await appEnvironmentModel.verifySubcategory(subcategory, isVerified: isVerified) {
+                await appModel.verifySubcategory(subcategory, isVerified: isVerified) {
                     subcategory = subcategory.copyWith(isVerified: isVerified)
                 }
             }
@@ -75,7 +75,7 @@ struct SubcategoryAdminSheet: View {
 
         Section {
             ConfirmedDeleteButtonView(presenting: subcategory, action: { presenting in
-                await appEnvironmentModel.deleteSubcategory(presenting)
+                await appModel.deleteSubcategory(presenting)
             }, description: "subcategory.delete.confirmation.description", label: "subcategory.delete.confirmation.label \(subcategory.name)", isDisabled: subcategory.isVerified)
         }
         .customListRowBackground()
@@ -85,7 +85,7 @@ struct SubcategoryAdminSheet: View {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) { [subcategoryName] in
             AsyncButton("labels.edit", action: {
-                await appEnvironmentModel.editSubcategory(.init(id: subcategory.id, name: subcategory.name))
+                await appModel.editSubcategory(.init(id: subcategory.id, name: subcategory.name))
                 await onEdit(subcategoryName)
             })
             .disabled(subcategoryName.isEmpty || subcategory.name == subcategoryName)
@@ -99,7 +99,7 @@ struct SubcategoryAdminSheet: View {
             state = .populated
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed to load detailed subcategory info. Error: \(error) (\(#file):\(#line))")
         }
     }

@@ -1,10 +1,10 @@
 import Components
-import EnvironmentModels
+
 import SwiftUI
 
 struct CategoryCreationSheet: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @State private var newCategoryName = ""
 
     let onSubmit: (_ newCategoryName: String) async -> Void
@@ -27,7 +27,7 @@ struct CategoryCreationSheet: View {
         ToolbarDismissAction()
         ToolbarItem(placement: .primaryAction) {
             AsyncButton("labels.add", action: {
-                await appEnvironmentModel.addCategory(name: newCategoryName)
+                await appModel.addCategory(name: newCategoryName)
                 dismiss()
             }).disabled(newCategoryName.isEmpty)
         }

@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -46,7 +46,7 @@ struct ProfileStatisticsUniqueByCategoryScreen: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed loading category statistics. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -105,7 +105,7 @@ struct SubcategoryStatisticsView: View {
             }
         } catch {
             guard !error.isCancelled else { return }
-            state = .error([error])
+            state = .error(error)
             logger.error("Failed loading subcategory statistics. Error: \(error) (\(#file):\(#line))")
         }
     }

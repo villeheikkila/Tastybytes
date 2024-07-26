@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,7 +9,7 @@ import SwiftUI
 struct SubBrandPickerSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm: String = ""
     @Binding var subBrand: SubBrandProtocol?
@@ -38,7 +38,7 @@ struct SubBrandPickerSheet: View {
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .safeAreaInset(edge: .bottom, content: {
-            if profileEnvironmentModel.hasPermission(.canCreateBrands) {
+            if profileModel.hasPermission(.canCreateBrands) {
                 CreateSubBrandView(brandWithSubBrands: brandWithSubBrands) { subBrand in
                     self.subBrand = subBrand
                     dismiss()

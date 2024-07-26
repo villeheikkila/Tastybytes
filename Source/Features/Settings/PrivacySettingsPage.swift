@@ -1,9 +1,9 @@
-import EnvironmentModels
+
 import PhotosUI
 import SwiftUI
 
 struct PrivacySettingsScreen: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
 
     var body: some View {
         Form {
@@ -16,10 +16,10 @@ struct PrivacySettingsScreen: View {
     private var privacySection: some View {
         Section {
             Toggle("settings.privacy.privateProfile.label", isOn: .init(get: {
-                profileEnvironmentModel.isPrivateProfile
+                profileModel.isPrivateProfile
             }, set: { newValue in
-                profileEnvironmentModel.isPrivateProfile = newValue
-                Task { await profileEnvironmentModel.updatePrivacySettings() }
+                profileModel.isPrivateProfile = newValue
+                Task { await profileModel.updatePrivacySettings() }
             }))
         } footer: {
             Text("settings.privacy.privateProfile.description")

@@ -6,8 +6,8 @@ import SwiftUI
 
 @MainActor
 @Observable
-public final class AdminEnvironmentModel {
-    private let logger = Logger(category: "AdminEnvironmentModel")
+public final class AdminModel {
+    private let logger = Logger(category: "AdminModel")
 
     public var events = [AdminEvent.Joined]()
     public var unverified = [VerifiableEntity]()

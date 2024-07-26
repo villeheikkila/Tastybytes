@@ -1,12 +1,12 @@
-import EnvironmentModels
+
 import SwiftUI
 
 struct AppStateObserver<Content: View>: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        switch appEnvironmentModel.state {
+        switch appModel.state {
         case .operational:
             content()
         case let .error(errors):

@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,8 +9,8 @@ import SwiftUI
 struct FriendsScreen: View {
     private let logger = Logger(category: "FriendsScreen")
     @Environment(Repository.self) private var repository
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FriendModel.self) private var friendModel
+    @Environment(ProfileModel.self) private var profileModel
     @State private var state: ScreenState = .loading
     @State private var friends: [Friend.Saved]
     @State private var searchTerm = ""
@@ -63,9 +63,6 @@ struct FriendsScreen: View {
         .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
             oldValue && !newValue
         }
-        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends) { oldValue, newValue in
-            newValue.count > oldValue.count
-        }
         .initialTask {
             await loadFriends()
         }
@@ -73,11 +70,11 @@ struct FriendsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            if friendEnvironmentModel.hasNoFriendStatus(friend: profile) {
+            if friendModel.hasNoFriendStatus(friend: profile) {
                 AsyncButton(
                     "friends.add.label",
                     systemImage: "person.fill.badge.plus",
-                    action: { await friendEnvironmentModel.sendFriendRequest(receiver: profile.id) }
+                    action: { await friendModel.sendFriendRequest(receiver: profile.id) }
                 )
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
@@ -94,7 +91,7 @@ struct FriendsScreen: View {
         } catch {
             guard !error.isCancelled else { return }
             if state != .populated {
-                state = .error([error])
+                state = .error(error)
             }
             logger.error("Failed to load friends' . Error: \(error) (\(#file):\(#line))")
         }

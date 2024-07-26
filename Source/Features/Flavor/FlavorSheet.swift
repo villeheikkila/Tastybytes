@@ -1,11 +1,11 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import SwiftUI
 
 struct FlavorPickerSheet: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @Binding var pickedFlavors: [Flavor.Saved]
@@ -14,7 +14,7 @@ struct FlavorPickerSheet: View {
     private let maxFlavors = 4
 
     private var filteredFlavors: [Flavor.Saved] {
-        appEnvironmentModel.flavors.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
+        appModel.flavors.filteredBySearchTerm(by: \.name, searchTerm: searchTerm)
     }
 
     private var showContentUnavailableView: Bool {
@@ -22,7 +22,7 @@ struct FlavorPickerSheet: View {
     }
 
     private var availableFlavours: [Flavor.Saved] {
-        appEnvironmentModel.flavors
+        appModel.flavors
     }
 
     var body: some View {

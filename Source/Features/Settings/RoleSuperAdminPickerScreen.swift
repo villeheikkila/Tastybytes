@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -7,17 +7,17 @@ import SwiftUI
 
 struct RoleSuperAdminPickerScreen: View {
     let logger = Logger(category: "RoleSuperAdminPickerScreen")
-    @Environment(AdminEnvironmentModel.self) private var adminEnvironmentModel
+    @Environment(AdminModel.self) private var adminModel
     @Environment(Repository.self) private var repository
 
     @Binding var profile: Profile.Detailed
     let roles: [Role.Joined]
 
     var body: some View {
-        List(adminEnvironmentModel.roles) { role in
+        List(adminModel.roles) { role in
             RolePickerRowView(profile: $profile, role: role)
         }
-        .animation(.default, value: adminEnvironmentModel.roles)
+        .animation(.default, value: adminModel.roles)
         .navigationTitle("profile.rolePickerSheet.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
     }

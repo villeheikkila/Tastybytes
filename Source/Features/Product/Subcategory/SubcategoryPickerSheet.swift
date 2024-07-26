@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -9,8 +9,8 @@ import SwiftUI
 struct SubcategoryPickerSheet: View {
     private let logger = Logger(category: "SubcategoryPickerSheet")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
+    @Environment(AppModel.self) private var appModel
     @Binding var subcategories: [Subcategory.Saved]
     @State private var newSubcategoryName = ""
     @State private var searchTerm = ""
@@ -18,7 +18,7 @@ struct SubcategoryPickerSheet: View {
     let category: Models.Category.JoinedSubcategoriesServingStyles
 
     private var availableSubcategories: [Subcategory.Saved] {
-        appEnvironmentModel.categories
+        appModel.categories
             .first(where: { $0.id == category.id })?
             .subcategories
             .sorted() ?? []
@@ -51,12 +51,12 @@ struct SubcategoryPickerSheet: View {
         .environment(\.editMode, .constant(.active))
         .searchable(text: $searchTerm)
         .safeAreaInset(edge: .bottom) {
-            if profileEnvironmentModel.hasPermission(.canAddSubcategories) {
+            if profileModel.hasPermission(.canAddSubcategories) {
                 Form {
                     Section("subcategory.add.name") {
                         TextField("subcategory.name.placeholder", text: $newSubcategoryName)
                         AsyncButton("labels.create") {
-                            await appEnvironmentModel.addSubcategory(category: category, name: newSubcategoryName) { subcategory in
+                            await appModel.addSubcategory(category: category, name: newSubcategoryName) { subcategory in
                                 newSubcategoryName = ""
                                 subcategories.append(subcategory)
                             }

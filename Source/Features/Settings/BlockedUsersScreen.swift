@@ -1,25 +1,25 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct BlockedUsersScreen: View {
-    @Environment(FriendEnvironmentModel.self) private var friendEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(FriendModel.self) private var friendModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(Router.self) private var router
 
     var body: some View {
-        List(friendEnvironmentModel.blockedUsers) { friend in
+        List(friendModel.blockedUsers) { friend in
             BlockedUserListItemView(
-                profile: friend.getFriend(userId: profileEnvironmentModel.profile.id),
+                profile: friend.getFriend(userId: profileModel.profile.id),
                 onUnblockUser: {
-                    await friendEnvironmentModel.unblockUser(friend)
+                    await friendModel.unblockUser(friend)
                 }
             )
         }
         .listStyle(.insetGrouped)
         .refreshable {
-            await friendEnvironmentModel.refresh()
+            await friendModel.refresh()
         }
         .overlay {
             ContentUnavailableView {
@@ -31,10 +31,9 @@ struct BlockedUsersScreen: View {
                     router.open(.toast(.success("blockedUsers.block.success")))
                 })))
             }
-            .opacity(friendEnvironmentModel.blockedUsers.isEmpty ? 1 : 0)
+            .opacity(friendModel.blockedUsers.isEmpty ? 1 : 0)
         }
         .navigationTitle("blockedUsers.navigationTitle")
-        .sensoryFeedback(.success, trigger: friendEnvironmentModel.friends)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent

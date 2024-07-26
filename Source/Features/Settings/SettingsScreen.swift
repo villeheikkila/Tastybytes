@@ -1,12 +1,12 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct SettingsScreen: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(SubscriptionEnvironmentModel.self) private var subscriptionEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppModel.self) private var appModel
+    @Environment(SubscriptionModel.self) private var subscriptionModel
+    @Environment(ProfileModel.self) private var profileModel
 
     var body: some View {
         List {
@@ -28,7 +28,7 @@ struct SettingsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarDismissAction()
-        if let subscriptionGroup = appEnvironmentModel.subscriptionGroup {
+        if let subscriptionGroup = appModel.subscriptionGroup {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 RouterLink("subscription.callToAction  \(subscriptionGroup.name)", systemImage: "crown.fill", open: .sheet(.subscribe))
                     .labelStyle(.iconOnly)
@@ -67,14 +67,14 @@ struct SettingsScreen: View {
                 "contributions.title",
                 systemName: "plus",
                 color: .teal,
-                open: .screen(.contributions(profileEnvironmentModel.profile.id))
+                open: .screen(.contributions(profileModel.profile.id))
             )
             RouterLink("about.title", systemName: "at", color: .blue, open: .screen(.about))
         } footer: {
-            if case .subscribed = subscriptionEnvironmentModel.subscriptionStatus, let subscriptionName = appEnvironmentModel.subscriptionGroup?.name {
+            if case .subscribed = subscriptionModel.subscriptionStatus, let subscriptionName = appModel.subscriptionGroup?.name {
                 HStack {
                     Spacer()
-                    Text("subscription.thankYou \(appEnvironmentModel.infoPlist.appName) \(subscriptionName)")
+                    Text("subscription.thankYou \(appModel.infoPlist.appName) \(subscriptionName)")
                     Spacer()
                 }
             }
@@ -84,7 +84,7 @@ struct SettingsScreen: View {
     @ViewBuilder private var logOutSection: some View {
         Section {
             AsyncButton(action: {
-                await profileEnvironmentModel.logOut()
+                await profileModel.logOut()
             }, label: {
                 Spacer()
                 Text("settings.signOut")
@@ -97,11 +97,11 @@ struct SettingsScreen: View {
 }
 
 struct AppIconLabelRow: View {
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
 
     var body: some View {
         HStack {
-            Image(profileEnvironmentModel.appIcon.icon)
+            Image(profileModel.appIcon.icon)
                 .resizable()
                 .cornerRadius(8)
                 .frame(width: 30, height: 30)
@@ -110,8 +110,8 @@ struct AppIconLabelRow: View {
                 .accessibilityHidden(true)
             Text("settings.appIcon.title")
             Spacer()
-            if profileEnvironmentModel.appIcon != .ramune {
-                Text(profileEnvironmentModel.appIcon.label)
+            if profileModel.appIcon != .ramune {
+                Text(profileModel.appIcon.label)
                     .foregroundColor(.secondary)
             }
         }

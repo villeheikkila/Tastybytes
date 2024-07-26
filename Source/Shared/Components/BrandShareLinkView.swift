@@ -1,9 +1,9 @@
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 public struct BrandShareLinkView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let brand: Brand.JoinedSubBrandsProductsCompany
 
     public init(brand: Brand.JoinedSubBrandsProductsCompany) {
@@ -11,7 +11,7 @@ public struct BrandShareLinkView: View {
     }
 
     private var link: URL {
-        NavigatablePath.brand(id: brand.id).getUrl(baseUrl: appEnvironmentModel.infoPlist.baseUrl)
+        NavigatablePath.brand(id: brand.id).getUrl(baseUrl: appModel.infoPlist.baseUrl)
     }
 
     private var title: String {

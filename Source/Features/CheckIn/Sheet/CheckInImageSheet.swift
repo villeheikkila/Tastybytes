@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -10,8 +10,8 @@ struct CheckInImageSheet: View {
 
     private let logger = Logger(category: "CheckInImageSheet")
     @Environment(Repository.self) private var repository
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(AppModel.self) private var appModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss
     @State private var currentImage: ImageEntity.Saved
     @State private var showDeleteConfirmationFor: ImageEntity.Saved?
@@ -35,7 +35,7 @@ struct CheckInImageSheet: View {
         TabView(selection: $currentImage) {
             ForEach(images) { image in
                 VStack(alignment: .center) {
-                    if let imageUrl = image.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+                    if let imageUrl = image.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
                         ZoomableRemoteImageView(imageUrl: imageUrl, blurHash: image.blurHash)
                     }
                 }
@@ -53,14 +53,14 @@ struct CheckInImageSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            if let imageUrl = currentImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+            if let imageUrl = currentImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
                 ImageShareLinkView(url: imageUrl, title: "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))")
             }
             Menu {
-                if let imageUrl = currentImage.getLogoUrl(baseUrl: appEnvironmentModel.infoPlist.supabaseUrl) {
+                if let imageUrl = currentImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
                     SaveToPhotoGalleryButtonView(imageUrl: imageUrl)
                 }
-                if profileEnvironmentModel.profile.id == checkIn.profile.id {
+                if profileModel.profile.id == checkIn.profile.id {
                     Button("labels.delete", systemImage: "trash", role: .destructive, action: {
                         showDeleteConfirmationFor = currentImage
                     })

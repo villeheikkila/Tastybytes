@@ -1,15 +1,15 @@
 import Components
-import EnvironmentModels
+
 import Models
 import SwiftUI
 
 struct NotificationScreen: View {
-    @Environment(NotificationEnvironmentModel.self) private var notificationEnvironmentModel
-    @Environment(FeedbackEnvironmentModel.self) private var feedbackEnvironmentModel
+    @Environment(NotificationModel.self) private var notificationModel
+    @Environment(FeedbackModel.self) private var feedbackModel
     @State private var filter: Models.Notification.Kind?
 
     private var filteredNotifications: [Models.Notification.Joined] {
-        notificationEnvironmentModel.notifications.filter { notification in
+        notificationModel.notifications.filter { notification in
             if filter == nil {
                 return true
             }
@@ -29,7 +29,7 @@ struct NotificationScreen: View {
     }
 
     private var showContentUnavailableView: Bool {
-        filteredNotifications.isEmpty && !notificationEnvironmentModel.isRefreshing
+        filteredNotifications.isEmpty && !notificationModel.isRefreshing
     }
 
     var body: some View {
@@ -41,17 +41,17 @@ struct NotificationScreen: View {
             }
             .onDelete { index in
                 Task {
-                    await notificationEnvironmentModel.deleteFromIndex(at: index)
+                    await notificationModel.deleteFromIndex(at: index)
                 }
             }
         }
         .listStyle(.plain)
         .routerLinkMode(.button)
         .refreshable {
-            notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
+            notificationModel.refresh(reset: true, withHaptics: true)
         }
         .overlay {
-            if notificationEnvironmentModel.state.isPopulated {
+            if notificationModel.state.isPopulated {
                 if showContentUnavailableView {
                     ContentUnavailableView {
                         Label(
@@ -65,16 +65,16 @@ struct NotificationScreen: View {
                     }
                 }
             } else {
-                ScreenStateOverlayView(state: notificationEnvironmentModel.state) {
-                    notificationEnvironmentModel.refresh(reset: true, withHaptics: true)
+                ScreenStateOverlayView(state: notificationModel.state) {
+                    notificationModel.refresh(reset: true, withHaptics: true)
                 }
             }
         }
-        .sensoryFeedback(.success, trigger: notificationEnvironmentModel.isRefreshing) { oldValue, newValue in
+        .sensoryFeedback(.success, trigger: notificationModel.isRefreshing) { oldValue, newValue in
             oldValue && !newValue
         }
         .onAppear {
-            notificationEnvironmentModel.refresh()
+            notificationModel.refresh()
         }
         .navigationTitle(filter?.label ?? "notifications.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
@@ -87,12 +87,12 @@ struct NotificationScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 AsyncButton("notifications.markAsRead.label", systemImage: "envelope.open", action: {
-                    feedbackEnvironmentModel.trigger(.impact(intensity: .low))
-                    await notificationEnvironmentModel.markAllAsRead()
+                    feedbackModel.trigger(.impact(intensity: .low))
+                    await notificationModel.markAllAsRead()
                 })
                 AsyncButton("notifications.deleteAll.label", systemImage: "trash", action: {
-                    feedbackEnvironmentModel.trigger(.impact(intensity: .low))
-                    await notificationEnvironmentModel.deleteAll()
+                    feedbackModel.trigger(.impact(intensity: .low))
+                    await notificationModel.deleteAll()
                 })
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")

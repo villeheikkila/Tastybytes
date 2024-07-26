@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Models
 import OSLog
 import Repositories
@@ -7,58 +7,58 @@ import SwiftUI
 import TipKit
 
 struct EnvironmentProvider<Content: View>: View {
-    @State private var adminEnvironmentModel: AdminEnvironmentModel
-    @State private var profileEnvironmentModel: ProfileEnvironmentModel
-    @State private var notificationEnvironmentModel: NotificationEnvironmentModel
-    @State private var appEnvironmentModel: AppEnvironmentModel
-    @State private var friendEnvironmentModel: FriendEnvironmentModel
-    @State private var imageUploadEnvironmentModel: ImageUploadEnvironmentModel
-    @State private var locationEnvironmentModel = LocationEnvironmentModel()
-    @State private var subscriptionEnvironmentModel: SubscriptionEnvironmentModel
-    @State private var feedbackEnvironmentModel = FeedbackEnvironmentModel()
+    @State private var adminModel: AdminModel
+    @State private var profileModel: ProfileModel
+    @State private var notificationModel: NotificationModel
+    @State private var appModel: AppModel
+    @State private var friendModel: FriendModel
+    @State private var checkInUploadModel: CheckInUploadModel
+    @State private var locationModel = LocationModel()
+    @State private var subscriptionModel: SubscriptionModel
+    @State private var feedbackModel = FeedbackModel()
     @ViewBuilder let content: () -> Content
 
     init(repository: Repository, infoPlist: InfoPlist, content: @escaping () -> Content) {
-        adminEnvironmentModel = AdminEnvironmentModel(repository: repository)
-        profileEnvironmentModel = ProfileEnvironmentModel(repository: repository)
-        notificationEnvironmentModel = NotificationEnvironmentModel(repository: repository)
-        appEnvironmentModel = AppEnvironmentModel(repository: repository, infoPlist: infoPlist)
-        friendEnvironmentModel = FriendEnvironmentModel(repository: repository)
-        imageUploadEnvironmentModel = ImageUploadEnvironmentModel(repository: repository)
-        subscriptionEnvironmentModel = SubscriptionEnvironmentModel(repository: repository)
+        adminModel = AdminModel(repository: repository)
+        profileModel = ProfileModel(repository: repository)
+        notificationModel = NotificationModel(repository: repository)
+        appModel = AppModel(repository: repository, infoPlist: infoPlist)
+        friendModel = FriendModel(repository: repository)
+        checkInUploadModel = CheckInUploadModel(repository: repository)
+        subscriptionModel = SubscriptionModel(repository: repository)
         self.content = content
     }
 
     var body: some View {
         content()
-            .environment(adminEnvironmentModel)
-            .environment(notificationEnvironmentModel)
-            .environment(profileEnvironmentModel)
-            .environment(appEnvironmentModel)
-            .environment(friendEnvironmentModel)
-            .environment(imageUploadEnvironmentModel)
-            .environment(locationEnvironmentModel)
-            .environment(subscriptionEnvironmentModel)
-            .environment(feedbackEnvironmentModel)
-            .sensoryFeedback(trigger: feedbackEnvironmentModel.sensoryFeedback) { _, newValue in
+            .environment(adminModel)
+            .environment(notificationModel)
+            .environment(profileModel)
+            .environment(appModel)
+            .environment(friendModel)
+            .environment(checkInUploadModel)
+            .environment(locationModel)
+            .environment(subscriptionModel)
+            .environment(feedbackModel)
+            .sensoryFeedback(trigger: feedbackModel.sensoryFeedback) { _, newValue in
                 newValue?.sensoryFeedback
             }
-            // .alertError($appEnvironmentModel.alertError)
-            // .alertError($notificationEnvironmentModel.alertError)
-            // .alertError($profileEnvironmentModel.alertError)
-            // .alertError($appEnvironmentModel.alertError)
-            // .alertError($friendEnvironmentModel.alertError)
+            // .alertError($appModel.alertError)
+            // .alertError($notificationModel.alertError)
+            // .alertError($profileModel.alertError)
+            // .alertError($appModel.alertError)
+            // .alertError($friendModel.alertError)
             .task {
                 try? Tips.configure([.displayFrequency(.daily)])
             }
             .task {
-                await appEnvironmentModel.initialize()
+                await appModel.initialize()
             }
             .task {
-                await profileEnvironmentModel.listenToAuthState()
+                await profileModel.listenToAuthState()
             }
             .task {
-                locationEnvironmentModel.updateLocationAuthorizationStatus()
+                locationModel.updateLocationAuthorizationStatus()
             }
     }
 }

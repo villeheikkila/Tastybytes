@@ -1,9 +1,9 @@
 import Components
-import EnvironmentModels
+
 import SwiftUI
 
 struct AppErrorStateView: View {
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     let errors: [Error]
 
     private var title: LocalizedStringKey {
@@ -32,7 +32,7 @@ struct AppErrorStateView: View {
 
     var body: some View {
         FullScreenErrorView(title: title, description: description, systemImage: systemImage, action: {
-            await appEnvironmentModel.initialize(reset: true)
+            await appModel.initialize(reset: true)
         })
     }
 }

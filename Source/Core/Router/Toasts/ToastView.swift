@@ -1,5 +1,5 @@
 // Vendored from https://github.com/elai950/AlertToast with modifications
-import EnvironmentModels
+
 import SwiftUI
 
 public struct ToastView: View {

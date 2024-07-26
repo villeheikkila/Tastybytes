@@ -22,6 +22,20 @@ public enum AppState: Sendable, Equatable {
     }
 }
 
+public struct RateControl: Sendable {
+    public let checkInPageSize = 10
+    public let checkInImagePageSize = 10
+}
+
+public struct IncludedLibrary: Identifiable, Hashable, Sendable {
+    public let name: String
+    public let link: URL
+
+    public var id: Int {
+        hashValue
+    }
+}
+
 public enum SplashScreenState {
     case showing, dismissing, finished
 }
@@ -60,8 +74,8 @@ extension UserDefaults {
 
 @MainActor
 @Observable
-public final class AppEnvironmentModel {
-    private let logger = Logger(category: "AppEnvironmentModel")
+public final class AppModel {
+    private let logger = Logger(category: "AppModel")
     // App state
     public var isInitializing = false
     public var state: AppState = .loading {
@@ -165,6 +179,16 @@ public final class AppEnvironmentModel {
     // Props
     private let repository: Repository
     public let infoPlist: InfoPlist
+
+    public let rateControl = RateControl()
+
+    public let includedLibraries: [IncludedLibrary] = [
+        .init(name: "supabase-swift", link: .init(string: "https://github.com/supabase/supabase-swift")!),
+        .init(name: "swift-tagged", link: .init(string: "https://github.com/pointfreeco/swift-tagged")!),
+        .init(name: "Brightroom", link: .init(string: "https://github.com/FluidGroup/Brightroom")!),
+        .init(name: "BlurHashViews", link: .init(string: "https://github.com/daprice/BlurHashViews")!),
+        .init(name: "Nuke", link: .init(string: "https://github.com/kean/Nuke")!),
+    ]
 
     public init(repository: Repository, infoPlist: InfoPlist) {
         self.repository = repository

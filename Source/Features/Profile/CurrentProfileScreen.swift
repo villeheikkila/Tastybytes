@@ -1,4 +1,4 @@
-import EnvironmentModels
+
 import Models
 import Repositories
 import SwiftUI
@@ -6,11 +6,11 @@ import SwiftUI
 struct CurrentProfileScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileEnvironmentModel.self) private var profileEnvironmentModel
+    @Environment(ProfileModel.self) private var profileModel
 
     var body: some View {
-        ProfileView(profile: profileEnvironmentModel.profile, isCurrentUser: true)
-            .navigationTitle(profileEnvironmentModel.profile.preferredName)
+        ProfileView(profile: profileModel.profile, isCurrentUser: true)
+            .navigationTitle(profileModel.profile.preferredName)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 toolbarContent

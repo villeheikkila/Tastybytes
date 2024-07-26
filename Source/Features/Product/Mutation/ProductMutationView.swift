@@ -1,5 +1,5 @@
 import Components
-import EnvironmentModels
+
 import Extensions
 import Models
 import OSLog
@@ -12,7 +12,7 @@ struct ProductMutationView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(AppEnvironmentModel.self) private var appEnvironmentModel
+    @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isPresentedInSheet) private var isPresentedInSheet
     @FocusState private var focusedField: Focusable?
@@ -313,7 +313,7 @@ struct ProductMutationView: View {
         case let .edit(initialProduct, _), let .editSuggestion(initialProduct):
             do {
                 let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(id: initialProduct.subBrand.brand.brandOwner.id)
-                category = appEnvironmentModel.categories.first(where: { category in
+                category = appModel.categories.first(where: { category in
                     category.id == initialProduct.category.id
                 })
                 subcategories = initialProduct.subcategories.map { .init(subcategory: $0) }
@@ -329,7 +329,7 @@ struct ProductMutationView: View {
                 state = .populated
             } catch {
                 guard !error.isCancelled else { return }
-                state = .error([error])
+                state = .error(error)
                 logger.error("Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))")
             }
         case let .addToBrand(brand, _):
