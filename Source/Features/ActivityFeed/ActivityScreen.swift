@@ -109,16 +109,14 @@ struct ActivityScreen: View {
             guard !Task.isCancelled else { return }
             logger.info("Succesfully loaded check-ins from \(from) to \(to)")
             isInitialLoad = false
-            withAnimation {
-                if reset {
-                    checkIns = fetchedCheckIns
-                } else if case .afterId = queryType {
-                    checkIns.insert(contentsOf: fetchedCheckIns, at: 0)
-                } else {
-                    checkIns.append(contentsOf: fetchedCheckIns)
-                }
-                state = .populated
+            if reset {
+                checkIns = fetchedCheckIns
+            } else if case .afterId = queryType {
+                checkIns.insert(contentsOf: fetchedCheckIns, at: 0)
+            } else {
+                checkIns.append(contentsOf: fetchedCheckIns)
             }
+            state = .populated
             page += 1
         } catch {
             guard !error.isCancelled, !Task.isCancelled else { return }

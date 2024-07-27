@@ -34,7 +34,7 @@ struct SupabaseAuthRepository: AuthRepository {
 
     func signInWithGoogle(token: String, accessToken: String) async throws {
         try await client.auth.signInWithIdToken(
-            credentials: OpenIDConnectCredentials(
+            credentials: .init(
                 provider: .google,
                 idToken: token,
                 accessToken: accessToken

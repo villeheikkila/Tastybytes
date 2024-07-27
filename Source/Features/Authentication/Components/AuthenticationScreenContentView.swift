@@ -23,11 +23,11 @@ struct AuthenticationScreenContentView: View {
         .safeAreaInset(edge: .bottom) {
             VStack(alignment: .leading, spacing: 12) {
                 Text("authentication.welcome \(appModel.infoPlist.appName)")
-                Group {
+                VStack {
                     SignInWithAppleView()
+                        .frame(height: 52)
                     SignInWithGoogleView()
                 }
-                .frame(height: 52)
                 Text("[Privacy Policy](privacyPolicy) [Terms of Service](termsOfService)")
                     .font(.caption)
                     .environment(\.openURL, OpenURLAction { url in
