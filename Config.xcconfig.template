@@ -10,3 +10,4 @@ FEEDBACK_EMAIL = contact@yourdomain.com
 IS_DEBUG = false
 GIDClientID = 
 GURL = 
+GIDServerClientID =

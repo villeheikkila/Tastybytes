@@ -10,7 +10,7 @@ struct ProfileHeaderAvatarSection: View {
     private let logger = Logger(category: "ProfileHeaderAvatarSection")
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
-    @Binding var showPicker: Bool
+    @Binding var showAvatarPicker: Bool
     @Binding var profile: Profile.Saved
 
     let isCurrentUser: Bool
@@ -27,7 +27,7 @@ struct ProfileHeaderAvatarSection: View {
             }
             Spacer()
             VStack(alignment: .center) {
-                ProfileAvatarPickerView(showAvatarPicker: $showPicker, profile: profile, allowEdit: isCurrentUser)
+                ProfileAvatarPickerView(showAvatarPicker: $showAvatarPicker, profile: profile, allowEdit: isCurrentUser)
                     .avatarSize(.custom(90))
             }
             Spacer()

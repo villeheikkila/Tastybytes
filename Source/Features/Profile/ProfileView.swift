@@ -11,6 +11,7 @@ import SwiftUI
 struct ProfileView: View {
     private let logger = Logger(category: "ProfileView")
     @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FriendModel.self) private var friendModel
     @Environment(FeedbackModel.self) private var feedbackModel
@@ -25,8 +26,8 @@ struct ProfileView: View {
     @State private var loadImagesTask: Task<Void, Never>?
     @State private var page = 0
     @State private var imagePage = 0
-    @State private var showPicker = false
-    @State private var selectedItem: PhotosPickerItem?
+    @State private var showAvatarPicker = false
+    @State private var selectedAvatarImage: PhotosPickerItem?
     @State private var state: ScreenState = .loading
 
     private let topAnchor = 0
@@ -49,6 +50,7 @@ struct ProfileView: View {
         }
         .listStyle(.plain)
         .animation(.default, value: checkIns)
+        .animation(.default, value: profile)
         .refreshable {
             await initialize(isRefresh: true)
         }
@@ -58,26 +60,31 @@ struct ProfileView: View {
                 await initialize(isRefresh: true)
             }
         }
-        .photosPicker(isPresented: $showPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
+        .photosPicker(isPresented: $showAvatarPicker, selection: $selectedAvatarImage, matching: .images, photoLibrary: .shared())
         .onDisappear {
             loadImagesTask?.cancel()
         }
         .initialTask {
             await initialize()
         }
-        .task(id: selectedItem) {
-            guard let data = await selectedItem?.getJPEG() else { return }
-            await profileModel.uploadAvatar(data: data)
-            withAnimation {
-                profile = profileModel.profile
-            }
+        .task(id: selectedAvatarImage) {
+            guard let selectedAvatarImage, let data = await selectedAvatarImage.getImageData() else { return }
+            guard let image = UIImage(data: data) else { return }
+            router.open(.fullScreenCover(.cropImage(image: image, onSubmit: { image in
+                guard let image else { return }
+                Task {
+                    guard let data = image.jpegData(compressionQuality: 0.7) else { return }
+                    await profileModel.uploadAvatar(data: data)
+                    profile = profileModel.profile
+                }
+            })))
         }
     }
 
     @ViewBuilder private var content: some View {
         Group {
             ProfileHeaderAvatarSection(
-                showPicker: $showPicker, profile: $profile,
+                showAvatarPicker: $showAvatarPicker, profile: $profile,
                 isCurrentUser: isCurrentUser,
                 showInFull: showInFull,
                 profileSummary: profileSummary

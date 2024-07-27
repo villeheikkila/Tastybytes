@@ -5,9 +5,10 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileAvatarPickerSectionView: View {
+    @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel
     @State private var showAvatarPicker = false
-    @State private var selectedItem: PhotosPickerItem?
+    @State private var selectedAvatarImage: PhotosPickerItem?
 
     var body: some View {
         Section {
@@ -19,10 +20,17 @@ struct ProfileAvatarPickerSectionView: View {
             }
         }
         .listRowBackground(Color.clear)
-        .photosPicker(isPresented: $showAvatarPicker, selection: $selectedItem, matching: .images, photoLibrary: .shared())
-        .task(id: selectedItem) {
-            guard let data = await selectedItem?.getJPEG() else { return }
-            await profileModel.uploadAvatar(data: data)
+        .photosPicker(isPresented: $showAvatarPicker, selection: $selectedAvatarImage, matching: .images, photoLibrary: .shared())
+        .task(id: selectedAvatarImage) {
+            guard let selectedAvatarImage, let data = await selectedAvatarImage.getImageData() else { return }
+            guard let image = UIImage(data: data) else { return }
+            router.open(.fullScreenCover(.cropImage(image: image, onSubmit: { image in
+                guard let image else { return }
+                Task {
+                    guard let data = image.jpegData(compressionQuality: 0.7) else { return }
+                    await profileModel.uploadAvatar(data: data)
+                }
+            })))
         }
     }
 }

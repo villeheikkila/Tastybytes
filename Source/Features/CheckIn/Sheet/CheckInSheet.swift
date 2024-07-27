@@ -87,9 +87,7 @@ struct CheckInSheet: View {
             toolbarContent
         }
         .onAppear {
-            servingStyles =
-                appModel.categories.first(where: { $0.id == product.category.id })?
-                    .servingStyles ?? []
+            servingStyles = appModel.categories.first(where: { $0.id == product.category.id })?.servingStyles ?? []
         }
     }
 

@@ -34,6 +34,8 @@
 	<string>${SUPABASE_URL}</string>
 	<key>GIDClientID</key>
 	<string>${GIDClientID}</string>
+	<key>GIDServerClientID</key>
+	<string>${GIDServerClientID}</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Comfortaa-Bold.ttf</string>
