@@ -1,13 +1,13 @@
 {
-  "originHash" : "cb01857600a43b6b9f3de5fb8377e1692330e4f4b7a05bebce36f7246c298b8f",
+  "originHash" : "458b049a4632eda34039d9c24b0fd8f845f4e480d7616b2ba2ba9196f203b7fa",
   "pins" : [
     {
       "identity" : "supabase-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift.git",
       "state" : {
-        "revision" : "8a80aae59bed520f5a9473e1e4f775bde8400e4d",
-        "version" : "2.13.7"
+        "revision" : "12694543f0c5f407504b54276f0dc1536065e016",
+        "version" : "2.14.3"
       }
     },
     {
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "c370ad81a1823add3a1ec5608cb327a062843124",
         "version" : "3.5.1"
+      }
+    },
+    {
+      "identity" : "swift-tagged",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-tagged",
+      "state" : {
+        "revision" : "3907a9438f5b57d317001dc99f3f11b46882272b",
+        "version" : "0.10.0"
       }
     }
   ],

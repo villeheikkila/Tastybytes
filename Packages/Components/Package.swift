@@ -6,7 +6,7 @@ let package = Package(
     name: "Components",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v18), .watchOS(.v11), .tvOS(.v17), .visionOS(.v2),
+        .iOS(.v18), .visionOS(.v2),
     ],
     products: [
         .library(
@@ -20,6 +20,7 @@ let package = Package(
         .package(url: "https://github.com/kean/Nuke.git", from: "12.8.0"),
         .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
         .package(url: "https://github.com/daprice/BlurHashViews.git", from: "1.0.0"),
+        .package(url: "https://github.com/google/GoogleSignIn-iOS.git", from: "7.1.0"),
     ],
     targets: [
         .target(
@@ -33,6 +34,7 @@ let package = Package(
                 .product(name: "BrightroomUI", package: "Brightroom"),
                 .product(name: "BrightroomUIPhotosCrop", package: "Brightroom"),
                 .product(name: "BlurHashViews", package: "blurhashviews"),
+                .product(name: "GoogleSignInSwift", package: "GoogleSignIn-iOS"),
             ]
         ),
     ],

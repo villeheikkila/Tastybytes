@@ -7,3 +7,15 @@ struct TermsOfServiceScreen: View {
             .navigationBarTitleDisplayMode(.inline)
     }
 }
+
+struct TermsOfServiceSheet: View {
+    var body: some View {
+        TermsOfServiceView()
+            .webViewTranslucentBackground(true)
+            .navigationTitle("termsOfService.navigationTitle")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarDismissAction()
+            }
+    }
+}

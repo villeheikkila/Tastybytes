@@ -105,13 +105,16 @@ public extension Profile {
         public var id: String { deviceToken }
 
         public let deviceToken: String
+        public let isDebug: Bool
 
-        public init(deviceToken: String) {
+        public init(deviceToken: String, isDebug: Bool) {
             self.deviceToken = deviceToken
+            self.isDebug = isDebug
         }
 
         enum CodingKeys: String, CodingKey {
             case deviceToken = "p_device_token"
+            case isDebug = "p_is_debug"
         }
     }
 }

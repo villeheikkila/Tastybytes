@@ -1,5 +1,5 @@
-import SwiftUI
 import Components
+import SwiftUI
 
 struct AppUnderMaintenanceState: View {
     @Environment(AppModel.self) private var appModel

@@ -23,6 +23,16 @@
     "(%lld)" : {
 
     },
+    "[Privacy Policy](privacyPolicy) [Terms of Service](termsOfService)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your privacy is important to us; learn how we handle your data in our [Privacy Policy](privacyPolicy) . By logging in or creating an account, you acknowledge that you have read and agree to our [Terms of Service](termsOfService)."
+          }
+        }
+      }
+    },
     "%@" : {
 
     },
@@ -715,12 +725,12 @@
         }
       }
     },
-    "authentication.welcomeAndPrivacyPolicy %@ [Privacy Policy](%@)" : {
+    "authentication.welcome %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to %1$@! Please log in or create an account to continue. Your privacy is important to us; learn how we handle your data in our [Privacy Policy](%2$@)"
+            "value" : "Welcome to %@! Please log in or create an account to continue."
           }
         }
       }

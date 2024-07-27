@@ -16,6 +16,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>${BUNDLE_ID_BASE}</string>
+				<string>${GURL}</string>
 			</array>
 		</dict>
 	</array>
@@ -31,6 +32,8 @@
 	<string>${SUPABASE_ANON_KEY}</string>
 	<key>SUPABASE_URL</key>
 	<string>${SUPABASE_URL}</string>
+	<key>GIDClientID</key>
+	<string>${GIDClientID}</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Comfortaa-Bold.ttf</string>
@@ -52,6 +55,8 @@
 	<true/>
 	<key>UIRequiresPersistentWiFi</key>
 	<true/>
+	<key>IS_DEBUG</key>
+	<string>${IS_DEBUG}</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

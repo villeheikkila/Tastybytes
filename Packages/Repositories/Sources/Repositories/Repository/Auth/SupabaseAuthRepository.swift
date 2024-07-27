@@ -32,6 +32,16 @@ struct SupabaseAuthRepository: AuthRepository {
         )
     }
 
+    func signInWithGoogle(token: String, accessToken: String) async throws {
+        try await client.auth.signInWithIdToken(
+            credentials: OpenIDConnectCredentials(
+                provider: .google,
+                idToken: token,
+                accessToken: accessToken
+            )
+        )
+    }
+
     func sendMagicLink(email: String) async throws {
         try await client
             .auth

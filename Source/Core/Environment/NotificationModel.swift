@@ -219,8 +219,7 @@ public final class NotificationModel {
             sendCheckInCommentNotifications: sendCheckInCommentNotifications
         ) else { return }
         do {
-            let pushNotificationSettings = try await repository.notification.updatePushNotificationSettingsForDevice(updateRequest: updateRequest)
-            self.pushNotificationSettings = pushNotificationSettings
+            pushNotificationSettings = try await repository.notification.updatePushNotificationSettingsForDevice(updateRequest: updateRequest)
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -228,10 +227,10 @@ public final class NotificationModel {
         }
     }
 
-    public func refreshDeviceToken(deviceToken: String) async {
+    public func refreshDeviceToken(deviceToken: String, isDebug: Bool) async {
         do {
-            let pushNotificationSettings = try await repository.notification.refreshPushNotificationToken(deviceToken: deviceToken)
-            logger.notice("Device token refreshed: \(deviceToken)")
+            let pushNotificationSettings = try await repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDebug: isDebug)
+            logger.notice("Device token refreshed: \(deviceToken), debug: \(isDebug)")
             self.pushNotificationSettings = pushNotificationSettings
         } catch {
             logger.error("Failed to save device token (\(String(describing: deviceToken))). Error: \(error) (\(#file):\(#line))")

@@ -16,7 +16,6 @@ enum UserDefaultsKey: String, CaseIterable {
     case profileDeleted = "profile_deleted"
 }
 
-
 extension UserDefaults {
     static func set(value: some Codable, forKey key: AppDataKey) {
         let data = try? JSONEncoder().encode(value)
@@ -37,7 +36,6 @@ extension UserDefaults {
         userDefaults.synchronize()
     }
 }
-
 
 extension UserDefaults {
     func set(value: some Codable, forKey key: UserDefaultsKey) {

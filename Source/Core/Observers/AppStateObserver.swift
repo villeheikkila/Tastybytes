@@ -8,7 +8,7 @@ struct AppStateObserver<Content: View>: View {
     var body: some View {
         switch appModel.state {
         case .operational:
-           content()
+            content()
         case let .error(errors):
             AppErrorStateView(errors: errors)
         case .tooOldAppVersion:
@@ -18,6 +18,5 @@ struct AppStateObserver<Content: View>: View {
         case .loading:
             EmptyView()
         }
-
     }
 }

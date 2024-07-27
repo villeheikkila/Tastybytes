@@ -1,7 +1,9 @@
+import Components
 import SwiftUI
 
 struct AuthenticationScreenContentView: View {
     @Environment(Router.self) private var router
+    @Environment(AppModel.self) private var appModel
     @AppStorage(.profileDeleted) private var profileDeleted = false
 
     var body: some View {
@@ -20,9 +22,23 @@ struct AuthenticationScreenContentView: View {
         }
         .safeAreaInset(edge: .bottom) {
             VStack(alignment: .leading, spacing: 12) {
-                SignInWithAppleView()
-                    .frame(height: 52)
-                PrivacyPolicyLinkView()
+                Text("authentication.welcome \(appModel.infoPlist.appName)")
+                Group {
+                    SignInWithAppleView()
+                    SignInWithGoogleView()
+                }
+                .frame(height: 52)
+                Text("[Privacy Policy](privacyPolicy) [Terms of Service](termsOfService)")
+                    .font(.caption)
+                    .environment(\.openURL, OpenURLAction { url in
+                        print("URLZ \(url.path())")
+                        if url == URL(string: "privacyPolicy") {
+                            router.open(.sheet(.privacyPolicy))
+                        } else if url == URL(string: "termsOfService") {
+                            router.open(.sheet(.termsOfService))
+                        }
+                        return .handled
+                    })
             }
             .padding(40)
             .frame(maxWidth: 500)

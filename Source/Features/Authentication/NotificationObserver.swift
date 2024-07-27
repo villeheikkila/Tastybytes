@@ -7,6 +7,7 @@ import TipKit
 
 struct NotificationObserver<Content: View>: View {
     private let logger = Logger(category: "MainContent")
+    @Environment(AppModel.self) private var appModel
     @Environment(NotificationModel.self) private var notificationModel
     @Environment(\.scenePhase) private var phase
 
@@ -31,7 +32,11 @@ struct NotificationObserver<Content: View>: View {
             }
             .task {
                 if let deviceTokenForPusNotifications = await DeviceTokenActor.shared.deviceTokenForPusNotifications {
-                    await notificationModel.refreshDeviceToken(deviceToken: deviceTokenForPusNotifications)
+                    await notificationModel
+                        .refreshDeviceToken(
+                            deviceToken: deviceTokenForPusNotifications,
+                            isDebug: appModel.infoPlist.isDebug
+                        )
                 }
             }
             .onAppear {

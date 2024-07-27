@@ -349,4 +349,3 @@ public func clearTemporaryData() {
         logger.error("Failed to delete navigation stack state restoration files. Error: \(error) (\(#file):\(#line))")
     }
 }
-

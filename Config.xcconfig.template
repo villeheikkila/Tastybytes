@@ -7,3 +7,6 @@ SUPABASE_ANON_KEY = YOUR_SUPABASE_ANON_KEY
 PRIVACY_POLICY_URL = https:/$()/yourdomain.com/privacy_policy
 DEEP_LINK_BASE_URL = tastybytes:/$()/deeplink/
 FEEDBACK_EMAIL = contact@yourdomain.com
+IS_DEBUG = false
+GIDClientID = 
+GURL = 
