@@ -69,9 +69,9 @@ struct SupabaseAuthRepository: AuthRepository {
     func authStateListener() async -> AsyncStream<AuthState> {
         client.auth.authStateChanges.compactMap { event, session in
             switch event {
-            case .initialSession: session != nil ? AuthState.authenticated : .unauthenticated
-            case .signedIn: AuthState.authenticated
-            case .signedOut: AuthState.unauthenticated
+            case .initialSession: session != nil ? .authenticated : .unauthenticated
+            case .signedIn: .authenticated
+            case .signedOut: .unauthenticated
             case .passwordRecovery, .tokenRefreshed, .userUpdated, .userDeleted, .mfaChallengeVerified:
                 nil
             }

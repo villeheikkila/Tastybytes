@@ -41,7 +41,6 @@
 		5C4FC6362BA5FC630025DB83 /* ImageShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6352BA5FC630025DB83 /* ImageShareLinkView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C4FC6382BA68A130025DB83 /* DataScannerViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C4FC63A2BA6EBD20025DB83 /* SaveToPhotoGalleryButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC6392BA6EBD20025DB83 /* SaveToPhotoGalleryButtonView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C4FC63C2BA6EC030025DB83 /* ZoomableRemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC63B2BA6EC030025DB83 /* ZoomableRemoteImageView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C4FC6402BA70C110025DB83 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC63D2BA70C110025DB83 /* WebView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C4FC6412BA70C110025DB83 /* CameraPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC63E2BA70C110025DB83 /* CameraPickerView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C4FC6422BA70C110025DB83 /* SendMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC63F2BA70C110025DB83 /* SendMailView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -238,6 +237,7 @@
 		5CB42D792C50EC0900810CA7 /* ProductVariantsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB42D782C50EC0900810CA7 /* ProductVariantsScreen.swift */; };
 		5CB42D7C2C50ED1400810CA7 /* CompanyProductVariantsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB42D7B2C50ED1400810CA7 /* CompanyProductVariantsScreen.swift */; };
 		5CB42D7E2C510D8800810CA7 /* CompanySubsidiaryAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB42D7D2C510D8800810CA7 /* CompanySubsidiaryAdminScreen.swift */; };
+		5CBD93E72C55944100D2B97F /* ZoomableScrollableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD93E62C55944100D2B97F /* ZoomableScrollableImageView.swift */; };
 		5CC483212C54559400DD8638 /* AppUnderMaintenanceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC483202C54559400DD8638 /* AppUnderMaintenanceState.swift */; };
 		5CC483232C553D0400DD8638 /* SignInWithGoogleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC483222C553D0400DD8638 /* SignInWithGoogleView.swift */; };
 		5CCEE2772B2C6AAF00F276DF /* CheckInCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2762B2C6AAF00F276DF /* CheckInCard.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -398,7 +398,6 @@
 		5C4FC6352BA5FC630025DB83 /* ImageShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageShareLinkView.swift; sourceTree = "<group>"; };
 		5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScannerViewRepresentable.swift; sourceTree = "<group>"; };
 		5C4FC6392BA6EBD20025DB83 /* SaveToPhotoGalleryButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveToPhotoGalleryButtonView.swift; sourceTree = "<group>"; };
-		5C4FC63B2BA6EC030025DB83 /* ZoomableRemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableRemoteImageView.swift; sourceTree = "<group>"; };
 		5C4FC63D2BA70C110025DB83 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		5C4FC63E2BA70C110025DB83 /* CameraPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPickerView.swift; sourceTree = "<group>"; };
 		5C4FC63F2BA70C110025DB83 /* SendMailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailView.swift; sourceTree = "<group>"; };
@@ -596,6 +595,7 @@
 		5CB42D782C50EC0900810CA7 /* ProductVariantsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVariantsScreen.swift; sourceTree = "<group>"; };
 		5CB42D7B2C50ED1400810CA7 /* CompanyProductVariantsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyProductVariantsScreen.swift; sourceTree = "<group>"; };
 		5CB42D7D2C510D8800810CA7 /* CompanySubsidiaryAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanySubsidiaryAdminScreen.swift; sourceTree = "<group>"; };
+		5CBD93E62C55944100D2B97F /* ZoomableScrollableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableScrollableImageView.swift; sourceTree = "<group>"; };
 		5CBF5A072B3C70F700227A19 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		5CC483202C54559400DD8638 /* AppUnderMaintenanceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUnderMaintenanceState.swift; sourceTree = "<group>"; };
 		5CC483222C553D0400DD8638 /* SignInWithGoogleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithGoogleView.swift; sourceTree = "<group>"; };
@@ -1376,6 +1376,7 @@
 				5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */,
 				5CD3C0DC2B814B910049E563 /* RatingView.swift */,
 				5CD3C0D62B814B400049E563 /* CreateQRCodeView.swift */,
+				5CBD93E62C55944100D2B97F /* ZoomableScrollableImageView.swift */,
 				5CD3C0DA2B814B790049E563 /* RatingPickerView.swift */,
 				5CD3C0DE2B814B9A0049E563 /* SummaryView.swift */,
 				5CD3C0D52B814AE90049E563 /* ToolbarDismissAction.swift */,
@@ -1398,7 +1399,6 @@
 				5C4FC6352BA5FC630025DB83 /* ImageShareLinkView.swift */,
 				5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */,
 				5C4FC6392BA6EBD20025DB83 /* SaveToPhotoGalleryButtonView.swift */,
-				5C4FC63B2BA6EC030025DB83 /* ZoomableRemoteImageView.swift */,
 				5C511D752BA77EF300F95290 /* SparklesView.swift */,
 				5C4FC63E2BA70C110025DB83 /* CameraPickerView.swift */,
 				5C4FC63F2BA70C110025DB83 /* SendMailView.swift */,
@@ -1984,6 +1984,7 @@
 				5C4FC6402BA70C110025DB83 /* WebView.swift in Sources */,
 				5C95FE792C4FEA3D00CC2B0A /* ProductListAdminScreen.swift in Sources */,
 				5CEEA30F2C3B2E9D0009B3F5 /* CompanyListScreen.swift in Sources */,
+				5CBD93E72C55944100D2B97F /* ZoomableScrollableImageView.swift in Sources */,
 				5C90582D2B2894BE00EC157B /* VerificationScreen.swift in Sources */,
 				5C90583F2B2894BE00EC157B /* CheckInCommentEntityView.swift in Sources */,
 				5CCEE2832B2CA5D600F276DF /* CheckInCardTaggedFriends.swift in Sources */,
@@ -2178,7 +2179,6 @@
 				5CD2EE2C2C37E161009AA949 /* ProductAdminSheet.swift in Sources */,
 				5C07F2792B51EBB800D8740B /* BrandShareLinkView.swift in Sources */,
 				5C9058022B2894BE00EC157B /* SubscriptionStoreContent.swift in Sources */,
-				5C4FC63C2BA6EC030025DB83 /* ZoomableRemoteImageView.swift in Sources */,
 				5C64E7E72B70122F006FC2C3 /* Product+Extension.swift in Sources */,
 				5C82E8A02B2F7B7800F2B369 /* ProfileLinksSection.swift in Sources */,
 				5C9058432B2894BE00EC157B /* DiscoverScreen.swift in Sources */,

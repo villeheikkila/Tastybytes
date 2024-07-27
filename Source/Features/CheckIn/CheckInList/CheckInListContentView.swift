@@ -34,7 +34,7 @@ struct CheckInListContentView: View {
                 },
                 onDelete: deleteCheckIn,
                 onCreate: { checkIn in
-                    checkIns.insert(checkIn, at: 0)
+                    checkIns = [checkIn] + checkIns
                     if let onCreateCheckIn {
                         await onCreateCheckIn(checkIn)
                     }

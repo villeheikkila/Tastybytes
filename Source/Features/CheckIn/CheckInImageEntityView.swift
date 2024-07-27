@@ -17,6 +17,7 @@ struct CheckInImageEntityView: View {
                     image
                         .resizable()
                         .scaledToFit()
+                        .clipShape(.rect(cornerRadius: 8))
                         .frame(height: height)
                 }
             }

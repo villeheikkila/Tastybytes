@@ -41,6 +41,7 @@ struct LocationScreen: View {
             }
         }
         .listStyle(.plain)
+        .scrollIndicators(.hidden)
         .animation(.default, value: location)
         .animation(.default, value: checkIns)
         .refreshable {
@@ -149,7 +150,8 @@ struct LocationScreenHeader: View {
                 MapCompass()
             }
             .frame(height: 200)
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 4, trailing: 0))
+            .clipShape(.rect(cornerRadius: 8))
+            .listRowInsets(.init(top: 8, leading: 4, bottom: 8, trailing: 4))
         }
         SummaryView(summary: summary)
     }

@@ -1,5 +1,4 @@
 import Components
-
 import Models
 import OSLog
 import Repositories
@@ -33,14 +32,7 @@ struct CheckInImageSheet: View {
 
     var body: some View {
         TabView(selection: $currentImage) {
-            ForEach(images) { image in
-                VStack(alignment: .center) {
-                    if let imageUrl = image.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
-                        ZoomableRemoteImageView(imageUrl: imageUrl, blurHash: image.blurHash)
-                    }
-                }
-                .tag(image)
-            }
+            tabs
         }
         .tabViewStyle(.page)
         .safeAreaInset(edge: .bottom, content: {
@@ -48,6 +40,13 @@ struct CheckInImageSheet: View {
         })
         .toolbar {
             toolbarContent
+        }
+    }
+
+    @ViewBuilder private var tabs: some View {
+        ForEach(images) { image in
+            ZoomableRemoteImageView(imageEntity: image)
+                .tag(image)
         }
     }
 

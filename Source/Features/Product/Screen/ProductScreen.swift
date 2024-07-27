@@ -58,6 +58,7 @@ struct ProductScreen: View {
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)
+        .animation(.default, value: checkIns)
         .overlay {
             ScreenStateOverlayView(state: state, errorDescription: "product.screen.failedToLoadError \(product.formatted(.fullName))", errorAction: { await getProductData()
             })
@@ -118,7 +119,8 @@ struct ProductScreen: View {
             Menu {
                 ControlGroup {
                     ProductShareLinkView(product: product)
-                    RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIns.insert($0, at: 0)
+                    RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIn in
+                        checkIns = [checkIn] + checkIns
                     }))))
                     .disabled(!profileModel.hasPermission(.canCreateCheckIns))
                     if profileModel.hasPermission(.canAddBarcodes) {
@@ -144,7 +146,6 @@ struct ProductScreen: View {
                     open: .screen(.company(product.subBrand.brand.brandOwner.id))
                 )
                 Divider()
-
                 Button("labels.translate", systemImage: "bubble.left.and.text.bubble.right") {
                     showTranslator = true
                 }

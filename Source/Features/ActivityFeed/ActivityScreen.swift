@@ -30,7 +30,7 @@ struct ActivityScreen: View {
             List {
                 if state.isPopulated {
                     CheckInListContentView(checkIns: $checkIns, onCreateCheckIn: { checkIn in
-                        checkIns.insert(checkIn, at: 0)
+                        checkIns = [checkIn] + checkIns
                         try? await Task.sleep(nanoseconds: 100_000_000)
                         proxy.scrollTo(checkIn.id, anchor: .top)
                     }, onLoadMore: {
