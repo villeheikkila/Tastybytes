@@ -21,6 +21,7 @@ struct ReportAdminScreen: View {
                     )
                 }
         }
+        .listStyle(.plain)
         .refreshable {
             await adminModel.loadReports()
         }
