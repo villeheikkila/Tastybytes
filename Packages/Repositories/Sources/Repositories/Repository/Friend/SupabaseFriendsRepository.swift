@@ -28,6 +28,14 @@ struct SupabaseFriendsRepository: FriendRepository {
             .value
     }
 
+    func getCurrentUserFriends() async throws -> [Friend.Saved] {
+        try await client
+            .from(.viewProfileFriends)
+            .select(Friend.getQuery(.joined(false)))
+            .execute()
+            .value
+    }
+
     func insert(newFriend: Friend.NewRequest) async throws -> Friend.Saved {
         try await client
             .from(.friends)

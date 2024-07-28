@@ -60,6 +60,7 @@ enum Database {
         case viewProductRatings = "view__product_ratings"
         case viewRecentLocationsFromCurrentUser = "view__recent_locations_from_current_user"
         case viewRecentPurchaseLocationsFromCurrentUser = "view__recent_purchase_locations_from_current_user"
+        case viewProfileFriends = "view__profile_friends"
     }
 
     enum Function: String {

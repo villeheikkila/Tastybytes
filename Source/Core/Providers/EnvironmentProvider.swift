@@ -11,7 +11,6 @@ struct EnvironmentProvider<Content: View>: View {
     @State private var profileModel: ProfileModel
     @State private var notificationModel: NotificationModel
     @State private var appModel: AppModel
-    @State private var friendModel: FriendModel
     @State private var checkInUploadModel: CheckInUploadModel
     @State private var locationModel = LocationModel()
     @State private var subscriptionModel: SubscriptionModel
@@ -23,7 +22,6 @@ struct EnvironmentProvider<Content: View>: View {
         profileModel = ProfileModel(repository: repository)
         notificationModel = NotificationModel(repository: repository)
         appModel = AppModel(repository: repository, infoPlist: infoPlist)
-        friendModel = FriendModel(repository: repository)
         checkInUploadModel = CheckInUploadModel(repository: repository)
         subscriptionModel = SubscriptionModel(repository: repository)
         self.content = content
@@ -35,7 +33,6 @@ struct EnvironmentProvider<Content: View>: View {
             .environment(notificationModel)
             .environment(profileModel)
             .environment(appModel)
-            .environment(friendModel)
             .environment(checkInUploadModel)
             .environment(locationModel)
             .environment(subscriptionModel)

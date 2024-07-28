@@ -10,7 +10,6 @@ struct ProfilePickerSheet: View {
     private let logger = Logger(category: "ProfilePickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
-    @Environment(FriendModel.self) private var friendModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .populated
     @State private var searchTerm: String = ""
@@ -30,11 +29,11 @@ struct ProfilePickerSheet: View {
                 HStack {
                     if mode == .add {
                         HStack {
-                            if !friendModel.friends
+                            if !profileModel.friends
                                 .contains(where: { $0.containsUser(userId: profile.id) })
                             {
                                 AsyncButton("user.addFriend.label", systemImage: "person.badge.plus", action: {
-                                    await friendModel.sendFriendRequest(
+                                    await profileModel.sendFriendRequest(
                                         receiver: profile.id,
                                         onSuccess: {
                                             dismiss()
@@ -48,13 +47,13 @@ struct ProfilePickerSheet: View {
                         }
                     }
                     if mode == .block {
-                        if !friendModel.blockedUsers
+                        if !profileModel.blockedUsers
                             .contains(where: { $0.containsUser(userId: profile.id) })
                         {
                             AsyncButton(
                                 "user.block.label",
                                 systemImage: "person.fill.xmark",
-                                action: { await friendModel.blockUser(user: profile, onSuccess: {
+                                action: { await profileModel.blockUser(user: profile, onSuccess: {
                                     onSubmit()
                                     dismiss()
                                 })

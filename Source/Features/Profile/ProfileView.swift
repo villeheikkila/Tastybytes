@@ -13,7 +13,6 @@ struct ProfileView: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel
-    @Environment(FriendModel.self) private var friendModel
     @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(AppModel.self) private var appModel
     @State private var checkIns = [CheckIn.Joined]()
@@ -39,7 +38,7 @@ struct ProfileView: View {
     }
 
     private var showInFull: Bool {
-        isCurrentUser || !profile.isPrivate || friendModel.isFriend(profile)
+        isCurrentUser || !profile.isPrivate || profileModel.isFriend(profile)
     }
 
     var body: some View {
@@ -117,7 +116,7 @@ struct ProfileView: View {
     }
 
     @ViewBuilder private var sendFriendRequestSection: some View {
-        if !isCurrentUser, friendModel.hasNoFriendStatus(friend: profile) || (friendModel.isPendingCurrentUserApproval(profile) != nil) {
+        if !isCurrentUser, profileModel.hasNoFriendStatus(friend: profile) || (profileModel.isPendingCurrentUserApproval(profile) != nil) {
             ProfileFriendActionSection(profile: profile)
         }
     }

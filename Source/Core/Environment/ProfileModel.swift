@@ -62,6 +62,19 @@ public final class ProfileModel {
         }
     }
 
+    public var friends: [Friend.Saved] {
+        get {
+            access(keyPath: \.friends)
+            return UserDefaults.read(forKey: .profileFriendsData) ?? []
+        }
+
+        set {
+            withMutation(keyPath: \.friends) {
+                UserDefaults.set(value: newValue, forKey: .profileFriendsData)
+            }
+        }
+    }
+
     public init(repository: Repository) {
         self.repository = repository
     }
@@ -171,7 +184,7 @@ public final class ProfileModel {
         logger.notice("Initializing user data")
         let isPreviouslyLoaded = extendedProfile != nil
         if let extendedProfile {
-            showFullName = extendedProfile.nameDisplay == Profile.NameDisplay.fullName
+            showFullName = extendedProfile.nameDisplay == .fullName
             isPrivateProfile = extendedProfile.isPrivate
             reactionNotifications = extendedProfile.settings.sendReactionNotifications
             friendRequestNotifications = extendedProfile.settings.sendFriendRequestNotifications
@@ -183,19 +196,20 @@ public final class ProfileModel {
         }
 
         let startTime = DispatchTime.now()
-        async let profilePromise = await repository.profile.getCurrentUser()
-        async let userPromise = await repository.auth.getUser()
-
+        async let profilePromise = repository.profile.getCurrentUser()
+        async let userPromise = repository.auth.getUser()
+        async let friendsPromise = repository.friend.getCurrentUserFriends()
         var errors = [Error]()
         do {
-            let (currentUserProfile, userResult) = try await (profilePromise, userPromise)
+            let (currentUserProfile, userResult, friendsResult) = try await (profilePromise, userPromise, friendsPromise)
             extendedProfile = currentUserProfile
-            showFullName = currentUserProfile.nameDisplay == Profile.NameDisplay.fullName
+            showFullName = currentUserProfile.nameDisplay == .fullName
             isPrivateProfile = currentUserProfile.isPrivate
             reactionNotifications = currentUserProfile.settings.sendReactionNotifications
             friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
             checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
             sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
+            friends = friendsResult
             appIcon = .currentAppIcon
             email = userResult.email.orEmpty
             logger.info("User data initialized in \(startTime.elapsedTime())ms")
@@ -325,6 +339,133 @@ public final class ProfileModel {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    // Friends
+
+    public var acceptedFriends: [Profile.Saved] {
+        guard let extendedProfile else { return [] }
+        return friends.filter { $0.status == .accepted }.compactMap { $0.getFriend(userId: extendedProfile.id) }
+    }
+
+    public var blockedUsers: [Friend.Saved] {
+        friends.filter { $0.status == .blocked }
+    }
+
+    public var acceptedOrPendingFriends: [Friend.Saved] {
+        friends.filter { $0.status != .blocked }
+    }
+
+    public var pendingFriends: [Friend.Saved] {
+        friends.filter { $0.status == .pending }
+    }
+
+    public func sendFriendRequest(receiver: Profile.Id, onSuccess: (() -> Void)? = nil) async {
+        do {
+            let newFriend = try await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending))
+            withAnimation {
+                self.friends.append(newFriend)
+            }
+            if let onSuccess {
+                onSuccess()
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed add new friend '\(receiver)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func updateFriendRequest(friend: Friend.Saved, newStatus: Friend.Status) async {
+        do {
+            let updatedFriend = try await repository.friend.update(id: friend.id, friendUpdate: .init(
+                sender: friend.sender,
+                receiver: friend.receiver,
+                status: newStatus
+            ))
+            withAnimation {
+                self.friends.replace(friend, with: updatedFriend)
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error(
+                "Failed to update friend request. Error: \(error) (\(#file):\(#line))"
+            )
+        }
+    }
+
+    public func removeFriendRequest(_ friend: Friend.Saved) async {
+        do {
+            try await repository.friend.delete(id: friend.id)
+            withAnimation {
+                self.friends.remove(object: friend)
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to remove friend request '\(friend.id)'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func hasNoFriendStatus(friend: Profile.Saved) -> Bool {
+        guard let extendedProfile else { return false }
+        return !friends.contains(where: { $0.getFriend(userId: extendedProfile.id).id == friend.id })
+    }
+
+    public func isFriend(_ friend: Profile.Saved) -> Bool {
+        guard let extendedProfile else { return false }
+        return friends.contains(where: { $0.status == .accepted && $0.getFriend(userId: extendedProfile.id).id == friend.id })
+    }
+
+    public func isPendingUserApproval(_ friend: Profile.Saved) -> Friend.Saved? {
+        guard let extendedProfile else { return nil }
+        return friends.first(where: { $0.status == .pending && $0.getFriend(userId: extendedProfile.id).id == friend.id })
+    }
+
+    public func isPendingCurrentUserApproval(_ friend: Profile.Saved) -> Friend.Saved? {
+        friends.first(where: { $0.status == .pending && $0.sender == friend })
+    }
+
+    public func refreshFriends(withHaptics _: Bool = false) async {
+        do {
+            friends = try await repository.friend.getCurrentUserFriends()
+        } catch {
+            logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func unblockUser(_ friend: Friend.Saved) async {
+        do {
+            try await repository.friend.delete(id: friend.id)
+            withAnimation {
+                self.friends.remove(object: friend)
+            }
+            logger.notice("\(friend.id) unblocked")
+        } catch {
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to unblock user \(friend.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func blockUser(user: Profile.Saved, onSuccess: @escaping () -> Void) async {
+        guard let extendedProfile else { return }
+        if let friend = friends.first(where: { $0.getFriend(userId: extendedProfile.id) == user }) {
+            await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)
+        } else {
+            do {
+                let blockedUser = try await repository.friend.insert(newFriend: .init(receiver: user.id, status: .blocked))
+                withAnimation {
+                    self.friends.append(blockedUser)
+                }
+                onSuccess()
+            } catch {
+                guard !error.isCancelled else { return }
+                alertError = .init()
+                logger.error("Failed to block user \(user.id). Error: \(error) (\(#file):\(#line))")
+            }
         }
     }
 }

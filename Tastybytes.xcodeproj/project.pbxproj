@@ -309,7 +309,6 @@
 		5CF7ACFA2C53B16300491479 /* PrivacyPolicyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7ACF92C53B16300491479 /* PrivacyPolicyScreen.swift */; };
 		5CF7ACFC2C53B17400491479 /* TermsOfServiceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7ACFB2C53B17400491479 /* TermsOfServiceScreen.swift */; };
 		5CF7ACFF2C53CB2300491479 /* IncludedLibrariesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7ACFE2C53CB2300491479 /* IncludedLibrariesScreen.swift */; };
-		5CF7AD0A2C53D43500491479 /* FriendModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AD062C53D43500491479 /* FriendModel.swift */; };
 		5CF7AD0B2C53D43500491479 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AD022C53D43500491479 /* AppModel.swift */; };
 		5CF7AD0C2C53D43500491479 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AD072C53D43500491479 /* LocationModel.swift */; };
 		5CF7AD0D2C53D43500491479 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AD092C53D43500491479 /* ProfileModel.swift */; };
@@ -669,7 +668,6 @@
 		5CF7AD022C53D43500491479 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		5CF7AD032C53D43500491479 /* CheckInUploadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInUploadModel.swift; sourceTree = "<group>"; };
 		5CF7AD052C53D43500491479 /* FeedbackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackModel.swift; sourceTree = "<group>"; };
-		5CF7AD062C53D43500491479 /* FriendModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendModel.swift; sourceTree = "<group>"; };
 		5CF7AD072C53D43500491479 /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
 		5CF7AD082C53D43500491479 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		5CF7AD092C53D43500491479 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
@@ -1792,7 +1790,6 @@
 				5CF7AD022C53D43500491479 /* AppModel.swift */,
 				5CF7AD032C53D43500491479 /* CheckInUploadModel.swift */,
 				5CF7AD052C53D43500491479 /* FeedbackModel.swift */,
-				5CF7AD062C53D43500491479 /* FriendModel.swift */,
 				5CF7AD072C53D43500491479 /* LocationModel.swift */,
 				5CF7AD082C53D43500491479 /* NotificationModel.swift */,
 				5CF7AD092C53D43500491479 /* ProfileModel.swift */,
@@ -2150,7 +2147,6 @@
 				5C64E7E72B70122F006FC2C3 /* Product+Extension.swift in Sources */,
 				5C82E8A02B2F7B7800F2B369 /* ProfileLinksSection.swift in Sources */,
 				5C9058432B2894BE00EC157B /* DiscoverScreen.swift in Sources */,
-				5CF7AD0A2C53D43500491479 /* FriendModel.swift in Sources */,
 				5CC483232C553D0400DD8638 /* SignInWithGoogleView.swift in Sources */,
 				5CF7AD0B2C53D43500491479 /* AppModel.swift in Sources */,
 				5CF7AD0C2C53D43500491479 /* LocationModel.swift in Sources */,

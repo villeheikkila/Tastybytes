@@ -6,7 +6,6 @@ import SwiftUI
 
 struct ProfileScreen: View {
     @Environment(Router.self) private var router
-    @Environment(FriendModel.self) private var friendModel
     @Environment(ProfileModel.self) private var profileModel
 
     let profile: Profile.Saved
@@ -26,17 +25,17 @@ struct ProfileScreen: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 ProfileShareLinkView(profile: profile)
-                if friendModel.hasNoFriendStatus(friend: profile) {
+                if profileModel.hasNoFriendStatus(friend: profile) {
                     AsyncButton(
                         "friend.friendRequest.send.label",
-                        action: { await friendModel.sendFriendRequest(receiver: profile.id) }
+                        action: { await profileModel.sendFriendRequest(receiver: profile.id) }
                     )
-                } else if let friend = friendModel.isPendingCurrentUserApproval(profile) {
+                } else if let friend = profileModel.isPendingCurrentUserApproval(profile) {
                     AsyncButton(
                         "friend.friendRequest.accept.label",
 
                         action: {
-                            await friendModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                            await profileModel.updateFriendRequest(friend: friend, newStatus: .accepted)
                         }
                     )
                 }

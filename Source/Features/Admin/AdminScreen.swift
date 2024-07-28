@@ -50,5 +50,8 @@ struct AdminScreen: View {
             await adminModel.initialize()
         }
         .navigationBarTitle("admin.navigationTitle")
+        .initialTask {
+            await adminModel.initialize()
+        }
     }
 }

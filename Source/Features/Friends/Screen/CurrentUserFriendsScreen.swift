@@ -5,7 +5,6 @@ import SwiftUI
 
 struct CurrentUserFriendsScreen: View {
     @Environment(ProfileModel.self) private var profileModel
-    @Environment(FriendModel.self) private var friendModel
     @Environment(Router.self) private var router
     @Environment(NotificationModel.self) private var notificationModel
     @State private var friendToBeRemoved: Friend?
@@ -16,9 +15,9 @@ struct CurrentUserFriendsScreen: View {
 
     private var filteredFriends: [Friend.Saved] {
         if searchTerm.isEmpty {
-            friendModel.acceptedOrPendingFriends
+            profileModel.acceptedOrPendingFriends
         } else {
-            friendModel.acceptedOrPendingFriends.filter {
+            profileModel.acceptedOrPendingFriends.filter {
                 $0.getFriend(userId: profileModel.id).preferredName.localizedCaseInsensitiveContains(searchTerm)
             }
         }
@@ -31,27 +30,18 @@ struct CurrentUserFriendsScreen: View {
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .refreshable {
-            await friendModel.refresh(withHaptics: true)
-        }
-        .sensoryFeedback(.success, trigger: friendModel.isRefreshing) { oldValue, newValue in
-            oldValue && !newValue
+            await profileModel.refreshFriends(withHaptics: true)
         }
         .overlay {
-            if friendModel.state.isPopulated {
-                if friendModel.friends.isEmpty {
-                    ContentUnavailableView {
-                        Label("friends.contentUnavailable.noFriends", systemImage: "person.3")
-                    }
-                } else if !searchTerm.isEmpty, filteredFriends.isEmpty {
-                    ContentUnavailableView.search(text: searchTerm)
+            if profileModel.friends.isEmpty {
+                ContentUnavailableView {
+                    Label("friends.contentUnavailable.noFriends", systemImage: "person.3")
                 }
-            } else {
-                ScreenStateOverlayView(state: friendModel.state) {
-                    await friendModel.refresh()
-                }
+            } else if !searchTerm.isEmpty, filteredFriends.isEmpty {
+                ContentUnavailableView.search(text: searchTerm)
             }
         }
-        .navigationTitle("friends.title \(friendModel.friends.count.formatted())")
+        .navigationTitle("friends.title \(profileModel.friends.count.formatted())")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if showToolbar {
@@ -59,7 +49,7 @@ struct CurrentUserFriendsScreen: View {
             }
         }
         .initialTask {
-            await friendModel.refresh()
+            await profileModel.refreshFriends()
         }
         .task {
             await notificationModel.markAllFriendRequestsAsRead()
@@ -73,7 +63,7 @@ struct CurrentUserFriendsScreen: View {
                 systemImage: "qrcode",
                 open: .sheet(.nameTag(onSuccess: { profileId in
                     Task {
-                        await friendModel.sendFriendRequest(receiver: profileId)
+                        await profileModel.sendFriendRequest(receiver: profileId)
                     }
                 }))
             )
@@ -100,7 +90,6 @@ struct CurrentUserFriendsScreen: View {
 
 struct CurrentUserFriendListRow: View {
     @Environment(ProfileModel.self) private var profileModel
-    @Environment(FriendModel.self) private var friendModel
     @State private var showFriendDeleteConfirmation = false
 
     let friend: Friend.Saved
@@ -120,7 +109,7 @@ struct CurrentUserFriendListRow: View {
                             showFriendDeleteConfirmation = true
                         })
                         AsyncButton("friends.acceptRequest.label", systemImage: "person.badge.plus", action: {
-                            await friendModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                            await profileModel.updateFriendRequest(friend: friend, newStatus: .accepted)
                         })
                     }
                     .buttonStyle(.plain)
@@ -136,7 +125,7 @@ struct CurrentUserFriendListRow: View {
                         "friends.acceptRequest.label",
                         systemImage: "person.badge.plus",
                         action: {
-                            await friendModel.updateFriendRequest(
+                            await profileModel.updateFriendRequest(
                                 friend: friend,
                                 newStatus: .accepted
                             )
@@ -161,7 +150,7 @@ struct CurrentUserFriendListRow: View {
                 "friend.delete.confirmation.label \(presenting.getFriend(userId: profileModel.id).preferredName)",
                 role: .destructive,
                 action: {
-                    await friendModel.removeFriendRequest(presenting)
+                    await profileModel.removeFriendRequest(presenting)
                 }
             )
         }
@@ -181,7 +170,7 @@ struct CurrentUserFriendListRow: View {
             "friends.block.label",
             systemImage: "person.2.slash",
             action: {
-                await friendModel.updateFriendRequest(friend: friend, newStatus: .blocked)
+                await profileModel.updateFriendRequest(friend: friend, newStatus: .blocked)
             }
         )
     }

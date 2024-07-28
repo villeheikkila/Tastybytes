@@ -9,7 +9,6 @@ import SwiftUI
 struct FriendsScreen: View {
     private let logger = Logger(category: "FriendsScreen")
     @Environment(Repository.self) private var repository
-    @Environment(FriendModel.self) private var friendModel
     @Environment(ProfileModel.self) private var profileModel
     @State private var state: ScreenState = .loading
     @State private var friends: [Friend.Saved]
@@ -70,11 +69,11 @@ struct FriendsScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            if friendModel.hasNoFriendStatus(friend: profile) {
+            if profileModel.hasNoFriendStatus(friend: profile) {
                 AsyncButton(
                     "friends.add.label",
                     systemImage: "person.fill.badge.plus",
-                    action: { await friendModel.sendFriendRequest(receiver: profile.id) }
+                    action: { await profileModel.sendFriendRequest(receiver: profile.id) }
                 )
                 .labelStyle(.iconOnly)
                 .imageScale(.large)

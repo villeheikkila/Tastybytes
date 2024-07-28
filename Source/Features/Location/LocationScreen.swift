@@ -13,7 +13,6 @@ struct LocationScreen: View {
     private let logger = Logger(category: "LocationScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(ProfileModel.self) private var profileModel
     @Environment(AppModel.self) private var appModel
     @State private var state: ScreenState = .loading
     @State private var summary: Summary?

@@ -4,22 +4,21 @@ import Models
 import SwiftUI
 
 struct BlockedUsersScreen: View {
-    @Environment(FriendModel.self) private var friendModel
     @Environment(ProfileModel.self) private var profileModel
     @Environment(Router.self) private var router
 
     var body: some View {
-        List(friendModel.blockedUsers) { friend in
+        List(profileModel.blockedUsers) { friend in
             BlockedUserListItemView(
                 profile: friend.getFriend(userId: profileModel.profile.id),
                 onUnblockUser: {
-                    await friendModel.unblockUser(friend)
+                    await profileModel.unblockUser(friend)
                 }
             )
         }
         .listStyle(.insetGrouped)
         .refreshable {
-            await friendModel.refresh()
+            await profileModel.refreshFriends()
         }
         .overlay {
             ContentUnavailableView {
@@ -31,7 +30,7 @@ struct BlockedUsersScreen: View {
                     router.open(.toast(.success("blockedUsers.block.success")))
                 })))
             }
-            .opacity(friendModel.blockedUsers.isEmpty ? 1 : 0)
+            .opacity(profileModel.blockedUsers.isEmpty ? 1 : 0)
         }
         .navigationTitle("blockedUsers.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)

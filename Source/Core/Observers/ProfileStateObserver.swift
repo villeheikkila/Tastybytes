@@ -2,21 +2,13 @@
 import SwiftUI
 
 struct ProfileStateObserver<Content: View>: View {
-    @Environment(FriendModel.self) private var friendModel
-    @Environment(AdminModel.self) private var adminModel
     @Environment(ProfileModel.self) private var profileModel
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         switch profileModel.profileState {
-        case let .populated(profile):
+        case .populated:
             content()
-                .task {
-                    await friendModel.initialize(profile: profile)
-                    if profileModel.hasRole(.admin) {
-                        await adminModel.initialize()
-                    }
-                }
         case .loading:
             EmptyView()
         case let .error(errors):
