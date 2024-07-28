@@ -56,7 +56,9 @@ struct LocationScreen: View {
         .navigationTitle(location.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            toolbarContent
+            if state.isPopulated {
+                toolbarContent
+            }
         }
         .initialTask {
             await load()

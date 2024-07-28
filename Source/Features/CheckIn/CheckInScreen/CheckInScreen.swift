@@ -50,7 +50,9 @@ struct CheckInScreen: View {
                 }
             })
             .toolbar {
-                toolbarContent
+                if state.isPopulated {
+                    toolbarContent
+                }
             }
             .initialTask {
                 await loadCheckInData()

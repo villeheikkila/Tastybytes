@@ -741,6 +741,8 @@
 		5C07F2812B5275E100D8740B /* Observers */ = {
 			isa = PBXGroup;
 			children = (
+				5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */,
+				5C9057E12B2894BE00EC157B /* NotificationObserver.swift */,
 				5C672E892B504DD80048605B /* ProfileStateObserver.swift */,
 				5C02A73E2B4F316800B497FA /* AppStateObserver.swift */,
 				5C07F27E2B51F00600D8740B /* PhaseObserver.swift */,
@@ -892,17 +894,6 @@
 				5C9057602B2894BE00EC157B /* SubscriptionStoreContent.swift */,
 			);
 			path = Subscription;
-			sourceTree = "<group>";
-		};
-		5C82E88C2B2F67FA00F2B369 /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				5C9057C82B2894BE00EC157B /* SignInWithAppleView.swift */,
-				5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */,
-				5C9057E12B2894BE00EC157B /* NotificationObserver.swift */,
-				5CC483222C553D0400DD8638 /* SignInWithGoogleView.swift */,
-			);
-			path = Authentication;
 			sourceTree = "<group>";
 		};
 		5C82E8922B2F71B400F2B369 /* ActivityFeed */ = {
@@ -1402,6 +1393,8 @@
 		5C9057D12B2894BE00EC157B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				5C9057C82B2894BE00EC157B /* SignInWithAppleView.swift */,
+				5CC483222C553D0400DD8638 /* SignInWithGoogleView.swift */,
 				5C9057D22B2894BE00EC157B /* OnboardingScreen.swift */,
 			);
 			path = Onboarding;
@@ -1557,7 +1550,6 @@
 				5CF4948E2C4D07EB00B374AD /* Category */,
 				5C82E8922B2F71B400F2B369 /* ActivityFeed */,
 				5C3907652B32093D0036253E /* Admin */,
-				5C82E88C2B2F67FA00F2B369 /* Authentication */,
 				5CEEA3192C3BCBEB0009B3F5 /* Barcode */,
 				5C9057952B2894BE00EC157B /* Brand */,
 				5CC276322B31F07C001032CE /* CheckIn */,

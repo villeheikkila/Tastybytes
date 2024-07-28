@@ -45,7 +45,9 @@ struct CompanyScreen: View {
         .navigationTitle(company.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            toolbarContent
+            if state.isPopulated {
+                toolbarContent
+            }
         }
         .task {
             await getCompanyData()

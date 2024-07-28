@@ -73,7 +73,9 @@ struct BrandScreen: View {
             .navigationTitle(brand.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                toolbarContent
+                if state.isPopulated {
+                    toolbarContent
+                }
             }
         }
     }

@@ -110,62 +110,64 @@ struct ProductScreen: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .principal) { HStack {} }
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            AsyncButton("wishlist.add.label", systemImage: "star") {
-                await toggleWishlist()
-            }
-            .asyncButtonLoadingStyle(.plain)
-            .symbolVariant(isOnWishlist ? .fill : .none)
-            Menu {
-                ControlGroup {
-                    ProductShareLinkView(product: product)
-                    RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIn in
-                        checkIns = [checkIn] + checkIns
-                    }))))
-                    .disabled(!profileModel.hasPermission(.canCreateCheckIns))
-                    if profileModel.hasPermission(.canAddBarcodes) {
-                        RouterLink(
-                            "labels.add",
-                            systemImage: "barcode.viewfinder",
-                            open: .sheet(.barcodeScanner(onComplete: { barcode in
-                                await addBarcodeToProduct(barcode)
-                            }))
-                        )
+        if state.isPopulated {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                AsyncButton("wishlist.add.label", systemImage: "star") {
+                    await toggleWishlist()
+                }
+                .asyncButtonLoadingStyle(.plain)
+                .symbolVariant(isOnWishlist ? .fill : .none)
+                Menu {
+                    ControlGroup {
+                        ProductShareLinkView(product: product)
+                        RouterLink("checkIn.create.label", systemImage: "plus", open: .sheet(.checkIn(.create(product: product, onCreation: { checkIn in
+                            checkIns = [checkIn] + checkIns
+                        }))))
+                        .disabled(!profileModel.hasPermission(.canCreateCheckIns))
+                        if profileModel.hasPermission(.canAddBarcodes) {
+                            RouterLink(
+                                "labels.add",
+                                systemImage: "barcode.viewfinder",
+                                open: .sheet(.barcodeScanner(onComplete: { barcode in
+                                    await addBarcodeToProduct(barcode)
+                                }))
+                            )
+                        }
                     }
-                }
-                Divider()
-                RouterLink(
-                    "subBrand.screen.open",
-                    systemImage: "cart",
-                    open: .screen(.subBrand(brandId: product.subBrand.brand.id, subBrandId: product.subBrand.id))
-                )
-                RouterLink("brand.screen.open", systemImage: "cart", open: .screen(.brand(product.subBrand.brand.id)))
-                RouterLink(
-                    "company.screen.open",
-                    systemImage: "network",
-                    open: .screen(.company(product.subBrand.brand.brandOwner.id))
-                )
-                Divider()
-                Button("labels.translate", systemImage: "bubble.left.and.text.bubble.right") {
-                    showTranslator = true
-                }
+                    Divider()
+                    RouterLink(
+                        "subBrand.screen.open",
+                        systemImage: "cart",
+                        open: .screen(.subBrand(brandId: product.subBrand.brand.id, subBrandId: product.subBrand.id))
+                    )
+                    RouterLink("brand.screen.open", systemImage: "cart", open: .screen(.brand(product.subBrand.brand.id)))
+                    RouterLink(
+                        "company.screen.open",
+                        systemImage: "network",
+                        open: .screen(.company(product.subBrand.brand.brandOwner.id))
+                    )
+                    Divider()
+                    Button("labels.translate", systemImage: "bubble.left.and.text.bubble.right") {
+                        showTranslator = true
+                    }
 
-                Divider()
-                RouterLink(
-                    "product.editSuggestion.label",
-                    systemImage: "pencil",
-                    open: .sheet(.product(.editSuggestion(product)))
-                )
-                ReportButton(entity: .product(product))
-                Divider()
-                AdminRouterLink(open: .sheet(.productAdmin(id: product.id, onUpdate: { _ in
-                    await getProductData()
-                }, onDelete: { _ in
-                    router.removeLast()
-                })))
-            } label: {
-                Label("labels.menu", systemImage: "ellipsis")
-                    .labelStyle(.iconOnly)
+                    Divider()
+                    RouterLink(
+                        "product.editSuggestion.label",
+                        systemImage: "pencil",
+                        open: .sheet(.product(.editSuggestion(product)))
+                    )
+                    ReportButton(entity: .product(product))
+                    Divider()
+                    AdminRouterLink(open: .sheet(.productAdmin(id: product.id, onUpdate: { _ in
+                        await getProductData()
+                    }, onDelete: { _ in
+                        router.removeLast()
+                    })))
+                } label: {
+                    Label("labels.menu", systemImage: "ellipsis")
+                        .labelStyle(.iconOnly)
+                }
             }
         }
     }

@@ -2,9 +2,8 @@ import Components
 import SwiftUI
 
 struct OnboardingScreen: View {
-    enum Section: Int, Identifiable, Hashable {
+    enum Section {
         case intro, auth, profile
-        var id: Int { rawValue }
     }
 
     @Environment(ProfileModel.self) private var profileModel
@@ -88,7 +87,7 @@ struct OnboardingScreen: View {
         Group {
             switch section {
             case .intro:
-                OnboardingButtonView(label: "Continue") { section = .auth }
+                OnboardingButtonView(label: "labels.continue") { section = .auth }
             case .auth:
                 authBottomView
             case .profile:
