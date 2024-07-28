@@ -10,15 +10,15 @@ struct AuthStateObserver<Authenticated: View>: View {
     @ViewBuilder let authenticated: () -> Authenticated
 
     var body: some View {
-        VStack {
-            switch profileModel.authState {
-            case .authenticated:
-                authenticated()
-            case .unauthenticated:
-                AuthenticationScreen()
-            case .none:
-                EmptyView()
+        switch (profileModel.authState, profileModel.isOnboarded) {
+        case (.authenticated, true):
+            authenticated()
+        case (.authenticated, false), (.unauthenticated, false), (.unauthenticated, true):
+            RouterProvider(enableRoutingFromURLs: false) {
+                OnboardingScreen()
             }
+        case (.none, true), (.none, false):
+            EmptyView()
         }
     }
 }

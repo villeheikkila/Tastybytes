@@ -27,12 +27,10 @@ public struct AsyncButton<LabelView: View>: View {
                 await action()
             }
         }, label: {
-            HStack {
-                label()
-                if task != nil, asyncButtonLoadingStyle == .spinner {
-                    ProgressView()
-                        .padding(.leading, 10)
-                }
+            label()
+            if task != nil, asyncButtonLoadingStyle == .spinner {
+                ProgressView()
+                    .padding(.leading, 10)
             }
         })
         .disabled(task != nil)

@@ -2411,6 +2411,12 @@
         }
       }
     },
+    "Connect" : {
+
+    },
+    "Continue" : {
+
+    },
     "contributions.title" : {
       "localizations" : {
         "en" : {
@@ -2453,6 +2459,9 @@
           }
         }
       }
+    },
+    "Discover" : {
+
     },
     "discover.barcode.dismiss.label" : {
       "localizations" : {
@@ -2800,6 +2809,9 @@
         }
       }
     },
+    "Find new flavors tailored to your taste" : {
+
+    },
     "flavor.add.labels" : {
       "localizations" : {
         "en" : {
@@ -2859,6 +2871,9 @@
           }
         }
       }
+    },
+    "Follow friends and taste influencers" : {
+
     },
     "friend.delete.confirmation.label %@" : {
       "localizations" : {
@@ -4953,6 +4968,9 @@
         }
       }
     },
+    "Rate & Review" : {
+
+    },
     "rating.outOf %lf %lld" : {
       "localizations" : {
         "en" : {
@@ -5506,6 +5524,9 @@
           }
         }
       }
+    },
+    "Share your opinions on countless products" : {
+
     },
     "subBrand.addSubBrandFor.title %@" : {
       "localizations" : {

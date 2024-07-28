@@ -45,7 +45,6 @@
 		5C4FC6412BA70C110025DB83 /* CameraPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC63E2BA70C110025DB83 /* CameraPickerView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C4FC6422BA70C110025DB83 /* SendMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4FC63F2BA70C110025DB83 /* SendMailView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C511D762BA77EF300F95290 /* SparklesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C511D752BA77EF300F95290 /* SparklesView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C511D7B2BA78E2A00F95290 /* AuthenticationScreenContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C511D7A2BA78E2A00F95290 /* AuthenticationScreenContentView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C511D852BA792DF00F95290 /* CheckInListLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C511D842BA792DF00F95290 /* CheckInListLoadingIndicator.swift */; };
 		5C511D872BA7952100F95290 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C511D862BA7952100F95290 /* Pagination.swift */; };
 		5C5270572B821D6C0062AB18 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */; };
@@ -67,7 +66,6 @@
 		5C8036442B814F9800DE9EF3 /* ScanTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8862B2F63A100F2B369 /* SplashScreenProvider.swift */; };
 		5C82E88B2B2F678500F2B369 /* SubscriptionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E88A2B2F678500F2B369 /* SubscriptionProvider.swift */; };
-		5C82E88E2B2F692A00F2B369 /* OnboardingStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E88D2B2F692A00F2B369 /* OnboardingStateObserver.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C82E8962B2F74BF00F2B369 /* CheckInStatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8952B2F74BF00F2B369 /* CheckInStatisticView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C82E89A2B2F799300F2B369 /* PrivateProfileSign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E8992B2F799300F2B369 /* PrivateProfileSign.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C82E89C2B2F79EB00F2B369 /* ProfileFriendActionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82E89B2B2F79EB00F2B369 /* ProfileFriendActionSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -172,7 +170,6 @@
 		5C90583F2B2894BE00EC157B /* CheckInCommentEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B72B2894BE00EC157B /* CheckInCommentEntityView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058402B2894BE00EC157B /* CheckInScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057B82B2894BE00EC157B /* CheckInScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058412B2894BE00EC157B /* DuplicataProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057BA2B2894BE00EC157B /* DuplicataProductScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057BC2B2894BE00EC157B /* AuthenticationScreen.swift */; };
 		5C9058432B2894BE00EC157B /* DiscoverScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057BD2B2894BE00EC157B /* DiscoverScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058442B2894BE00EC157B /* CompanyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057C02B2894BE00EC157B /* CompanyScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058452B2894BE00EC157B /* AppNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057C22B2894BE00EC157B /* AppNameView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -186,7 +183,6 @@
 		5C9058502B2894BE00EC157B /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057CE2B2894BE00EC157B /* TabsView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058512B2894BE00EC157B /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C9057D02B2894BE00EC157B /* Comfortaa-Bold.ttf */; };
 		5C9058522B2894BE00EC157B /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D22B2894BE00EC157B /* OnboardingScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5C9058542B2894BE00EC157B /* OnboardingProfileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058572B2894BE00EC157B /* RouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D82B2894BE00EC157B /* RouterLink.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C9058582B2894BE00EC157B /* QuickAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057D92B2894BE00EC157B /* QuickAction.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C90585A2B2894BE00EC157B /* PathIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -402,7 +398,6 @@
 		5C4FC63E2BA70C110025DB83 /* CameraPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPickerView.swift; sourceTree = "<group>"; };
 		5C4FC63F2BA70C110025DB83 /* SendMailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailView.swift; sourceTree = "<group>"; };
 		5C511D752BA77EF300F95290 /* SparklesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparklesView.swift; sourceTree = "<group>"; };
-		5C511D7A2BA78E2A00F95290 /* AuthenticationScreenContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationScreenContentView.swift; sourceTree = "<group>"; };
 		5C511D842BA792DF00F95290 /* CheckInListLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListLoadingIndicator.swift; sourceTree = "<group>"; };
 		5C511D862BA7952100F95290 /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -425,7 +420,6 @@
 		5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextButton.swift; sourceTree = "<group>"; };
 		5C82E8862B2F63A100F2B369 /* SplashScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenProvider.swift; sourceTree = "<group>"; };
 		5C82E88A2B2F678500F2B369 /* SubscriptionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionProvider.swift; sourceTree = "<group>"; };
-		5C82E88D2B2F692A00F2B369 /* OnboardingStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStateObserver.swift; sourceTree = "<group>"; };
 		5C82E8952B2F74BF00F2B369 /* CheckInStatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInStatisticView.swift; sourceTree = "<group>"; };
 		5C82E8992B2F799300F2B369 /* PrivateProfileSign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateProfileSign.swift; sourceTree = "<group>"; };
 		5C82E89B2B2F79EB00F2B369 /* ProfileFriendActionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFriendActionSection.swift; sourceTree = "<group>"; };
@@ -530,7 +524,6 @@
 		5C9057B72B2894BE00EC157B /* CheckInCommentEntityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInCommentEntityView.swift; sourceTree = "<group>"; };
 		5C9057B82B2894BE00EC157B /* CheckInScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInScreen.swift; sourceTree = "<group>"; };
 		5C9057BA2B2894BE00EC157B /* DuplicataProductScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuplicataProductScreen.swift; sourceTree = "<group>"; };
-		5C9057BC2B2894BE00EC157B /* AuthenticationScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationScreen.swift; sourceTree = "<group>"; };
 		5C9057BD2B2894BE00EC157B /* DiscoverScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverScreen.swift; sourceTree = "<group>"; };
 		5C9057C02B2894BE00EC157B /* CompanyScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyScreen.swift; sourceTree = "<group>"; };
 		5C9057C22B2894BE00EC157B /* AppNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNameView.swift; sourceTree = "<group>"; };
@@ -544,7 +537,6 @@
 		5C9057CE2B2894BE00EC157B /* TabsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		5C9057D02B2894BE00EC157B /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		5C9057D22B2894BE00EC157B /* OnboardingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
-		5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingProfileSection.swift; sourceTree = "<group>"; };
 		5C9057D82B2894BE00EC157B /* RouterLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterLink.swift; sourceTree = "<group>"; };
 		5C9057D92B2894BE00EC157B /* QuickAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickAction.swift; sourceTree = "<group>"; };
 		5C9057DB2B2894BE00EC157B /* PathIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIdentifier.swift; sourceTree = "<group>"; };
@@ -850,14 +842,6 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		5C511D772BA78DC200F95290 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				5C511D7A2BA78E2A00F95290 /* AuthenticationScreenContentView.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		5C5D3CAF2C50E869002CFCB9 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
@@ -913,8 +897,6 @@
 		5C82E88C2B2F67FA00F2B369 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				5C511D772BA78DC200F95290 /* Components */,
-				5C9057BC2B2894BE00EC157B /* AuthenticationScreen.swift */,
 				5C9057C82B2894BE00EC157B /* SignInWithAppleView.swift */,
 				5C9057E42B2894BE00EC157B /* AuthStateObserver.swift */,
 				5C9057E12B2894BE00EC157B /* NotificationObserver.swift */,
@@ -1420,9 +1402,7 @@
 		5C9057D12B2894BE00EC157B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				5C82E88D2B2F692A00F2B369 /* OnboardingStateObserver.swift */,
 				5C9057D22B2894BE00EC157B /* OnboardingScreen.swift */,
-				5C9057D42B2894BE00EC157B /* OnboardingProfileSection.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -2082,7 +2062,6 @@
 				5CEEA2FA2C3814BE0009B3F5 /* CreationInfoSection.swift in Sources */,
 				5C9058182B2894BE00EC157B /* AppIconScreen.swift in Sources */,
 				5C9058522B2894BE00EC157B /* OnboardingScreen.swift in Sources */,
-				5C82E88E2B2F692A00F2B369 /* OnboardingStateObserver.swift in Sources */,
 				5CF494902C4D082C00B374AD /* AdminEvent+Extensions.swift in Sources */,
 				5C90584E2B2894BE00EC157B /* ProductMutationView.swift in Sources */,
 				5C24E1CA2B5D34CE003AB7C8 /* CheckInCommentRow.swift in Sources */,
@@ -2108,10 +2087,8 @@
 				5C9057E62B2894BE00EC157B /* Utils.swift in Sources */,
 				5CEEA2FE2C381AE40009B3F5 /* BrandEntityView.swift in Sources */,
 				5CF7ACFA2C53B16300491479 /* PrivacyPolicyScreen.swift in Sources */,
-				5C511D7B2BA78E2A00F95290 /* AuthenticationScreenContentView.swift in Sources */,
 				5C6337422C47F2A200390B38 /* BrandEditSuggestionScreen.swift in Sources */,
 				5C9058042B2894BE00EC157B /* CategoryCreationSheet.swift in Sources */,
-				5C9058422B2894BE00EC157B /* AuthenticationScreen.swift in Sources */,
 				5C9058052B2894BE00EC157B /* ProductPickerSheet.swift in Sources */,
 				5C68D76F2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift in Sources */,
 				5CF494942C4D1BD000B374AD /* ReportAdminScreen.swift in Sources */,
@@ -2126,7 +2103,6 @@
 				5C82E8872B2F63A100F2B369 /* SplashScreenProvider.swift in Sources */,
 				5C9057F82B2894BE00EC157B /* CompanyAdminSheet.swift in Sources */,
 				5C82E8AE2B2F97E400F2B369 /* CreateCheckInButtonView.swift in Sources */,
-				5C9058542B2894BE00EC157B /* OnboardingProfileSection.swift in Sources */,
 				5C24E1D32B5E4464003AB7C8 /* SubBrandSheetRow.swift in Sources */,
 				5C90581F2B2894BE00EC157B /* AdminScreen.swift in Sources */,
 				5C90580C2B2894BE00EC157B /* ReportSheet.swift in Sources */,

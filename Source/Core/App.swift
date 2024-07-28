@@ -48,10 +48,8 @@ struct MainApp: App {
                             SubscriptionProvider {
                                 AuthStateObserver {
                                     ProfileStateObserver {
-                                        OnboardingStateObserver {
-                                            NotificationObserver {
-                                                TabsView()
-                                            }
+                                        NotificationObserver {
+                                            TabsView()
                                         }
                                     }
                                 }
