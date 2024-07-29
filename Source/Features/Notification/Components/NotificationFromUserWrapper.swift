@@ -9,7 +9,7 @@ struct NotificationFromUserWrapper<Content: View>: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            Avatar(profile: profile)
+            AvatarView(profile: profile)
                 .avatarSize(.large)
                 .padding(.top, 2)
                 .padding(.trailing, 3)

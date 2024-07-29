@@ -42,7 +42,7 @@ struct ProfileAvatarPickerView: View {
     let allowEdit: Bool
 
     var body: some View {
-        Avatar(profile: profile)
+        AvatarView(profile: profile)
             .overlay(alignment: .bottomTrailing) {
                 if allowEdit {
                     Button(action: {

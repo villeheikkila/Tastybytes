@@ -18,7 +18,7 @@ struct CheckInCardTaggedFriends: View {
                 HStack(spacing: 4) {
                     ForEach(taggedProfiles) { taggedProfile in
                         RouterLink(open: .screen(.profile(taggedProfile))) {
-                            Avatar(profile: taggedProfile)
+                            AvatarView(profile: taggedProfile)
                         }
                         .routerLinkDisabled(checkInCardLoadedFrom.isLoadedFromProfile(taggedProfile))
                     }

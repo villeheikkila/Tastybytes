@@ -9,7 +9,7 @@ struct ReportEntityView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .center) {
-                Avatar(profile: report.createdBy)
+                AvatarView(profile: report.createdBy)
                     .avatarSize(.medium)
                 Text(report.createdBy.preferredName)
                     .font(.caption).bold()

@@ -1,5 +1,6 @@
 import Models
 internal import Supabase
+import Foundation
 
 struct SupabaseImageEntityRepository: ImageEntityRepository {
     let client: SupabaseClient
@@ -21,5 +22,11 @@ struct SupabaseImageEntityRepository: ImageEntityRepository {
             .delete()
             .eq("id", value: id.rawValue)
             .execute()
+    }
+
+    func getData(entity: ImageEntityProtocol) async throws -> Data {
+        try await client.storage
+            .from(entity.bucket)
+            .download(path: entity.file)
     }
 }

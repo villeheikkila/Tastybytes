@@ -4,27 +4,10 @@ import Models
 import SwiftUI
 
 public struct BlurHashPlaceholderView: View {
-    @State private var image: UIImage?
-
     let blurHash: BlurHash
-    let height: CGFloat
-    let width: CGFloat?
 
-    public init(blurHash: BlurHash, height: CGFloat, width: CGFloat? = nil) {
+    public init(blurHash: BlurHash) {
         self.blurHash = blurHash
-        self.height = height
-        self.width = width
-    }
-
-    nonisolated func getBlurHashImage(blurHash: BlurHash) async -> UIImage? {
-        let aspectRatio = blurHash.height / blurHash.width
-        let width = 32.0
-        let height = width * aspectRatio
-
-        return UIImage(
-            blurHash: blurHash.hash,
-            size: CGSize(width: width, height: height)
-        )
     }
 
     public var body: some View {

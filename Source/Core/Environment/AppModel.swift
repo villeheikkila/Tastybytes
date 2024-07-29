@@ -169,7 +169,6 @@ public final class AppModel {
         .init(name: "swift-tagged", link: .init(string: "https://github.com/pointfreeco/swift-tagged")!),
         .init(name: "Brightroom", link: .init(string: "https://github.com/FluidGroup/Brightroom")!),
         .init(name: "BlurHashViews", link: .init(string: "https://github.com/daprice/BlurHashViews")!),
-        .init(name: "Nuke", link: .init(string: "https://github.com/kean/Nuke")!),
     ]
 
     public init(repository: Repository, infoPlist: InfoPlist) {

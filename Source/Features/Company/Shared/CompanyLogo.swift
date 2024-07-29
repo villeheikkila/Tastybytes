@@ -1,20 +1,16 @@
 import Components
-
 import Models
 import SwiftUI
 
 struct CompanyLogo: View {
-    @Environment(AppModel.self) private var appModel
     let company: CompanyLogoProtocol
     let size: Double
 
     public var body: some View {
         Group {
-            if let logoUrl = company.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
-                RemoteImageView(url: logoUrl, content: { image in
+            if let image = company.logos.first {
+                ImageEntityView(image: image, content: { image in
                     image.resizable()
-                }, progress: {
-                    ProgressView()
                 })
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size, height: size)

@@ -6,7 +6,7 @@ struct ProfileEntityView: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            Avatar(profile: profile)
+            AvatarView(profile: profile)
                 .avatarSize(.extraLarge)
             VStack {
                 HStack {

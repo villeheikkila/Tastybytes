@@ -13,10 +13,3 @@ public protocol BrandProtocol: Verifiable {
     var logos: [ImageEntity.Saved] { get }
     var isVerified: Bool { get }
 }
-
-public extension BrandProtocol {
-    func getLogoUrl(baseUrl: URL) -> URL? {
-        guard let logo = logos.first else { return nil }
-        return logo.getLogoUrl(baseUrl: baseUrl)
-    }
-}

@@ -1,7 +1,9 @@
+import Foundation
 import Models
 
 public protocol ImageEntityRepository: Sendable {
     func getByFileName(from: ImageCategory, fileName: String) async throws -> ImageEntity.Saved
+    func getData(entity: ImageEntityProtocol) async throws -> Data
     func delete(from: ImageCategory, id: ImageEntity.Id) async throws
 }
 

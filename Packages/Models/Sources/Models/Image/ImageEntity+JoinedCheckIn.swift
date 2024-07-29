@@ -2,7 +2,7 @@ import Foundation
 public import Tagged
 
 public extension ImageEntity {
-    struct JoinedCheckIn: Codable, Hashable, Sendable, Identifiable, ImageEntityUrl {
+    struct JoinedCheckIn: Codable, Hashable, Sendable, Identifiable, ImageEntityProtocol {
         public let id: ImageEntity.Id
         public let file: String
         public let bucket: String

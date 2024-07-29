@@ -31,7 +31,7 @@ struct CheckInImageManagementView: View {
         ScrollView(.horizontal) {
             LazyHStack(alignment: .center, spacing: 3) {
                 ForEach(images) { image in
-                    RemoteImageView(url: image.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl), content: { image in
+                    ImageEntityView(image: image, content: { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)

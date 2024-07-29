@@ -11,7 +11,7 @@ struct CheckInCardHeader: View {
     var body: some View {
         RouterLink(open: .screen(.profile(profile))) {
             HStack {
-                Avatar(profile: profile)
+                AvatarView(profile: profile)
                     .avatarSize(.large)
                 Text(profile.preferredName)
                     .font(.caption).bold()

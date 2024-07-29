@@ -4,17 +4,12 @@ import Models
 import SwiftUI
 
 public struct CheckInEntityView: View {
-    @Environment(AppModel.self) private var appModel
     let checkIn: CheckIn.Joined
     let hideHeader: Bool
 
     init(checkIn: CheckIn.Joined, hideHeader: Bool = false) {
         self.checkIn = checkIn
         self.hideHeader = hideHeader
-    }
-
-    var baseUrl: URL {
-        appModel.infoPlist.supabaseUrl
     }
 
     public var body: some View {
@@ -37,7 +32,7 @@ public struct CheckInEntityView: View {
 
     private var header: some View {
         HStack {
-            AvatarView(profile: checkIn.profile, baseUrl: baseUrl)
+            AvatarView(profile: checkIn.profile)
             Text(checkIn.profile.preferredName)
                 .font(.caption).bold()
                 .foregroundColor(.primary)
@@ -128,7 +123,7 @@ public struct CheckInEntityView: View {
             }
             HStack(spacing: 4) {
                 ForEach(checkIn.taggedProfiles.map(\.profile)) { taggedProfile in
-                    AvatarView(profile: taggedProfile, baseUrl: baseUrl)
+                    AvatarView(profile: taggedProfile)
                 }
                 Spacer()
             }

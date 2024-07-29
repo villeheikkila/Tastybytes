@@ -8,18 +8,11 @@ struct ProductLogoView: View {
     let product: ProductLogoProtocol
     let size: Double
 
-    var logoUrl: URL? {
-        guard let logo = product.logos.first else { return nil }
-        return logo.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl)
-    }
-
     var body: some View {
         Group {
-            if let logoUrl {
-                RemoteImageView(url: logoUrl) { image in
+            if let image = product.logos.first {
+                ImageEntityView(image: image) { image in
                     image.resizable()
-                } progress: {
-                    ProgressView()
                 }
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size, height: size)

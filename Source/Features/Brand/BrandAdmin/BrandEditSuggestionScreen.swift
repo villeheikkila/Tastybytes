@@ -116,7 +116,7 @@ struct BrandEditSuggestionEntityView: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            Avatar(profile: editSuggestion.createdBy)
+            AvatarView(profile: editSuggestion.createdBy)
                 .avatarSize(.medium)
             VStack(alignment: .leading, spacing: 2) {
                 HStack(alignment: .top) {

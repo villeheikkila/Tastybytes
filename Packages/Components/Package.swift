@@ -17,10 +17,10 @@ let package = Package(
     dependencies: [
         .package(name: "Models", path: "../Models"),
         .package(name: "Extensions", path: "../Extensions"),
-        .package(url: "https://github.com/kean/Nuke.git", from: "12.8.0"),
         .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
         .package(url: "https://github.com/daprice/BlurHashViews.git", from: "1.0.0"),
         .package(url: "https://github.com/google/GoogleSignIn-iOS.git", from: "7.1.0"),
+        .package(url: "https://github.com/hyperoslo/Cache", from: "7.2.0"),
     ],
     targets: [
         .target(
@@ -28,13 +28,12 @@ let package = Package(
             dependencies: [
                 .product(name: "Models", package: "Models"),
                 .product(name: "Extensions", package: "Extensions"),
-                .product(name: "Nuke", package: "Nuke"),
-                .product(name: "NukeUI", package: "Nuke"),
                 .product(name: "BrightroomEngine", package: "Brightroom"),
                 .product(name: "BrightroomUI", package: "Brightroom"),
                 .product(name: "BrightroomUIPhotosCrop", package: "Brightroom"),
                 .product(name: "BlurHashViews", package: "blurhashviews"),
                 .product(name: "GoogleSignInSwift", package: "GoogleSignIn-iOS"),
+                .product(name: "Cache", package: "Cache"),
             ]
         ),
     ],

@@ -31,7 +31,7 @@ struct ReactionsView: View {
             Spacer()
             ForEach(checkInReactions) { reaction in
                 RouterLink(open: .screen(.profile(reaction.profile))) {
-                    Avatar(profile: reaction.profile)
+                    AvatarView(profile: reaction.profile)
                         .avatarSize(.medium)
                         .fixedSize()
                 }

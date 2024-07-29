@@ -6,7 +6,7 @@ struct BarcodeManagementRowView: View {
 
     var body: some View {
         HStack {
-            Avatar(profile: barcode.profile)
+            AvatarView(profile: barcode.profile)
                 .avatarSize(.medium)
             VStack(alignment: .leading, spacing: 2) {
                 HStack {

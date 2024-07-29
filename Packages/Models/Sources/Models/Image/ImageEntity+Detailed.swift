@@ -2,7 +2,7 @@ import Foundation
 public import Tagged
 
 public extension ImageEntity {
-    struct Detailed: Decodable, Hashable, Sendable, Identifiable, ImageEntityUrl {
+    struct Detailed: Decodable, Hashable, Sendable, Identifiable, ImageEntityProtocol {
         public let id: ImageEntity.Id
         public let file: String
         public let bucket: String

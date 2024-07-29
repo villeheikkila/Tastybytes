@@ -11,7 +11,7 @@ struct CheckInCommentEntityView: View {
 
     var body: some View {
         HStack {
-            Avatar(profile: comment.profile)
+            AvatarView(profile: comment.profile)
                 .avatarSize(.medium)
             VStack(alignment: .leading) {
                 HStack {

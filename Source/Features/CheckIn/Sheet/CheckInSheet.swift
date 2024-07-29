@@ -162,7 +162,7 @@ struct CheckInSheet: View {
                 } else {
                     WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
                         ForEach(taggedFriends) { friend in
-                            Avatar(profile: friend)
+                            AvatarView(profile: friend)
                                 .avatarSize(.large)
                         }
                     }

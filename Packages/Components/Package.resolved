@@ -1,5 +1,5 @@
 {
-  "originHash" : "39610d3f02071fcbca6e2dc06c7f17be2dbbd1a59eb751c9e0031e86c0d086a0",
+  "originHash" : "f399da48db87c67c0ff35b26b042d97e3d18804305d368394a7281870114a73a",
   "pins" : [
     {
       "identity" : "appauth-ios",
@@ -56,15 +56,6 @@
       }
     },
     {
-      "identity" : "nuke",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kean/Nuke.git",
-      "state" : {
-        "revision" : "0ead44350d2737db384908569c012fe67c421e4d",
-        "version" : "12.8.0"
-      }
-    },
-    {
       "identity" : "precisionlevelslider",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/FluidGroup/PrecisionLevelSlider",
@@ -96,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "ee97538f5b81ae89698fd95938896dec5217b148",
-        "version" : "1.1.1"
+        "revision" : "3d2dc41a01f9e49d84f0a3925fb858bed64f702d",
+        "version" : "1.1.2"
       }
     },
     {
@@ -150,8 +141,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/VergeGroup/Verge.git",
       "state" : {
-        "revision" : "a791a644e7b60bb6609fce6c6f5ed80b19dd465f",
-        "version" : "12.3.0"
+        "revision" : "78cee392fdb5319cd06409fe5d214ecac4f625dd",
+        "version" : "12.4.0"
       }
     }
   ],

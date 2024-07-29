@@ -10,7 +10,7 @@ struct CreationInfoSection: View {
             if let createdBy {
                 RouterLink(open: .screen(.profile(createdBy))) {
                     HStack {
-                        Avatar(profile: createdBy)
+                        AvatarView(profile: createdBy)
                         VStack(alignment: .leading) {
                             Text(createdBy.preferredName)
                             if let createdAt {
@@ -55,7 +55,7 @@ struct ModificationInfoView: View {
             if let createdBy {
                 RouterLink(open: .screen(.profile(createdBy))) {
                     HStack {
-                        Avatar(profile: createdBy)
+                        AvatarView(profile: createdBy)
                         VStack(alignment: .leading) {
                             Text(createdBy.preferredName)
                             Text(createdAt.formatted())
@@ -77,7 +77,7 @@ struct ModificationInfoView: View {
                 if let updatedBy {
                     RouterLink(open: .screen(.profile(updatedBy))) {
                         HStack {
-                            Avatar(profile: updatedBy)
+                            AvatarView(profile: updatedBy)
                             VStack(alignment: .leading) {
                                 Text(updatedBy.preferredName)
                                 Text(updatedAt.formatted())

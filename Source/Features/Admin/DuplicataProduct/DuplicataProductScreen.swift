@@ -12,7 +12,7 @@ struct DuplicateProductSuggestionEntityView: View {
     var body: some View {
         VStack {
             HStack {
-                Avatar(profile: editSuggestion.createdBy)
+                AvatarView(profile: editSuggestion.createdBy)
                     .avatarSize(.small)
                 Text(editSuggestion.createdBy.preferredName).font(.caption).bold()
                 Spacer()

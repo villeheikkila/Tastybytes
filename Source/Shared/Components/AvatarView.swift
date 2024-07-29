@@ -4,25 +4,18 @@ import SwiftUI
 
 public struct AvatarView: View {
     @Environment(\.avatarSize) private var avatarSize
-    let avatarUrl: URL?
+    let image: ImageEntity.Saved?
     let id: Profile.Id
 
-    public init(avatarUrl: URL? = nil, id: Profile.Id) {
-        self.avatarUrl = avatarUrl
-        self.id = id
-    }
-
-    public init(profile: ProfileProtocol, baseUrl: URL) {
-        avatarUrl = profile.getAvatarUrl(baseUrl: baseUrl)
+    public init(profile: ProfileProtocol) {
+        image = profile.avatars.first
         id = profile.id
     }
 
     public var body: some View {
-        if let avatarUrl {
-            RemoteImageView(url: avatarUrl, content: { image in
+        if let image {
+            ImageEntityView(image: image, content: { image in
                 image.resizable()
-            }, progress: {
-                ProgressView()
             })
             .clipShape(.circle)
             .aspectRatio(contentMode: .fill)

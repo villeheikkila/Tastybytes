@@ -1,10 +1,9 @@
 import Components
-
 import Models
+import Repositories
 import SwiftUI
 
 struct CheckInImageReelView: View {
-    @Environment(AppModel.self) private var appModel
     let checkIn: CheckIn.Joined
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
 
@@ -14,20 +13,18 @@ struct CheckInImageReelView: View {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 0) {
                 ForEach(checkIn.images) { image in
-                    if let imageUrl = image.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
-                        RouterLink(open: .sheet(.checkInImage(checkIn: checkIn, onDeleteImage: onDeleteImage))) {
-                            RemoteImageBlurHashView(url: imageUrl, blurHash: image.blurHash, height: imageHeight) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(height: imageHeight)
-                            }
-                            .frame(height: imageHeight)
-                            .clipShape(.rect(cornerRadius: 8))
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 4)
-                            .containerRelativeFrame(.horizontal)
+                    RouterLink(open: .sheet(.checkInImage(checkIn: checkIn, onDeleteImage: onDeleteImage))) {
+                        ImageEntityView(image: image) { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(height: imageHeight)
                         }
+                        .frame(height: imageHeight)
+                        .clipShape(.rect(cornerRadius: 8))
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 4)
+                        .containerRelativeFrame(.horizontal)
                     }
                 }
             }
