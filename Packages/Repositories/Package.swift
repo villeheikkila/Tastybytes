@@ -18,6 +18,7 @@ let package = Package(
             url: "https://github.com/supabase-community/supabase-swift.git",
             from: "2.14.3"
         ),
+        .package(url: "https://github.com/hyperoslo/Cache", from: "7.2.0"),
         .package(name: "Models", path: "../Models"),
         .package(name: "Extensions", path: "../Extensions"),
     ],
@@ -28,6 +29,7 @@ let package = Package(
                 .product(name: "Supabase", package: "supabase-swift"),
                 .product(name: "Models", package: "Models"),
                 .product(name: "Extensions", package: "Extensions"),
+                .product(name: "Cache", package: "Cache"),
             ]
         ),
     ],

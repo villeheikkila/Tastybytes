@@ -35,9 +35,12 @@ public final class Repository: RepositoryProtocol {
             supabaseKey: supabaseKey,
             options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers, logger: CustomSupabaseLogger()))
         )
+
+        let cache = CacheClient()
+
         admin = SupabaseAdminRepository(client: client)
         appConfig = SupabaseAppConfigRepository(client: client)
-        imageEntity = SupabaseImageEntityRepository(client: client)
+        imageEntity = SupabaseImageEntityRepository(client: client, cache: cache)
         profile = SupabaseProfileRepository(client: client, imageEntityRepository: imageEntity)
         role = SupabaseRoleRepository(client: client)
         checkIn = SupabaseCheckInRepository(client: client, imageEntityRepository: imageEntity)

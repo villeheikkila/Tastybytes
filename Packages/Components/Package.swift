@@ -20,7 +20,6 @@ let package = Package(
         .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
         .package(url: "https://github.com/daprice/BlurHashViews.git", from: "1.0.0"),
         .package(url: "https://github.com/google/GoogleSignIn-iOS.git", from: "7.1.0"),
-        .package(url: "https://github.com/hyperoslo/Cache", from: "7.2.0"),
     ],
     targets: [
         .target(
@@ -33,7 +32,6 @@ let package = Package(
                 .product(name: "BrightroomUIPhotosCrop", package: "Brightroom"),
                 .product(name: "BlurHashViews", package: "blurhashviews"),
                 .product(name: "GoogleSignInSwift", package: "GoogleSignIn-iOS"),
-                .product(name: "Cache", package: "Cache"),
             ]
         ),
     ],

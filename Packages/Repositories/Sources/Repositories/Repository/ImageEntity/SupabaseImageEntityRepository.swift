@@ -4,6 +4,7 @@ import Foundation
 
 struct SupabaseImageEntityRepository: ImageEntityRepository {
     let client: SupabaseClient
+    let cache: CacheProtocol
 
     func getByFileName(from: ImageCategory, fileName: String) async throws -> ImageEntity.Saved {
         try await client
@@ -25,8 +26,14 @@ struct SupabaseImageEntityRepository: ImageEntityRepository {
     }
 
     func getData(entity: ImageEntityProtocol) async throws -> Data {
-        try await client.storage
-            .from(entity.bucket)
-            .download(path: entity.file)
+        if let data = await cache.getData(key: entity.cacheKey) {
+            return data
+        } else {
+            let data = try await client.storage
+                .from(entity.bucket)
+                .download(path: entity.file)
+            await cache.setData(key: entity.cacheKey, data: data)
+            return data
+        }
     }
 }
