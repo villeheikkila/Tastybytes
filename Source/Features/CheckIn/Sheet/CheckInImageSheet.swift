@@ -9,7 +9,6 @@ struct CheckInImageSheet: View {
 
     private let logger = Logger(category: "CheckInImageSheet")
     @Environment(Repository.self) private var repository
-    @Environment(AppModel.self) private var appModel
     @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss
     @State private var currentImage: ImageEntity.Saved
@@ -52,13 +51,12 @@ struct CheckInImageSheet: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
-            if let imageUrl = currentImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
-                ImageShareLinkView(url: imageUrl, title: "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))")
-            }
+            ImageShareLinkView(
+                image: currentImage,
+                title: "checkIn.shareLink.title \(checkIn.profile.preferredName) \(checkIn.product.formatted(.fullName))"
+            )
             Menu {
-                if let imageUrl = currentImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) {
-                    SaveToPhotoGalleryButtonView(imageUrl: imageUrl)
-                }
+                SaveToPhotoGalleryButtonView(image: currentImage)
                 if profileModel.profile.id == checkIn.profile.id {
                     Button("labels.delete", systemImage: "trash", role: .destructive, action: {
                         showDeleteConfirmationFor = currentImage

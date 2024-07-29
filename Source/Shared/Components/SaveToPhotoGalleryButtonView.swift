@@ -1,9 +1,12 @@
 import Components
 import Extensions
+import Models
+import Repositories
 import SwiftUI
 
 struct SaveToPhotoGalleryButtonView: View {
-    let imageUrl: URL
+    @Environment(Repository.self) private var repository
+    let image: ImageEntity.Saved
 
     var body: some View {
         AsyncButton("saveToPhotoGalleryButton.label", systemImage: "arrow.down.circle", action: downloadImage)
@@ -11,7 +14,7 @@ struct SaveToPhotoGalleryButtonView: View {
 
     private func downloadImage() async {
         do {
-            let (data, _) = try await URLSession.shared.data(from: imageUrl, delegate: nil)
+            let data = try await repository.imageEntity.getData(entity: image)
             guard let image = UIImage(data: data) else { return }
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
         } catch {

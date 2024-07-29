@@ -1,11 +1,14 @@
+import Models
+import Repositories
 import SwiftUI
 
 struct ImageShareLinkView: View {
-    let url: URL
-    let title: String
+    @Environment(Repository.self) private var repository
+    let image: ImageEntity.Saved
+    let title: LocalizedStringKey
 
     private var transferable: ImageTransferable {
-        ImageTransferable(url: url)
+        ImageTransferable(image: image, repository: repository)
     }
 
     var body: some View {
@@ -13,13 +16,13 @@ struct ImageShareLinkView: View {
     }
 }
 
-struct ImageTransferable: Codable, Transferable {
-    let url: URL
+struct ImageTransferable: Transferable {
+    let image: ImageEntityProtocol
+    let repository: Repository
 
     private func fetchImageData() async -> Data {
         do {
-            let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
-            return data
+            return try await repository.imageEntity.getData(entity: image)
         } catch {
             return Data()
         }
