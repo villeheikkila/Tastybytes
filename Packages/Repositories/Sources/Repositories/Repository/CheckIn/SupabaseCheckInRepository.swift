@@ -91,7 +91,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getCheckInImages(id: Profile.Id, from: Int, to: Int) async throws -> [ImageEntity.JoinedCheckIn] {
+    func getCheckInImages(id: Profile.Id, from: Int, to: Int) async throws -> [ImageEntity.CheckInId] {
         try await client
             .from(.checkInImages)
             .select(CheckIn.getQuery(.image(false)))
@@ -102,7 +102,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async throws -> [ImageEntity.JoinedCheckIn] {
+    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async throws -> [ImageEntity.CheckInId] {
         try await client
             .from(.checkInImages)
             .select(CheckIn.getQuery(.image(false)))
@@ -165,7 +165,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func deleteAsModerator(id: CheckIn.Id) async throws {
         try await client
-            .rpc(fn: .deleteCheckInAsModerator, params: CheckIn.DeleteAsAdminRequest(id: id))
+            .rpc(fn: .deleteCheckInAsModerator, params: ["p_check_in_id": id.rawValue])
             .execute()
     }
 

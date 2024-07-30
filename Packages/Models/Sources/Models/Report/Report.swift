@@ -15,7 +15,7 @@ public extension Report {
         case subBrand(SubBrand.JoinedBrand)
         case checkIn(CheckIn.Joined)
         case comment(CheckIn.Comment.Joined)
-        case checkInImage(ImageEntity.JoinedCheckIn)
+        case checkInImage(ImageEntity.CheckInId)
         case profile(Profile.Saved)
         case location(Location.Saved)
     }

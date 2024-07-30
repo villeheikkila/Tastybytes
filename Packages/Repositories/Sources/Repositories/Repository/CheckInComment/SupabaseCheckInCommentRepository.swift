@@ -59,7 +59,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         try await client
             .rpc(
                 fn: .deleteCheckInCommentAsModerator,
-                params: CheckIn.Comment.DeleteAsAdminRequest(id: id)
+                params: ["p_check_in_comment_id": id.rawValue]
             )
             .execute()
     }

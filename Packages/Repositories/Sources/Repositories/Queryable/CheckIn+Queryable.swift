@@ -46,7 +46,7 @@ extension CheckIn: Queryable {
         case let .image(withTableName):
             buildQuery(
                 .checkInImages,
-                [ImageEntity.getQuery(.saved(nil)), "check_ins!inner(id, created_by)"],
+                [ImageEntity.getQuery(.saved(nil)), "check_in_id"],
                 withTableName
             )
         case let .imageDetailed(withTableName):

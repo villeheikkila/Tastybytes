@@ -10,28 +10,6 @@ public extension CheckIn {
         }
     }
 
-    struct Minimal: Codable, Hashable, Sendable, Identifiable {
-        public let id: CheckIn.Id
-        public let createdBy: Profile.Id
-
-        enum CodingKeys: String, CodingKey {
-            case id
-            case createdBy = "created_by"
-        }
-    }
-
-    struct DeleteAsAdminRequest: Codable, Sendable {
-        public let id: CheckIn.Id
-
-        public init(id: CheckIn.Id) {
-            self.id = id
-        }
-
-        enum CodingKeys: String, CodingKey {
-            case id = "p_check_in_id"
-        }
-    }
-
     struct NewRequest: Codable, Sendable {
         public let productId: Product.Id
         public let rating: Double?

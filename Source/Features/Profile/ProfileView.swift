@@ -18,7 +18,7 @@ struct ProfileView: View {
     @State private var checkIns = [CheckIn.Joined]()
     @State private var profile: Profile.Saved
     @State private var profileSummary: Profile.Summary?
-    @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
+    @State private var checkInImages = [ImageEntity.CheckInId]()
     @State private var isLoading = false
     @State private var isRefreshing = false
     @State private var isLoadingImages = false

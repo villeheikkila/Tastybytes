@@ -7,11 +7,11 @@ import Repositories
 import SwiftUI
 
 struct CheckInImageCellView: View {
-    let checkInImage: ImageEntity.JoinedCheckIn
+    let checkInImage: ImageEntity.CheckInId
 
     var body: some View {
         HStack {
-            RouterLink(open: .screen(.checkIn(checkInImage.checkIn.id))) {
+            RouterLink(open: .screen(.checkIn(checkInImage.checkInId))) {
                 ImageEntityView(image: checkInImage, content: { image in
                     image
                         .resizable()

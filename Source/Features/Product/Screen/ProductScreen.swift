@@ -22,7 +22,7 @@ struct ProductScreen: View {
     @State private var showTranslator = false
     // check-in images
     @State private var checkInImageTask: Task<Void, Never>?
-    @State private var checkInImages = [ImageEntity.JoinedCheckIn]()
+    @State private var checkInImages = [ImageEntity.CheckInId]()
     @State private var isLoadingCheckInImages = false
     @State private var checkInImagesPage = 0
     // state

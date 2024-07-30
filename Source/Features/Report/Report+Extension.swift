@@ -44,7 +44,7 @@ extension Report.Content {
         case let .comment(comment):
             .screen(.checkIn(comment.checkIn.id))
         case let .checkInImage(imageEntity):
-            .screen(.checkIn(imageEntity.checkIn.id))
+                .screen(.checkIn(imageEntity.checkInId))
         case let .profile(profile):
             .screen(.profile(profile))
         case let .location(location):

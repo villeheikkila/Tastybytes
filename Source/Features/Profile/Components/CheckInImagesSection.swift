@@ -2,7 +2,7 @@ import Models
 import SwiftUI
 
 struct CheckInImagesSection: View {
-    let checkInImages: [ImageEntity.JoinedCheckIn]
+    let checkInImages: [ImageEntity.CheckInId]
     let isLoading: Bool
     let onLoadMore: () -> Void
 

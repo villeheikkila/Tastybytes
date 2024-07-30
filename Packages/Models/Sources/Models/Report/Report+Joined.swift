@@ -28,7 +28,7 @@ public extension Report {
             let subBrand = try values.decodeIfPresent(SubBrand.JoinedBrand.self, forKey: .subBrand)
             let checkInComment = try values.decodeIfPresent(CheckIn.Comment.Joined.self, forKey: .checkInComment)
             let checkIn = try values.decodeIfPresent(CheckIn.Joined.self, forKey: .checkIn)
-            let checkInImageEntity = try values.decodeIfPresent(ImageEntity.JoinedCheckIn.self, forKey: .checkInImage)
+            let checkInImageEntity = try values.decodeIfPresent(ImageEntity.CheckInId.self, forKey: .checkInImage)
             let profile = try values.decodeIfPresent(Profile.Saved.self, forKey: .profile)
             let location = try values.decodeIfPresent(Location.Saved.self, forKey: .location)
 
