@@ -10,14 +10,6 @@ public extension CheckIn {
         }
     }
 
-    struct CheckInFlavor: Codable, Sendable, Hashable {
-        public let flavor: Flavor.Saved
-
-        enum CodingKeys: String, CodingKey {
-            case flavor = "flavors"
-        }
-    }
-
     struct Minimal: Codable, Hashable, Sendable, Identifiable {
         public let id: CheckIn.Id
         public let createdBy: Profile.Id

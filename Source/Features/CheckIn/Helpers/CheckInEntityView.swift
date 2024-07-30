@@ -106,7 +106,7 @@ public struct CheckInEntityView: View {
                     .foregroundColor(.primary)
             }
 
-            FlavorsView(flavors: checkIn.flavors.map(\.flavor))
+            FlavorsView(flavors: checkIn.flavors)
             if let purchaseLocation = checkIn.purchaseLocation {
                 Text("checkIn.location.purchasedFrom __\(purchaseLocation.name)__")
             }

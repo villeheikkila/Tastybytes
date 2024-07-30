@@ -9,10 +9,10 @@ extension Product: Queryable {
         case let .saved(withTableName):
             buildQuery(.products,
                        [
-                saved,
-                ImageEntity.getQuery(.saved(.productLogos))
-            ]
-                       , withTableName)
+                           saved,
+                           ImageEntity.getQuery(.saved(.productLogos)),
+                       ],
+                       withTableName)
         case let .joinedBrandSubcategories(withTableName):
             buildQuery(
                 .products,

@@ -54,7 +54,7 @@ struct CheckInSheet: View {
             _manufacturer = State(wrappedValue: checkIn.variant?.manufacturer)
             _servingStyle = State(wrappedValue: checkIn.servingStyle)
             _taggedFriends = State(wrappedValue: checkIn.taggedProfiles.map(\.profile))
-            _pickedFlavors = State(wrappedValue: checkIn.flavors.map(\.flavor))
+            _pickedFlavors = State(wrappedValue: checkIn.flavors)
             _location = State(wrappedValue: checkIn.location)
             _purchaseLocation = State(wrappedValue: checkIn.purchaseLocation)
             _checkInAt = State(wrappedValue: checkIn.checkInAt ?? Date.now)

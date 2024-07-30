@@ -26,7 +26,7 @@ struct CheckInCardCheckIn: View {
                     }
                 }
 
-                FlavorsView(flavors: checkIn.flavors.map(\.flavor))
+                FlavorsView(flavors: checkIn.flavors)
 
                 if let purchaseLocation = checkIn.purchaseLocation {
                     RouterLink(open: .screen(.location(purchaseLocation.id))) {

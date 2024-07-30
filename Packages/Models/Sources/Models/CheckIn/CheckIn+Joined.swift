@@ -11,7 +11,7 @@ public extension CheckIn {
         public let product: Product.Joined
         public let checkInReactions: [CheckIn.Reaction.Saved]
         public let taggedProfiles: [CheckInTaggedProfile]
-        public let flavors: [CheckInFlavor]
+        public let flavors: [Flavor.Saved]
         public let variant: Product.Variant.JoinedCompany?
         public let servingStyle: ServingStyle.Saved?
         public let location: Location.Saved?
@@ -28,7 +28,7 @@ public extension CheckIn {
             product: Product.Joined,
             checkInReactions: [CheckIn.Reaction.Saved],
             taggedProfiles: [CheckInTaggedProfile],
-            flavors: [CheckInFlavor],
+            flavors: [Flavor.Saved],
             variant: Product.Variant.JoinedCompany? = nil,
             servingStyle: ServingStyle.Saved? = nil,
             location: Location.Saved? = nil,
@@ -101,7 +101,7 @@ public extension CheckIn {
             product: Product.Joined? = nil,
             checkInReactions: [CheckIn.Reaction.Saved]? = nil,
             taggedProfiles: [CheckInTaggedProfile]? = nil,
-            flavors: [CheckInFlavor]? = nil,
+            flavors: [Flavor.Saved]? = nil,
             variant: Product.Variant.JoinedCompany? = nil,
             servingStyle: ServingStyle.Saved? = nil,
             location: Location.Saved? = nil,
@@ -137,7 +137,7 @@ public extension CheckIn {
             case product = "products"
             case checkInReactions = "check_in_reactions"
             case taggedProfiles = "check_in_tagged_profiles"
-            case flavors = "check_in_flavors"
+            case flavors
             case variant = "product_variants"
             case servingStyle = "serving_styles"
             case location = "locations"
