@@ -7,7 +7,12 @@ extension Product: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            buildQuery(.products, [saved, ImageEntity.getQuery(.saved(.productLogos))], withTableName)
+            buildQuery(.products,
+                       [
+                saved,
+                ImageEntity.getQuery(.saved(.productLogos))
+            ]
+                       , withTableName)
         case let .joinedBrandSubcategories(withTableName):
             buildQuery(
                 .products,
@@ -15,8 +20,7 @@ extension Product: Queryable {
                     saved,
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
-                    Subcategory.getQuery(.joinedCategory(true)),
-                    Product.Barcode.getQuery(.saved(true)),
+                    Subcategory.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                 ],
                 withTableName
@@ -29,7 +33,7 @@ extension Product: Queryable {
                     buildQuery(name: "profiles", foreignKey: "created_by", [Profile.getQuery(.minimal(false))]),
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
-                    Subcategory.getQuery(.joinedCategory(true)),
+                    Subcategory.getQuery(.saved(true)),
                     Product.Barcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                 ],
@@ -44,7 +48,7 @@ extension Product: Queryable {
                     "average_rating",
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
-                    Subcategory.getQuery(.joinedCategory(true)),
+                    Subcategory.getQuery(.saved(true)),
                     Product.Barcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                 ],
@@ -59,7 +63,7 @@ extension Product: Queryable {
                     "average_rating",
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
-                    Subcategory.getQuery(.joinedCategory(true)),
+                    Subcategory.getQuery(.saved(true)),
                     Product.Barcode.getQuery(.saved(true)),
                     ImageEntity.getQuery(.saved(.productLogos)),
                 ],

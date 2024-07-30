@@ -18,6 +18,6 @@ public protocol ProductProtocol: ProductLogoProtocol, Verifiable {
     var isVerified: Bool { get }
     var subBrand: SubBrand.JoinedBrand { get }
     var category: Category.Saved { get }
-    var subcategories: [Subcategory.JoinedCategory] { get }
+    var subcategories: [Subcategory.Saved] { get }
     var isDiscontinued: Bool { get }
 }

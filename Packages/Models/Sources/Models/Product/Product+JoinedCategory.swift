@@ -8,7 +8,7 @@ public extension Product {
         public let isVerified: Bool
         public let isDiscontinued: Bool
         public let category: Category.Saved
-        public let subcategories: [Subcategory.JoinedCategory]
+        public let subcategories: [Subcategory.Saved]
         public let logos: [ImageEntity.Saved]
 
         enum CodingKeys: String, CodingKey {
@@ -40,7 +40,7 @@ public extension Product {
             isVerified: Bool,
             isDiscontinued: Bool,
             category: Category.Saved,
-            subcategories: [Subcategory.JoinedCategory],
+            subcategories: [Subcategory.Saved],
             logos: [ImageEntity.Saved]
         ) {
             self.id = id

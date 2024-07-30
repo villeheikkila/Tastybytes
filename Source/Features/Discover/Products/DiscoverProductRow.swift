@@ -29,7 +29,7 @@ struct DiscoverProductRow: View {
         .contentShape(.rect)
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
-            if barcode == nil || product.barcodes.contains(where: { $0.isSameAs(barcode) }) {
+            if barcode == nil || (product.barcodes ?? []).contains(where: { $0.isSameAs(barcode) }) {
                 router.open(.screen(.product(product.id)))
             } else {
                 showAddBarcodeToConfirmationDialog = true

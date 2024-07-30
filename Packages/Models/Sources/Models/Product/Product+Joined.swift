@@ -8,8 +8,8 @@ public extension Product {
         public let isVerified: Bool
         public let subBrand: SubBrand.JoinedBrand
         public let category: Category.Saved
-        public let subcategories: [Subcategory.JoinedCategory]
-        public let barcodes: [Product.Barcode.Saved]
+        public let subcategories: [Subcategory.Saved]
+        public let barcodes: [Product.Barcode.Saved]?
         public let averageRating: Double?
         public let currentUserCheckIns: Int?
         public let isDiscontinued: Bool
@@ -45,8 +45,8 @@ public extension Product {
             isVerified: Bool,
             subBrand: SubBrand.JoinedBrand,
             category: Category.Saved,
-            subcategories: [Subcategory.JoinedCategory],
-            barcodes: [Product.Barcode.Saved],
+            subcategories: [Subcategory.Saved],
+            barcodes: [Product.Barcode.Saved]?,
             isDiscontinued: Bool,
             logos: [ImageEntity.Saved]
         ) {
@@ -178,7 +178,7 @@ public extension Product {
             isVerified: Bool? = nil,
             subBrand: SubBrand.JoinedBrand? = nil,
             category: Category.Saved? = nil,
-            subcategories: [Subcategory.JoinedCategory]? = nil,
+            subcategories: [Subcategory.Saved]? = nil,
             barcodes: [Product.Barcode.Saved]? = nil,
             isDiscontinued: Bool? = nil,
             logos: [ImageEntity.Saved]? = nil

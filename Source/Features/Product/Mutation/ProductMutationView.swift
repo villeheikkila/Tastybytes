@@ -316,7 +316,7 @@ struct ProductMutationView: View {
                 category = appModel.categories.first(where: { category in
                     category.id == initialProduct.category.id
                 })
-                subcategories = initialProduct.subcategories.map { .init(subcategory: $0) }
+                subcategories = initialProduct.subcategories
                 brandOwner = initialProduct.subBrand.brand.brandOwner
                 brand = brandsWithSubBrands.first(where: { $0.id == initialProduct.subBrand.brand.id })
                 if initialProduct.subBrand.name != nil {

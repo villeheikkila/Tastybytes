@@ -9,7 +9,7 @@ public extension Product {
         public let isVerified: Bool
         public let subBrand: SubBrand.JoinedBrand
         public let category: Category.Saved
-        public let subcategories: [Subcategory.JoinedCategory]
+        public let subcategories: [Subcategory.Saved]
         public let barcodes: [Product.Barcode.JoinedWithCreator]
         public let editSuggestions: [EditSuggestion]
         public let variants: [Product.Variant.JoinedCompany]
@@ -48,7 +48,7 @@ public extension Product {
             isVerified: Bool,
             subBrand: SubBrand.JoinedBrand,
             category: Category.Saved,
-            subcategories: [Subcategory.JoinedCategory],
+            subcategories: [Subcategory.Saved],
             barcodes: [Product.Barcode.JoinedWithCreator],
             editSuggestions: [Product.EditSuggestion],
             variants: [Product.Variant.JoinedCompany],
@@ -127,7 +127,7 @@ public extension Product {
             isVerified: Bool? = nil,
             subBrand: SubBrand.JoinedBrand? = nil,
             category: Category.Saved? = nil,
-            subcategories: [Subcategory.JoinedCategory]? = nil,
+            subcategories: [Subcategory.Saved]? = nil,
             barcodes: [Product.Barcode.JoinedWithCreator]? = nil,
             editSuggestions: [Product.EditSuggestion]? = nil,
             variants: [Product.Variant.JoinedCompany]? = nil,
