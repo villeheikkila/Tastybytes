@@ -6,8 +6,9 @@ struct SupabaseAuthRepository: AuthRepository {
     let client: SupabaseClient
 
     func getUser() async throws -> Profile.Account {
-        let response = try await client.auth.session.user
-        return .init(id: .init(rawValue: response.id), email: response.email)
+        let response = try await client.auth.session
+        let (roles, permissions) = try decodeClaimsFromAccessToken(response.accessToken)
+        return .init(id: .init(rawValue: response.user.id), email: response.user.email, roles: roles, permissions: permissions)
     }
 
     func logOut() async throws {
@@ -88,4 +89,50 @@ extension AsyncSequence {
     func eraseToStream() -> AsyncStream<Element> {
         AsyncStream(self)
     }
+}
+
+private func decodeClaimsFromAccessToken(_ jwt: String) throws -> (roles: [Role.Name], permissions: [Permission.Name]) {
+    enum DecodeErrors: Error {
+        case badToken
+        case other
+        case missingAuthData
+    }
+
+    func base64Decode(_ base64: String) throws -> Data {
+        let base64 = base64
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+        let padded = base64.padding(toLength: ((base64.count + 3) / 4) * 4, withPad: "=", startingAt: 0)
+        guard let decoded = Data(base64Encoded: padded) else {
+            throw DecodeErrors.badToken
+        }
+        return decoded
+    }
+
+    func decodeJWTPart(_ value: String) throws -> [String: Any] {
+        let bodyData = try base64Decode(value)
+        let json = try JSONSerialization.jsonObject(with: bodyData, options: [])
+        guard let payload = json as? [String: Any] else {
+            throw DecodeErrors.other
+        }
+        return payload
+    }
+
+    let segments = jwt.components(separatedBy: ".")
+    guard segments.count >= 2 else {
+        throw DecodeErrors.badToken
+    }
+
+    let payload = try decodeJWTPart(segments[1])
+
+    guard let authRoles = payload["auth_roles"] as? [String],
+          let authPermissions = payload["auth_permissions"] as? [String]
+    else {
+        throw DecodeErrors.missingAuthData
+    }
+
+    let roles: [Role.Name] = authRoles.compactMap { .init(rawValue: $0) }
+    let permissions: [Permission.Name] = authPermissions.compactMap { .init(rawValue: $0) }
+
+    return (roles: roles, permissions: permissions)
 }

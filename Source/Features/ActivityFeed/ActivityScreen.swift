@@ -105,6 +105,7 @@ struct ActivityScreen: View {
             .paginated(from, to)
         }
         do {
+            let startTime = DispatchTime.now()
             let fetchedCheckIns = try await repository.checkIn.getActivityFeed(query: queryType)
             guard !Task.isCancelled else { return }
             logger.info("Succesfully loaded check-ins from \(from) to \(to)")
@@ -116,6 +117,7 @@ struct ActivityScreen: View {
             } else {
                 checkIns.append(contentsOf: fetchedCheckIns)
             }
+            logger.info("Activity feed data loaded in \(startTime.elapsedTime())ms")
             state = .populated
             page += 1
         } catch {

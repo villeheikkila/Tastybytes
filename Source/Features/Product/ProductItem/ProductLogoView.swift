@@ -4,7 +4,6 @@ import Models
 import SwiftUI
 
 struct ProductLogoView: View {
-    @Environment(AppModel.self) private var appModel
     let product: ProductLogoProtocol
     let size: Double
 

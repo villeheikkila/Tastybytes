@@ -12,7 +12,6 @@ public extension Profile {
         public let isOnboarded: Bool
         private let rawPreferredName: String?
         public let nameDisplay: NameDisplay
-        public let roles: [Role.Joined]
         public let settings: Profile.Settings
         public let avatars: [ImageEntity.Saved]
 
@@ -28,7 +27,6 @@ public extension Profile {
             isOnboarded: Bool,
             preferredName: String?,
             nameDisplay: Profile.NameDisplay,
-            roles: [Role.Joined],
             settings: Profile.Settings,
             avatars: [ImageEntity.Saved],
             firstName: String? = nil,
@@ -43,7 +41,6 @@ public extension Profile {
             self.isOnboarded = isOnboarded
             rawPreferredName = preferredName
             self.nameDisplay = nameDisplay
-            self.roles = roles
             self.settings = settings
             self.avatars = avatars
         }
@@ -57,7 +54,6 @@ public extension Profile {
             isOnboarded: Bool? = nil,
             preferredName: String? = nil,
             nameDisplay: Profile.NameDisplay? = nil,
-            roles: [Role.Joined]? = nil,
             settings: Profile.Settings? = nil,
             avatars: [ImageEntity.Saved]? = nil
         ) -> Self {
@@ -69,7 +65,6 @@ public extension Profile {
                 isOnboarded: isOnboarded ?? self.isOnboarded,
                 preferredName: preferredName ?? self.preferredName,
                 nameDisplay: nameDisplay ?? self.nameDisplay,
-                roles: roles ?? self.roles,
                 settings: settings ?? self.settings,
                 avatars: avatars ?? self.avatars,
                 firstName: firstName ?? self.firstName,
@@ -87,10 +82,6 @@ public extension Profile {
             )
         }
 
-        public func hasRole(_ role: Role.Name) -> Bool {
-            roles.contains(where: { $0.name == role.rawValue })
-        }
-
         enum CodingKeys: String, CodingKey, CaseIterable {
             case id
             case username
@@ -101,7 +92,6 @@ public extension Profile {
             case firstName = "first_name"
             case lastName = "last_name"
             case nameDisplay = "name_display"
-            case roles
             case settings = "profile_settings"
             case avatars = "profile_avatars"
         }

@@ -36,4 +36,10 @@ struct SupabaseImageEntityRepository: ImageEntityRepository {
             return data
         }
     }
+
+    func getSignedUrl(entity: ImageEntityProtocol, expiresIn: Int) async throws -> URL {
+        try await client.storage
+            .from(entity.bucket)
+            .createSignedURL(path: entity.file, expiresIn: expiresIn)
+    }
 }

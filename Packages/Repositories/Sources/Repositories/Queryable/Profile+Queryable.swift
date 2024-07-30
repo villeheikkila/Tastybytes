@@ -13,7 +13,7 @@ extension Profile: Queryable {
         case let .extended(withTableName):
             buildQuery(
                 .profiles,
-                [saved, Profile.Settings.getQuery(.saved(true)), Role.getQuery(.joined(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
+                [saved, Profile.Settings.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.profileAvatars))],
                 withTableName
             )
         case let .detailed(withTableName):

@@ -33,8 +33,8 @@ struct MainApp: App {
 
         self.infoPlist = infoPlist
         repository = .init(
-            supabaseURL: infoPlist.supabaseUrl,
-            supabaseKey: infoPlist.supabaseAnonKey,
+            apiUrl: infoPlist.supabaseUrl,
+            apiKey: infoPlist.supabaseAnonKey,
             headers: ["x_bundle_id": bundleIdentifier, "x_app_version": infoPlist.appVersion.prettyString]
         )
     }

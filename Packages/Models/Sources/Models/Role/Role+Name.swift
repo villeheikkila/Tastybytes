@@ -1,5 +1,5 @@
 public extension Role {
-    enum Name: String {
+    enum Name: String, Codable, Sendable {
         case admin
         case user
         case moderator

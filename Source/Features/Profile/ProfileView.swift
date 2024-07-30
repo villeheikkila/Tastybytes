@@ -122,6 +122,7 @@ struct ProfileView: View {
     }
 
     private func initialize(isRefresh: Bool = false) async {
+        let startTime = DispatchTime.now()
         async let checkInsPromise: Void = fetchFeedItems(reset: true)
         async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
         async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile.id), from: 0, to: appModel.rateControl.checkInPageSize)
@@ -140,6 +141,7 @@ struct ProfileView: View {
             logger.error("Fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
         await checkInsPromise
+        logger.info("Profile data loaded in \(startTime.elapsedTime())ms")
     }
 
     private func fetchImages() async {
@@ -168,8 +170,9 @@ struct ProfileView: View {
         let (from, to) = getPagination(page: reset ? 0 : page, size: appModel.rateControl.checkInPageSize)
         isLoading = true
         do {
+            let startTime = DispatchTime.now()
             let fetchedCheckIns = try await repository.checkIn.getByProfileId(id: profile.id, queryType: .paginated(from, to))
-            logger.info("Succesfully loaded check-ins from \(from) to \(to)")
+            logger.info("Succesfully loaded check-ins from \(from) to \(to) in \(startTime.elapsedTime())ms")
             if reset {
                 checkIns = fetchedCheckIns
             } else {

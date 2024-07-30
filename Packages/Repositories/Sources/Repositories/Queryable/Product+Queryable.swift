@@ -11,8 +11,14 @@ extension Product: Queryable {
         case let .joinedBrandSubcategories(withTableName):
             buildQuery(
                 .products,
-                [saved, SubBrand.getQuery(.joinedBrand(true)), Category.getQuery(.saved(true)),
-                 Subcategory.getQuery(.joinedCategory(true)), Product.Barcode.getQuery(.saved(true)), ImageEntity.getQuery(.saved(.productLogos))],
+                [
+                    saved,
+                    SubBrand.getQuery(.joinedBrand(true)),
+                    Category.getQuery(.saved(true)),
+                    Subcategory.getQuery(.joinedCategory(true)),
+                    Product.Barcode.getQuery(.saved(true)),
+                    ImageEntity.getQuery(.saved(.productLogos)),
+                ],
                 withTableName
             )
         case let .joinedBrandSubcategoriesCreator(withTableName):

@@ -75,6 +75,32 @@ public final class ProfileModel {
         }
     }
 
+    public var roles: [Role.Name] {
+        get {
+            access(keyPath: \.roles)
+            return UserDefaults.read(forKey: .profileRolesData) ?? []
+        }
+
+        set {
+            withMutation(keyPath: \.roles) {
+                UserDefaults.set(value: newValue, forKey: .profileRolesData)
+            }
+        }
+    }
+
+    public var permissions: [Permission.Name] {
+        get {
+            access(keyPath: \.permissions)
+            return UserDefaults.read(forKey: .profilePermissionsData) ?? []
+        }
+
+        set {
+            withMutation(keyPath: \.permissions) {
+                UserDefaults.set(value: newValue, forKey: .profilePermissionsData)
+            }
+        }
+    }
+
     public init(repository: Repository) {
         self.repository = repository
     }
@@ -163,14 +189,12 @@ public final class ProfileModel {
     }
 
     // Access Control
-    public func hasPermission(_ permission: Permission.Name) -> Bool {
-        guard let roles = extendedProfile?.roles else { return false }
-        let permissions = roles.flatMap(\.permissions)
-        return permissions.contains(where: { $0.name == permission.rawValue })
+    public func hasPermission(_: Permission.Name) -> Bool {
+        permissions.contains(permissions)
     }
 
     public func hasRole(_ role: Role.Name) -> Bool {
-        extendedProfile?.hasRole(role) ?? false
+        roles.contains(role)
     }
 
     public func hasChanged(username: String, firstName: String, lastName: String) -> Bool {
@@ -212,6 +236,8 @@ public final class ProfileModel {
             friends = friendsResult
             appIcon = .currentAppIcon
             email = userResult.email.orEmpty
+            roles = userResult.roles
+            permissions = userResult.permissions
             logger.info("User data initialized in \(startTime.elapsedTime())ms")
         } catch {
             errors.append(error)

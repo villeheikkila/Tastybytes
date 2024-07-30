@@ -238,6 +238,7 @@ struct DiscoverScreen: View {
             return
         }
         logger.info("Staring search for id: '\(searchKey.id)'")
+        let startTime = DispatchTime.now()
         switch searchKey {
         case let .barcode(barcode):
             do {
@@ -266,7 +267,7 @@ struct DiscoverScreen: View {
                         searchResultKey = searchKey
                         error = nil
                     }
-                    logger.info("Search completed for id: '\(searchKey.id)'")
+                    logger.info("Search completed for id: '\(searchKey.id)' in \(startTime.elapsedTime())ms")
                 } catch {
                     if error.isCancelled {
                         logger.info("Search cancelled for id: '\(searchKey.id)'")
@@ -283,7 +284,7 @@ struct DiscoverScreen: View {
                         searchResultKey = searchKey
                         error = nil
                     }
-                    logger.info("Search completed for id: '\(searchKey.id)'")
+                    logger.info("Search completed for id: '\(searchKey.id)' in \(startTime.elapsedTime())ms")
                 } catch {
                     guard !error.isCancelled else { return }
                     self.error = error
@@ -297,7 +298,7 @@ struct DiscoverScreen: View {
                         searchResultKey = searchKey
                         error = nil
                     }
-                    logger.info("Search completed for id: '\(searchKey.id)'")
+                    logger.info("Search completed for id: '\(searchKey.id)' in \(startTime.elapsedTime())ms")
                 } catch {
                     guard !error.isCancelled else { return }
                     self.error = error
@@ -311,7 +312,7 @@ struct DiscoverScreen: View {
                         searchResultKey = searchKey
                         error = nil
                     }
-                    logger.info("Search completed for id: '\(searchKey.id)'")
+                    logger.info("Search completed for id: '\(searchKey.id)' in \(startTime.elapsedTime())ms")
                 } catch {
                     guard !error.isCancelled else { return }
                     self.error = error

@@ -1,5 +1,5 @@
 {
-  "originHash" : "1e2c0781f9187e2b23d318cb822362d75cbe00715f5f8919dd4b75f5b7c8c87d",
+  "originHash" : "e054769080d0aec40c1d4d25343b19f7cb0d87668c17c6cdb082576de5a27f24",
   "pins" : [
     {
       "identity" : "appauth-ios",
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift.git",
       "state" : {
-        "revision" : "12694543f0c5f407504b54276f0dc1536065e016",
-        "version" : "2.14.3"
+        "revision" : "d2ec7d3cd18befd40e5f349b8c565efe58e7e300",
+        "version" : "2.15.1"
       }
     },
     {
@@ -179,6 +179,15 @@
       "state" : {
         "revision" : "78cee392fdb5319cd06409fe5d214ecac4f625dd",
         "version" : "12.4.0"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "357ca1e5dd31f613a1d43320870ebc219386a495",
+        "version" : "1.2.2"
       }
     }
   ],

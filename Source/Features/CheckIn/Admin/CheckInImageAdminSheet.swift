@@ -13,20 +13,16 @@ struct CheckInImageAdminSheet: View {
 
     private let logger = Logger(category: "CheckInImageAdminSheet")
     @Environment(\.dismiss) private var dismiss
-    @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
     @State private var imageDetails: ImageDetails?
     @State private var checkInImage = ImageEntity.Detailed()
+    @State private var imageUrl: URL?
 
     let id: ImageEntity.Id
     let open: Open?
     let onDelete: OnDeleteCallback
-
-    private var imageUrl: URL? {
-        checkInImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl)
-    }
 
     var body: some View {
         Form {
@@ -93,15 +89,11 @@ struct CheckInImageAdminSheet: View {
     private func initialize() async {
         do {
             checkInImage = try await repository.checkIn.getDetailedCheckInImage(id: id)
-            guard let imageUrl = checkInImage.getLogoUrl(baseUrl: appModel.infoPlist.supabaseUrl) else {
-                throw ImageEntity.EntityError.failedToFormUrl
-            }
-            let (data, _) = try await URLSession.shared.data(from: imageUrl)
-
+            let data = try await repository.imageEntity.getData(entity: checkInImage)
+            imageUrl = try await repository.imageEntity.getSignedUrl(entity: checkInImage, expiresIn: 60)
             guard let image = UIImage(data: data) else {
                 throw NSError(domain: "ImageLoading", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to create image from data"])
             }
-
             let size = image.size
             let resolution = CGSize(width: image.scale * size.width, height: image.scale * size.height)
             let fileSize = data.count

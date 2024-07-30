@@ -50,6 +50,8 @@ enum AppDataKey: String, CaseIterable {
     case appDataSubscriptionGroup = "app_data_subcategories"
     case profileData = "profile_data"
     case profileFriendsData = "profile_friends_data"
+    case profileRolesData = "profile_roles_data"
+    case profilePermissionsData = "profile_permissions_data"
     case friendsData = "friends_data"
     case profileDeleted = "profile_deleted"
 }

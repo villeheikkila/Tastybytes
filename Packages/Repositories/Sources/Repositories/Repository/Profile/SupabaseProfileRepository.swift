@@ -10,7 +10,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         try await client
             .from(.profiles)
             .select(Profile.getQuery(.minimal(false)))
-            .eq("id", value: id.uuidString.lowercased())
+            .eq("id", value: id.uuidString)
             .limit(1)
             .single()
             .execute()
@@ -21,7 +21,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         try await client
             .from(.profiles)
             .select(Profile.getQuery(.detailed(false)))
-            .eq("id", value: id.uuidString.lowercased())
+            .eq("id", value: id.uuidString)
             .limit(1)
             .single()
             .execute()
@@ -41,7 +41,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         try await client
             .from(.profiles)
             .select(Profile.Contributions.getQuery(.joined(false)))
-            .eq("id", value: id.uuidString.lowercased())
+            .eq("id", value: id.uuidString)
             .not("sub_brands.name", operator: .is, value: AnyJSON.null)
             .limit(1)
             .single()

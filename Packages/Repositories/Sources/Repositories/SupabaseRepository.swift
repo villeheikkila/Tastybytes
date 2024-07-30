@@ -29,10 +29,10 @@ public final class Repository: RepositoryProtocol {
     public let subscription: SubscriptionRepository
     public let imageEntity: ImageEntityRepository
 
-    public init(supabaseURL: URL, supabaseKey: String, headers: [String: String]) {
+    public init(apiUrl: URL, apiKey: String, headers: [String: String]) {
         let client = SupabaseClient(
-            supabaseURL: supabaseURL,
-            supabaseKey: supabaseKey,
+            supabaseURL: apiUrl,
+            supabaseKey: apiKey,
             options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers, logger: CustomSupabaseLogger()))
         )
 

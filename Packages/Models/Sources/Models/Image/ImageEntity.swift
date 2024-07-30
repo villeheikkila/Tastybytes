@@ -17,12 +17,6 @@ public extension ImageEntityProtocol {
     var cacheKey: String { "\(bucket)-\(file)" }
 }
 
-public extension ImageEntityProtocol {
-    func getLogoUrl(baseUrl: URL) -> URL? {
-        baseUrl.appendingPathComponent("storage/v1/object/public/\(bucket)/\(file)")
-    }
-}
-
 public extension ImageEntity {
     enum EntityError: Error {
         case failedToFormUrl
