@@ -26,6 +26,7 @@ public enum AppState: Sendable, Equatable {
 public struct RateControl: Sendable {
     public let checkInPageSize = 10
     public let checkInImagePageSize = 10
+    public let productFeedPageSize = 50
 }
 
 public struct IncludedLibrary: Identifiable, Hashable, Sendable {

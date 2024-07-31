@@ -26,35 +26,46 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func getFeed(_ type: Product.FeedType, from: Int, to: Int, categoryFilterId: Models.Category.Id?) async throws -> [Product.Joined] {
-        var queryBuilder = client
-            .from(.viewProductRatings)
+    func getFeed(_ type: Product.FeedType, page: Int, pageSize: Int, categoryFilterId _: Models.Category.Id?) async throws -> [Product.Joined] {
+        struct PaginationParams: Encodable {
+            let pageNumber: Int
+            let pageSize: Int
+            let sortBy: SortOption
+
+            enum SortOption: String, Codable {
+                case averageRating = "average_rating"
+                case checkInsDuringPreviousMonth = "check_ins_during_previous_month"
+                case createdAt = "created_at"
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case pageNumber = "p_page_number"
+                case pageSize = "p_page_size"
+                case sortBy = "p_sort_by"
+            }
+
+            init(pageNumber: Int, pageSize: Int, type: Product.FeedType) {
+                self.pageNumber = pageNumber
+                self.pageSize = pageSize
+                sortBy = switch type {
+                case .latest:
+                    .createdAt
+                case .topRated:
+                    .averageRating
+                case .trending:
+                    .checkInsDuringPreviousMonth
+                }
+            }
+        }
+
+        return try await client
+            .rpc(
+                fn: .getPaginatedProductRatings,
+                params: PaginationParams(pageNumber: page, pageSize: pageSize, type: type)
+            )
             .select(Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
-
-        if let categoryFilterId {
-            queryBuilder = queryBuilder.eq("category_id", value: categoryFilterId.rawValue)
-        }
-
-        switch type {
-        case .topRated:
-            return try await queryBuilder
-                .range(from: from, to: to)
-                .order("average_rating", ascending: false)
-                .execute()
-                .value
-        case .trending:
-            return try await queryBuilder
-                .range(from: from, to: to)
-                .order("check_ins_during_previous_month", ascending: false)
-                .execute()
-                .value
-        case .latest:
-            return try await queryBuilder
-                .range(from: from, to: to)
-                .order("created_at", ascending: false)
-                .execute()
-                .value
-        }
+            .execute()
+            .value
     }
 
     func getUnverified() async throws -> [Product.Joined] {

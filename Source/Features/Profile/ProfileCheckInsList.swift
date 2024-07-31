@@ -42,7 +42,6 @@ struct ProfileCheckInsList: View {
     @State private var state: ScreenState = .loading
     @State private var checkIns = [CheckIn.Joined]()
     @State private var isLoading = false
-    @State private var page = 0
 
     let profile: Profile.Saved
     let filter: ProfileCheckInListFilter
@@ -77,23 +76,24 @@ struct ProfileCheckInsList: View {
 
     func loadCheckIns() async {
         guard !isLoading else { return }
-        let (from, to) = getPagination(page: page, size: appModel.rateControl.checkInPageSize)
         isLoading = true
+        let lastCheckInId = checkIns.last?.id
         do {
+            let startTime = DispatchTime.now()
+            let pageSize = appModel.rateControl.checkInPageSize
             let fetchedCheckIns = switch filter {
             case let .dateRange(dateRange):
-                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .dateRange(from, to, dateRange))
+                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .dateRange(lastCheckInId, pageSize, dateRange))
             case let .location(location):
-                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .location(from, to, location))
+                try await repository.checkIn.getByProfileId(id: profile.id, queryType: .location(lastCheckInId, pageSize, location.id))
             }
-            logger.info("Succesfully loaded check-ins from \(from) to \(to)")
+            logger.info("Succesfully loaded check-ins after \(lastCheckInId?.rawValue.formatted() ?? "lastest"), page size: \(pageSize) in \(startTime.elapsedTime())ms")
             checkIns.append(contentsOf: fetchedCheckIns)
             state = .populated
-            page += 1
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
-            if page == 0 {
+            if lastCheckInId == nil {
                 state = .error(error)
             }
         }

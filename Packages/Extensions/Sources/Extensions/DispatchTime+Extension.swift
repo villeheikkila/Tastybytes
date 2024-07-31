@@ -1,8 +1,9 @@
 import Foundation
 
 public extension DispatchTime {
-    func elapsedTime() -> Double {
+    func elapsedTime() -> Int {
         let elapsedTime = DispatchTime.now().uptimeNanoseconds - uptimeNanoseconds
-        return Double(elapsedTime) / 1_000_000.0
+        let milliseconds = Double(elapsedTime) / 1_000_000.0
+        return Int(round(milliseconds))
     }
 }

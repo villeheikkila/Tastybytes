@@ -1,11 +1,73 @@
 import Foundation
 import Models
 
+struct GetPaginatedCheckInsParams: Codable {
+    let lastSeenId: CheckIn.Id?
+    let pageSize: Int
+    let createdBy: Profile.Id
+    let startDate: Date?
+    let endDate: Date?
+    let locationId: Location.Id?
+
+    init(lastSeenId: CheckIn.Id? = nil, pageSize: Int, createdBy: Profile.Id, startDate: Date? = nil, endDate: Date? = nil, locationId: Location.Id? = nil) {
+        self.lastSeenId = lastSeenId
+        self.pageSize = pageSize
+        self.createdBy = createdBy
+        self.startDate = startDate
+        self.endDate = endDate
+        self.locationId = locationId
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case lastSeenId = "p_last_seen_id"
+        case pageSize = "p_page_size"
+        case createdBy = "p_created_by"
+        case startDate = "p_start_date"
+        case endDate = "p_end_date"
+        case locationId = "p_location_id"
+    }
+}
+
 public enum CheckInQueryType: Sendable {
-    case paginated(Int, Int)
-    case dateRange(Int, Int, ClosedRange<Date>)
-    case location(Int, Int, Location.Saved)
+    case paginated(_ lastCheckInId: CheckIn.Id?, _ pageSize: Int)
+    case dateRange(_ lastCheckInId: CheckIn.Id?, _ pageSize: Int, ClosedRange<Date>)
+    case location(_ lastCheckInId: CheckIn.Id?, _ pageSize: Int, Location.Id)
     case all
+
+    func getParams(createdBy: Profile.Id) -> GetPaginatedCheckInsParams {
+        switch self {
+        case let .paginated(lastSeenId, pageSize):
+            .init(
+                lastSeenId: lastSeenId,
+                pageSize: pageSize,
+                createdBy: createdBy
+            )
+
+        case let .dateRange(lastSeenId, pageSize, dateRange):
+            .init(
+                lastSeenId: lastSeenId,
+                pageSize: pageSize,
+                createdBy: createdBy,
+                startDate: dateRange.lowerBound,
+                endDate: dateRange.upperBound
+            )
+
+        case let .location(lastSeenId, pageSize, id):
+            .init(
+                lastSeenId: lastSeenId,
+                pageSize: pageSize,
+                createdBy: createdBy,
+                locationId: id
+            )
+
+        case .all:
+            .init(
+                lastSeenId: nil,
+                pageSize: Int.max,
+                createdBy: createdBy
+            )
+        }
+    }
 }
 
 public enum ActivityFeedQueryType: Sendable {

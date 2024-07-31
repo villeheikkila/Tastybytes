@@ -31,13 +31,13 @@ struct ProductFeedScreen: View {
         List {
             ForEach(products) { product in
                 RouterLink(open: .screen(.product(product.id))) {
-                    ProductEntityView(product: product, extras: [.checkInCheck, .rating])
+                    ProductEntityView(product: product, extras: [.checkInCheck, .rating], averageRating: product.averageRating)
                 }
                 .onAppear {
                     if product == products.last, isLoading != true {
                         loadingAdditionalItemsTask = Task {
                             defer { loadingAdditionalItemsTask = nil }
-                            await loadFeedItems()
+                            await loadFeedItems(page: page)
                         }
                     }
                 }
@@ -49,13 +49,14 @@ struct ProductFeedScreen: View {
             }
         }
         .listStyle(.plain)
+        .animation(.default, value: products)
         .overlay {
             ScreenStateOverlayView(state: state) {
-                await loadFeedItems(refresh: true)
+                await loadFeedItems(page: 0, refresh: true)
             }
         }
         .refreshable {
-            await loadFeedItems(refresh: true)
+            await loadFeedItems(page: 0, refresh: true)
         }
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
@@ -63,7 +64,7 @@ struct ProductFeedScreen: View {
             toolbarContent
         }
         .task(id: categoryFilter) {
-            await loadFeedItems(refresh: true)
+            await loadFeedItems(page: 0, refresh: true)
         }
         .onDisappear {
             loadingAdditionalItemsTask?.cancel()
@@ -79,25 +80,22 @@ struct ProductFeedScreen: View {
         }
     }
 
-    private func loadFeedItems(refresh: Bool = false) async {
+    private func loadFeedItems(page: Int, refresh: Bool = false) async {
         guard isLoading == false else { return }
         if refresh {
             loadingAdditionalItemsTask?.cancel()
-            page = 0
             isRefreshing = true
         }
-        let (from, to) = getPagination(page: page, size: appModel.rateControl.checkInPageSize)
         isLoading = true
-        do { let additionalProducts = try await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id)
+        do {
+            let additionalProducts = try await repository.product.getFeed(feed, page: page, pageSize: appModel.rateControl.productFeedPageSize, categoryFilterId: categoryFilter?.id)
             guard !Task.isCancelled else { return }
-            withAnimation {
-                if refresh {
-                    products = additionalProducts
-                } else {
-                    products.append(contentsOf: additionalProducts)
-                }
+            if refresh {
+                products = additionalProducts
+            } else {
+                products.append(contentsOf: additionalProducts)
             }
-            page += 1
+            self.page += 1
             state = .populated
         } catch {
             guard !error.isCancelled else { return }

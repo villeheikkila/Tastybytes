@@ -14,7 +14,7 @@ public extension ImageEntity {
             file = imageEntity.file
             bucket = imageEntity.bucket
             blurHash = imageEntity.blurHash
-            self.checkInId =  checkIn.id
+            checkInId = checkIn.id
         }
 
         enum CodingKeys: String, CodingKey {

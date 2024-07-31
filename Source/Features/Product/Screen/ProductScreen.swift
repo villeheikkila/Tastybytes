@@ -296,6 +296,7 @@ struct ProductScreen: View {
     func fetchCheckIns(reset: Bool = false, segment: CheckIn.Segment) async {
         let (from, to) = getPagination(page: reset ? 0 : page, size: appModel.rateControl.checkInPageSize)
         isLoading = true
+        let startTime = DispatchTime.now()
         do {
             let fetchedCheckIns = try await repository.checkIn.getByProductId(id: id, segment: segment, from: from, to: to)
             if reset {
@@ -304,6 +305,7 @@ struct ProductScreen: View {
                 checkIns.append(contentsOf: fetchedCheckIns)
             }
             page += 1
+            logger.info("Fetching check-ins for product succesful in \(startTime.elapsedTime())ms")
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-ins from \(from) to \(to) failed. Error: \(error) (\(#file):\(#line))")

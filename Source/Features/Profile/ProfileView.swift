@@ -23,7 +23,6 @@ struct ProfileView: View {
     @State private var isRefreshing = false
     @State private var isLoadingImages = false
     @State private var loadImagesTask: Task<Void, Never>?
-    @State private var page = 0
     @State private var imagePage = 0
     @State private var showAvatarPicker = false
     @State private var selectedAvatarImage: PhotosPickerItem?
@@ -48,6 +47,7 @@ struct ProfileView: View {
             }
         }
         .listStyle(.plain)
+        .scrollIndicators(.hidden)
         .animation(.default, value: checkIns)
         .animation(.default, value: profile)
         .refreshable {
@@ -128,7 +128,7 @@ struct ProfileView: View {
         async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile.id), from: 0, to: appModel.rateControl.checkInPageSize)
         do {
             let (summaryResult, imagesResult) = try await (summaryPromise, imagesPromise)
-            page += 1
+            imagePage += 1
             withAnimation {
                 profileSummary = summaryResult
                 imagePage = 1
@@ -167,18 +167,21 @@ struct ProfileView: View {
         if reset {
             isRefreshing = true
         }
-        let (from, to) = getPagination(page: reset ? 0 : page, size: appModel.rateControl.checkInPageSize)
         isLoading = true
         do {
             let startTime = DispatchTime.now()
-            let fetchedCheckIns = try await repository.checkIn.getByProfileId(id: profile.id, queryType: .paginated(from, to))
-            logger.info("Succesfully loaded check-ins from \(from) to \(to) in \(startTime.elapsedTime())ms")
+            let lastCheckInId = checkIns.last?.id
+            let pageSize = appModel.rateControl.checkInPageSize
+            let fetchedCheckIns = try await repository.checkIn.getByProfileId(
+                id: profile.id,
+                queryType: .paginated(lastCheckInId, pageSize)
+            )
+            logger.info("Succesfully loaded check-ins after \(lastCheckInId?.rawValue.formatted() ?? "lastest"), page size: \(pageSize) in \(startTime.elapsedTime())ms")
             if reset {
                 checkIns = fetchedCheckIns
             } else {
                 checkIns.append(contentsOf: fetchedCheckIns)
             }
-            page += 1
         } catch {
             guard !error.isCancelled else { return }
             guard !error.isNetworkUnavailable else { return }

@@ -12,13 +12,13 @@ struct CacheClient: CacheProtocol {
     func setData(key: String, data: Data) async {
         do {
             try await storage.async.setObject(data, forKey: key)
-            logger.info("Saved \(key) to storage")
+            // logger.info("Saved \(key) to storage")
         } catch {}
     }
 
     func getData(key: String) async -> Data? {
         do {
-            logger.info("Loading \(key) from storage")
+            // logger.info("Loading \(key) from storage")
             return try await storage.async.object(forKey: key)
         } catch {
             return nil

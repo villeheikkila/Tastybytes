@@ -113,6 +113,8 @@ enum Database {
         case deleteUserAsSuperAdmin = "fnc__delete_user_as_super_admin"
         case markAdminEventAsReviewed = "fnc__mark_admin_event_as_reviewed"
         case mergeCompanies = "fnc__merge_companies"
+        case getPaginatedCheckIns = "fnc__get_paginated_check_ins"
+        case getPaginatedProductRatings = "fnc__get_paginated_product_ratings"
     }
 }
 
