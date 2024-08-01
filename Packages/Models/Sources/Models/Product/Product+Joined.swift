@@ -15,6 +15,10 @@ public extension Product {
         public let isDiscontinued: Bool
         public let logos: [ImageEntity.Saved]
 
+        public var effectiveLogo: ImageEntity.Saved? {
+            logos.first ?? subBrand.brand.logos.first ?? subBrand.brand.brandOwner.logos.first
+        }
+
         enum CodingKeys: String, CodingKey, Sendable {
             case id
             case name

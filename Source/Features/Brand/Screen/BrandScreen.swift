@@ -71,7 +71,14 @@ struct BrandScreen: View {
     }
 
     @ViewBuilder private var content: some View {
-        SummaryView(summary: summary)
+        SummaryView(summary: summary) {
+            Divider()
+            OutOfSummaryItem(
+                title: "labels.hadOf",
+                count: products.count { $0.isCheckedInByCurrentUser },
+                of: products.count
+            )
+        }
         switch productGrouping {
         case .subBrand:
             subBrandList

@@ -11,12 +11,12 @@ struct ProductEntityView: View {
         case checkInCheck, rating, companyLink, logoOnLeft, logoOnRight
     }
 
-    let product: ProductProtocol
+    let product: Product.Joined
     let extras: Set<Extra>
     let isCheckedIn: Bool
     let averageRating: Double?
 
-    init(product: ProductProtocol, extras: Set<Extra> = Set(), isCheckedIn: Bool = false, averageRating: Double? = nil) {
+    init(product: Product.Joined, extras: Set<Extra> = Set(), isCheckedIn: Bool = false, averageRating: Double? = nil) {
         self.product = product
         self.extras = extras
         self.isCheckedIn = isCheckedIn

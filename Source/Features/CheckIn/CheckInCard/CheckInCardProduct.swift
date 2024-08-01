@@ -49,7 +49,7 @@ struct CheckInCardProduct: View {
                         Spacer()
                     }
                 }
-                if !product.logos.isEmpty {
+                if product.effectiveLogo != nil {
                     ProductLogoView(product: product, size: 48)
                 }
             }

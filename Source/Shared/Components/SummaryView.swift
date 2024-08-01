@@ -1,11 +1,17 @@
 import Models
 import SwiftUI
 
-struct SummaryView: View {
+struct SummaryView<Content: View>: View {
     let summary: Summary?
+    @ViewBuilder let content: () -> Content
 
     private var isEmpty: Bool {
         summary?.isEmpty == true
+    }
+
+    init(summary: Summary?, @ViewBuilder content: (@escaping () -> Content) = { EmptyView() }) {
+        self.summary = summary
+        self.content = content
     }
 
     var body: some View {
@@ -30,6 +36,7 @@ struct SummaryView: View {
                                 rating: currentUserAverageRating
                             )
                         }
+                        content()
                         Spacer()
                     }
                     .frame(minWidth: UIScreen.main.bounds.width)
@@ -49,6 +56,24 @@ struct SummaryDivider: View {
         Divider()
             .frame(height: 50)
             .padding(.horizontal, 8)
+    }
+}
+
+struct OutOfSummaryItem: View {
+    let title: LocalizedStringKey
+    let count: Int
+    let of: Int
+
+    var body: some View {
+        SummaryItem(title: title, content: {
+            Text("\(count) of \(of)")
+                .font(.title3)
+                .fontDesign(.rounded)
+                .fontWeight(.bold)
+                .foregroundStyle(.gray)
+        }, subContent: {
+            HStack {}
+        })
     }
 }
 

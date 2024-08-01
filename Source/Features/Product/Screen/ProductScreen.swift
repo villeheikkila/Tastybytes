@@ -43,7 +43,7 @@ struct ProductScreen: View {
     private let id: Product.Id
 
     private var productItemViewExtras: Set<ProductEntityView.Extra> {
-        product.logos.isEmpty ? [.companyLink] : [.companyLink, .logoOnRight]
+        product.effectiveLogo == nil ? [.companyLink] : [.companyLink, .logoOnRight]
     }
 
     init(id: Product.Id, loadedWithBarcode: Barcode? = nil) {

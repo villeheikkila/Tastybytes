@@ -4,12 +4,12 @@ import Models
 import SwiftUI
 
 struct ProductLogoView: View {
-    let product: ProductLogoProtocol
+    let product: Product.Joined
     let size: Double
 
     var body: some View {
         Group {
-            if let image = product.logos.first {
+            if let image = product.effectiveLogo {
                 ImageEntityView(image: image) { image in
                     image.resizable()
                 }

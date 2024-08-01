@@ -70,7 +70,7 @@ struct ProductAdminSheet: View {
     @ViewBuilder private var content: some View {
         Section("product.admin.section.product") {
             RouterLink(open: .screen(.product(product.id))) {
-                ProductEntityView(product: product)
+                ProductEntityView(product: .init(product: product))
             }
             .buttonStyle(.plain)
         }
