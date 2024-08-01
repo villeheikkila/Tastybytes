@@ -22,6 +22,7 @@ struct ProductsAdminScreen: View {
             }
         }
         .listStyle(.plain)
+        .verificationBadgeVisibility(.visible)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
         .overlay {
             ScreenStateOverlayView(state: state) {
