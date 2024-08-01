@@ -5,7 +5,7 @@ public extension Notification {
         case disabled
         case inApp = "in-app"
         case pushNotification = "push-notification"
-        
+
         public var id: String {
             rawValue
         }

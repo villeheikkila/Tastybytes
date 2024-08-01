@@ -18,33 +18,23 @@ struct BrandScreen: View {
     @State private var productGrouping: GroupProductsBy = .subBrand
     @State private var showProductGroupingPicker = false
     @State private var state: ScreenState = .loading
+    @State private var products = [Product.Joined]()
 
     let id: Brand.Id
     let initialScrollPosition: SubBrand.Id?
 
-    private var sortedSubBrands: [SubBrand.JoinedProduct] {
-        brand.subBrands
+    private var productsBySubBrand: [SubBrand.JoinedProductJoined] {
+        products
+            .grouped(by: { $0.subBrand })
+            .map { .init(subBrand: $0, products: $1) }
             .filter { !($0.name == nil && $0.products.isEmpty) }
             .sorted()
     }
 
     private var productsByCategory: [ProductsByCategory] {
-        brand.subBrands.flatMap { subBrand in
-            subBrand.products.map { product in
-                Product.Joined(
-                    product: product,
-                    subBrand: subBrand,
-                    brand: brand
-                )
-            }
-        }
-        .reduce(into: [ProductsByCategory]()) { result, product in
-            if let index = result.firstIndex(where: { $0.category == product.category }) {
-                result[index].products.append(product)
-            } else {
-                result.append(.init(category: product.category, products: [product]))
-            }
-        }
+        products
+            .grouped(by: { $0.category })
+            .map { .init(category: $0, products: $1) }
     }
 
     var body: some View {
@@ -59,7 +49,7 @@ struct BrandScreen: View {
                 await getBrandData(withHaptics: true)
             }
             .overlay {
-                if state.isPopulated, brand.subBrands.count == 1, let products = brand.subBrands.first?.products, products.isEmpty {
+                if state.isPopulated, products.isEmpty {
                     ContentUnavailableView("brand.screen.empty.title", systemImage: "tray")
                 } else {
                     ScreenStateOverlayView(state: state, errorDescription: "brand.screen.failedToLoad \(brand.name)", errorAction: {
@@ -102,18 +92,13 @@ struct BrandScreen: View {
     }
 
     @ViewBuilder private var subBrandList: some View {
-        ForEach(sortedSubBrands) { subBrand in
+        ForEach(productsBySubBrand) { subBrand in
             Section {
                 ForEach(subBrand.products) { product in
-                    BrandScreenProductRowView(
-                        product: .init(
-                            product: product,
-                            subBrand: subBrand,
-                            brand: brand
-                        ))
+                    BrandScreenProductRowView(product: product)
                 }
             } header: {
-                SubBrandSectionHeaderView(brand: $brand, subBrand: subBrand)
+                SubBrandSectionHeaderView(brand: $brand, subBrand: .init(subBrand: subBrand))
             }
             .headerProminence(.increased)
             .id(subBrand.id)
@@ -193,19 +178,22 @@ struct BrandScreen: View {
         async let summaryPromise = repository.brand.getSummaryById(id: id)
         async let brandPromise = repository.brand.getJoinedById(id: id)
         async let isLikedPromisePromise = repository.brand.isLikedByCurrentUser(id: id)
+        async let productsPromise = repository.brand.getBrandProductsWithRating(id: id)
         if withHaptics {
             feedbackModel.trigger(.impact(intensity: .low))
         }
         do {
-            let (summaryResult, brandResult, isLikedResult) = try await (
+            let (summaryResult, brandResult, isLikedResult, productResults) = try await (
                 summaryPromise,
                 brandPromise,
-                isLikedPromisePromise
+                isLikedPromisePromise,
+                productsPromise
             )
             withAnimation {
                 summary = summaryResult
                 brand = brandResult
                 isLikedByCurrentUser = isLikedResult
+                products = productResults
                 state = .populated
             }
         } catch {

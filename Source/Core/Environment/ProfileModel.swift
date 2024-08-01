@@ -241,7 +241,6 @@ final class ProfileModel {
             showFullName = currentUserProfile.nameDisplay == .fullName
             isPrivateProfile = currentUserProfile.isPrivate
             notificationSettings = .init(profileSettings: currentUserProfile.settings, pushNotificationSettings: pushNotificationSettings)
-            print("notificationSettings \(notificationSettings)")
             friends = friendsResult
             appIcon = .currentAppIcon
             email = userResult.email.orEmpty

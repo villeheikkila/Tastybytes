@@ -28,6 +28,17 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
+    func getBrandProductsWithRating(id: Brand.Id) async throws -> [Product.Joined] {
+        try await client
+            .rpc(
+                fn: .brandProductsWithRatingCheckInStatus,
+                params: ["p_brand_id": id.rawValue]
+            )
+            .select(Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
+            .execute()
+            .value
+    }
+
     func getAll() async throws -> [Brand.JoinedCompany] {
         try await client
             .from(.brands)

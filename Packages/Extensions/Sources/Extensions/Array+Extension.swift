@@ -110,3 +110,9 @@ public extension Array {
         compactMap { $0 as? String }.joined(separator: " ")
     }
 }
+
+public extension Sequence {
+    func grouped<T: Hashable>(by key: (Element) -> T) -> [T: [Element]] {
+        Dictionary(grouping: self, by: key)
+    }
+}

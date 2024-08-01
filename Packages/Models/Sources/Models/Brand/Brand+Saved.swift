@@ -8,6 +8,13 @@ public extension Brand {
         public let isVerified: Bool
         public let logos: [ImageEntity.Saved]
 
+        public init() {
+            id = .init(rawValue: 0)
+            name = ""
+            isVerified = false
+            logos = []
+        }
+
         public init(brand: BrandProtocol) {
             id = brand.id
             name = brand.name

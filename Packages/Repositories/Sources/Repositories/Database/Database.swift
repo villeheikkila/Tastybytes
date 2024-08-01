@@ -114,6 +114,7 @@ enum Database {
         case getPaginatedCheckIns = "fnc__get_paginated_check_ins"
         case getPaginatedProductRatings = "fnc__get_paginated_product_ratings"
         case updateNotificationSettings = "fnc__update_notification_settings"
+        case brandProductsWithRatingCheckInStatus = "fnc__brand_products_with_rating_check_in_status"
     }
 }
 

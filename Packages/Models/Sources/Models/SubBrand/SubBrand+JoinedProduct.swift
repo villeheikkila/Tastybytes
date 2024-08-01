@@ -25,6 +25,14 @@ public extension SubBrand {
             products = subBrand.products
         }
 
+        public init(subBrand: SubBrand.JoinedProductJoined) {
+            id = subBrand.id
+            name = subBrand.name
+            includesBrandName = subBrand.includesBrandName
+            isVerified = subBrand.isVerified
+            products = subBrand.products.map { .init(product: $0) }
+        }
+
         public var subBrand: SubBrand.Saved {
             .init(id: id, name: name, includesBrandName: includesBrandName, isVerified: isVerified)
         }
@@ -53,6 +61,43 @@ public extension SubBrand {
                 isVerified: isVerified ?? self.isVerified,
                 products: products ?? self.products
             )
+        }
+    }
+}
+
+public extension SubBrand {
+    struct JoinedProductJoined: Identifiable, Hashable, Codable, Sendable, Comparable, SubBrandProtocol {
+        public let id: SubBrand.Id
+        public let name: String?
+        public let includesBrandName: Bool
+        public let isVerified: Bool
+        public let products: [Product.Joined]
+
+        public init(
+            subBrand: SubBrand.JoinedBrand,
+            products: [Product.Joined]
+        ) {
+            id = subBrand.id
+            name = subBrand.name
+            includesBrandName = subBrand.includesBrandName
+            isVerified = subBrand.isVerified
+            self.products = products
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case isVerified = "is_verified"
+            case includesBrandName = "includes_brand_name"
+            case products
+        }
+
+        public static func < (lhs: JoinedProductJoined, rhs: JoinedProductJoined) -> Bool {
+            switch (lhs.name, rhs.name) {
+            case let (lhs?, rhs?): lhs < rhs
+            case (nil, _): true
+            case (_?, nil): false
+            }
         }
     }
 }
