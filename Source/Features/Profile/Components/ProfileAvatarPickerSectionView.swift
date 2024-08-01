@@ -22,6 +22,7 @@ struct ProfileAvatarPickerSectionView: View {
         .listRowBackground(Color.clear)
         .photosPicker(isPresented: $showAvatarPicker, selection: $selectedAvatarImage, matching: .images, photoLibrary: .shared())
         .task(id: selectedAvatarImage) {
+            defer { selectedAvatarImage = nil }
             guard let selectedAvatarImage, let data = await selectedAvatarImage.getImageData() else { return }
             guard let image = UIImage(data: data) else { return }
             router.open(.fullScreenCover(.cropImage(image: image, onSubmit: { image in

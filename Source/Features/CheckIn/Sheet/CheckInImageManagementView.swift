@@ -84,6 +84,7 @@ struct CheckInImageManagementView: View {
         }
         .photosPicker(isPresented: $showPhotoPicker, selection: $photoSelection, matching: .images, photoLibrary: .shared())
         .task(id: photoSelection) {
+            defer { photoSelection = nil }
             guard let photoSelection, let data = await photoSelection.getImageData() else { return }
             if let imageTakenAt = photoSelection.imageMetadata.date {
                 checkInAt = imageTakenAt
