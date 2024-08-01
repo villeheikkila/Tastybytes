@@ -11,7 +11,6 @@ struct CheckInCommentRowView: View {
     private let logger = Logger(category: "CheckInScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
-    @State private var showDeleteAsModeratorConfirmationDialog = false
     @State private var showTranslator = false
 
     let checkIn: CheckIn.Joined

@@ -8,6 +8,20 @@ public extension Profile {
         public let sendFriendRequestNotifications: Bool
         public let sendCommentNotifications: Bool
 
+        public init(
+            id: Profile.Id,
+            sendReactionNotifications: Bool,
+            sendTaggedCheckInNotifications: Bool,
+            sendFriendRequestNotifications: Bool,
+            sendCommentNotifications: Bool
+        ) {
+            self.id = id
+            self.sendReactionNotifications = sendReactionNotifications
+            self.sendTaggedCheckInNotifications = sendTaggedCheckInNotifications
+            self.sendFriendRequestNotifications = sendFriendRequestNotifications
+            self.sendCommentNotifications = sendCommentNotifications
+        }
+
         enum CodingKeys: String, CodingKey {
             case id
             case sendReactionNotifications = "send_reaction_notifications"

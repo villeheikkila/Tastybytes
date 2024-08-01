@@ -102,12 +102,12 @@ public extension Profile {
     }
 
     struct PushNotificationToken: Identifiable, Codable, Hashable, Sendable {
-        public var id: String { deviceToken }
+        public var id: String { deviceToken.rawValue }
 
-        public let deviceToken: String
+        public let deviceToken: DeviceToken.Id
         public let isDebug: Bool
 
-        public init(deviceToken: String, isDebug: Bool) {
+        public init(deviceToken: DeviceToken.Id, isDebug: Bool) {
             self.deviceToken = deviceToken
             self.isDebug = isDebug
         }

@@ -17,7 +17,7 @@ extension Report: Queryable {
                     Company.getQuery(.saved(true)),
                     SubBrand.getQuery(.joinedBrand(true)),
                     CheckIn.Comment.getQuery(.joinedCheckIn(true)),
-                    CheckIn.getQuery(.image(true)),
+                    ImageEntity.CheckInId.getQuery(.saved(false)),
                     CheckIn.getQuery(.joined(true)),
                     Location.getQuery(.joined(true)),
                 ],

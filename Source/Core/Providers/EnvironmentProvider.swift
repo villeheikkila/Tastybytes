@@ -9,7 +9,6 @@ import TipKit
 struct EnvironmentProvider<Content: View>: View {
     @State private var adminModel: AdminModel
     @State private var profileModel: ProfileModel
-    @State private var notificationModel: NotificationModel
     @State private var appModel: AppModel
     @State private var checkInUploadModel: CheckInUploadModel
     @State private var locationModel = LocationModel()
@@ -20,7 +19,6 @@ struct EnvironmentProvider<Content: View>: View {
     init(repository: Repository, infoPlist: InfoPlist, content: @escaping () -> Content) {
         adminModel = AdminModel(repository: repository)
         profileModel = ProfileModel(repository: repository)
-        notificationModel = NotificationModel(repository: repository)
         appModel = AppModel(repository: repository, infoPlist: infoPlist)
         checkInUploadModel = CheckInUploadModel(repository: repository)
         subscriptionModel = SubscriptionModel(repository: repository)
@@ -30,7 +28,6 @@ struct EnvironmentProvider<Content: View>: View {
     var body: some View {
         content()
             .environment(adminModel)
-            .environment(notificationModel)
             .environment(profileModel)
             .environment(appModel)
             .environment(checkInUploadModel)

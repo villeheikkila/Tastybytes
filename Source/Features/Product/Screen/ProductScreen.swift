@@ -21,9 +21,7 @@ struct ProductScreen: View {
     @State private var loadedWithBarcode: Barcode?
     @State private var showTranslator = false
     // check-in images
-    @State private var checkInImageTask: Task<Void, Never>?
     @State private var checkInImages = [ImageEntity.CheckInId]()
-    @State private var isLoadingCheckInImages = false
     @State private var checkInImagesPage = 0
     // state
     @State private var state: ScreenState = .loading
@@ -81,9 +79,6 @@ struct ProductScreen: View {
                 ProductScreenLoadedFromBarcodeOverlay(loadedWithBarcode: $loadedWithBarcode)
             }
         }
-        .onDisappear {
-            checkInImageTask?.cancel()
-        }
         .initialTask {
             await getProductData()
         }
@@ -103,11 +98,9 @@ struct ProductScreen: View {
                 SummaryView(summary: summary)
             }
             if !checkInImages.isEmpty {
-                CheckInImagesSection(
-                    checkInImages: checkInImages,
-                    isLoading: isLoadingCheckInImages,
-                    onLoadMore: loadMoreImages
-                )
+                CheckInImagesSection(checkInImages: checkInImages, page: $checkInImagesPage, onLoadMore: {
+                    await fetchImages(reset: false)
+                })
             }
         }
         .listRowSeparator(.hidden)
@@ -170,7 +163,7 @@ struct ProductScreen: View {
                     )
                     ReportButton(entity: .product(product))
                     Divider()
-                    AdminRouterLink(open: .sheet(.productAdmin(id: product.id, onUpdate: { _ in
+                    AdminRouterLink(open: .sheet(.productAdmin(id: id, onUpdate: { _ in
                         await getProductData()
                     }, onDelete: { _ in
                         router.removeLast()
@@ -180,13 +173,6 @@ struct ProductScreen: View {
                         .labelStyle(.iconOnly)
                 }
             }
-        }
-    }
-
-    func loadMoreImages() {
-        checkInImageTask = Task {
-            defer { checkInImageTask = nil }
-            await fetchImages(reset: false)
         }
     }
 
@@ -227,7 +213,7 @@ struct ProductScreen: View {
 
     private func addBarcodeToProduct(_ barcode: Barcode) async {
         do {
-            try await repository.productBarcode.addToProduct(id: product.id, barcode: barcode)
+            try await repository.productBarcode.addToProduct(id: id, barcode: barcode)
             router.open(.toast(.success("barcode.add.success.toast")))
         } catch {
             guard !error.isCancelled else { return }
@@ -245,23 +231,17 @@ struct ProductScreen: View {
     private func fetchImages(reset: Bool) async {
         if reset {
             withAnimation {
-                checkInImageTask?.cancel()
                 checkInImages = []
-                isLoadingCheckInImages = false
                 checkInImagesPage = 0
             }
         }
-        guard !isLoadingCheckInImages else { return }
         let (from, to) = getPagination(page: checkInImagesPage, size: 10)
-        isLoadingCheckInImages = true
 
         do {
-            let checkIns = try await repository.checkIn.getCheckInImages(by: .product(product.id), from: from, to: to)
+            let checkIns = try await repository.checkIn.getProductCheckInImages(productId: id, from: from, to: to)
             withAnimation {
                 checkInImages.append(contentsOf: checkIns)
             }
-            checkInImagesPage += 1
-            isLoadingCheckInImages = false
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
@@ -271,7 +251,7 @@ struct ProductScreen: View {
     private func toggleWishlist() async {
         if isOnWishlist {
             do {
-                try await repository.product.removeFromWishlist(productId: product.id)
+                try await repository.product.removeFromWishlist(productId: id)
                 feedbackModel.trigger(.notification(.success))
                 withAnimation {
                     isOnWishlist = false
@@ -281,7 +261,7 @@ struct ProductScreen: View {
                 logger.error("Removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
             }
         } else {
-            do { try await repository.product.addToWishlist(productId: product.id)
+            do { try await repository.product.addToWishlist(productId: id)
                 feedbackModel.trigger(.notification(.success))
                 withAnimation {
                     isOnWishlist = true

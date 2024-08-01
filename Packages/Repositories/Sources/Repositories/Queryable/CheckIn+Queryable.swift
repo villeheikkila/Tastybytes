@@ -43,31 +43,12 @@ extension CheckIn: Queryable {
                 ],
                 withTableName
             )
-        case let .image(withTableName):
-            buildQuery(
-                .checkInImages,
-                [ImageEntity.getQuery(.saved(nil)), "check_in_id"],
-                withTableName
-            )
-        case let .imageDetailed(withTableName):
-            buildQuery(
-                .checkInImages,
-                [
-                    ImageEntity.getQuery(.saved(nil)),
-                    CheckIn.getQuery(.joined(true)),
-                    Report.getQuery(.joined(true)),
-                    Profile.getQuery(.minimal(true)),
-                ],
-                withTableName
-            )
         }
     }
 
     enum QueryType {
         case joined(_ withTableName: Bool)
         case detailed(_ withTableName: Bool)
-        case image(_ withTableName: Bool)
-        case imageDetailed(_ withTableName: Bool)
     }
 }
 

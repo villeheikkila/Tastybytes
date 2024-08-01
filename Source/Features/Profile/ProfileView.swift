@@ -15,18 +15,16 @@ struct ProfileView: View {
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(AppModel.self) private var appModel
+    @State private var state: ScreenState = .loading
     @State private var checkIns = [CheckIn.Joined]()
     @State private var profile: Profile.Saved
     @State private var profileSummary: Profile.Summary?
     @State private var checkInImages = [ImageEntity.CheckInId]()
     @State private var isLoading = false
     @State private var isRefreshing = false
-    @State private var isLoadingImages = false
-    @State private var loadImagesTask: Task<Void, Never>?
     @State private var imagePage = 0
     @State private var showAvatarPicker = false
     @State private var selectedAvatarImage: PhotosPickerItem?
-    @State private var state: ScreenState = .loading
 
     private let topAnchor = 0
     private let isCurrentUser: Bool
@@ -49,7 +47,7 @@ struct ProfileView: View {
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .animation(.default, value: checkIns)
-        .animation(.default, value: profile)
+        .animation(.easeIn, value: profile)
         .refreshable {
             await initialize(isRefresh: true)
         }
@@ -60,9 +58,6 @@ struct ProfileView: View {
             }
         }
         .photosPicker(isPresented: $showAvatarPicker, selection: $selectedAvatarImage, matching: .images, photoLibrary: .shared())
-        .onDisappear {
-            loadImagesTask?.cancel()
-        }
         .initialTask {
             await initialize()
         }
@@ -92,12 +87,7 @@ struct ProfileView: View {
             if showInFull {
                 RatingChartView(profile: profile, profileSummary: profileSummary)
                 if !checkInImages.isEmpty {
-                    CheckInImagesSection(checkInImages: checkInImages, isLoading: isLoadingImages, onLoadMore: {
-                        guard loadImagesTask == nil else { return }
-                        loadImagesTask = Task {
-                            await fetchImages()
-                        }
-                    })
+                    CheckInImagesSection(checkInImages: checkInImages, page: $imagePage, onLoadMore: fetchImages)
                 }
                 ProfileSummarySection(profile: profile, profileSummary: profileSummary)
                 ProfileJoinedAtSection(joinedAt: profile.joinedAt)
@@ -145,17 +135,10 @@ struct ProfileView: View {
     }
 
     private func fetchImages() async {
-        defer { loadImagesTask = nil }
         let (from, to) = getPagination(page: imagePage, size: appModel.rateControl.checkInImagePageSize)
-        isLoadingImages = true
-
         do {
             let checkIns = try await repository.checkIn.getCheckInImages(by: .profile(profile.id), from: from, to: to)
-            withAnimation {
-                checkInImages.append(contentsOf: checkIns)
-            }
-            imagePage += 1
-            isLoadingImages = false
+            checkInImages.append(contentsOf: checkIns)
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")

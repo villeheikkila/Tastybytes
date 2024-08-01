@@ -67,7 +67,6 @@ enum Database {
         case checkIfUsernameIsAvailable = "fnc__check_if_username_is_available"
         case createCheckIn = "fnc__create_check_in"
         case createCheckInReaction = "fnc__create_check_in_reaction"
-        case createCompanyEditSuggestion = "fnc__create_company_edit_suggestion"
         case createProduct = "fnc__create_product"
         case createProductEditSuggestion = "fnc__create_product_edit_suggestion"
         case currentUserHasPermission = "fnc__current_user_has_permission"
@@ -96,7 +95,6 @@ enum Database {
         case mergeLocations = "fnc__merge_locations"
         case mergeProducts = "fnc__merge_products"
         case searchProducts = "fnc__search_products"
-        case searchProfiles = "fnc__search_profiles"
         case softDeleteCheckInReaction = "fnc__soft_delete_check_in_reaction"
         case updateCheckIn = "fnc__update_check_in"
         case upsertDeviceToken = "fnc__upsert_device_token"
@@ -115,6 +113,7 @@ enum Database {
         case mergeCompanies = "fnc__merge_companies"
         case getPaginatedCheckIns = "fnc__get_paginated_check_ins"
         case getPaginatedProductRatings = "fnc__get_paginated_product_ratings"
+        case updateNotificationSettings = "fnc__update_notification_settings"
     }
 }
 

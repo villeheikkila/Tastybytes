@@ -1,5 +1,4 @@
 import Components
-
 import Extensions
 import Models
 import OSLog
@@ -65,7 +64,7 @@ struct ActivityScreen: View {
             }
             .navigationTitle("tab.activity")
             .navigationBarTitleDisplayMode(.inline)
-            .task {
+            .initialTask {
                 await fetchFeedItems(onPageLoad: true)
             }
             .onChange(of: checkInUploadModel.uploadedImageForCheckIn) { _, newValue in

@@ -110,7 +110,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     {
         let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
         Task {
-            await DeviceTokenActor.shared.setDeviceTokenForPusNotifications(deviceTokenString)
+            await DeviceTokenActor.shared.setDeviceTokenForPusNotifications(.init(rawValue: deviceTokenString))
         }
     }
 }

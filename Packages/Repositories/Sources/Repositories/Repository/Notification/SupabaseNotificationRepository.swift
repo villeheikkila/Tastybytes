@@ -4,20 +4,22 @@ internal import Supabase
 struct SupabaseNotificationRepository: NotificationRepository {
     let client: SupabaseClient
 
-    func getAll(afterId: Notification.Id? = nil) async throws -> [Models.Notification.Joined] {
+    func getAll(profileId: Profile.Id, afterId: Notification.Id? = nil) async throws -> [Models.Notification.Joined] {
         try await client
             .from(.notifications)
             .select(Notification.getQuery(.joined))
+            .eq("profile_id", value: profileId.rawValue)
             .gt("id", value: afterId?.rawValue ?? 0)
             .order("id", ascending: false)
             .execute()
             .value
     }
 
-    func getUnreadCount() async throws -> Int {
+    func getUnreadCount(profileId: Profile.Id) async throws -> Int {
         let response = try await client
             .from(.notifications)
             .select("id", head: true, count: .exact)
+            .eq("profile_id", value: profileId.rawValue)
             .is("seen_at", value: nil)
             .execute()
             .count
@@ -25,25 +27,26 @@ struct SupabaseNotificationRepository: NotificationRepository {
         return response ?? 0
     }
 
-    func refreshPushNotificationToken(deviceToken: String, isDebug: Bool) async throws -> Profile.PushNotification {
+    func refreshPushNotificationToken(deviceToken: DeviceToken.Id, isDebug: Bool) async throws -> Profile.PushNotificationSettings {
         try await client
-            .rpc(fn: .upsertDeviceToken, params: Profile.PushNotificationToken(deviceToken: deviceToken, isDebug: isDebug))
-            .select(Profile.PushNotification.getQuery(.saved(false)))
+            .rpc(
+                fn: .upsertDeviceToken,
+                params: Profile.PushNotificationToken(deviceToken: deviceToken, isDebug: isDebug)
+            )
+            .select(Profile.PushNotificationSettings.getQuery(.saved(false)))
             .limit(1)
             .single()
             .execute()
             .value
     }
 
-    func updatePushNotificationSettingsForDevice(updateRequest: Profile.PushNotification) async throws -> Profile.PushNotification {
+    func updatePushNotificationSettingsForDevice(updateRequest: Profile.PushNotificationSettings) async throws {
         try await client
             .from(.profilePushNotifications)
-            .update(updateRequest, returning: .representation)
-            .eq("device_token", value: updateRequest.id)
-            .select(Profile.PushNotification.getQuery(.saved(false)))
-            .single()
+            .update(updateRequest)
+            .eq("device_token", value: updateRequest.deviceToken.rawValue)
+            .eq("created_by", value: updateRequest.createdBy.uuidString)
             .execute()
-            .value
     }
 
     func markRead(id: Notification.Id) async throws -> Notification.Joined {
@@ -76,11 +79,20 @@ struct SupabaseNotificationRepository: NotificationRepository {
         try await client
             .rpc(
                 fn: .markCheckInNotificationAsRead,
-                params: Notification.MarkCheckInReadRequest(checkInId: checkInId)
+                params: ["p_check_in_id": checkInId.rawValue]
             )
             .select(Notification.getQuery(.joined))
             .execute()
             .value
+    }
+
+    func updateNotificationSettings(settings: Models.Notification.Settings) async throws {
+        try await client
+            .rpc(
+                fn: .updateNotificationSettings,
+                params: settings
+            )
+            .execute()
     }
 
     func delete(id: Notification.Id) async throws {
@@ -91,13 +103,11 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .execute()
     }
 
-    func deleteAll() async throws {
+    func deleteAll(profileId: Profile.Id) async throws {
         try await client
             .from(.notifications)
             .delete()
-            // DELETE requires a where clause, add something that always returns true
-            // Security policies make sure that everything can be deleted
-            .neq("id", value: 0)
+            .eq("profile_id", value: profileId.rawValue)
             .execute()
     }
 }

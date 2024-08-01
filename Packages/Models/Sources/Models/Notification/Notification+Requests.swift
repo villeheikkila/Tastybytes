@@ -23,16 +23,4 @@ public extension Notification {
             case id = "p_notification_id"
         }
     }
-
-    struct MarkCheckInReadRequest: Codable, Sendable {
-        public init(checkInId: CheckIn.Id) {
-            self.checkInId = checkInId
-        }
-
-        public let checkInId: CheckIn.Id
-
-        enum CodingKeys: String, CodingKey {
-            case checkInId = "p_check_in_id"
-        }
-    }
 }

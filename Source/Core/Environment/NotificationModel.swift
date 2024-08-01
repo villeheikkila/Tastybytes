@@ -12,15 +12,17 @@ public final class NotificationModel {
     public var isRefreshing = false
     public var task: Task<Void, Never>?
 
-    public var pushNotificationSettings: Profile.PushNotification?
+    public var pushNotificationSettings: Profile.PushNotificationSettings?
     public var unreadCount: Int = 0
     public var alertError: AlertEvent?
     public var state: ScreenState = .loading
 
     private let repository: Repository
+    private let profileId: Profile.Id
 
-    public init(repository: Repository) {
+    public init(repository: Repository, profileId: Profile.Id) {
         self.repository = repository
+        self.profileId = profileId
     }
 
     public var unreadFriendRequestCount: Int {
@@ -38,10 +40,8 @@ public final class NotificationModel {
 
     public func getUnreadCount() async {
         do {
-            let count = try await repository.notification.getUnreadCount()
-            withAnimation {
-                self.unreadCount = count
-            }
+            let count = try await repository.notification.getUnreadCount(profileId: profileId)
+            unreadCount = count
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -60,7 +60,7 @@ public final class NotificationModel {
                 isRefreshing = true
             }
             do {
-                let newNotifications = try await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id)
+                let newNotifications = try await repository.notification.getAll(profileId: profileId, afterId: reset ? nil : notifications.first?.id)
                 if reset {
                     notifications = newNotifications
                     unreadCount = newNotifications
@@ -85,11 +85,9 @@ public final class NotificationModel {
 
     public func deleteAll() async {
         do {
-            try await repository.notification.deleteAll()
-            withAnimation {
-                self.notifications = [Models.Notification.Joined]()
-                self.unreadCount = 0
-            }
+            try await repository.notification.deleteAll(profileId: profileId)
+            notifications = [Models.Notification.Joined]()
+            unreadCount = 0
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -105,10 +103,8 @@ public final class NotificationModel {
                 return readNotification ?? notification
             }
 
-            withAnimation {
-                notifications = markedAsSeenNotifications
-                self.unreadCount = 0
-            }
+            notifications = markedAsSeenNotifications
+            unreadCount = 0
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -117,55 +113,41 @@ public final class NotificationModel {
     }
 
     public func markAllFriendRequestsAsRead() async {
-        let containsFriendRequests = notifications.contains(where: \.isFriendRequest)
-
-        if containsFriendRequests {
-            do {
-                let updatedNotifications = try await repository.notification.markAllFriendRequestsAsRead()
-                notifications = notifications.map { notification in
-                    if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
-                        updatedNotification
-                    } else {
-                        notification
-                    }
-                }
-            } catch {
-                guard !error.isCancelled else { return }
-                logger.error("Failed to mark all friend requests as read. Error: \(error) (\(#file):\(#line))")
+        guard notifications.contains(where: \.isFriendRequest) else { return }
+        do {
+            let updatedNotifications = try await repository.notification.markAllFriendRequestsAsRead()
+            notifications = notifications.map { notification in
+                updatedNotifications.first { $0.id == notification.id } ?? notification
             }
+            unreadCount = notifications.count {
+                $0.seenAt == nil
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to mark all friend requests as read. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func markCheckInAsRead(checkIn: CheckIn.Joined) async {
-        let containsCheckIn = notifications.contains(where: { notification in
-            switch notification.content {
-            case let .checkInReaction(cir):
-                cir.checkIn == checkIn
-            case let .taggedCheckIn(tci):
-                tci == checkIn
-            case let .checkInComment(cic):
-                cic.checkIn == checkIn
-            default:
-                false
+    public func markCheckInAsRead(id: CheckIn.Id) async {
+        let containsCheckIn = notifications.contains {
+            if case let .checkInReaction(cir) = $0.content { return cir.checkIn.id == id }
+            if case let .taggedCheckIn(tci) = $0.content { return tci.id == id }
+            if case let .checkInComment(cic) = $0.content { return cic.checkIn.id == id }
+            return false
+        }
+        guard containsCheckIn else { return }
+        do {
+            let updatedNotifications = try await repository.notification.markAllCheckInNotificationsAsRead(checkInId: id)
+            notifications = notifications.map { notification in
+                updatedNotifications.first { $0.id == notification.id } ?? notification
             }
-        })
-
-        if containsCheckIn {
-            do {
-                let updatedNotifications = try await repository.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id)
-                notifications = notifications.map { notification in
-                    if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
-                        updatedNotification
-                    } else {
-                        notification
-                    }
-                }
-                unreadCount = notifications.count
-            } catch {
-                guard !error.isCancelled else { return }
-                alertError = .init()
-                logger.error("Failed to mark check-in as read \(checkIn.id). Error: \(error) (\(#file):\(#line))")
+            unreadCount = notifications.count {
+                $0.seenAt == nil
             }
+        } catch {
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to mark check-in as read \(id). Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -184,56 +166,11 @@ public final class NotificationModel {
         guard let index = at.first, let notification = notifications[safe: index] else { return }
         do {
             try await repository.notification.delete(id: notification.id)
-            withAnimation {
-                self.notifications = notifications.removing(notification)
-            }
+            notifications = notifications.removing(notification)
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
             logger.error("Failed to delete notification. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    public func deleteNotification(notification: Models.Notification.Joined) async {
-        do {
-            try await repository.notification.delete(id: notification.id)
-            withAnimation {
-                self.notifications = notifications.removing(notification)
-            }
-        } catch {
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to delete notification '\(notification.id)'. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    public func updatePushNotificationSettingsForDevice(sendReactionNotifications: Bool? = nil,
-                                                        sendTaggedCheckInNotifications: Bool? = nil,
-                                                        sendFriendRequestNotifications: Bool? = nil,
-                                                        sendCheckInCommentNotifications: Bool? = nil) async
-    {
-        guard let updateRequest = pushNotificationSettings?.copyWith(
-            sendReactionNotifications: sendReactionNotifications,
-            sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
-            sendFriendRequestNotifications: sendFriendRequestNotifications,
-            sendCheckInCommentNotifications: sendCheckInCommentNotifications
-        ) else { return }
-        do {
-            pushNotificationSettings = try await repository.notification.updatePushNotificationSettingsForDevice(updateRequest: updateRequest)
-        } catch {
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to update push notification settings for device. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    public func refreshDeviceToken(deviceToken: String, isDebug: Bool) async {
-        do {
-            let pushNotificationSettings = try await repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDebug: isDebug)
-            logger.notice("Device token refreshed: \(deviceToken), debug: \(isDebug)")
-            self.pushNotificationSettings = pushNotificationSettings
-        } catch {
-            logger.error("Failed to save device token (\(String(describing: deviceToken))). Error: \(error) (\(#file):\(#line))")
         }
     }
 }

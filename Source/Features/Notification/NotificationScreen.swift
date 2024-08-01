@@ -47,6 +47,7 @@ struct NotificationScreen: View {
         }
         .listStyle(.plain)
         .routerLinkMode(.button)
+        .animation(.default, value: notificationModel.notifications)
         .refreshable {
             notificationModel.refresh(reset: true, withHaptics: true)
         }

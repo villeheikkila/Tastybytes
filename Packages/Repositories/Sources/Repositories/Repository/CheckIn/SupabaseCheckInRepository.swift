@@ -59,7 +59,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getDetailedCheckInImage(id: ImageEntity.Id) async throws -> ImageEntity.Detailed {
         try await client
             .from(.checkInImages)
-            .select(CheckIn.getQuery(.imageDetailed(false)))
+            .select(ImageEntity.CheckInId.getQuery(.imageDetailed(false)))
             .eq("id", value: id.rawValue)
             .limit(1)
             .single()
@@ -70,7 +70,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getCheckInImages(id: Profile.Id, from: Int, to: Int) async throws -> [ImageEntity.CheckInId] {
         try await client
             .from(.checkInImages)
-            .select(CheckIn.getQuery(.image(false)))
+            .select(ImageEntity.CheckInId.getQuery(.saved(false)))
             .eq("created_by", value: id.rawValue)
             .order("created_at", ascending: false)
             .range(from: from, to: to)
@@ -81,8 +81,19 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async throws -> [ImageEntity.CheckInId] {
         try await client
             .from(.checkInImages)
-            .select(CheckIn.getQuery(.image(false)))
+            .select(ImageEntity.CheckInId.getQuery(.saved(false)))
             .eq(by.column, value: by.id)
+            .order("created_at", ascending: false)
+            .range(from: from, to: to)
+            .execute()
+            .value
+    }
+
+    func getProductCheckInImages(productId: Product.Id, from: Int, to: Int) async throws -> [ImageEntity.CheckInId] {
+        try await client
+            .from(.checkInImages)
+            .select(ImageEntity.CheckInId.getQuery(.product(false)))
+            .eq("check_ins.product_id", value: productId.rawValue)
             .order("created_at", ascending: false)
             .range(from: from, to: to)
             .execute()

@@ -18,7 +18,6 @@ struct CheckInScreen: View {
     @State private var checkIn = CheckIn.Joined()
     @State private var checkInComments = [CheckIn.Comment.Saved]()
     @State private var showDeleteConfirmation = false
-    @State private var toDeleteCheckInAsModerator: CheckIn.Joined?
 
     let id: CheckIn.Id
 
@@ -107,8 +106,8 @@ struct CheckInScreen: View {
                     RouterLink(
                         "checkIn.add.label",
                         systemImage: "pencil",
-                        open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: { checkIn in
-                            router.open(.screen(.checkIn(checkIn.id)))
+                        open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: { _ in
+                            router.open(.screen(.checkIn(id)))
                         })))
                     )
                 }
@@ -190,7 +189,7 @@ struct CheckInScreen: View {
                 Divider()
                 ReportButton(entity: .checkIn(checkIn))
                 Divider()
-                AdminRouterLink(open: .sheet(.checkInAdmin(id: checkIn.id, onDelete: { _ in
+                AdminRouterLink(open: .sheet(.checkInAdmin(id: id, onDelete: { _ in
                     router.removeLast()
                 })))
             } label: {
@@ -216,7 +215,7 @@ struct CheckInScreen: View {
         async let checkInPromise = repository.checkIn.getById(id: id)
         async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: id)
         async let markCheckInAsReadPromise: Void = notificationModel.markCheckInAsRead(
-            checkIn: checkIn)
+            id: id)
         do {
             let (checkInResult, checkInCommentResult, _) = try await (
                 checkInPromise,
@@ -234,9 +233,9 @@ struct CheckInScreen: View {
         }
     }
 
-    private func deleteCheckIn(_ checkIn: CheckIn.Joined) async {
+    private func deleteCheckIn(_: CheckIn.Joined) async {
         do {
-            try await repository.checkIn.delete(id: checkIn.id)
+            try await repository.checkIn.delete(id: id)
             feedbackModel.trigger(.notification(.success))
             router.removeLast()
         } catch {

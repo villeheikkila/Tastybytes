@@ -5,10 +5,10 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-public enum ProfileState: Sendable {
+enum ProfileState: Sendable {
     case loading, populated(Profile.Extended), error([Error])
 
-    public static func == (lhs: ProfileState, rhs: ProfileState) -> Bool {
+    static func == (lhs: ProfileState, rhs: ProfileState) -> Bool {
         switch (lhs, rhs) {
         case let (.populated(lhsProfile), .populated(rhsProfile)):
             lhsProfile == rhsProfile
@@ -24,32 +24,40 @@ public enum ProfileState: Sendable {
 
 @MainActor
 @Observable
-public final class ProfileModel {
+final class ProfileModel {
     private let logger = Logger(category: "ProfileModel")
     // Auth state
-    public var profileState: ProfileState = .loading
-    public var authState: AuthState?
-    public var alertError: AlertEvent?
+    var profileState: ProfileState = .loading
+    var authState: AuthState?
+    var alertError: AlertEvent?
 
     // Profile Settings
-    public var showFullName = false
-    public var isPrivateProfile = true
+    var showFullName = false
+    var isPrivateProfile = true
 
     // Account Settings
-    public var email = ""
+    var email = ""
 
     // Application Settings
-    public var reactionNotifications = true
-    public var friendRequestNotifications = true
-    public var checkInTagNotifications = true
-    public var sendCommentNotifications = true
+    var notificationSettings: Models.Notification.Settings? {
+        get {
+            access(keyPath: \.notificationSettings)
+            return UserDefaults.read(forKey: .notificationSettingsData)
+        }
+
+        set {
+            withMutation(keyPath: \.notificationSettings) {
+                UserDefaults.set(value: newValue, forKey: .notificationSettingsData)
+            }
+        }
+    }
 
     // AppIcon
-    public var appIcon: AppIcon = .ramune
+    var appIcon: AppIcon = .ramune
 
     private let repository: Repository
 
-    public var extendedProfile: Profile.Extended? {
+    var extendedProfile: Profile.Extended? {
         get {
             access(keyPath: \.extendedProfile)
             return UserDefaults.read(forKey: .profileData)
@@ -62,7 +70,7 @@ public final class ProfileModel {
         }
     }
 
-    public var friends: [Friend.Saved] {
+    var friends: [Friend.Saved] {
         get {
             access(keyPath: \.friends)
             return UserDefaults.read(forKey: .profileFriendsData) ?? []
@@ -75,7 +83,7 @@ public final class ProfileModel {
         }
     }
 
-    public var roles: [Role.Name] {
+    var roles: [Role.Name] {
         get {
             access(keyPath: \.roles)
             return UserDefaults.read(forKey: .profileRolesData) ?? []
@@ -88,7 +96,7 @@ public final class ProfileModel {
         }
     }
 
-    public var permissions: [Permission.Name] {
+    var permissions: [Permission.Name] {
         get {
             access(keyPath: \.permissions)
             return UserDefaults.read(forKey: .profilePermissionsData) ?? []
@@ -101,7 +109,7 @@ public final class ProfileModel {
         }
     }
 
-    public init(repository: Repository) {
+    init(repository: Repository) {
         self.repository = repository
     }
 
@@ -210,29 +218,30 @@ public final class ProfileModel {
         if let extendedProfile {
             showFullName = extendedProfile.nameDisplay == .fullName
             isPrivateProfile = extendedProfile.isPrivate
-            reactionNotifications = extendedProfile.settings.sendReactionNotifications
-            friendRequestNotifications = extendedProfile.settings.sendFriendRequestNotifications
-            checkInTagNotifications = extendedProfile.settings.sendTaggedCheckInNotifications
-            sendCommentNotifications = extendedProfile.settings.sendCommentNotifications
             appIcon = .currentAppIcon
             profileState = .populated(extendedProfile)
             logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
         }
 
+        let deviceToken = await DeviceTokenActor.shared.deviceTokenForPusNotifications
+        guard let deviceToken else {
+            logger.error("Failed to obtain device token")
+            return
+        }
         let startTime = DispatchTime.now()
         async let profilePromise = repository.profile.getCurrentUser()
         async let userPromise = repository.auth.getUser()
         async let friendsPromise = repository.friend.getCurrentUserFriends()
+        async let pushNotificationSettingsPromise = repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDebug: false)
+
         var errors = [Error]()
         do {
-            let (currentUserProfile, userResult, friendsResult) = try await (profilePromise, userPromise, friendsPromise)
+            let (currentUserProfile, userResult, friendsResult, pushNotificationSettings) = try await (profilePromise, userPromise, friendsPromise, pushNotificationSettingsPromise)
             extendedProfile = currentUserProfile
             showFullName = currentUserProfile.nameDisplay == .fullName
             isPrivateProfile = currentUserProfile.isPrivate
-            reactionNotifications = currentUserProfile.settings.sendReactionNotifications
-            friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
-            checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
-            sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
+            notificationSettings = .init(profileSettings: currentUserProfile.settings, pushNotificationSettings: pushNotificationSettings)
+            print("notificationSettings \(notificationSettings)")
             friends = friendsResult
             appIcon = .currentAppIcon
             email = userResult.email.orEmpty
@@ -259,29 +268,6 @@ public final class ProfileModel {
         } catch {
             logger.error("Failed to check if username is available. Error: \(error) (\(#file):\(#line))")
             return false
-        }
-    }
-
-    public func updateNotificationSettings(sendReactionNotifications: Bool? = nil,
-                                           sendTaggedCheckInNotifications: Bool? = nil,
-                                           sendFriendRequestNotifications: Bool? = nil,
-                                           sendCheckInCommentNotifications: Bool? = nil) async
-    {
-        do {
-            let updatedSettings = try await repository.profile.updateSettings(update: .init(
-                id: id,
-                sendReactionNotifications: sendReactionNotifications,
-                sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
-                sendFriendRequestNotifications: sendFriendRequestNotifications,
-                sendCommentNotifications: sendCheckInCommentNotifications
-            ))
-            withAnimation {
-                extendedProfile = extendedProfile?.copyWith(settings: updatedSettings)
-            }
-        } catch {
-            guard !error.isCancelled else { return }
-            alertError = .init()
-            logger.error("Failed to update notification settings. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -494,14 +480,37 @@ public final class ProfileModel {
             }
         }
     }
+
+    // Notifications
+
+    public func updatePushNotificationSettingsForDevice(reactions: Models.Notification.DeliveryType? = nil,
+                                                        taggedCheckIn: Models.Notification.DeliveryType? = nil,
+                                                        friendRequest: Models.Notification.DeliveryType? = nil,
+                                                        checkInComment: Models.Notification.DeliveryType? = nil) async
+    {
+        guard let notificationSettings else {
+            logger.error("Can not update notification settings before initialization")
+            return
+        }
+        let updatedNotificationSettings = notificationSettings.copyWith(
+            reactions: reactions,
+            taggedCheckIn: taggedCheckIn,
+            friendRequest: friendRequest,
+            checkInComment: checkInComment
+        )
+        do {
+            try await repository.notification.updateNotificationSettings(settings: updatedNotificationSettings)
+            self.notificationSettings = updatedNotificationSettings
+        } catch {
+            guard !error.isCancelled else { return }
+            alertError = .init()
+            logger.error("Failed to update push notification settings for device. Error: \(error) (\(#file):\(#line))")
+        }
+    }
 }
 
 public func clearTemporaryData() {
     let logger = Logger(category: "TempDataCleanUp")
-    // Reset tab restoration
-    UserDefaults.standard.removeObject(for: .selectedTab)
-
-    // Clear caches folder
     let fileManager = FileManager.default
     do {
         let directoryContents = try fileManager.contentsOfDirectory(
@@ -513,6 +522,6 @@ public func clearTemporaryData() {
             try fileManager.removeItem(at: file)
         }
     } catch {
-        logger.error("Failed to delete navigation stack state restoration files. Error: \(error) (\(#file):\(#line))")
+        logger.error("Failed to clear the app folder. Error: \(error) (\(#file):\(#line))")
     }
 }
