@@ -157,7 +157,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         try await client
             .storage
             .from(.avatars)
-            .upload(path: path, file: data, options: .init(contentType: "image/jpeg"))
+            .upload(path: path, file: data)
 
         return try await imageEntityRepository.getByFileName(from: .avatars, fileName: path)
     }

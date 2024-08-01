@@ -1,5 +1,4 @@
 import Components
-
 import Models
 import OSLog
 import PhotosUI
@@ -8,7 +7,7 @@ import SwiftUI
 struct EditLogoSection: View {
     private let logger = Logger(category: "EditLogoSection")
     @Environment(ProfileModel.self) private var profileModel
-    @State private var selectedLogo: PhotosPickerItem?
+    @State private var showImport = false
 
     let logos: [ImageEntity.Saved]
     let onUpload: (Data) async -> Void
@@ -34,25 +33,39 @@ struct EditLogoSection: View {
                 Text("logos.edit.title")
                 Spacer()
                 if profileModel.hasPermission(.canAddBrandLogo) {
-                    PhotosPicker(
-                        selection: $selectedLogo,
-                        matching: .images,
-                        photoLibrary: .shared()
-                    ) {
+                    Button {
+                        showImport = true
+                    } label: {
                         Label("labels.add", systemImage: "plus")
                             .labelStyle(.iconOnly)
                     }
                 }
             }
         }
-        .customListRowBackground()
-        .task(id: selectedLogo) { @MainActor in
-            guard let selectedLogo else { return }
-            guard let data = await selectedLogo.getJPEG() else {
-                logger.error("Failed to convert image to JPEG")
-                return
+        .fileImporter(isPresented: $showImport,
+                      allowedContentTypes: [.png, .jpeg])
+        { result in
+            switch result {
+            case let .success(url):
+                Task {
+                    do {
+                        guard url.startAccessingSecurityScopedResource() else {
+                            logger.error("Failed to access the security-scoped resource")
+                            return
+                        }
+                        defer {
+                            url.stopAccessingSecurityScopedResource()
+                        }
+                        let data = try Data(contentsOf: url)
+                        await onUpload(data)
+                    } catch {
+                        logger.error("Failed to read file: \(error.localizedDescription)")
+                    }
+                }
+            case let .failure(error):
+                logger.error("File import failed: \(error.localizedDescription)")
             }
-            await onUpload(data)
         }
+        .customListRowBackground()
     }
 }

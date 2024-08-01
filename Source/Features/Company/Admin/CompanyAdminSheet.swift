@@ -21,10 +21,8 @@ struct CompanyAdminSheet: View {
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var showDeleteCompanyConfirmationDialog = false
     @State private var company = Company.Detailed()
     @State private var name = ""
-    @State private var selectedLogo: PhotosPickerItem?
 
     @State private var id: Company.Id
     @State private var open: Open?
@@ -67,14 +65,6 @@ struct CompanyAdminSheet: View {
         }
         .initialTask(id: id) {
             await initialize(id: id)
-        }
-        .task(id: selectedLogo) {
-            guard let selectedLogo else { return }
-            guard let data = await selectedLogo.getJPEG() else {
-                logger.error("Failed to convert image to JPEG")
-                return
-            }
-            await uploadLogo(id: id, data)
         }
     }
 

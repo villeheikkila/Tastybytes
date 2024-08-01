@@ -20,8 +20,6 @@ struct ProductAdminSheet: View {
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var showDeleteProductConfirmationDialog = false
-    @State private var logos: [ImageEntity.Saved] = []
     @State private var product = Product.Detailed()
 
     @State private var id: Product.Id
@@ -115,7 +113,7 @@ struct ProductAdminSheet: View {
             })
         }
         .customListRowBackground()
-        EditLogoSection(logos: logos, onUpload: { data in
+        EditLogoSection(logos: product.logos, onUpload: { data in
             await uploadData(id: id, data: data)
         }, onDelete: { entity in
             await deleteLogo(id: id, entity: entity)
@@ -235,9 +233,7 @@ struct ProductAdminSheet: View {
     private func deleteLogo(id: Product.Id, entity: ImageEntity.Saved) async {
         do {
             try await repository.imageEntity.delete(from: .productLogos, id: entity.id)
-            withAnimation {
-                logos.remove(object: entity)
-            }
+            product = product.copyWith(logos: product.logos.removing(entity))
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
@@ -248,7 +244,7 @@ struct ProductAdminSheet: View {
     private func uploadData(id: Product.Id, data: Data) async {
         do {
             let imageEntity = try await repository.product.uploadLogo(productId: id, data: data)
-            logos.append(imageEntity)
+            product = product.copyWith(logos: product.logos + [imageEntity])
             logger.info("Succesfully uploaded logo \(imageEntity.file)")
         } catch {
             logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")

@@ -11,7 +11,9 @@ struct ProductLogoView: View {
         Group {
             if let image = product.effectiveLogo {
                 ImageEntityView(image: image) { image in
-                    image.resizable()
+                    image
+                        .renderingMode(.original)
+                        .resizable()
                 }
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size, height: size)

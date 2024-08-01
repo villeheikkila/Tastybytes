@@ -161,12 +161,12 @@ struct SupabaseBrandRepository: BrandRepository {
     }
 
     func uploadLogo(id: Brand.Id, data: Data) async throws -> ImageEntity.Saved {
-        let fileName = "\(id)_\(Date.now.timeIntervalSince1970).jpeg"
+        let fileName = "\(id)_\(Date.now.timeIntervalSince1970)"
 
         try await client
             .storage
             .from(.brandLogos)
-            .upload(path: fileName, file: data, options: .init(contentType: "image/jpeg"))
+            .upload(path: fileName, file: data)
 
         return try await imageEntityRepository.getByFileName(from: .brandLogos, fileName: fileName)
     }

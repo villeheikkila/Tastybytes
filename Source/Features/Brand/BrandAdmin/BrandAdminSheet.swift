@@ -22,12 +22,10 @@ struct BrandAdminSheet: View {
     @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading
-    @State private var showDeleteBrandConfirmationDialog = false
     @State private var name: String = ""
     @State private var brandOwner: Company.Saved?
     @State private var brand = Brand.Detailed()
     @State private var newCompanyName = ""
-    @State private var selectedLogo: PhotosPickerItem?
 
     let id: Brand.Id
     let open: Open?
@@ -70,14 +68,6 @@ struct BrandAdminSheet: View {
         }
         .initialTask {
             await initialize()
-        }
-        .task(id: selectedLogo) {
-            guard let selectedLogo else { return }
-            guard let data = await selectedLogo.getJPEG() else {
-                logger.error("Failed to convert image to JPEG")
-                return
-            }
-            await uploadLogo(data: data)
         }
     }
 

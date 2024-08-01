@@ -180,7 +180,7 @@ struct SupabaseProductRepository: ProductRepository {
         try await client
             .storage
             .from(.productLogos)
-            .upload(path: fileName, file: data, options: .init(contentType: "image/jpeg"))
+            .upload(path: fileName, file: data)
 
         return try await imageEntityRepository.getByFileName(from: .productLogos, fileName: fileName)
     }
