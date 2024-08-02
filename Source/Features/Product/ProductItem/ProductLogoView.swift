@@ -1,9 +1,20 @@
 import Components
-
 import Models
 import SwiftUI
 
+extension EnvironmentValues {
+    @Entry var productLogoShowPlacerholder: Bool = false
+}
+
+extension View {
+    func productLogoShowPlacerholder(_ enabled: Bool) -> some View {
+        environment(\.productLogoShowPlacerholder, enabled)
+    }
+}
+
 struct ProductLogoView: View {
+    @Environment(\.productLogoShowPlacerholder) private var productLogoShowPlacerholder
+
     let product: Product.Joined
     let size: Double
 
@@ -18,7 +29,7 @@ struct ProductLogoView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size, height: size)
                 .accessibility(hidden: true)
-            } else {
+            } else if productLogoShowPlacerholder {
                 Image(systemName: "photo")
                     .resizable()
                     .padding(.all, size / 5)

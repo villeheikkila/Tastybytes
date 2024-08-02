@@ -42,10 +42,6 @@ struct ProductScreen: View {
 
     private let id: Product.Id
 
-    private var productItemViewExtras: Set<ProductEntityView.Extra> {
-        product.effectiveLogo == nil ? [.companyLink] : [.companyLink, .logoOnRight]
-    }
-
     init(id: Product.Id, loadedWithBarcode: Barcode? = nil) {
         _loadedWithBarcode = State(initialValue: loadedWithBarcode)
         self.id = id
@@ -92,7 +88,10 @@ struct ProductScreen: View {
 
     @ViewBuilder private var content: some View {
         Group {
-            ProductEntityView(product: product, extras: productItemViewExtras)
+            ProductEntityView(product: product)
+                .productLogoShowPlacerholder(false)
+                .productCompanyLinkEnabled(true)
+                .productLogoLocation(.right)
             CreateCheckInButtonView(product: product, onCreateCheckIn: onCreateCheckIn)
             if let summary, !summary.isEmpty {
                 SummaryView(summary: summary)

@@ -1,31 +1,21 @@
 import Components
-
 import Models
 import Repositories
 import SwiftUI
 
 struct ProductEntityView: View {
-    @Environment(\.verificationBadgeVisibility) private var verificationBadgeVisibility
-
-    enum Extra {
-        case checkInCheck, rating, companyLink, logoOnLeft, logoOnRight
-    }
+    @Environment(\.productLogoLocation) private var productLogoLocation
+    @Environment(\.productCompanyLinkEnabled) private var productCompanyLinkEnabled
 
     let product: Product.Joined
-    let extras: Set<Extra>
-    let isCheckedIn: Bool
-    let averageRating: Double?
 
-    init(product: Product.Joined, extras: Set<Extra> = Set(), isCheckedIn: Bool = false, averageRating: Double? = nil) {
+    init(product: Product.Joined) {
         self.product = product
-        self.extras = extras
-        self.isCheckedIn = isCheckedIn
-        self.averageRating = averageRating
     }
 
     var body: some View {
         HStack(spacing: 12) {
-            if extras.contains(.logoOnLeft) {
+            if productLogoLocation == .left {
                 productLogo
             }
             VStack(alignment: .leading, spacing: 4) {
@@ -35,7 +25,7 @@ struct ProductEntityView: View {
                         .textSelection(.enabled)
                     VerifiedBadgeView(verifiable: product)
                     Spacer()
-                    if isCheckedIn, extras.contains(.checkInCheck) {
+                    if product.isCheckedInByCurrentUser {
                         Label("checkIn.checkedIn.label", systemImage: "checkmark.circle")
                             .labelStyle(.iconOnly)
                             .symbolRenderingMode(.palette)
@@ -55,20 +45,20 @@ struct ProductEntityView: View {
                         .textSelection(.enabled)
                         .foregroundColor(.secondary)
                 }
-                .routerLinkDisabled(!extras.contains(.companyLink))
+                .routerLinkDisabled(!productCompanyLinkEnabled)
                 .routerLinkMode(.button)
                 .buttonStyle(.plain)
 
                 HStack {
                     CategoryView(category: product.category, subcategories: product.subcategories)
                     Spacer()
-                    if let averageRating, extras.contains(.rating) {
+                    if let averageRating = product.averageRating {
                         RatingView(rating: averageRating)
                             .ratingSize(.small)
                     }
                 }
             }
-            if extras.contains(.logoOnRight) {
+            if productLogoLocation == .right {
                 productLogo
             }
         }
@@ -76,5 +66,29 @@ struct ProductEntityView: View {
 
     private var productLogo: some View {
         ProductLogoView(product: product, size: 48)
+    }
+}
+
+enum ProductLogoLocation {
+    case hidden, left, right
+}
+
+extension EnvironmentValues {
+    @Entry var productLogoLocation: ProductLogoLocation = .hidden
+}
+
+extension View {
+    func productLogoLocation(_ visibility: ProductLogoLocation) -> some View {
+        environment(\.productLogoLocation, visibility)
+    }
+}
+
+extension EnvironmentValues {
+    @Entry var productCompanyLinkEnabled: Bool = false
+}
+
+extension View {
+    func productCompanyLinkEnabled(_ enabled: Bool) -> some View {
+        environment(\.productCompanyLinkEnabled, enabled)
     }
 }

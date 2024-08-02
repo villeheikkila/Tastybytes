@@ -8,7 +8,9 @@ struct ReportContentEntityView: View {
     var body: some View {
         switch content {
         case let .product(product):
-            ProductEntityView(product: product, extras: [.companyLink, .logoOnRight])
+            ProductEntityView(product: product)
+                .productCompanyLinkEnabled(true)
+                .productLogoLocation(.right)
         case let .company(company):
             CompanyEntityView(company: company)
         case let .brand(brand):

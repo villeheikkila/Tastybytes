@@ -11,13 +11,9 @@ struct BrandScreenProductRowView: View {
 
     var body: some View {
         RouterLink(open: .screen(.product(product.id))) {
-            ProductEntityView(
-                product: product,
-                extras: [.logoOnLeft, .rating, .checkInCheck],
-                isCheckedIn: product.isCheckedInByCurrentUser,
-                averageRating: product.averageRating
-            )
-            .padding(2)
+            ProductEntityView(product: product)
+                .padding(2)
+                .productLogoLocation(.left)
         }
         .alignmentGuide(.listRowSeparatorLeading) { _ in
             0
