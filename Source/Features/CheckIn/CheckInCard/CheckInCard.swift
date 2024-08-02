@@ -14,7 +14,11 @@ struct CheckInCard: View {
             VStack(spacing: 4) {
                 Group {
                     CheckInCardHeader(profile: checkIn.profile, location: checkIn.location)
-                    CheckInCardProduct(product: checkIn.product, productVariant: checkIn.variant, servingStyle: checkIn.servingStyle)
+                    RouterLink(open: .screen(.product(checkIn.product.id))) {
+                        ProductEntityView(product: checkIn.product, variant: checkIn.variant)
+                            .productLogoLocation(.right)
+                            .productCompanyLinkEnabled(checkInCardLoadedFrom != .product)
+                    }
                 }
                 .padding(.horizontal, 8)
                 if !checkIn.images.isEmpty {

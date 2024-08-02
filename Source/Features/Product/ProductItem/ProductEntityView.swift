@@ -8,9 +8,11 @@ struct ProductEntityView: View {
     @Environment(\.productCompanyLinkEnabled) private var productCompanyLinkEnabled
 
     let product: Product.Joined
+    let variant: Product.Variant.JoinedCompany?
 
-    init(product: Product.Joined) {
+    init(product: Product.Joined, variant: Product.Variant.JoinedCompany? = nil) {
         self.product = product
+        self.variant = variant
     }
 
     var body: some View {
@@ -39,15 +41,27 @@ struct ProductEntityView: View {
                         .textSelection(.enabled)
                 }
 
-                RouterLink(open: .screen(.company(product.subBrand.brand.brandOwner.id))) {
-                    Text(product.formatted(.brandOwner))
-                        .font(.subheadline)
-                        .textSelection(.enabled)
-                        .foregroundColor(.secondary)
+                HStack {
+                    RouterLink(open: .screen(.company(product.subBrand.brand.brandOwner.id))) {
+                        Text(product.formatted(.brandOwner))
+                            .font(.subheadline)
+                            .textSelection(.enabled)
+                            .foregroundColor(.secondary)
+                    }
+                    .routerLinkDisabled(!productCompanyLinkEnabled)
+                    .routerLinkMode(.button)
+                    .buttonStyle(.plain)
+
+                    if let manufacturer = variant?.manufacturer,
+                       manufacturer.id != product.subBrand.brand.brandOwner.id
+                    {
+                        RouterLink(open: .screen(.company(manufacturer.id))) {
+                            Text("(\(manufacturer.name))")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                    }
                 }
-                .routerLinkDisabled(!productCompanyLinkEnabled)
-                .routerLinkMode(.button)
-                .buttonStyle(.plain)
 
                 HStack {
                     CategoryView(category: product.category, subcategories: product.subcategories)

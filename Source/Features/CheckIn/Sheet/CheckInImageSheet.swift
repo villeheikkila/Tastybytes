@@ -115,11 +115,8 @@ struct CheckInImageCheckInSectionView: View {
                 profile: checkIn.profile,
                 location: checkIn.location
             )
-            CheckInCardProduct(
-                product: checkIn.product,
-                productVariant: checkIn.variant,
-                servingStyle: checkIn.servingStyle
-            )
+            ProductEntityView(product: checkIn.product, variant: checkIn.variant)
+                .productLogoLocation(.right)
         }
         .padding()
         .background(.ultraThinMaterial)
