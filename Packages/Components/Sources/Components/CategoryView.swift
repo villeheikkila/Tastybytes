@@ -17,7 +17,7 @@ public struct CategoryView: View {
     }
 
     public var body: some View {
-        HStack(spacing: 4) {
+        WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
             CategoryNameView(category: category)
             ForEach(subcategories, id: \.id) { subcategory in
                 SubcategoryLabelView(subcategory: subcategory)

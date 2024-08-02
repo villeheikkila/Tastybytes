@@ -31,10 +31,6 @@ final class ProfileModel {
     var authState: AuthState?
     var alertError: AlertEvent?
 
-    // Profile Settings
-    var showFullName = false
-    var isPrivateProfile = true
-
     // Account Settings
     var email = ""
 
@@ -196,6 +192,14 @@ final class ProfileModel {
         }
     }
 
+    var isPrivateProfile: Bool {
+        extendedProfile?.isPrivate ?? false
+    }
+
+    var showFullName: Bool {
+        extendedProfile?.nameDisplay == .fullName
+    }
+
     // Access Control
     public func hasPermission(_: Permission.Name) -> Bool {
         permissions.contains(permissions)
@@ -216,8 +220,6 @@ final class ProfileModel {
         logger.notice("Initializing user data")
         let isPreviouslyLoaded = extendedProfile != nil
         if let extendedProfile {
-            showFullName = extendedProfile.nameDisplay == .fullName
-            isPrivateProfile = extendedProfile.isPrivate
             appIcon = .currentAppIcon
             profileState = .populated(extendedProfile)
             logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
@@ -238,8 +240,6 @@ final class ProfileModel {
         do {
             let (currentUserProfile, userResult, friendsResult, pushNotificationSettings) = try await (profilePromise, userPromise, friendsPromise, pushNotificationSettingsPromise)
             extendedProfile = currentUserProfile
-            showFullName = currentUserProfile.nameDisplay == .fullName
-            isPrivateProfile = currentUserProfile.isPrivate
             notificationSettings = .init(profileSettings: currentUserProfile.settings, pushNotificationSettings: pushNotificationSettings)
             friends = friendsResult
             appIcon = .currentAppIcon
@@ -329,10 +329,9 @@ final class ProfileModel {
         }
     }
 
-    public func updatePrivacySettings() async {
+    public func updatePrivacySettings(isPrivate: Bool) async {
         do {
-            let updatedProfile = try await repository.profile.update(update: .init(id: id, isPrivate: isPrivateProfile))
-            extendedProfile = updatedProfile
+            extendedProfile = try await repository.profile.update(update: .init(id: id, isPrivate: isPrivate))
             logger.log("Updated privacy settings")
         } catch {
             guard !error.isCancelled else { return }
@@ -341,10 +340,9 @@ final class ProfileModel {
         }
     }
 
-    public func updateDisplaySettings() async {
+    public func updateDisplaySettings(showFullName: Bool) async {
         do {
-            let updatedProfile = try await repository.profile.update(update: .init(id: id, showFullName: showFullName))
-            extendedProfile = updatedProfile
+            extendedProfile = try await repository.profile.update(update: .init(id: id, showFullName: showFullName))
             logger.log("updated display settings")
         } catch {
             guard !error.isCancelled else { return }

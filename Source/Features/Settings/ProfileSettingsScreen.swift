@@ -44,8 +44,7 @@ struct ProfileSettingsScreen: View {
             Toggle("settings.profile.useFullName.label", isOn: .init(get: {
                 profileModel.showFullName
             }, set: { newValue in
-                profileModel.showFullName = newValue
-                Task { await profileModel.updateDisplaySettings() }
+                Task { await profileModel.updateDisplaySettings(showFullName: newValue) }
             }))
         } footer: {
             Text("settings.profile.useFullName.description")

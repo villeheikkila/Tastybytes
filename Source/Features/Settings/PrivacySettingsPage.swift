@@ -18,8 +18,7 @@ struct PrivacySettingsScreen: View {
             Toggle("settings.privacy.privateProfile.label", isOn: .init(get: {
                 profileModel.isPrivateProfile
             }, set: { newValue in
-                profileModel.isPrivateProfile = newValue
-                Task { await profileModel.updatePrivacySettings() }
+                Task { await profileModel.updatePrivacySettings(isPrivate: newValue) }
             }))
         } footer: {
             Text("settings.privacy.privateProfile.description")

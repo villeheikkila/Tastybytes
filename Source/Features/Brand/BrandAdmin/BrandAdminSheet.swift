@@ -218,7 +218,7 @@ struct BrandAdminSheet: View {
 
     private func uploadLogo(data: Data) async {
         do {
-            let imageEntity = try await repository.brand.uploadLogo(id: brand.id, data: data)
+            let imageEntity = try await repository.brand.uploadLogo(id: id, data: data)
             withAnimation {
                 brand = brand.copyWith(logos: brand.logos + [imageEntity])
             }
