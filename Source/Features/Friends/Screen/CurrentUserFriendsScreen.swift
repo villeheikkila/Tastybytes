@@ -7,8 +7,6 @@ struct CurrentUserFriendsScreen: View {
     @Environment(ProfileModel.self) private var profileModel
     @Environment(Router.self) private var router
     @Environment(NotificationModel.self) private var notificationModel
-    @State private var friendToBeRemoved: Friend?
-    @State private var showUserSearchSheet = false
     @State private var searchTerm = ""
 
     let showToolbar: Bool

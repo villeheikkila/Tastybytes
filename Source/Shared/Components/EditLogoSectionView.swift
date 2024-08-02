@@ -4,17 +4,17 @@ import OSLog
 import PhotosUI
 import SwiftUI
 
-struct EditLogoSection: View {
+struct EditLogoSectionView: View {
     private let logger = Logger(category: "EditLogoSection")
     @Environment(ProfileModel.self) private var profileModel
-    @State private var showImport = false
+    @State private var showFileImporter = false
 
     let logos: [ImageEntity.Saved]
     let onUpload: (Data) async -> Void
     let onDelete: (ImageEntity.Saved) async -> Void
 
     var body: some View {
-        Section {
+        Section("logos.edit.title") {
             ForEach(logos) { image in
                 ImageEntityView(image: image, content: { image in
                     image.resizable()
@@ -28,21 +28,23 @@ struct EditLogoSection: View {
                     }
                 }
             }
-        } header: {
-            HStack {
-                Text("logos.edit.title")
-                Spacer()
-                if profileModel.hasPermission(.canAddBrandLogo) {
-                    Button {
-                        showImport = true
-                    } label: {
-                        Label("labels.add", systemImage: "plus")
-                            .labelStyle(.iconOnly)
+            if profileModel.hasPermission(.canAddBrandLogo) {
+                Button(action: { showFileImporter = true }) {
+                    VStack(alignment: .center) {
+                        Spacer()
+                        Label("checkIn.image.add", systemImage: "plus")
+                            .font(.system(size: 24))
+                        Spacer()
                     }
+                    .labelStyle(.iconOnly)
+                    .frame(width: 120, height: 120)
+                    .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
+                    .shadow(radius: 1)
+                    .padding(.vertical, 1)
                 }
             }
         }
-        .fileImporter(isPresented: $showImport,
+        .fileImporter(isPresented: $showFileImporter,
                       allowedContentTypes: [.png, .jpeg])
         { result in
             switch result {
@@ -66,6 +68,6 @@ struct EditLogoSection: View {
                 logger.error("File import failed: \(error.localizedDescription)")
             }
         }
-        .customListRowBackground()
+        .listRowBackground(Color.clear)
     }
 }

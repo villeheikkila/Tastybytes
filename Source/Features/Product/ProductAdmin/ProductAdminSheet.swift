@@ -113,7 +113,7 @@ struct ProductAdminSheet: View {
             })
         }
         .customListRowBackground()
-        EditLogoSection(logos: product.logos, onUpload: { data in
+        EditLogoSectionView(logos: product.logos, onUpload: { data in
             await uploadData(id: id, data: data)
         }, onDelete: { entity in
             await deleteLogo(id: id, entity: entity)

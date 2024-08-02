@@ -250,7 +250,7 @@
 		5CD2EE1B2C356DB2009AA949 /* LocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE1A2C356DB2009AA949 /* LocationSearchSheet.swift */; };
 		5CD2EE1E2C367768009AA949 /* CompanyEditSuggestionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE1D2C367768009AA949 /* CompanyEditSuggestionSheet.swift */; };
 		5CD2EE212C36D947009AA949 /* ProfileAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE202C36D947009AA949 /* ProfileAdminSheet.swift */; };
-		5CD2EE232C3733EE009AA949 /* EditLogoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */; };
+		5CD2EE232C3733EE009AA949 /* EditLogoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE222C3733EE009AA949 /* EditLogoSectionView.swift */; };
 		5CD2EE252C3733FB009AA949 /* AdminRouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */; };
 		5CD2EE272C37CE07009AA949 /* SubBrandEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE262C37CE07009AA949 /* SubBrandEntityView.swift */; };
 		5CD2EE292C37DA58009AA949 /* ProfileEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD2EE282C37DA58009AA949 /* ProfileEntityView.swift */; };
@@ -601,7 +601,7 @@
 		5CD2EE1A2C356DB2009AA949 /* LocationSearchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSheet.swift; sourceTree = "<group>"; };
 		5CD2EE1D2C367768009AA949 /* CompanyEditSuggestionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyEditSuggestionSheet.swift; sourceTree = "<group>"; };
 		5CD2EE202C36D947009AA949 /* ProfileAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAdminSheet.swift; sourceTree = "<group>"; };
-		5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogoSection.swift; sourceTree = "<group>"; };
+		5CD2EE222C3733EE009AA949 /* EditLogoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogoSectionView.swift; sourceTree = "<group>"; };
 		5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminRouterLink.swift; sourceTree = "<group>"; };
 		5CD2EE262C37CE07009AA949 /* SubBrandEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandEntityView.swift; sourceTree = "<group>"; };
 		5CD2EE282C37DA58009AA949 /* ProfileEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEntityView.swift; sourceTree = "<group>"; };
@@ -1347,7 +1347,7 @@
 				5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */,
 				5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */,
 				5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */,
-				5CD2EE222C3733EE009AA949 /* EditLogoSection.swift */,
+				5CD2EE222C3733EE009AA949 /* EditLogoSectionView.swift */,
 				5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */,
 				5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */,
 				5CD3C0DC2B814B910049E563 /* RatingView.swift */,
@@ -2188,7 +2188,7 @@
 				5C07F2782B51EBB800D8740B /* ProfileShareLinkView.swift in Sources */,
 				5C07F27A2B51EBB800D8740B /* CompanyShareLinkView.swift in Sources */,
 				5CAADF012B5C4EED00D956C1 /* DiscoverProductRow.swift in Sources */,
-				5CD2EE232C3733EE009AA949 /* EditLogoSection.swift in Sources */,
+				5CD2EE232C3733EE009AA949 /* EditLogoSectionView.swift in Sources */,
 				5C9058112B2894BE00EC157B /* SubBrandAdminSheet.swift in Sources */,
 				5CEEA30D2C3B2D540009B3F5 /* ProductListScreen.swift in Sources */,
 				5C9058082B2894BE00EC157B /* CheckInDatePickerSheet.swift in Sources */,

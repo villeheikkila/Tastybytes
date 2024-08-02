@@ -88,7 +88,7 @@ struct BrandAdminSheet: View {
             }
         }
         .customListRowBackground()
-        EditLogoSection(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
+        EditLogoSectionView(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
         Section("labels.info") {
             LabeledIdView(id: brand.id.rawValue.formatted())
             LabeledContent("brandOwner.label") {

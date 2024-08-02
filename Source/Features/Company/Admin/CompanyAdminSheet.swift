@@ -84,7 +84,7 @@ struct CompanyAdminSheet: View {
             })
         }
         .customListRowBackground()
-        EditLogoSection(logos: company.logos, onUpload: { data in
+        EditLogoSectionView(logos: company.logos, onUpload: { data in
             await uploadLogo(id: id, data)
         }, onDelete: deleteLogo)
         Section {
