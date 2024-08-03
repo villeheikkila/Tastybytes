@@ -237,9 +237,9 @@
 		5CCEE2772B2C6AAF00F276DF /* CheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2762B2C6AAF00F276DF /* CheckInView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE2792B2C6CEA00F276DF /* CheckInHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2782B2C6CEA00F276DF /* CheckInHeaderView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE27D2B2CA34800F276DF /* CheckInImageReelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE27C2B2CA34800F276DF /* CheckInImageReelView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5CCEE27F2B2CA4DC00F276DF /* CheckInCardCheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE27E2B2CA4DC00F276DF /* CheckInCardCheckIn.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5CCEE2812B2CA57700F276DF /* CheckInCardFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2802B2CA57700F276DF /* CheckInCardFooter.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
-		5CCEE2832B2CA5D600F276DF /* CheckInCardTaggedFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5CCEE27F2B2CA4DC00F276DF /* CheckInCheckInSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE27E2B2CA4DC00F276DF /* CheckInCheckInSectionView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5CCEE2812B2CA57700F276DF /* CheckInFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2802B2CA57700F276DF /* CheckInFooterView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
+		5CCEE2832B2CA5D600F276DF /* CheckInTaggedFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2822B2CA5D600F276DF /* CheckInTaggedFriendsView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CCEE2892B2D0C0100F276DF /* CheckInListCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCEE2882B2D0C0100F276DF /* CheckInListCardView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD1F0B32B9E4FD000C76F0C /* View+InjectToasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE030E02B9E4E9200E119E4 /* View+InjectToasts.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CD1F0B42B9E4FD100C76F0C /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE030DF2B9E4E9200E119E4 /* ToastView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -588,9 +588,9 @@
 		5CCEE2762B2C6AAF00F276DF /* CheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInView.swift; sourceTree = "<group>"; };
 		5CCEE2782B2C6CEA00F276DF /* CheckInHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInHeaderView.swift; sourceTree = "<group>"; };
 		5CCEE27C2B2CA34800F276DF /* CheckInImageReelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImageReelView.swift; sourceTree = "<group>"; };
-		5CCEE27E2B2CA4DC00F276DF /* CheckInCardCheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardCheckIn.swift; sourceTree = "<group>"; };
-		5CCEE2802B2CA57700F276DF /* CheckInCardFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardFooter.swift; sourceTree = "<group>"; };
-		5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardTaggedFriends.swift; sourceTree = "<group>"; };
+		5CCEE27E2B2CA4DC00F276DF /* CheckInCheckInSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCheckInSectionView.swift; sourceTree = "<group>"; };
+		5CCEE2802B2CA57700F276DF /* CheckInFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInFooterView.swift; sourceTree = "<group>"; };
+		5CCEE2822B2CA5D600F276DF /* CheckInTaggedFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInTaggedFriendsView.swift; sourceTree = "<group>"; };
 		5CCEE2882B2D0C0100F276DF /* CheckInListCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListCardView.swift; sourceTree = "<group>"; };
 		5CD2EE152C35369B009AA949 /* View+InjectAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+InjectAlerts.swift"; sourceTree = "<group>"; };
 		5CD2EE182C35538A009AA949 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
@@ -1529,7 +1529,7 @@
 			isa = PBXGroup;
 			children = (
 				5CEEA3012C39903A0009B3F5 /* Admin */,
-				5CCEE2752B2C6AA500F276DF /* CheckInCard */,
+				5CCEE2752B2C6AA500F276DF /* CheckInView */,
 				5CEEA3082C39BB6B0009B3F5 /* CheckInImageEntityView.swift */,
 				5CCEE2872B2D0BBA00F276DF /* CheckInList */,
 				5C9057B62B2894BE00EC157B /* CheckInScreen */,
@@ -1574,19 +1574,19 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
-		5CCEE2752B2C6AA500F276DF /* CheckInCard */ = {
+		5CCEE2752B2C6AA500F276DF /* CheckInView */ = {
 			isa = PBXGroup;
 			children = (
 				5C9057C92B2894BE00EC157B /* ReactionsView.swift */,
 				5CCEE2762B2C6AAF00F276DF /* CheckInView.swift */,
 				5CCEE2782B2C6CEA00F276DF /* CheckInHeaderView.swift */,
 				5CCEE27C2B2CA34800F276DF /* CheckInImageReelView.swift */,
-				5CCEE27E2B2CA4DC00F276DF /* CheckInCardCheckIn.swift */,
-				5CCEE2802B2CA57700F276DF /* CheckInCardFooter.swift */,
-				5CCEE2822B2CA5D600F276DF /* CheckInCardTaggedFriends.swift */,
+				5CCEE27E2B2CA4DC00F276DF /* CheckInCheckInSectionView.swift */,
+				5CCEE2802B2CA57700F276DF /* CheckInFooterView.swift */,
+				5CCEE2822B2CA5D600F276DF /* CheckInTaggedFriendsView.swift */,
 				5C2899DC2BA8ACA50099C976 /* CheckInDateView.swift */,
 			);
-			path = CheckInCard;
+			path = CheckInView;
 			sourceTree = "<group>";
 		};
 		5CCEE2872B2D0BBA00F276DF /* CheckInList */ = {
@@ -1955,9 +1955,9 @@
 				5CBD93E72C55944100D2B97F /* ZoomableScrollableImageView.swift in Sources */,
 				5C90582D2B2894BE00EC157B /* VerificationScreen.swift in Sources */,
 				5C90583F2B2894BE00EC157B /* CheckInCommentView.swift in Sources */,
-				5CCEE2832B2CA5D600F276DF /* CheckInCardTaggedFriends.swift in Sources */,
+				5CCEE2832B2CA5D600F276DF /* CheckInTaggedFriendsView.swift in Sources */,
 				5CD2EE1E2C367768009AA949 /* CompanyEditSuggestionSheet.swift in Sources */,
-				5CCEE27F2B2CA4DC00F276DF /* CheckInCardCheckIn.swift in Sources */,
+				5CCEE27F2B2CA4DC00F276DF /* CheckInCheckInSectionView.swift in Sources */,
 				5CF7ACF52C53B08400491479 /* PrivacyPolicyView.swift in Sources */,
 				5C9058002B2894BE00EC157B /* SubscriptionStatus.swift in Sources */,
 				5C9058272B2894BE00EC157B /* BrandScreen.swift in Sources */,
@@ -2170,7 +2170,7 @@
 				5CD2EE1B2C356DB2009AA949 /* LocationSearchSheet.swift in Sources */,
 				5C4FC6422BA70C110025DB83 /* SendMailView.swift in Sources */,
 				5CF7ACF22C538B5100491479 /* ProfileByIdScreen.swift in Sources */,
-				5CCEE2812B2CA57700F276DF /* CheckInCardFooter.swift in Sources */,
+				5CCEE2812B2CA57700F276DF /* CheckInFooterView.swift in Sources */,
 				5C9058462B2894BE00EC157B /* SplashScreenView.swift in Sources */,
 				5C8FE4972BAA2EF80038869E /* AppGradientView.swift in Sources */,
 				5CF2A0A22C513DD800B9EDC2 /* SubcategoryView.swift in Sources */,

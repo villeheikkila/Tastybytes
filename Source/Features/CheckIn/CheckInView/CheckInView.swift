@@ -35,10 +35,10 @@ struct CheckInView: View {
                     CheckInImageReelView(checkIn: checkIn, onDeleteImage: onDeleteImage)
                 }
                 Group {
-                    CheckInCardCheckIn(checkIn: checkIn)
-                    CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile))
+                    CheckInCheckInSectionView(checkIn: checkIn)
+                    CheckInTaggedFriendsView(taggedProfiles: checkIn.taggedProfiles.map(\.profile))
                     if checkInFooterVisibility {
-                        CheckInCardFooter(checkIn: checkIn)
+                        CheckInFooterView(checkIn: checkIn)
                     }
                 }
                 .padding(.horizontal, 8)

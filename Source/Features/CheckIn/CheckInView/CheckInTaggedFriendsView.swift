@@ -2,7 +2,7 @@ import Components
 import Models
 import SwiftUI
 
-struct CheckInCardTaggedFriends: View {
+struct CheckInTaggedFriendsView: View {
     @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     let taggedProfiles: [Profile.Saved]
 

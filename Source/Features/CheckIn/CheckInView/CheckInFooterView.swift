@@ -2,7 +2,7 @@ import Components
 import Models
 import SwiftUI
 
-struct CheckInCardFooter: View {
+struct CheckInFooterView: View {
     @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     @Environment(Router.self) private var router
 

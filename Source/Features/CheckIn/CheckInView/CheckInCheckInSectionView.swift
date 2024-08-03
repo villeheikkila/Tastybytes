@@ -2,7 +2,7 @@ import Components
 import Models
 import SwiftUI
 
-struct CheckInCardCheckIn: View {
+struct CheckInCheckInSectionView: View {
     @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     let checkIn: CheckIn.Joined
 
