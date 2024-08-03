@@ -8,13 +8,9 @@ struct ProfileView: View {
         HStack(alignment: .center) {
             AvatarView(profile: profile)
                 .avatarSize(.extraLarge)
-            VStack {
-                HStack {
                     Text(profile.preferredName)
                         .padding(.leading, 8)
                     Spacer()
-                }
-            }
         }
         .contentShape(.rect)
     }

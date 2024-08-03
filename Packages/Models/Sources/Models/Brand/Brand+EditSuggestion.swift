@@ -2,7 +2,7 @@ import Foundation
 public import Tagged
 
 public extension Brand {
-    struct EditSuggestion: Codable, Sendable, Identifiable, Hashable, Resolvable, CreationInfo {
+    struct EditSuggestion: Codable, Sendable, Identifiable, Hashable, Resolvable, CreationInfoCascade {
         public typealias Id = Tagged<Brand.EditSuggestion, Int>
 
         public let id: Brand.EditSuggestion.Id

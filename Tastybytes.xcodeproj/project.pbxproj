@@ -50,6 +50,7 @@
 		5C5270572B821D6C0062AB18 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */; };
 		5C58906B2C502D5F00C0CBE6 /* BrandsAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C58906A2C502D5F00C0CBE6 /* BrandsAdminScreen.swift */; };
 		5C58906D2C5030C000C0CBE6 /* ProductsAdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C58906C2C5030C000C0CBE6 /* ProductsAdminScreen.swift */; };
+		5C619B7F2C5E006A0034823F /* CreationInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C619B7E2C5E006A0034823F /* CreationInfoHeaderView.swift */; };
 		5C6337402C47D53700390B38 /* BrandEditSuggestionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63373F2C47D53700390B38 /* BrandEditSuggestionSheet.swift */; };
 		5C6337422C47F2A200390B38 /* BrandEditSuggestionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6337412C47F2A200390B38 /* BrandEditSuggestionScreen.swift */; };
 		5C6337452C491E5C00390B38 /* AdminEventScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6337442C491E5C00390B38 /* AdminEventScreen.swift */; };
@@ -399,6 +400,7 @@
 		5C5270562B821D6C0062AB18 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		5C58906A2C502D5F00C0CBE6 /* BrandsAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandsAdminScreen.swift; sourceTree = "<group>"; };
 		5C58906C2C5030C000C0CBE6 /* ProductsAdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsAdminScreen.swift; sourceTree = "<group>"; };
+		5C619B7E2C5E006A0034823F /* CreationInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationInfoHeaderView.swift; sourceTree = "<group>"; };
 		5C63373F2C47D53700390B38 /* BrandEditSuggestionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEditSuggestionSheet.swift; sourceTree = "<group>"; };
 		5C6337412C47F2A200390B38 /* BrandEditSuggestionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEditSuggestionScreen.swift; sourceTree = "<group>"; };
 		5C6337442C491E5C00390B38 /* AdminEventScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEventScreen.swift; sourceTree = "<group>"; };
@@ -1339,6 +1341,7 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5C619B7E2C5E006A0034823F /* CreationInfoHeaderView.swift */,
 				5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */,
 				5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */,
 				5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */,
@@ -2225,6 +2228,7 @@
 				5C9057FF2B2894BE00EC157B /* SubscriptionSheet.swift in Sources */,
 				5C82E88B2B2F678500F2B369 /* SubscriptionProvider.swift in Sources */,
 				5C9058162B2894BE00EC157B /* PrivacySettingsPage.swift in Sources */,
+				5C619B7F2C5E006A0034823F /* CreationInfoHeaderView.swift in Sources */,
 				5C82E8A42B2F7D0E00F2B369 /* ProfileHeaderAvatarSection.swift in Sources */,
 				5C9057F22B2894BE00EC157B /* CompanyPickerSheet.swift in Sources */,
 				5CEEA3032C39904B0009B3F5 /* CheckInAdminSheet.swift in Sources */,

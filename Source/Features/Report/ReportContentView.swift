@@ -23,6 +23,7 @@ struct ReportContentView: View {
             CheckInView(checkIn: checkIn)
                 .allowsHitTesting(false)
                 .checkInFooterVisibility(false)
+                .checkInContainerPadding(0)
         case let .checkInImage(imageEntity):
             CheckInImageEntityView(imageEntity: imageEntity)
         case let .profile(profile):

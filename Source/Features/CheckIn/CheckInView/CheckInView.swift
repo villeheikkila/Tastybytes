@@ -8,6 +8,7 @@ struct CheckInView: View {
     @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     @Environment(\.checkInHeaderVisibility) private var checkInHeaderVisibility
     @Environment(\.checkInFooterVisibility) private var checkInFooterVisibility
+    @Environment(\.checkInContainerPadding) private var checkInContainerPadding
 
     let checkIn: CheckIn.Joined
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
@@ -30,7 +31,7 @@ struct CheckInView: View {
                             .productCompanyLinkEnabled(checkInLoadedFrom != .product)
                     }
                 }
-                .padding(.horizontal, 8)
+                .padding(.horizontal, checkInContainerPadding)
                 if !checkIn.images.isEmpty {
                     CheckInImageReelView(checkIn: checkIn, onDeleteImage: onDeleteImage)
                 }
@@ -41,7 +42,7 @@ struct CheckInView: View {
                         CheckInFooterView(checkIn: checkIn)
                     }
                 }
-                .padding(.horizontal, 8)
+                .padding(.horizontal, checkInContainerPadding)
             }
             .routerLinkDisabled(false)
         }
@@ -80,6 +81,17 @@ extension View {
         environment(\.checkInFooterVisibility, visible)
     }
 }
+
+extension EnvironmentValues {
+    @Entry var checkInContainerPadding: Double = 8
+}
+
+extension View {
+    func checkInContainerPadding(_ padding: Double) -> some View {
+        environment(\.checkInContainerPadding, padding)
+    }
+}
+
 
 extension CheckInView {
     enum LoadedFrom: Equatable {
