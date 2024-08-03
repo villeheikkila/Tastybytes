@@ -45,7 +45,7 @@ struct CategoryAdminRowView: View {
 
     var body: some View {
         RouterLink(open: .sheet(.categoryAdmin(id: category.id))) {
-            CategoryEntityView(category: category)
+            CategoryView(category: category)
         }
     }
 }

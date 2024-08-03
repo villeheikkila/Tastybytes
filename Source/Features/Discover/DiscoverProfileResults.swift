@@ -7,7 +7,7 @@ struct DiscoverProfileResults: View {
     var body: some View {
         ForEach(profiles) { profile in
             RouterLink(open: .screen(.profile(profile))) {
-                ProfileEntityView(profile: profile)
+                ProfileView(profile: profile)
                     .padding(.vertical, 10)
             }
             .id(profile.id)

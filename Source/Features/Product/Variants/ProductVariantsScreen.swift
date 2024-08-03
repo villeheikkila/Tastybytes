@@ -19,7 +19,7 @@ struct ProductVariantRowView: View {
 
     var body: some View {
         RouterLink(open: .sheet(.companyAdmin(id: variant.manufacturer.id))) {
-            CompanyEntityView(company: variant.manufacturer)
+            CompanyView(company: variant.manufacturer)
         }
     }
 }

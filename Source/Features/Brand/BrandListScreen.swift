@@ -10,7 +10,7 @@ struct BrandListScreen: View {
     var body: some View {
         List(brands) { brand in
             RouterLink(open: .screen(.brand(brand.id))) {
-                BrandEntityView(brand: brand)
+                BrandView(brand: brand)
             }
         }
         .listStyle(.plain)

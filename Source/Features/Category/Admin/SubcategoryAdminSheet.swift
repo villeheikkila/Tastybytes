@@ -52,7 +52,7 @@ struct SubcategoryAdminSheet: View {
 
     @ViewBuilder var content: some View {
         Section("subcategory.admin.subcategory") {
-            SubCategoryEntityView(subcategory: subcategory)
+            SubcategoryView(subcategory: subcategory)
         }
         .customListRowBackground()
 

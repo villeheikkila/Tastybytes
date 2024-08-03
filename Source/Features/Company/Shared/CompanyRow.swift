@@ -7,7 +7,7 @@ struct CompanyResultRow: View {
 
     var body: some View {
         Button(action: action) {
-            CompanyEntityView(company: company)
+            CompanyView(company: company)
         }
         .listRowBackground(Color.clear)
     }

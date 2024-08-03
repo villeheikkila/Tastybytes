@@ -2,33 +2,33 @@ import Models
 import Repositories
 import SwiftUI
 
-struct ReportContentEntityView: View {
+struct ReportContentView: View {
     let content: Report.Content
 
     var body: some View {
         switch content {
         case let .product(product):
-            ProductEntityView(product: product)
+            ProductView(product: product)
                 .productCompanyLinkEnabled(true)
                 .productLogoLocation(.right)
         case let .company(company):
-            CompanyEntityView(company: company)
+            CompanyView(company: company)
         case let .brand(brand):
-            BrandEntityView(brand: brand)
+            BrandView(brand: brand)
         case let .subBrand(subBrand):
-            SubBrandEntityView(brand: subBrand.brand, subBrand: subBrand)
+            SubBrandView(brand: subBrand.brand, subBrand: subBrand)
         case let .comment(comment):
-            CheckInCommentEntityView(comment: comment)
+            CheckInCommentView(comment: comment)
         case let .checkIn(checkIn):
-            CheckInCard(checkIn: checkIn)
+            CheckInView(checkIn: checkIn)
                 .allowsHitTesting(false)
-                .checkInCardFooterVisibility(false)
+                .checkInFooterVisibility(false)
         case let .checkInImage(imageEntity):
             CheckInImageEntityView(imageEntity: imageEntity)
         case let .profile(profile):
-            ProfileEntityView(profile: profile)
+            ProfileView(profile: profile)
         case let .location(location):
-            LocationEntityView(location: location)
+            LocationView(location: location)
         }
     }
 }

@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-public struct CategoryView: View {
+public struct ProductLabelsView: View {
     let category: Models.Category.Saved
     let subcategories: [SubcategoryProtocol]
     let servingStyle: ServingStyle.Saved?
@@ -30,7 +30,7 @@ public struct CategoryView: View {
 }
 
 #Preview {
-    CategoryView(
+    ProductLabelsView(
         category: .init(id: 0, name: "beverage", icon: "🥤"),
         subcategories: [Subcategory.Saved(id: 0, name: "BCAA", isVerified: true)],
         servingStyle: .init(

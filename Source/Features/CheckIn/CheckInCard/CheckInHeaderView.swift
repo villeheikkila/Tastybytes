@@ -3,8 +3,8 @@ import Components
 import Models
 import SwiftUI
 
-struct CheckInCardHeader: View {
-    @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
+struct CheckInHeaderView: View {
+    @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     let profile: Profile.Saved
     let location: Location.Saved?
 
@@ -24,11 +24,11 @@ struct CheckInCardHeader: View {
                             .foregroundColor(.primary)
                             .contentShape(.rect)
                     }
-                    .routerLinkDisabled(checkInCardLoadedFrom.isLoadedFromLocation(location))
+                    .routerLinkDisabled(checkInLoadedFrom.isLoadedFromLocation(location))
                 }
             }
             .contentShape(.rect)
         }
-        .routerLinkDisabled(checkInCardLoadedFrom.isLoadedFromProfile(profile))
+        .routerLinkDisabled(checkInLoadedFrom.isLoadedFromProfile(profile))
     }
 }

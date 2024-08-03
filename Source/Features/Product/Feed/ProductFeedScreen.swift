@@ -31,7 +31,7 @@ struct ProductFeedScreen: View {
         List {
             ForEach(products) { product in
                 RouterLink(open: .screen(.product(product.id))) {
-                    ProductEntityView(product: product)
+                    ProductView(product: product)
                 }
                 .onAppear {
                     if product == products.last, isLoading != true {

@@ -2,7 +2,7 @@ import MapKit
 import Models
 import SwiftUI
 
-struct LocationEntityView: View {
+struct LocationView: View {
     let location: Location.Saved
 
     var body: some View {

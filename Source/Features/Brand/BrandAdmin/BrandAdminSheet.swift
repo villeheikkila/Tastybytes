@@ -74,7 +74,7 @@ struct BrandAdminSheet: View {
     @ViewBuilder private var content: some View {
         Section("brand.admin.section.brand") {
             RouterLink(open: .screen(.brand(brand.id))) {
-                BrandEntityView(brand: brand)
+                BrandView(brand: brand)
             }
         }
         .customListRowBackground()
@@ -268,7 +268,7 @@ struct SubBrandListAdminScreen: View {
             }, onDelete: { id in
                 subBrands = subBrands.removingWithId(id)
             }))) {
-                SubBrandEntityView(brand: brand, subBrand: subBrand)
+                SubBrandView(brand: brand, subBrand: subBrand)
             }
         }
         .listStyle(.plain)

@@ -44,7 +44,7 @@ struct ActivityScreen: View {
             .refreshable {
                 await fetchFeedItems(reset: true, onPageLoad: false)
             }
-            .checkInCardLoadedFrom(.activity(profileModel.profile))
+            .checkInLoadedFrom(.activity(profileModel.profile))
             .sensoryFeedback(.success, trigger: isRefreshing) { oldValue, newValue in
                 oldValue && !newValue
             }

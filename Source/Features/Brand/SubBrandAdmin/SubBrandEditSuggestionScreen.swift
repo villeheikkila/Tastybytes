@@ -43,7 +43,7 @@ struct SubBrandEditSuggestionRowView: View {
     let onDelete: (_ editSuggestion: SubBrand.EditSuggestion) async -> Void
 
     var body: some View {
-        SubBrandEditSuggestionEntityView(editSuggestion: editSuggestion)
+        SubBrandEditSuggestionView(editSuggestion: editSuggestion)
             .swipeActions {
                 Button("labels.delete", systemImage: "trash") {
                     showDeleteConfirmationDialog = true

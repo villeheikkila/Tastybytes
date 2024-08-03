@@ -9,7 +9,7 @@ struct CurrentProfileScreen: View {
     @Environment(ProfileModel.self) private var profileModel
 
     var body: some View {
-        ProfileView(profile: profileModel.profile, isCurrentUser: true)
+        ProfileInnerScreen(profile: profileModel.profile, isCurrentUser: true)
             .navigationTitle(profileModel.profile.preferredName)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

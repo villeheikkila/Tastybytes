@@ -4,14 +4,14 @@ import Models
 import Repositories
 import SwiftUI
 
-struct CheckInCard: View {
-    @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
-    @Environment(\.checkInCardHeaderVisibility) private var checkInCardHeaderVisibility
-    @Environment(\.checkInCardFooterVisibility) private var checkInCardFooterVisibility
+struct CheckInView: View {
+    @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
+    @Environment(\.checkInHeaderVisibility) private var checkInHeaderVisibility
+    @Environment(\.checkInFooterVisibility) private var checkInFooterVisibility
 
     let checkIn: CheckIn.Joined
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
-    
+
     init(checkIn: CheckIn.Joined, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback? = nil) {
         self.checkIn = checkIn
         self.onDeleteImage = onDeleteImage
@@ -21,13 +21,13 @@ struct CheckInCard: View {
         RouterLink(open: .screen(.checkIn(checkIn.id))) {
             VStack(spacing: 4) {
                 Group {
-                    if checkInCardHeaderVisibility {
-                        CheckInCardHeader(profile: checkIn.profile, location: checkIn.location)
+                    if checkInHeaderVisibility {
+                        CheckInHeaderView(profile: checkIn.profile, location: checkIn.location)
                     }
                     RouterLink(open: .screen(.product(checkIn.product.id))) {
-                        ProductEntityView(product: checkIn.product, variant: checkIn.variant)
+                        ProductView(product: checkIn.product, variant: checkIn.variant)
                             .productLogoLocation(.right)
-                            .productCompanyLinkEnabled(checkInCardLoadedFrom != .product)
+                            .productCompanyLinkEnabled(checkInLoadedFrom != .product)
                     }
                 }
                 .padding(.horizontal, 8)
@@ -37,7 +37,7 @@ struct CheckInCard: View {
                 Group {
                     CheckInCardCheckIn(checkIn: checkIn)
                     CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile))
-                    if checkInCardFooterVisibility {
+                    if checkInFooterVisibility {
                         CheckInCardFooter(checkIn: checkIn)
                     }
                 }
@@ -45,43 +45,43 @@ struct CheckInCard: View {
             }
             .routerLinkDisabled(false)
         }
-        .routerLinkDisabled(checkInCardLoadedFrom == .checkIn)
+        .routerLinkDisabled(checkInLoadedFrom == .checkIn)
         .routerLinkMode(.button)
         .buttonStyle(.plain)
     }
 }
 
 extension EnvironmentValues {
-    @Entry var checkInCardLoadedFrom: CheckInCard.LoadedFrom = .checkIn
+    @Entry var checkInLoadedFrom: CheckInView.LoadedFrom = .checkIn
 }
 
 extension View {
-    func checkInCardLoadedFrom(_ checkInCardLoadedFrom: CheckInCard.LoadedFrom) -> some View {
-        environment(\.checkInCardLoadedFrom, checkInCardLoadedFrom)
+    func checkInLoadedFrom(_ checkInLoadedFrom: CheckInView.LoadedFrom) -> some View {
+        environment(\.checkInLoadedFrom, checkInLoadedFrom)
     }
 }
 
 extension EnvironmentValues {
-    @Entry var checkInCardHeaderVisibility: Bool = true
+    @Entry var checkInHeaderVisibility: Bool = true
 }
 
 extension View {
-    func checkInCardHeaderVisibility(_ visible: Bool) -> some View {
-        environment(\.checkInCardHeaderVisibility, visible)
+    func checkInHeaderVisibility(_ visible: Bool) -> some View {
+        environment(\.checkInHeaderVisibility, visible)
     }
 }
 
 extension EnvironmentValues {
-    @Entry var checkInCardFooterVisibility: Bool = true
+    @Entry var checkInFooterVisibility: Bool = true
 }
 
 extension View {
-    func checkInCardFooterVisibility(_ visible: Bool) -> some View {
-        environment(\.checkInCardFooterVisibility, visible)
+    func checkInFooterVisibility(_ visible: Bool) -> some View {
+        environment(\.checkInFooterVisibility, visible)
     }
 }
 
-extension CheckInCard {
+extension CheckInView {
     enum LoadedFrom: Equatable {
         case checkIn
         case product

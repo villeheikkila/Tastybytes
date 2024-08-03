@@ -66,7 +66,7 @@ struct CheckInSheet: View {
     var body: some View {
         Form {
             Group {
-                ProductEntityView(product: product)
+                ProductView(product: product)
                     .accessibilityAddTraits(.isButton)
                     .onTapGesture {
                         focusedField = nil

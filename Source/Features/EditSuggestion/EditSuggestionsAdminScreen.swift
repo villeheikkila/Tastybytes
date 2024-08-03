@@ -41,7 +41,7 @@ struct EditSuggestionRowView: View {
     var body: some View {
         Section {
             RouterLink(open: editSuggestion.open) {
-                EditSuggestionEntityView(editSuggestion: editSuggestion)
+                EditSuggestionView(editSuggestion: editSuggestion)
             }
         }
     }

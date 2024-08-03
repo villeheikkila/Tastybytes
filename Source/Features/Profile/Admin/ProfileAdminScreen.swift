@@ -18,7 +18,7 @@ struct ProfilesAdminScreen: View {
     var body: some View {
         List(filteredProfiles) { profile in
             RouterLink(open: .screen(.profile(profile))) {
-                ProfileEntityView(profile: profile)
+                ProfileView(profile: profile)
             }
             .swipeActions {
                 Button("profile.admin.navigationTitle", systemImage: "wrench.and.screwdriver") {

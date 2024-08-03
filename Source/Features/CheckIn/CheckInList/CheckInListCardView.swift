@@ -16,7 +16,7 @@ struct CheckInListCardView: View {
     let onCreate: (_ checkIn: CheckIn.Joined) async -> Void
 
     var body: some View {
-        CheckInCard(checkIn: checkIn, onDeleteImage: { id in
+        CheckInView(checkIn: checkIn, onDeleteImage: { id in
             await onUpdate(checkIn.copyWith(images: checkIn.images.removingWithId(id)))
         })
         .contextMenu {

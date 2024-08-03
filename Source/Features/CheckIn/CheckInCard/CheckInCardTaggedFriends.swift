@@ -3,7 +3,7 @@ import Models
 import SwiftUI
 
 struct CheckInCardTaggedFriends: View {
-    @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
+    @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     let taggedProfiles: [Profile.Saved]
 
     var body: some View {
@@ -20,7 +20,7 @@ struct CheckInCardTaggedFriends: View {
                         RouterLink(open: .screen(.profile(taggedProfile))) {
                             AvatarView(profile: taggedProfile)
                         }
-                        .routerLinkDisabled(checkInCardLoadedFrom.isLoadedFromProfile(taggedProfile))
+                        .routerLinkDisabled(checkInLoadedFrom.isLoadedFromProfile(taggedProfile))
                     }
                     Spacer()
                 }

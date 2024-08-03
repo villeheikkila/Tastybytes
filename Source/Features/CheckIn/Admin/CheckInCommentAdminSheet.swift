@@ -48,7 +48,7 @@ struct CheckInCommentAdminSheet: View {
     @ViewBuilder private var content: some View {
         Section("checkIn.admin.section.checkIn") {
             RouterLink(open: .screen(.checkIn(checkInComment.checkIn.id))) {
-                CheckInCommentEntityView(comment: checkInComment)
+                CheckInCommentView(comment: checkInComment)
             }
         }
         .customListRowBackground()

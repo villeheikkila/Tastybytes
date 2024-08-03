@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct SubBrandEditSuggestionEntityView: View {
+struct SubBrandEditSuggestionView: View {
     let editSuggestion: SubBrand.EditSuggestion
 
     var body: some View {

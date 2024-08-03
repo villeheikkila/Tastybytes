@@ -39,7 +39,7 @@ struct ReportReaderRowView: View {
 
     var body: some View {
         Section {
-            ReportContentEntityView(content: report.content)
+            ReportContentView(content: report.content)
         } header: {
             if let message = report.message {
                 Text(message)

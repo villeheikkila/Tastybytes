@@ -57,7 +57,7 @@ struct ProfileCheckInsList: View {
         .listStyle(.plain)
         .animation(.default, value: checkIns)
         .scrollIndicators(.hidden)
-        .checkInCardLoadedFrom(.activity(profileModel.profile))
+        .checkInLoadedFrom(.activity(profileModel.profile))
         .overlay {
             ScreenStateOverlayView(state: state) {
                 await loadCheckIns()

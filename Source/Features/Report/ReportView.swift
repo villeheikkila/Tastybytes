@@ -3,7 +3,7 @@ import Components
 import Models
 import SwiftUI
 
-struct ReportEntityView: View {
+struct ReportView: View {
     let report: Report.Joined
 
     var body: some View {
@@ -18,7 +18,7 @@ struct ReportEntityView: View {
                 Text(report.createdAt.formatted(.customRelativetime))
                     .font(.caption)
             }
-            ReportContentEntityView(content: report.content)
+            ReportContentView(content: report.content)
             if let message = report.message {
                 VStack(alignment: .leading) {
                     Text("report.section.report.title").bold()

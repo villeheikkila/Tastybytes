@@ -68,7 +68,7 @@ struct ReportScreenRow: View {
 
     var body: some View {
         RouterLink(open: report.content.open) {
-            ReportEntityView(report: report)
+            ReportView(report: report)
         }
     }
 }

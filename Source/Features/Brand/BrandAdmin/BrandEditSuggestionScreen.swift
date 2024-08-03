@@ -34,7 +34,7 @@ struct BrandEditSuggestionRowView: View {
     let editSuggestion: Brand.EditSuggestion
 
     var body: some View {
-        BrandEditSuggestionEntityView(editSuggestion: editSuggestion, brand: brand)
+        BrandEditSuggestionView(editSuggestion: editSuggestion, brand: brand)
             .padding(.vertical, 2)
             .swipeActions {
                 Button("company.admin.editSuggestion.delete.label", systemImage: "trash") {
@@ -105,7 +105,7 @@ struct BrandEditSuggestionRowView: View {
     }
 }
 
-struct BrandEditSuggestionEntityView: View {
+struct BrandEditSuggestionView: View {
     let brand: Brand.Detailed?
     let editSuggestion: Brand.EditSuggestion
 

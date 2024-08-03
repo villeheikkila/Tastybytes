@@ -9,13 +9,13 @@ struct VerifiableEntityView: View {
             RouterLink(open: entity.open) {
                 switch entity {
                 case let .product(product):
-                    ProductEntityView(product: product)
+                    ProductView(product: product)
                 case let .brand(brand):
-                    BrandEntityView(brand: brand)
+                    BrandView(brand: brand)
                 case let .subBrand(subBrand):
-                    SubBrandEntityView(subBrand: subBrand)
+                    SubBrandView(subBrand: subBrand)
                 case let .company(company):
-                    CompanyEntityView(company: company)
+                    CompanyView(company: company)
                 }
             }
         }

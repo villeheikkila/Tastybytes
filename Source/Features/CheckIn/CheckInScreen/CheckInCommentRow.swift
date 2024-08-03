@@ -18,7 +18,7 @@ struct CheckInCommentRowView: View {
     @Binding var checkInComments: [CheckIn.Comment.Saved]
 
     var body: some View {
-        CheckInCommentEntityView(comment: comment)
+        CheckInCommentView(comment: comment)
             .translationPresentation(isPresented: $showTranslator, text: comment.content)
             .contextMenu {
                 if comment.profile == profileModel.profile {

@@ -71,7 +71,7 @@ struct CompanyAdminSheet: View {
     @ViewBuilder private var content: some View {
         Section("company.admin.section.company") {
             RouterLink(open: .screen(.company(company.id))) {
-                CompanyEntityView(company: company)
+                CompanyView(company: company)
             }
         }
         .customListRowBackground()

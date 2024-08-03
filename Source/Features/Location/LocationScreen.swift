@@ -46,7 +46,7 @@ struct LocationScreen: View {
         .refreshable {
             await load(isRefresh: true)
         }
-        .checkInCardLoadedFrom(.location(location))
+        .checkInLoadedFrom(.location(location))
         .overlay {
             ScreenStateOverlayView(state: state) {
                 await load(isRefresh: true)

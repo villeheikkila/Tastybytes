@@ -111,11 +111,11 @@ struct CheckInImageCheckInSectionView: View {
 
     var body: some View {
         VStack {
-            CheckInCardHeader(
+            CheckInHeaderView(
                 profile: checkIn.profile,
                 location: checkIn.location
             )
-            ProductEntityView(product: checkIn.product, variant: checkIn.variant)
+            ProductView(product: checkIn.product, variant: checkIn.variant)
                 .productLogoLocation(.right)
         }
         .padding()

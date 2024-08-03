@@ -21,7 +21,7 @@ struct ProductPickerSheet: View {
                 self.product = product
                 dismiss()
             }) {
-                ProductEntityView(product: product)
+                ProductView(product: product)
             }
         }
         .listStyle(.plain)

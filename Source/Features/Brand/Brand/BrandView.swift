@@ -1,7 +1,8 @@
+
 import Models
 import SwiftUI
 
-struct BrandEntityView: View {
+struct BrandView: View {
     let brandOwner: Company.Saved?
     let brand: BrandProtocol
 

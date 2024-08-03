@@ -7,7 +7,7 @@ struct CompanyListScreen: View {
     var body: some View {
         List(companies) { company in
             RouterLink(open: .screen(.company(company.id))) {
-                CompanyEntityView(company: company)
+                CompanyView(company: company)
             }
         }
         .listStyle(.plain)

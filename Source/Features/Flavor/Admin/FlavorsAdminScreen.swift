@@ -13,7 +13,7 @@ struct FlavorsAdminScreen: View {
 
     var body: some View {
         List(filtered) { flavor in
-            FlavorEntityView(flavor: flavor)
+            FlavorView(flavor: flavor)
                 .swipeActions {
                     AsyncButton("labels.delete", systemImage: "trash", role: .destructive, action: {
                         await appModel.deleteFlavor(flavor)

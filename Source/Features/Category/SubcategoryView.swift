@@ -2,7 +2,7 @@ import Components
 import Models
 import SwiftUI
 
-struct SubCategoryEntityView: View {
+struct SubcategoryView: View {
     let subcategory: SubcategoryProtocol
 
     var body: some View {

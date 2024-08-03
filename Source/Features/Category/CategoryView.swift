@@ -2,7 +2,7 @@ import Components
 import Models
 import SwiftUI
 
-struct CategoryEntityView: View {
+struct CategoryView: View {
     let category: CategoryProtocol
 
     var body: some View {

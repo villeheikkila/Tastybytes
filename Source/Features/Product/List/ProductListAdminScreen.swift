@@ -11,7 +11,7 @@ struct ProductListAdminScreen: View {
             }, onDelete: { id in
                 products = products.removingWithId(id)
             }))) {
-                ProductEntityView(product: product)
+                ProductView(product: product)
             }
         }
         .listStyle(.plain)

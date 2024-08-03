@@ -46,7 +46,7 @@ struct LocationAdminSheet: View {
 
     @ViewBuilder private var content: some View {
         Section("location.admin.section.location") {
-            LocationEntityView(location: .init(location: location))
+            LocationView(location: .init(location: location))
         }
         .customListRowBackground()
         CreationInfoSection(createdBy: location.createdBy, createdAt: location.createdAt)

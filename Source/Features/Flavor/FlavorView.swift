@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct FlavorEntityView: View {
+struct FlavorView: View {
     let flavor: Flavor.Saved
 
     var body: some View {

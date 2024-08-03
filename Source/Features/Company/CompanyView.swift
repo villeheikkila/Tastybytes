@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct CompanyEntityView: View {
+struct CompanyView: View {
     let company: any CompanyProtocol
 
     var body: some View {

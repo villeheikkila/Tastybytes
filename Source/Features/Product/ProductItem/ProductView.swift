@@ -3,7 +3,7 @@ import Models
 import Repositories
 import SwiftUI
 
-struct ProductEntityView: View {
+struct ProductView: View {
     @Environment(\.productLogoLocation) private var productLogoLocation
     @Environment(\.productCompanyLinkEnabled) private var productCompanyLinkEnabled
 
@@ -64,7 +64,7 @@ struct ProductEntityView: View {
                 }
 
                 HStack {
-                    CategoryView(category: product.category, subcategories: product.subcategories)
+                    ProductLabelsView(category: product.category, subcategories: product.subcategories)
                     Spacer()
                     if let averageRating = product.averageRating {
                         RatingView(rating: averageRating)

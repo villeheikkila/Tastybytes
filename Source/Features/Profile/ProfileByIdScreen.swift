@@ -20,7 +20,7 @@ struct ProfileByIdScreen: View {
     }
 
     @ViewBuilder private func content(profile: Profile.Saved) -> some View {
-        ProfileView(
+        ProfileInnerScreen(
             profile: profile,
             isCurrentUser: profileModel.id == profile.id
         )

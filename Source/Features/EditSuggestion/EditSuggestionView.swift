@@ -2,19 +2,19 @@ import Models
 import Repositories
 import SwiftUI
 
-struct EditSuggestionEntityView: View {
+struct EditSuggestionView: View {
     let editSuggestion: EditSuggestion
 
     var body: some View {
         switch editSuggestion {
         case let .brand(editSuggestion):
-            BrandEditSuggestionEntityView(editSuggestion: editSuggestion)
+            BrandEditSuggestionView(editSuggestion: editSuggestion)
         case let .product(editSuggestion):
-            ProductEditSuggestionEntityView(editSuggestion: editSuggestion)
+            ProductEditSuggestionView(editSuggestion: editSuggestion)
         case let .company(editSuggestion):
-            CompanyEditSuggestionEntityView(editSuggestion: editSuggestion)
+            CompanyEditSuggestionView(editSuggestion: editSuggestion)
         case let .subBrand(editSuggestion):
-            SubBrandEditSuggestionEntityView(editSuggestion: editSuggestion)
+            SubBrandEditSuggestionView(editSuggestion: editSuggestion)
         }
     }
 }

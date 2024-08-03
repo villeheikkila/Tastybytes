@@ -28,7 +28,7 @@ struct FriendPickerSheet: View {
         }, setter: { ids in
             ids.compactMap { id in profileModel.acceptedFriends.first(where: { $0.id == id }) }
         })) { profile in
-            ProfileEntityView(profile: profile)
+            ProfileView(profile: profile)
                 .listRowBackground(Color.clear)
         }
         .environment(\.editMode, .constant(.active))

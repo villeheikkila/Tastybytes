@@ -3,7 +3,7 @@ import Models
 import SwiftUI
 
 struct CheckInCardCheckIn: View {
-    @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
+    @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     let checkIn: CheckIn.Joined
 
     var body: some View {
@@ -35,11 +35,11 @@ struct CheckInCardCheckIn: View {
                             Spacer()
                         }
                     }
-                    .routerLinkDisabled(checkInCardLoadedFrom.isLoadedFromLocation(purchaseLocation))
+                    .routerLinkDisabled(checkInLoadedFrom.isLoadedFromLocation(purchaseLocation))
                     .buttonStyle(.plain)
                 }
             }
         }
-        .routerLinkDisabled(checkInCardLoadedFrom == .checkIn)
+        .routerLinkDisabled(checkInLoadedFrom == .checkIn)
     }
 }

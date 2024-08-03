@@ -11,7 +11,7 @@ struct ProfileScreen: View {
     let profile: Profile.Saved
 
     var body: some View {
-        ProfileView(
+        ProfileInnerScreen(
             profile: profile,
             isCurrentUser: profileModel.id == profile.id
         )

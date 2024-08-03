@@ -11,7 +11,7 @@ struct BrandScreenProductRowView: View {
 
     var body: some View {
         RouterLink(open: .screen(.product(product.id))) {
-            ProductEntityView(product: product)
+            ProductView(product: product)
                 .padding(2)
                 .productLogoLocation(.left)
         }

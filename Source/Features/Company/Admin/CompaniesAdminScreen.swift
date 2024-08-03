@@ -20,7 +20,7 @@ struct CompaniesAdminScreen: View {
             }, onDelete: { id in
                 companies = companies.removingWithId(id)
             }))) {
-                CompanyEntityView(company: company)
+                CompanyView(company: company)
             }
         }
         .listStyle(.plain)

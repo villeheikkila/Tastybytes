@@ -6,7 +6,7 @@ struct ProductListRowView: View {
 
     var body: some View {
         RouterLink(open: .screen(.product(product.id))) {
-            ProductEntityView(product: product)
+            ProductView(product: product)
         }
     }
 }

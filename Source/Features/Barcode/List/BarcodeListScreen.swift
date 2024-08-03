@@ -20,7 +20,7 @@ struct BarcodeListRowView: View {
     var body: some View {
         RouterLink(open: .screen(.product(barcode.product.id))) {
             VStack(alignment: .leading, spacing: 8) {
-                ProductEntityView(product: barcode.product)
+                ProductView(product: barcode.product)
                 Text(barcode.barcode)
             }
         }

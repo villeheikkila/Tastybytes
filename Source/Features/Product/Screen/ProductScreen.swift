@@ -88,7 +88,7 @@ struct ProductScreen: View {
 
     @ViewBuilder private var content: some View {
         Group {
-            ProductEntityView(product: product)
+            ProductView(product: product)
                 .productLogoShowPlacerholder(false)
                 .productCompanyLinkEnabled(true)
                 .productLogoLocation(.right)
@@ -107,7 +107,7 @@ struct ProductScreen: View {
         CheckInListContentView(checkIns: $checkIns, onLoadMore: {
             await fetchCheckIns(segment: showCheckInsFrom)
         })
-        .checkInCardLoadedFrom(.product)
+        .checkInLoadedFrom(.product)
         CheckInListLoadingIndicatorView(isLoading: $isLoading, isRefreshing: $isRefreshing)
     }
 

@@ -54,7 +54,7 @@ struct ProfileAdminSheet: View {
     @ViewBuilder private func content(summary: Profile.Summary) -> some View {
         Section("profile.admin.section.profile") {
             RouterLink(open: .screen(.profile(.init(profile: profile)))) {
-                ProfileEntityView(profile: profile)
+                ProfileView(profile: profile)
             }
         }
         .customListRowBackground()

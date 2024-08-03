@@ -6,7 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct CheckInCommentEntityView: View {
+struct CheckInCommentView: View {
     let comment: CheckInCommentProtocol
 
     var body: some View {

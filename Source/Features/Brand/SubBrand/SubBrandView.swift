@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-struct SubBrandEntityView: View {
+struct SubBrandView: View {
     let brand: BrandProtocol
     let subBrand: SubBrandProtocol
 
@@ -22,7 +22,7 @@ struct SubBrandEntityView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            BrandEntityView(brand: brand)
+            BrandView(brand: brand)
                 .verificationBadgeVisibility(.hidden)
             HStack(alignment: .center) {
                 Text(subBrand.name ?? "-")

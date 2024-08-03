@@ -6,7 +6,7 @@ import OSLog
 import Repositories
 import SwiftUI
 
-struct DuplicateProductSuggestionEntityView: View {
+struct DuplicateProductSuggestionView: View {
     let editSuggestion: Product.EditSuggestion
 
     var body: some View {
@@ -19,11 +19,11 @@ struct DuplicateProductSuggestionEntityView: View {
                 Text(editSuggestion.createdAt.formatted(.customRelativetime)).font(.caption).bold()
             }
             RouterLink(open: .screen(.product(editSuggestion.product.id))) {
-                ProductEntityView(product: editSuggestion.product)
+                ProductView(product: editSuggestion.product)
             }
             if let duplicateOf = editSuggestion.duplicateOf {
                 RouterLink(open: .screen(.product(duplicateOf.id))) {
-                    ProductEntityView(product: duplicateOf)
+                    ProductView(product: duplicateOf)
                 }
             }
         }

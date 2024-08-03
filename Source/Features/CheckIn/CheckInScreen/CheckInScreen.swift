@@ -30,7 +30,7 @@ struct CheckInScreen: View {
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
-            .checkInCardLoadedFrom(.checkIn)
+            .checkInLoadedFrom(.checkIn)
             .overlay {
                 ScreenStateOverlayView(state: state, errorDescription: "checkIn.screen.failedToLoad \(checkIn.product.formatted(.fullName)) \(checkIn.profile.preferredName)", errorAction: {
                     await loadCheckInData(withHaptics: true)
@@ -80,7 +80,7 @@ struct CheckInScreen: View {
     }
 
     private var header: some View {
-        CheckInCard(checkIn: checkIn, onDeleteImage: { id in
+        CheckInView(checkIn: checkIn, onDeleteImage: { id in
             checkIn = checkIn.copyWith(images: checkIn.images.removingWithId(id))
         })
         .contextMenu {

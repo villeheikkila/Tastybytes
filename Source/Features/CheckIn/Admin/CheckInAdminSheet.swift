@@ -49,10 +49,10 @@ struct CheckInAdminSheet: View {
     @ViewBuilder private var content: some View {
         Section("checkIn.admin.section.checkIn") {
             RouterLink(open: .screen(.checkIn(checkIn.id))) {
-                CheckInCard(checkIn: .init(checkIn: checkIn))
+                CheckInView(checkIn: .init(checkIn: checkIn))
                     .allowsHitTesting(false)
-                    .checkInCardHeaderVisibility(false)
-                    .checkInCardFooterVisibility(false)
+                    .checkInHeaderVisibility(false)
+                    .checkInFooterVisibility(false)
                     .padding(.vertical, 8)
             }
         }

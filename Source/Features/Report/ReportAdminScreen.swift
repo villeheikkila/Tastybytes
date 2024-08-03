@@ -41,7 +41,7 @@ struct ReportAdminRowView: View {
 
     var body: some View {
         RouterLink(open: report.open) {
-            ReportEntityView(report: report)
+            ReportView(report: report)
         }
     }
 }
