@@ -6,6 +6,21 @@ struct EditSuggestionView: View {
     let editSuggestion: EditSuggestion
 
     var body: some View {
+        VStack(alignment: .leading) {
+            CreationInfoHeaderView(
+                createdBy: editSuggestion.createdBy,
+                createdAt: editSuggestion.createdAt,
+                resolvedAt: editSuggestion.resolvedAt
+            )
+            EditSuggestionContentView(editSuggestion: editSuggestion)
+        }
+    }
+}
+
+struct EditSuggestionContentView: View {
+    let editSuggestion: EditSuggestion
+
+    var body: some View {
         switch editSuggestion {
         case let .brand(editSuggestion):
             BrandEditSuggestionView(editSuggestion: editSuggestion)

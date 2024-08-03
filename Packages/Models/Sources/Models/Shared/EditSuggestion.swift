@@ -22,4 +22,30 @@ public enum EditSuggestion: Hashable, Identifiable, Sendable, Decodable {
             editSuggestion.createdAt
         }
     }
+
+    public var createdBy: Profile.Saved {
+        switch self {
+        case let .brand(editSuggestion):
+            editSuggestion.createdBy
+        case let .product(editSuggestion):
+            editSuggestion.createdBy
+        case let .company(editSuggestion):
+            editSuggestion.createdBy
+        case let .subBrand(editSuggestion):
+            editSuggestion.createdBy
+        }
+    }
+
+    public var resolvedAt: Date? {
+        switch self {
+        case let .brand(editSuggestion):
+            editSuggestion.resolvedAt
+        case let .product(editSuggestion):
+            editSuggestion.resolvedAt
+        case let .company(editSuggestion):
+            editSuggestion.resolvedAt
+        case let .subBrand(editSuggestion):
+            editSuggestion.resolvedAt
+        }
+    }
 }

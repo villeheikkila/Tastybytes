@@ -115,25 +115,7 @@ struct BrandEditSuggestionView: View {
     }
 
     var body: some View {
-        HStack(alignment: .top) {
-            AvatarView(profile: editSuggestion.createdBy)
-                .avatarSize(.medium)
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(alignment: .top) {
-                    Text(editSuggestion.createdBy.preferredName)
-                        .font(.caption)
-                    Spacer()
-                    VStack(alignment: .leading) {
-                        Text("\(Image(systemName: "calendar.badge.plus")) \(editSuggestion.createdAt.formatted(.customRelativetime))").font(.caption2)
-                        if let resolvedAt = editSuggestion.resolvedAt {
-                            Text("\(Image(systemName: "calendar.badge.checkmark")) \(resolvedAt.formatted(.customRelativetime))").font(.caption2)
-                        }
-                    }
-                }
-                Text("company.admin.editSuggestion.changeNameTo.label \(brand?.name ?? "-") \(editSuggestion.name ?? "-")")
-                    .font(.callout)
-            }
-            Spacer()
-        }
+        Text("company.admin.editSuggestion.changeNameTo.label \(brand?.name ?? "-") \(editSuggestion.name ?? "-")")
+            .font(.callout)
     }
 }

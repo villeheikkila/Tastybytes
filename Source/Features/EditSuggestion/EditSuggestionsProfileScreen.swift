@@ -14,7 +14,7 @@ struct EditSuggestionsProfileScreen: View {
 
     var body: some View {
         List(editSuggestions) { editSuggestion in
-            EditSuggestionView(editSuggestion: editSuggestion)
+            EditSuggestionContentView(editSuggestion: editSuggestion)
                 .swipeActions {
                     AsyncButton("labels.delete", systemImage: "trash") {
                         await contributionsModel.deleteEditSuggestion(editSuggestion)

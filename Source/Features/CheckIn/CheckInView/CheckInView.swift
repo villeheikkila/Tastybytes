@@ -92,7 +92,6 @@ extension View {
     }
 }
 
-
 extension CheckInView {
     enum LoadedFrom: Equatable {
         case checkIn

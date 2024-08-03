@@ -13,7 +13,7 @@ public extension Report {
         public let createdBy: Profile.Saved
         public let content: Content
         public let resolvedAt: Date?
-        
+
         public init(id: Report.Id, message: String? = nil, createdAt: Date, createdBy: Profile.Saved, content: Report.Content, resolvedAt: Date? = nil) {
             self.id = id
             self.message = message
