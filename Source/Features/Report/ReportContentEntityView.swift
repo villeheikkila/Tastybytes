@@ -20,7 +20,9 @@ struct ReportContentEntityView: View {
         case let .comment(comment):
             CheckInCommentEntityView(comment: comment)
         case let .checkIn(checkIn):
-            CheckInEntityView(checkIn: checkIn)
+            CheckInCard(checkIn: checkIn)
+                .allowsHitTesting(false)
+                .checkInCardFooterVisibility(false)
         case let .checkInImage(imageEntity):
             CheckInImageEntityView(imageEntity: imageEntity)
         case let .profile(profile):

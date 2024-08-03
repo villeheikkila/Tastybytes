@@ -49,7 +49,11 @@ struct CheckInAdminSheet: View {
     @ViewBuilder private var content: some View {
         Section("checkIn.admin.section.checkIn") {
             RouterLink(open: .screen(.checkIn(checkIn.id))) {
-                CheckInEntityView(checkIn: .init(checkIn: checkIn), hideHeader: true)
+                CheckInCard(checkIn: .init(checkIn: checkIn))
+                    .allowsHitTesting(false)
+                    .checkInCardHeaderVisibility(false)
+                    .checkInCardFooterVisibility(false)
+                    .padding(.vertical, 8)
             }
         }
         .customListRowBackground()

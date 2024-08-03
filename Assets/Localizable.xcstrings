@@ -1608,6 +1608,7 @@
       }
     },
     "checkIn.friends.tagged.label" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

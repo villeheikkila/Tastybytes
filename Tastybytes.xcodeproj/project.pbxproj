@@ -55,7 +55,6 @@
 		5C6337452C491E5C00390B38 /* AdminEventScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6337442C491E5C00390B38 /* AdminEventScreen.swift */; };
 		5C6337472C49746900390B38 /* ReportContentEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6337462C49746400390B38 /* ReportContentEntityView.swift */; };
 		5C64E7E72B70122F006FC2C3 /* Product+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */; };
-		5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C672E8A2B504DD80048605B /* ProfileStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C672E892B504DD80048605B /* ProfileStateObserver.swift */; };
 		5C68D76B2B965FBE00D88229 /* Report+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76A2B965FBE00D88229 /* Report+Extension.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5C68D76D2B978EF700D88229 /* CopyToClipboardButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68D76C2B978EF700D88229 /* CopyToClipboardButtonView.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
@@ -405,7 +404,6 @@
 		5C6337442C491E5C00390B38 /* AdminEventScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEventScreen.swift; sourceTree = "<group>"; };
 		5C6337462C49746400390B38 /* ReportContentEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportContentEntityView.swift; sourceTree = "<group>"; };
 		5C64E7E62B70122F006FC2C3 /* Product+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+Extension.swift"; sourceTree = "<group>"; };
-		5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
 		5C672E892B504DD80048605B /* ProfileStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStateObserver.swift; sourceTree = "<group>"; };
 		5C68D76A2B965FBE00D88229 /* Report+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report+Extension.swift"; sourceTree = "<group>"; };
 		5C68D76C2B978EF700D88229 /* CopyToClipboardButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyToClipboardButtonView.swift; sourceTree = "<group>"; };
@@ -1468,7 +1466,6 @@
 			isa = PBXGroup;
 			children = (
 				5CA065E32B6C2DAE00588194 /* Localization.swift */,
-				5C64E7E82B701353006FC2C3 /* CheckInEntityView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2241,7 +2238,6 @@
 				5CEEA3182C3BCBC70009B3F5 /* ProductListRowView.swift in Sources */,
 				5C9058402B2894BE00EC157B /* CheckInScreen.swift in Sources */,
 				5C87DA472C43F60900711393 /* ProfileAvatarPickerSectionView.swift in Sources */,
-				5C64E7E92B701353006FC2C3 /* CheckInEntityView.swift in Sources */,
 				5CD3C0DF2B814B9A0049E563 /* SummaryView.swift in Sources */,
 				5CB42D7E2C510D8800810CA7 /* CompanySubsidiaryAdminScreen.swift in Sources */,
 				5C90584A2B2894BE00EC157B /* SignInWithAppleView.swift in Sources */,

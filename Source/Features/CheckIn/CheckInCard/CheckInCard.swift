@@ -6,14 +6,24 @@ import SwiftUI
 
 struct CheckInCard: View {
     @Environment(\.checkInCardLoadedFrom) private var checkInCardLoadedFrom
+    @Environment(\.checkInCardHeaderVisibility) private var checkInCardHeaderVisibility
+    @Environment(\.checkInCardFooterVisibility) private var checkInCardFooterVisibility
+
     let checkIn: CheckIn.Joined
     let onDeleteImage: CheckInImageSheet.OnDeleteImageCallback?
+    
+    init(checkIn: CheckIn.Joined, onDeleteImage: CheckInImageSheet.OnDeleteImageCallback? = nil) {
+        self.checkIn = checkIn
+        self.onDeleteImage = onDeleteImage
+    }
 
     var body: some View {
         RouterLink(open: .screen(.checkIn(checkIn.id))) {
             VStack(spacing: 4) {
                 Group {
-                    CheckInCardHeader(profile: checkIn.profile, location: checkIn.location)
+                    if checkInCardHeaderVisibility {
+                        CheckInCardHeader(profile: checkIn.profile, location: checkIn.location)
+                    }
                     RouterLink(open: .screen(.product(checkIn.product.id))) {
                         ProductEntityView(product: checkIn.product, variant: checkIn.variant)
                             .productLogoLocation(.right)
@@ -27,7 +37,9 @@ struct CheckInCard: View {
                 Group {
                     CheckInCardCheckIn(checkIn: checkIn)
                     CheckInCardTaggedFriends(taggedProfiles: checkIn.taggedProfiles.map(\.profile))
-                    CheckInCardFooter(checkIn: checkIn)
+                    if checkInCardFooterVisibility {
+                        CheckInCardFooter(checkIn: checkIn)
+                    }
                 }
                 .padding(.horizontal, 8)
             }
@@ -46,6 +58,26 @@ extension EnvironmentValues {
 extension View {
     func checkInCardLoadedFrom(_ checkInCardLoadedFrom: CheckInCard.LoadedFrom) -> some View {
         environment(\.checkInCardLoadedFrom, checkInCardLoadedFrom)
+    }
+}
+
+extension EnvironmentValues {
+    @Entry var checkInCardHeaderVisibility: Bool = true
+}
+
+extension View {
+    func checkInCardHeaderVisibility(_ visible: Bool) -> some View {
+        environment(\.checkInCardHeaderVisibility, visible)
+    }
+}
+
+extension EnvironmentValues {
+    @Entry var checkInCardFooterVisibility: Bool = true
+}
+
+extension View {
+    func checkInCardFooterVisibility(_ visible: Bool) -> some View {
+        environment(\.checkInCardFooterVisibility, visible)
     }
 }
 
