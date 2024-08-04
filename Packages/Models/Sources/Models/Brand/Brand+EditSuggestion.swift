@@ -27,7 +27,7 @@ public extension Brand {
         let name: String?
         let brandOwnerId: Company.Id?
 
-        public init(brand: Brand.JoinedSubBrandsProductsCompany, name: String?, brandOwner: Company.Saved?) {
+        public init(brand: Brand.JoinedSubBrandsCompany, name: String?, brandOwner: Company.Saved?) {
             brandId = brand.id
             self.name = name
             brandOwnerId = brandOwner?.id

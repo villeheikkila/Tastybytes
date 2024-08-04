@@ -342,7 +342,7 @@ struct ProductMutationView: View {
             if subBrand.name != nil {
                 hasSubBrand = true
             }
-            self.subBrand = brand.subBrands.map(\.subBrand).first(where: { $0.id == subBrand.id })
+            self.subBrand = brand.subBrands.first(where: { $0.id == subBrand.id })
             state = .populated
         case let .new(barcode, _):
             self.barcode = barcode
@@ -354,8 +354,8 @@ struct ProductMutationView: View {
 extension ProductMutationView {
     enum Mode: Equatable {
         case new(barcode: Barcode?, onCreate: ProductCallback? = nil), edit(Product.Joined, onEdit: ProductCallback?), editSuggestion(Product.Joined),
-             addToBrand(Brand.JoinedSubBrandsProductsCompany, onCreate: ProductCallback?),
-             addToSubBrand(Brand.JoinedSubBrandsProductsCompany, SubBrand.JoinedProduct, onCreate: ProductCallback?)
+             addToBrand(Brand.JoinedSubBrandsCompany, onCreate: ProductCallback?),
+             addToSubBrand(Brand.JoinedSubBrandsCompany, SubBrand.JoinedProductJoined, onCreate: ProductCallback?)
 
         static func == (lhs: Mode, rhs: Mode) -> Bool {
             switch (lhs, rhs) {

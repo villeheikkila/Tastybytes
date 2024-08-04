@@ -2,12 +2,12 @@ import Foundation
 public import Tagged
 
 public extension Brand {
-    struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
+    struct JoinedSubBrandsCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
         public let id: Brand.Id
         public let name: String
         public let isVerified: Bool
         public let brandOwner: Company.Saved
-        public let subBrands: [SubBrand.JoinedProduct]
+        public let subBrands: [SubBrand.Saved]
         public let logos: [ImageEntity.Saved]
 
         public init(brandOwner: Company.Saved, brand: JoinedSubBrandsProducts) {
@@ -16,6 +16,9 @@ public extension Brand {
             isVerified = brand.isVerified
             self.brandOwner = brandOwner
             subBrands = brand.subBrands
+                .map {
+                    .init(id: $0.id, name: $0.name, includesBrandName: $0.includesBrandName, isVerified: $0.isVerified)
+                }
             logos = brand.logos
         }
 
@@ -42,15 +45,20 @@ public extension Brand {
             name = brand.name
             isVerified = brand.isVerified
             brandOwner = brand.brandOwner
-            subBrands = brand.subBrands
+            subBrands = brand.subBrands.map {
+                .init(id: $0.id, name: $0.name, includesBrandName: $0.includesBrandName, isVerified: $0.isVerified)
+            }
             logos = brand.logos
         }
 
-        public var productCount: Int {
-            subBrands.flatMap(\.products).count
-        }
-
-        public init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company.Saved, subBrands: [SubBrand.JoinedProduct], logos: [ImageEntity.Saved] = []) {
+        public init(
+            id: Brand.Id,
+            name: String,
+            isVerified: Bool,
+            brandOwner: Company.Saved,
+            subBrands: [SubBrand.Saved],
+            logos: [ImageEntity.Saved] = []
+        ) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -80,7 +88,7 @@ public extension Brand {
         public func copyWith(name: String? = nil,
                              isVerified: Bool? = nil,
                              brandOwner: Company.Saved? = nil,
-                             subBrands: [SubBrand.JoinedProduct]? = nil,
+                             subBrands: [SubBrand.Saved]? = nil,
                              logos: [ImageEntity.Saved]? = nil) -> Self
         {
             .init(

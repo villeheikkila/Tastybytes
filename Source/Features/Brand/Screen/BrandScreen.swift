@@ -12,7 +12,7 @@ struct BrandScreen: View {
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(Router.self) private var router
-    @State private var brand = Brand.JoinedSubBrandsProductsCompany()
+    @State private var brand = Brand.JoinedSubBrandsCompany()
     @State private var summary: Summary?
     @State private var isLikedByCurrentUser = false
     @State private var productGrouping: GroupProductsBy = .subBrand
@@ -105,7 +105,7 @@ struct BrandScreen: View {
                     BrandScreenProductRowView(product: product)
                 }
             } header: {
-                SubBrandSectionHeaderView(brand: $brand, subBrand: .init(subBrand: subBrand))
+                SubBrandSectionHeaderView(brand: brand, subBrand: subBrand)
             }
             .headerProminence(.increased)
             .id(subBrand.id)
@@ -258,8 +258,8 @@ private enum GroupProductsBy: String, CaseIterable {
 struct SubBrandSectionHeaderView: View {
     @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel
-    @Binding var brand: Brand.JoinedSubBrandsProductsCompany
-    let subBrand: SubBrand.JoinedProduct
+    let brand: Brand.JoinedSubBrandsCompany
+    let subBrand: SubBrand.JoinedProductJoined
 
     var body: some View {
         HStack {
@@ -278,10 +278,10 @@ struct SubBrandSectionHeaderView: View {
                     )
                 }
                 Divider()
-                RouterLink("labels.editSuggestion", systemImage: "pencil", open: .sheet(.subBrandEditSuggestion(brand: .init(brand: brand), subBrand: .init(brand: brand, subBrand: subBrand), onSuccess: {
+                RouterLink("labels.editSuggestion", systemImage: "pencil", open: .sheet(.subBrandEditSuggestion(brand: .init(brand: brand), subBrand: .init(brand: brand, subBrand: .init(subBrand: subBrand)), onSuccess: {
                     router.open(.toast(.success("brand.editSuggestion.submitted")))
                 })))
-                ReportButton(entity: .subBrand(.init(brand: brand, subBrand: subBrand)))
+                ReportButton(entity: .subBrand(.init(brand: brand, subBrand: .init(subBrand: subBrand))))
                 Divider()
                 AdminRouterLink(open: .sheet(.subBrandAdmin(id: subBrand.id)))
             } label: {

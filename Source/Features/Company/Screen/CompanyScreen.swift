@@ -14,14 +14,11 @@ struct CompanyScreen: View {
     @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(Router.self) private var router
     @State private var state: ScreenState = .loading
-    @State private var company = Company.Joined()
+    @State private var company = Company.Saved()
+    @State private var brands = [Brand.Saved]()
     @State private var summary: Summary?
 
     let id: Company.Id
-
-    var sortedBrands: [Brand.JoinedSubBrandsProducts] {
-        company.brands.sorted { lhs, rhs in lhs.productCount > rhs.productCount }
-    }
 
     var body: some View {
         List {
@@ -30,11 +27,12 @@ struct CompanyScreen: View {
             }
         }
         .listStyle(.plain)
+        .animation(.default, value: brands)
         .refreshable {
             await getCompanyData(withHaptics: true)
         }
         .overlay {
-            if state.isPopulated, company.brands.isEmpty {
+            if state.isPopulated, brands.isEmpty {
                 ContentUnavailableView("company.screen.empty.title", systemImage: "tray")
             } else {
                 ScreenStateOverlayView(state: state, errorDescription: "company.screen.failedToLoad \(company.name)") {
@@ -73,21 +71,17 @@ struct CompanyScreen: View {
         if let summary, summary.averageRating != nil {
             SummaryView(summary: summary)
         }
-        if !sortedBrands.isEmpty {
-            Section("brand.title") {
-                ForEach(sortedBrands) { brand in
-                    RouterLink(
-                        open: .screen(.brand(brand.id)
-                        )) {
-                            CompanyBrandRowView(brand: brand)
-                        }
-                        .alignmentGuide(.listRowSeparatorLeading) { _ in
-                            0
-                        }
+        Section("brand.title") {
+            ForEach(brands) { brand in
+                RouterLink(open: .screen(.brand(brand.id))) {
+                    CompanyBrandRowView(brand: brand)
+                }
+                .alignmentGuide(.listRowSeparatorLeading) { _ in
+                    0
                 }
             }
-            .headerProminence(.increased)
         }
+        .headerProminence(.increased)
     }
 
     private var navigationBarMenu: some View {
@@ -99,9 +93,7 @@ struct CompanyScreen: View {
                         "brand.title",
                         systemImage: "plus",
                         open: .sheet(.brandPicker(brandOwner: company, brand: .constant(nil), mode: .new(onCreate: { brand in
-                            withAnimation {
-                                company = company.copyWith(brands: company.brands + [.init(newBrand: brand)])
-                            }
+                            brands = brands + [.init(brand: brand)]
                         })))
                     )
                 }
@@ -114,7 +106,7 @@ struct CompanyScreen: View {
                     router.open(.toast(.success("company.editSuggestion.success.toast")))
                 }))
             )
-            ReportButton(entity: .company(.init(company: company)))
+            ReportButton(entity: .company(company))
             Divider()
             AdminRouterLink(open: .sheet(.companyAdmin(id: id, onUpdate: { _ in
                 await getCompanyData(withHaptics: true)
@@ -129,16 +121,19 @@ struct CompanyScreen: View {
     }
 
     private func getCompanyData(withHaptics: Bool = false) async {
-        async let companyPromise = repository.company.getJoinedById(id: id)
+        async let companyPromise = repository.company.getById(id: id)
+        async let brandsPromise = repository.brand.getBrandsWithProductCount(id: id)
         async let summaryPromise = repository.company.getSummaryById(id: id)
         do {
-            let (companyResult, summaryResult) = try await (
+            let (company, brands, summary) = try await (
                 companyPromise,
+                brandsPromise,
                 summaryPromise
             )
             withAnimation {
-                company = companyResult
-                summary = summaryResult
+                self.company = company
+                self.brands = brands
+                self.summary = summary
                 state = .populated
             }
             if withHaptics {

@@ -11,7 +11,7 @@ public extension Report {
     enum Content: Hashable, Sendable {
         case product(Product.Joined)
         case company(Company.Saved)
-        case brand(Brand.JoinedSubBrandsProductsCompany)
+        case brand(Brand.JoinedSubBrandsCompany)
         case subBrand(SubBrand.JoinedBrand)
         case checkIn(CheckIn.Joined)
         case comment(CheckIn.Comment.Joined)

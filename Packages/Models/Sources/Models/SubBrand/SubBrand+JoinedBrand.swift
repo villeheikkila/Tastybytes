@@ -17,7 +17,7 @@ public extension SubBrand {
             self.isVerified = isVerified
         }
 
-        public init(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct) {
+        public init(brand: Brand.JoinedSubBrandsCompany, subBrand: SubBrand.JoinedProduct) {
             id = subBrand.id
             name = subBrand.name
             isVerified = subBrand.isVerified

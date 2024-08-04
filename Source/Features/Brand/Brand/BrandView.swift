@@ -6,7 +6,7 @@ struct BrandView: View {
     let brandOwner: Company.Saved?
     let brand: BrandProtocol
 
-    init(brand: Brand.JoinedSubBrandsProductsCompany) {
+    init(brand: Brand.JoinedSubBrandsCompany) {
         self.brand = brand
         brandOwner = brand.brandOwner
     }

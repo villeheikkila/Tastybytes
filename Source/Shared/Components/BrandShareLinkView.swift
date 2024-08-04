@@ -4,9 +4,9 @@ import SwiftUI
 
 public struct BrandShareLinkView: View {
     @Environment(AppModel.self) private var appModel
-    let brand: Brand.JoinedSubBrandsProductsCompany
+    let brand: Brand.JoinedSubBrandsCompany
 
-    public init(brand: Brand.JoinedSubBrandsProductsCompany) {
+    public init(brand: Brand.JoinedSubBrandsCompany) {
         self.brand = brand
     }
 

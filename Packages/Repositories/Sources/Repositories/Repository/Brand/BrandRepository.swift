@@ -3,12 +3,13 @@ import Models
 
 public protocol BrandRepository: Sendable {
     func getById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsProducts
-    func getJoinedById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsProductsCompany
+    func getJoinedById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsCompany
     func getDetailed(id: Brand.Id) async throws -> Brand.Detailed
     func getByBrandOwnerId(id: Company.Id) async throws -> [Brand.JoinedSubBrands]
     func getBrandProductsWithRating(id: Brand.Id) async throws -> [Product.Joined]
+    func getBrandsWithProductCount(id: Company.Id) async throws -> [Brand.Saved]
     func getAll() async throws -> [Brand.JoinedCompany]
-    func getUnverified() async throws -> [Brand.JoinedSubBrandsProductsCompany]
+    func getUnverified() async throws -> [Brand.JoinedSubBrandsCompany]
     func getSummaryById(id: Brand.Id) async throws -> Summary
     func insert(newBrand: Brand.NewRequest) async throws -> Brand.JoinedSubBrands
     func isLikedByCurrentUser(id: Brand.Id) async throws -> Bool

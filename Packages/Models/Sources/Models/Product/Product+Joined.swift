@@ -118,7 +118,7 @@ public extension Product {
         public init(
             product: Product.JoinedCategory,
             subBrand: SubBrand.JoinedProduct,
-            brand: Brand.JoinedSubBrandsProductsCompany
+            brand: Brand.JoinedSubBrandsCompany
         ) {
             id = product.id
             name = product.name

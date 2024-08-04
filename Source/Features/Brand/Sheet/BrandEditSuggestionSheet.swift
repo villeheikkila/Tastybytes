@@ -9,13 +9,13 @@ struct BrandEditSuggestionSheet: View {
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
-    @State private var brand: Brand.JoinedSubBrandsProductsCompany
+    @State private var brand: Brand.JoinedSubBrandsCompany
     @State private var newBrandName: String
     @State private var brandOwner: Company.Saved
 
     let onSuccess: () async -> Void
 
-    init(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: @escaping () async -> Void) {
+    init(brand: Brand.JoinedSubBrandsCompany, onSuccess: @escaping () async -> Void) {
         _brand = State(initialValue: brand)
         _newBrandName = State(initialValue: brand.name)
         _brandOwner = State(initialValue: brand.brandOwner)

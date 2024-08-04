@@ -17,12 +17,12 @@ public extension Brand {
             self.logos = logos
         }
 
-        public init(brand: Brand.JoinedSubBrandsProductsCompany) {
+        public init(brand: Brand.JoinedSubBrandsCompany) {
             self.init(
                 id: brand.id,
                 name: brand.name,
                 isVerified: brand.isVerified,
-                subBrands: brand.subBrands.map(\.subBrand),
+                subBrands: brand.subBrands,
                 logos: brand.logos
             )
         }

@@ -17,7 +17,7 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func getJoinedById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsProductsCompany {
+    func getJoinedById(id: Brand.Id) async throws -> Brand.JoinedSubBrandsCompany {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.joinedSubBrandsCompany(false)))
@@ -35,6 +35,17 @@ struct SupabaseBrandRepository: BrandRepository {
                 params: ["p_brand_id": id.rawValue]
             )
             .select(Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
+            .execute()
+            .value
+    }
+
+    func getBrandsWithProductCount(id: Company.Id) async throws -> [Brand.Saved] {
+        try await client
+            .rpc(
+                fn: .brandsWithProductCount,
+                params: ["p_company_id": id.rawValue]
+            )
+            .select(Brand.getQuery(.savedProductCount(false)))
             .execute()
             .value
     }
@@ -59,7 +70,7 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func getUnverified() async throws -> [Brand.JoinedSubBrandsProductsCompany] {
+    func getUnverified() async throws -> [Brand.JoinedSubBrandsCompany] {
         try await client
             .from(.brands)
             .select(Brand.getQuery(.joinedSubBrandsCompany(false)))

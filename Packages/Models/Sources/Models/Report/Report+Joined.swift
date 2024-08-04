@@ -36,7 +36,7 @@ extension Report.Joined: Decodable {
 
         let product = try values.decodeIfPresent(Product.Joined.self, forKey: .product)
         let company = try values.decodeIfPresent(Company.Saved.self, forKey: .company)
-        let brand = try values.decodeIfPresent(Brand.JoinedSubBrandsProductsCompany.self, forKey: .brand)
+        let brand = try values.decodeIfPresent(Brand.JoinedSubBrandsCompany.self, forKey: .brand)
         let subBrand = try values.decodeIfPresent(SubBrand.JoinedBrand.self, forKey: .subBrand)
         let checkInComment = try values.decodeIfPresent(CheckIn.Comment.Joined.self, forKey: .checkInComment)
         let checkIn = try values.decodeIfPresent(CheckIn.Joined.self, forKey: .checkIn)

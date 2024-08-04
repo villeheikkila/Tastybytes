@@ -81,7 +81,7 @@ enum Sheet: Identifiable, Equatable {
         onDelete: CheckInImageAdminSheet.OnDeleteCallback = noop
     )
     case categoryAdmin(id: Models.Category.Id)
-    case brandEditSuggestion(brand: Brand.JoinedSubBrandsProductsCompany, onSuccess: () -> Void)
+    case brandEditSuggestion(brand: Brand.JoinedSubBrandsCompany, onSuccess: () -> Void)
     case subBrandEditSuggestion(brand: Brand.JoinedSubBrands, subBrand: SubBrand.JoinedBrand, onSuccess: () -> Void)
     case settings
     case privacyPolicy

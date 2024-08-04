@@ -17,7 +17,7 @@ public extension Brand {
             self.logos = logos
         }
 
-        public init(brand: Brand.JoinedSubBrandsProductsCompany) {
+        public init(brand: Brand.JoinedSubBrandsCompany) {
             id = brand.id
             name = brand.name
             isVerified = brand.isVerified

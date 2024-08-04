@@ -5,7 +5,7 @@ public extension Company {
         public let id: Company.Id
         public let name: String
         public let subsidiaries: [Company.Saved]
-        public let brands: [Brand.JoinedSubBrandsProducts]
+        public let brands: [Brand.Saved]
         public let logos: [ImageEntity.Saved]
         public let isVerified: Bool
 
@@ -21,7 +21,7 @@ public extension Company {
         public func copyWith(
             name: String? = nil,
             subsidiaries: [Company.Saved]? = nil,
-            brands: [Brand.JoinedSubBrandsProducts]? = nil,
+            brands: [Brand.Saved]? = nil,
             logos: [ImageEntity.Saved]? = nil,
             isVerified: Bool? = nil
         ) -> Self {
