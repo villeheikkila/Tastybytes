@@ -1,5 +1,6 @@
 import Models
 import SwiftUI
+import Components
 
 public struct ProductLabelsView: View {
     let category: Models.Category.Saved

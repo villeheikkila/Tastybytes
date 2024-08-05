@@ -273,6 +273,12 @@
 		5CE10CD92C0BCA8800B8AE24 /* List+background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE10CD82C0BCA8800B8AE24 /* List+background.swift */; };
 		5CE10CDB2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE10CDA2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift */; };
 		5CE8A3AA2BD8381B0048BC58 /* CheckInsByTimeBucketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */; };
+		5CE91CD82C6155F000CBC24B /* ServingStyleLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE91CD62C6155F000CBC24B /* ServingStyleLabelView.swift */; };
+		5CE91CD92C6155F000CBC24B /* SubcategoryLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE91CD72C6155F000CBC24B /* SubcategoryLabelView.swift */; };
+		5CE91CDA2C6155F000CBC24B /* FlavorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE91CD42C6155F000CBC24B /* FlavorsView.swift */; };
+		5CE91CDB2C6155F000CBC24B /* ProductLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE91CD52C6155F000CBC24B /* ProductLabelsView.swift */; };
+		5CE91CDC2C6155F000CBC24B /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE91CD32C6155F000CBC24B /* ChipView.swift */; };
+		5CE91CDD2C6155F000CBC24B /* CategoryNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE91CD22C6155F000CBC24B /* CategoryNameView.swift */; };
 		5CEC64082B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */; platformFilters = (ios, maccatalyst, tvos, xros, ); };
 		5CEEA2F62C3804510009B3F5 /* ConfirmedDeleteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */; };
 		5CEEA2F82C380B2E0009B3F5 /* VerificationAdminToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */; };
@@ -626,6 +632,12 @@
 		5CE10CD82C0BCA8800B8AE24 /* List+background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+background.swift"; sourceTree = "<group>"; };
 		5CE10CDA2C0BCE3400B8AE24 /* View+IsPresentedInsideSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsPresentedInsideSheet.swift"; sourceTree = "<group>"; };
 		5CE8A3A92BD8381B0048BC58 /* CheckInsByTimeBucketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInsByTimeBucketView.swift; sourceTree = "<group>"; };
+		5CE91CD22C6155F000CBC24B /* CategoryNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryNameView.swift; sourceTree = "<group>"; };
+		5CE91CD32C6155F000CBC24B /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
+		5CE91CD42C6155F000CBC24B /* FlavorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorsView.swift; sourceTree = "<group>"; };
+		5CE91CD52C6155F000CBC24B /* ProductLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductLabelsView.swift; sourceTree = "<group>"; };
+		5CE91CD62C6155F000CBC24B /* ServingStyleLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleLabelView.swift; sourceTree = "<group>"; };
+		5CE91CD72C6155F000CBC24B /* SubcategoryLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategoryLabelView.swift; sourceTree = "<group>"; };
 		5CEC64072B854B34008050B4 /* ProfileStatisticsUniqueByCategoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsUniqueByCategoryScreen.swift; sourceTree = "<group>"; };
 		5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmedDeleteButtonView.swift; sourceTree = "<group>"; };
 		5CEEA2F72C380B2E0009B3F5 /* VerificationAdminToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationAdminToggleView.swift; sourceTree = "<group>"; };
@@ -1341,44 +1353,50 @@
 		5C9057C12B2894BE00EC157B /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				5C619B7E2C5E006A0034823F /* CreationInfoHeaderView.swift */,
-				5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */,
-				5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */,
-				5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */,
 				5CD2EE242C3733FB009AA949 /* AdminRouterLink.swift */,
-				5CD2EE222C3733EE009AA949 /* EditLogoSectionView.swift */,
-				5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */,
-				5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */,
-				5CD3C0DC2B814B910049E563 /* RatingView.swift */,
+				5C8FE4962BAA2EF80038869E /* AppGradientView.swift */,
+				5C9057C42B2894BE00EC157B /* AppLogoView.swift */,
+				5C9057C22B2894BE00EC157B /* AppNameView.swift */,
+				5CAB45DB2BA8A8CF0017E71A /* AvatarView.swift */,
+				5C07F2742B51EBB700D8740B /* BrandShareLinkView.swift */,
+				5C4FC63E2BA70C110025DB83 /* CameraPickerView.swift */,
+				5CE91CD22C6155F000CBC24B /* CategoryNameView.swift */,
+				5C07F2732B51EBB700D8740B /* CheckInShareLinkView.swift */,
+				5CE91CD32C6155F000CBC24B /* ChipView.swift */,
+				5CD3C0D22B814ACD0049E563 /* CloseButton.swift */,
+				5C07F2772B51EBB800D8740B /* CompanyShareLinkView.swift */,
+				5CEEA2F52C3804510009B3F5 /* ConfirmedDeleteButtonView.swift */,
+				5C68D76C2B978EF700D88229 /* CopyToClipboardButtonView.swift */,
 				5CD3C0D62B814B400049E563 /* CreateQRCodeView.swift */,
-				5CBD93E62C55944100D2B97F /* ZoomableScrollableImageView.swift */,
+				5C619B7E2C5E006A0034823F /* CreationInfoHeaderView.swift */,
+				5CEEA2F92C3814BE0009B3F5 /* CreationInfoSection.swift */,
+				5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */,
+				5C68D7702B9794F600D88229 /* DeleteButtonView.swift */,
+				5CD2EE222C3733EE009AA949 /* EditLogoSectionView.swift */,
+				5CD3C0D02B814ACD0049E563 /* EmptyActivityFeedView.swift */,
+				5CE91CD42C6155F000CBC24B /* FlavorsView.swift */,
+				5C13190D2C1DB1BF00C9BF25 /* FullScreenErrorView.swift */,
+				5C4FC6352BA5FC630025DB83 /* ImageShareLinkView.swift */,
+				5CEEA2FF2C3985370009B3F5 /* LabeledIdView.swift */,
+				5C07F2752B51EBB700D8740B /* LocationShareLinkView.swift */,
+				5CE91CD52C6155F000CBC24B /* ProductLabelsView.swift */,
+				5C07F2722B51EBB700D8740B /* ProductShareLinkView.swift */,
+				5C07F2762B51EBB700D8740B /* ProfileShareLinkView.swift */,
 				5CD3C0DA2B814B790049E563 /* RatingPickerView.swift */,
+				5CD3C0DC2B814B910049E563 /* RatingView.swift */,
+				5C4FC6392BA6EBD20025DB83 /* SaveToPhotoGalleryButtonView.swift */,
+				5C8036432B814F9800DE9EF3 /* ScanTextButton.swift */,
+				5C3B6E8D2B81502C005C2F62 /* ScanTextField.swift */,
+				5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */,
+				5C4FC63F2BA70C110025DB83 /* SendMailView.swift */,
+				5CE91CD62C6155F000CBC24B /* ServingStyleLabelView.swift */,
+				5C511D752BA77EF300F95290 /* SparklesView.swift */,
+				5CE91CD72C6155F000CBC24B /* SubcategoryLabelView.swift */,
 				5CD3C0DE2B814B9A0049E563 /* SummaryView.swift */,
 				5CD3C0D52B814AE90049E563 /* ToolbarDismissAction.swift */,
 				5CD3C0D42B814AE90049E563 /* ToolbarDoneActionView.swift */,
-				5CD3C0D22B814ACD0049E563 /* CloseButton.swift */,
-				5CD3C0D02B814ACD0049E563 /* EmptyActivityFeedView.swift */,
-				5C07F2742B51EBB700D8740B /* BrandShareLinkView.swift */,
-				5C07F2732B51EBB700D8740B /* CheckInShareLinkView.swift */,
-				5C07F2772B51EBB800D8740B /* CompanyShareLinkView.swift */,
-				5C07F2752B51EBB700D8740B /* LocationShareLinkView.swift */,
-				5C07F2722B51EBB700D8740B /* ProductShareLinkView.swift */,
-				5C07F2762B51EBB700D8740B /* ProfileShareLinkView.swift */,
-				5C9057C22B2894BE00EC157B /* AppNameView.swift */,
-				5C9057C42B2894BE00EC157B /* AppLogoView.swift */,
-				5CAB45DB2BA8A8CF0017E71A /* AvatarView.swift */,
-				5C68D76C2B978EF700D88229 /* CopyToClipboardButtonView.swift */,
-				5C68D76E2B9790DD00D88229 /* SearchGoogleBySearchTermButton.swift */,
-				5C68D7702B9794F600D88229 /* DeleteButtonView.swift */,
-				5C4FC6352BA5FC630025DB83 /* ImageShareLinkView.swift */,
-				5C4FC6372BA68A130025DB83 /* DataScannerViewRepresentable.swift */,
-				5C4FC6392BA6EBD20025DB83 /* SaveToPhotoGalleryButtonView.swift */,
-				5C511D752BA77EF300F95290 /* SparklesView.swift */,
-				5C4FC63E2BA70C110025DB83 /* CameraPickerView.swift */,
-				5C4FC63F2BA70C110025DB83 /* SendMailView.swift */,
 				5C4FC63D2BA70C110025DB83 /* WebView.swift */,
-				5C8FE4962BAA2EF80038869E /* AppGradientView.swift */,
-				5C13190D2C1DB1BF00C9BF25 /* FullScreenErrorView.swift */,
+				5CBD93E62C55944100D2B97F /* ZoomableScrollableImageView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1981,6 +1999,12 @@
 				5C90582A2B2894BE00EC157B /* ProductScreen.swift in Sources */,
 				5C9058252B2894BE00EC157B /* CheckInReactionNotificationView.swift in Sources */,
 				5C9058282B2894BE00EC157B /* FlavorsAdminScreen.swift in Sources */,
+				5CE91CD82C6155F000CBC24B /* ServingStyleLabelView.swift in Sources */,
+				5CE91CD92C6155F000CBC24B /* SubcategoryLabelView.swift in Sources */,
+				5CE91CDA2C6155F000CBC24B /* FlavorsView.swift in Sources */,
+				5CE91CDB2C6155F000CBC24B /* ProductLabelsView.swift in Sources */,
+				5CE91CDC2C6155F000CBC24B /* ChipView.swift in Sources */,
+				5CE91CDD2C6155F000CBC24B /* CategoryNameView.swift in Sources */,
 				5C90580A2B2894BE00EC157B /* BarcodeManagementScreen.swift in Sources */,
 				5C24E1CF2B5D89DD003AB7C8 /* CompanyBrandRowView.swift in Sources */,
 				5C4FC6362BA5FC630025DB83 /* ImageShareLinkView.swift in Sources */,

@@ -15,7 +15,6 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(name: "Models", path: "../Models"),
         .package(name: "Extensions", path: "../Extensions"),
         .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
         .package(url: "https://github.com/daprice/BlurHashViews.git", from: "1.0.0"),
@@ -25,7 +24,6 @@ let package = Package(
         .target(
             name: "Components",
             dependencies: [
-                .product(name: "Models", package: "Models"),
                 .product(name: "Extensions", package: "Extensions"),
                 .product(name: "BrightroomEngine", package: "Brightroom"),
                 .product(name: "BrightroomUI", package: "Brightroom"),

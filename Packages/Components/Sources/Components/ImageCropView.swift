@@ -1,4 +1,3 @@
-
 internal import BrightroomEngine
 internal import BrightroomUI
 import SwiftUI
