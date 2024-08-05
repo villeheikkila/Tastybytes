@@ -84,30 +84,28 @@ struct CategoryServingStyleRow: View {
     let deleteServingStyle: (_ servingStyle: ServingStyle.Saved) async -> Void
 
     var body: some View {
-        HStack {
-            Text(servingStyle.label)
-        }
-        .swipeActions {
-            Button(
-                "labels.delete",
-                systemImage: "trash",
-                action: { showDeleteServingStyleConfirmation = true }
-            )
-            .tint(.red)
-        }
-        .confirmationDialog(
-            "servingStyle.deleteWarning.title",
-            isPresented: $showDeleteServingStyleConfirmation,
-            titleVisibility: .visible,
-            presenting: servingStyle
-        ) { presenting in
-            AsyncButton(
-                "servingStyle.deleteWarning.label \(presenting.name) from \(category.name)",
-                role: .destructive,
-                action: {
-                    await deleteServingStyle(presenting)
-                }
-            )
-        }
+        ServingStyleView(servingStyle: servingStyle)
+            .swipeActions {
+                Button(
+                    "labels.delete",
+                    systemImage: "trash",
+                    action: { showDeleteServingStyleConfirmation = true }
+                )
+                .tint(.red)
+            }
+            .confirmationDialog(
+                "servingStyle.deleteWarning.title",
+                isPresented: $showDeleteServingStyleConfirmation,
+                titleVisibility: .visible,
+                presenting: servingStyle
+            ) { presenting in
+                AsyncButton(
+                    "servingStyle.deleteWarning.label \(presenting.name) from \(category.name)",
+                    role: .destructive,
+                    action: {
+                        await deleteServingStyle(presenting)
+                    }
+                )
+            }
     }
 }

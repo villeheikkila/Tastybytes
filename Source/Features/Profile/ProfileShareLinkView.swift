@@ -1,8 +1,7 @@
-
 import Models
 import SwiftUI
 
-public struct ProfileShareLinkView: View {
+struct ProfileShareLinkView: View {
     @Environment(AppModel.self) private var appModel
     let profile: Profile.Saved
 
@@ -14,7 +13,7 @@ public struct ProfileShareLinkView: View {
         profile.preferredName
     }
 
-    public var body: some View {
+    var body: some View {
         ShareLink(item: link, subject: Text("profile.shareLink.subject \(profile.preferredName)"), message: Text(title))
     }
 }

@@ -1,32 +1,31 @@
+import Components
 import Models
 import SwiftUI
-import Components
 
-public struct ProductLabelsView: View {
+struct ProductLabelsView: View {
     let category: Models.Category.Saved
     let subcategories: [SubcategoryProtocol]
     let servingStyle: ServingStyle.Saved?
 
-    public init(
-        category: Models.Category.Saved,
-        subcategories: [SubcategoryProtocol],
-        servingStyle: ServingStyle.Saved? = nil
-    ) {
+    init(category: Models.Category.Saved, subcategories: [SubcategoryProtocol], servingStyle: ServingStyle.Saved? = nil) {
         self.category = category
         self.subcategories = subcategories
         self.servingStyle = servingStyle
     }
 
     public var body: some View {
-        WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
-            CategoryNameView(category: category)
+        WStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
+            CategoryView(category: category)
             ForEach(subcategories, id: \.id) { subcategory in
-                SubcategoryLabelView(subcategory: subcategory)
+                SubcategoryView(subcategory: subcategory)
             }
             if let servingStyle {
-                ServingStyleLabelView(servingStyle: servingStyle)
+                ServingStyleView(servingStyle: servingStyle)
             }
         }
+        .categoryStyle(.chip)
+        .subcategoryStyle(.chip)
+        .servingStyle(.chip)
     }
 }
 

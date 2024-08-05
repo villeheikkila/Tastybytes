@@ -114,7 +114,8 @@ struct CheckInSheet: View {
                 Picker(selection: $servingStyle) {
                     Text("servingStyle.unselected").tag(ServingStyle.Saved?(nil))
                     ForEach(servingStyles) { servingStyle in
-                        Text(servingStyle.label).tag(Optional(servingStyle))
+                        ServingStyleView(servingStyle: servingStyle)
+                            .tag(Optional(servingStyle))
                     }
                 } label: {
                     Text("servingStyle.title")
@@ -160,7 +161,7 @@ struct CheckInSheet: View {
                 if taggedFriends.isEmpty {
                     Text("checkIn.friends.tag")
                 } else {
-                    WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
+                    WStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
                         ForEach(taggedFriends) { friend in
                             AvatarView(profile: friend)
                                 .avatarSize(.large)

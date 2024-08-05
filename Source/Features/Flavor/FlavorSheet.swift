@@ -30,8 +30,8 @@ struct FlavorPickerSheet: View {
             Set(flavors.map(\.id))
         }, setter: { ids in
             Array(ids.compactMap { id in availableFlavours.first(where: { $0.id == id }) })
-        })) { pickedFlavor in
-            Text(pickedFlavor.name.capitalized)
+        })) { flavor in
+            FlavorView(flavor: flavor)
                 .listRowBackground(Color.clear)
         }
         .scrollContentBackground(.hidden)

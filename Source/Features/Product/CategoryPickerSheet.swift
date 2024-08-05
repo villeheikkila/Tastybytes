@@ -30,14 +30,8 @@ struct CategoryPickerSheet: View {
         List(sortedCategories, selection: $category.map(getter: { _ in category?.id }, setter: { id in
             appModel.categories.first(where: { c in c.id == id })
         })) { category in
-            HStack {
-                if let icon = category.icon {
-                    Text(icon)
-                        .grayscale(1)
-                }
-                Text(category.name)
-            }
-            .listRowBackground(Color.clear)
+            CategoryView(category: category)
+                .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 50)

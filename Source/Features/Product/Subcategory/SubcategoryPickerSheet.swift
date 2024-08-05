@@ -42,7 +42,7 @@ struct SubcategoryPickerSheet: View {
         }, setter: { ids in
             ids.compactMap { id in availableSubcategories.first(where: { $0.id == id }) }
         })) { subcategory in
-            Text(subcategory.name)
+            SubcategoryView(subcategory: subcategory)
                 .listRowBackground(Color.clear)
         }
         .listStyle(.plain)

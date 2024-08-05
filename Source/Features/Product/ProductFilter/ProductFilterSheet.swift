@@ -52,7 +52,8 @@ struct ProductFilterSheet: View {
                     Picker(selection: $categoryFilter) {
                         Text("labels.selectAll").tag(Models.Category.JoinedSubcategoriesServingStyles?(nil))
                         ForEach(appModel.categories) { category in
-                            Text(category.name).tag(Optional(category))
+                            CategoryView(category: category)
+                                .tag(Optional(category))
                         }
                     } label: {
                         Text("category.picker.label")
@@ -62,7 +63,8 @@ struct ProductFilterSheet: View {
                         Text("labels.selectAll").tag(Subcategory.Saved?(nil))
                         if let categoryFilter {
                             ForEach(categoryFilter.subcategories) { subcategory in
-                                Text(subcategory.name).tag(Optional(subcategory))
+                                SubcategoryView(subcategory: subcategory)
+                                    .tag(Optional(subcategory))
                             }
                         }
                     } label: {

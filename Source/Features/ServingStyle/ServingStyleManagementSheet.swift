@@ -119,7 +119,7 @@ struct ServingStyleManagementRow: View {
             action: { await onSelect(servingStyle) },
             label: {
                 HStack {
-                    Text(servingStyle.label)
+                    ServingStyleView(servingStyle: servingStyle)
                     Spacer()
                     if pickedServingStyles.contains(servingStyle) {
                         Label("servingStyle.selected.label", systemImage: "checkmark")

@@ -1,5 +1,4 @@
 internal import BlurHashViews
-import Extensions
 import SwiftUI
 
 public struct BlurHashPlaceholderView: View {

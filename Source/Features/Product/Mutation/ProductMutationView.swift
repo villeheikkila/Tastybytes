@@ -125,9 +125,10 @@ struct ProductMutationView: View {
                     } else {
                         HStack(spacing: 4) {
                             ForEach(subcategories) { subcategory in
-                                SubcategoryLabelView(subcategory: subcategory)
+                                SubcategoryView(subcategory: subcategory)
                             }
                         }
+                        .subcategoryStyle(.chip)
                     }
                 }
             })

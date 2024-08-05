@@ -1,7 +1,7 @@
 import Extensions
 import SwiftUI
 
-public struct WrappingHStack: Layout {
+public struct WStack: Layout {
     public struct Cache {
         var minSize: CGSize
         var rows: (Int, [Row])?
@@ -68,7 +68,7 @@ public struct WrappingHStack: Layout {
     }
 }
 
-public extension WrappingHStack {
+public extension WStack {
     struct Row {
         var elements: [(index: Int, size: CGSize, xOffset: CGFloat)] = []
         var yOffset: CGFloat = .zero

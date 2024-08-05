@@ -104,7 +104,7 @@ struct CategoryAdminSheetSubcategoryRowView: View {
         RouterLink(open: .sheet(.subcategoryAdmin(id: subcategory.id, onEdit: { subcategoryName in
             print(subcategoryName)
         }))) {
-            Text(subcategory.name)
+            SubcategoryView(subcategory: subcategory)
         }
     }
 }

@@ -61,7 +61,7 @@ struct ProfileStatisticsUniqueByCategoryRow: View {
             SubcategoryStatisticsView(profile: profile, category: category)
         }, label: {
             HStack {
-                CategoryNameView(category: category, withBorder: false)
+                CategoryView(category: category)
                 Spacer()
                 Text(category.count.formatted()).font(.caption).bold()
             }
