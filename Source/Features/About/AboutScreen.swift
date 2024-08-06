@@ -11,7 +11,7 @@ struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
     @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
-    // @Environment(\.requestReview) private var requestReview
+    @Environment(\.requestReview) private var requestReview
     @State private var email: Email = .init()
 
     var body: some View {
@@ -65,7 +65,7 @@ struct AboutScreen: View {
             }))
         )
         AsyncButton("about.rateApp.label \(appModel.infoPlist.appName)", systemName: "heart", color: .red, action: {
-            // requestReview()
+            requestReview()
         })
     }
 
