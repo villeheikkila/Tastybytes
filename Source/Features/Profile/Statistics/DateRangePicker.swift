@@ -2,24 +2,41 @@ import Models
 import SwiftUI
 
 struct DateRangePicker: View {
+    @Environment(Router.self) private var router
+    @Environment(SubscriptionModel.self) private var subscriptionModel
     @Binding var page: Int
     @Binding var timePeriod: StatisticsTimePeriod
     @Binding var dateRange: ClosedRange<Date>
+    
 
     var body: some View {
-        Picker("checkIn.statistics.timePeriod.segment.picker", selection: $timePeriod) {
-            ForEach(StatisticsTimePeriod.allCases, id: \.self) { segment in
-                Text(segment.label)
+        ZStack {
+            Picker("checkIn.statistics.timePeriod.segment.picker", selection: $timePeriod) {
+                ForEach(StatisticsTimePeriod.allCases) { segment in
+                    DateRangePrickerItemView(timePeriod: segment)
+                        .tag(segment)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, -8)
+            
+            if subscriptionModel.isRegularMember {
+                Color.clear
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        router.open(.sheet(.subscribe))
+                    }
             }
         }
-        .pickerStyle(.segmented)
-        .padding(.horizontal, -8)
+        
         HStack {
             PageButton(direction: .decrement, page: $page)
+                .disabled(subscriptionModel.isRegularMember)
             Spacer()
             Text(dateRange.title)
             Spacer()
             PageButton(direction: .increment, page: $page)
+                .disabled(subscriptionModel.isRegularMember)
         }
         .onChange(of: timePeriod) { _, newTimePeriod in
             withAnimation {
@@ -36,6 +53,56 @@ struct DateRangePicker: View {
                 }
             }
         }
+    }
+}
+
+struct DateRangePrickerItemView: View {
+    @Environment(SubscriptionModel.self) private var subscriptionModel
+    let timePeriod: StatisticsTimePeriod
+
+    @State private var renderedImage: UIImage?
+    
+    private var isEnabled: Bool {
+        timePeriod == .week || subscriptionModel.isProMember
+    }
+    
+    private let height: Double = 38
+
+    var body: some View {
+        Group {
+            if let image = renderedImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            } else {
+                itemContent
+                    .task {
+                        await renderImage()
+                    }
+            }
+        }
+        .frame(height: height)
+    }
+
+    private var itemContent: some View {
+        HStack(alignment: .center, spacing: 4) {
+            Text(timePeriod.label)
+                .font(.body)
+            if !isEnabled {
+                Image(systemName: "lock.fill")
+                    .font(.caption)
+                    .foregroundColor(.yellow)
+            }
+        }
+    }
+
+    private func renderImage() async {
+        let renderer = ImageRenderer(content:
+            itemContent
+                .frame(height: height)
+                .fixedSize(horizontal: false, vertical: true))
+        renderer.scale = UIScreen.main.scale
+        renderedImage = renderer.uiImage
     }
 }
 

@@ -131,6 +131,10 @@ public struct NumberOfCheckInsByDayRequest: Sendable, Encodable {
     }
 }
 
-public enum StatisticsTimePeriod: String, CaseIterable, Sendable {
+public enum StatisticsTimePeriod: String, CaseIterable, Sendable, Identifiable {
     case week, month, sixMonths = "six_months", year
+
+    public var id: String {
+        rawValue
+    }
 }

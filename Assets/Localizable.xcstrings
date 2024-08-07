@@ -5931,6 +5931,9 @@
         }
       }
     },
+    "Subscribe Now" : {
+
+    },
     "subscription.callToAction  %@" : {
       "localizations" : {
         "en" : {
@@ -6129,6 +6132,12 @@
           }
         }
       }
+    },
+    "Unlock check-in date modification and many other features by becoming a Pro member" : {
+
+    },
+    "Unlock Pro Membership" : {
+
     },
     "user.addFriend.label" : {
       "localizations" : {

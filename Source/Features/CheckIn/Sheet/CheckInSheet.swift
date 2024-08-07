@@ -148,13 +148,11 @@ struct CheckInSheet: View {
                 }
             )
 
-            if profileModel.hasPermission(.canSetCheckInDate) {
-                RouterLink(open: .sheet(.checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic))) {
-                    Text(
-                        isLegacyCheckIn
-                            ? "checkIn.date.legacyCheckIn"
-                            : "checkIn.date.checkInAt \(checkInAt.formatted(.customRelativetime).lowercased())")
-                }
+            RouterLink(open: .sheet(.checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn, isNostalgic: $isNostalgic))) {
+                Text(
+                    isLegacyCheckIn
+                        ? "checkIn.date.legacyCheckIn"
+                        : "checkIn.date.checkInAt \(checkInAt.formatted(.customRelativetime).lowercased())")
             }
 
             RouterLink(open: .sheet(.friendPicker(taggedFriends: $taggedFriends))) {

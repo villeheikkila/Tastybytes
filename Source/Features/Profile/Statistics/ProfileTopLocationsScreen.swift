@@ -26,6 +26,7 @@ struct ProfileTopLocationsScreen: View {
                 }
             }
         }
+        .proMembershipOverlay()
         .initialTask {
             await loadData()
         }

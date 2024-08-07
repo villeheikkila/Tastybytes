@@ -54,5 +54,8 @@ struct EnvironmentProvider<Content: View>: View {
             .task {
                 locationModel.updateLocationAuthorizationStatus()
             }
+            .onChange(of: subscriptionModel.subscriptionStatus, initial: true) {
+                print("Subscription status: \(subscriptionModel.subscriptionStatus)")
+            }
     }
 }

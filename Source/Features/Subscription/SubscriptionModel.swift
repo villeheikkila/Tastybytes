@@ -82,4 +82,16 @@ final class SubscriptionModel {
             logger.error("Failed to sync transaction. Error: \(error) (\(#file):\(#line))")
         }
     }
+
+    var isProMember: Bool {
+        if case .subscribed = subscriptionStatus {
+            true
+        } else {
+            false
+        }
+    }
+    
+    var isRegularMember: Bool {
+        !isProMember
+    }
 }
