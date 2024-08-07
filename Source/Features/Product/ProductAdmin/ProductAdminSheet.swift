@@ -276,7 +276,6 @@ struct MergeProductsButtonView: View {
             systemImage: "arrow.triangle.merge",
             open: .sheet(.productPicker(product: $mergeToProduct))
         )
-        .foregroundColor(.primary)
         .confirmationDialog(
             "product.admin.mergeProducts.description",
             isPresented: $mergeToProduct.isNotNull(),

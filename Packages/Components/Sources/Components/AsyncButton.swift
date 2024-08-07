@@ -82,7 +82,12 @@ public extension AsyncButton where LabelView == Label<Text, Image> {
          action: @escaping () async -> Void)
     {
         self.init(role: role, action: action) {
-            Label(title, systemImage: systemImage)
+            Label {
+                Text(title)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: systemImage)
+            }
         }
     }
 }
@@ -135,6 +140,7 @@ public struct LinkIconLabelView: View {
             .padding(.trailing, 8)
             .accessibilityHidden(true)
             Text(titleKey)
+                .foregroundColor(.primary)
         }
     }
 }

@@ -18,6 +18,7 @@ struct ConfirmedDeleteButtonView<Presenting>: View {
             action: { showDeleteConfirmation = true }
         )
         .foregroundColor(.red)
+        .fontWeight(.medium)
         .disabled(isDisabled)
         .confirmationDialog(
             description,

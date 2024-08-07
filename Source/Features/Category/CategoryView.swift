@@ -14,11 +14,11 @@ struct CategoryView: View {
                 }
                 Text(category.name)
             }
-            .font(.caption)
             .bold()
         }
         .if(categoryStyle == .chip, transform: { view in
             view
+                .font(.caption)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
                 .overlay(

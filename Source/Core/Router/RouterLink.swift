@@ -92,7 +92,12 @@ extension RouterLink where LabelView == Label<Text, Image> {
     @_disfavoredOverload
     init(_ titleKey: String, systemImage: String, open: Router.Open) {
         self.init(open: open, label: {
-            Label(titleKey, systemImage: systemImage)
+            Label {
+                Text(titleKey)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: systemImage)
+            }
         })
     }
 }
@@ -100,7 +105,12 @@ extension RouterLink where LabelView == Label<Text, Image> {
 extension RouterLink where LabelView == Label<Text, Image> {
     init(_ titleKey: LocalizedStringKey, systemImage: String, open: Router.Open) {
         self.init(open: open, label: {
-            Label(titleKey, systemImage: systemImage)
+            Label {
+                Text(titleKey)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: systemImage)
+            }
         })
     }
 }
@@ -143,7 +153,6 @@ struct BadgeRouterLinkView: View {
                     Text(label)
                 }
             }
-            .foregroundStyle(.primary)
             Spacer()
             RouterLinkBadgeView(badge: badge)
         }
@@ -164,7 +173,6 @@ struct RouterLinkCountView: View {
                     Text(label)
                 }
             }
-            .foregroundStyle(.primary)
             Spacer()
             Text(count.formatted())
         }

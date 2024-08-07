@@ -1648,9 +1648,6 @@
         }
       }
     },
-    "checkIn.label" : {
-
-    },
     "checkIn.legacy.label" : {
       "localizations" : {
         "en" : {
@@ -4355,6 +4352,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Product has been discontinued"
+          }
+        }
+      }
+    },
+    "product.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product"
           }
         }
       }

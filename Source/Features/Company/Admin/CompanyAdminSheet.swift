@@ -239,7 +239,6 @@ struct MergeCompaniesButtonView: View {
         RouterLink("company.admin.mergeCompanies.label", systemImage: "arrow.triangle.merge", open: .sheet(.companyPicker(onSelect: { company in
             mergeToCompany = company
         })))
-        .foregroundColor(.primary)
         .confirmationDialog(
             "company.admin.mergeCompanies.description",
             isPresented: $mergeToCompany.isNotNull(),

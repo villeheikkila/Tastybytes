@@ -86,11 +86,13 @@ struct SettingsScreen: View {
             AsyncButton(action: {
                 await profileModel.logOut()
             }, label: {
-                Spacer()
-                Text("settings.signOut")
-                    .fontWeight(.medium)
-                    .foregroundColor(.red)
-                Spacer()
+                HStack {
+                    Spacer()
+                    Text("settings.signOut")
+                        .fontWeight(.medium)
+                        .foregroundColor(.red)
+                    Spacer()
+                }
             })
         }
     }

@@ -60,7 +60,7 @@ struct CheckInAdminSheet: View {
         ModificationInfoView(modificationInfo: checkIn)
         Section("admin.section.details") {
             LabeledIdView(id: checkIn.id.rawValue.formatted())
-            LabeledContent("checkIn.label") {
+            LabeledContent("product.label") {
                 RouterLink(
                     checkIn.product.formatted(.fullName),
                     open: .sheet(.productAdmin(id: checkIn.product.id, onUpdate: { product in
