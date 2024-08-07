@@ -102,9 +102,7 @@ struct DiscoverScreen: View {
             }
         })
         .safeAreaInset(edge: .top) {
-            if searchScope == .products, barcode != nil, !showContentUnavailableView {
-                DiscoverProductAssignBarcode(isEmpty: products.isEmpty, barcode: $barcode)
-            } else if searchScope == .products, let productFilter {
+            if searchScope == .products, let productFilter {
                 ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
             }
         }
@@ -160,17 +158,15 @@ struct DiscoverScreen: View {
                 ).labelStyle(.iconOnly)
             }
 
-            if profileModel.hasPermission(.canAddBarcodes) {
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    RouterLink(
-                        "discover.barcode.scan",
-                        systemImage: "barcode.viewfinder",
-                        open: .sheet(.barcodeScanner(onComplete: { barcode in
-                            self.barcode = barcode
-                            searchKey = .barcode(barcode)
-                        }))
-                    )
-                }
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                RouterLink(
+                    "discover.barcode.scan",
+                    systemImage: "barcode.viewfinder",
+                    open: .sheet(.barcodeScanner(onComplete: { barcode in
+                        self.barcode = barcode
+                        searchKey = .barcode(barcode)
+                    }))
+                )
             }
         }
     }
