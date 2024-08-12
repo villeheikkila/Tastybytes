@@ -64,8 +64,7 @@ public final class NotificationModel {
                 if reset {
                     notifications = newNotifications
                     unreadCount = newNotifications
-                        .filter { $0.seenAt == nil }
-                        .count
+                        .count { $0.seenAt == nil }
                 } else {
                     notifications.insert(contentsOf: newNotifications, at: 0)
                 }
