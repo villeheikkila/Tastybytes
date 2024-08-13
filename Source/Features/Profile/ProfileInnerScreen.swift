@@ -154,7 +154,7 @@ struct ProfileInnerScreen: View {
         isLoading = true
         do {
             let startTime = DispatchTime.now()
-            let lastCheckInId = checkIns.last?.id
+            let lastCheckInId = reset ? nil : checkIns.last?.id
             let pageSize = appModel.rateControl.checkInPageSize
             let fetchedCheckIns = try await repository.checkIn.getByProfileId(
                 id: profile.id,
