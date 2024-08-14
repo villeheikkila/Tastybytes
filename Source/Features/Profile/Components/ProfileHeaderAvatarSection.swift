@@ -9,6 +9,7 @@ import SwiftUI
 struct ProfileHeaderAvatarSection: View {
     private let logger = Logger(category: "ProfileHeaderAvatarSection")
     @Environment(Router.self) private var router
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(Repository.self) private var repository
     @Binding var showAvatarPicker: Bool
     @Binding var profile: Profile.Saved
@@ -58,21 +59,12 @@ struct ProfileHeaderAvatarSection: View {
         .contextMenu {
             if let imageEntity = profile.avatars.first, isCurrentUser {
                 AsyncButton("profile.avatar.delete.label", systemImage: "trash", role: .destructive) {
-                    await deleteAvatar(entity: imageEntity)
+                    await profileModel.deleteAvatar(entity: imageEntity)
+                    withAnimation {
+                        profile = profileModel.profile
+                    }
                 }
             }
-        }
-    }
-
-    private func deleteAvatar(entity: ImageEntity.Saved) async {
-        do {
-            try await repository.imageEntity.delete(from: .avatars, id: entity.id)
-            withAnimation {
-                profile = profile.copyWith(avatars: profile.avatars.removing(entity))
-            }
-        } catch {
-            guard !error.isCancelled else { return }
-            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

@@ -7,7 +7,6 @@ struct DateRangePicker: View {
     @Binding var page: Int
     @Binding var timePeriod: StatisticsTimePeriod
     @Binding var dateRange: ClosedRange<Date>
-    
 
     var body: some View {
         ZStack {
@@ -19,7 +18,7 @@ struct DateRangePicker: View {
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, -8)
-            
+
             if subscriptionModel.isRegularMember {
                 Color.clear
                     .contentShape(.rect)
@@ -28,7 +27,7 @@ struct DateRangePicker: View {
                     }
             }
         }
-        
+
         HStack {
             PageButton(direction: .decrement, page: $page)
                 .disabled(subscriptionModel.isRegularMember)
@@ -61,11 +60,11 @@ struct DateRangePrickerItemView: View {
     let timePeriod: StatisticsTimePeriod
 
     @State private var renderedImage: UIImage?
-    
+
     private var isEnabled: Bool {
         timePeriod == .week || subscriptionModel.isProMember
     }
-    
+
     private let height: Double = 38
 
     var body: some View {

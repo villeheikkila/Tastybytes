@@ -63,8 +63,7 @@ public final class NotificationModel {
                 let newNotifications = try await repository.notification.getAll(profileId: profileId, afterId: reset ? nil : notifications.first?.id)
                 if reset {
                     notifications = newNotifications
-                    unreadCount = newNotifications
-                        .count { $0.seenAt == nil }
+                    unreadCount = newNotifications.count { $0.seenAt == nil }
                 } else {
                     notifications.insert(contentsOf: newNotifications, at: 0)
                 }

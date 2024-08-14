@@ -47,7 +47,6 @@ struct ProfileInnerScreen: View {
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .animation(.default, value: checkIns)
-        .animation(.easeIn, value: profile)
         .refreshable {
             await initialize(isRefresh: true)
         }

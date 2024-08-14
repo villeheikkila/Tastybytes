@@ -90,7 +90,7 @@ final class SubscriptionModel {
             false
         }
     }
-    
+
     var isRegularMember: Bool {
         !isProMember
     }

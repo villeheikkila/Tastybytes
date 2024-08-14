@@ -305,6 +305,19 @@ final class ProfileModel {
         }
     }
 
+    public func deleteAvatar(entity: ImageEntity.Saved) async {
+        guard let extendedProfile else { return }
+        do {
+            try await repository.imageEntity.delete(from: .avatars, id: entity.id)
+            withAnimation {
+                self.extendedProfile = extendedProfile.copyWith(avatars: extendedProfile.avatars.removing(entity))
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
     public func updateProfile(username: String?, firstName: String?, lastName: String?) async {
         do {
             let updatedProfile = try await repository.profile.update(
