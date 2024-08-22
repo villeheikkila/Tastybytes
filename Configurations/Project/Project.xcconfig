@@ -1,1 +1,3 @@
 #include "Config.xcconfig"
+
+SWIFT_VERSION = 6.0

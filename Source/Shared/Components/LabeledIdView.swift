@@ -9,3 +9,7 @@ struct LabeledIdView: View {
             .multilineTextAlignment(.trailing)
     }
 }
+
+#Preview {
+    LabeledIdView(id: "")
+}

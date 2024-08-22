@@ -32,7 +32,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Camera is used for scanning barcodes and adding photos to check-ins"
+            "value" : "Camera is used for reading barcodes and for check-in photos"
           }
         }
       }
@@ -44,7 +44,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Location is used to find nearby locations for check-ins"
+            "value" : "Location is used to help you find nearby locations for check-ins"
           }
         }
       }

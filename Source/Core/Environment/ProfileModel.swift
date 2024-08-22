@@ -185,11 +185,7 @@ final class ProfileModel {
     }
 
     public var isOnboarded: Bool {
-        if let extendedProfile {
-            extendedProfile.isOnboarded
-        } else {
-            fatalError("isOnboarded can only be used on authenticated routes.")
-        }
+        extendedProfile?.isOnboarded ?? false
     }
 
     var isPrivateProfile: Bool {

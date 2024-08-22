@@ -13,3 +13,8 @@ struct ChipView: View {
         .cornerRadius(5)
     }
 }
+
+
+#Preview {
+    ChipView(title: "Hey")
+}
