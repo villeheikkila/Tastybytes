@@ -37,6 +37,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5C0811922C7D0E42006C2873 /* .editorconfig */ = {isa = PBXFileReference; lastKnownFileType = text; path = .editorconfig; sourceTree = "<group>"; };
 		C94722D52AD1859C006DE096 /* TastybytesDEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TastybytesDEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -1098,6 +1099,7 @@
 		C94722CC2AD1859C006DE096 = {
 			isa = PBXGroup;
 			children = (
+				5C0811922C7D0E42006C2873 /* .editorconfig */,
 				5C410FF52C751DB50086C146 /* ci_scripts */,
 				5C410FEB2C751D850086C146 /* Assets */,
 				5C410FFA2C751DE70086C146 /* Packages */,

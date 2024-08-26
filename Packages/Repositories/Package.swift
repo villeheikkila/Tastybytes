@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "Repositories",
     platforms: [
-        .iOS(.v18), .visionOS(.v2),
+        .iOS(.v18),
     ],
     products: [
         .library(
@@ -16,7 +16,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/supabase-community/supabase-swift.git",
-            from: "2.16.0"
+            from: "2.16.1"
         ),
         .package(url: "https://github.com/hyperoslo/Cache", from: "7.2.0"),
         .package(name: "Models", path: "../Models"),

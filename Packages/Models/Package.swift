@@ -6,7 +6,7 @@ let package = Package(
     name: "Models",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v18), .visionOS(.v2),
+        .iOS(.v18),
     ],
     products: [
         .library(
@@ -26,5 +26,5 @@ let package = Package(
             ]
         ),
     ],
-    swiftLanguageVersions: [.version("6")]
+    swiftLanguageModes: [.version("6")]
 )
