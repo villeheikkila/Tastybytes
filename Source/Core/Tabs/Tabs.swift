@@ -9,7 +9,18 @@ public enum Tabs: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
     }
 
     @MainActor
-    @ViewBuilder
+    var tab: Tab<Tabs, some View, some View> {
+        Tab(
+            label,
+            systemImage: systemImage,
+            value: self,
+            content: {
+                view
+            }
+        )
+    }
+
+    @MainActor
     var view: some View {
         RouterProvider(enableRoutingFromURLs: true) {
             switch self {

@@ -15,25 +15,15 @@ struct TabsView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab(Tabs.activity.label, systemImage: Tabs.activity.systemImage, value: .activity) {
-                Tabs.activity.view
-            }
-            Tab(Tabs.discover.label, systemImage: Tabs.discover.systemImage, value: .discover) {
-                Tabs.discover.view
-            }
-            Tab(Tabs.notifications.label, systemImage: Tabs.notifications.systemImage, value: .notifications) {
-                Tabs.notifications.view
-            }
-            .badge(notificationModel.unreadCount)
+            Tabs.activity.tab
+            Tabs.discover.tab
+            Tabs.notifications.tab
+                .badge(notificationModel.unreadCount)
             if isAdmin {
-                Tab(Tabs.admin.label, systemImage: Tabs.admin.systemImage, value: .admin) {
-                    Tabs.admin.view
-                }
-                .badge(adminModel.notificationCount)
+                Tabs.admin.tab
+                    .badge(adminModel.notificationCount)
             }
-            Tab(Tabs.profile.label, systemImage: Tabs.profile.systemImage, value: .profile) {
-                Tabs.profile.view
-            }
+            Tabs.profile.tab
         }
         .tabViewStyle(.sidebarAdaptable)
         .sensoryFeedback(.selection, trigger: selectedTab)
