@@ -14,7 +14,6 @@ struct ChipView: View {
     }
 }
 
-
 #Preview {
     ChipView(title: "Hey")
 }

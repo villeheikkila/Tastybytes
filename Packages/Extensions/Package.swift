@@ -17,5 +17,5 @@ let package = Package(
     targets: [
         .target(name: "Extensions"),
     ],
-    swiftLanguageVersions: [.version("6")]
+    swiftLanguageModes: [.version("6")]
 )

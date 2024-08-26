@@ -1,5 +1,5 @@
 {
-  "originHash" : "f399da48db87c67c0ff35b26b042d97e3d18804305d368394a7281870114a73a",
+  "originHash" : "7d80db6bb60efa7639cf6036613cdd9cdb4b3b194ae3ac36981aa7c6d929dbcd",
   "pins" : [
     {
       "identity" : "appauth-ios",
@@ -107,15 +107,6 @@
       "state" : {
         "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
         "version" : "509.1.1"
-      }
-    },
-    {
-      "identity" : "swift-tagged",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-tagged",
-      "state" : {
-        "revision" : "3907a9438f5b57d317001dc99f3f11b46882272b",
-        "version" : "0.10.0"
       }
     },
     {

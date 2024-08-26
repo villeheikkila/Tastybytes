@@ -13,29 +13,15 @@
 		5C885F0F2B2873EC00F17C78 /* Components in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F0E2B2873EC00F17C78 /* Components */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		5CAB45DA2BA8A6A90017E71A /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.proxy.script;
-			fileType = pattern.proxy;
-			inputFiles = (
-			);
-			isEditable = 1;
-			outputFiles = (
-			);
-			script = "# Type a script or drag a script file from your workspace to insert its path.\n";
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXCopyFilesBuildPhase section */
-		C9C213322AD1EDB500C60282 /* Embed Frameworks */ = {
+		C9C213322AD1EDB500C60282 /* Embed Frameworks (0 items) */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
 			);
-			name = "Embed Frameworks";
+			name = "Embed Frameworks (0 items)";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C9C213492AD2E43E00C60282 /* Embed Foundation Extensions */ = {
@@ -150,7 +136,7 @@
 					tvos,
 					xros,
 				);
-				Core/Tabs/Tab.swift = (
+				Core/Tabs/Tabs.swift = (
 					ios,
 					maccatalyst,
 					tvos,
@@ -1140,11 +1126,10 @@
 				C94722D12AD1859C006DE096 /* Sources */,
 				C94722D22AD1859C006DE096 /* Frameworks */,
 				C94722D32AD1859C006DE096 /* Resources */,
-				C9C213322AD1EDB500C60282 /* Embed Frameworks */,
+				C9C213322AD1EDB500C60282 /* Embed Frameworks (0 items) */,
 				C9C213492AD2E43E00C60282 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
-				5CAB45DA2BA8A6A90017E71A /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
