@@ -18,7 +18,7 @@ let package = Package(
         .package(name: "Extensions", path: "../Extensions"),
         .package(url: "https://github.com/muukii/Brightroom.git", exact: "3.0.0-beta.5"),
         .package(url: "https://github.com/daprice/BlurHashViews.git", from: "1.0.0"),
-        .package(url: "https://github.com/google/GoogleSignIn-iOS.git", from: "7.1.0"),
+        .package(url: "https://github.com/google/GoogleSignIn-iOS.git", from: "8.0.0"),
     ],
     targets: [
         .target(
