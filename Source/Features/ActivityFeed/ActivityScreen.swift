@@ -94,8 +94,9 @@ struct ActivityScreen: View {
         }
         let lastCheckInId = reset ? nil : checkIns.last?.id
         let pageSize = appModel.rateControl.checkInPageSize
+        let startTime = DispatchTime.now()
+
         do {
-            let startTime = DispatchTime.now()
             let fetchedCheckIns = try await repository.checkIn.getActivityFeed(id: lastCheckInId, pageSize: pageSize)
             guard !Task.isCancelled else { return }
             if reset {

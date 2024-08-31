@@ -46,7 +46,6 @@ struct ProfileInnerScreen: View {
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)
-        .animation(.default, value: checkIns)
         .refreshable {
             await initialize(isRefresh: true)
         }
@@ -160,10 +159,12 @@ struct ProfileInnerScreen: View {
                 queryType: .paginated(lastCheckInId, pageSize)
             )
             logger.info("Succesfully loaded check-ins after \(lastCheckInId?.rawValue.formatted() ?? "lastest"), page size: \(pageSize) in \(startTime.elapsedTime())ms")
-            if reset {
-                checkIns = fetchedCheckIns
-            } else {
-                checkIns.append(contentsOf: fetchedCheckIns)
+            withAnimation {
+                if reset {
+                    checkIns = fetchedCheckIns
+                } else {
+                    checkIns.append(contentsOf: fetchedCheckIns)
+                }
             }
         } catch {
             guard !error.isCancelled else { return }
