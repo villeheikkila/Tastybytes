@@ -22,10 +22,11 @@ final class SubscriptionModel {
 
     func onTaskStatusChange(taskStatus: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions _: [SubscriptionProduct]) async {
         if let value = taskStatus.value {
-            isProMember = !value
+            let isPro = !value
                 .filter { $0.state != .revoked && $0.state != .expired }
                 .isEmpty
-            logger.info("User is a \(isProMember ? "pro" : "regular") member")
+            isProMember = isPro
+            logger.info("User is a \(isPro ? "pro" : "regular") member")
         } else {
             logger.info("User is a regular member")
             isProMember = false
