@@ -70,13 +70,8 @@ public enum CheckInQueryType: Sendable {
     }
 }
 
-public enum ActivityFeedQueryType: Sendable {
-    case paginated(Int, Int)
-    case afterId(CheckIn.Id)
-}
-
 public protocol CheckInRepository: Sendable {
-    func getActivityFeed(query: ActivityFeedQueryType) async throws -> [CheckIn.Joined]
+    func getActivityFeed(id: CheckIn.Id?, pageSize: Int) async throws -> [CheckIn.Joined]
     func getById(id: CheckIn.Id) async throws -> CheckIn.Joined
     func getDetailed(id: CheckIn.Id) async throws -> CheckIn.Detailed
     func getByProfileId(id: Profile.Id, queryType: CheckInQueryType) async throws -> [CheckIn.Joined]

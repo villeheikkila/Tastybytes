@@ -116,6 +116,7 @@ enum Database {
         case updateNotificationSettings = "fnc__update_notification_settings"
         case brandProductsWithRatingCheckInStatus = "fnc__brand_products_with_rating_check_in_status"
         case brandsWithProductCount = "fnc__brands_with_product_count"
+        case activityFeed = "func__activity_feed"
     }
 }
 

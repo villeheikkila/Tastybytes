@@ -13,15 +13,10 @@ struct ActivityScreen: View {
     @Environment(NotificationModel.self) private var notificationModel
     @Environment(CheckInUploadModel.self) private var checkInUploadModel
     @State private var state: ScreenState = .loading
-
+    @State private var checkIns = [CheckIn.Joined]()
     @State private var loadingCheckInsOnAppearTask: Task<Void, Error>?
-    // Feed state
     @State private var isRefreshing = false
     @State private var isLoading = false
-    @State private var isInitialLoad = true
-    @State private var page = 0
-    // Check-ins
-    @State private var checkIns = [CheckIn.Joined]()
 
     var body: some View {
         @Bindable var checkInUploadModel = checkInUploadModel
@@ -91,34 +86,30 @@ struct ActivityScreen: View {
         }
     }
 
-    private func fetchFeedItems(reset: Bool = false, onPageLoad: Bool = false) async {
+    private func fetchFeedItems(reset: Bool = false, onPageLoad _: Bool = false) async {
         if reset {
             isRefreshing = true
         } else {
             isLoading = true
         }
-        let (from, to) = getPagination(page: reset ? 0 : page, size: appModel.rateControl.checkInPageSize)
-        let queryType: ActivityFeedQueryType = if !reset, !isInitialLoad, onPageLoad, let id = checkIns.first?.id {
-            .afterId(id)
-        } else {
-            .paginated(from, to)
-        }
+        let lastCheckInId = reset ? nil : checkIns.last?.id
+        let pageSize = appModel.rateControl.checkInPageSize
         do {
             let startTime = DispatchTime.now()
-            let fetchedCheckIns = try await repository.checkIn.getActivityFeed(query: queryType)
+            let fetchedCheckIns = try await repository.checkIn.getActivityFeed(id: lastCheckInId, pageSize: pageSize)
             guard !Task.isCancelled else { return }
-            logger.info("Succesfully loaded check-ins from \(from) to \(to)")
-            isInitialLoad = false
             if reset {
                 checkIns = fetchedCheckIns
-            } else if case .afterId = queryType {
-                checkIns.insert(contentsOf: fetchedCheckIns, at: 0)
             } else {
                 checkIns.append(contentsOf: fetchedCheckIns)
             }
-            logger.info("Activity feed data loaded in \(startTime.elapsedTime())ms")
             state = .populated
-            page += 1
+            let queryDescription = if let lastCheckInId {
+                "check-ins from cursor \(lastCheckInId.rawValue)"
+            } else {
+                "latest check-ins"
+            }
+            logger.info("Succesfully loaded \(queryDescription), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(checkIns.count)")
         } catch {
             guard !error.isCancelled, !Task.isCancelled else { return }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")

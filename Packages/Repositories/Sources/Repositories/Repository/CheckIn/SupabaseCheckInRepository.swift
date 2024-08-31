@@ -6,19 +6,13 @@ struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
     let imageEntityRepository: ImageEntityRepository
 
-    func getActivityFeed(query: ActivityFeedQueryType) async throws -> [CheckIn.Joined] {
-        let partialQuery = client
-            .from(.viewActivityFeed)
+    func getActivityFeed(id: CheckIn.Id?, pageSize: Int) async throws -> [CheckIn.Joined] {
+        try await client
+            .rpc(
+                fn: .activityFeed,
+                params: ["p_page_size": pageSize, "p_cursor": id?.rawValue]
+            )
             .select(CheckIn.getQuery(.joined(false)))
-
-        let range = switch query {
-        case let .paginated(from, to):
-            partialQuery.range(from: from, to: to)
-        case let .afterId(id):
-            partialQuery.gt("id", value: id.rawValue)
-        }
-
-        return try await range
             .execute()
             .value
     }
