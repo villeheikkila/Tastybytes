@@ -113,15 +113,12 @@ struct ProfileInnerScreen: View {
     private func initialize(isRefresh: Bool = false) async {
         let startTime = DispatchTime.now()
         async let checkInsPromise: Void = fetchFeedItems(reset: true)
+        async let imagesPromise: Void = fetchImages()
         async let summaryPromise = repository.checkIn.getSummaryByProfileId(id: profile.id)
-        async let imagesPromise = repository.checkIn.getCheckInImages(by: .profile(profile.id), from: 0, to: appModel.rateControl.checkInPageSize)
         do {
-            let (summaryResult, imagesResult) = try await (summaryPromise, imagesPromise)
-            imagePage += 1
+            let (summaryResult, _) = try await (summaryPromise, imagesPromise)
             withAnimation {
                 profileSummary = summaryResult
-                imagePage = 1
-                checkInImages = imagesResult
                 isLoading = false
                 state = .populated
             }
@@ -138,6 +135,7 @@ struct ProfileInnerScreen: View {
         do {
             let checkIns = try await repository.checkIn.getCheckInImages(by: .profile(profile.id), from: from, to: to)
             checkInImages.append(contentsOf: checkIns)
+            imagePage = 1
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))")
