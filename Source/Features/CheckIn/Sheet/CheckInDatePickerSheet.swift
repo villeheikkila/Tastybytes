@@ -42,7 +42,7 @@ struct ProMembershipOverlayModifier: ViewModifier {
     @Environment(SubscriptionModel.self) private var subscriptionModel
 
     private var isEnabled: Bool {
-        subscriptionModel.isProMember
+        !subscriptionModel.isProMember
     }
 
     func body(content: Content) -> some View {

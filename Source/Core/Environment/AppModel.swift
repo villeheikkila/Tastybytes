@@ -48,7 +48,7 @@ enum AppDataKey: String, CaseIterable {
     case appDataFlavors = "app_data_flavors"
     case appDataAboutPage = "app_data_about_page"
     case appDataAppConfig = "app_data_app_config"
-    case appDataSubscriptionGroup = "app_data_subcategories"
+    case appDataSubscriptionGroup = "app_data_subscription_group"
     case profileData = "profile_data"
     case notificationSettingsData = "notification_settings_data"
     case profileFriendsData = "profile_friends_data"

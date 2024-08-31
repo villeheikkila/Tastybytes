@@ -18,18 +18,17 @@ final class SubscriptionModel {
     }
 
     var subscriptionStatus: SubscriptionStatus = .notSubscribed
+    var isProMember = false
 
-    func onTaskStatusChange(taskStatus: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions: [SubscriptionProduct]) async {
-        let status = await productSubscription.getStatusFromTaskStatus(taskStatuses: taskStatus, productSubscriptions: productSubscriptions)
-        switch status {
-        case let .success(status):
-            subscriptionStatus = status
-            logger.info("Subscription status: \(status.description)")
-        case let .failure(error):
-            subscriptionStatus = .notSubscribed
-            logger.error("Failed to check subscription status: \(error)")
-        case .loading: break
-        @unknown default: break
+    func onTaskStatusChange(taskStatus: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions _: [SubscriptionProduct]) async {
+        if let value = taskStatus.value {
+            isProMember = !value
+                .filter { $0.state != .revoked && $0.state != .expired }
+                .isEmpty
+            logger.info("User is a \(isProMember ? "pro" : "regular") member")
+        } else {
+            logger.info("User is a regular member")
+            isProMember = false
         }
     }
 
@@ -48,7 +47,6 @@ final class SubscriptionModel {
             logger.info("Purchases for \(product.displayName) successful at \(transaction.signedDate)")
             if let transaction = try? transaction.payloadValue {
                 activeTransactions.insert(transaction)
-                await insertTransactionIntoDatabase(transaction: transaction)
                 await transaction.finish()
             }
         case .pending:
@@ -57,37 +55,6 @@ final class SubscriptionModel {
             logger.info("Purchases for \(product.displayName) was cancelled by the user")
         @unknown default:
             logger.error("Encountered unknown purchase result")
-        }
-    }
-
-    func initializeActiveTransactions() async {
-        var activeTransactions: Set<StoreKit.Transaction> = []
-
-        for await entitlement in StoreKit.Transaction.currentEntitlements {
-            if let transaction = try? entitlement.payloadValue {
-                activeTransactions.insert(transaction)
-                // keep database in sync by reuploading all transactions
-                // this might be excessive but in practise user should have only one valid subscription at the time
-                await insertTransactionIntoDatabase(transaction: transaction)
-            }
-        }
-        self.activeTransactions = activeTransactions
-    }
-
-    func insertTransactionIntoDatabase(transaction: StoreKit.Transaction) async {
-        do {
-            try await repository.subscription.syncSubscriptionTransaction(transactionInfo: .init(transaction: transaction))
-            logger.info("Synced transaction to the server")
-        } catch {
-            logger.error("Failed to sync transaction. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    var isProMember: Bool {
-        if case .subscribed = subscriptionStatus {
-            true
-        } else {
-            false
         }
     }
 
