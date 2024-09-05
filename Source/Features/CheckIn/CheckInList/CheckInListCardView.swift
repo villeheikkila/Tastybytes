@@ -19,6 +19,17 @@ struct CheckInListCardView: View {
         CheckInView(checkIn: checkIn, onDeleteImage: { id in
             await onUpdate(checkIn.copyWith(images: checkIn.images.removingWithId(id)))
         })
+        .swipeActions(edge: .trailing) {
+            RouterLink("", open: .screen(.product(checkIn.product.id)))
+                .tint(Color(.systemBackground))
+        }
+        .swipeActions(edge: .leading) {
+            RouterLink(
+                "checkIn.create.label",
+                systemImage: "checkmark.circle", open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: onCreate)))
+            )
+            .tint(.green)
+        }
         .contextMenu {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
