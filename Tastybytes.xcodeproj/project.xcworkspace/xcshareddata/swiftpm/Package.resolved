@@ -1,5 +1,5 @@
 {
-  "originHash" : "1646d3e16c1d803f2d5a3495864b110ed5760beb48b797449c0775e32a8ad937",
+  "originHash" : "b19bb672dae051ce208f4a35c037072ce6ec69f5d747338215ae0760f903fb31",
   "pins" : [
     {
       "identity" : "app-check",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/hyperoslo/Cache",
       "state" : {
-        "revision" : "fd97438a85d44aa4f7186145cdba90e3c36f1c94",
-        "version" : "7.2.0"
+        "revision" : "24e47109e31b2031cb26e25cc1b81b607496066c",
+        "version" : "7.4.0"
       }
     },
     {
@@ -114,8 +114,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift.git",
       "state" : {
-        "revision" : "f0932947743776239272df0c7f066a503b00e753",
-        "version" : "2.17.0"
+        "revision" : "d44fb8a8c821c2d522cfadd1aa741bbe1cbab97a",
+        "version" : "2.17.1"
       }
     },
     {
@@ -159,8 +159,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-crypto.git",
       "state" : {
-        "revision" : "46072478ca365fe48370993833cb22de9b41567f",
-        "version" : "3.5.2"
+        "revision" : "9f95b4d033a4edd3814b48608db3f2ca90c7218b",
+        "version" : "3.7.0"
       }
     },
     {
@@ -213,8 +213,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "357ca1e5dd31f613a1d43320870ebc219386a495",
-        "version" : "1.2.2"
+        "revision" : "96beb108a57f24c8476ae1f309239270772b2940",
+        "version" : "1.2.5"
       }
     }
   ],
