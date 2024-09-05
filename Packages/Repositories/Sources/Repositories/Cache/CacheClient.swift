@@ -28,7 +28,7 @@ struct CacheClient: CacheProtocol {
     init() {
         storage = try! Storage<String, Data>(
             diskConfig: .init(name: "Disk"),
-            memoryConfig: .init(expiry: .seconds(86400)),
+            memoryConfig: .init(expiry: .seconds(86400)), fileManager: .default,
             transformer: TransformerFactory.forData()
         )
     }
