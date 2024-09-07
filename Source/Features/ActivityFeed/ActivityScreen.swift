@@ -25,7 +25,7 @@ struct ActivityScreen: View {
                 if state.isPopulated {
                     CheckInListContentView(checkIns: $checkIns, onCreateCheckIn: { checkIn in
                         checkIns = [checkIn] + checkIns
-                        try? await Task.sleep(nanoseconds: 100_000_000)
+                        try? await Task.sleep(for: .milliseconds(100))
                         proxy.scrollTo(checkIn.id, anchor: .top)
                     }, onLoadMore: {
                         await fetchFeedItems()

@@ -43,7 +43,7 @@ struct CheckInScreen: View {
             .safeAreaInset(edge: .bottom, alignment: .trailing, content: {
                 if state.isPopulated, profileModel.hasPermission(.canCommentOnCheckIns) {
                     CheckInLeaveComment(checkIn: checkIn, checkInComments: $checkInComments, focusedField: _focusedField, onSubmitted: { comment in
-                        try? await Task.sleep(nanoseconds: 100_000_000)
+                        try? await Task.sleep(for: .milliseconds(100))
                         scrollProxy.scrollTo(comment.id, anchor: .top)
                     })
                 }

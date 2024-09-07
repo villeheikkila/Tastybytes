@@ -51,6 +51,6 @@ struct FullScreenErrorView: View {
 
 #Preview {
     FullScreenErrorView(title: "app.error.unexpected.title", description: Text("app.error.unexpected.description"), systemImage: "exclamationmark.triangle", action: {
-        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        try? await Task.sleep(for: .milliseconds(100))
     })
 }

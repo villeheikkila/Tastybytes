@@ -7,7 +7,7 @@ struct ScreenLoadingView: View {
         ProgressView()
             .opacity(showProgressView ? 1 : 0)
             .task {
-                try? await Task.sleep(nanoseconds: 250 * 1_000_000)
+                try? await Task.sleep(for: .milliseconds(250))
                 withAnimation {
                     showProgressView = true
                 }
