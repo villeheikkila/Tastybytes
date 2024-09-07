@@ -29,8 +29,14 @@ struct CheckInListContentView: View {
         ForEach(checkIns) { checkIn in
             CheckInListCardView(
                 checkIn: checkIn,
-                onUpdate: { checkIn in
-                    checkIns = checkIns.replacingWithId(checkIn.id, with: checkIn)
+                onUpdate: { updatedCheckIn in
+                    if updatedCheckIn.product.id == checkIn.product.id {
+                        checkIns = checkIns.replacingWithId(checkIn.id, with: checkIn)
+                    } else {
+                        checkIns = checkIns.removingWithId(updatedCheckIn.id)
+                        try? await Task.sleep(for: .milliseconds(100))
+                        router.open(.screen(.product(updatedCheckIn.product.id)))
+                    }
                 },
                 onDelete: deleteCheckIn,
                 onCreate: { checkIn in

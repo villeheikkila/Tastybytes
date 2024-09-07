@@ -34,20 +34,20 @@ struct CheckInSheet: View {
     @State private var isNostalgic: Bool
     @State private var newImages = [UIImage]()
     @State private var images: [ImageEntity.Saved]
+    @State private var product: Product.Joined?
 
     let action: Action
-    let product: Product.Joined
 
     init(action: Action) {
         self.action = action
         switch action {
         case let .create(product: product, _):
-            self.product = product
+            _product = State(initialValue: product)
             _isLegacyCheckIn = State(initialValue: false)
             _isNostalgic = State(initialValue: false)
             _images = State(initialValue: [])
         case let .update(checkIn, _):
-            product = checkIn.product
+            _product = State(initialValue: checkIn.product)
             _images = State(initialValue: checkIn.images)
             _review = State(wrappedValue: checkIn.review.orEmpty)
             _rating = State(wrappedValue: checkIn.rating ?? 0)
@@ -66,11 +66,12 @@ struct CheckInSheet: View {
     var body: some View {
         Form {
             Group {
-                ProductView(product: product)
-                    .accessibilityAddTraits(.isButton)
-                    .onTapGesture {
-                        focusedField = nil
+                if let currentProduct = product {
+                    RouterLink(open: .sheet(.productPicker(product: $product))) {
+                        ProductView(product: currentProduct)
+                            .accessibilityAddTraits(.isButton)
                     }
+                }
                 CheckInImageManagementView(newImages: $newImages, images: $images, checkInAt: $checkInAt, locationFromImage: $locationFromImage)
                     .listRowInsets(.init())
                 RatingPickerView(rating: $rating)
@@ -87,6 +88,7 @@ struct CheckInSheet: View {
             toolbarContent
         }
         .onAppear {
+            guard let product else { return }
             servingStyles = appModel.categories.first(where: { $0.id == product.category.id })?.servingStyles ?? []
         }
     }
@@ -234,6 +236,7 @@ struct CheckInSheet: View {
             }
         case let .update(checkIn, onUpdate):
             do {
+                guard let product else { return }
                 let updatedCheckIn = try await repository.checkIn.update(updateCheckInParams: .init(
                     checkIn: checkIn,
                     product: product,

@@ -23,6 +23,7 @@ struct ProductPickerSheet: View {
             }) {
                 ProductView(product: product)
             }
+            .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
         .animation(.default, value: products)
