@@ -35,9 +35,9 @@ struct CheckInImageManagementView: View {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .clipShape(.rect(cornerRadius: 8))
+                            .cardStyle()
                             .frame(height: 150)
-                            .shadow(radius: 1)
+                            .padding(.leading, 2)
                             .accessibilityLabel("checkIn.image.label")
                     })
                     .overlayDeleteButton(action: {
@@ -48,9 +48,8 @@ struct CheckInImageManagementView: View {
                     Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .clipShape(.rect(cornerRadius: 8))
+                        .cardStyle()
                         .frame(height: 150)
-                        .shadow(radius: 1)
                         .accessibilityLabel("checkIn.image.label")
                         .overlayDeleteButton(action: {
                             if let index = newImages.firstIndex(of: image) {
@@ -99,7 +98,6 @@ struct CheckInImageManagementView: View {
             })))
         }
         .scrollIndicators(.hidden)
-        .contentMargins(.horizontal, 16)
     }
 
     func getLocationFromCoordinate(coordinate: CLLocationCoordinate2D) async {

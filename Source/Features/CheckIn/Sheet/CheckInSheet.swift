@@ -69,8 +69,10 @@ struct CheckInSheet: View {
                 if let currentProduct = product {
                     RouterLink(open: .sheet(.productPicker(product: $product))) {
                         ProductView(product: currentProduct)
-                            .accessibilityAddTraits(.isButton)
                     }
+                    .padding()
+                    .cardStyle()
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 6, trailing: 0))
                 }
                 CheckInImageManagementView(newImages: $newImages, images: $images, checkInAt: $checkInAt, locationFromImage: $locationFromImage)
                     .listRowInsets(.init())
@@ -78,9 +80,9 @@ struct CheckInSheet: View {
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
-            reviewSection
-            additionalInformationSection
-            locationAndFriendsSection
+                reviewSection
+                additionalInformationSection
+                locationAndFriendsSection
         }
         .scrollContentBackground(.hidden)
         .foregroundColor(.primary)
