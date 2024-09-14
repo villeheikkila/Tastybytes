@@ -9,6 +9,7 @@ struct BarcodeScannerSheet: View {
     @State private var showBarcodeTextField = false
     @State private var barcodeInput = ""
     @State private var isTorchOn = false
+    @State private var task: Task<Void, Never>?
 
     let onComplete: (_ barcode: Models.Barcode) async -> Void
 
@@ -30,12 +31,14 @@ struct BarcodeScannerSheet: View {
                 }
                 .safeAreaPadding(.vertical)
             } else {
-                #if !targetEnvironment(macCatalyst)
-                    BarcodeDataScannerView { barcode in
-                        await onComplete(barcode)
+                BarcodeScannerView { barcode in
+                    guard let barcode, task == nil else { return }
+                    task = Task {
+                        defer { task = nil }
+                        await onComplete(.init(barcode: barcode.barcodeString, type: barcode.standardName))
                         dismiss()
                     }
-                #endif
+                }
             }
         }
         .ignoresSafeArea()

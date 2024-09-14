@@ -1,7 +1,7 @@
+import BarcodeToolsKit
 import Components
 import Models
 import SwiftUI
-import BarcodeToolsKit
 
 struct BarcodeManagementRowView: View {
     let barcode: Product.Barcode.JoinedWithCreator

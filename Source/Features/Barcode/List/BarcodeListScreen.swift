@@ -1,6 +1,6 @@
+import BarcodeToolsKit
 import Models
 import SwiftUI
-import BarcodeToolsKit
 
 struct BarcodeListScreen: View {
     let barcodes: [Product.Barcode.Joined]
