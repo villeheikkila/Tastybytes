@@ -1,5 +1,5 @@
 import AVFoundation
-import BarcodeGeneratorKit
+import BarcodeToolsKit
 import Components
 import Models
 import SwiftUI
@@ -13,7 +13,7 @@ struct BarcodeScannerSheet: View {
     let onComplete: (_ barcode: Models.Barcode) async -> Void
 
     private var isValidBarcode: Bool {
-        BarcodeGeneratorKit.Barcode(rawValue: barcodeInput) != nil
+        BarcodeToolsKit.Barcode(rawValue: barcodeInput) != nil
     }
 
     var body: some View {

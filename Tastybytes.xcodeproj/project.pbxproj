@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5C4742EE2C9623B100B6DB62 /* BarcodeGeneratorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5C4742ED2C9623B100B6DB62 /* BarcodeGeneratorKit */; };
+		5C4742F12C96306500B6DB62 /* BarcodeToolsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5C4742F02C96306500B6DB62 /* BarcodeToolsKit */; };
 		5C885F002B2873A900F17C78 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885EFF2B2873A900F17C78 /* Models */; };
 		5C885F032B2873B400F17C78 /* Extensions in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F022B2873B400F17C78 /* Extensions */; };
 		5C885F062B2873C300F17C78 /* Repositories in Frameworks */ = {isa = PBXBuildFile; productRef = 5C885F052B2873C300F17C78 /* Repositories */; };
@@ -1074,10 +1074,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C4742F12C96306500B6DB62 /* BarcodeToolsKit in Frameworks */,
 				5C885F062B2873C300F17C78 /* Repositories in Frameworks */,
 				5C885F0F2B2873EC00F17C78 /* Components in Frameworks */,
 				5C885F032B2873B400F17C78 /* Extensions in Frameworks */,
-				5C4742EE2C9623B100B6DB62 /* BarcodeGeneratorKit in Frameworks */,
 				5C885F002B2873A900F17C78 /* Models in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1141,7 +1141,7 @@
 				5C885F022B2873B400F17C78 /* Extensions */,
 				5C885F052B2873C300F17C78 /* Repositories */,
 				5C885F0E2B2873EC00F17C78 /* Components */,
-				5C4742ED2C9623B100B6DB62 /* BarcodeGeneratorKit */,
+				5C4742F02C96306500B6DB62 /* BarcodeToolsKit */,
 			);
 			productName = Tastybytes;
 			productReference = C94722D52AD1859C006DE096 /* TastybytesDEV.app */;
@@ -1177,7 +1177,7 @@
 				5C885F012B2873B400F17C78 /* XCLocalSwiftPackageReference "Packages/Extensions" */,
 				5C885F042B2873C300F17C78 /* XCLocalSwiftPackageReference "Packages/Repositories" */,
 				5C885F0D2B2873EC00F17C78 /* XCLocalSwiftPackageReference "Packages/Components" */,
-				5C4742EC2C9623B100B6DB62 /* XCRemoteSwiftPackageReference "BarcodeGeneratorKit" */,
+				5C4742EF2C96306500B6DB62 /* XCRemoteSwiftPackageReference "BarcodeToolsKit" */,
 			);
 			productRefGroup = C94722D62AD1859C006DE096 /* Products */;
 			projectDirPath = "";
@@ -1303,21 +1303,21 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5C4742EC2C9623B100B6DB62 /* XCRemoteSwiftPackageReference "BarcodeGeneratorKit" */ = {
+		5C4742EF2C96306500B6DB62 /* XCRemoteSwiftPackageReference "BarcodeToolsKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/villeheikkila/BarcodeGeneratorKit.git";
+			repositoryURL = "https://github.com/villeheikkila/BarcodeToolsKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.2;
+				minimumVersion = 0.0.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5C4742ED2C9623B100B6DB62 /* BarcodeGeneratorKit */ = {
+		5C4742F02C96306500B6DB62 /* BarcodeToolsKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5C4742EC2C9623B100B6DB62 /* XCRemoteSwiftPackageReference "BarcodeGeneratorKit" */;
-			productName = BarcodeGeneratorKit;
+			package = 5C4742EF2C96306500B6DB62 /* XCRemoteSwiftPackageReference "BarcodeToolsKit" */;
+			productName = BarcodeToolsKit;
 		};
 		5C885EFF2B2873A900F17C78 /* Models */ = {
 			isa = XCSwiftPackageProductDependency;

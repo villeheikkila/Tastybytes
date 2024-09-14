@@ -1,4 +1,4 @@
-import BarcodeGeneratorKit
+import BarcodeToolsKit
 import Components
 import SwiftUI
 
@@ -6,7 +6,7 @@ struct BarcodeView: View {
     let barcode: String
 
     var body: some View {
-        if let barcode: BarcodeGeneratorKit.Barcode = .init(rawValue: barcode) {
+        if let barcode: BarcodeToolsKit.Barcode = .init(rawValue: barcode) {
             BarcodeGenerator(barcode: barcode) {
                 fallback
             }
