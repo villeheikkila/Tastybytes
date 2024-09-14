@@ -9,15 +9,20 @@ import VisionKit
         let onComplete: (_ barcode: Barcode) async -> Void
 
         var body: some View {
-            DataScannerViewRepresentable(recognizedDataTypes: [.barcode(symbologies: [.codabar, .code39, .ean8, .ean13])], onDataFound: { data in
-                if task == nil, case let .barcode(foundBarcode) = data {
-                    defer { task = nil }
-                    guard let payloadStringValue = foundBarcode.payloadStringValue else { return }
-                    task = Task {
-                        await onComplete(.init(barcode: payloadStringValue, type: foundBarcode.observation.symbology.standardName ?? ""))
+            DataScannerViewRepresentable(
+                recognizedDataTypes: [.barcode(symbologies: [.codabar, .code39, .ean8, .ean13, .upce])],
+                onDataFound: { data in
+                    if task == nil,
+                       case let .barcode(foundBarcode) = data
+                    {
+                        defer { task = nil }
+                        guard let payloadStringValue = foundBarcode.payloadStringValue else { return }
+                        task = Task {
+                            await onComplete(.init(barcode: payloadStringValue, type: foundBarcode.observation.symbology.standardName ?? ""))
+                        }
                     }
                 }
-            })
+            )
         }
     }
 

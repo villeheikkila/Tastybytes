@@ -1,5 +1,5 @@
 {
-  "originHash" : "f0de0281b971ab45f18dbd0fb1cbf53fc4ddd581d5e8b979c59127fbdfc0fe87",
+  "originHash" : "e1636f00016c54054ae51828fda1c539f916361203712a3de81724bdb55f9d1c",
   "pins" : [
     {
       "identity" : "app-check",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "c89ed571ae140f8eb1142735e6e23d7bb8c34cb2",
         "version" : "1.7.5"
+      }
+    },
+    {
+      "identity" : "barcodegeneratorkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/villeheikkila/BarcodeGeneratorKit.git",
+      "state" : {
+        "revision" : "7c92713c4632a8f75f7433601c1c939a98c26243",
+        "version" : "0.0.2"
       }
     },
     {

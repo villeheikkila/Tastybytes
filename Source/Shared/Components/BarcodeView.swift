@@ -1,3 +1,4 @@
+import BarcodeGeneratorKit
 import Components
 import SwiftUI
 
@@ -5,12 +6,18 @@ struct BarcodeView: View {
     let barcode: String
 
     var body: some View {
-        if isValidEAN13(input: barcode) {
-            EAN13View(barcode: barcode)
-                .frame(width: 150, height: 50)
+        if let barcode: BarcodeGeneratorKit.Barcode = .init(rawValue: barcode) {
+            BarcodeGenerator(barcode: barcode) {
+                fallback
+            }
+            .frame(width: 200, height: 80)
         } else {
-            Text(barcode)
-                .font(.callout)
+            fallback
         }
+    }
+
+    private var fallback: some View {
+        Text(barcode)
+            .font(.callout)
     }
 }

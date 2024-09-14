@@ -1,4 +1,5 @@
 import AVFoundation
+import BarcodeGeneratorKit
 import Components
 import Models
 import SwiftUI
@@ -9,7 +10,11 @@ struct BarcodeScannerSheet: View {
     @State private var barcodeInput = ""
     @State private var isTorchOn = false
 
-    let onComplete: (_ barcode: Barcode) async -> Void
+    let onComplete: (_ barcode: Models.Barcode) async -> Void
+
+    private var isValidBarcode: Bool {
+        BarcodeGeneratorKit.Barcode(rawValue: barcodeInput) != nil
+    }
 
     var body: some View {
         VStack {
@@ -21,7 +26,7 @@ struct BarcodeScannerSheet: View {
                         await onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13.rawValue))
                         dismiss()
                     })
-                    .disabled(!isValidEAN13(input: barcodeInput))
+                    .disabled(!isValidBarcode)
                 }
                 .safeAreaPadding(.vertical)
             } else {

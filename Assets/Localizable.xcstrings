@@ -836,7 +836,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Barcode (EAN13)"
+            "value" : "Barcode (EAN-13, EAN-8)"
           }
         }
       }
