@@ -1,5 +1,6 @@
 import Models
 import SwiftUI
+import BarcodeToolsKit
 
 struct BarcodeListScreen: View {
     let barcodes: [Product.Barcode.Joined]
@@ -22,6 +23,8 @@ struct BarcodeListRowView: View {
             VStack(alignment: .leading, spacing: 8) {
                 ProductView(product: barcode.product)
                 BarcodeView(barcode: barcode.barcode)
+                    .barcodeLineColor(.accentColor)
+                    .frame(width: 200, height: 100)
             }
         }
     }
