@@ -21,7 +21,7 @@ struct BarcodeListRowView: View {
         RouterLink(open: .screen(.product(barcode.product.id))) {
             VStack(alignment: .leading, spacing: 8) {
                 ProductView(product: barcode.product)
-                Text(barcode.barcode)
+                BarcodeView(barcode: barcode.barcode)
             }
         }
     }

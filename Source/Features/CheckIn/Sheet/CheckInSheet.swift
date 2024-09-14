@@ -80,9 +80,9 @@ struct CheckInSheet: View {
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
-                reviewSection
-                additionalInformationSection
-                locationAndFriendsSection
+            reviewSection
+            additionalInformationSection
+            locationAndFriendsSection
         }
         .scrollContentBackground(.hidden)
         .foregroundColor(.primary)

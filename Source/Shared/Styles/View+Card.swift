@@ -2,11 +2,11 @@ import SwiftUI
 
 enum CardStyleType {
     case `default`
-    
+
     var cornerRadius: CGFloat {
         switch self {
         case .default:
-            return 16
+            16
         }
     }
 }
@@ -16,11 +16,11 @@ struct CardStyle: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
 
     let type: CardStyleType
-    
+
     init(_ type: CardStyleType = .default) {
         self.type = type
     }
-    
+
     private var color: Color {
         switch colorScheme {
         case .light:
@@ -31,7 +31,7 @@ struct CardStyle: ViewModifier {
             .white
         }
     }
-    
+
     func body(content: Content) -> some View {
         content
             .background(color.opacity(colorScheme == .dark ? 0.3 : 1))
@@ -47,6 +47,6 @@ struct CardStyle: ViewModifier {
 
 extension View {
     func cardStyle(_ type: CardStyleType = .default) -> some View {
-        self.modifier(CardStyle(type))
+        modifier(CardStyle(type))
     }
 }
