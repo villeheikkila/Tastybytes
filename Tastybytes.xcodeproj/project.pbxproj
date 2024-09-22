@@ -948,12 +948,6 @@
 					tvos,
 					xros,
 				);
-				Features/SplashScreen/SplashScreenView.swift = (
-					ios,
-					maccatalyst,
-					tvos,
-					xros,
-				);
 				Features/User/UserSheet.swift = (
 					ios,
 					maccatalyst,
