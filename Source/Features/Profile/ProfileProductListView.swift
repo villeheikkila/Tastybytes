@@ -121,7 +121,7 @@ struct ProfileProductListView: View {
 
         let namePass = !searchTerm.isEmpty ?
             [product.formatted(.brandOwner), product.formatted(.fullName)].joinOptionalSpace()
-            .contains(searchTerm) : true
+            .localizedCaseInsensitiveContains(searchTerm) : true
 
         let categoryPass = productFilter != nil && productFilter?.category?.id != nil ? product.category
             .id == productFilter?.category?.id : true
