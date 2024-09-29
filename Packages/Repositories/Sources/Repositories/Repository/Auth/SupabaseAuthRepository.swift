@@ -85,7 +85,7 @@ struct SupabaseAuthRepository: AuthRepository {
     }
 }
 
-extension AsyncSequence {
+extension AsyncSequence where Self: Sendable {
     func eraseToStream() -> AsyncStream<Element> {
         AsyncStream(self)
     }
