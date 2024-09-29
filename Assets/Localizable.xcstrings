@@ -5776,8 +5776,15 @@
         }
       }
     },
-    "subBrandListAdmin.navigationTitle" : {
-
+    "subBrandListAdmin.navigationTitle %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sub-brands of %@"
+          }
+        }
+      }
     },
     "subcategory.add" : {
       "localizations" : {

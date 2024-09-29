@@ -177,7 +177,7 @@ struct SupabaseBrandRepository: BrandRepository {
         try await client
             .storage
             .from(.brandLogos)
-            .upload(path: fileName, file: data)
+            .upload(fileName, data: data)
 
         return try await imageEntityRepository.getByFileName(from: .brandLogos, fileName: fileName)
     }
