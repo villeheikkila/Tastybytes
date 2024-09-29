@@ -132,9 +132,7 @@ struct AddPhotoButtonView: View {
             }
             .labelStyle(.iconOnly)
             .frame(width: 110, height: 150)
-            .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-            .shadow(radius: 1)
-            .padding(.vertical, 1)
+            .cardStyle()
         }
     }
 }
