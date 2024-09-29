@@ -272,7 +272,7 @@ struct SubBrandListAdminScreen: View {
             }
         }
         .listStyle(.plain)
-        .navigationTitle("subBrandListAdmin.navigationTitle")
+        .navigationTitle("subBrandListAdmin.navigationTitle \(brand.name)")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
