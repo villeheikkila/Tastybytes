@@ -8,6 +8,7 @@ import SwiftUI
 
 struct CheckInListCardView: View {
     @Environment(ProfileModel.self) private var profileModel
+    @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     @State private var showDeleteConfirmation = false
 
     let checkIn: CheckIn.Joined
@@ -20,8 +21,10 @@ struct CheckInListCardView: View {
             await onUpdate(checkIn.copyWith(images: checkIn.images.removingWithId(id)))
         })
         .swipeActions(edge: .trailing) {
-            RouterLink("", open: .screen(.product(checkIn.product.id)))
-                .tint(Color(.systemBackground))
+            if checkInLoadedFrom != .product {
+                RouterLink("", open: .screen(.product(checkIn.product.id)))
+                    .tint(Color(.systemBackground))
+            }
         }
         .swipeActions(edge: .leading) {
             RouterLink(
