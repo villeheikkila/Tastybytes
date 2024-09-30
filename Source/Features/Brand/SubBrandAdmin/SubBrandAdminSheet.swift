@@ -83,16 +83,6 @@ struct SubBrandAdminSheet: View {
             Toggle("subBrand.includesBrandName.toggle.label", isOn: $includesBrandName)
         }
         .customListRowBackground()
-//        if !subBrandsToMergeTo.isEmpty {
-//            Section("subBrand.mergeToAnotherSubBrand.title") {
-//                ForEach(subBrandsToMergeTo) { subBrand in
-//                    EditSubBrandMergeToRowView(subBrand: subBrand) { mergeTo in
-//                        await mergeToSubBrand(mergeTo: mergeTo)
-//                    }
-//                }
-//            }
-//            .customListRowBackground()
-//        }
         Section("labels.info") {
             LabeledIdView(id: subBrand.id.rawValue.formatted())
             LabeledContent("brand.label") {
@@ -209,21 +199,6 @@ struct SubBrandAdminSheet: View {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    private func mergeToSubBrand(mergeTo: SubBrand.JoinedProduct) async {
-        do {
-            // TODO: This is completely wrong
-            // try await repository.subBrand
-            //    .update(updateRequest: .brand(.init(id: id, brandId: mergeTo.id)))
-            id = mergeTo.id
-            await onDelete(subBrand.id)
-            feedbackModel.trigger(.notification(.success))
-        } catch {
-            guard !error.isCancelled else { return }
-            router.open(.alert(.init()))
-            logger.error("Failed to merge to merge sub-brand '\(id)' to '\(mergeTo.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
