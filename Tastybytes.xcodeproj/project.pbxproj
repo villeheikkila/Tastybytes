@@ -1302,7 +1302,7 @@
 			repositoryURL = "https://github.com/villeheikkila/BarcodeToolsKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.4;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
