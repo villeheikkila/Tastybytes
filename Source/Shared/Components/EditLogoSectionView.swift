@@ -38,9 +38,7 @@ struct EditLogoSectionView: View {
                     }
                     .labelStyle(.iconOnly)
                     .frame(width: 120, height: 120)
-                    .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-                    .shadow(radius: 1)
-                    .padding(.vertical, 1)
+                    .cardStyle()
                 }
             }
         }

@@ -4,12 +4,19 @@ import Components
 import Models
 import SwiftUI
 
+extension BarcodeToolsKit.Barcode: @retroactive Equatable {
+    public static func == (lhs: BarcodeToolsKit.Barcode, rhs: BarcodeToolsKit.Barcode) -> Bool {
+        rhs.barcodeString == lhs.barcodeString
+    }
+}
+
 struct BarcodeScannerSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showBarcodeTextField = false
     @State private var barcodeInput = ""
     @State private var isTorchOn = false
     @State private var task: Task<Void, Never>?
+    @State private var addingBarcode: BarcodeToolsKit.Barcode?
 
     let onComplete: (_ barcode: Models.Barcode) async -> Void
 
@@ -32,9 +39,13 @@ struct BarcodeScannerSheet: View {
                 .safeAreaPadding(.vertical)
             } else {
                 BarcodeScannerView { barcode in
-                    guard let barcode, task == nil else { return }
+                    guard let barcode, barcode != addingBarcode, task == nil else { return }
+                    addingBarcode = barcode
                     task = Task {
-                        defer { task = nil }
+                        defer {
+                            task = nil
+                            addingBarcode = nil
+                        }
                         await onComplete(.init(barcode: barcode.barcodeString, type: barcode.standardName))
                         dismiss()
                     }
