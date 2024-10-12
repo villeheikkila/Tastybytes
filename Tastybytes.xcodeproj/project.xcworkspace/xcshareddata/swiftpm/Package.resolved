@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/villeheikkila/BarcodeToolsKit",
       "state" : {
-        "revision" : "5c61e5ee15bc354f8a81534b41a35a680689b58e",
-        "version" : "1.0.0"
+        "revision" : "06f6bf50d8a1c008ae07ca0d92ba455925cd3e97",
+        "version" : "1.1.0"
       }
     },
     {

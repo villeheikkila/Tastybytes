@@ -4,12 +4,6 @@ import Components
 import Models
 import SwiftUI
 
-extension BarcodeToolsKit.Barcode: @retroactive Equatable {
-    public static func == (lhs: BarcodeToolsKit.Barcode, rhs: BarcodeToolsKit.Barcode) -> Bool {
-        rhs.barcodeString == lhs.barcodeString
-    }
-}
-
 struct BarcodeScannerSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showBarcodeTextField = false
