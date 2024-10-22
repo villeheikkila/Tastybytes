@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct FriendsScreen: View {
-    private let logger = Logger(category: "FriendsScreen")
+    private let logger = Logger(label: "FriendsScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @State private var state: ScreenState = .loading

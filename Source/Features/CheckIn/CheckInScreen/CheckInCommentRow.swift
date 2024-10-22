@@ -2,13 +2,13 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 import Translation
 
 struct CheckInCommentRowView: View {
-    private let logger = Logger(category: "CheckInScreen")
+    private let logger = Logger(label: "CheckInScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @State private var showTranslator = false

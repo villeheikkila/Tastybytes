@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct SubcategoryPickerSheet: View {
-    private let logger = Logger(category: "SubcategoryPickerSheet")
+    private let logger = Logger(label: "SubcategoryPickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(AppModel.self) private var appModel

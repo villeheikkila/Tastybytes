@@ -3,13 +3,13 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
 
 struct ProfileInnerScreen: View {
-    private let logger = Logger(category: "ProfileInnerScreen")
+    private let logger = Logger(label: "ProfileInnerScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel

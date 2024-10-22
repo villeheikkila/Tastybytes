@@ -2,7 +2,7 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
@@ -16,7 +16,7 @@ struct BrandAdminSheet: View {
         case editSuggestions(Brand.EditSuggestion.Id)
     }
 
-    private let logger = Logger(category: "BrandAdminSheet")
+    private let logger = Logger(label: "BrandAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel

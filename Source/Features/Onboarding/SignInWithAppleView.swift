@@ -1,12 +1,12 @@
 import AuthenticationServices
 import CryptoKit
 import Extensions
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct SignInWithAppleView: View {
-    private let logger = Logger(category: "SignInWithAppleView")
+    private let logger = Logger(label: "SignInWithAppleView")
     @Environment(\.colorScheme) private var colorScheme
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository

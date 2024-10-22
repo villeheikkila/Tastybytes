@@ -2,12 +2,12 @@
 import Extensions
 import MapKit
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProfileLocationsScreen: View {
-    private let logger = Logger(category: "ProfileLocationsScreen")
+    private let logger = Logger(label: "ProfileLocationsScreen")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
     @State private var checkInLocations = [Location.Saved]()

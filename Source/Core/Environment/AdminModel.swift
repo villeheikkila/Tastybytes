@@ -1,13 +1,13 @@
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 @MainActor
 @Observable
 public final class AdminModel {
-    private let logger = Logger(category: "AdminModel")
+    private let logger = Logger(label: "AdminModel")
 
     public var events = [AdminEvent.Joined]()
     public var unverified = [VerifiableEntity]()

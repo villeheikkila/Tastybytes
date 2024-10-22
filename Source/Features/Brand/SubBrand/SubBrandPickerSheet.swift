@@ -2,7 +2,7 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
@@ -62,7 +62,7 @@ struct SubBrandPickerSheet: View {
 }
 
 struct CreateSubBrandView: View {
-    private let logger = Logger(category: "CreateSubBrandView")
+    private let logger = Logger(label: "CreateSubBrandView")
     @Environment(Repository.self) private var repository
     @State private var subBrandName = ""
     @State private var includesBrandName = false

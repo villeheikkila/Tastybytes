@@ -1,13 +1,13 @@
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 @MainActor
 @Observable
 public final class NotificationModel {
-    private let logger = Logger(category: "NotificationModel")
+    private let logger = Logger(label: "NotificationModel")
     public var notifications = [Models.Notification.Joined]()
     public var isRefreshing = false
     public var task: Task<Void, Never>?

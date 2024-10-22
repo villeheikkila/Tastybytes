@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct BrandScreen: View {
-    private let logger = Logger(category: "BrandScreen")
+    private let logger = Logger(label: "BrandScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel

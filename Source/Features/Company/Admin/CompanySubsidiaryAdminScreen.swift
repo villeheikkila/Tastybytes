@@ -1,11 +1,11 @@
 import Components
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CompanySubsidiaryAdminScreen: View {
-    private let logger = Logger(category: "CompanySubsidiaryScreen")
+    private let logger = Logger(label: "CompanySubsidiaryScreen")
     @Environment(Repository.self) private var repository
     @State private var companyToAttach: Company.Saved?
     @Binding var company: Company.Detailed

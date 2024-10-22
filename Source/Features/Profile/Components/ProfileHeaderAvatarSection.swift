@@ -1,13 +1,13 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
 
 struct ProfileHeaderAvatarSection: View {
-    private let logger = Logger(category: "ProfileHeaderAvatarSection")
+    private let logger = Logger(label: "ProfileHeaderAvatarSection")
     @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel
     @Environment(Repository.self) private var repository

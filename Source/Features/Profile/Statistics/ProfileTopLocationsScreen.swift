@@ -1,11 +1,11 @@
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProfileTopLocationsScreen: View {
-    private let logger = Logger(category: "ProfileTopLocationsScreen")
+    private let logger = Logger(label: "ProfileTopLocationsScreen")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
     @State private var locations = [Profile.TopLocations]()

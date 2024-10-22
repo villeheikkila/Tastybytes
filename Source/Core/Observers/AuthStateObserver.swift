@@ -1,11 +1,11 @@
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct AuthStateObserver<Authenticated: View>: View {
-    private let logger = Logger(category: "AuthStateObserver")
+    private let logger = Logger(label: "AuthStateObserver")
     @Environment(ProfileModel.self) private var profileModel
     @ViewBuilder let authenticated: () -> Authenticated
 

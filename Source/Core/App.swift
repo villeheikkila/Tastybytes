@@ -1,11 +1,11 @@
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 @main
 struct MainApp: App {
-    private let logger = Logger(category: "MainApp")
+    private let logger = Logger(label: "MainApp")
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let infoPlist: InfoPlist
     private let repository: Repository

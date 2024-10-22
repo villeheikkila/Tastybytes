@@ -1,12 +1,12 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CategoriesAdminScreen: View {
-    private let logger = Logger(category: "CategoriesAdminScreen")
+    private let logger = Logger(label: "CategoriesAdminScreen")
     @Environment(Router.self) private var router
     @Environment(AppModel.self) private var appModel
 

@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct MergeLocationSheet: View {
-    private let logger = Logger(category: "MergeLocationSheet")
+    private let logger = Logger(label: "MergeLocationSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackModel.self) private var feedbackModel

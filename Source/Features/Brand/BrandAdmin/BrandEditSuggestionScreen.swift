@@ -1,6 +1,6 @@
 import Components
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
@@ -25,7 +25,7 @@ struct BrandEditSuggestionScreen: View {
 }
 
 struct BrandEditSuggestionRowView: View {
-    private let logger = Logger(category: "CompanyEditSuggestionRow")
+    private let logger = Logger(label: "CompanyEditSuggestionRow")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var showApplyConfirmationDialog = false

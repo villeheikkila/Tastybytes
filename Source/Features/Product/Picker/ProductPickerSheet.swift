@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProductPickerSheet: View {
-    private let logger = Logger(category: "ProductPickerSheet")
+    private let logger = Logger(label: "ProductPickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss

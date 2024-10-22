@@ -1,12 +1,12 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct DiscoverProductRow: View {
-    private let logger = Logger(category: "DiscoverProductRow")
+    private let logger = Logger(label: "DiscoverProductRow")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var showAddBarcodeToConfirmationDialog = false

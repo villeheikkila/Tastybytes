@@ -2,7 +2,7 @@ import Components
 import Extensions
 import MapKit
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
@@ -14,7 +14,7 @@ struct LocationAdminSheet: View {
         case report(Report.Id)
     }
 
-    let logger = Logger(category: "LocationAdminSheet")
+    let logger = Logger(label: "LocationAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router

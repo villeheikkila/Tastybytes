@@ -2,13 +2,13 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
 
 struct CheckInSheet: View {
-    private let logger = Logger(category: "CheckInSheet")
+    private let logger = Logger(label: "CheckInSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackModel.self) private var feedbackModel

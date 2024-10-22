@@ -2,13 +2,13 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
 
 struct CompanyScreen: View {
-    private let logger = Logger(category: "CompanyScreen")
+    private let logger = Logger(label: "CompanyScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel

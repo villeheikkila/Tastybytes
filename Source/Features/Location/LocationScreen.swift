@@ -4,13 +4,13 @@ import Components
 import Extensions
 import MapKit
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
 
 struct LocationScreen: View {
-    private let logger = Logger(category: "LocationScreen")
+    private let logger = Logger(label: "LocationScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(AppModel.self) private var appModel

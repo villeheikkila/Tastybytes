@@ -1,12 +1,12 @@
 
 import MapKit
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct LocationSearchSheet: View {
-    private let logger = Logger(category: "LocationSearchSheet")
+    private let logger = Logger(label: "LocationSearchSheet")
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
     @State private var state: ScreenState = .loading

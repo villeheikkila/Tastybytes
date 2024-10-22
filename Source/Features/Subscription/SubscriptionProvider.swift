@@ -1,5 +1,5 @@
 
-import OSLog
+import Logging
 import StoreKit
 import SwiftUI
 

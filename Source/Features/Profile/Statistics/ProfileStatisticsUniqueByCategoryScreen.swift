@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProfileStatisticsUniqueByCategoryScreen: View {
-    private let logger = Logger(category: "ProfileStatisticsUniqueByCategoryScreen")
+    private let logger = Logger(label: "ProfileStatisticsUniqueByCategoryScreen")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
     @State private var categoryStatistics = [Profile.CategoryStatistics]()
@@ -70,7 +70,7 @@ struct ProfileStatisticsUniqueByCategoryRow: View {
 }
 
 struct SubcategoryStatisticsView: View {
-    private let logger = Logger(category: "SubcategoryStatisticsView")
+    private let logger = Logger(label: "SubcategoryStatisticsView")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
     @State private var subcategoryStatistics = [Profile.SubcategoryStatistics]()

@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProfileWishlistScreen: View {
-    private let logger = Logger(category: "ProfileWishlistScreen")
+    private let logger = Logger(label: "ProfileWishlistScreen")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackModel.self) private var feedbackModel
     @State private var state: ScreenState = .loading

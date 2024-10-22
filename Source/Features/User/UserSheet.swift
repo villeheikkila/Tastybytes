@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProfilePickerSheet: View {
-    private let logger = Logger(category: "ProfilePickerSheet")
+    private let logger = Logger(label: "ProfilePickerSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss

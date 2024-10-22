@@ -1,11 +1,11 @@
 import Components
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CompanyEditSuggestionSheet: View {
-    private let logger = Logger(category: "CompanyEditSuggestionSheet")
+    private let logger = Logger(label: "CompanyEditSuggestionSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss

@@ -1,13 +1,13 @@
 @preconcurrency import GoogleSignIn
 import GoogleSignInSwift
-import OSLog
+import Logging
 import SwiftUI
 import UIKit
 
 public struct SignInWithGoogleButtonView: View {
     public typealias OnSignIn = (_ idToken: String, _ accessToken: String) async -> Void
 
-    private let logger = Logger(category: "SignInWithGoogleButtonView")
+    private let logger = Logger(label: "SignInWithGoogleButtonView")
     @State private var signInTask: Task<Void, Never>?
 
     private let onSignIn: OnSignIn

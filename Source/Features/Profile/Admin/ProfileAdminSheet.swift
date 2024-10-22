@@ -1,7 +1,7 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
@@ -12,7 +12,7 @@ struct ProfileAdminSheet: View {
         case report(Report.Id)
     }
 
-    let logger = Logger(category: "ProfileAdminSheet")
+    let logger = Logger(label: "ProfileAdminSheet")
     @Environment(ProfileModel.self) private var profileModel
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router

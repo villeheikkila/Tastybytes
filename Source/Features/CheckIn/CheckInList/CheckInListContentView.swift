@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CheckInListContentView: View {
-    private let logger = Logger(category: "CheckInListContentView")
+    private let logger = Logger(label: "CheckInListContentView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @State private var loadingCheckInsOnAppearTask: Task<Void, Error>?

@@ -1,5 +1,5 @@
 
-import OSLog
+import Logging
 import SwiftUI
 
 @MainActor func applyNavigationBarUITweaks(application _: UIApplication) {
@@ -16,7 +16,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         return await center.notificationSettings().authorizationStatus
     }
 
-    private let logger = Logger(category: "AppDelegate")
+    private let logger = Logger(label: "AppDelegate")
 
     func application(
         _ application: UIApplication,

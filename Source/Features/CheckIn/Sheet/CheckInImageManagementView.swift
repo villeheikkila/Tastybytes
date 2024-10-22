@@ -1,13 +1,13 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
 
 struct CheckInImageManagementView: View {
-    private let logger = Logger(category: "CheckInImageManagementView")
+    private let logger = Logger(label: "CheckInImageManagementView")
 
     @Environment(AppModel.self) private var appModel
     @Environment(Repository.self) private var repository

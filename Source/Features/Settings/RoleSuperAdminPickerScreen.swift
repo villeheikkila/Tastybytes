@@ -1,12 +1,12 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct RoleSuperAdminPickerScreen: View {
-    let logger = Logger(category: "RoleSuperAdminPickerScreen")
+    let logger = Logger(label: "RoleSuperAdminPickerScreen")
     @Environment(AdminModel.self) private var adminModel
     @Environment(Repository.self) private var repository
 
@@ -24,7 +24,7 @@ struct RoleSuperAdminPickerScreen: View {
 }
 
 struct RolePickerRowView: View {
-    let logger = Logger(category: "RolePickerRowView")
+    let logger = Logger(label: "RolePickerRowView")
     @Environment(Repository.self) private var repository
     @State private var showConfirmationDialogForAddingPermission = false
     @State private var showConfirmationDialogForRemovingPermission = false

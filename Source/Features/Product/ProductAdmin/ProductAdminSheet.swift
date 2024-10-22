@@ -1,7 +1,7 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
@@ -14,7 +14,7 @@ struct ProductAdminSheet: View {
         case editSuggestions(Product.EditSuggestion.Id)
     }
 
-    let logger = Logger(category: "ProductAdminSheet")
+    let logger = Logger(label: "ProductAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(Router.self) private var router

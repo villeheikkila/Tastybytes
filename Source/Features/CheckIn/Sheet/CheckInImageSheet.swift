@@ -1,13 +1,13 @@
 import Components
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CheckInImageSheet: View {
     typealias OnDeleteImageCallback = (_ id: ImageEntity.Id) async -> Void
 
-    private let logger = Logger(category: "CheckInImageSheet")
+    private let logger = Logger(label: "CheckInImageSheet")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(\.dismiss) private var dismiss

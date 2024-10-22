@@ -1,5 +1,5 @@
 import Models
-import OSLog
+import Logging
 import Repositories
 import StoreKit
 import SwiftUI
@@ -7,7 +7,7 @@ import SwiftUI
 @MainActor
 @Observable
 final class SubscriptionModel {
-    private let logger = Logger(category: "SubscriptionModel")
+    private let logger = Logger(label: "SubscriptionModel")
     let productSubscription = ProductSubscription()
     private var activeTransactions: Set<StoreKit.Transaction> = []
 

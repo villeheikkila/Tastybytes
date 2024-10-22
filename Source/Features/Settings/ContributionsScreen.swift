@@ -1,14 +1,14 @@
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 @MainActor
 @Observable
 public final class ContributionsModel {
-    private let logger = Logger(category: "ContributionsModel")
+    private let logger = Logger(label: "ContributionsModel")
 
     public var contributions: Profile.Contributions?
     public var contributionsState: ScreenState = .loading

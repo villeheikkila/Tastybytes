@@ -1,12 +1,12 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct AdminEventScreen: View {
-    let logger = Logger(category: "AdminEventScreen")
+    let logger = Logger(label: "AdminEventScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(AdminModel.self) private var adminModel

@@ -2,14 +2,14 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProductMutationView: View {
     typealias ProductCallback = (_ product: Product.Joined) async -> Void
 
-    private let logger = Logger(category: "ProductMutationInnerView")
+    private let logger = Logger(label: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(AppModel.self) private var appModel

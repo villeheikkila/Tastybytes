@@ -1,5 +1,5 @@
 import Foundation
-import OSLog
+import Logging
 internal import Supabase
 
 @Observable
@@ -66,7 +66,7 @@ public final class Repository: RepositoryProtocol {
 }
 
 struct CustomSupabaseLogger: SupabaseLogger {
-    let logger = Logger(category: "SupabaseLogger")
+    let logger = Logger(label: "SupabaseLogger")
 
     func log(message: SupabaseLogMessage) {
         switch message.level {

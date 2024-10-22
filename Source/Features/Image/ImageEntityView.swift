@@ -1,11 +1,11 @@
 import Components
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ImageEntityView<Content: View>: View {
-    let logger = Logger(category: "ImageEntityView")
+    let logger = Logger(label: "ImageEntityView")
     public typealias ImageBuilder = (Image) -> Content
 
     @Environment(Repository.self) private var repository

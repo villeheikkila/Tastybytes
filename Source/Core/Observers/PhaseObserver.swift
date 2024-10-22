@@ -1,9 +1,9 @@
 
-import OSLog
+import Logging
 import SwiftUI
 
 struct PhaseObserver<Content: View>: View {
-    private let logger = Logger(category: "PhaseObserver")
+    private let logger = Logger(label: "PhaseObserver")
     @Environment(AppModel.self) private var appModel
     @Environment(\.scenePhase) private var phase
 

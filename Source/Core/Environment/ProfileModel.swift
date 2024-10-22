@@ -1,6 +1,6 @@
 import Extensions
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
@@ -25,7 +25,7 @@ enum ProfileState: Sendable {
 @MainActor
 @Observable
 final class ProfileModel {
-    private let logger = Logger(category: "ProfileModel")
+    private let logger = Logger(label: "ProfileModel")
     // Auth state
     var profileState: ProfileState = .loading
     var authState: AuthState?
@@ -341,7 +341,7 @@ final class ProfileModel {
     public func updatePrivacySettings(isPrivate: Bool) async {
         do {
             extendedProfile = try await repository.profile.update(update: .init(id: id, isPrivate: isPrivate))
-            logger.log("Updated privacy settings")
+            logger.info("Updated privacy settings")
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -352,7 +352,7 @@ final class ProfileModel {
     public func updateDisplaySettings(showFullName: Bool) async {
         do {
             extendedProfile = try await repository.profile.update(update: .init(id: id, showFullName: showFullName))
-            logger.log("updated display settings")
+            logger.info("updated display settings")
         } catch {
             guard !error.isCancelled else { return }
             alertError = .init()
@@ -516,7 +516,7 @@ final class ProfileModel {
 }
 
 public func clearTemporaryData() {
-    let logger = Logger(category: "TempDataCleanUp")
+    let logger = Logger(label: "TempDataCleanUp")
     let fileManager = FileManager.default
     do {
         let directoryContents = try fileManager.contentsOfDirectory(

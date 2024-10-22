@@ -1,6 +1,6 @@
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
@@ -15,7 +15,7 @@ struct NotificationObserver<Content: View>: View {
 }
 
 private struct InnerNotificationObserver<Content: View>: View {
-    private let logger = Logger(category: "MainContent")
+    private let logger = Logger(label: "MainContent")
     @Environment(AppModel.self) private var appModel
     @State private var notificationModel: NotificationModel
     @Environment(\.scenePhase) private var phase

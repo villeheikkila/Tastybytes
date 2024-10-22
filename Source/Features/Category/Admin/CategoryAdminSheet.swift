@@ -1,12 +1,12 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CategoryAdminSheet: View {
-    private let logger = Logger(category: "CategoryAdminSheet")
+    private let logger = Logger(label: "CategoryAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss

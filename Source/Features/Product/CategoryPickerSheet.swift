@@ -2,11 +2,11 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import SwiftUI
 
 struct CategoryPickerSheet: View {
-    private let logger = Logger(category: "CategoryPickerSheet")
+    private let logger = Logger(label: "CategoryPickerSheet")
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchTerm = ""

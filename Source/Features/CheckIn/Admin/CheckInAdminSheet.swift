@@ -1,5 +1,5 @@
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
@@ -11,7 +11,7 @@ struct CheckInAdminSheet: View {
         case report(Report.Id)
     }
 
-    private let logger = Logger(category: "CheckInAdminSheet")
+    private let logger = Logger(label: "CheckInAdminSheet")
     @Environment(\.dismiss) private var dismiss
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository

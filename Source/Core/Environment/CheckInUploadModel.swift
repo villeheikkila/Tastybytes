@@ -1,13 +1,13 @@
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 @MainActor
 @Observable
 public final class CheckInUploadModel {
-    private let logger = Logger(category: "CheckInUploadModel")
+    private let logger = Logger(label: "CheckInUploadModel")
 
     public var uploadedImageForCheckIn: CheckIn.Joined?
     public var alertError: AlertEvent?

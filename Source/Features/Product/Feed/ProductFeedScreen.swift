@@ -1,12 +1,12 @@
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProductFeedScreen: View {
-    private let logger = Logger(category: "ProductFeedView")
+    private let logger = Logger(label: "ProductFeedView")
     @Environment(Repository.self) private var repository
     @Environment(AppModel.self) private var appModel
     @State private var products = [Product.Joined]()

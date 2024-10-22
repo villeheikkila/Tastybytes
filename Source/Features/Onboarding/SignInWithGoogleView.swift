@@ -1,10 +1,10 @@
 import Components
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct SignInWithGoogleView: View {
-    private let logger = Logger(category: "SignInWithGoogleView")
+    private let logger = Logger(label: "SignInWithGoogleView")
     @Environment(\.colorScheme) private var colorScheme
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository

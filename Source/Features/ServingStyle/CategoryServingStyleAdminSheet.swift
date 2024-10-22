@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CategoryServingStyleAdminSheet: View {
-    private let logger = Logger(category: "CategoryServingStyleAdminSheet")
+    private let logger = Logger(label: "CategoryServingStyleAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(FeedbackModel.self) private var feedbackModel

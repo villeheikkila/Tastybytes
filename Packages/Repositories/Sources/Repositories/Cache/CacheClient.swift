@@ -1,11 +1,11 @@
 import Foundation
-import OSLog
+import Logging
 internal import Cache
 
 extension Storage<String, Data>: @unchecked @retroactive Sendable {}
 
 struct CacheClient: CacheProtocol {
-    let logger = Logger(category: "SupabaseLogger")
+    let logger = Logger(label: "SupabaseLogger")
 
     let storage: Storage<String, Data>
 

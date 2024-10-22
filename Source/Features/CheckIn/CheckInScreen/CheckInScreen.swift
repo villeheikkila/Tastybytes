@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CheckInScreen: View {
-    private let logger = Logger(category: "CheckInScreen")
+    private let logger = Logger(label: "CheckInScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(NotificationModel.self) private var notificationModel

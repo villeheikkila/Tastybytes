@@ -1,5 +1,5 @@
 import Foundation
-import OSLog
+import Logging
 
 public enum NavigatablePath: Sendable {
     case product(id: Product.Id)

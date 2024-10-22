@@ -1,12 +1,12 @@
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ProfileProductListView: View {
-    private let logger = Logger(category: "ProfileProductListView")
+    private let logger = Logger(label: "ProfileProductListView")
     @Environment(Repository.self) private var repository
     @State private var state: ScreenState = .loading
     @State private var products: [Product.Joined] = []

@@ -1,10 +1,10 @@
 import Models
-import OSLog
+import Logging
 import StoreKit
 import SwiftUI
 
 actor ProductSubscription {
-    private let logger = Logger(category: "ProductSubscription")
+    private let logger = Logger(label: "ProductSubscription")
 
     public init() {}
 

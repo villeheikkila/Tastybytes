@@ -1,11 +1,11 @@
 import CoreLocation
 import MapKit
-import OSLog
+import Logging
 
 @MainActor
 @Observable
 public final class LocationModel {
-    private let logger = Logger(category: "LocationModel")
+    private let logger = Logger(label: "LocationModel")
     private let manager = CLLocationManager()
     private var monitoringTask: Task<Void, Never>?
 

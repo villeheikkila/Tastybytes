@@ -1,14 +1,14 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct SubcategoryAdminSheet: View {
     typealias OnEditCallback = (_ subcategoryName: String) async -> Void
 
-    private var logger = Logger(category: "SubcategoryAdminSheet")
+    private var logger = Logger(label: "SubcategoryAdminSheet")
     @Environment(Repository.self) private var repository
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss

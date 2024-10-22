@@ -2,12 +2,12 @@ import Components
 import Extensions
 import MessageUI
 import Models
-import OSLog
+import Logging
 import StoreKit
 import SwiftUI
 
 struct AboutScreen: View {
-    private let logger = Logger(category: "AboutScreen")
+    private let logger = Logger(label: "AboutScreen")
     @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
     @Environment(\.requestReview) private var requestReview

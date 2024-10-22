@@ -1,5 +1,5 @@
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import SwiftUI
 

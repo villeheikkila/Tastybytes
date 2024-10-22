@@ -3,12 +3,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CheckInsByTimeBucketView: View {
-    private let logger = Logger(category: "CheckInsByTimeBucketView")
+    private let logger = Logger(label: "CheckInsByTimeBucketView")
     @Environment(Repository.self) private var repository
     @State private var isLoading = false
     @State private var checkInsPerDay = [Profile.CheckInsPerDay]()

@@ -1,6 +1,6 @@
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
@@ -62,7 +62,7 @@ enum AppDataKey: String, CaseIterable {
 @MainActor
 @Observable
 public final class AppModel {
-    private let logger = Logger(category: "AppModel")
+    private let logger = Logger(label: "AppModel")
     // App state
     public var isInitializing = false
     public var state: AppState = .loading {

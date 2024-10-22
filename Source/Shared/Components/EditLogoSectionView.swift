@@ -1,11 +1,11 @@
 import Components
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import SwiftUI
 
 struct EditLogoSectionView: View {
-    private let logger = Logger(category: "EditLogoSection")
+    private let logger = Logger(label: "EditLogoSection")
     @Environment(ProfileModel.self) private var profileModel
     @State private var showFileImporter = false
 

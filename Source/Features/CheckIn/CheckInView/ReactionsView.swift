@@ -2,12 +2,12 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ReactionsView: View {
-    private let logger = Logger(category: "ReactionsView")
+    private let logger = Logger(label: "ReactionsView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel

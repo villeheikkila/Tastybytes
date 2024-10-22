@@ -3,7 +3,7 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
@@ -34,7 +34,7 @@ enum ProfileCheckInListFilter: Sendable, Hashable, Codable {
 }
 
 struct ProfileCheckInsList: View {
-    private let logger = Logger(category: "ProfileCheckInsListInnerView")
+    private let logger = Logger(label: "ProfileCheckInsListInnerView")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel

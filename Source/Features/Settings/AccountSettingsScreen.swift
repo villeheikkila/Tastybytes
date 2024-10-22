@@ -2,13 +2,13 @@ import Components
 
 import Extensions
 import Models
-import OSLog
+import Logging
 import PhotosUI
 import Repositories
 import SwiftUI
 
 struct AccountSettingsScreen: View {
-    private let logger = Logger(category: "AccountSettingsScreen")
+    private let logger = Logger(label: "AccountSettingsScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(AppModel.self) private var appModel

@@ -1,11 +1,11 @@
 import Components
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CheckInCommentEditSheet: View {
-    private let logger = Logger(category: "CheckInCommentEditSheet")
+    private let logger = Logger(label: "CheckInCommentEditSheet")
     @Environment(Repository.self) private var repository
     @Environment(\.dismiss) private var dismiss
     @State private var editCommentText = ""

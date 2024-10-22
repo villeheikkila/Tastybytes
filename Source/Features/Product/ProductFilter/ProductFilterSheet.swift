@@ -1,7 +1,7 @@
 import Components
 
 import Models
-import OSLog
+import Logging
 import SwiftUI
 
 struct ProductFilterSheet: View {
@@ -9,7 +9,7 @@ struct ProductFilterSheet: View {
         case category, checkIns, sortBy
     }
 
-    private let logger = Logger(category: "SeachFilterSheet")
+    private let logger = Logger(label: "SeachFilterSheet")
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @State private var categoryFilter: Models.Category.JoinedSubcategoriesServingStyles?

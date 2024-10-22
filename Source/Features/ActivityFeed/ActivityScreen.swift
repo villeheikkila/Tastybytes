@@ -1,12 +1,12 @@
 import Components
 import Extensions
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct ActivityScreen: View {
-    private let logger = Logger(category: "CheckInList")
+    private let logger = Logger(label: "CheckInList")
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(AppModel.self) private var appModel

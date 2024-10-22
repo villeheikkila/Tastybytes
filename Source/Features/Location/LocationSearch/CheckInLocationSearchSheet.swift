@@ -5,12 +5,12 @@ import Extensions
 import Foundation
 import MapKit
 import Models
-import OSLog
+import Logging
 import Repositories
 import SwiftUI
 
 struct CheckInLocationSearchSheet: View {
-    private let logger = Logger(category: "CheckInLocationSearchSheet")
+    private let logger = Logger(label: "CheckInLocationSearchSheet")
     @Environment(Router.self) private var router
     @Environment(Repository.self) private var repository
     @Environment(FeedbackModel.self) private var feedbackModel

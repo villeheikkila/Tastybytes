@@ -1,4 +1,4 @@
-import OSLog
+import Logging
 import SwiftUI
 
 public struct AsyncButton<LabelView: View>: View {

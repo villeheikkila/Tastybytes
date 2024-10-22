@@ -1,5 +1,5 @@
 import Foundation
-import OSLog
+import Logging
 internal import Supabase
 
 public protocol RepositoryProtocol: Sendable {
