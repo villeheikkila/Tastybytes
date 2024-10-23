@@ -3,9 +3,9 @@ import CoreLocation
 
 import Extensions
 import Foundation
+import Logging
 import MapKit
 import Models
-import Logging
 import Repositories
 import SwiftUI
 

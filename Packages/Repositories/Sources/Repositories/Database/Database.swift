@@ -27,6 +27,7 @@ enum Database {
         case checkInComments = "check_in_comments"
         case checkInTaggedProfiles = "check_in_tagged_profiles"
         case companies
+        case logs
         case companyLogos = "company_logos"
         case countries
         case documents

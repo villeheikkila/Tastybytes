@@ -1,6 +1,6 @@
 import CoreLocation
-import MapKit
 import Logging
+import MapKit
 
 @MainActor
 @Observable

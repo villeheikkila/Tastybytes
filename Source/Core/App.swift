@@ -1,14 +1,16 @@
-import Models
 import Logging
+import Models
 import Repositories
 import SwiftUI
 
 @main
 struct MainApp: App {
     private let logger = Logger(label: "MainApp")
+    @Environment(\.scenePhase) private var phase
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let infoPlist: InfoPlist
     private let repository: Repository
+    private let logManager: LogManager
 
     init() {
         #if DEBUG
@@ -31,11 +33,23 @@ struct MainApp: App {
         }
 
         self.infoPlist = infoPlist
-        repository = .init(
+        let repository: Repository = .init(
             apiUrl: infoPlist.supabaseUrl,
             apiKey: infoPlist.supabaseAnonKey,
             headers: ["x_bundle_id": bundleIdentifier, "x_app_version": infoPlist.appVersion.prettyString]
         )
+        let logManager = try! LogManager(onLogsSent: { entries in
+            print("entries: \(entries)")
+        }, internalLog: { log in print(log) })
+        LoggingSystem.bootstrap { label in
+            CustomLogHandler(
+                label: label,
+                onLogged: { entry in Task { await logManager.log(entry) }
+                }
+            )
+        }
+        self.repository = repository
+        self.logManager = logManager
     }
 
     var body: some Scene {
@@ -59,5 +73,20 @@ struct MainApp: App {
             }
         }
         .environment(repository)
+        .onChange(of: phase) { _, newPhase in
+            switch newPhase {
+            case .active:
+                Task {
+                    await logManager.resumeSyncing()
+                }
+            case .background:
+                Task {
+                    await logManager.pauseSyncing()
+                    try? await logManager.storeToDisk()
+                }
+            default:
+                ()
+            }
+        }
     }
 }
