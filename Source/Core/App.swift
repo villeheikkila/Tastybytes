@@ -10,7 +10,7 @@ struct MainApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let infoPlist: InfoPlist
     private let repository: Repository
-    private let logManager: LogManager
+    private let logManager: CachedLogManager
 
     init() {
         #if DEBUG
@@ -38,18 +38,24 @@ struct MainApp: App {
             apiKey: infoPlist.supabaseAnonKey,
             headers: ["x_bundle_id": bundleIdentifier, "x_app_version": infoPlist.appVersion.prettyString]
         )
-        let logManager = try! LogManager(onLogsSent: { entries in
+
+        let cachedLogManager = try! CachedLogManager(onLogsSent: { entries in
             print("entries: \(entries)")
         }, internalLog: { log in print(log) })
+        let osLogManager = OSLogManager(subsystem: bundleIdentifier)
+        #if DEBUG
+            let customLogHandlerManager = osLogManager
+        #else
+            let customLogHandlerManager = cachedLogManager
+        #endif
         LoggingSystem.bootstrap { label in
             CustomLogHandler(
                 label: label,
-                onLogged: { entry in Task { await logManager.log(entry) }
-                }
+                logManager: customLogHandlerManager
             )
         }
         self.repository = repository
-        self.logManager = logManager
+        logManager = cachedLogManager
     }
 
     var body: some Scene {

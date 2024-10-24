@@ -2,7 +2,6 @@ import Foundation
 import Logging
 
 public struct CustomLogHandler: LogHandler {
-    public typealias OnLogged = @Sendable (LogEntry) -> Void
     public var metadata: Logger.Metadata = [:]
     public var logLevel: Logger.Level = .debug
 
@@ -12,11 +11,11 @@ public struct CustomLogHandler: LogHandler {
     }
 
     private let label: String
-    private let onLogged: OnLogged
+    private let logManager: LogManagerProtocol
 
-    public init(label: String, onLogged: @escaping OnLogged) {
+    public init(label: String, logManager: LogManagerProtocol) {
         self.label = label
-        self.onLogged = onLogged
+        self.logManager = logManager
     }
 
     public func log(
@@ -39,6 +38,6 @@ public struct CustomLogHandler: LogHandler {
             function: function,
             line: line
         )
-        onLogged(entry)
+        logManager.log(entry)
     }
 }

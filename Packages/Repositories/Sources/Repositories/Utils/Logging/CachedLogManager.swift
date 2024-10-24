@@ -11,7 +11,11 @@ public struct LogManagerConfig: Sendable {
     }
 }
 
-public actor LogManager {
+public protocol LogManagerProtocol: Sendable {
+    func log(_ entry: LogEntry)
+}
+
+public actor CachedLogManager: LogManagerProtocol {
     public typealias OnLogsSent = @Sendable ([LogEntry]) async throws -> Void
     public typealias OnInternalLog = @Sendable (String) -> Void
 
@@ -52,8 +56,10 @@ public actor LogManager {
         }
     }
 
-    public func log(_ entry: LogEntry) async {
-        await cache.insert(entry)
+    public nonisolated func log(_ entry: LogEntry) {
+        Task {
+            await cache.insert(entry)
+        }
     }
 
     public func pauseSyncing() {
