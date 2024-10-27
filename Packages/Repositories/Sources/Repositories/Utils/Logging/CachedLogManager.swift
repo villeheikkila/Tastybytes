@@ -19,15 +19,15 @@ public actor CachedLogManager: LogManagerProtocol {
     public typealias OnLogsSent = @Sendable ([LogEntry]) async throws -> Void
     public typealias OnInternalLog = @Sendable (String) -> Void
 
-    private let onLogsSent: OnLogsSent
+    private let onSyncLogs: OnLogsSent
     private let internalLog: OnInternalLog
-    private let cache: SimpleCache<LogEntry>
+    private let cache: any SimpleCacheProtocol<LogEntry>
     private let config: LogManagerConfig
     private var syncTask: Task<Void, Never>?
 
-    public init(config: LogManagerConfig = .init(), onLogsSent: @escaping OnLogsSent, internalLog: @escaping OnInternalLog) throws {
-        cache = try SimpleCache(filePath: "log-cache")
-        self.onLogsSent = onLogsSent
+    public init(cache: any SimpleCacheProtocol<LogEntry>, config: LogManagerConfig = .init(), onLogsSent: @escaping OnLogsSent, internalLog: @escaping OnInternalLog) throws {
+        self.cache = cache
+        self.onSyncLogs = onLogsSent
         self.internalLog = internalLog
         self.config = config
     }
@@ -45,20 +45,20 @@ public actor CachedLogManager: LogManagerProtocol {
     }
 
     private func sync(count: Int) async {
-        let logsToSync = await cache.get(count: count)
-        guard !logsToSync.isEmpty else { return }
+        let logsToSync = try? await cache.get(count: count)
+        guard let logsToSync, !logsToSync.isEmpty else { return }
         do {
-            try await onLogsSent(logsToSync)
+            try await onSyncLogs(logsToSync)
             internalLog("Succesfully synced \(logsToSync.count) logs")
         } catch {
             internalLog("Failed to sync \(logsToSync.count) log events, \(error). Returning to cache")
-            await cache.insert(logsToSync)
+            _ = try? await cache.append(logsToSync)
         }
     }
 
     public nonisolated func log(_ entry: LogEntry) {
         Task {
-            await cache.insert(entry)
+            try await cache.append(entry)
         }
     }
 
@@ -73,7 +73,7 @@ public actor CachedLogManager: LogManagerProtocol {
 
     public func storeToDisk() async throws {
         do {
-            try await cache.storeToDisk()
+            try await cache.persist()
         } catch {
             internalLog("Failed to store the logs to disk: \(error)")
         }

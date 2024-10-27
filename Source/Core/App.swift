@@ -8,9 +8,9 @@ struct MainApp: App {
     private let logger = Logger(label: "MainApp")
     @Environment(\.scenePhase) private var phase
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @State private var logManagerContainer = LogManagerContainer()
     private let infoPlist: InfoPlist
     private let repository: Repository
-    private let logManager: CachedLogManager
 
     init() {
         #if DEBUG
@@ -33,29 +33,11 @@ struct MainApp: App {
         }
 
         self.infoPlist = infoPlist
-        let repository: Repository = .init(
+        self.repository = Repository(
             apiUrl: infoPlist.supabaseUrl,
             apiKey: infoPlist.supabaseAnonKey,
             headers: ["x_bundle_id": bundleIdentifier, "x_app_version": infoPlist.appVersion.prettyString]
         )
-
-        let cachedLogManager = try! CachedLogManager(onLogsSent: { entries in
-            print("entries: \(entries)")
-        }, internalLog: { log in print(log) })
-        let osLogManager = OSLogManager(subsystem: bundleIdentifier)
-        #if DEBUG
-            let customLogHandlerManager = osLogManager
-        #else
-            let customLogHandlerManager = cachedLogManager
-        #endif
-        LoggingSystem.bootstrap { label in
-            CustomLogHandler(
-                label: label,
-                logManager: customLogHandlerManager
-            )
-        }
-        self.repository = repository
-        logManager = cachedLogManager
     }
 
     var body: some Scene {
@@ -77,22 +59,55 @@ struct MainApp: App {
                     }
                 }
             }
+            .task {
+                await initializeLogging()
+            }
         }
         .environment(repository)
         .onChange(of: phase) { _, newPhase in
             switch newPhase {
             case .active:
                 Task {
-                    await logManager.resumeSyncing()
+                    await logManagerContainer.logManager?.resumeSyncing()
                 }
             case .background:
                 Task {
-                    await logManager.pauseSyncing()
-                    try? await logManager.storeToDisk()
+                    await logManagerContainer.logManager?.pauseSyncing()
+                    try? await logManagerContainer.logManager?.storeToDisk()
                 }
             default:
                 ()
             }
         }
     }
+    
+    private func initializeLogging() async {
+        do {
+            let cache = try await SimpleCache<LogEntry>(fileName: "logs.json")
+            let cachedLogManager = try CachedLogManager(cache: cache, onLogsSent: { entries in
+                print("entries: \(entries)")
+            }, internalLog: { log in print(log) })
+            let bundleIdentifier = Bundle.main.bundleIdentifier!
+            let osLogManager = OSLogManager(subsystem: bundleIdentifier)
+            #if DEBUG
+                let customLogHandlerManager = osLogManager
+            #else
+                let customLogHandlerManager = cachedLogManager
+            #endif
+            LoggingSystem.bootstrap { label in
+                CustomLogHandler(
+                    label: label,
+                    logManager: customLogHandlerManager
+                )
+            }
+            logManagerContainer.logManager = cachedLogManager
+        } catch {
+            logger.error("Failed to initialize logging: \(error)")
+        }
+    }
+}
+
+@Observable
+class LogManagerContainer {
+    var logManager: CachedLogManager?
 }
