@@ -156,6 +156,7 @@ struct ProductAdminSheet: View {
         Section {
             RouterLink("labels.edit", systemImage: "pencil", open: .sheet(.product(.edit(.init(product: product), onEdit: { updatedProduct in
                 product = product.mergeWith(product: updatedProduct)
+                await onUpdate(product)
             }))))
         }
         .buttonStyle(.plain)

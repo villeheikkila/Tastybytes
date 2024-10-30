@@ -162,8 +162,9 @@ struct ProductScreen: View {
                     )
                     ReportButton(entity: .product(product))
                     Divider()
-                    AdminRouterLink(open: .sheet(.productAdmin(id: id, onUpdate: { _ in
-                        await getProductData()
+                    AdminRouterLink(open: .sheet(.productAdmin(id: id, onUpdate: { update in
+                        product = .init(product: update)
+                        await getProductData(isRefresh: true)
                     }, onDelete: { _ in
                         router.removeLast()
                     })))
