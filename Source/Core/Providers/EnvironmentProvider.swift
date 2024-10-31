@@ -7,6 +7,7 @@ import SwiftUI
 import TipKit
 
 struct EnvironmentProvider<Content: View>: View {
+    @State private var snackController: SnackController
     @State private var adminModel: AdminModel
     @State private var profileModel: ProfileModel
     @State private var appModel: AppModel
@@ -17,12 +18,14 @@ struct EnvironmentProvider<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(repository: Repository, infoPlist: InfoPlist, content: @escaping () -> Content) {
+        let snackController = SnackController()
         adminModel = AdminModel(repository: repository)
         profileModel = ProfileModel(repository: repository)
         appModel = AppModel(repository: repository, infoPlist: infoPlist)
         checkInUploadModel = CheckInUploadModel(repository: repository)
         subscriptionModel = SubscriptionModel(repository: repository)
         self.content = content
+        self.snackController = snackController
     }
 
     var body: some View {
@@ -34,6 +37,7 @@ struct EnvironmentProvider<Content: View>: View {
             .environment(locationModel)
             .environment(subscriptionModel)
             .environment(feedbackModel)
+            .environment(snackController)
             .sensoryFeedback(trigger: feedbackModel.sensoryFeedback) { _, newValue in
                 newValue?.sensoryFeedback
             }

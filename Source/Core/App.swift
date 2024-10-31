@@ -33,7 +33,7 @@ struct MainApp: App {
         }
 
         self.infoPlist = infoPlist
-        self.repository = Repository(
+        repository = Repository(
             apiUrl: infoPlist.supabaseUrl,
             apiKey: infoPlist.supabaseAnonKey,
             headers: ["x_bundle_id": bundleIdentifier, "x_app_version": infoPlist.appVersion.prettyString]
@@ -80,7 +80,7 @@ struct MainApp: App {
             }
         }
     }
-    
+
     private func initializeLogging() async {
         do {
             let cache = try await SimpleCache<LogEntry>(fileName: "logs.json")

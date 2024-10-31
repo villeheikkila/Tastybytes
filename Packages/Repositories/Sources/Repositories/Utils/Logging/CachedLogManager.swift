@@ -27,7 +27,7 @@ public actor CachedLogManager: LogManagerProtocol {
 
     public init(cache: any SimpleCacheProtocol<LogEntry>, config: LogManagerConfig = .init(), onLogsSent: @escaping OnLogsSent, internalLog: @escaping OnInternalLog) throws {
         self.cache = cache
-        self.onSyncLogs = onLogsSent
+        onSyncLogs = onLogsSent
         self.internalLog = internalLog
         self.config = config
     }

@@ -31,7 +31,7 @@ public final class SimpleCache<T: Codable & Sendable>: SimpleCacheProtocol {
     private let fileManager: FileManager
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
-    
+
     public init(
         fileName: String,
         maxCacheSize: Int = 1000,
@@ -39,24 +39,24 @@ public final class SimpleCache<T: Codable & Sendable>: SimpleCacheProtocol {
     ) throws {
         self.maxCacheSize = maxCacheSize
         self.fileManager = fileManager
-        self.decoder = JSONDecoder()
-        self.encoder = JSONEncoder()
+        decoder = JSONDecoder()
+        encoder = JSONEncoder()
         let fileNameWithExtension = fileName.hasSuffix(".json") ? fileName : "\(fileName).json"
-        self.cacheDirectoryUrl = try fileManager.url(
+        cacheDirectoryUrl = try fileManager.url(
             for: .cachesDirectory,
             in: .userDomainMask,
             appropriateFor: nil,
             create: true
         )
         .appendingPathComponent(fileNameWithExtension)
-        
+
         try loadFromDisk()
     }
-    
+
     public var count: Int {
         cache.count
     }
-    
+
     @discardableResult
     public func append(_ item: T) async throws -> Bool {
         guard cache.count < maxCacheSize else {
@@ -66,7 +66,7 @@ public final class SimpleCache<T: Codable & Sendable>: SimpleCacheProtocol {
         try await persist()
         return true
     }
-    
+
     @discardableResult
     public func append(_ items: [T]) async throws -> Bool {
         guard cache.count + items.count <= maxCacheSize else {
@@ -76,7 +76,7 @@ public final class SimpleCache<T: Codable & Sendable>: SimpleCacheProtocol {
         try await persist()
         return true
     }
-    
+
     public func get(count: Int) async throws -> [T] {
         let sliceSize = min(count, cache.count)
         let items = Array(cache[..<sliceSize])
@@ -84,12 +84,12 @@ public final class SimpleCache<T: Codable & Sendable>: SimpleCacheProtocol {
         try await persist()
         return items
     }
-    
+
     public func clear() async throws {
         cache.removeAll()
         try await persist()
     }
-    
+
     private func loadFromDisk() throws {
         if fileManager.fileExists(atPath: cacheDirectoryUrl.path) {
             let data = try Data(contentsOf: cacheDirectoryUrl)
@@ -99,7 +99,7 @@ public final class SimpleCache<T: Codable & Sendable>: SimpleCacheProtocol {
             try "[]".data(using: .utf8)?.write(to: cacheDirectoryUrl)
         }
     }
-    
+
     public func persist() async throws {
         do {
             let data = try encoder.encode(cache)
@@ -112,7 +112,7 @@ public final class SimpleCache<T: Codable & Sendable>: SimpleCacheProtocol {
 
 public enum CacheFactory {
     @CacheActor public static func makeCache<T: Codable>(
-        for type: T.Type,
+        for _: T.Type,
         fileName: String,
         maxSize: Int = 1000
     ) throws -> SimpleCache<T> {
