@@ -6,7 +6,7 @@ import SwiftUI
 
 @MainActor
 @Observable
-public final class AdminModel {
+final class AdminModel {
     private let logger = Logger(label: "AdminModel")
 
     public var events = [AdminEvent.Joined]()
@@ -21,9 +21,11 @@ public final class AdminModel {
     public var roles = [Role.Joined]()
 
     private let repository: Repository
+    private let snackController: SnackController
 
-    public init(repository: Repository) {
+    init(repository: Repository, snackController: SnackController) {
         self.repository = repository
+        self.snackController = snackController
     }
 
     public func initialize() async {

@@ -26,6 +26,9 @@ struct TabsView: View {
             Tabs.profile.tab
         }
         .tabViewStyle(.sidebarAdaptable)
+        .overlay(alignment: .top) {
+            SnackContainer()
+        }
         .sensoryFeedback(.selection, trigger: selectedTab)
         .onOpenURL { url in
             if let tab = TabUrlHandler(url: url, deeplinkSchemes: appModel.infoPlist.deeplinkSchemes).tab {

@@ -19,8 +19,8 @@ struct EnvironmentProvider<Content: View>: View {
 
     init(repository: Repository, infoPlist: InfoPlist, content: @escaping () -> Content) {
         let snackController = SnackController()
-        adminModel = AdminModel(repository: repository)
-        profileModel = ProfileModel(repository: repository)
+        adminModel = AdminModel(repository: repository, snackController: snackController)
+        profileModel = ProfileModel(repository: repository, snackController: snackController)
         appModel = AppModel(repository: repository, infoPlist: infoPlist)
         checkInUploadModel = CheckInUploadModel(repository: repository)
         subscriptionModel = SubscriptionModel(repository: repository)
@@ -41,11 +41,6 @@ struct EnvironmentProvider<Content: View>: View {
             .sensoryFeedback(trigger: feedbackModel.sensoryFeedback) { _, newValue in
                 newValue?.sensoryFeedback
             }
-            // .alertError($appModel.alertError)
-            // .alertError($notificationModel.alertError)
-            // .alertError($profileModel.alertError)
-            // .alertError($appModel.alertError)
-            // .alertError($friendModel.alertError)
             .task {
                 try? Tips.configure([.displayFrequency(.daily)])
             }
@@ -58,8 +53,33 @@ struct EnvironmentProvider<Content: View>: View {
             .task {
                 locationModel.updateLocationAuthorizationStatus()
             }
+            .showPeriodicSnack(snackController: snackController)
             .onChange(of: subscriptionModel.subscriptionStatus, initial: true) {
                 print("Subscription status: \(subscriptionModel.subscriptionStatus)")
             }
+    }
+}
+
+extension View {
+    func showPeriodicSnack(
+        snackController: SnackController,
+        isActive: Bool = true,
+        interval: TimeInterval = 5.0
+    ) -> some View {
+        task {
+            guard isActive else { return }
+
+            while true {
+                snackController.open(.init(
+                    mode: .snack(
+                        tint: .red,
+                        systemName: "exclamationmark.triangle.fill",
+                        message: "Unexpected error occurred"
+                    )
+                ))
+
+                try? await Task.sleep(for: .seconds(interval))
+            }
+        }
     }
 }

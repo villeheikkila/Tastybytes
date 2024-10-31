@@ -6140,6 +6140,51 @@
         }
       }
     },
+    "Unexpected error occurred" : {
+
+    },
+    "Unexpected error occurred while blocking user" : {
+
+    },
+    "Unexpected error occurred while deleting account" : {
+
+    },
+    "Unexpected error occurred while deleting avatar" : {
+
+    },
+    "Unexpected error occurred while logging out" : {
+
+    },
+    "Unexpected error occurred while removing friend request" : {
+
+    },
+    "Unexpected error occurred while sending friend request" : {
+
+    },
+    "Unexpected error occurred while unblocking user" : {
+
+    },
+    "Unexpected error occurred while updating display settings" : {
+
+    },
+    "Unexpected error occurred while updating friend request" : {
+
+    },
+    "Unexpected error occurred while updating onboarding status" : {
+
+    },
+    "Unexpected error occurred while updating privacy settings" : {
+
+    },
+    "Unexpected error occurred while updating profile" : {
+
+    },
+    "Unexpected error occurred while updating push notification settings" : {
+
+    },
+    "Unexpected error occurred while uploading avatar" : {
+
+    },
     "Unlock check-in date modification and many other features by becoming a Pro member" : {
 
     },

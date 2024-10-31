@@ -29,7 +29,6 @@ final class ProfileModel {
     // Auth state
     var profileState: ProfileState = .loading
     var authState: AuthState?
-    var alertError: AlertEvent?
 
     // Account Settings
     var email = ""
@@ -52,6 +51,7 @@ final class ProfileModel {
     var appIcon: AppIcon = .ramune
 
     private let repository: Repository
+    private let snackController: SnackController
 
     var extendedProfile: Profile.Extended? {
         get {
@@ -105,8 +105,9 @@ final class ProfileModel {
         }
     }
 
-    init(repository: Repository) {
+    init(repository: Repository, snackController: SnackController) {
         self.repository = repository
+        self.snackController = snackController
     }
 
     // Session
@@ -272,7 +273,7 @@ final class ProfileModel {
             clearTemporaryData()
             UserDefaults().reset()
         } catch {
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while logging out")))
             logger.error("Failed to log out. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -284,7 +285,7 @@ final class ProfileModel {
             try await repository.auth.logOut()
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting account")))
             logger.error("Failed to delete current account. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -296,7 +297,7 @@ final class ProfileModel {
             self.extendedProfile = extendedProfile.copyWith(avatars: [imageEntity])
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while uploading avatar")))
             logger.error("Uploading avatar failed. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -310,6 +311,7 @@ final class ProfileModel {
             }
         } catch {
             guard !error.isCancelled else { return }
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting avatar")))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -322,7 +324,7 @@ final class ProfileModel {
             extendedProfile = updatedProfile
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating profile")))
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -333,7 +335,7 @@ final class ProfileModel {
             extendedProfile = updatedProfile
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating onboarding status")))
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -344,7 +346,7 @@ final class ProfileModel {
             logger.info("Updated privacy settings")
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating privacy settings")))
             logger.error("Failed to update settings. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -355,7 +357,7 @@ final class ProfileModel {
             logger.info("updated display settings")
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating display settings")))
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -390,7 +392,7 @@ final class ProfileModel {
             }
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while sending friend request")))
             logger.error("Failed add new friend '\(receiver)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -407,7 +409,7 @@ final class ProfileModel {
             }
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating friend request")))
             logger.error(
                 "Failed to update friend request. Error: \(error) (\(#file):\(#line))"
             )
@@ -422,7 +424,7 @@ final class ProfileModel {
             }
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while removing friend request")))
             logger.error("Failed to remove friend request '\(friend.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -463,7 +465,7 @@ final class ProfileModel {
             logger.notice("\(friend.id) unblocked")
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while unblocking user")))
             logger.error("Failed to unblock user \(friend.id). Error: \(error) (\(#file):\(#line))")
         }
     }
@@ -481,7 +483,7 @@ final class ProfileModel {
                 onSuccess()
             } catch {
                 guard !error.isCancelled else { return }
-                alertError = .init()
+                snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while blocking user")))
                 logger.error("Failed to block user \(user.id). Error: \(error) (\(#file):\(#line))")
             }
         }
@@ -509,7 +511,7 @@ final class ProfileModel {
             self.notificationSettings = updatedNotificationSettings
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating push notification settings")))
             logger.error("Failed to update push notification settings for device. Error: \(error) (\(#file):\(#line))")
         }
     }
