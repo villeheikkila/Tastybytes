@@ -34,3 +34,7 @@ struct HUDView: View {
         .padding(.horizontal, 24)
     }
 }
+
+#Preview {
+    HUDView(systemName: "heart", foregroundColor: .red, title: "Interesting", subtitle: "This is a very interesting thing")
+}
