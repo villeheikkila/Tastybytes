@@ -3,7 +3,15 @@ import SwiftUI
 @MainActor
 @Observable
 final class SnackController {
-    var snacks: [Snack] = []
+    var snacks: [Snack] = [] {
+        didSet {
+            if snacks.isEmpty {
+                showOverview = false
+            }
+        }
+    }
+
+    var showOverview = false
 
     func open(_ snack: Snack) {
         withAnimation(.bouncy) {

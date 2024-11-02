@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Snack: Identifiable, Equatable {
+struct Snack: Identifiable {
     enum Mode {
         case snack(tint: Color, systemName: String, message: LocalizedStringKey)
         case hud(systemName: String, foregroundColor: Color, title: LocalizedStringKey, subtitle: LocalizedStringKey?)
@@ -8,16 +8,15 @@ struct Snack: Identifiable, Equatable {
 
     let id: UUID
     let mode: Mode
-    var offsetX: CGFloat = 0
+    let timeout: TimeInterval?
+    let onRetry: (() async -> Void)?
     var isDeleting: Bool = false
 
-    init(mode: Mode) {
+    init(mode: Mode, timeout: TimeInterval? = nil, onRetry: (() async -> Void)? = nil) {
         id = UUID()
         self.mode = mode
-    }
-
-    static func == (lhs: Snack, rhs: Snack) -> Bool {
-        lhs.id == rhs.id && lhs.isDeleting == rhs.isDeleting
+        self.timeout = timeout
+        self.onRetry = onRetry
     }
 
     @MainActor

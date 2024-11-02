@@ -579,6 +579,9 @@
         }
       }
     },
+    "admin.testings.title" : {
+
+    },
     "admin.verification.title" : {
       "localizations" : {
         "en" : {
@@ -2814,6 +2817,9 @@
         }
       }
     },
+    "Error" : {
+
+    },
     "error.screen.title" : {
       "localizations" : {
         "en" : {
@@ -2823,6 +2829,42 @@
           }
         }
       }
+    },
+    "Experiments" : {
+
+    },
+    "experiments.title" : {
+
+    },
+    "Failed to %@ subcategory" : {
+
+    },
+    "Failed to add category" : {
+
+    },
+    "Failed to add flavor" : {
+
+    },
+    "Failed to create subcategory" : {
+
+    },
+    "Failed to delete category" : {
+
+    },
+    "Failed to delete flavor" : {
+
+    },
+    "Failed to delete subcategory" : {
+
+    },
+    "Failed to edit subcategory" : {
+
+    },
+    "Failed to load categories" : {
+
+    },
+    "Failed to refresh flavors" : {
+
     },
     "Find new flavors tailored to your taste" : {
 
@@ -5563,6 +5605,9 @@
     "Share your opinions on countless products" : {
 
     },
+    "Snacks" : {
+
+    },
     "subBrand.addSubBrandFor.title %@" : {
       "localizations" : {
         "en" : {
@@ -6060,6 +6105,9 @@
         }
       }
     },
+    "Test error message" : {
+
+    },
     "timePeriod.abbreviated.month" : {
       "localizations" : {
         "en" : {
@@ -6146,10 +6194,28 @@
     "Unexpected error occurred while deleting account" : {
 
     },
+    "Unexpected error occurred while deleting all notifications" : {
+
+    },
     "Unexpected error occurred while deleting avatar" : {
 
     },
+    "Unexpected error occurred while deleting notification" : {
+
+    },
+    "Unexpected error occurred while getting unread count" : {
+
+    },
     "Unexpected error occurred while logging out" : {
+
+    },
+    "Unexpected error occurred while marking all notifications as read" : {
+
+    },
+    "Unexpected error occurred while marking check-in notifactions as read" : {
+
+    },
+    "Unexpected error occurred while marking notification as read" : {
 
     },
     "Unexpected error occurred while removing friend request" : {

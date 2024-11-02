@@ -13,7 +13,7 @@ public extension Notification {
 }
 
 public extension Notification {
-    struct Settings: Codable, Sendable {
+    struct Settings: Codable, Sendable, Hashable {
         public let id: Profile.Id
         public let deviceToken: DeviceToken.Id
         public let reactions: Notification.DeliveryType
@@ -46,6 +46,10 @@ public extension Notification {
             checkInComment = profileSettings.sendCommentNotifications ? pushNotificationSettings.sendCheckInCommentNotifications ? .pushNotification : .inApp : .disabled
             taggedCheckIn = profileSettings.sendTaggedCheckInNotifications ? pushNotificationSettings.sendTaggedCheckInNotifications ? .pushNotification : .inApp : .disabled
             friendRequest = profileSettings.sendFriendRequestNotifications ? pushNotificationSettings.sendFriendRequestNotifications ? .pushNotification : .inApp : .disabled
+        }
+
+        public init() {
+            self.init(id: .init(), deviceToken: "", reactions: .disabled, taggedCheckIn: .disabled, friendRequest: .disabled, checkInComment: .disabled)
         }
 
         public func copyWith(

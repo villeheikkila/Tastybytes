@@ -8,12 +8,22 @@ public struct AsyncButton<LabelView: View>: View {
 
     let role: ButtonRole?
     let action: () async -> Void
-    @ViewBuilder var label: () -> LabelView
+    @ViewBuilder let label: (Bool) -> LabelView
 
     public init(
         role: ButtonRole? = nil,
         action: @escaping () async -> Void,
         @ViewBuilder label: @escaping () -> LabelView
+    ) {
+        self.init(role: role, action: action) { _ in
+            label()
+        }
+    }
+
+    public init(
+        role: ButtonRole? = nil,
+        action: @escaping () async -> Void,
+        @ViewBuilder label: @escaping (Bool) -> LabelView
     ) {
         self.role = role
         self.action = action
@@ -27,7 +37,7 @@ public struct AsyncButton<LabelView: View>: View {
                 await action()
             }
         }, label: {
-            label()
+            label(task != nil)
             if task != nil, asyncButtonLoadingStyle == .spinner {
                 ProgressView()
                     .padding(.leading, 10)
@@ -58,7 +68,7 @@ public extension AsyncButton where LabelView == Text {
          role: ButtonRole? = nil,
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action) {
+        self.init(role: role, action: action) { _ in
             Text(label)
         }
     }
@@ -69,7 +79,7 @@ public extension AsyncButton where LabelView == Text {
          role: ButtonRole? = nil,
          action: @MainActor @escaping () async -> Void)
     {
-        self.init(role: role, action: action) {
+        self.init(role: role, action: action) { _ in
             Text(label)
         }
     }
@@ -81,7 +91,7 @@ public extension AsyncButton where LabelView == Label<Text, Image> {
          role: ButtonRole? = nil,
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action) {
+        self.init(role: role, action: action) { _ in
             Label {
                 Text(title)
                     .foregroundColor(.primary)
@@ -97,7 +107,7 @@ public extension AsyncButton where LabelView == Label<Text, Image> {
          role: ButtonRole? = nil,
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action) {
+        self.init(role: role, action: action) { _ in
             Label(title, systemImage: systemImage)
         }
     }
@@ -110,7 +120,7 @@ public extension AsyncButton where LabelView == LinkIconLabelView {
         color: Color,
         action: @escaping () async -> Void
     ) {
-        self.init(action: action) {
+        self.init(action: action) { _ in
             LinkIconLabelView(titleKey: titleKey, systemName: systemName, color: color)
         }
     }

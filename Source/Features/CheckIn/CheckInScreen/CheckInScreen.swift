@@ -10,7 +10,6 @@ struct CheckInScreen: View {
     private let logger = Logger(label: "CheckInScreen")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
-    @Environment(NotificationModel.self) private var notificationModel
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel
     @FocusState private var focusedField: CheckInLeaveComment.Focusable?
@@ -214,7 +213,7 @@ struct CheckInScreen: View {
     private func loadCheckInData(withHaptics: Bool = false) async {
         async let checkInPromise = repository.checkIn.getById(id: id)
         async let checkInCommentPromise = repository.checkInComment.getByCheckInId(id: id)
-        async let markCheckInAsReadPromise: Void = notificationModel.markCheckInAsRead(
+        async let markCheckInAsReadPromise: Void = profileModel.markCheckInAsRead(
             id: id)
         do {
             let (checkInResult, checkInCommentResult, _) = try await (

@@ -33,7 +33,6 @@ struct AdminScreen: View {
                 )
             }
             .foregroundColor(.primary)
-
             Section("admin.section.management.title") {
                 RouterLink("admin.category.title", systemImage: "rectangle.stack", open: .screen(.categoriesAdmin))
                 RouterLink("flavor.navigationTitle", systemImage: "face.smiling", open: .screen(.flavorAdmin))
@@ -42,6 +41,10 @@ struct AdminScreen: View {
                 RouterLink("productsAdmin.navigationTitle", systemImage: "cart", open: .screen(.productsAdmin))
                 RouterLink("admin.locations.title", systemImage: "mappin.square", open: .screen(.locationAdmin))
                 RouterLink("admin.profiles.title", systemImage: "person", open: .screen(.profilesAdmin))
+            }
+            .foregroundColor(.primary)
+            Section("admin.testings.title") {
+                RouterLink("experiments.title", systemImage: "testtube.2", open: .screen(.experiments))
             }
             .foregroundColor(.primary)
         }

@@ -9,13 +9,14 @@ import SwiftUI
 public final class CheckInUploadModel {
     private let logger = Logger(label: "CheckInUploadModel")
 
-    public var uploadedImageForCheckIn: CheckIn.Joined?
-    public var alertError: AlertEvent?
+    var uploadedImageForCheckIn: CheckIn.Joined?
 
     private let repository: Repository
+    private let onSnack: OnSnack
 
-    public init(repository: Repository) {
+    init(repository: Repository, onSnack: @escaping OnSnack) {
         self.repository = repository
+        self.onSnack = onSnack
     }
 
     public func uploadCheckInImage(checkIn: CheckIn.Joined, images: [UIImage]) {
@@ -33,7 +34,7 @@ public final class CheckInUploadModel {
                     uploadedImages.append(imageEntity)
                 } catch {
                     guard !error.isCancelled else { return }
-                    alertError = .init()
+                    onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to add category")))
                     logger.error("Failed to upload image to check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
                 }
             }

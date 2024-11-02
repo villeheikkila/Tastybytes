@@ -4,10 +4,10 @@ import SwiftUI
 
 struct AppErrorStateView: View {
     @Environment(AppModel.self) private var appModel
-    let errors: [Error]
+    let error: Error
 
     private var title: LocalizedStringKey {
-        if errors.isNetworkUnavailable {
+        if error.isNetworkUnavailable {
             "app.error.networkUnavailable.title"
         } else {
             "app.error.unexpected.title"
@@ -15,7 +15,7 @@ struct AppErrorStateView: View {
     }
 
     private var description: Text {
-        if errors.isNetworkUnavailable {
+        if error.isNetworkUnavailable {
             Text("app.error.networkUnavailable.description")
         } else {
             Text("app.error.unexpected.description")
@@ -23,7 +23,7 @@ struct AppErrorStateView: View {
     }
 
     private var systemImage: String {
-        if errors.isNetworkUnavailable {
+        if error.isNetworkUnavailable {
             "wifi.slash"
         } else {
             "exclamationmark.triangle"
@@ -32,7 +32,7 @@ struct AppErrorStateView: View {
 
     var body: some View {
         FullScreenErrorView(title: title, description: description, systemImage: systemImage, action: {
-            await appModel.initialize(reset: true)
+            await appModel.initialize(cache: true)
         })
     }
 }

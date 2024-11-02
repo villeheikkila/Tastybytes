@@ -3,7 +3,7 @@ import StoreKit
 import SwiftUI
 
 struct SubscriptionSheet: View {
-    @Environment(SubscriptionModel.self) private var subscriptionModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(AppModel.self) private var appModel
 
     var body: some View {
@@ -23,7 +23,7 @@ struct SubscriptionSheet: View {
             }
             .subscriptionStorePickerItemBackground(.thinMaterial)
             .storeButton(.visible, for: .restorePurchases)
-            .onInAppPurchaseCompletion(perform: subscriptionModel.onInAppPurchaseCompletion)
+            .onInAppPurchaseCompletion(perform: profileModel.onInAppPurchaseCompletion)
         }
     }
 }

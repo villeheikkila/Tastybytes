@@ -1,0 +1,19 @@
+{
+	"name": "xcode build server",
+	"version": "0.2",
+	"bspVersion": "2.0",
+	"languages": [
+		"c",
+		"cpp",
+		"objective-c",
+		"objective-cpp",
+		"swift"
+	],
+	"argv": [
+		"/opt/homebrew/bin/xcode-build-server"
+	],
+	"workspace": "/Users/villeheikkila/Developer/Tastybytes/Tastybytes.xcodeproj/project.xcworkspace",
+	"build_root": "/Users/villeheikkila/Library/Developer/Xcode/DerivedData/Tastybytes-eavwkhxwpwjxywcokkzrwcmazccp",
+	"scheme": "Tastybytes",
+	"kind": "xcode"
+}

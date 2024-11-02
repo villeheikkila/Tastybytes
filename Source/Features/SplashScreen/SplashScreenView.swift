@@ -1,8 +1,6 @@
-import Models
 import SwiftUI
 
 struct SplashScreenView: View {
-    @Environment(AppModel.self) private var appModel
     @State private var dismissAnimation = false
     @State private var startFadeoutAnimation = false
     @State private var size = 0.8
@@ -21,32 +19,29 @@ struct SplashScreenView: View {
                     .foregroundColor(.primary.opacity(0.80))
             }
         }
-        .onReceive(
-            Timer
-                .publish(every: 0.5, on: .current, in: .common)
-                .autoconnect()
-        ) { _ in
-            updateAnimation()
+        .task {
+            await animate()
+            try? await Task.sleep(for: .seconds(2))
+            await dismiss()
         }
         .opacity(startFadeoutAnimation ? 0 : 1)
     }
 
-    private func updateAnimation() {
-        switch appModel.splashScreenState {
-        case .showing:
-            withAnimation(.easeIn(duration: 1)) {
-                size = 0.9
-                opacity = 1.00
-            }
-        case .dismissing:
-            if dismissAnimation == false {
-                withAnimation(.linear) {
-                    dismissAnimation = true
-                    startFadeoutAnimation = true
-                }
-            }
-        case .finished:
-            break
+    private func animate() async {
+        withAnimation(.easeIn(duration: 1)) {
+            size = 0.9
+            opacity = 1.0
         }
     }
+
+    private func dismiss() async {
+        withAnimation(.linear(duration: 0.3)) {
+            dismissAnimation = true
+            startFadeoutAnimation = true
+        }
+    }
+}
+
+#Preview {
+    SplashScreenView()
 }

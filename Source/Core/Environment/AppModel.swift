@@ -4,155 +4,166 @@ import Models
 import Repositories
 import SwiftUI
 
-public enum AppState: Sendable, Equatable {
-    case error([Error])
+enum AppState: Sendable, Equatable {
+    case error(Error)
     case tooOldAppVersion
-    case operational
+    case operational(AppData)
     case loading
     case underMaintenance
 
-    public static func == (lhs: AppState, rhs: AppState) -> Bool {
+    var isOperational: Bool {
+        if case .operational = self {
+            return true
+        }
+        return false
+    }
+
+    static func == (lhs: AppState, rhs: AppState) -> Bool {
         switch (lhs, rhs) {
-        case (.loading, .loading), (.operational, .operational):
+        case (.loading, .loading):
             true
+        case (.tooOldAppVersion, .tooOldAppVersion):
+            true
+        case (.underMaintenance, .underMaintenance):
+            true
+        case let (.operational(lhsData), .operational(rhsData)):
+            lhsData == rhsData
         case let (.error(lhsErrors), .error(rhsErrors)):
-            lhsErrors.count == rhsErrors.count && lhsErrors.elementsEqual(rhsErrors, by: { $0.localizedDescription == $1.localizedDescription })
+            lhsErrors.localizedDescription == rhsErrors.localizedDescription
         default:
             false
         }
     }
 }
 
-public struct RateControl: Sendable {
-    public let checkInPageSize = 10
-    public let checkInImagePageSize = 10
-    public let productFeedPageSize = 50
+struct AppData: Codable, Hashable {
+    let categories: [Models.Category.JoinedSubcategoriesServingStyles]
+    let appConfig: AppConfig
+    let flavors: [Flavor.Saved]
+    let countries: [Country.Saved]
+    let subscriptionGroup: SubscriptionGroup.Joined?
+    let aboutPage: Document.About.Page?
+    // meta
+    let version: Int
+
+    init(
+        categories: [Models.Category.JoinedSubcategoriesServingStyles],
+        appConfig: AppConfig,
+        flavors: [Flavor.Saved],
+        countries: [Country.Saved],
+        subscriptionGroup: SubscriptionGroup.Joined?,
+        aboutPage: Document.About.Page?,
+        version: Int
+    ) {
+        self.categories = categories
+        self.appConfig = appConfig
+        self.flavors = flavors
+        self.countries = countries
+        self.subscriptionGroup = subscriptionGroup
+        self.aboutPage = aboutPage
+        self.version = version
+    }
+
+    func copyWith(
+        categories: [Models.Category.JoinedSubcategoriesServingStyles]? = nil,
+        appConfig: AppConfig? = nil,
+        flavors: [Flavor.Saved]? = nil,
+        countries: [Country.Saved]? = nil,
+        subscriptionGroup: SubscriptionGroup.Joined? = nil,
+        aboutPage: Document.About.Page? = nil
+    ) -> AppData {
+        .init(
+            categories: categories ?? self.categories,
+            appConfig: appConfig ?? self.appConfig,
+            flavors: flavors ?? self.flavors,
+            countries: countries ?? self.countries,
+            subscriptionGroup: subscriptionGroup ?? self.subscriptionGroup,
+            aboutPage: aboutPage ?? self.aboutPage,
+            version: version
+        )
+    }
 }
 
-public struct IncludedLibrary: Identifiable, Hashable, Sendable {
-    public let name: String
-    public let link: URL
+struct RateControl: Sendable {
+    let checkInPageSize = 10
+    let checkInImagePageSize = 10
+    let productFeedPageSize = 50
+}
 
-    public var id: Int {
+struct IncludedLibrary: Identifiable, Hashable, Sendable {
+    let name: String
+    let link: URL
+
+    var id: Int {
         hashValue
     }
 }
 
-public enum SplashScreenState {
-    case showing, dismissing, finished
-}
-
 enum AppDataKey: String, CaseIterable {
-    case appDataCategories = "app_data_categories"
-    case appDataCountries = "app_data_countries"
-    case appDataFlavors = "app_data_flavors"
-    case appDataAboutPage = "app_data_about_page"
-    case appDataAppConfig = "app_data_app_config"
-    case appDataSubscriptionGroup = "app_data_subscription_group"
-    case profileData = "profile_data"
-    case notificationSettingsData = "notification_settings_data"
-    case profileFriendsData = "profile_friends_data"
-    case profileRolesData = "profile_roles_data"
-    case profilePermissionsData = "profile_permissions_data"
     case deviceToken = "device_token"
-    case friendsData = "friends_data"
     case profileDeleted = "profile_deleted"
 }
 
 @MainActor
 @Observable
-public final class AppModel {
+final class AppModel {
     private let logger = Logger(label: "AppModel")
-    // App state
-    public var isInitializing = false
-    public var state: AppState = .loading {
+    private let dataVersion = 1
+    // app state
+    var isInitializing = false
+    var state: AppState = .loading {
         didSet {
-            dismissSplashScreen()
-        }
-    }
-
-    public var alertError: AlertEvent?
-    // App data
-    public var categories: [Models.Category.JoinedSubcategoriesServingStyles] {
-        get {
-            access(keyPath: \.categories)
-            return UserDefaults.read(forKey: .appDataCategories) ?? []
-        }
-
-        set {
-            withMutation(keyPath: \.categories) {
-                UserDefaults.set(value: newValue, forKey: .appDataCategories)
+            if case let .operational(appData) = state {
+                try? storage.save(appData)
             }
         }
     }
 
-    public var appConfig: AppConfig? {
-        get {
-            access(keyPath: \.appConfig)
-            return UserDefaults.read(forKey: .appDataAppConfig)
+    // app data
+    var categories: [Models.Category.JoinedSubcategoriesServingStyles] {
+        if case let .operational(appData) = state {
+            return appData.categories
         }
-
-        set {
-            withMutation(keyPath: \.appConfig) {
-                UserDefaults.set(value: newValue, forKey: .appDataAppConfig)
-            }
-        }
+        return []
     }
 
-    public var flavors: [Flavor.Saved] {
-        get {
-            access(keyPath: \.flavors)
-            return UserDefaults.read(forKey: .appDataFlavors) ?? []
+    var appConfig: AppConfig? {
+        if case let .operational(appData) = state {
+            return appData.appConfig
         }
-
-        set {
-            withMutation(keyPath: \.flavors) {
-                UserDefaults.set(value: newValue, forKey: .appDataFlavors)
-            }
-        }
+        return nil
     }
 
-    public var countries: [Country.Saved] {
-        get {
-            access(keyPath: \.countries)
-            return UserDefaults.read(forKey: .appDataCountries) ?? []
+    var flavors: [Flavor.Saved] {
+        if case let .operational(appData) = state {
+            return appData.flavors
         }
-
-        set {
-            withMutation(keyPath: \.countries) {
-                UserDefaults.set(value: newValue, forKey: .appDataCountries)
-            }
-        }
+        return []
     }
 
-    public var subscriptionGroup: SubscriptionGroup.Joined? {
-        get {
-            access(keyPath: \.subscriptionGroup)
-            return UserDefaults.read(forKey: .appDataSubscriptionGroup)
+    var countries: [Country.Saved] {
+        if case let .operational(appData) = state {
+            return appData.countries
         }
-
-        set {
-            withMutation(keyPath: \.subscriptionGroup) {
-                UserDefaults.set(value: newValue, forKey: .appDataSubscriptionGroup)
-            }
-        }
+        return []
     }
 
-    public var aboutPage: Document.About.Page? {
-        get {
-            access(keyPath: \.aboutPage)
-            return UserDefaults.read(forKey: .appDataAboutPage)
+    var subscriptionGroup: SubscriptionGroup.Joined? {
+        if case let .operational(appData) = state {
+            return appData.subscriptionGroup
         }
+        return nil
+    }
 
-        set {
-            withMutation(keyPath: \.aboutPage) {
-                UserDefaults.set(value: newValue, forKey: .appDataAboutPage)
-            }
+    var aboutPage: Document.About.Page? {
+        if case let .operational(appData) = state {
+            return appData.aboutPage
         }
+        return nil
     }
 
     // Getters that are only available after initialization, calling these before authentication causes an app crash
-    public var config: AppConfig {
+    var config: AppConfig {
         if let appConfig {
             appConfig
         } else {
@@ -160,64 +171,51 @@ public final class AppModel {
         }
     }
 
-    // Splash screen
-    public var splashScreenState: SplashScreenState = .showing
-    private var splashScreenDismissalTask: Task<Void, Never>?
     // Props
     private let repository: Repository
-    public let infoPlist: InfoPlist
+    private let storage: any StorageProtocol<AppData>
+    private let onSnack: OnSnack
+    let infoPlist: InfoPlist
 
-    public let rateControl = RateControl()
+    let rateControl = RateControl()
 
-    public let includedLibraries: [IncludedLibrary] = [
+    let includedLibraries: [IncludedLibrary] = [
         .init(name: "supabase-swift", link: .init(string: "https://github.com/supabase/supabase-swift")!),
         .init(name: "swift-tagged", link: .init(string: "https://github.com/pointfreeco/swift-tagged")!),
         .init(name: "Brightroom", link: .init(string: "https://github.com/FluidGroup/Brightroom")!),
         .init(name: "BlurHashViews", link: .init(string: "https://github.com/daprice/BlurHashViews")!),
     ]
 
-    public init(repository: Repository, infoPlist: InfoPlist) {
+    init(
+        repository: Repository,
+        storage: any StorageProtocol<AppData>,
+        infoPlist: InfoPlist,
+        onSnack: @escaping OnSnack
+    ) {
         self.repository = repository
+        self.storage = storage
         self.infoPlist = infoPlist
+        self.onSnack = onSnack
     }
 
-    public func dismissSplashScreen() {
-        guard splashScreenState == .showing, splashScreenDismissalTask == nil else { return }
-        splashScreenDismissalTask = Task {
-            defer { splashScreenDismissalTask = nil }
-            logger.info("Dismissing splash screen")
-            splashScreenState = .dismissing
-            try? await Task.sleep(for: Duration.seconds(0.5))
-            splashScreenState = .finished
-        }
-    }
-
-    public func initialize(reset: Bool = false) async {
+    public func initialize(cache: Bool = false) async {
         defer { isInitializing = false }
         guard !isInitializing else { return }
         isInitializing = true
         let startTime = DispatchTime.now()
-        let isPreviouslyInitialied = state == .loading && aboutPage != nil && subscriptionGroup != nil && appConfig != nil && !countries.isEmpty && !flavors.isEmpty && !categories.isEmpty
-
-        logger.notice("\(reset || isPreviouslyInitialied ? "Refreshing" : "Initializing") app data")
-        if !reset, isPreviouslyInitialied, state == .loading {
-            splashScreenState = .finished
-            state = .operational
-            logger.info("App optimistically loaded from stored data")
+        if !cache, let cachedData = try? storage.load(), cachedData.version == dataVersion {
+            state = .operational(cachedData)
+            logger.info("App optimistically loaded from stored data, refreshing...")
         }
-
         async let appConfigPromise = repository.appConfig.get()
         async let aboutPagePromise = repository.document.getAboutPage()
         async let flavorPromise = repository.flavor.getAll()
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
         async let countryPromise = repository.location.getAllCountries()
         async let subscriptionGroupPromise = repository.subscription.getActiveGroup()
-
-        var errors: [Error] = []
-
+        let aConfig: AppConfig?
         do {
             let appConfig = try await appConfigPromise
-            self.appConfig = appConfig
             if appConfig.isUnderMaintenance {
                 state = .underMaintenance
                 return
@@ -227,9 +225,14 @@ public final class AppModel {
                 state = .tooOldAppVersion
                 return
             }
+            aConfig = appConfig
         } catch {
-            errors.append(error)
+            if error.isNetworkUnavailable, state.isOperational {
+                return
+            }
+            state = .error(error)
             logger.error("Failed to load app config. Error: \(error) (\(#file):\(#line))")
+            return
         }
         do {
             let (flavorResponse, categoryResponse, aboutPageResponse, countryResponse, subscriptionGroup) = try await (
@@ -239,144 +242,144 @@ public final class AppModel {
                 countryPromise,
                 subscriptionGroupPromise
             )
-            self.subscriptionGroup = subscriptionGroup
-            flavors = flavorResponse
-            categories = categoryResponse
-            aboutPage = aboutPageResponse
-            countries = countryResponse
+            logger.info("App \(state.isOperational ? "refreshed" : "initialized") in \(startTime.elapsedTime())ms")
+            state = .operational(.init(categories: categoryResponse, appConfig: aConfig!, flavors: flavorResponse, countries: countryResponse, subscriptionGroup: subscriptionGroup, aboutPage: aboutPageResponse, version: dataVersion))
         } catch {
-            errors.append(error)
-        }
-        guard !isPreviouslyInitialied else { return }
-
-        withAnimation {
-            state = if errors.isEmpty {
-                .operational
-            } else {
-                .error(errors)
+            if error.isNetworkUnavailable, state.isOperational {
+                return
             }
+            logger.error("Failed to load app data. Error: \(error) (\(#file):\(#line))")
+            state = .error(error)
         }
-        logger.info("App \(reset ? "refreshed" : "initialized") in \(startTime.elapsedTime())ms")
     }
 
     // Flavors
-    public func addFlavor(name: String) async {
+    func addFlavor(name: String) async {
         do {
             let newFlavor = try await repository.flavor.insert(name: name)
+            guard case let .operational(appData) = state else { return }
+
             withAnimation {
-                flavors.append(newFlavor)
+                state = .operational(appData.copyWith(flavors: appData.flavors + [newFlavor]))
             }
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to add flavor")))
             logger.error("Failed to delete flavor. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func deleteFlavor(_ flavor: Flavor.Saved) async {
+    func deleteFlavor(_ flavor: Flavor.Saved) async {
+        guard case let .operational(appData) = state else { return }
         do {
             try await repository.flavor.delete(id: flavor.id)
             withAnimation {
-                flavors.remove(object: flavor)
+                state = .operational(appData.copyWith(flavors: appData.flavors.filter { $0 != flavor }))
             }
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to delete flavor")))
             logger.error("Failed to delete flavor: '\(flavor.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func refreshFlavors() async {
+    func refreshFlavors() async {
+        guard case let .operational(appData) = state else { return }
         do {
             let flavors = try await repository.flavor.getAll()
             withAnimation {
-                self.flavors = flavors
+                state = .operational(appData.copyWith(flavors: flavors))
             }
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to refresh flavors")))
             logger.error("Fetching flavors failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     // Categories
-    public func verifySubcategory(_ subcategory: SubcategoryProtocol, isVerified: Bool, onSuccess: () -> Void) async {
+    func verifySubcategory(_ subcategory: SubcategoryProtocol, isVerified: Bool, onSuccess: () -> Void) async {
         do {
             try await repository.subcategory.verification(id: subcategory.id, isVerified: isVerified)
             await loadCategories()
             onSuccess()
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to \(isVerified ? "unverify" : "labels.verify") subcategory")))
             logger.error("Failed to \(isVerified ? "unverify" : "labels.verify") subcategory \(subcategory.id). error: \(error)")
         }
     }
 
-    public func editSubcategory(_ updateRequest: Subcategory.UpdateRequest) async {
+    func editSubcategory(_ updateRequest: Subcategory.UpdateRequest) async {
         do {
             try await repository.subcategory.update(updateRequest: updateRequest)
             await loadCategories()
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to edit subcategory")))
         }
     }
 
-    public func deleteSubcategory(_ deleteSubcategory: SubcategoryProtocol) async {
+    func deleteSubcategory(_ deleteSubcategory: SubcategoryProtocol) async {
         do {
             try await repository.subcategory.delete(id: deleteSubcategory.id)
             await loadCategories()
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to delete subcategory")))
             logger.error("Failed to delete subcategory \(deleteSubcategory.name). Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func addCategory(name: String) async {
+    func addCategory(name: String) async {
+        guard case let .operational(appData) = state else { return }
         do {
             let category = try await repository.category.insert(name: name)
-            categories.append(category)
+            state = .operational(appData.copyWith(categories: appData.categories + [category]))
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to add category")))
             logger.error("Failed to add new category with name \(name). Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String, onCreate: ((Subcategory.Saved) -> Void)? = nil) async {
+    func addSubcategory(category: Models.Category.JoinedSubcategoriesServingStyles, name: String, onCreate: ((Subcategory.Saved) -> Void)? = nil) async {
+        guard case let .operational(appData) = state else { return }
         do {
             let newSubcategory = try await repository.subcategory
                 .insert(newSubcategory: Subcategory.NewRequest(name: name, category: category))
-            categories = categories.replacing(category, with: category.appending(subcategory: newSubcategory))
+            state = .operational(appData.copyWith(categories: categories.replacing(category, with: category.appending(subcategory: newSubcategory))))
             if let onCreate {
                 onCreate(newSubcategory)
             }
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to create subcategory")))
             logger.error("Failed to create subcategory '\(name)' to category \(category.name). Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func loadCategories() async {
+    func loadCategories() async {
+        guard case let .operational(appData) = state else { return }
         do {
             let categories = try await repository.category.getAllWithSubcategoriesServingStyles()
-            self.categories = categories
+            state = .operational(appData.copyWith(categories: categories))
         } catch {
             guard !error.isCancelled else { return }
-            alertError = .init()
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to load categories")))
             logger.error("Failed to load categories. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func deleteCategory(_ category: Models.Category.JoinedSubcategoriesServingStyles, onDelete: () -> Void) async {
+    func deleteCategory(_ category: Models.Category.JoinedSubcategoriesServingStyles, onDelete: () -> Void) async {
+        guard case let .operational(appData) = state else { return }
         do {
             try await repository.category.deleteCategory(id: category.id)
-            categories = categories.removing(category)
+            state = .operational(appData.copyWith(categories: categories.removing(category)))
             onDelete()
         } catch {
             guard !error.isCancelled else { return }
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to delete category")))
             logger.error("Failed to delete category. Error: \(error) (\(#file):\(#line))")
         }
     }

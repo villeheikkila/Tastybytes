@@ -66,6 +66,7 @@ enum Screen: Hashable, Sendable {
     case privacyPolicy
     case termsOfService
     case includedLibraries
+    case experiments
 
     @MainActor
     @ViewBuilder
@@ -197,6 +198,8 @@ enum Screen: Hashable, Sendable {
             TermsOfServiceScreen()
         case .includedLibraries:
             IncludedLibrariesScreen()
+        case .experiments:
+            ExperimentScreens()
         }
     }
 
@@ -296,6 +299,7 @@ enum Screen: Hashable, Sendable {
             (.termsOfService, .termsOfService),
             (.includedLibraries, .includedLibraries),
             (.brandsAdmin, .brandsAdmin),
+            (.experiments, .experiments),
             (.locationAdmin, .locationAdmin), (.profilesAdmin, .profilesAdmin), (.profileEditSuggestions, .profileEditSuggestions), (
                 .profileReports, .profileReports
             ):
@@ -482,6 +486,8 @@ enum Screen: Hashable, Sendable {
             hasher.combine("termsOfService")
         case .includedLibraries:
             hasher.combine("includedLibraries")
+        case .experiments:
+            hasher.combine("experiments")
         }
     }
 }

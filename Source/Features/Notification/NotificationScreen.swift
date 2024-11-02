@@ -4,12 +4,12 @@ import Models
 import SwiftUI
 
 struct NotificationScreen: View {
-    @Environment(NotificationModel.self) private var notificationModel
+    @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel
     @State private var filter: Models.Notification.Kind?
 
     private var filteredNotifications: [Models.Notification.Joined] {
-        notificationModel.notifications.filter { notification in
+        profileModel.notifications.filter { notification in
             if filter == nil {
                 return true
             }
@@ -29,7 +29,7 @@ struct NotificationScreen: View {
     }
 
     private var showContentUnavailableView: Bool {
-        filteredNotifications.isEmpty && !notificationModel.isRefreshing
+        filteredNotifications.isEmpty && !profileModel.isRefreshingNotifications
     }
 
     var body: some View {
@@ -41,41 +41,35 @@ struct NotificationScreen: View {
             }
             .onDelete { index in
                 Task {
-                    await notificationModel.deleteFromIndex(at: index)
+                    await profileModel.deleteFromIndex(at: index)
                 }
             }
         }
         .listStyle(.plain)
         .routerLinkMode(.button)
-        .animation(.default, value: notificationModel.notifications)
+        .animation(.default, value: profileModel.notifications)
         .refreshable {
-            notificationModel.refresh(reset: true, withHaptics: true)
+            profileModel.refreshNotifications(reset: true, withHaptics: true)
         }
         .overlay {
-            if notificationModel.state.isPopulated {
-                if showContentUnavailableView {
-                    ContentUnavailableView {
-                        Label(
-                            filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
-                            systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
-                        )
-                    } description: {
-                        if let description = filter?.contentUnavailableViewProps.description {
-                            Text(description)
-                        }
+            if showContentUnavailableView {
+                ContentUnavailableView {
+                    Label(
+                        filter?.contentUnavailableViewProps.title ?? "notifications.empty.label",
+                        systemImage: filter?.contentUnavailableViewProps.icon ?? "tray"
+                    )
+                } description: {
+                    if let description = filter?.contentUnavailableViewProps.description {
+                        Text(description)
                     }
-                }
-            } else {
-                ScreenStateOverlayView(state: notificationModel.state) {
-                    notificationModel.refresh(reset: true, withHaptics: true)
                 }
             }
         }
-        .sensoryFeedback(.success, trigger: notificationModel.isRefreshing) { oldValue, newValue in
+        .sensoryFeedback(.success, trigger: profileModel.isRefreshingNotifications) { oldValue, newValue in
             oldValue && !newValue
         }
         .onAppear {
-            notificationModel.refresh()
+            profileModel.refreshNotifications()
         }
         .navigationTitle(filter?.label ?? "notifications.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
@@ -89,11 +83,11 @@ struct NotificationScreen: View {
             Menu {
                 AsyncButton("notifications.markAsRead.label", systemImage: "envelope.open", action: {
                     feedbackModel.trigger(.impact(intensity: .low))
-                    await notificationModel.markAllAsRead()
+                    await profileModel.markAllAsRead()
                 })
                 AsyncButton("notifications.deleteAll.label", systemImage: "trash", action: {
                     feedbackModel.trigger(.impact(intensity: .low))
-                    await notificationModel.deleteAll()
+                    await profileModel.deleteAllNotifications()
                 })
             } label: {
                 Label("labels.menu", systemImage: "ellipsis")

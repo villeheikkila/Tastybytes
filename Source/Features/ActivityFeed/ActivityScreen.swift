@@ -10,7 +10,6 @@ struct ActivityScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(AppModel.self) private var appModel
-    @Environment(NotificationModel.self) private var notificationModel
     @Environment(CheckInUploadModel.self) private var checkInUploadModel
     @State private var state: ScreenState = .loading
     @State private var checkIns = [CheckIn.Joined]()
@@ -76,7 +75,7 @@ struct ActivityScreen: View {
             RouterLink("friends.navigationTitle", systemImage: "person.2", open: .screen(.currentUserFriends))
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
-                .customBadge(notificationModel.unreadFriendRequestCount)
+                .customBadge(profileModel.unreadFriendRequestCount)
         }
         ToolbarItem(placement: .principal) {}
         ToolbarItemGroup(placement: .topBarTrailing) {

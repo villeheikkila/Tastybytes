@@ -16,7 +16,7 @@ struct CategoriesAdminScreen: View {
         }
         .listStyle(.plain)
         .refreshable {
-            await appModel.initialize(reset: true)
+            await appModel.initialize(cache: true)
         }
         .navigationBarTitle("category.title")
         .navigationBarTitleDisplayMode(.inline)

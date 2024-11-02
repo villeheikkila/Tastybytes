@@ -5,6 +5,11 @@ internal import Supabase
 struct SupabaseAuthRepository: AuthRepository {
     let client: SupabaseClient
 
+    func getUserId() async throws -> Profile.Id {
+        let response = try await client.auth.session
+        return .init(rawValue: response.user.id)
+    }
+
     func getUser() async throws -> Profile.Account {
         let response = try await client.auth.session
         let (roles, permissions) = try decodeClaimsFromAccessToken(response.accessToken)

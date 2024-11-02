@@ -7,7 +7,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
     func getAll(profileId: Profile.Id, afterId: Notification.Id? = nil) async throws -> [Models.Notification.Joined] {
         try await client
             .from(.notifications)
-            .select(Notification.getQuery(.joined))
+            .select(Notification.getQuery(.joined(false)))
             .eq("profile_id", value: profileId.rawValue)
             .gt("id", value: afterId?.rawValue ?? 0)
             .order("id", ascending: false)
@@ -52,7 +52,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
     func markRead(id: Notification.Id) async throws -> Notification.Joined {
         try await client
             .rpc(fn: .markNotificationAsRead, params: Notification.MarkReadRequest(id: id))
-            .select(Notification.getQuery(.joined))
+            .select(Notification.getQuery(.joined(false)))
             .limit(1)
             .single()
             .execute()
@@ -62,7 +62,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
     func markAllRead() async throws -> [Models.Notification.Joined] {
         try await client
             .rpc(fn: .markAllNotificationRead)
-            .select(Notification.getQuery(.joined))
+            .select(Notification.getQuery(.joined(false)))
             .execute()
             .value
     }
@@ -70,7 +70,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
     func markAllFriendRequestsAsRead() async throws -> [Models.Notification.Joined] {
         try await client
             .rpc(fn: .markFriendRequestNotificationAsRead)
-            .select(Notification.getQuery(.joined))
+            .select(Notification.getQuery(.joined(false)))
             .execute()
             .value
     }
@@ -81,7 +81,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 fn: .markCheckInNotificationAsRead,
                 params: ["p_check_in_id": checkInId.rawValue]
             )
-            .select(Notification.getQuery(.joined))
+            .select(Notification.getQuery(.joined(false)))
             .execute()
             .value
     }

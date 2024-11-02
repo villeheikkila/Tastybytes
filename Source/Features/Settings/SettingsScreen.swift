@@ -5,7 +5,6 @@ import SwiftUI
 
 struct SettingsScreen: View {
     @Environment(AppModel.self) private var appModel
-    @Environment(SubscriptionModel.self) private var subscriptionModel
     @Environment(ProfileModel.self) private var profileModel
 
     var body: some View {
@@ -71,7 +70,7 @@ struct SettingsScreen: View {
             )
             RouterLink("about.title", systemName: "at", color: .blue, open: .screen(.about))
         } footer: {
-            if case .subscribed = subscriptionModel.subscriptionStatus, let subscriptionName = appModel.subscriptionGroup?.name {
+            if case .subscribed = profileModel.subscriptionStatus, let subscriptionName = appModel.subscriptionGroup?.name {
                 HStack {
                     Spacer()
                     Text("subscription.thankYou \(appModel.infoPlist.appName) \(subscriptionName)")

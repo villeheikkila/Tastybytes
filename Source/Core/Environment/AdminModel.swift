@@ -4,6 +4,8 @@ import Models
 import Repositories
 import SwiftUI
 
+typealias OnSnack = (Snack) -> Void
+
 @MainActor
 @Observable
 final class AdminModel {
@@ -21,11 +23,11 @@ final class AdminModel {
     public var roles = [Role.Joined]()
 
     private let repository: Repository
-    private let snackController: SnackController
+    private let onSnack: OnSnack
 
-    init(repository: Repository, snackController: SnackController) {
+    init(repository: Repository, onSnack: @escaping OnSnack) {
         self.repository = repository
-        self.snackController = snackController
+        self.onSnack = onSnack
     }
 
     public func initialize() async {

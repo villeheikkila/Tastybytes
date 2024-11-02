@@ -39,10 +39,10 @@ extension View {
 }
 
 struct ProMembershipOverlayModifier: ViewModifier {
-    @Environment(SubscriptionModel.self) private var subscriptionModel
+    @Environment(ProfileModel.self) private var profileModel
 
     private var isEnabled: Bool {
-        !subscriptionModel.isProMember
+        !profileModel.isProMember
     }
 
     func body(content: Content) -> some View {

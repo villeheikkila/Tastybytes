@@ -11,7 +11,7 @@ struct AppUnderMaintenanceState: View {
             Text("app.underMaintenance.description")
         } actions: {
             AsyncButton("app.underMaintenance.refreshButton", systemImage: "arrow.triangle.2.circlepath", action: {
-                await appModel.initialize(reset: true)
+                await appModel.initialize(cache: true)
             })
             .foregroundColor(.black)
             .buttonStyle(.borderedProminent)
@@ -19,7 +19,7 @@ struct AppUnderMaintenanceState: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
-            AppGradientView(color: Color(.sRGB, red: 255 / 255, green: 165 / 255, blue: 0 / 255, opacity: 1)), // Orange color
+            AppGradientView(color: Color(.sRGB, red: 255 / 255, green: 165 / 255, blue: 0 / 255, opacity: 1)),
             alignment: .bottom
         )
         .ignoresSafeArea()

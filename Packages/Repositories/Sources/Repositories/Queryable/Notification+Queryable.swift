@@ -6,18 +6,18 @@ extension Models.Notification: Queryable {
 
     static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
-        case .joined:
+        case let .joined(withTableName):
             buildQuery(.notifications, [
                 saved,
                 CheckIn.Reaction.getQuery(.joinedProfileCheckIn(true)),
                 Notification.CheckInTaggedProfiles.getQuery(.joined(true)),
                 Friend.getQuery(.joined(true)),
                 CheckIn.Comment.getQuery(.joinedCheckIn(true)),
-            ], false)
+            ], withTableName)
         }
     }
 
     enum QueryType {
-        case joined
+        case joined(_ withTableName: Bool)
     }
 }

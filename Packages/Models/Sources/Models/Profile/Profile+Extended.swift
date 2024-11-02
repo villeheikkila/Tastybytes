@@ -14,6 +14,7 @@ public extension Profile {
         public let nameDisplay: NameDisplay
         public let settings: Profile.Settings
         public let avatars: [ImageEntity.Saved]
+        public let notifications: [Notification.Joined]
 
         public var preferredName: String {
             rawPreferredName ?? ""
@@ -30,7 +31,8 @@ public extension Profile {
             settings: Profile.Settings,
             avatars: [ImageEntity.Saved],
             firstName: String? = nil,
-            lastName: String? = nil
+            lastName: String? = nil,
+            notifications: [Notification.Joined] = []
         ) {
             self.id = id
             self.username = username
@@ -43,6 +45,7 @@ public extension Profile {
             self.nameDisplay = nameDisplay
             self.settings = settings
             self.avatars = avatars
+            self.notifications = notifications
         }
 
         public func copyWith(
@@ -55,7 +58,8 @@ public extension Profile {
             preferredName: String? = nil,
             nameDisplay: Profile.NameDisplay? = nil,
             settings: Profile.Settings? = nil,
-            avatars: [ImageEntity.Saved]? = nil
+            avatars: [ImageEntity.Saved]? = nil,
+            notifications: [Notification.Joined]? = nil
         ) -> Self {
             .init(
                 id: id,
@@ -68,7 +72,8 @@ public extension Profile {
                 settings: settings ?? self.settings,
                 avatars: avatars ?? self.avatars,
                 firstName: firstName ?? self.firstName,
-                lastName: lastName ?? self.lastName
+                lastName: lastName ?? self.lastName,
+                notifications: notifications ?? self.notifications
             )
         }
 
@@ -94,6 +99,7 @@ public extension Profile {
             case nameDisplay = "name_display"
             case settings = "profile_settings"
             case avatars = "profile_avatars"
+            case notifications
         }
     }
 }

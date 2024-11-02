@@ -3,10 +3,11 @@ import Logging
 import Models
 import PhotosUI
 import Repositories
+import StoreKit
 import SwiftUI
 
-enum ProfileState: Sendable {
-    case loading, populated(Profile.Extended), error([Error])
+enum ProfileState: Sendable, Equatable {
+    case loading, populated(Profile.Populated), error(Error), unauthenticated
 
     static func == (lhs: ProfileState, rhs: ProfileState) -> Bool {
         switch (lhs, rhs) {
@@ -14,111 +15,252 @@ enum ProfileState: Sendable {
             lhsProfile == rhsProfile
         case (.loading, .loading):
             true
-        case let (.error(lhsErrors), .error(rhsErrors)):
-            lhsErrors.count == rhsErrors.count && lhsErrors.elementsEqual(rhsErrors, by: { $0.localizedDescription == $1.localizedDescription })
+        case let (.error(lhsError), .error(rhsError)):
+            lhsError.localizedDescription == rhsError.localizedDescription
         default:
             false
         }
     }
+
+    var isPopulated: Bool {
+        if case .populated = self {
+            return true
+        }
+        return false
+    }
+}
+
+extension Profile {
+    struct Populated: Equatable, Codable {
+        let id: Profile.Id
+        let username: String?
+        let firstName: String?
+        let lastName: String?
+        let preferredName: String
+        let joinedAt: Date
+        let isPrivate: Bool
+        let isOnboarded: Bool
+        let nameDisplay: Profile.NameDisplay
+        let notificationSettings: Models.Notification.Settings
+        let avatars: [ImageEntity.Saved]
+        let email: String?
+        let roles: [Role.Name]
+        let permissions: [Permission.Name]
+        let friends: [Friend.Saved]
+        // meta
+        let version: Int
+        let updatedAt: Date
+
+        func copyWith(
+            id: Profile.Id? = nil,
+            username: String? = nil,
+            firstName: String? = nil,
+            lastName: String? = nil,
+            preferredName: String? = nil,
+            joinedAt: Date? = nil,
+            isPrivate: Bool? = nil,
+            isOnboarded: Bool? = nil,
+            nameDisplay: Profile.NameDisplay? = nil,
+            notificationSettings: Models.Notification.Settings? = nil,
+            avatars: [ImageEntity.Saved]? = nil,
+            email: String?? = nil,
+            roles: [Role.Name]? = nil,
+            permissions: [Permission.Name]? = nil,
+            friends: [Friend.Saved]? = nil
+        ) -> Self {
+            .init(
+                id: id ?? self.id,
+                username: username ?? self.username,
+                firstName: firstName ?? self.firstName,
+                lastName: lastName ?? self.lastName,
+                preferredName: preferredName ?? self.preferredName,
+                joinedAt: joinedAt ?? self.joinedAt,
+                isPrivate: isPrivate ?? self.isPrivate,
+                isOnboarded: isOnboarded ?? self.isOnboarded,
+                nameDisplay: nameDisplay ?? self.nameDisplay,
+                notificationSettings: notificationSettings ?? self.notificationSettings,
+                avatars: avatars ?? self.avatars,
+                email: email ?? self.email,
+                roles: roles ?? self.roles,
+                permissions: permissions ?? self.permissions,
+                friends: friends ?? self.friends,
+                version: version,
+                updatedAt: Date.now
+            )
+        }
+
+        var saved: Profile.Saved {
+            .init(
+                id: id,
+                preferredName: preferredName,
+                isPrivate: isPrivate,
+                joinedAt: joinedAt,
+                avatars: avatars
+            )
+        }
+    }
+}
+
+extension Profile.Populated {
+    init(
+        profile: Profile.Extended,
+        account: Profile.Account,
+        pushNotificationSettings: Profile.PushNotificationSettings,
+        friends: [Friend.Saved],
+        version: Int
+    ) {
+        id = profile.id
+        username = profile.username
+        firstName = profile.firstName
+        lastName = profile.lastName
+        preferredName = profile.preferredName
+        joinedAt = profile.joinedAt
+        isPrivate = profile.isPrivate
+        isOnboarded = profile.isOnboarded
+        nameDisplay = profile.nameDisplay
+        notificationSettings = .init(profileSettings: profile.settings, pushNotificationSettings: pushNotificationSettings)
+        avatars = profile.avatars
+        email = account.email
+        roles = account.roles
+        permissions = account.permissions
+        self.friends = friends
+        self.version = version
+        updatedAt = Date.now
+    }
+
+    init() {
+        id = .init()
+        username = nil
+        firstName = nil
+        lastName = nil
+        preferredName = ""
+        joinedAt = Date.now
+        isPrivate = false
+        isOnboarded = false
+        nameDisplay = .username
+        notificationSettings = .init()
+        avatars = []
+        email = nil
+        roles = []
+        permissions = []
+        friends = []
+        version = 0
+        updatedAt = Date.now
+    }
+}
+
+enum ProfileError: Error {
+    case failedToObtainDeviceToken
+    case failedToObtainSession
 }
 
 @MainActor
 @Observable
 final class ProfileModel {
     private let logger = Logger(label: "ProfileModel")
-    // Auth state
-    var profileState: ProfileState = .loading
+    private let dataVersion = 1
+    // state
+    var state: ProfileState = .loading {
+        didSet {
+            if case let .populated(profile) = state {
+                try? storage.save(profile)
+            }
+        }
+    }
+
     var authState: AuthState?
-
-    // Account Settings
-    var email = ""
-
-    // Application Settings
-    var notificationSettings: Models.Notification.Settings? {
-        get {
-            access(keyPath: \.notificationSettings)
-            return UserDefaults.read(forKey: .notificationSettingsData)
-        }
-
-        set {
-            withMutation(keyPath: \.notificationSettings) {
-                UserDefaults.set(value: newValue, forKey: .notificationSettingsData)
-            }
-        }
+    // subscriptions
+    let productSubscription = ProductSubscription()
+    private var activeTransactions: Set<StoreKit.Transaction> = []
+    var subscriptionStatus: SubscriptionStatus = .notSubscribed
+    var isProMember = false
+    var isRegularMember: Bool {
+        !isProMember
     }
 
-    // AppIcon
+    // notifications
+    var isRefreshingNotifications = false
+    var task: Task<Void, Never>?
+    var notifications = [Models.Notification.Joined]()
+    var unreadCount: Int = 0
+    // app icon
     var appIcon: AppIcon = .ramune
-
+    // dependencies
     private let repository: Repository
-    private let snackController: SnackController
-
-    var extendedProfile: Profile.Extended? {
-        get {
-            access(keyPath: \.extendedProfile)
-            return UserDefaults.read(forKey: .profileData)
-        }
-
-        set {
-            withMutation(keyPath: \.extendedProfile) {
-                UserDefaults.set(value: newValue, forKey: .profileData)
-            }
-        }
-    }
-
-    var friends: [Friend.Saved] {
-        get {
-            access(keyPath: \.friends)
-            return UserDefaults.read(forKey: .profileFriendsData) ?? []
-        }
-
-        set {
-            withMutation(keyPath: \.friends) {
-                UserDefaults.set(value: newValue, forKey: .profileFriendsData)
-            }
-        }
-    }
-
-    var roles: [Role.Name] {
-        get {
-            access(keyPath: \.roles)
-            return UserDefaults.read(forKey: .profileRolesData) ?? []
-        }
-
-        set {
-            withMutation(keyPath: \.roles) {
-                UserDefaults.set(value: newValue, forKey: .profileRolesData)
-            }
-        }
-    }
-
-    var permissions: [Permission.Name] {
-        get {
-            access(keyPath: \.permissions)
-            return UserDefaults.read(forKey: .profilePermissionsData) ?? []
-        }
-
-        set {
-            withMutation(keyPath: \.permissions) {
-                UserDefaults.set(value: newValue, forKey: .profilePermissionsData)
-            }
-        }
-    }
-
-    init(repository: Repository, snackController: SnackController) {
+    private let storage: any StorageProtocol<Profile.Populated>
+    private let onSnack: OnSnack
+    // init
+    init(repository: Repository, storage: any StorageProtocol<Profile.Populated>, onSnack: @escaping OnSnack) {
         self.repository = repository
-        self.snackController = snackController
+        self.onSnack = onSnack
+        self.storage = storage
     }
 
-    // Session
-    public func listenToAuthState() async {
+    func initialize(cache: Bool) async {
+        logger.notice("Initializing profile data")
+        let startTime = DispatchTime.now()
+        let initialValue = cache ? try? storage.load() : nil
+        let userId = try? await repository.auth.getUserId()
+        if userId == nil {
+            state = .error(ProfileError.failedToObtainSession)
+            return
+        }
+        if let initialValue {
+            logger.notice("Initializing profile from cache...")
+            if initialValue.id != userId {
+                logger.notice("Stored profile data is for another user, clearing...")
+                try? storage.clear()
+            } else if initialValue.version != dataVersion {
+                logger.notice("Profile cache version mismatch, ignoring initial value")
+            } else {
+                state = .populated(initialValue)
+                logger.notice("Profile initialized from cache, refreshing...")
+            }
+        }
+        appIcon = .currentAppIcon
+        let deviceToken = await DeviceTokenActor.shared.deviceTokenForPusNotifications
+        guard let deviceToken else {
+            logger.error("Failed to obtain device token")
+            state = .error(ProfileError.failedToObtainDeviceToken)
+            return
+        }
+        async let profilePromise = repository.profile.getCurrentUser()
+        async let userPromise = repository.auth.getUser()
+        async let friendsPromise = repository.friend.getCurrentUserFriends()
+        async let pushNotificationSettingsPromise = repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDebug: false)
+        do {
+            let (currentUserProfile, userResult, friendsResult, pushNotificationSettings) = try await (profilePromise, userPromise, friendsPromise, pushNotificationSettingsPromise)
+            notifications = currentUserProfile.notifications
+            unreadCount = currentUserProfile.notifications.count { $0.seenAt == nil }
+            state = .populated(.init(
+                profile: currentUserProfile,
+                account: userResult,
+                pushNotificationSettings: pushNotificationSettings,
+                friends: friendsResult,
+                version: dataVersion
+            ))
+            logger.info("Profile refreshed in \(startTime.elapsedTime())ms")
+        } catch {
+            logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
+            if error.isNetworkUnavailable, state.isPopulated {
+                logger.notice("Network unavailable, keeping current profile state")
+                return
+            }
+            state = .error(error)
+        }
+    }
+
+    // session
+    func listenToAuthState() async {
         do {
             for await state in try await repository.auth.authStateListener() {
                 let previousState = authState
                 authState = state
                 logger.info("Auth state changed from \(String(describing: previousState)) to \(String(describing: state))")
                 if state == .authenticated {
-                    await initialize()
+                    await initialize(cache: true)
+                } else {
+                    authState = .unauthenticated
                 }
                 if Task.isCancelled {
                     logger.info("Auth state listener cancelled")
@@ -130,7 +272,7 @@ final class ProfileModel {
         }
     }
 
-    public func loadSessionFromURL(url: URL) async {
+    func loadSessionFromURL(url: URL) async {
         do {
             try await repository.auth.signInFromUrl(url: url)
         } catch {
@@ -138,127 +280,114 @@ final class ProfileModel {
         }
     }
 
-    // App icon
-    public func setAppIcon(_ appIcon: AppIcon) {
+    // app icon
+    func setAppIcon(_ appIcon: AppIcon) {
         UIApplication.shared.setAlternateIconName(appIcon == AppIcon.ramune ? nil : appIcon.rawValue)
         self.appIcon = appIcon
     }
 
-    // Getters that are only available after authentication, calling these before authentication causes an app crash
-    public var profile: Profile.Saved {
-        if let extendedProfile {
-            extendedProfile.profile
+    // Getters that are only available after authentication
+    var profile: Profile.Saved {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.saved
         } else {
-            fatalError("profile can only be used on authenticated routes.")
+            logger.error("profile can only be used on authenticated routes.")
+            return .init(id: .init(), preferredName: nil, isPrivate: false, joinedAt: Date.now, avatars: [])
         }
     }
 
-    public var id: Profile.Id {
-        if let extendedProfile {
-            extendedProfile.id
+    var id: Profile.Id {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.id
         } else {
-            fatalError("id can only be used on authenticated routes.")
+            logger.error("id can only be used on authenticated routes.")
+            return .init()
         }
     }
 
-    public var username: String {
-        if let extendedProfile {
-            extendedProfile.username ?? ""
+    var email: String {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.email ?? ""
         } else {
-            fatalError("username can only be used on authenticated routes.")
+            logger.error("email can only be used on authenticated routes.")
+            return ""
         }
     }
 
-    public var firstName: String? {
-        if let extendedProfile {
-            extendedProfile.firstName
+    var username: String {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.username ?? ""
         } else {
-            fatalError("username can only be used on authenticated routes.")
+            logger.error("username can only be used on authenticated routes.")
+            return ""
         }
     }
 
-    public var lastName: String? {
-        if let extendedProfile {
-            extendedProfile.lastName
+    var firstName: String? {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.firstName
         } else {
-            fatalError("username can only be used on authenticated routes.")
+            logger.error("username can only be used on authenticated routes.")
+            return nil
         }
     }
 
-    public var isOnboarded: Bool {
-        extendedProfile?.isOnboarded ?? false
+    var lastName: String? {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.lastName
+        } else {
+            logger.error("username can only be used on authenticated routes.")
+            return nil
+        }
+    }
+
+    var isOnboarded: Bool {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.isOnboarded
+        }
+        return false
     }
 
     var isPrivateProfile: Bool {
-        extendedProfile?.isPrivate ?? false
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.isPrivate
+        }
+        return false
     }
 
     var showFullName: Bool {
-        extendedProfile?.nameDisplay == .fullName
+        guard case let .populated(extendedProfile) = state else { return false }
+        return extendedProfile.nameDisplay == .fullName
+    }
+
+    var notificationSettings: Models.Notification.Settings {
+        guard case let .populated(extendedProfile) = state else { return .init() }
+        return extendedProfile.notificationSettings
     }
 
     // Access Control
-    public func hasPermission(_: Permission.Name) -> Bool {
-        permissions.contains(permissions)
+    func hasPermission(_ permission: Permission.Name) -> Bool {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.permissions.contains(permission)
+        }
+        return false
     }
 
-    public func hasRole(_ role: Role.Name) -> Bool {
-        roles.contains(role)
+    func hasRole(_ role: Role.Name) -> Bool {
+        if case let .populated(extendedProfile) = state {
+            return extendedProfile.roles.contains(role)
+        }
+        return false
     }
 
-    public func hasChanged(username: String, firstName: String, lastName: String) -> Bool {
-        guard let extendedProfile else { return false }
+    func hasChanged(username: String, firstName: String, lastName: String) -> Bool {
+        guard case let .populated(extendedProfile) = state else { return false }
         return !(username == extendedProfile.username &&
             firstName == extendedProfile.firstName ?? "" &&
             lastName == extendedProfile.lastName ?? "")
     }
 
-    public func initialize() async {
-        logger.notice("Initializing user data")
-        let isPreviouslyLoaded = extendedProfile != nil
-        if let extendedProfile {
-            appIcon = .currentAppIcon
-            profileState = .populated(extendedProfile)
-            logger.info("Profile data optimistically initialized based on previously stored data, refreshing...")
-        }
-
-        let deviceToken = await DeviceTokenActor.shared.deviceTokenForPusNotifications
-        guard let deviceToken else {
-            logger.error("Failed to obtain device token")
-            return
-        }
-        let startTime = DispatchTime.now()
-        async let profilePromise = repository.profile.getCurrentUser()
-        async let userPromise = repository.auth.getUser()
-        async let friendsPromise = repository.friend.getCurrentUserFriends()
-        async let pushNotificationSettingsPromise = repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDebug: false)
-
-        var errors = [Error]()
-        do {
-            let (currentUserProfile, userResult, friendsResult, pushNotificationSettings) = try await (profilePromise, userPromise, friendsPromise, pushNotificationSettingsPromise)
-            extendedProfile = currentUserProfile
-            notificationSettings = .init(profileSettings: currentUserProfile.settings, pushNotificationSettings: pushNotificationSettings)
-            friends = friendsResult
-            appIcon = .currentAppIcon
-            email = userResult.email.orEmpty
-            roles = userResult.roles
-            permissions = userResult.permissions
-            logger.info("User data initialized in \(startTime.elapsedTime())ms")
-        } catch {
-            errors.append(error)
-            logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
-        }
-        guard !isPreviouslyLoaded else { return }
-        withAnimation {
-            profileState = if errors.isEmpty, let extendedProfile {
-                .populated(extendedProfile)
-            } else {
-                .error(errors)
-            }
-        }
-    }
-
-    public func checkIfUsernameIsAvailable(username: String) async -> Bool {
+    func checkIfUsernameIsAvailable(username: String) async -> Bool {
         do {
             return try await repository.profile.checkIfUsernameIsAvailable(username: username)
         } catch {
@@ -267,137 +396,154 @@ final class ProfileModel {
         }
     }
 
-    public func logOut() async {
+    func logOut() async {
         do {
             try await repository.auth.logOut()
             clearTemporaryData()
             UserDefaults().reset()
         } catch {
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while logging out")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while logging out")))
             logger.error("Failed to log out. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func deleteCurrentAccount() async {
+    func deleteCurrentAccount() async {
         do {
             try await repository.profile.deleteCurrentAccount()
             logger.info("User succesfully deleted")
             try await repository.auth.logOut()
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting account")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting account")))
             logger.error("Failed to delete current account. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func uploadAvatar(data: Data) async {
-        guard let extendedProfile else { return }
+    func uploadAvatar(data: Data) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
             let imageEntity = try await repository.profile.uploadAvatar(id: extendedProfile.id, data: data)
-            self.extendedProfile = extendedProfile.copyWith(avatars: [imageEntity])
+            state = .populated(extendedProfile.copyWith(avatars: [imageEntity]))
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while uploading avatar")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while uploading avatar")))
             logger.error("Uploading avatar failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func deleteAvatar(entity: ImageEntity.Saved) async {
-        guard let extendedProfile else { return }
+    func deleteAvatar(entity: ImageEntity.Saved) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
             try await repository.imageEntity.delete(from: .avatars, id: entity.id)
             withAnimation {
-                self.extendedProfile = extendedProfile.copyWith(avatars: extendedProfile.avatars.removing(entity))
+                self.state =
+                    .populated(extendedProfile.copyWith(avatars: extendedProfile.avatars.removing(entity)))
             }
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting avatar")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting avatar")))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func updateProfile(username: String?, firstName: String?, lastName: String?) async {
+    func updateProfile(username: String?, firstName: String?, lastName: String?) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
             let updatedProfile = try await repository.profile.update(
                 update: .init(id: id, username: username, firstName: firstName, lastName: lastName)
             )
-            extendedProfile = updatedProfile
+            state = .populated(extendedProfile.copyWith(
+                username: updatedProfile.username,
+                firstName: updatedProfile.firstName,
+                lastName: updatedProfile.lastName
+            ))
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating profile")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating profile")))
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func onboardingUpdate() async {
+    func onboardingUpdate() async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
             let updatedProfile = try await repository.profile.update(update: .init(id: id, isOnboarded: true))
-            extendedProfile = updatedProfile
+            state = .populated(extendedProfile.copyWith(isOnboarded: updatedProfile.isOnboarded))
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating onboarding status")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating onboarding status")))
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func updatePrivacySettings(isPrivate: Bool) async {
+    func updatePrivacySettings(isPrivate: Bool) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
-            extendedProfile = try await repository.profile.update(update: .init(id: id, isPrivate: isPrivate))
+            let updatedProfile = try await repository.profile.update(update: .init(id: id, isPrivate: isPrivate))
+            state = .populated(extendedProfile.copyWith(isPrivate: updatedProfile.isPrivate))
             logger.info("Updated privacy settings")
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating privacy settings")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating privacy settings")))
             logger.error("Failed to update settings. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func updateDisplaySettings(showFullName: Bool) async {
+    func updateDisplaySettings(showFullName: Bool) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
-            extendedProfile = try await repository.profile.update(update: .init(id: id, showFullName: showFullName))
+            let updatedProfile = try await repository.profile.update(update: .init(id: id, showFullName: showFullName))
+            state = .populated(extendedProfile.copyWith(nameDisplay: updatedProfile.nameDisplay))
             logger.info("updated display settings")
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating display settings")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating display settings")))
             logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     // Friends
+    var friends: [Friend.Saved] {
+        guard case let .populated(extendedProfile) = state else { return [] }
+        return extendedProfile.friends
+    }
 
-    public var acceptedFriends: [Profile.Saved] {
-        guard let extendedProfile else { return [] }
+    var acceptedFriends: [Profile.Saved] {
+        guard case let .populated(extendedProfile) = state else { return [] }
         return friends.filter { $0.status == .accepted }.compactMap { $0.getFriend(userId: extendedProfile.id) }
     }
 
-    public var blockedUsers: [Friend.Saved] {
+    var blockedUsers: [Friend.Saved] {
         friends.filter { $0.status == .blocked }
     }
 
-    public var acceptedOrPendingFriends: [Friend.Saved] {
+    var acceptedOrPendingFriends: [Friend.Saved] {
         friends.filter { $0.status != .blocked }
     }
 
-    public var pendingFriends: [Friend.Saved] {
+    var pendingFriends: [Friend.Saved] {
         friends.filter { $0.status == .pending }
     }
 
-    public func sendFriendRequest(receiver: Profile.Id, onSuccess: (() -> Void)? = nil) async {
+    func sendFriendRequest(receiver: Profile.Id, onSuccess: (() -> Void)? = nil) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
             let newFriend = try await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending))
             withAnimation {
-                self.friends.append(newFriend)
+                self.state = .populated(extendedProfile.copyWith(friends: friends + [newFriend]))
             }
             if let onSuccess {
                 onSuccess()
             }
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while sending friend request")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while sending friend request")))
             logger.error("Failed add new friend '\(receiver)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func updateFriendRequest(friend: Friend.Saved, newStatus: Friend.Status) async {
+    func updateFriendRequest(friend: Friend.Saved, newStatus: Friend.Status) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
             let updatedFriend = try await repository.friend.update(id: friend.id, friendUpdate: .init(
                 sender: friend.sender,
@@ -405,85 +551,89 @@ final class ProfileModel {
                 status: newStatus
             ))
             withAnimation {
-                self.friends.replace(friend, with: updatedFriend)
+                self.state = .populated(extendedProfile.copyWith(friends: friends.replacing(friend, with: updatedFriend)))
             }
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating friend request")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating friend request")))
             logger.error(
                 "Failed to update friend request. Error: \(error) (\(#file):\(#line))"
             )
         }
     }
 
-    public func removeFriendRequest(_ friend: Friend.Saved) async {
+    func removeFriendRequest(_ friend: Friend.Saved) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
             try await repository.friend.delete(id: friend.id)
             withAnimation {
-                self.friends.remove(object: friend)
+                self.state = .populated(extendedProfile.copyWith(friends: friends.removing(friend)))
             }
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while removing friend request")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while removing friend request")))
             logger.error("Failed to remove friend request '\(friend.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func hasNoFriendStatus(friend: Profile.Saved) -> Bool {
-        guard let extendedProfile else { return false }
+    func hasNoFriendStatus(friend: Profile.Saved) -> Bool {
+        guard case let .populated(extendedProfile) = state else { return false }
         return !friends.contains(where: { $0.getFriend(userId: extendedProfile.id).id == friend.id })
     }
 
-    public func isFriend(_ friend: Profile.Saved) -> Bool {
-        guard let extendedProfile else { return false }
+    func isFriend(_ friend: Profile.Saved) -> Bool {
+        guard case let .populated(extendedProfile) = state else { return false }
         return friends.contains(where: { $0.status == .accepted && $0.getFriend(userId: extendedProfile.id).id == friend.id })
     }
 
-    public func isPendingUserApproval(_ friend: Profile.Saved) -> Friend.Saved? {
-        guard let extendedProfile else { return nil }
+    func isPendingUserApproval(_ friend: Profile.Saved) -> Friend.Saved? {
+        guard case let .populated(extendedProfile) = state else { return nil }
         return friends.first(where: { $0.status == .pending && $0.getFriend(userId: extendedProfile.id).id == friend.id })
     }
 
-    public func isPendingCurrentUserApproval(_ friend: Profile.Saved) -> Friend.Saved? {
+    func isPendingCurrentUserApproval(_ friend: Profile.Saved) -> Friend.Saved? {
         friends.first(where: { $0.status == .pending && $0.sender == friend })
     }
 
-    public func refreshFriends(withHaptics _: Bool = false) async {
+    func refreshFriends(withHaptics _: Bool = false) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
-            friends = try await repository.friend.getCurrentUserFriends()
+            let friends = try await repository.friend.getCurrentUserFriends()
+            state = .populated(extendedProfile.copyWith(friends: friends))
         } catch {
             logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func unblockUser(_ friend: Friend.Saved) async {
+    func unblockUser(_ friend: Friend.Saved) async {
+        guard case let .populated(extendedProfile) = state else { return }
         do {
             try await repository.friend.delete(id: friend.id)
             withAnimation {
-                self.friends.remove(object: friend)
+                self.state = .populated(extendedProfile.copyWith(friends: friends.removing(friend)))
             }
             logger.notice("\(friend.id) unblocked")
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while unblocking user")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while unblocking user")))
             logger.error("Failed to unblock user \(friend.id). Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    public func blockUser(user: Profile.Saved, onSuccess: @escaping () -> Void) async {
-        guard let extendedProfile else { return }
+    func blockUser(user: Profile.Saved, onSuccess: @escaping () -> Void) async {
+        guard case let .populated(extendedProfile) = state else { return }
         if let friend = friends.first(where: { $0.getFriend(userId: extendedProfile.id) == user }) {
             await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)
         } else {
             do {
                 let blockedUser = try await repository.friend.insert(newFriend: .init(receiver: user.id, status: .blocked))
                 withAnimation {
-                    self.friends.append(blockedUser)
+                    self.state = .populated(extendedProfile.copyWith(friends: friends + [blockedUser]))
                 }
                 onSuccess()
             } catch {
                 guard !error.isCancelled else { return }
-                snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while blocking user")))
+                onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while blocking user")))
                 logger.error("Failed to block user \(user.id). Error: \(error) (\(#file):\(#line))")
             }
         }
@@ -491,15 +641,12 @@ final class ProfileModel {
 
     // Notifications
 
-    public func updatePushNotificationSettingsForDevice(reactions: Models.Notification.DeliveryType? = nil,
-                                                        taggedCheckIn: Models.Notification.DeliveryType? = nil,
-                                                        friendRequest: Models.Notification.DeliveryType? = nil,
-                                                        checkInComment: Models.Notification.DeliveryType? = nil) async
+    func updatePushNotificationSettingsForDevice(reactions: Models.Notification.DeliveryType? = nil,
+                                                 taggedCheckIn: Models.Notification.DeliveryType? = nil,
+                                                 friendRequest: Models.Notification.DeliveryType? = nil,
+                                                 checkInComment: Models.Notification.DeliveryType? = nil) async
     {
-        guard let notificationSettings else {
-            logger.error("Can not update notification settings before initialization")
-            return
-        }
+        guard case let .populated(extendedProfile) = state else { return }
         let updatedNotificationSettings = notificationSettings.copyWith(
             reactions: reactions,
             taggedCheckIn: taggedCheckIn,
@@ -508,16 +655,202 @@ final class ProfileModel {
         )
         do {
             try await repository.notification.updateNotificationSettings(settings: updatedNotificationSettings)
-            self.notificationSettings = updatedNotificationSettings
+            state = .populated(extendedProfile.copyWith(notificationSettings: updatedNotificationSettings))
         } catch {
             guard !error.isCancelled else { return }
-            snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating push notification settings")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while updating push notification settings")))
             logger.error("Failed to update push notification settings for device. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    // subscriptions
+    func onTaskStatusChange(taskStatus: EntitlementTaskState<[StoreKit.Product.SubscriptionInfo.Status]>, productSubscriptions _: [SubscriptionProduct]) async {
+        if let value = taskStatus.value {
+            let isPro = !value
+                .filter { $0.state != .revoked && $0.state != .expired }
+                .isEmpty
+            isProMember = isPro
+            logger.info("User is a \(isPro ? "pro" : "regular") member")
+        }
+    }
+
+    func onInAppPurchaseCompletion(product: StoreKit.Product, result: Result<StoreKit.Product.PurchaseResult, Error>) async {
+        switch result {
+        case let .success(result):
+            await onPurchaseResult(product: product, result: result)
+        case let .failure(error):
+            logger.error("Purchase failed: \(error)")
+        }
+    }
+
+    func onPurchaseResult(product: StoreKit.Product, result: StoreKit.Product.PurchaseResult) async {
+        switch result {
+        case let .success(transaction):
+            logger.info("Purchases for \(product.displayName) successful at \(transaction.signedDate)")
+            if let transaction = try? transaction.payloadValue {
+                activeTransactions.insert(transaction)
+                await transaction.finish()
+            }
+        case .pending:
+            logger.info("Purchases for \(product.displayName) pending user action")
+        case .userCancelled:
+            logger.info("Purchases for \(product.displayName) was cancelled by the user")
+        @unknown default:
+            logger.error("Encountered unknown purchase result")
+        }
+    }
+
+    // notifications
+    var unreadFriendRequestCount: Int {
+        notifications
+            .filter { notification in
+                switch notification.content {
+                case .friendRequest where notification.seenAt == nil:
+                    true
+                default:
+                    false
+                }
+            }
+            .count
+    }
+
+    func getUnreadCount() async {
+        guard case let .populated(extendedProfile) = state else { return }
+        do {
+            let count = try await repository.notification.getUnreadCount(profileId: extendedProfile.id)
+            unreadCount = count
+        } catch {
+            guard !error.isCancelled else { return }
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while getting unread count")))
+            logger.error("Failed to get all unread notifications. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func refreshNotifications(reset: Bool = false, withHaptics: Bool = false) {
+        guard case let .populated(extendedProfile) = state else { return }
+        guard task == nil else {
+            logger.info("Tried to refresh but already fetching notifications. Skipping.")
+            return
+        }
+        task = Task {
+            defer { task = nil }
+            if withHaptics {
+                isRefreshingNotifications = true
+            }
+            do {
+                let newNotifications = try await repository.notification.getAll(
+                    profileId: extendedProfile.id,
+                    afterId: reset ? nil : notifications.first?.id
+                )
+                if reset {
+                    notifications = newNotifications
+                    unreadCount = newNotifications.count { $0.seenAt == nil }
+                } else {
+                    notifications.insert(contentsOf: newNotifications, at: 0)
+                }
+            } catch {
+                guard !error.isCancelled else { return }
+                logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
+            }
+            if withHaptics {
+                isRefreshingNotifications = false
+            }
+        }
+    }
+
+    func deleteAllNotifications() async {
+        do {
+            try await repository.notification.deleteAll(profileId: id)
+            notifications = [Models.Notification.Joined]()
+            unreadCount = 0
+        } catch {
+            guard !error.isCancelled else { return }
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting all notifications")))
+            logger.error("Failed to delete all notifications. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func markAllAsRead() async {
+        do {
+            let readNotifications = try await repository.notification.markAllRead()
+            let markedAsSeenNotifications = notifications.map { notification in
+                let readNotification = readNotifications.first(where: { rn in rn.id == notification.id })
+                return readNotification ?? notification
+            }
+
+            notifications = markedAsSeenNotifications
+            unreadCount = 0
+        } catch {
+            guard !error.isCancelled else { return }
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while marking all notifications as read")))
+            logger.error("Failed to mark all notifications as read. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func markAllFriendRequestsAsRead() async {
+        guard notifications.contains(where: \.isFriendRequest) else { return }
+        do {
+            let updatedNotifications = try await repository.notification.markAllFriendRequestsAsRead()
+            notifications = notifications.map { notification in
+                updatedNotifications.first { $0.id == notification.id } ?? notification
+            }
+            unreadCount = notifications.count {
+                $0.seenAt == nil
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Failed to mark all friend requests as read. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func markCheckInAsRead(id: CheckIn.Id) async {
+        let containsCheckIn = notifications.contains {
+            if case let .checkInReaction(cir) = $0.content { return cir.checkIn.id == id }
+            if case let .taggedCheckIn(tci) = $0.content { return tci.id == id }
+            if case let .checkInComment(cic) = $0.content { return cic.checkIn.id == id }
+            return false
+        }
+        guard containsCheckIn else { return }
+        do {
+            let updatedNotifications = try await repository.notification.markAllCheckInNotificationsAsRead(checkInId: id)
+            notifications = notifications.map { notification in
+                updatedNotifications.first { $0.id == notification.id } ?? notification
+            }
+            unreadCount = notifications.count {
+                $0.seenAt == nil
+            }
+        } catch {
+            guard !error.isCancelled else { return }
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while marking check-in notifactions as read")))
+            logger.error("Failed to mark check-in as read \(id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func markAsRead(_ notification: Models.Notification.Joined) async {
+        do {
+            let updatedNotification = try await repository.notification.markRead(id: notification.id)
+            notifications.replace(notification, with: updatedNotification)
+        } catch {
+            guard !error.isCancelled else { return }
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while marking notification as read")))
+            logger.error("Failed to mark '\(notification.id)' as read. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func deleteFromIndex(at: IndexSet) async {
+        guard let index = at.first, let notification = notifications[safe: index] else { return }
+        do {
+            try await repository.notification.delete(id: notification.id)
+            notifications = notifications.removing(notification)
+        } catch {
+            guard !error.isCancelled else { return }
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting notification")))
+            logger.error("Failed to delete notification. Error: \(error) (\(#file):\(#line))")
         }
     }
 }
 
-public func clearTemporaryData() {
+func clearTemporaryData() {
     let logger = Logger(label: "TempDataCleanUp")
     let fileManager = FileManager.default
     do {

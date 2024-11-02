@@ -5,7 +5,7 @@ public extension Document {
 }
 
 public extension Document.About {
-    struct Page: Codable, Sendable {
+    struct Page: Codable, Sendable, Hashable {
         public let summary: String
         public let githubUrl: String
         public let portfolioUrl: String

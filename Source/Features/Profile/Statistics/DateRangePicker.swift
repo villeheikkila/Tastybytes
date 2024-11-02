@@ -3,7 +3,7 @@ import SwiftUI
 
 struct DateRangePicker: View {
     @Environment(Router.self) private var router
-    @Environment(SubscriptionModel.self) private var subscriptionModel
+    @Environment(ProfileModel.self) private var profileModel
     @Binding var page: Int
     @Binding var timePeriod: StatisticsTimePeriod
     @Binding var dateRange: ClosedRange<Date>
@@ -19,7 +19,7 @@ struct DateRangePicker: View {
             .pickerStyle(.segmented)
             .padding(.horizontal, -8)
 
-            if subscriptionModel.isRegularMember {
+            if profileModel.isRegularMember {
                 Color.clear
                     .contentShape(.rect)
                     .onTapGesture {
@@ -30,12 +30,12 @@ struct DateRangePicker: View {
 
         HStack {
             PageButton(direction: .decrement, page: $page)
-                .disabled(subscriptionModel.isRegularMember)
+                .disabled(profileModel.isRegularMember)
             Spacer()
             Text(dateRange.title)
             Spacer()
             PageButton(direction: .increment, page: $page)
-                .disabled(subscriptionModel.isRegularMember)
+                .disabled(profileModel.isRegularMember)
         }
         .onChange(of: timePeriod) { _, newTimePeriod in
             withAnimation {
@@ -56,13 +56,13 @@ struct DateRangePicker: View {
 }
 
 struct DateRangePrickerItemView: View {
-    @Environment(SubscriptionModel.self) private var subscriptionModel
+    @Environment(ProfileModel.self) private var profileModel
     let timePeriod: StatisticsTimePeriod
 
     @State private var renderedImage: UIImage?
 
     private var isEnabled: Bool {
-        timePeriod == .week || subscriptionModel.isProMember
+        timePeriod == .week || profileModel.isProMember
     }
 
     private let height: Double = 38

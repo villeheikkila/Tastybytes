@@ -32,7 +32,7 @@ struct NotificationDeliveryMethodSection: View {
                 NotificationDeliveryTypePickerView(
                     notificationDeliveryType: .init(
                         get: {
-                            profileModel.notificationSettings?[keyPath: type.keyPath] ?? Models.Notification.DeliveryType.disabled
+                            profileModel.notificationSettings[keyPath: type.keyPath]
                         },
                         set: { newValue in
                             updateNotificationSetting(for: type, with: newValue)
