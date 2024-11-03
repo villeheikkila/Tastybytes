@@ -46,10 +46,7 @@ struct CheckInListContentView: View {
                     }
                 }
             )
-            .listRowSeparator(.visible, edges: .bottom)
-            .alignmentGuide(.listRowSeparatorLeading) { _ in
-                -50
-            }
+            .listRowSeparator(.hidden)
             .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
             .id(checkIn.id)
             .onAppear {

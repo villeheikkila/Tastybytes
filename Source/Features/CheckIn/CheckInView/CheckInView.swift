@@ -5,6 +5,7 @@ import Repositories
 import SwiftUI
 
 struct CheckInView: View {
+    @Namespace private var namespace
     @Environment(\.checkInLoadedFrom) private var checkInLoadedFrom
     @Environment(\.checkInHeaderVisibility) private var checkInHeaderVisibility
     @Environment(\.checkInFooterVisibility) private var checkInFooterVisibility
@@ -19,9 +20,9 @@ struct CheckInView: View {
     }
 
     var body: some View {
-        RouterLink(open: .screen(.checkIn(checkIn.id))) {
-            VStack(spacing: 4) {
-                Group {
+        RouterLink(open: .screen(.checkIn(checkIn.id, namespace: namespace))) {
+            VStack(spacing: 8) {
+                VStack {
                     if checkInHeaderVisibility {
                         CheckInHeaderView(profile: checkIn.profile, location: checkIn.location)
                     }
@@ -31,24 +32,33 @@ struct CheckInView: View {
                             .productCompanyLinkEnabled(checkInLoadedFrom != .product)
                     }
                 }
+                .padding(.top, 8)
                 .padding(.horizontal, checkInContainerPadding)
                 if !checkIn.images.isEmpty {
                     CheckInImageReelView(checkIn: checkIn, onDeleteImage: onDeleteImage)
                 }
-                Group {
+                VStack {
                     CheckInCheckInSectionView(checkIn: checkIn)
                     CheckInTaggedFriendsView(taggedProfiles: checkIn.taggedProfiles.map(\.profile))
                     if checkInFooterVisibility {
                         CheckInFooterView(checkIn: checkIn)
                     }
                 }
+                .padding(.bottom, 8)
                 .padding(.horizontal, checkInContainerPadding)
             }
             .routerLinkDisabled(false)
+            .background(.ultraThinMaterial)
+            .clipShape(.rect(cornerRadius: 16))
+            .appleShadow()
         }
         .routerLinkDisabled(checkInLoadedFrom == .checkIn)
         .routerLinkMode(.button)
         .buttonStyle(.plain)
+        .matchedTransitionSource(
+            id: checkIn.id,
+            in: namespace
+        )
     }
 }
 
@@ -83,7 +93,7 @@ extension View {
 }
 
 extension EnvironmentValues {
-    @Entry var checkInContainerPadding: Double = 8
+    @Entry var checkInContainerPadding: Double = 12
 }
 
 extension View {

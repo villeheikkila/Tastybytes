@@ -7,7 +7,7 @@ enum Screen: Hashable, Sendable {
     case productFromBarcode(Product.Id, Barcode)
     case profile(Profile.Saved)
     case profileById(Profile.Id)
-    case checkIn(CheckIn.Id)
+    case checkIn(CheckIn.Id, namespace: Namespace.ID? = nil)
     case location(Location.Id)
     case company(Company.Id)
     case brand(Brand.Id)
@@ -96,8 +96,11 @@ enum Screen: Hashable, Sendable {
             ProfileCheckInsList(profile: profile, filter: filter)
         case let .profileStatisticsTopLocations(profile):
             ProfileTopLocationsScreen(profile: profile)
-        case let .checkIn(id):
+        case let .checkIn(id, namespace):
             CheckInScreen(id: id)
+                .ifLet(namespace) { view, namespace in
+                view.navigationTransition(.zoom(sourceID: id, in: namespace))
+                }
         case let .profile(profile):
             ProfileScreen(profile: profile)
         case let .profileById(id):
@@ -321,7 +324,7 @@ enum Screen: Hashable, Sendable {
         case let .profile(profile):
             hasher.combine("profile")
             hasher.combine(profile)
-        case let .checkIn(checkIn):
+        case let .checkIn(checkIn, _):
             hasher.combine("checkIn")
             hasher.combine(checkIn)
         case let .location(location):

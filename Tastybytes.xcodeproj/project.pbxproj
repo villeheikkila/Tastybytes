@@ -1152,7 +1152,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					C94722D42AD1859C006DE096 = {
 						CreatedOnToolsVersion = 15.1;
@@ -1212,6 +1212,8 @@
 			baseConfigurationReferenceAnchor = 5C410FE12C751D650086C146 /* Configurations */;
 			baseConfigurationReferenceRelativePath = "Project/Project-Staging.xcconfig";
 			buildSettings = {
+				DEAD_CODE_STRIPPING = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 			};
 			name = Staging;
 		};
@@ -1220,6 +1222,8 @@
 			baseConfigurationReferenceAnchor = 5C410FE12C751D650086C146 /* Configurations */;
 			baseConfigurationReferenceRelativePath = Target/Target.xcconfig;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				DEAD_CODE_STRIPPING = YES;
 			};
 			name = Staging;
 		};
@@ -1228,6 +1232,8 @@
 			baseConfigurationReferenceAnchor = 5C410FE12C751D650086C146 /* Configurations */;
 			baseConfigurationReferenceRelativePath = "Project/Project-Development.xcconfig";
 			buildSettings = {
+				DEAD_CODE_STRIPPING = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 			};
 			name = Debug;
 		};
@@ -1236,6 +1242,8 @@
 			baseConfigurationReferenceAnchor = 5C410FE12C751D650086C146 /* Configurations */;
 			baseConfigurationReferenceRelativePath = "Project/Project-Production.xcconfig";
 			buildSettings = {
+				DEAD_CODE_STRIPPING = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 			};
 			name = Release;
 		};
@@ -1244,6 +1252,8 @@
 			baseConfigurationReferenceAnchor = 5C410FE12C751D650086C146 /* Configurations */;
 			baseConfigurationReferenceRelativePath = Target/Target.xcconfig;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -1253,6 +1263,8 @@
 			baseConfigurationReferenceAnchor = 5C410FE12C751D650086C146 /* Configurations */;
 			baseConfigurationReferenceRelativePath = Target/Target.xcconfig;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				DEAD_CODE_STRIPPING = YES;
 			};
 			name = Release;
 		};

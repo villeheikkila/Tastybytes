@@ -33,7 +33,7 @@ struct ActivityScreen: View {
                 }
             }
             .listStyle(.plain)
-            .animation(.default, value: checkIns)
+            .animation(.easeIn, value: checkIns)
             .scrollIndicators(.hidden)
             .refreshable {
                 await fetchFeedItems(reset: true, onPageLoad: false)
