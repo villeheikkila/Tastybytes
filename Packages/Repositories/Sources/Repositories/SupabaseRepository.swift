@@ -33,7 +33,7 @@ public final class Repository: RepositoryProtocol {
         let client = SupabaseClient(
             supabaseURL: apiUrl,
             supabaseKey: apiKey,
-            options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers, logger: CustomSupabaseLogger()))
+            options: .init(auth: .init(flowType: .implicit), global: .init(headers: headers))
         )
 
         let cache = CacheClient()
@@ -71,10 +71,10 @@ struct CustomSupabaseLogger: SupabaseLogger {
     func log(message: SupabaseLogMessage) {
         switch message.level {
         case .verbose:
-            // logger.log(level: .info, "\(message.description)")
+            logger.log(level: .info, "\(message.description)")
             return
         case .debug:
-            // logger.log(level: .debug, "\(message.description)")
+            logger.log(level: .debug, "\(message.description)")
             return
         case .warning, .error:
             logger.log(level: .error, "\(message.description)")

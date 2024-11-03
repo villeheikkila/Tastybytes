@@ -8,7 +8,6 @@ import TipKit
 struct Entrypoint: App {
     private let logger = Logger(label: "Entrypoint")
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @State private var logManagerContainer = LogManagerContainer()
     @State private var snackController: SnackController
     @State private var adminModel: AdminModel
     @State private var profileModel: ProfileModel
@@ -24,13 +23,11 @@ struct Entrypoint: App {
         let (infoPlist, bundleIdentifier) = readEnvironment()
         let repository = makeRepository(infoPlist: infoPlist, bundleIdentifier: bundleIdentifier)
         let snackController = SnackController()
+        let profileStorage = DiskStorage<Profile.Populated>(filename: "profile_data.json")
+        let appStorage = DiskStorage<AppData>(filename: "app_data.json")
         adminModel = AdminModel(repository: repository, onSnack: snackController.open)
-        profileModel = ProfileModel(
-            repository: repository,
-            storage: DiskStorage<Profile.Populated>(filename: "profile_data.json"),
-            onSnack: snackController.open
-        )
-        appModel = AppModel(repository: repository, storage: DiskStorage<AppData>(filename: "app_data.json"), infoPlist: infoPlist, onSnack: snackController.open)
+        profileModel = ProfileModel(repository: repository, storage: profileStorage, onSnack: snackController.open)
+        appModel = AppModel(repository: repository, storage: appStorage, infoPlist: infoPlist, onSnack: snackController.open)
         checkInUploadModel = CheckInUploadModel(repository: repository, onSnack: snackController.open)
         self.snackController = snackController
         self.repository = repository
