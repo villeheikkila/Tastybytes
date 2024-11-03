@@ -20,7 +20,7 @@ struct CheckInView: View {
     }
 
     var body: some View {
-        RouterLink(open: .screen(.checkIn(checkIn.id, namespace: namespace))) {
+        RouterLink(open: .screen(.checkIn(checkIn.id, initialValue: checkIn, namespace: namespace))) {
             VStack(spacing: 8) {
                 VStack {
                     if checkInHeaderVisibility {

@@ -14,15 +14,29 @@ struct CheckInScreen: View {
     @Environment(FeedbackModel.self) private var feedbackModel
     @FocusState private var focusedField: CheckInLeaveComment.Focusable?
     @State private var state: ScreenState = .loading
-    @State private var checkIn = CheckIn.Joined()
+    @State private var checkIn: CheckIn.Joined
     @State private var checkInComments = [CheckIn.Comment.Saved]()
     @State private var showDeleteConfirmation = false
 
     let id: CheckIn.Id
+    let namespace: Namespace.ID?
+
+    init(id: CheckIn.Id, initialValue: CheckIn.Joined? = nil, namespace: Namespace.ID? = nil) {
+        self.id = id
+        _checkIn = .init(initialValue: initialValue ?? CheckIn.Joined())
+        self.namespace = namespace
+    }
 
     var body: some View {
         ScrollViewReader { scrollProxy in
             List {
+                header
+                    .id(0)
+                    .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+                    .accessibilityAddTraits(.isButton)
+                    .onTapGesture {
+                        focusedField = nil
+                    }
                 if state.isPopulated {
                     content
                 }
@@ -56,20 +70,12 @@ struct CheckInScreen: View {
                 await loadCheckInData()
             }
         }
+        .ifLet(namespace) { view, namespace in
+            view.navigationTransition(.zoom(sourceID: id, in: namespace))
+        }
     }
 
     @ViewBuilder private var content: some View {
-        header
-            .id(0)
-            .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
-            .listRowSeparator(.visible, edges: .bottom)
-            .alignmentGuide(.listRowSeparatorLeading) { _ in
-                -50
-            }
-            .accessibilityAddTraits(.isButton)
-            .onTapGesture {
-                focusedField = nil
-            }
         ForEach(checkInComments) { comment in
             CheckInCommentRowView(checkIn: checkIn, comment: comment, checkInComments: $checkInComments)
                 .listRowSeparator(.hidden)

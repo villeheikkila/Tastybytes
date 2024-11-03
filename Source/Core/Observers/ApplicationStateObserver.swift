@@ -112,6 +112,7 @@ private enum ApplicationState: Equatable {
         case let (.appError(lhsErrors), .appError(rhsErrors)),
              let (.profileError(lhsErrors), .profileError(rhsErrors)):
             lhsErrors.localizedDescription == rhsErrors.localizedDescription
+
         default:
             false
         }
