@@ -16,11 +16,6 @@ public struct InfoPlist: Codable {
     public let feedbackEmail: String
     public let bundleVersion: String
     public let appVersion: AppVersion
-    private let _isDebug: String
-    public var isDebug: Bool {
-        _isDebug == "true"
-    }
-
     private let cfBundleURLTypes: [CFBundleType]
 
     enum CodingKeys: String, CodingKey {
@@ -33,7 +28,6 @@ public struct InfoPlist: Codable {
         case feedbackEmail = "FEEDBACK_EMAIL"
         case bundleVersion = "CFBundleVersion"
         case appVersion = "CFBundleShortVersionString"
-        case _isDebug = "IS_DEBUG"
         case cfBundleURLTypes = "CFBundleURLTypes"
     }
 

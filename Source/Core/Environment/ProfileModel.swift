@@ -227,7 +227,12 @@ final class ProfileModel {
         async let profilePromise = repository.profile.getCurrentUser()
         async let userPromise = repository.auth.getUser()
         async let friendsPromise = repository.friend.getCurrentUserFriends()
-        async let pushNotificationSettingsPromise = repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDebug: false)
+        #if DEBUG
+            let isDevelopment = true
+        #else
+            let isDevelopment = false
+        #endif
+        async let pushNotificationSettingsPromise = repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDevelopment: isDevelopment)
         do {
             let (currentUserProfile, userResult, friendsResult, pushNotificationSettings) = try await (profilePromise, userPromise, friendsPromise, pushNotificationSettingsPromise)
             notifications = currentUserProfile.notifications
