@@ -33,6 +33,7 @@ struct CheckInScreen: View {
                 header
                     .id(0)
                     .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+                    .listRowSeparator(.hidden)
                     .accessibilityAddTraits(.isButton)
                     .onTapGesture {
                         focusedField = nil
