@@ -26,11 +26,12 @@ struct Entrypoint: App {
         let profileStorage = DiskStorage<Profile.Populated>(filename: "profile_data.json")
         let appStorage = DiskStorage<AppData>(filename: "app_data.json")
         let appModel = AppModel(repository: repository, storage: appStorage, infoPlist: infoPlist, onSnack: snackController.open)
-        self.checkInModel = CheckInModel(
+        checkInModel = CheckInModel(
             repository: repository,
             onSnack: snackController.open,
             pageSize: appModel.rateControl
-                .checkInPageSize)
+                .checkInPageSize
+        )
         adminModel = AdminModel(repository: repository, onSnack: snackController.open)
         profileModel = ProfileModel(repository: repository, storage: profileStorage, onSnack: snackController.open)
         self.snackController = snackController

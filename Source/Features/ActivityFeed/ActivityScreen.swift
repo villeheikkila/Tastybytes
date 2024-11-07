@@ -9,41 +9,39 @@ struct ActivityScreen: View {
     private let logger = Logger(label: "CheckInList")
     @Environment(ProfileModel.self) private var profileModel
     @Environment(CheckInModel.self) private var checkInModel
-    
+
     var body: some View {
         @Bindable var checkInModel = checkInModel
         ScrollViewReader { proxy in
             List {
-                if checkInModel.state.isPopulated {
-                    CheckInListContentView(checkIns: $checkInModel.checkIns, onCreateCheckIn: { checkIn in
-                        checkInModel.addNewCheckIn(checkIn)
-                        try? await Task.sleep(for: .milliseconds(100))
-                        proxy.scrollTo(checkIn.id, anchor: .top)
-                    }, onLoadMore: {
-                        await checkInModel.fetchFeedItems()
-                    })
-                    CheckInListLoadingIndicatorView(isLoading: $checkInModel.isLoading, isRefreshing: $checkInModel.isRefreshing)
-                }
+                CheckInListContentView(checkIns: $checkInModel.checkIns, onCreateCheckIn: { checkIn in
+                    checkInModel.addNewCheckIn(checkIn)
+                    try? await Task.sleep(for: .milliseconds(100))
+                    proxy.scrollTo(checkIn.id, anchor: .top)
+                }, onLoadMore: {
+                    await checkInModel.fetchFeedItems(mode: .loadMore)
+                })
+                ActivityLoadingIndicatorView(state: checkInModel.state)
             }
             .listStyle(.plain)
             .animation(.easeIn, value: checkInModel.checkIns)
             .scrollIndicators(.hidden)
             .refreshable {
-                await checkInModel.fetchFeedItems(reset: true, onPageLoad: false)
+                await checkInModel.fetchFeedItems(mode: .reset)
             }
             .checkInLoadedFrom(.activity(profileModel.profile))
-            .sensoryFeedback(.success, trigger: checkInModel.isRefreshing) { oldValue, newValue in
-                oldValue && !newValue
-            }
             .overlay {
-                if checkInModel.state.isPopulated {
-                    if checkInModel.checkIns.isEmpty, !checkInModel.isLoading {
-                        EmptyActivityFeedView()
+                switch checkInModel.state {
+                case let .error(error):
+                    ScreenContentUnavailableView(error: error, description: nil) {
+                        await checkInModel.fetchFeedItems(mode: .reset)
                     }
-                } else {
-                    ScreenStateOverlayView(state: checkInModel.state) {
-                        await checkInModel.fetchFeedItems(reset: true, onPageLoad: false)
-                    }
+                case .loading:
+                    ScreenLoadingView()
+                case .populated where checkInModel.checkIns.isEmpty:
+                    EmptyActivityFeedView()
+                default:
+                    EmptyView()
                 }
             }
             .toolbar {
@@ -52,13 +50,7 @@ struct ActivityScreen: View {
             .navigationTitle("tab.activity")
             .navigationBarTitleDisplayMode(.inline)
             .initialTask {
-                await checkInModel.fetchFeedItems(onPageLoad: true)
-            }
-            .onChange(of: checkInModel.uploadedImageForCheckIn) { _, newValue in
-                if let updatedCheckIn = newValue {
-                    checkInModel.uploadedImageForCheckIn = nil
-                    checkInModel.checkIns = checkInModel.checkIns.replacingWithId(updatedCheckIn.id, with: updatedCheckIn)
-                }
+                await checkInModel.fetchFeedItems(mode: .pageLoad)
             }
         }
     }
@@ -79,21 +71,31 @@ struct ActivityScreen: View {
     }
 }
 
+struct ActivityLoadingIndicatorView: View {
+    let state: ActivityState
+
+    var body: some View {
+        ProgressView()
+            .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+            .opacity(state == .loadingMore ? 1 : 0)
+            .listRowSeparator(.hidden)
+    }
+}
+
 @MainActor
 @Observable
 class CheckInModel {
     private let logger = Logger(label: "CheckInModel")
-    private let repository: Repository
-    
-    var state: ScreenState = .loading
+    // state
+    var state: ActivityState = .loading
     var checkIns = [CheckIn.Joined]()
+    // depedencies
+    private let repository: Repository
     private let onSnack: OnSnack
-    var isRefreshing = false
-    var isLoading = false
-    
+    // options
     @ObservationIgnored
     private let pageSize: Int
-    
+
     init(
         repository: Repository,
         onSnack: @escaping OnSnack,
@@ -103,62 +105,62 @@ class CheckInModel {
         self.onSnack = onSnack
         self.pageSize = pageSize
     }
-    
-    func fetchFeedItems(reset: Bool = false, onPageLoad: Bool = false) async {
-        if reset {
-            isRefreshing = true
-        } else {
-            isLoading = true
-        }
-        
-        let lastCheckInId = reset ? nil : checkIns.last?.id
-        let startTime = DispatchTime.now()
 
+    enum FetchFeedMode {
+        case pageLoad
+        case reset
+        case loadMore
+    }
+
+    func fetchFeedItems(mode: FetchFeedMode) async {
+        state = switch mode {
+        case .pageLoad: .loading
+        case .reset: .refreshing
+        case .loadMore: .loadingMore
+        }
+        let lastCheckInId = mode == .reset ? nil : checkIns.last?.id
+        let startTime = DispatchTime.now()
         do {
             let fetchedCheckIns = try await repository.checkIn.getActivityFeed(
                 id: lastCheckInId,
                 pageSize: pageSize
             )
             guard !Task.isCancelled else { return }
-            
-            if reset {
+            if mode == .reset {
                 checkIns = fetchedCheckIns
             } else {
                 checkIns.append(contentsOf: fetchedCheckIns)
             }
             state = .populated
-            
             let queryDescription = if let lastCheckInId {
                 "check-ins from cursor \(lastCheckInId.rawValue)"
             } else {
                 "latest check-ins"
             }
             logger.info("Successfully loaded \(queryDescription), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(checkIns.count)")
-            
         } catch {
             guard !error.isCancelled, !Task.isCancelled else { return }
             logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
-            if state != .populated {
-                state = .error(error)
+            state = switch state {
+            case .loading, .refreshing, .error:
+                .error(error)
+            case .loadingMore, .errorLoadingMore:
+                .errorLoadingMore(error)
+            case .populated:
+                checkIns.isEmpty ? .error(error) : .errorLoadingMore(error)
             }
         }
-        
-        if reset {
-            isRefreshing = false
-        } else {
-            isLoading = false
-        }
     }
-    
+
     func handleUploadedCheckIn(_ updatedCheckIn: CheckIn.Joined) {
         uploadedImageForCheckIn = nil
         checkIns = checkIns.replacingWithId(updatedCheckIn.id, with: updatedCheckIn)
     }
-    
+
     func addNewCheckIn(_ checkIn: CheckIn.Joined) {
         checkIns = [checkIn] + checkIns
     }
-    
+
     var uploadedImageForCheckIn: CheckIn.Joined?
 
     public func uploadCheckInImage(checkIn: CheckIn.Joined, images: [UIImage]) {
@@ -183,6 +185,26 @@ class CheckInModel {
             let uploadedImageForCheckIn = checkIn.copyWith(images: checkIn.images + uploadedImages)
             checkIns = checkIns.replacingWithId(checkIn.id, with: uploadedImageForCheckIn)
             self.uploadedImageForCheckIn = uploadedImageForCheckIn
+        }
+    }
+}
+
+public enum ActivityState: Equatable {
+    case loading
+    case loadingMore
+    case refreshing
+    case populated
+    case error(Error)
+    case errorLoadingMore(Error)
+
+    public static func == (lhs: ActivityState, rhs: ActivityState) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading), (.populated, .populated), (.refreshing, .refreshing):
+            true
+        case let (.error(lhsErrors), .error(rhsErrors)), let (.errorLoadingMore(lhsErrors), .errorLoadingMore(rhsErrors)):
+            lhsErrors.localizedDescription == rhsErrors.localizedDescription
+        default:
+            false
         }
     }
 }
