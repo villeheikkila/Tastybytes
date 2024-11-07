@@ -12,7 +12,7 @@ struct ProductScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel
-    @Environment(CheckInUploadModel.self) private var checkInUploadModel
+    @Environment(CheckInModel.self) private var checkInModel
     @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
     @State private var product = Product.Joined()
@@ -48,7 +48,7 @@ struct ProductScreen: View {
     }
 
     var body: some View {
-        @Bindable var checkInUploadModel = checkInUploadModel
+        @Bindable var checkInModel = checkInModel
         List {
             if state.isPopulated {
                 content
@@ -78,9 +78,9 @@ struct ProductScreen: View {
         .initialTask {
             await getProductData()
         }
-        .onChange(of: checkInUploadModel.uploadedImageForCheckIn) { _, newValue in
+        .onChange(of: checkInModel.uploadedImageForCheckIn) { _, newValue in
             if let updatedCheckIn = newValue {
-                checkInUploadModel.uploadedImageForCheckIn = nil
+                checkInModel.uploadedImageForCheckIn = nil
                 checkIns = checkIns.replacingWithId(updatedCheckIn.id, with: updatedCheckIn)
             }
         }

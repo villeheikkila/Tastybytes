@@ -14,7 +14,7 @@ struct CheckInSheet: View {
     @Environment(FeedbackModel.self) private var feedbackModel
     @Environment(ProfileModel.self) private var profileModel
     @Environment(AppModel.self) private var appModel
-    @Environment(CheckInUploadModel.self) private var checkInUploadModel
+    @Environment(CheckInModel.self) private var checkInModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var primaryActionTask: Task<Void, Never>?
@@ -220,7 +220,7 @@ struct CheckInSheet: View {
                     checkInAt: isLegacyCheckIn ? nil : checkInAt,
                     isNostalgic: isNostalgic
                 ))
-                checkInUploadModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
+                checkInModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
                 if let onCreation {
                     await onCreation(newCheckIn)
                 }
@@ -253,7 +253,7 @@ struct CheckInSheet: View {
                     checkInAt: isLegacyCheckIn ? nil : checkInAt,
                     isNostalgic: isNostalgic
                 ))
-                checkInUploadModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
+                checkInModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
                 if let onUpdate {
                     await onUpdate(updatedCheckIn.copyWith(images: images))
                 }

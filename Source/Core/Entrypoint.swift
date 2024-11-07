@@ -12,9 +12,9 @@ struct Entrypoint: App {
     @State private var adminModel: AdminModel
     @State private var profileModel: ProfileModel
     @State private var appModel: AppModel
-    @State private var checkInUploadModel: CheckInUploadModel
     @State private var locationModel = LocationModel()
     @State private var feedbackModel = FeedbackModel()
+    @State private var checkInModel: CheckInModel
     private let repository: Repository
 
     init() {
@@ -25,12 +25,17 @@ struct Entrypoint: App {
         let snackController = SnackController()
         let profileStorage = DiskStorage<Profile.Populated>(filename: "profile_data.json")
         let appStorage = DiskStorage<AppData>(filename: "app_data.json")
+        let appModel = AppModel(repository: repository, storage: appStorage, infoPlist: infoPlist, onSnack: snackController.open)
+        self.checkInModel = CheckInModel(
+            repository: repository,
+            onSnack: snackController.open,
+            pageSize: appModel.rateControl
+                .checkInPageSize)
         adminModel = AdminModel(repository: repository, onSnack: snackController.open)
         profileModel = ProfileModel(repository: repository, storage: profileStorage, onSnack: snackController.open)
-        appModel = AppModel(repository: repository, storage: appStorage, infoPlist: infoPlist, onSnack: snackController.open)
-        checkInUploadModel = CheckInUploadModel(repository: repository, onSnack: snackController.open)
         self.snackController = snackController
         self.repository = repository
+        self.appModel = appModel
     }
 
     var body: some Scene {
@@ -43,10 +48,10 @@ struct Entrypoint: App {
         .environment(adminModel)
         .environment(profileModel)
         .environment(appModel)
-        .environment(checkInUploadModel)
         .environment(locationModel)
         .environment(feedbackModel)
         .environment(snackController)
+        .environment(checkInModel)
     }
 }
 
