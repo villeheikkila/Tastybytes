@@ -21,7 +21,9 @@ struct ActivityScreen: View {
                 }, onLoadMore: {
                     await checkInModel.fetchFeedItems(mode: .loadMore)
                 })
-                ActivityLoadingIndicatorView(state: checkInModel.state)
+                ActivityLoadingIndicatorView(state: checkInModel.state) {
+                    await checkInModel.fetchFeedItems(mode: .loadMore)
+                }
             }
             .listStyle(.plain)
             .animation(.easeIn, value: checkInModel.checkIns)
@@ -73,12 +75,32 @@ struct ActivityScreen: View {
 
 struct ActivityLoadingIndicatorView: View {
     let state: ActivityState
+    var onRetry: (() async -> Void)? = nil
 
     var body: some View {
-        ProgressView()
-            .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-            .opacity(state == .loadingMore ? 1 : 0)
-            .listRowSeparator(.hidden)
+        Group {
+            switch state {
+            case .loadingMore:
+                ProgressView()
+                    .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+
+            case .errorLoadingMore:
+                VStack(spacing: 8) {
+                    Text("Failed to load more items")
+                        .foregroundStyle(.secondary)
+                    AsyncButton("Retry", systemImage: "arrow.clockwise") {
+                        await onRetry?()
+                    }
+                    .buttonStyle(.bordered)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical)
+
+            default:
+                EmptyView()
+            }
+        }
+        .listRowSeparator(.hidden)
     }
 }
 
@@ -93,8 +115,9 @@ class CheckInModel {
     private let repository: Repository
     private let onSnack: OnSnack
     // options
-    @ObservationIgnored
     private let pageSize: Int
+    // task management
+    private var currentFetchTask: Task<Void, Never>?
 
     init(
         repository: Repository,
@@ -113,48 +136,45 @@ class CheckInModel {
     }
 
     func fetchFeedItems(mode: FetchFeedMode) async {
-        state = switch mode {
-        case .pageLoad: .loading
-        case .reset: .refreshing
-        case .loadMore: .loadingMore
-        }
-        let lastCheckInId = mode == .reset ? nil : checkIns.last?.id
-        let startTime = DispatchTime.now()
-        do {
-            let fetchedCheckIns = try await repository.checkIn.getActivityFeed(
-                id: lastCheckInId,
-                pageSize: pageSize
-            )
-            guard !Task.isCancelled else { return }
-            if mode == .reset {
-                checkIns = fetchedCheckIns
-            } else {
-                checkIns.append(contentsOf: fetchedCheckIns)
+        guard mode == .reset || currentFetchTask == nil else { return }
+        currentFetchTask?.cancel()
+        currentFetchTask = nil
+        let task = Task {
+            state = switch mode {
+            case .pageLoad: .loading
+            case .reset: .refreshing
+            case .loadMore: .loadingMore
             }
-            state = .populated
-            let queryDescription = if let lastCheckInId {
-                "check-ins from cursor \(lastCheckInId.rawValue)"
-            } else {
-                "latest check-ins"
-            }
-            logger.info("Successfully loaded \(queryDescription), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(checkIns.count)")
-        } catch {
-            guard !error.isCancelled, !Task.isCancelled else { return }
-            logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
-            state = switch state {
-            case .loading, .refreshing, .error:
-                .error(error)
-            case .loadingMore, .errorLoadingMore:
-                .errorLoadingMore(error)
-            case .populated:
-                checkIns.isEmpty ? .error(error) : .errorLoadingMore(error)
+            let lastCheckInId = mode == .reset ? nil : checkIns.last?.id
+            let startTime = DispatchTime.now()
+            do {
+                let fetchedCheckIns = try await repository.checkIn.getActivityFeed(
+                    id: lastCheckInId,
+                    pageSize: pageSize
+                )
+                guard !Task.isCancelled else { return }
+                checkIns = mode == .reset ? fetchedCheckIns : checkIns + fetchedCheckIns
+                logger.info("Successfully loaded check-ins\(lastCheckInId.map { " from cursor \($0.rawValue)" } ?? ""), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(checkIns.count)")
+            } catch {
+                guard !error.isCancelled else { return }
+                logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
+                state = switch state {
+                case .loading, .refreshing, .error:
+                    .error(error)
+                case .loadingMore, .errorLoadingMore:
+                    .errorLoadingMore(error)
+                case .populated:
+                    checkIns.isEmpty ? .error(error) : .errorLoadingMore(error)
+                }
             }
         }
-    }
-
-    func handleUploadedCheckIn(_ updatedCheckIn: CheckIn.Joined) {
-        uploadedImageForCheckIn = nil
-        checkIns = checkIns.replacingWithId(updatedCheckIn.id, with: updatedCheckIn)
+        currentFetchTask = task
+        await withTaskCancellationHandler {
+            await task.value
+        } onCancel: {
+            task.cancel()
+        }
+        currentFetchTask = nil
     }
 
     func addNewCheckIn(_ checkIn: CheckIn.Joined) {

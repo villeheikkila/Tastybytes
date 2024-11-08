@@ -38,7 +38,13 @@ struct OnboardingScreen: View {
         .navigationTitle("onboarding.profile.title")
         .toolbarVisibility(section == .profile ? .visible : .hidden, for: .navigationBar)
         .onChange(of: profileDeleted, initial: true, profileDeletedHandler)
-        .onChange(of: profileModel.authState, initial: true, authStateHandler)
+        .onChange(of: profileModel.state, initial: true) { _, newValue in
+            if case let .populated(profile) = newValue {
+                if !profile.isOnboarded {
+                    section = .profile
+                }
+            }
+        }
         .safeAreaInset(edge: .bottom) { bottomView }
     }
 
@@ -132,11 +138,6 @@ struct OnboardingScreen: View {
             router.open(.sheet(.profileDeleteConfirmation))
             profileDeleted = false
         }
-    }
-
-    private func authStateHandler() {
-        guard profileModel.authState == .authenticated else { return }
-        section = .profile
     }
 
     private func updateProfile() {

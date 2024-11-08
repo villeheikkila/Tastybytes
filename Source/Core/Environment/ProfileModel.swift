@@ -168,7 +168,6 @@ final class ProfileModel {
         }
     }
 
-    var authState: AuthState?
     // subscriptions
     let productSubscription = ProductSubscription()
     private var activeTransactions: Set<StoreKit.Transaction> = []
@@ -259,13 +258,11 @@ final class ProfileModel {
     func listenToAuthState() async {
         do {
             for await state in try await repository.auth.authStateListener() {
-                let previousState = authState
-                authState = state
-                logger.info("Auth state changed from \(String(describing: previousState)) to \(String(describing: state))")
+                logger.info("Auth state changed to \(String(describing: state))")
                 if state == .authenticated {
                     await initialize(cache: true)
                 } else {
-                    authState = .unauthenticated
+                    self.state = .unauthenticated
                 }
                 if Task.isCancelled {
                     logger.info("Auth state listener cancelled")
@@ -273,6 +270,7 @@ final class ProfileModel {
                 }
             }
         } catch {
+            state = .unauthenticated
             logger.error("Error while listening to auth state. Error: \(error) (\(#file):\(#line))")
         }
     }

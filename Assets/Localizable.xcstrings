@@ -2863,6 +2863,9 @@
     "Failed to load categories" : {
 
     },
+    "Failed to load more items" : {
+
+    },
     "Failed to refresh flavors" : {
 
     },
@@ -5259,6 +5262,9 @@
           }
         }
       }
+    },
+    "Retry" : {
+
     },
     "saveToPhotoGalleryButton.label" : {
       "localizations" : {
