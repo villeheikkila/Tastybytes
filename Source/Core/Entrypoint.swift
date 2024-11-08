@@ -20,15 +20,23 @@ struct Entrypoint: App {
     init() {
         setupURLCache()
         setupDebugConfiguration(logger: logger)
+        let fileManager = FileManager.default
+        let applicationSupport = try! fileManager.url(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
         let (infoPlist, bundleIdentifier) = readEnvironment()
         let repository = makeRepository(infoPlist: infoPlist, bundleIdentifier: bundleIdentifier)
         let snackController = SnackController()
-        let profileStorage = DiskStorage<Profile.Populated>(filename: "profile_data.json")
-        let appStorage = DiskStorage<AppData>(filename: "app_data.json")
+        let profileStorage = DiskStorage<Profile.Populated>(fileManager: fileManager, filename: "profile_data.json")
+        let appStorage = DiskStorage<AppData>(fileManager: fileManager, filename: "app_data.json")
         let appModel = AppModel(repository: repository, storage: appStorage, infoPlist: infoPlist, onSnack: snackController.open)
         checkInModel = CheckInModel(
             repository: repository,
             onSnack: snackController.open,
+            storeAt: applicationSupport,
             pageSize: appModel.rateControl
                 .checkInPageSize
         )

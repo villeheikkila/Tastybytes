@@ -15,7 +15,6 @@ struct ActivityScreen: View {
         ScrollViewReader { proxy in
             List {
                 CheckInListContentView(checkIns: $checkInModel.checkIns, onCreateCheckIn: { checkIn in
-                    checkInModel.addNewCheckIn(checkIn)
                     try? await Task.sleep(for: .milliseconds(100))
                     proxy.scrollTo(checkIn.id, anchor: .top)
                 }, onLoadMore: {
@@ -26,7 +25,6 @@ struct ActivityScreen: View {
                 }
             }
             .listStyle(.plain)
-            .animation(.easeIn, value: checkInModel.checkIns)
             .scrollIndicators(.hidden)
             .refreshable {
                 await checkInModel.fetchFeedItems(mode: .reset)
@@ -51,8 +49,15 @@ struct ActivityScreen: View {
             }
             .navigationTitle("tab.activity")
             .navigationBarTitleDisplayMode(.inline)
+            .animation(.easeIn, value: checkInModel.checkIns)
             .initialTask {
                 await checkInModel.fetchFeedItems(mode: .pageLoad)
+            }
+            .task {
+                await checkInModel.listenToCheckInImageUploads()
+            }
+            .onChange(of: checkInModel.state) { _, newValue in
+                print("CheckInModel changed: \(newValue)")
             }
         }
     }
@@ -118,15 +123,19 @@ class CheckInModel {
     private let pageSize: Int
     // task management
     private var currentFetchTask: Task<Void, Never>?
+    let uploadQueue: UploadQueue
 
     init(
         repository: Repository,
         onSnack: @escaping OnSnack,
+        storeAt: URL,
         pageSize: Int
     ) {
         self.repository = repository
         self.onSnack = onSnack
         self.pageSize = pageSize
+        uploadQueue = UploadQueue(storeAt: storeAt,
+                                  uploadImage: { checkInId, imageData, userId, blurHash in try await repository.checkIn.uploadImage(id: checkInId, data: imageData, userId: userId, blurHash: blurHash) })
     }
 
     enum FetchFeedMode {
@@ -141,9 +150,9 @@ class CheckInModel {
         currentFetchTask = nil
         let task = Task {
             state = switch mode {
-            case .pageLoad: .loading
+            case .pageLoad where checkIns.isEmpty: .loading
             case .reset: .refreshing
-            case .loadMore: .loadingMore
+            case .loadMore, .pageLoad: .loadingMore
             }
             let lastCheckInId = mode == .reset ? nil : checkIns.last?.id
             let startTime = DispatchTime.now()
@@ -153,6 +162,9 @@ class CheckInModel {
                     pageSize: pageSize
                 )
                 guard !Task.isCancelled else { return }
+                withAnimation(.easeIn) {
+                    state = .populated
+                }
                 checkIns = mode == .reset ? fetchedCheckIns : checkIns + fetchedCheckIns
                 logger.info("Successfully loaded check-ins\(lastCheckInId.map { " from cursor \($0.rawValue)" } ?? ""), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(checkIns.count)")
             } catch {
@@ -177,34 +189,26 @@ class CheckInModel {
         currentFetchTask = nil
     }
 
-    func addNewCheckIn(_ checkIn: CheckIn.Joined) {
-        checkIns = [checkIn] + checkIns
-    }
-
-    var uploadedImageForCheckIn: CheckIn.Joined?
-
     public func uploadCheckInImage(checkIn: CheckIn.Joined, images: [UIImage]) {
-        Task(priority: .userInitiated) {
-            var uploadedImages = [ImageEntity.Saved]()
+        Task {
             for image in images {
-                let blurHash: String? = if let hash = image.resize(to: 100)?.blurHash(numberOfComponents: (5, 5)) {
+                guard let data = image.jpegData(compressionQuality: 0.7) else { continue }
+                let blurHash: String? = if let hash = image.resize(to: 32)?.blurHash(numberOfComponents: (8, 6)) {
                     BlurHash(hash: hash, height: image.size.height, width: image.size.width).encoded
                 } else {
                     nil
                 }
-                guard let data = image.jpegData(compressionQuality: 0.7) else { return }
-                do {
-                    let imageEntity = try await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id, blurHash: blurHash)
-                    uploadedImages.append(imageEntity)
-                } catch {
-                    guard !error.isCancelled else { return }
-                    onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to add category")))
-                    logger.error("Failed to upload image to check-in '\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
-                }
+                await uploadQueue.enqueue(checkIn, imageData: data, blurHash: blurHash)
             }
-            let uploadedImageForCheckIn = checkIn.copyWith(images: checkIn.images + uploadedImages)
-            checkIns = checkIns.replacingWithId(checkIn.id, with: uploadedImageForCheckIn)
-            self.uploadedImageForCheckIn = uploadedImageForCheckIn
+        }
+    }
+
+    public func listenToCheckInImageUploads() async {
+        for await (checkInId, image) in await uploadQueue.uploads {
+            if let index = checkIns.firstIndex(where: { $0.id == checkInId }) {
+                let updatedCheckIn = checkIns[index].copyWith(images: checkIns[index].images + [image])
+                checkIns[index] = updatedCheckIn
+            }
         }
     }
 }
@@ -226,5 +230,121 @@ public enum ActivityState: Equatable {
         default:
             false
         }
+    }
+}
+
+actor UploadQueue {
+    private let logger = Logger(label: "UploadQueue")
+
+    typealias OnCompletedUpload = @Sendable (CheckIn.Id, ImageEntity.Saved) -> Void
+    typealias OnUploadImage = @Sendable (
+        _ id: CheckIn.Id,
+        _ data: Data,
+        _ userId: Profile.Id,
+        _ blurHash: String?
+    ) async throws -> ImageEntity.Saved
+
+    private struct PendingUpload: Codable {
+        let checkInId: CheckIn.Id
+        let imageData: Data
+        let userId: Profile.Id
+        let createdAt: Date
+        let blurHash: String?
+    }
+
+    private let fileManager = FileManager.default
+    private let queueDirectory: URL
+    private var currentTask: Task<Void, Never>?
+    private let uploadImage: OnUploadImage
+
+    init(storeAt: URL, uploadImage: @escaping OnUploadImage) {
+        var continuation: AsyncStream<(CheckIn.Id, ImageEntity.Saved)>.Continuation!
+        uploadStream = AsyncStream { c in
+            continuation = c
+        }
+        self.continuation = continuation
+        self.uploadImage = uploadImage
+        queueDirectory = storeAt.appendingPathComponent("ImageUploadQueue", isDirectory: true)
+        try? fileManager.createDirectory(at: queueDirectory, withIntermediateDirectories: true)
+    }
+
+    private func loadPendingUploads() throws -> [PendingUpload] {
+        let files = try fileManager.contentsOfDirectory(
+            at: queueDirectory,
+            includingPropertiesForKeys: [.creationDateKey],
+            options: []
+        )
+        return try files
+            .filter { file in file.pathExtension == "upload" }
+            .map { file in try JSONDecoder().decode(PendingUpload.self, from: Data(contentsOf: file)) }
+            .sorted { $0.createdAt < $1.createdAt }
+    }
+
+    func enqueue(_ checkIn: CheckIn.Joined, imageData: Data, blurHash: String?) async {
+        let pendingUpload = PendingUpload(
+            checkInId: checkIn.id,
+            imageData: imageData,
+            userId: checkIn.profile.id,
+            createdAt: Date(),
+            blurHash: blurHash
+        )
+        try? await save(pendingUpload)
+        await processQueue()
+    }
+
+    private func save(_ upload: PendingUpload) async throws {
+        let fileName = "\(upload.createdAt.timeIntervalSince1970)_\(UUID().uuidString).upload"
+        let fileURL = queueDirectory.appendingPathComponent(fileName)
+        let data = try JSONEncoder().encode(upload)
+        try data.write(to: fileURL)
+    }
+
+    private func removeUploadFile(createdAt: Date) {
+        let files = (try? fileManager.contentsOfDirectory(at: queueDirectory, includingPropertiesForKeys: nil)) ?? []
+        for file in files where file.lastPathComponent.starts(with: "\(createdAt.timeIntervalSince1970)") {
+            try? fileManager.removeItem(at: file)
+        }
+    }
+
+    func processQueue() async {
+        guard currentTask == nil else { return }
+        let task = Task { [weak self] in
+            guard let self else { return }
+            while !Task.isCancelled {
+                let uploads = await (try? loadPendingUploads()) ?? []
+                guard let upload = uploads.first else { break }
+                do {
+                    try await processUpload(upload)
+                    await removeUploadFile(createdAt: upload.createdAt)
+                } catch {
+                    break
+                }
+            }
+        }
+
+        currentTask = task
+        await task.value
+        currentTask = nil
+    }
+
+    private let uploadStream: AsyncStream<(CheckIn.Id, ImageEntity.Saved)>
+    private let continuation: AsyncStream<(CheckIn.Id, ImageEntity.Saved)>.Continuation
+    var uploads: AsyncStream<(CheckIn.Id, ImageEntity.Saved)> {
+        uploadStream
+    }
+
+    private func processUpload(_ upload: PendingUpload) async throws {
+        let result = try await uploadImage(
+            upload.checkInId,
+            upload.imageData,
+            upload.userId,
+            upload.blurHash
+        )
+        continuation.yield((upload.checkInId, result))
+        logger.info("Successfully uploaded image for check-in \(upload.checkInId.rawValue)")
+    }
+
+    deinit {
+        continuation.finish()
     }
 }

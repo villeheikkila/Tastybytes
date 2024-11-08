@@ -15,8 +15,8 @@ struct DiskStorage<T: Codable>: StorageProtocol {
     private let storageURL: URL
     private let logger: Logger
 
-    init(filename: String, directory: FileManager.SearchPathDirectory = .applicationSupportDirectory) {
-        let urls = FileManager.default.urls(for: directory, in: .userDomainMask)
+    init(fileManager: FileManager, filename: String, directory: FileManager.SearchPathDirectory = .applicationSupportDirectory) {
+        let urls = fileManager.urls(for: directory, in: .userDomainMask)
         storageURL = urls[0].appendingPathComponent(filename)
         logger = Logger(label: "Storage \(filename)")
     }
