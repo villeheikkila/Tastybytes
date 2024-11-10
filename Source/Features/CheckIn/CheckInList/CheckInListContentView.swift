@@ -13,12 +13,12 @@ struct CheckInListContentView: View {
     @State private var loadingCheckInsOnAppearTask: Task<Void, Error>?
     @Binding var checkIns: [CheckIn.Joined]
     let onCreateCheckIn: ((_ checkIn: CheckIn.Joined) async -> Void)?
-    let onLoadMore: () async -> Void
+    let onLoadMore: (CheckIn.Id) async -> Void
 
     init(
         checkIns: Binding<[CheckIn.Joined]>,
         onCreateCheckIn: ((_: CheckIn.Joined) async -> Void)? = nil,
-        onLoadMore: @MainActor @Sendable @escaping () async -> Void
+        onLoadMore: @MainActor @Sendable @escaping (CheckIn.Id) async -> Void
     ) {
         _checkIns = checkIns
         self.onCreateCheckIn = onCreateCheckIn
@@ -57,7 +57,7 @@ struct CheckInListContentView: View {
                     loadingCheckInsOnAppearTask = Task {
                         defer { loadingCheckInsOnAppearTask = nil }
                         logger.info("Loading more items invoked")
-                        await onLoadMore()
+                        await onLoadMore(checkIn.id)
                     }
                 }
             }

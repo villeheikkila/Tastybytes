@@ -2,15 +2,33 @@ import Foundation
 import Models
 internal import Supabase
 
+struct ActivityFeedParams: Encodable, Sendable {
+    let pageSize: Int
+    let cursor: CheckIn.Id?
+    let filter: ActivityFeedFilter
+
+    enum CodingKeys: String, CodingKey {
+        case pageSize = "p_page_size"
+        case cursor = "p_cursor"
+        case filter = "p_filter"
+    }
+}
+
+public enum ActivityFeedFilter: String, Encodable, Sendable {
+    case both
+    case friends
+    case currentUser = "current_user"
+}
+
 struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
     let imageEntityRepository: ImageEntityRepository
 
-    func getActivityFeed(id: CheckIn.Id?, pageSize: Int) async throws -> [CheckIn.Joined] {
+    func getActivityFeed(id: CheckIn.Id?, pageSize: Int, filter: ActivityFeedFilter) async throws -> [CheckIn.Joined] {
         try await client
             .rpc(
                 fn: .activityFeed,
-                params: ["p_page_size": pageSize, "p_cursor": id?.rawValue]
+                params: ActivityFeedParams(pageSize: pageSize, cursor: id, filter: filter)
             )
             .select(CheckIn.getQuery(.joined(false)))
             .execute()

@@ -67,7 +67,7 @@ struct LocationScreen: View {
     @ViewBuilder private var content: some View {
         LocationScreenHeader(location: location, summary: summary)
         CheckInListSegmentPickerView(showCheckInsFrom: $showCheckInsFrom)
-        CheckInListContentView(checkIns: $checkIns, onLoadMore: {
+        CheckInListContentView(checkIns: $checkIns, onLoadMore: { _ in
             await fetchCheckIns(segment: showCheckInsFrom)
         })
         CheckInListLoadingIndicatorView(isLoading: $isLoading, isRefreshing: $isRefreshing)

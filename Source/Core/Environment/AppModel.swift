@@ -88,6 +88,7 @@ struct RateControl: Sendable {
     let checkInPageSize = 10
     let checkInImagePageSize = 10
     let productFeedPageSize = 50
+    let loadMoreThreshold = 8
 }
 
 struct IncludedLibrary: Identifiable, Hashable, Sendable {

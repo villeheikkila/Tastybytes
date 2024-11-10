@@ -106,7 +106,7 @@ struct ProductScreen: View {
         }
         .listRowSeparator(.hidden)
         CheckInListSegmentPickerView(showCheckInsFrom: $showCheckInsFrom)
-        CheckInListContentView(checkIns: $checkIns, onLoadMore: {
+        CheckInListContentView(checkIns: $checkIns, onLoadMore: { _ in
             await fetchCheckIns(segment: showCheckInsFrom)
         })
         .checkInLoadedFrom(.product)

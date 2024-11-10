@@ -14,14 +14,22 @@ struct ActivityScreen: View {
         @Bindable var checkInModel = checkInModel
         ScrollViewReader { proxy in
             List {
-                CheckInListContentView(checkIns: $checkInModel.checkIns, onCreateCheckIn: { checkIn in
-                    try? await Task.sleep(for: .milliseconds(100))
-                    proxy.scrollTo(checkIn.id, anchor: .top)
-                }, onLoadMore: {
-                    await checkInModel.fetchFeedItems(mode: .loadMore)
-                })
+                ForEach(checkInModel.checkIns) { checkIn in
+                    CheckInListCardView(
+                        checkIn: checkIn,
+                        onUpdate: checkInModel.onUpdateCheckIn,
+                        onDelete: checkInModel.onDeleteCheckIn,
+                        onCreate: { item in await checkInModel.onCreateCheckIn(item, scrollProxy: proxy) }
+                    )
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+                    .id(checkIn.id)
+                    .onAppear {
+                        checkInModel.onNewActiveItem(checkIn)
+                    }
+                }
                 ActivityLoadingIndicatorView(state: checkInModel.state) {
-                    await checkInModel.fetchFeedItems(mode: .loadMore)
+                    await checkInModel.fetchFeedItems(mode: .retry)
                 }
             }
             .listStyle(.plain)
@@ -109,6 +117,11 @@ struct ActivityLoadingIndicatorView: View {
     }
 }
 
+enum ActivityFeedMode: Equatable {
+    case all
+    case currentUser
+}
+
 @MainActor
 @Observable
 class CheckInModel {
@@ -116,11 +129,13 @@ class CheckInModel {
     // state
     var state: ActivityState = .loading
     var checkIns = [CheckIn.Joined]()
+
     // depedencies
     private let repository: Repository
     private let onSnack: OnSnack
     // options
     private let pageSize: Int
+    private let loadMoreThreshold: Int
     // task management
     private var currentFetchTask: Task<Void, Never>?
     let uploadQueue: UploadQueue
@@ -129,19 +144,52 @@ class CheckInModel {
         repository: Repository,
         onSnack: @escaping OnSnack,
         storeAt: URL,
-        pageSize: Int
+        pageSize: Int,
+        loadMoreThreshold: Int
     ) {
         self.repository = repository
         self.onSnack = onSnack
         self.pageSize = pageSize
+        self.loadMoreThreshold = loadMoreThreshold
         uploadQueue = UploadQueue(storeAt: storeAt,
                                   uploadImage: { checkInId, imageData, userId, blurHash in try await repository.checkIn.uploadImage(id: checkInId, data: imageData, userId: userId, blurHash: blurHash) })
     }
 
-    enum FetchFeedMode {
+    enum FetchFeedMode: Equatable {
         case pageLoad
         case reset
-        case loadMore
+        case loadMore(CheckIn.Id)
+        case retry
+    }
+
+    func onNewActiveItem(_ item: CheckIn.Joined) {
+        let numberOfCheckIns = checkIns.count
+        let index = checkIns.firstIndex { $0.id == item.id }
+        guard let index, index + loadMoreThreshold > numberOfCheckIns else { return }
+        Task {
+            await fetchFeedItems(mode: .loadMore(item.id))
+        }
+    }
+
+    func onCreateCheckIn(_ item: CheckIn.Joined, scrollProxy: ScrollViewProxy) async {
+        checkIns = [item] + checkIns
+        try? await Task.sleep(for: .milliseconds(100))
+        scrollProxy.scrollTo(item.id, anchor: .top)
+    }
+
+    func onUpdateCheckIn(_ item: CheckIn.Joined) async {
+        checkIns = checkIns.replacingWithId(item.id, with: item)
+    }
+
+    func onDeleteCheckIn(_ item: CheckIn.Joined) async {
+        do {
+            try await repository.checkIn.delete(id: item.id)
+            checkIns.remove(object: item)
+        } catch {
+            guard !error.isCancelled else { return }
+            logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle", message: "checkIn.delete.failure.alert")))
+        }
     }
 
     func fetchFeedItems(mode: FetchFeedMode) async {
@@ -152,21 +200,22 @@ class CheckInModel {
             state = switch mode {
             case .pageLoad where checkIns.isEmpty: .loading
             case .reset: .refreshing
-            case .loadMore, .pageLoad: .loadingMore
+            case .loadMore, .pageLoad, .retry: .loadingMore
             }
-            let lastCheckInId = mode == .reset ? nil : checkIns.last?.id
             let startTime = DispatchTime.now()
             do {
+                let cursor = mode == .reset ? nil : checkIns.last?.id
                 let fetchedCheckIns = try await repository.checkIn.getActivityFeed(
-                    id: lastCheckInId,
-                    pageSize: pageSize
+                    id: cursor,
+                    pageSize: pageSize,
+                    filter: .both
                 )
                 guard !Task.isCancelled else { return }
                 withAnimation(.easeIn) {
                     state = .populated
                 }
                 checkIns = mode == .reset ? fetchedCheckIns : checkIns + fetchedCheckIns
-                logger.info("Successfully loaded check-ins\(lastCheckInId.map { " from cursor \($0.rawValue)" } ?? ""), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(checkIns.count)")
+                logger.info("Successfully loaded check-ins\(cursor.map { " from cursor \($0.rawValue)" } ?? ""), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(checkIns.count)")
             } catch {
                 guard !error.isCancelled else { return }
                 logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")

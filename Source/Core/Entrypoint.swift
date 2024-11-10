@@ -38,7 +38,9 @@ struct Entrypoint: App {
             onSnack: snackController.open,
             storeAt: applicationSupport,
             pageSize: appModel.rateControl
-                .checkInPageSize
+                .checkInPageSize,
+            loadMoreThreshold: appModel.rateControl
+                .loadMoreThreshold
         )
         adminModel = AdminModel(repository: repository, onSnack: snackController.open)
         profileModel = ProfileModel(repository: repository, storage: profileStorage, onSnack: snackController.open)

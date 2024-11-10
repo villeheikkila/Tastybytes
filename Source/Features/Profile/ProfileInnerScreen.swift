@@ -98,7 +98,7 @@ struct ProfileInnerScreen: View {
             }
         }
         .listRowSeparator(.hidden)
-        CheckInListContentView(checkIns: $checkIns, onLoadMore: {
+        CheckInListContentView(checkIns: $checkIns, onLoadMore: { _ in
             await fetchFeedItems()
         })
         CheckInListLoadingIndicatorView(isLoading: $isLoading, isRefreshing: $isRefreshing)

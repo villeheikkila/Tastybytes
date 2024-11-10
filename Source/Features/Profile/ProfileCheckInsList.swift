@@ -51,7 +51,7 @@ struct ProfileCheckInsList: View {
             if case let .location(location) = filter {
                 LocationScreenMap(location: location)
             }
-            CheckInListContentView(checkIns: $checkIns, onLoadMore: loadCheckIns)
+            CheckInListContentView(checkIns: $checkIns, onLoadMore: { _ in await loadCheckIns() })
             CheckInListLoadingIndicatorView(isLoading: $isLoading)
         }
         .listStyle(.plain)
