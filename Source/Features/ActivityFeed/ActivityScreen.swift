@@ -11,7 +11,41 @@ struct ActivityScreen: View {
     @Environment(CheckInModel.self) private var checkInModel
 
     var body: some View {
-        @Bindable var checkInModel = checkInModel
+        ActivityAllEventsListView()
+            .toolbar {
+                toolbarContent
+            }
+            .navigationTitle("tab.activity")
+            .navigationBarTitleDisplayMode(.inline)
+            .initialTask {
+                await checkInModel.fetchFeedItems(mode: .pageLoad)
+            }
+            .task {
+                await checkInModel.listenToCheckInImageUploads()
+            }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarLeading) {
+            RouterLink("friends.navigationTitle", systemImage: "person.2", open: .screen(.currentUserFriends))
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+                .customBadge(profileModel.unreadFriendRequestCount)
+        }
+        ToolbarItem(placement: .principal) {}
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            RouterLink("settings.navigationTitle", systemImage: "gear", open: .sheet(.settings))
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+        }
+    }
+}
+
+struct ActivityAllEventsListView: View {
+    private let logger = Logger(label: "ActivityAllEventsListView")
+    @Environment(CheckInModel.self) private var checkInModel
+
+    var body: some View {
         ScrollViewReader { proxy in
             List {
                 ForEach(checkInModel.checkIns) { checkIn in
@@ -33,11 +67,11 @@ struct ActivityScreen: View {
                 }
             }
             .listStyle(.plain)
+            .animation(.easeIn, value: checkInModel.checkIns)
             .scrollIndicators(.hidden)
             .refreshable {
                 await checkInModel.fetchFeedItems(mode: .reset)
             }
-            .checkInLoadedFrom(.activity(profileModel.profile))
             .overlay {
                 switch checkInModel.state {
                 case let .error(error):
@@ -52,39 +86,10 @@ struct ActivityScreen: View {
                     EmptyView()
                 }
             }
-            .toolbar {
-                toolbarContent
-            }
-            .navigationTitle("tab.activity")
-            .navigationBarTitleDisplayMode(.inline)
-            .animation(.easeIn, value: checkInModel.checkIns)
-            .initialTask {
-                await checkInModel.fetchFeedItems(mode: .pageLoad)
-            }
-            .task {
-                await checkInModel.listenToCheckInImageUploads()
-            }
-            .onChange(of: checkInModel.state) { _, newValue in
-                print("CheckInModel changed: \(newValue)")
-            }
-        }
-    }
-
-    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
-            RouterLink("friends.navigationTitle", systemImage: "person.2", open: .screen(.currentUserFriends))
-                .labelStyle(.iconOnly)
-                .imageScale(.large)
-                .customBadge(profileModel.unreadFriendRequestCount)
-        }
-        ToolbarItem(placement: .principal) {}
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("settings.navigationTitle", systemImage: "gear", open: .sheet(.settings))
-                .labelStyle(.iconOnly)
-                .imageScale(.large)
         }
     }
 }
+
 
 struct ActivityLoadingIndicatorView: View {
     let state: ActivityState
@@ -202,8 +207,8 @@ class CheckInModel {
             case .reset: .refreshing
             case .loadMore, .pageLoad, .retry: .loadingMore
             }
-            let startTime = DispatchTime.now()
             do {
+                let startTime = DispatchTime.now()
                 let cursor = mode == .reset ? nil : checkIns.last?.id
                 let fetchedCheckIns = try await repository.checkIn.getActivityFeed(
                     id: cursor,
@@ -238,7 +243,7 @@ class CheckInModel {
         currentFetchTask = nil
     }
 
-    public func uploadCheckInImage(checkIn: CheckIn.Joined, images: [UIImage]) {
+    func uploadCheckInImage(checkIn: CheckIn.Joined, images: [UIImage]) {
         Task {
             for image in images {
                 guard let data = image.jpegData(compressionQuality: 0.7) else { continue }
@@ -252,7 +257,7 @@ class CheckInModel {
         }
     }
 
-    public func listenToCheckInImageUploads() async {
+    func listenToCheckInImageUploads() async {
         for await (checkInId, image) in await uploadQueue.uploads {
             if let index = checkIns.firstIndex(where: { $0.id == checkInId }) {
                 let updatedCheckIn = checkIns[index].copyWith(images: checkIns[index].images + [image])
