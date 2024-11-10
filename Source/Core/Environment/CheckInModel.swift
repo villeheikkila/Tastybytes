@@ -369,7 +369,8 @@ enum ActivitySegment: Equatable, Identifiable, CaseIterable, SegmentPickerItem {
 
     var tab: Tab<Self, some View, some View> {
         Tab(value: self) {
-            ActivityAllEventsListView(segment: self)
+            ActivityListView(segment: self)
+                .toolbarVisibility(.hidden, for: .tabBar)
         }
     }
 }

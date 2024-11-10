@@ -5,7 +5,7 @@ import Models
 import Repositories
 import SwiftUI
 
-struct ActivityAllEventsListView: View {
+struct ActivityListView: View {
     private let logger = Logger(label: "ActivityAllEventsListView")
     @Environment(CheckInModel.self) private var checkInModel
     @Environment(ProfileModel.self) private var profileModel
@@ -47,7 +47,7 @@ struct ActivityAllEventsListView: View {
                 case .loading:
                     ScreenLoadingView()
                 case .populated where checkInModel.currentCheckIns.isEmpty:
-                    EmptyActivityFeedView()
+                    EmptyActivityListView()
                 default:
                     EmptyView()
                 }
@@ -69,7 +69,6 @@ struct ActivityLoadingIndicatorView: View {
             case .loadingMore:
                 ProgressView()
                     .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-
             case .errorLoadingMore:
                 VStack(spacing: 8) {
                     Text("Failed to load more items")
@@ -81,7 +80,6 @@ struct ActivityLoadingIndicatorView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical)
-
             default:
                 EmptyView()
             }

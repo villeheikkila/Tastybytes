@@ -19,7 +19,6 @@ struct SegmentPickerView<Tab: SegmentPickerItem>: View where Tab.AllCases: Rando
 
     var body: some View {
         let segmentShape = RoundedRectangle(cornerRadius: 8)
-
         HStack(spacing: 0) {
             ForEach(tabs) { tab in
                 Text(tab.label)

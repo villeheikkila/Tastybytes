@@ -14,7 +14,6 @@ struct RouterProvider<Content: View>: View {
         NavigationStack(path: $router.path) {
             content()
                 .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-                .toolbarBackground(.visible, for: .tabBar)
                 .toolbarBackground(.ultraThinMaterial, for: .tabBar)
                 .navigationDestination(for: Screen.self) { screen in
                     screen.view

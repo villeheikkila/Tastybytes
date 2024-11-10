@@ -10,13 +10,14 @@ struct ActivityScreen: View {
                 segment.tab
             }
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
+        .tabViewStyle(.tabBarOnly)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 SegmentPickerView(currentTab: $checkInModel.segment, width: 300)
             }
         }
         .navigationTitle("tab.activity")
+        .toolbarVisibility(.visible, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await checkInModel.listenToCheckInImageUploads()
