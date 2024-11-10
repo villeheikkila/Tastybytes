@@ -7,48 +7,54 @@ import SwiftUI
 
 struct ActivityScreen: View {
     private let logger = Logger(label: "CheckInList")
-    @Environment(ProfileModel.self) private var profileModel
     @Environment(CheckInModel.self) private var checkInModel
 
     var body: some View {
-        ActivityAllEventsListView()
-            .toolbar {
-                toolbarContent
+        @Bindable var checkInModel = checkInModel
+        TabView(selection: $checkInModel.segment) {
+            Tab(value: .all) {
+                ActivityAllEventsListView(segment: .all)
             }
-            .navigationTitle("tab.activity")
-            .navigationBarTitleDisplayMode(.inline)
-            .initialTask {
-                await checkInModel.fetchFeedItems(mode: .pageLoad)
+            Tab(value: .you) {
+                ActivityAllEventsListView(segment: .you)
             }
-            .task {
-                await checkInModel.listenToCheckInImageUploads()
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                SegmentPickerView(currentTab: $checkInModel.segment)
+                    .frame(width: 300)
             }
+        }
+        .navigationTitle("tab.activity")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            await checkInModel.listenToCheckInImageUploads()
+        }
     }
+}
 
-    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
-            RouterLink("friends.navigationTitle", systemImage: "person.2", open: .screen(.currentUserFriends))
-                .labelStyle(.iconOnly)
-                .imageScale(.large)
-                .customBadge(profileModel.unreadFriendRequestCount)
-        }
-        ToolbarItem(placement: .principal) {}
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            RouterLink("settings.navigationTitle", systemImage: "gear", open: .sheet(.settings))
-                .labelStyle(.iconOnly)
-                .imageScale(.large)
-        }
+struct FriendRouterLinkWithUnreadCountBadgeView: View {
+    @Environment(ProfileModel.self) private var profileModel
+
+    var body: some View {
+        RouterLink("friends.navigationTitle", systemImage: "person.2", open: .screen(.currentUserFriends))
+            .labelStyle(.iconOnly)
+            .imageScale(.large)
+            .customBadge(profileModel.unreadFriendRequestCount)
     }
 }
 
 struct ActivityAllEventsListView: View {
     private let logger = Logger(label: "ActivityAllEventsListView")
     @Environment(CheckInModel.self) private var checkInModel
+    @Environment(ProfileModel.self) private var profileModel
+    let segment: ActivitySegment
 
     var body: some View {
         ScrollViewReader { proxy in
             List {
-                ForEach(checkInModel.checkIns) { checkIn in
+                ForEach(checkInModel.currentCheckIns) { checkIn in
                     CheckInListCardView(
                         checkIn: checkIn,
                         onUpdate: checkInModel.onUpdateCheckIn,
@@ -59,37 +65,39 @@ struct ActivityAllEventsListView: View {
                     .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
                     .id(checkIn.id)
                     .onAppear {
-                        checkInModel.onNewActiveItem(checkIn)
+                        checkInModel.onNewActiveItem(checkIn, segment: segment)
                     }
                 }
-                ActivityLoadingIndicatorView(state: checkInModel.state) {
-                    await checkInModel.fetchFeedItems(mode: .retry)
+                ActivityLoadingIndicatorView(state: checkInModel.currentState) {
+                    await checkInModel.fetchFeedItems(mode: .retry, segment: segment)
                 }
             }
             .listStyle(.plain)
-            .animation(.easeIn, value: checkInModel.checkIns)
+            .animation(.easeIn, value: checkInModel.currentCheckIns)
             .scrollIndicators(.hidden)
             .refreshable {
-                await checkInModel.fetchFeedItems(mode: .reset)
+                await checkInModel.fetchFeedItems(mode: .reset, segment: segment)
             }
             .overlay {
-                switch checkInModel.state {
+                switch checkInModel.currentState {
                 case let .error(error):
                     ScreenContentUnavailableView(error: error, description: nil) {
-                        await checkInModel.fetchFeedItems(mode: .reset)
+                        await checkInModel.fetchFeedItems(mode: .reset, segment: segment)
                     }
                 case .loading:
                     ScreenLoadingView()
-                case .populated where checkInModel.checkIns.isEmpty:
+                case .populated where checkInModel.currentCheckIns.isEmpty:
                     EmptyActivityFeedView()
                 default:
                     EmptyView()
                 }
             }
+            .initialTask {
+                await checkInModel.fetchFeedItems(mode: .pageLoad, segment: segment)
+            }
         }
     }
 }
-
 
 struct ActivityLoadingIndicatorView: View {
     let state: ActivityState
@@ -122,19 +130,66 @@ struct ActivityLoadingIndicatorView: View {
     }
 }
 
-enum ActivityFeedMode: Equatable {
+enum ActivitySegment: Equatable, Identifiable, CaseIterable, SegmentPickerItem {
     case all
-    case currentUser
+    case you
+
+    var id: String {
+        switch self {
+        case .all:
+            "all"
+        case .you:
+            "you"
+        }
+    }
+
+    var label: String {
+        switch self {
+        case .all:
+            "Activity"
+        case .you:
+            "You"
+        }
+    }
 }
 
 @MainActor
 @Observable
 class CheckInModel {
     private let logger = Logger(label: "CheckInModel")
-    // state
-    var state: ActivityState = .loading
-    var checkIns = [CheckIn.Joined]()
+    // observable state
+    var segment: ActivitySegment = .all
+    var currentState: ActivityState {
+        get { segment == .all ? allTabState.state : youTabState.state }
+        set {
+            if segment == .all {
+                allTabState.state = newValue
+            } else {
+                youTabState.state = newValue
+            }
+        }
+    }
 
+    var currentCheckIns: [CheckIn.Joined] {
+        get { segment == .all ? allTabState.checkIns : youTabState.checkIns }
+        set {
+            if segment == .all {
+                allTabState.checkIns = newValue
+            } else {
+                youTabState.checkIns = newValue
+            }
+        }
+    }
+
+    // state
+    private struct TabState {
+        var state: ActivityState = .loading
+        var checkIns: [CheckIn.Joined] = []
+        var task: Task<Void, Never>?
+    }
+
+    private var allTabState = TabState()
+    private var youTabState = TabState()
     // depedencies
     private let repository: Repository
     private let onSnack: OnSnack
@@ -142,8 +197,7 @@ class CheckInModel {
     private let pageSize: Int
     private let loadMoreThreshold: Int
     // task management
-    private var currentFetchTask: Task<Void, Never>?
-    let uploadQueue: UploadQueue
+    private let uploadQueue: UploadQueue
 
     init(
         repository: Repository,
@@ -167,29 +221,31 @@ class CheckInModel {
         case retry
     }
 
-    func onNewActiveItem(_ item: CheckIn.Joined) {
-        let numberOfCheckIns = checkIns.count
-        let index = checkIns.firstIndex { $0.id == item.id }
-        guard let index, index + loadMoreThreshold > numberOfCheckIns else { return }
-        Task {
-            await fetchFeedItems(mode: .loadMore(item.id))
-        }
+    private func updateBothArrays(_ update: (inout [CheckIn.Joined]) -> Void) {
+        update(&allTabState.checkIns)
+        update(&youTabState.checkIns)
     }
 
     func onCreateCheckIn(_ item: CheckIn.Joined, scrollProxy: ScrollViewProxy) async {
-        checkIns = [item] + checkIns
+        updateBothArrays { checkIns in
+            checkIns = [item] + checkIns
+        }
         try? await Task.sleep(for: .milliseconds(100))
         scrollProxy.scrollTo(item.id, anchor: .top)
     }
 
     func onUpdateCheckIn(_ item: CheckIn.Joined) async {
-        checkIns = checkIns.replacingWithId(item.id, with: item)
+        updateBothArrays { checkIns in
+            checkIns = checkIns.replacingWithId(item.id, with: item)
+        }
     }
 
     func onDeleteCheckIn(_ item: CheckIn.Joined) async {
         do {
             try await repository.checkIn.delete(id: item.id)
-            checkIns.remove(object: item)
+            updateBothArrays { checkIns in
+                checkIns.remove(object: item)
+            }
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
@@ -197,50 +253,82 @@ class CheckInModel {
         }
     }
 
-    func fetchFeedItems(mode: FetchFeedMode) async {
-        guard mode == .reset || currentFetchTask == nil else { return }
-        currentFetchTask?.cancel()
-        currentFetchTask = nil
+    func onNewActiveItem(_ item: CheckIn.Joined, segment: ActivitySegment) {
+        let checkIns = segment == .all ? allTabState.checkIns : youTabState.checkIns
+        let numberOfCheckIns = checkIns.count
+        let index = checkIns.firstIndex { $0.id == item.id }
+        guard let index, index + loadMoreThreshold > numberOfCheckIns else { return }
+        Task {
+            await fetchFeedItems(mode: .loadMore(item.id), segment: segment)
+        }
+    }
+
+    func fetchFeedItems(mode: FetchFeedMode, segment: ActivitySegment) async {
+        let tabState = segment == .all ? allTabState : youTabState
+        guard mode == .reset || tabState.task == nil else { return }
+        if segment == .all {
+            allTabState.task?.cancel()
+            allTabState.task = nil
+        } else {
+            youTabState.task?.cancel()
+            youTabState.task = nil
+        }
+        let currentCheckIns = segment == .all ? allTabState.checkIns : youTabState.checkIns
         let task = Task {
-            state = switch mode {
-            case .pageLoad where checkIns.isEmpty: .loading
+            currentState = switch mode {
+            case .pageLoad where currentCheckIns.isEmpty: .loading
             case .reset: .refreshing
             case .loadMore, .pageLoad, .retry: .loadingMore
             }
             do {
                 let startTime = DispatchTime.now()
-                let cursor = mode == .reset ? nil : checkIns.last?.id
+                let cursor = mode == .reset ? nil : currentCheckIns.last?.id
                 let fetchedCheckIns = try await repository.checkIn.getActivityFeed(
                     id: cursor,
                     pageSize: pageSize,
-                    filter: .both
+                    filter: segment == .all ? .both : .currentUser
                 )
                 guard !Task.isCancelled else { return }
                 withAnimation(.easeIn) {
-                    state = .populated
+                    let newCheckIns = mode == .reset ? fetchedCheckIns : currentCheckIns + fetchedCheckIns
+                    if segment == .all {
+                        allTabState.checkIns = newCheckIns
+                        allTabState.state = .populated
+                    } else {
+                        youTabState.checkIns = newCheckIns
+                        youTabState.state = .populated
+                    }
                 }
-                checkIns = mode == .reset ? fetchedCheckIns : checkIns + fetchedCheckIns
-                logger.info("Successfully loaded check-ins\(cursor.map { " from cursor \($0.rawValue)" } ?? ""), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(checkIns.count)")
+                logger.info("Successfully loaded check-ins\(cursor.map { " from cursor \($0.rawValue)" } ?? ""), page size: \(pageSize) in \(startTime.elapsedTime())ms. Current feed length: \(currentCheckIns.count)")
             } catch {
                 guard !error.isCancelled else { return }
                 logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
-                state = switch state {
+                let newState: ActivityState = switch currentState {
                 case .loading, .refreshing, .error:
                     .error(error)
                 case .loadingMore, .errorLoadingMore:
                     .errorLoadingMore(error)
                 case .populated:
-                    checkIns.isEmpty ? .error(error) : .errorLoadingMore(error)
+                    currentCheckIns.isEmpty ? .error(error) : .errorLoadingMore(error)
                 }
+                currentState = newState
             }
         }
-        currentFetchTask = task
+        if segment == .all {
+            allTabState.task = task
+        } else {
+            youTabState.task = task
+        }
         await withTaskCancellationHandler {
             await task.value
         } onCancel: {
             task.cancel()
         }
-        currentFetchTask = nil
+        if segment == .all {
+            allTabState.task = nil
+        } else {
+            youTabState.task = nil
+        }
     }
 
     func uploadCheckInImage(checkIn: CheckIn.Joined, images: [UIImage]) {
@@ -259,9 +347,11 @@ class CheckInModel {
 
     func listenToCheckInImageUploads() async {
         for await (checkInId, image) in await uploadQueue.uploads {
-            if let index = checkIns.firstIndex(where: { $0.id == checkInId }) {
-                let updatedCheckIn = checkIns[index].copyWith(images: checkIns[index].images + [image])
-                checkIns[index] = updatedCheckIn
+            updateBothArrays { checkIns in
+                if let index = checkIns.firstIndex(where: { $0.id == checkInId }) {
+                    let updatedCheckIn = checkIns[index].copyWith(images: checkIns[index].images + [image])
+                    checkIns[index] = updatedCheckIn
+                }
             }
         }
     }

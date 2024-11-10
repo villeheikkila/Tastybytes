@@ -78,14 +78,6 @@ struct ProductScreen: View {
         .initialTask {
             await getProductData()
         }
-        .task {
-            for await (checkInId, image) in await checkInModel.uploadQueue.uploads {
-                print("image uploaded \(checkInId) \(image)")
-                if let checkIn = checkIns.first(where: { $0.id == checkInId }) {
-                    checkIns = checkIns.replacingWithId(checkIn.id, with: checkIn.copyWith(images: checkIn.images + [image]))
-                }
-            }
-        }
     }
 
     @ViewBuilder private var content: some View {
