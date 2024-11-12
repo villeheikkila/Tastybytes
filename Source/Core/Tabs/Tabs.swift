@@ -25,15 +25,15 @@ public enum Tabs: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
         RouterProvider(enableRoutingFromURLs: true) {
             switch self {
             case .activity:
-                ActivityScreen()
+                ActivityTab()
             case .discover:
-                DiscoverScreen()
+                DiscoverTab()
             case .notifications:
-                NotificationScreen()
+                NotificationTab()
             case .admin:
-                AdminScreen()
+                AdminTab()
             case .profile:
-                UserScreen()
+                ProfileTab()
             }
         }
     }

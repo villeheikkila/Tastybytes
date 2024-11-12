@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-struct AdminScreen: View {
+struct AdminTab: View {
     @Environment(AdminModel.self) private var adminModel
 
     var body: some View {

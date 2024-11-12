@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ActivityScreen: View {
+struct ActivityTab: View {
     @Environment(CheckInModel.self) private var checkInModel
 
     var body: some View {

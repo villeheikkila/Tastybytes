@@ -1,7 +1,7 @@
 import Models
 import SwiftUI
 
-extension DiscoverScreen {
+extension DiscoverTab {
     enum SearchScope: String, CaseIterable, Identifiable {
         var id: Self { self }
         case products, companies, users, locations

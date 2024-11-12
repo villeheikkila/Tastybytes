@@ -9,8 +9,8 @@ struct DiscoverProductResults: View {
     let products: [Product.Joined]
     @Binding var barcode: Barcode?
     let showContentUnavailableView: Bool
-    let searchKey: DiscoverScreen.SearchKey?
-    let searchResultKey: DiscoverScreen.SearchKey?
+    let searchKey: DiscoverTab.SearchKey?
+    let searchResultKey: DiscoverTab.SearchKey?
 
     var body: some View {
         if products.isEmpty, searchKey == nil {

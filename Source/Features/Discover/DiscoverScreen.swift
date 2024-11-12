@@ -6,8 +6,8 @@ import Models
 import Repositories
 import SwiftUI
 
-struct DiscoverScreen: View {
-    private let logger = Logger(label: "SearchListView")
+struct DiscoverTab: View {
+    private let logger = Logger(label: "DiscoverTab")
     @Environment(Repository.self) private var repository
     @Environment(Router.self) private var router
     @Environment(ProfileModel.self) private var profileModel

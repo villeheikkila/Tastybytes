@@ -3,7 +3,7 @@ import Components
 import Models
 import SwiftUI
 
-struct NotificationScreen: View {
+struct NotificationTab: View {
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel
     @State private var filter: Models.Notification.Kind?

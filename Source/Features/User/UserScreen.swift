@@ -7,7 +7,7 @@ import PhotosUI
 import Repositories
 import SwiftUI
 
-struct UserScreen: View {
+struct ProfileTab: View {
     @Environment(Router.self) private var router
     @Environment(CheckInModel.self) private var checkInModel
     @Environment(ProfileModel.self) private var profileModel

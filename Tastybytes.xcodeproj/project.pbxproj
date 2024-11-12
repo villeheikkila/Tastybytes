@@ -625,7 +625,7 @@
 					tvos,
 					xros,
 				);
-				Features/Notification/NotificationScreen.swift = (
+				Features/Notification/NotificationTab.swift = (
 					ios,
 					maccatalyst,
 					tvos,
