@@ -52,9 +52,6 @@ struct ActivityListView: View {
                     EmptyView()
                 }
             }
-            .initialTask {
-                await checkInModel.fetchFeedItems(mode: .pageLoad, segment: segment)
-            }
         }
     }
 }

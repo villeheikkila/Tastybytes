@@ -19,8 +19,5 @@ struct ActivityScreen: View {
         .navigationTitle("tab.activity")
         .toolbarVisibility(.visible, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
-        .task {
-            await checkInModel.listenToCheckInImageUploads()
-        }
     }
 }

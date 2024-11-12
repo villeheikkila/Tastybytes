@@ -33,7 +33,7 @@ public enum Tabs: Int, Identifiable, Hashable, CaseIterable, Codable, Sendable {
             case .admin:
                 AdminScreen()
             case .profile:
-                CurrentProfileScreen()
+                UserScreen()
             }
         }
     }

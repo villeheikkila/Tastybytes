@@ -12,7 +12,7 @@ struct ProfileHeaderAvatarSection: View {
     @Environment(ProfileModel.self) private var profileModel
     @Environment(Repository.self) private var repository
     @Binding var showAvatarPicker: Bool
-    @Binding var profile: Profile.Saved
+    let profile: Profile.Saved
 
     let isCurrentUser: Bool
     let showInFull: Bool
@@ -60,9 +60,6 @@ struct ProfileHeaderAvatarSection: View {
             if let imageEntity = profile.avatars.first, isCurrentUser {
                 AsyncButton("profile.avatar.delete.label", systemImage: "trash", role: .destructive) {
                     await profileModel.deleteAvatar(entity: imageEntity)
-                    withAnimation {
-                        profile = profileModel.profile
-                    }
                 }
             }
         }

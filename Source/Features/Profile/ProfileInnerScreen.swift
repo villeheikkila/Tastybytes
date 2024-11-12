@@ -77,7 +77,7 @@ struct ProfileInnerScreen: View {
     @ViewBuilder private var content: some View {
         Group {
             ProfileHeaderAvatarSection(
-                showAvatarPicker: $showAvatarPicker, profile: $profile,
+                showAvatarPicker: $showAvatarPicker, profile: profile,
                 isCurrentUser: isCurrentUser,
                 showInFull: showInFull,
                 profileSummary: profileSummary

@@ -16,7 +16,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/supabase-community/supabase-swift.git",
-            from: "2.22.0"
+            from: "2.22.1"
         ),
         .package(url: "https://github.com/hyperoslo/Cache", from: "7.4.0"),
         .package(name: "Models", path: "../Models"),

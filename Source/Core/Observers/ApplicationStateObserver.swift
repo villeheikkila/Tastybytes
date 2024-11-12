@@ -1,4 +1,5 @@
 import Logging
+import Models
 import SwiftUI
 import TipKit
 
@@ -35,6 +36,7 @@ struct ApplicationStateObserver<Content: View>: View {
 
 private struct StateContentView<Content: View>: View, Equatable {
     @Environment(AppModel.self) private var appModel
+    @Environment(CheckInModel.self) private var checkInModel
     private let logger = Logger(label: "ApplicationStateObserver")
     let state: ApplicationState
     @ViewBuilder let content: () -> Content
@@ -45,9 +47,12 @@ private struct StateContentView<Content: View>: View, Equatable {
 
     var body: some View {
         switch state {
-        case .operational:
+        case let .operational(profileId):
             content()
                 .transition(.opacity)
+                .task {
+                    await checkInModel.initialize(id: profileId)
+                }
         case .loading:
             SplashScreenView()
                 .transition(.opacity)
@@ -73,7 +78,7 @@ private struct StateContentView<Content: View>: View, Equatable {
 }
 
 private enum ApplicationState: Equatable {
-    case operational
+    case operational(Profile.Id)
     case loading
     case appError(Error)
     case profileError(Error)
@@ -83,8 +88,8 @@ private enum ApplicationState: Equatable {
 
     init(appState: AppState, profileState: ProfileState, isOnboarded: Bool) {
         self = switch (appState, profileState, isOnboarded) {
-        case (.operational, .populated, true):
-            .operational
+        case (.operational, let .populated(profile), true):
+            .operational(profile.id)
         case (.loading, _, _), (.operational, .loading, _):
             .loading
         case let (.error(error), _, _):

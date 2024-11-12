@@ -10,6 +10,7 @@ import SwiftUI
 class CheckInModel {
     private let logger = Logger(label: "CheckInModel")
     // observable state
+    var profileSummary: Profile.Summary?
     var segment: ActivitySegment = .all
     var currentState: ActivityState {
         get { segment == .all ? allTabState.state : youTabState.state }
@@ -50,6 +51,8 @@ class CheckInModel {
     private let loadMoreThreshold: Int
     // task management
     private let uploadQueue: UploadQueue
+    // profile
+    private var profileId: Profile.Id?
 
     init(
         repository: Repository,
@@ -112,6 +115,53 @@ class CheckInModel {
         guard let index, index + loadMoreThreshold > numberOfCheckIns else { return }
         Task {
             await fetchFeedItems(mode: .loadMore(item.id), segment: segment)
+        }
+    }
+
+    func initialize(id: Profile.Id? = nil) async {
+        profileId = profileId ?? id
+        guard let profileId else {
+            logger.error("Model must be intialized before it can be used without an id. (\(#file):\(#line))")
+            return
+        }
+        let startTime = DispatchTime.now()
+        async let allSegment: Void = fetchFeedItems(mode: .pageLoad, segment: .all)
+        async let youSegment: Void = fetchFeedItems(mode: .pageLoad, segment: .you)
+        async let summary = repository.checkIn.getSummaryByProfileId(id: profileId)
+        do {
+            profileSummary = try await summary
+            await allSegment
+            await youSegment
+            logger.info("Check-in model loaded in \(startTime.elapsedTime())ms")
+            for await (checkInId, image) in await uploadQueue.uploads {
+                updateBothArrays { checkIns in
+                    if let index = checkIns.firstIndex(where: { $0.id == checkInId }) {
+                        let updatedCheckIn = checkIns[index].copyWith(images: checkIns[index].images + [image])
+                        withAnimation {
+                            checkIns[index] = updatedCheckIn
+                        }
+                    }
+                }
+            }
+        } catch {
+            logger.error("Initializing check-in model failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func refresh() async {
+        guard let profileId else {
+            logger.error("Model must be intialized before it can be refreshed. (\(#file):\(#line))")
+            return
+        }
+        let startTime = DispatchTime.now()
+        do {
+            let summaryResult = try await repository.checkIn.getSummaryByProfileId(id: profileId)
+            logger.info("Check-in model refreshed in \(startTime.elapsedTime())ms")
+            withAnimation {
+                profileSummary = summaryResult
+            }
+        } catch {
+            logger.error("Refreshing check-in model failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -193,17 +243,6 @@ class CheckInModel {
                     nil
                 }
                 await uploadQueue.enqueue(checkIn, imageData: data, blurHash: blurHash)
-            }
-        }
-    }
-
-    func listenToCheckInImageUploads() async {
-        for await (checkInId, image) in await uploadQueue.uploads {
-            updateBothArrays { checkIns in
-                if let index = checkIns.firstIndex(where: { $0.id == checkInId }) {
-                    let updatedCheckIn = checkIns[index].copyWith(images: checkIns[index].images + [image])
-                    checkIns[index] = updatedCheckIn
-                }
             }
         }
     }
