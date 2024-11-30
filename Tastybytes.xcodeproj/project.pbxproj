@@ -439,12 +439,6 @@
 					tvos,
 					xros,
 				);
-				"Features/Discover/DIscoverScreen+Extension.swift" = (
-					ios,
-					maccatalyst,
-					tvos,
-					xros,
-				);
 				Features/Discover/DiscoverCompanyResults.swift = (
 					ios,
 					maccatalyst,
@@ -458,6 +452,12 @@
 					xros,
 				);
 				Features/Discover/DiscoverProfileResults.swift = (
+					ios,
+					maccatalyst,
+					tvos,
+					xros,
+				);
+				"Features/Discover/DiscoverScreen+Extension.swift" = (
 					ios,
 					maccatalyst,
 					tvos,

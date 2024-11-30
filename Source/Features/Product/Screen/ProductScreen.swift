@@ -12,7 +12,6 @@ struct ProductScreen: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileModel.self) private var profileModel
     @Environment(FeedbackModel.self) private var feedbackModel
-    @Environment(CheckInModel.self) private var checkInModel
     @Environment(AppModel.self) private var appModel
     @Environment(Router.self) private var router
     @State private var product = Product.Joined()
@@ -48,7 +47,6 @@ struct ProductScreen: View {
     }
 
     var body: some View {
-        @Bindable var checkInModel = checkInModel
         List {
             if state.isPopulated {
                 content

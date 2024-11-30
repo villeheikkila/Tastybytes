@@ -207,7 +207,7 @@ struct CheckInSheet: View {
         switch action {
         case let .create(product, onCreation):
             do {
-                let newCheckIn = try await repository.checkIn.create(newCheckInParams: .init(
+                let newCheckIn = try await checkInModel.createCheckIn(checkIn: .init(
                     product: product,
                     review: review,
                     taggedFriends: taggedFriends,
@@ -219,8 +219,7 @@ struct CheckInSheet: View {
                     purchaseLocation: purchaseLocation,
                     checkInAt: isLegacyCheckIn ? nil : checkInAt,
                     isNostalgic: isNostalgic
-                ))
-                checkInModel.uploadCheckInImage(checkIn: newCheckIn, images: newImages)
+                ), images: newImages)
                 if let onCreation {
                     await onCreation(newCheckIn)
                 }
@@ -239,7 +238,7 @@ struct CheckInSheet: View {
         case let .update(checkIn, onUpdate):
             do {
                 guard let product else { return }
-                let updatedCheckIn = try await repository.checkIn.update(updateCheckInParams: .init(
+                let updatedCheckIn = try await checkInModel.updateCheckIn(update: .init(
                     checkIn: checkIn,
                     product: product,
                     review: review,
@@ -252,8 +251,7 @@ struct CheckInSheet: View {
                     purchaseLocation: purchaseLocation,
                     checkInAt: isLegacyCheckIn ? nil : checkInAt,
                     isNostalgic: isNostalgic
-                ))
-                checkInModel.uploadCheckInImage(checkIn: updatedCheckIn, images: newImages)
+                ), images: newImages)
                 if let onUpdate {
                     await onUpdate(updatedCheckIn.copyWith(images: images))
                 }

@@ -81,15 +81,16 @@ class CheckInModel {
         update(&youTabState.checkIns)
     }
 
-    func onCreateCheckIn(_ item: CheckIn.Joined, scrollProxy: ScrollViewProxy) async {
+    func onCreateCheckIn(_ item: CheckIn.Joined, scrollProxy: ScrollViewProxy? = nil) async {
         updateBothArrays { checkIns in
             checkIns = [item] + checkIns
         }
+        guard let scrollProxy else { return }
         try? await Task.sleep(for: .milliseconds(100))
         scrollProxy.scrollTo(item.id, anchor: .top)
     }
 
-    func onUpdateCheckIn(_ item: CheckIn.Joined) async {
+    func onUpdateCheckIn(_ item: CheckIn.Joined) {
         updateBothArrays { checkIns in
             checkIns = checkIns.replacingWithId(item.id, with: item)
         }
@@ -245,6 +246,20 @@ class CheckInModel {
                 await uploadQueue.enqueue(checkIn, imageData: data, blurHash: blurHash)
             }
         }
+    }
+
+    func createCheckIn(checkIn: CheckIn.NewRequest, images: [UIImage]) async throws -> CheckIn.Joined {
+        let checkIn = try await repository.checkIn.create(newCheckInParams: checkIn)
+        uploadCheckInImage(checkIn: checkIn, images: images)
+        await onCreateCheckIn(checkIn)
+        return checkIn
+    }
+
+    func updateCheckIn(update: CheckIn.UpdateRequest, images: [UIImage]) async throws -> CheckIn.Joined {
+        let checkIn = try await repository.checkIn.update(updateCheckInParams: update)
+        uploadCheckInImage(checkIn: checkIn, images: images)
+        onUpdateCheckIn(checkIn)
+        return checkIn
     }
 }
 
