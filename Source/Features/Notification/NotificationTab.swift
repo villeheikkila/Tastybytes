@@ -38,18 +38,28 @@ struct NotificationTab: View {
                 Section {
                     notification.view
                 }
-                    .buttonStyle(.plain)
-                    .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
-                    .contextMenu {
-                        AsyncButton("labels.delete", systemImage: "trash", role: .destructive) {
-                            await profileModel.deleteNotification(id: notification.id)
+                .buttonStyle(.plain)
+                .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
+                .contextMenu {
+                    AsyncButton(
+                        notification.isRead ? "notification.markAsUnread" : "notification.markAsRead",
+                        systemImage: notification.isRead ? "envelope.badge" : "envelope.open"
+                    ) {
+                        if notification.isRead {
+                            await profileModel.notificationMarkAsUnread(notification)
+                        } else {
+                            await profileModel.notificationMarkAsRead(notification)
                         }
                     }
+                    AsyncButton("labels.delete", systemImage: "trash", role: .destructive) {
+                        await profileModel.notificationDelete(id: notification.id)
+                    }
+                }
             }
             .onDelete { index in
                 Task {
                     guard let i = index.first, let notification = profileModel.notifications[safe: i] else { return }
-                    await profileModel.deleteNotification(id: notification.id)
+                    await profileModel.notificationDelete(id: notification.id)
                 }
             }
         }

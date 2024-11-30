@@ -14,7 +14,7 @@ struct SnackView: View {
         tint: Color,
         systemName: String,
         message: LocalizedStringKey,
-        onRetry: (() -> Void)? = nil
+        onRetry: (() async -> Void)?
     ) {
         self.id = id
         self.tint = tint
@@ -46,50 +46,23 @@ struct SnackContentView: View {
     let onClose: () -> Void
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 8) {
             Image(systemName: systemName)
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundStyle(tint)
-
             Text(message)
                 .font(.callout)
-
             Spacer(minLength: 0)
-
-            if let onRetry {
-                Button(action: {
-                    guard task == nil else { return }
-                    isLoading = true
-                    task = Task {
-                        await onRetry()
-                        isLoading = false
-                        task = nil
-                    }
-                }) {
-                    Image(systemName: "arrow.trianglehead.2.clockwise")
-                        .font(.callout)
-                        .foregroundStyle(.primary)
-                        .rotationEffect(.degrees(90))
-                        .rotationEffect(.degrees(isLoading ? 360 : 0))
-                        .animation(
-                            isLoading ?
-                                .linear(duration: 1)
-                                .repeatForever(autoreverses: false) :
-                                .default,
-                            value: isLoading
-                        )
+            Group {
+                retryButton
+                Button("labels.close", systemImage: "xmark") {
+                    onClose()
                 }
-                .disabled(isLoading)
+                .font(.callout)
+                .foregroundStyle(.primary)
             }
-
-            Button {
-                onClose()
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.callout)
-                    .foregroundStyle(.primary)
-            }
+            .labelStyle(.iconOnly)
         }
         .foregroundStyle(.primary)
         .padding(12)
@@ -98,7 +71,36 @@ struct SnackContentView: View {
                 .fill(.thinMaterial)
                 .appleShadow()
         }
-        .padding(.horizontal, 24)
+        .contextMenu {
+            retryButton
+        }
+    }
+
+    @ViewBuilder private
+    var retryButton: some View {
+        if let onRetry {
+            Button("labels.retry", systemImage: "arrow.trianglehead.2.clockwise") {
+                guard task == nil else { return }
+                isLoading = true
+                task = Task {
+                    await onRetry()
+                    isLoading = false
+                    task = nil
+                }
+            }
+            .font(.callout)
+            .foregroundStyle(.primary)
+            .rotationEffect(.degrees(90))
+            .rotationEffect(.degrees(isLoading ? 360 : 0))
+            .animation(
+                isLoading ?
+                    .linear(duration: 1)
+                    .repeatForever(autoreverses: false) :
+                    .default,
+                value: isLoading
+            )
+            .disabled(isLoading)
+        }
     }
 }
 

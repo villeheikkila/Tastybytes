@@ -829,18 +829,39 @@ final class ProfileModel {
         }
     }
 
-    func markAsRead(_ notification: Models.Notification.Joined) async {
+    func notificationMarkAsRead(_ notification: Models.Notification.Joined) async {
         do {
             let updatedNotification = try await repository.notification.markRead(id: notification.id)
             notifications.replace(notification, with: updatedNotification)
         } catch {
             guard !error.isCancelled else { return }
-            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while marking notification as read")))
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while marking notification as read"), onRetry: { await self.notificationMarkAsRead(notification) }))
             logger.error("Failed to mark '\(notification.id)' as read. Error: \(error) (\(#file):\(#line))")
         }
     }
-    
-    func deleteNotification(id: Models.Notification.Id) async {
+
+    func notificationMarkAsUnread(_ notification: Models.Notification.Joined) async {
+        do {
+            let updatedNotification = try await repository.notification.markUnread(id: notification.id)
+            notifications.replace(notification, with: updatedNotification)
+        } catch {
+            guard !error.isCancelled else { return }
+            onSnack(
+                .init(
+                    mode:
+                    .snack(
+                        tint: .red,
+                        systemName: "exclamationmark.triangle.fill",
+                        message: "Unexpected error occurred while marking notification as unread"
+                    ),
+                    onRetry: { await self.notificationMarkAsUnread(notification) }
+                )
+            )
+            logger.error("Failed to mark '\(notification.id)' as unread. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func notificationDelete(id: Models.Notification.Id) async {
         do {
             try await repository.notification.delete(id: id)
             notifications = notifications.removingWithId(id)

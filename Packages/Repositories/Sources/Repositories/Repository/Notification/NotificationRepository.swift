@@ -7,6 +7,7 @@ public protocol NotificationRepository: Sendable {
     func updatePushNotificationSettingsForDevice(updateRequest: Profile.PushNotificationSettings) async throws
     func updateNotificationSettings(settings: Models.Notification.Settings) async throws
     func markRead(id: Notification.Id) async throws -> Notification.Joined
+    func markUnread(id: Notification.Id) async throws -> Notification.Joined
     func markAllRead() async throws -> [Models.Notification.Joined]
     func markAllFriendRequestsAsRead() async throws -> [Models.Notification.Joined]
     func markAllCheckInNotificationsAsRead(checkInId: CheckIn.Id) async throws -> [Models.Notification.Joined]

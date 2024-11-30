@@ -93,6 +93,7 @@ enum Database {
         case markCheckInNotificationAsRead = "fnc__mark_check_in_notification_as_read"
         case markFriendRequestNotificationAsRead = "fnc__mark_friend_request_notification_as_read"
         case markNotificationAsRead = "fnc__mark_notification_as_read"
+        case markNotificationAsUnread = "fnc__mark_notification_as_unread"
         case mergeLocations = "fnc__merge_locations"
         case mergeProducts = "fnc__merge_products"
         case searchProducts = "fnc__search_products"

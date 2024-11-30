@@ -46,7 +46,7 @@ struct SnacksContentView: View {
                 .visualEffect { [showOverview] content, _ in
                     content
                         .scaleEffect(showOverview ? 1 : (1 - min(CGFloat(index) * 0.1, 1)), anchor: .bottom)
-                        .offset(y: showOverview ? 0 : -min(CGFloat(index) * 15, 30))
+                        .offset(y: showOverview ? 0 : -min(-16 + CGFloat(index) * 16, 32))
                 }
                 .frame(maxWidth: .infinity)
                 .transition(.asymmetric(insertion: .offset(y: -128), removal: .move(edge: .leading)))

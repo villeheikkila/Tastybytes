@@ -59,6 +59,16 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .value
     }
 
+    func markUnread(id: Notification.Id) async throws -> Notification.Joined {
+        try await client
+            .rpc(fn: .markNotificationAsUnread, params: Notification.MarkReadRequest(id: id))
+            .select(Notification.getQuery(.joined(false)))
+            .limit(1)
+            .single()
+            .execute()
+            .value
+    }
+
     func markAllRead() async throws -> [Models.Notification.Joined] {
         try await client
             .rpc(fn: .markAllNotificationRead)

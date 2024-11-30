@@ -24,7 +24,8 @@ struct Snack: Identifiable {
     var view: some View {
         switch mode {
         case let .snack(tint, systemName, message):
-            SnackView(id: id, tint: tint, systemName: systemName, message: message)
+            SnackView(id: id, tint: tint, systemName: systemName, message: message, onRetry: onRetry)
+                .padding(.horizontal, 24)
         case let .hud(systemName, foregroundColor, title, subtitle):
             HUDView(
                 systemName: systemName,

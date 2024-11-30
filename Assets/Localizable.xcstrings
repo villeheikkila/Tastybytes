@@ -3896,6 +3896,26 @@
         }
       }
     },
+    "notification.markAsRead" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as read"
+          }
+        }
+      }
+    },
+    "notification.markAsUnread" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark as unread"
+          }
+        }
+      }
+    },
     "notification.message.label" : {
       "localizations" : {
         "en" : {
@@ -6222,6 +6242,9 @@
 
     },
     "Unexpected error occurred while marking notification as read" : {
+
+    },
+    "Unexpected error occurred while marking notification as unread" : {
 
     },
     "Unexpected error occurred while removing friend request" : {

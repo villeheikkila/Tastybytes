@@ -8,6 +8,10 @@ public extension Notification {
         public let seenAt: Date?
         public let content: Content
 
+        public var isRead: Bool {
+            seenAt != nil
+        }
+
         init(id: Notification.Id, createdAt: Date, seenAt: Date? = nil, content: Notification.Content) {
             self.id = id
             self.createdAt = createdAt
