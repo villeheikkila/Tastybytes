@@ -68,9 +68,6 @@ struct NotificationTab: View {
         .sensoryFeedback(.success, trigger: profileModel.isRefreshingNotifications) { oldValue, newValue in
             oldValue && !newValue
         }
-        .onAppear {
-            profileModel.refreshNotifications()
-        }
         .navigationTitle(filter?.label ?? "notifications.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

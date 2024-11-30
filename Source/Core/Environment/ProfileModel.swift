@@ -234,7 +234,7 @@ final class ProfileModel {
         async let pushNotificationSettingsPromise = repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDevelopment: isDevelopment)
         do {
             let (currentUserProfile, userResult, friendsResult, pushNotificationSettings) = try await (profilePromise, userPromise, friendsPromise, pushNotificationSettingsPromise)
-            notifications = currentUserProfile.notifications
+            notifications = currentUserProfile.notifications.sorted { $0.createdAt > $1.createdAt }
             unreadCount = currentUserProfile.notifications.count { $0.seenAt == nil }
             state = .populated(.init(
                 profile: currentUserProfile,

@@ -30,7 +30,73 @@ struct CheckInScreen: View {
     var body: some View {
         ScrollViewReader { scrollProxy in
             List {
-                header
+                if checkIn.id != .init(rawValue: 0) {
+                    CheckInView(checkIn: checkIn, onDeleteImage: { id in
+                        checkIn = checkIn.copyWith(images: checkIn.images.removingWithId(id))
+                    })
+                    .contextMenu {
+                        ControlGroup {
+                            CheckInShareLinkView(checkIn: checkIn)
+                            if checkIn.profile.id == profileModel.id {
+                                RouterLink(
+                                    "labels.edit",
+                                    systemImage: "pencil",
+                                    open: .sheet(.checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
+                                        checkIn = updatedCheckIn
+                                    })))
+                                )
+                                Button(
+                                    "labels.delete",
+                                    systemImage: "trash.fill",
+                                    role: .destructive,
+                                    action: {
+                                        showDeleteConfirmation = true
+                                    }
+                                )
+                            } else {
+                                RouterLink(
+                                    "checkIn.add.label",
+                                    systemImage: "pencil",
+                                    open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: { _ in
+                                        router.open(.screen(.checkIn(id)))
+                                    })))
+                                )
+                            }
+                        }
+                        Divider()
+                        RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product.id)))
+                        RouterLink(
+                            "company.screen.open",
+                            systemImage: "network",
+                            open: .screen(.company(checkIn.product.subBrand.brand.brandOwner.id))
+                        )
+                        RouterLink(
+                            "brand.screen.open",
+                            systemImage: "cart",
+                            open: .screen(.brand(checkIn.product.subBrand.brand.id))
+                        )
+                        RouterLink(
+                            "subBrand.screen.open",
+                            systemImage: "cart",
+                            open: .screen(.subBrand(brandId: checkIn.product.subBrand.brand.id, subBrandId: checkIn.product.subBrand.id))
+                        )
+                        if let location = checkIn.location {
+                            RouterLink(
+                                "location.open",
+                                systemImage: "network",
+                                open: .screen(.location(location.id))
+                            )
+                        }
+                        if let purchaseLocation = checkIn.purchaseLocation {
+                            RouterLink(
+                                "location.open.purchaseLocation",
+                                systemImage: "network",
+                                open: .screen(.location(purchaseLocation.id))
+                            )
+                        }
+                        Divider()
+                        ReportButton(entity: .checkIn(checkIn))
+                    }
                     .id(0)
                     .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
                     .listRowSeparator(.hidden)
@@ -38,8 +104,9 @@ struct CheckInScreen: View {
                     .onTapGesture {
                         focusedField = nil
                     }
-                if state.isPopulated {
-                    content
+                    if state.isPopulated {
+                        content
+                    }
                 }
             }
             .listStyle(.plain)
@@ -82,75 +149,6 @@ struct CheckInScreen: View {
                 .listRowSeparator(.hidden)
                 .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
                 .id(comment.id)
-        }
-    }
-
-    private var header: some View {
-        CheckInView(checkIn: checkIn, onDeleteImage: { id in
-            checkIn = checkIn.copyWith(images: checkIn.images.removingWithId(id))
-        })
-        .contextMenu {
-            ControlGroup {
-                CheckInShareLinkView(checkIn: checkIn)
-                if checkIn.profile.id == profileModel.id {
-                    RouterLink(
-                        "labels.edit",
-                        systemImage: "pencil",
-                        open: .sheet(.checkIn(.update(checkIn: checkIn, onUpdate: { updatedCheckIn in
-                            checkIn = updatedCheckIn
-                        })))
-                    )
-                    Button(
-                        "labels.delete",
-                        systemImage: "trash.fill",
-                        role: .destructive,
-                        action: {
-                            showDeleteConfirmation = true
-                        }
-                    )
-                } else {
-                    RouterLink(
-                        "checkIn.add.label",
-                        systemImage: "pencil",
-                        open: .sheet(.checkIn(.create(product: checkIn.product, onCreation: { _ in
-                            router.open(.screen(.checkIn(id)))
-                        })))
-                    )
-                }
-            }
-            Divider()
-            RouterLink("product.screen.open", systemImage: "grid", open: .screen(.product(checkIn.product.id)))
-            RouterLink(
-                "company.screen.open",
-                systemImage: "network",
-                open: .screen(.company(checkIn.product.subBrand.brand.brandOwner.id))
-            )
-            RouterLink(
-                "brand.screen.open",
-                systemImage: "cart",
-                open: .screen(.brand(checkIn.product.subBrand.brand.id))
-            )
-            RouterLink(
-                "subBrand.screen.open",
-                systemImage: "cart",
-                open: .screen(.subBrand(brandId: checkIn.product.subBrand.brand.id, subBrandId: checkIn.product.subBrand.id))
-            )
-            if let location = checkIn.location {
-                RouterLink(
-                    "location.open",
-                    systemImage: "network",
-                    open: .screen(.location(location.id))
-                )
-            }
-            if let purchaseLocation = checkIn.purchaseLocation {
-                RouterLink(
-                    "location.open.purchaseLocation",
-                    systemImage: "network",
-                    open: .screen(.location(purchaseLocation.id))
-                )
-            }
-            Divider()
-            ReportButton(entity: .checkIn(checkIn))
         }
     }
 

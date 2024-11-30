@@ -17,6 +17,9 @@ public enum ScreenState: Equatable {
     }
 
     public var isPopulated: Bool {
-        self == .populated
+        if case .populated = self {
+            return true
+        }
+        return false
     }
 }
