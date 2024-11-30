@@ -55,17 +55,20 @@ struct SnackContentView: View {
                 .font(.callout)
             Spacer(minLength: 0)
             Group {
-                retryButton
-                Button("labels.close", systemImage: "xmark") {
-                    onClose()
+                if onRetry != nil {
+                    retryButton
+                } else {
+                    Button("labels.close", systemImage: "xmark") {
+                        onClose()
+                    }
+                    .font(.callout)
+                    .foregroundStyle(.primary)
                 }
-                .font(.callout)
-                .foregroundStyle(.primary)
             }
             .labelStyle(.iconOnly)
         }
         .foregroundStyle(.primary)
-        .padding(12)
+        .padding(16)
         .background {
             RoundedRectangle(cornerRadius: 16)
                 .fill(.thinMaterial)
@@ -73,6 +76,11 @@ struct SnackContentView: View {
         }
         .contextMenu {
             retryButton
+            Button("labels.close", systemImage: "xmark") {
+                onClose()
+            }
+            .font(.callout)
+            .foregroundStyle(.primary)
         }
     }
 
