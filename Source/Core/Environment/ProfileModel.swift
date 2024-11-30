@@ -839,12 +839,11 @@ final class ProfileModel {
             logger.error("Failed to mark '\(notification.id)' as read. Error: \(error) (\(#file):\(#line))")
         }
     }
-
-    func deleteFromIndex(at: IndexSet) async {
-        guard let index = at.first, let notification = notifications[safe: index] else { return }
+    
+    func deleteNotification(id: Models.Notification.Id) async {
         do {
-            try await repository.notification.delete(id: notification.id)
-            notifications = notifications.removing(notification)
+            try await repository.notification.delete(id: id)
+            notifications = notifications.removingWithId(id)
         } catch {
             guard !error.isCancelled else { return }
             onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Unexpected error occurred while deleting notification")))

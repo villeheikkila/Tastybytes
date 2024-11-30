@@ -35,17 +35,26 @@ struct NotificationTab: View {
     var body: some View {
         List {
             ForEach(filteredNotifications) { notification in
-                notification.view
+                Section {
+                    notification.view
+                }
                     .buttonStyle(.plain)
                     .listRowBackground(notification.seenAt == nil ? Color(.systemGray5) : nil)
+                    .contextMenu {
+                        AsyncButton("labels.delete", systemImage: "trash", role: .destructive) {
+                            await profileModel.deleteNotification(id: notification.id)
+                        }
+                    }
             }
             .onDelete { index in
                 Task {
-                    await profileModel.deleteFromIndex(at: index)
+                    guard let i = index.first, let notification = profileModel.notifications[safe: i] else { return }
+                    await profileModel.deleteNotification(id: notification.id)
                 }
             }
         }
-        .listStyle(.plain)
+        .listStyle(.insetGrouped)
+        .listSectionSpacing(8)
         .routerLinkMode(.button)
         .animation(.default, value: profileModel.notifications)
         .refreshable {
@@ -67,6 +76,9 @@ struct NotificationTab: View {
         }
         .sensoryFeedback(.success, trigger: profileModel.isRefreshingNotifications) { oldValue, newValue in
             oldValue && !newValue
+        }
+        .onAppear {
+            profileModel.refreshNotifications()
         }
         .navigationTitle(filter?.label ?? "notifications.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
