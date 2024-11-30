@@ -12,7 +12,7 @@ struct Snack: Identifiable {
     let onRetry: (() async -> Void)?
     var isDeleting: Bool = false
 
-    init(mode: Mode, timeout: TimeInterval? = nil, onRetry: (() async -> Void)? = nil) {
+    init(mode: Mode, timeout: TimeInterval? = 3, onRetry: (() async -> Void)? = nil) {
         id = UUID()
         self.mode = mode
         self.timeout = timeout

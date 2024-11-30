@@ -60,12 +60,11 @@ struct SnacksContentView: View {
 struct SnackItemView: View {
     @Environment(SnackController.self) private var snackController
     @State private var offsetX: CGFloat = 0
-    @State private var isTimeout = false
     let snack: Snack
 
     var body: some View {
         snack.view
-            .zIndex(snack.isDeleting && !isTimeout ? 1000 : 0)
+            .zIndex(snack.isDeleting ? 1000 : 0)
             .offset(x: offsetX)
             .gesture(
                 DragGesture()
@@ -83,12 +82,5 @@ struct SnackItemView: View {
                         }
                     }
             )
-            .task {
-                if let timeout = snack.timeout {
-                    try? await Task.sleep(for: .seconds(timeout))
-                    isTimeout = true
-                    snackController.remove(snack.id)
-                }
-            }
     }
 }

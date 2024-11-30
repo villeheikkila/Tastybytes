@@ -3,6 +3,8 @@ import SwiftUI
 @MainActor
 @Observable
 final class SnackController {
+    private var timeoutTasks: [UUID: Task<Void, Never>] = [:]
+
     var snacks: [Snack] = [] {
         didSet {
             if snacks.isEmpty {
@@ -16,6 +18,13 @@ final class SnackController {
     func open(_ snack: Snack) {
         withAnimation(.bouncy) {
             snacks.append(snack)
+        }
+        if let timeout = snack.timeout {
+            let task = Task {
+                try? await Task.sleep(for: .seconds(timeout))
+                remove(snack.id)
+            }
+            timeoutTasks[snack.id] = task
         }
     }
 
