@@ -3380,6 +3380,16 @@
         }
       }
     },
+    "labels.report" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report"
+          }
+        }
+      }
+    },
     "labels.retry" : {
       "localizations" : {
         "en" : {

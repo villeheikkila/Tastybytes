@@ -43,7 +43,7 @@ struct NotificationTab: View {
                 .contextMenu {
                     AsyncButton(
                         notification.isRead ? "notification.markAsUnread" : "notification.markAsRead",
-                        systemImage: notification.isRead ? "envelope.badge" : "envelope.open"
+                        systemImage: notification.isRead ? "envelope.open" : "envelope"
                     ) {
                         if notification.isRead {
                             await profileModel.notificationMarkAsUnread(notification)

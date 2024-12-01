@@ -75,12 +75,15 @@ struct SnackContentView: View {
                 .appleShadow()
         }
         .contextMenu {
-            retryButton
-            Button("labels.close", systemImage: "xmark") {
-                onClose()
+            ControlGroup {
+                retryButton
+                Button("labels.close", systemImage: "xmark") {
+                    onClose()
+                }
+                .font(.callout)
+                .foregroundStyle(.primary)
+                AsyncButton("labels.report", systemImage: "exclamationmark.triangle.fill") {}
             }
-            .font(.callout)
-            .foregroundStyle(.primary)
         }
     }
 

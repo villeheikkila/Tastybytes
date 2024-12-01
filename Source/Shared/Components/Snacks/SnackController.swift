@@ -31,6 +31,7 @@ final class SnackController {
     func remove(_ id: UUID) {
         if let index = snacks.firstIndex(where: { $0.id == id }) {
             snacks[index].isDeleting = true
+            timeoutTasks[id]?.cancel()
             withAnimation(.bouncy) {
                 snacks.removeAll(where: { $0.id == id })
             }
