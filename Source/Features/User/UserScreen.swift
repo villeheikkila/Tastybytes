@@ -54,23 +54,20 @@ struct ProfileTab: View {
             })))
         }
         .navigationTitle(profile.preferredName)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Menu {
-                ProfileShareLinkView(profile: profile)
-                Divider()
-                AdminRouterLink(open: .sheet(.profileAdmin(id: profile.id, onDelete: { _ in
-                    router.removeLast()
-                })))
-            } label: {
-                Label("labels.menu", systemImage: "ellipsis")
-                    .labelStyle(.iconOnly)
-            }
-        }
-    }
+         ToolbarItemGroup(placement: .topBarLeading) {
+             RouterLink("nameTag.show.label", systemImage: "qrcode", open: .sheet(.nameTag(onSuccess: { profileId in
+                 router.open(.screen(.profileById(profileId)))
+             })))
+         }
+         ToolbarItemGroup(placement: .topBarTrailing) {
+             RouterLink("settings.title", systemImage: "gear", open: .sheet(.settings))
+         }
+     }
 }

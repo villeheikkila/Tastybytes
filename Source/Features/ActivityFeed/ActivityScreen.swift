@@ -5,11 +5,7 @@ struct ActivityTab: View {
 
     var body: some View {
         @Bindable var checkInModel = checkInModel
-        TabView(selection: $checkInModel.segment) {
-            ForEach(ActivitySegment.allCases) { segment in
-                segment.tab
-            }
-        }
+        ActivityListView(segment: checkInModel.segment)
         .tabViewStyle(.tabBarOnly)
         .toolbar {
             ToolbarItem(placement: .principal) {
