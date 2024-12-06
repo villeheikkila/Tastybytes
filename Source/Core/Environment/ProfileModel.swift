@@ -182,6 +182,7 @@ final class ProfileModel {
     var task: Task<Void, Never>?
     var notifications = [Models.Notification.Joined]()
     var unreadCount: Int = 0
+    var deviceToken: String?
     // app icon
     var appIcon: AppIcon = .ramune
     // dependencies
@@ -243,6 +244,7 @@ final class ProfileModel {
                 friends: friendsResult,
                 version: dataVersion
             ))
+            self.deviceToken = self.deviceToken
             logger.info("Profile refreshed in \(startTime.elapsedTime())ms")
         } catch {
             logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")

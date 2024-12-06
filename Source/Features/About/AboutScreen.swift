@@ -112,6 +112,10 @@ struct AboutScreen: View {
                     Spacer()
                 }
             }
-        }.listRowBackground(Color.clear)
+        }
+        .listRowBackground(Color.clear)
+        .onLongPressGesture {
+            router.open(.screen(.appInfo))
+        }
     }
 }

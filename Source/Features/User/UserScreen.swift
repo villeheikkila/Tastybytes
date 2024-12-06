@@ -61,13 +61,13 @@ struct ProfileTab: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-         ToolbarItemGroup(placement: .topBarLeading) {
-             RouterLink("nameTag.show.label", systemImage: "qrcode", open: .sheet(.nameTag(onSuccess: { profileId in
-                 router.open(.screen(.profileById(profileId)))
-             })))
-         }
-         ToolbarItemGroup(placement: .topBarTrailing) {
-             RouterLink("settings.title", systemImage: "gear", open: .sheet(.settings))
-         }
-     }
+        ToolbarItemGroup(placement: .topBarLeading) {
+            RouterLink("nameTag.show.label", systemImage: "qrcode", open: .sheet(.nameTag(onSuccess: { profileId in
+                router.open(.screen(.profileById(profileId)))
+            })))
+        }
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            RouterLink("settings.title", systemImage: "gear", open: .sheet(.settings))
+        }
+    }
 }

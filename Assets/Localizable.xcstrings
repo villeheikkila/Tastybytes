@@ -86,6 +86,16 @@
         }
       }
     },
+    "about.appInfo.navigationTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Info"
+          }
+        }
+      }
+    },
     "about.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -4722,6 +4732,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete user %@"
+          }
+        }
+      }
+    },
+    "profile.deviceId.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Device Token"
           }
         }
       }

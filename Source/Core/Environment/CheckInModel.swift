@@ -420,5 +420,4 @@ enum ActivitySegment: Equatable, Identifiable, CaseIterable, SegmentPickerItem {
             "You"
         }
     }
-
 }
