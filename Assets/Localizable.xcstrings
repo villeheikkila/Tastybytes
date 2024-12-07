@@ -96,6 +96,27 @@
         }
       }
     },
+    "about.appInfo.section.app" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App"
+          }
+        }
+      }
+    },
+    "about.appInfo.section.profile" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
+    },
     "about.navigationTitle" : {
       "localizations" : {
         "en" : {
@@ -3204,6 +3225,9 @@
           }
         }
       }
+    },
+    "labels.copied" : {
+
     },
     "labels.copyright" : {
       "localizations" : {

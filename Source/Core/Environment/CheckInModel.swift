@@ -65,8 +65,18 @@ class CheckInModel {
         self.onSnack = onSnack
         self.pageSize = pageSize
         self.loadMoreThreshold = loadMoreThreshold
-        uploadQueue = UploadQueue(storeAt: storeAt,
-                                  uploadImage: { checkInId, imageData, userId, blurHash in try await repository.checkIn.uploadImage(id: checkInId, data: imageData, userId: userId, blurHash: blurHash) })
+        uploadQueue = UploadQueue(
+            storeAt: storeAt,
+            uploadImage: {
+                checkInId,
+                    imageData,
+                    userId,
+                    blurHash,
+                    width,
+                    height in try await repository.checkIn
+                    .uploadImage(id: checkInId, data: imageData, userId: userId, blurHash: blurHash, width: width, height: height)
+            }
+        )
     }
 
     enum FetchFeedMode: Equatable {
@@ -238,12 +248,8 @@ class CheckInModel {
         Task {
             for image in images {
                 guard let data = image.jpegData(compressionQuality: 0.7) else { continue }
-                let blurHash: String? = if let hash = image.resize(to: 32)?.blurHash(numberOfComponents: (8, 6)) {
-                    BlurHash(hash: hash, height: image.size.height, width: image.size.width).encoded
-                } else {
-                    nil
-                }
-                await uploadQueue.enqueue(checkIn, imageData: data, blurHash: blurHash)
+                let blurHash = image.resize(to: 32)?.blurHash(numberOfComponents: (4, 3))
+                await uploadQueue.enqueue(checkIn, imageData: data, blurHash: blurHash, width: Int(image.size.width), height: Int(image.size.height))
             }
         }
     }
@@ -291,7 +297,9 @@ actor UploadQueue {
         _ id: CheckIn.Id,
         _ data: Data,
         _ userId: Profile.Id,
-        _ blurHash: String?
+        _ blurHash: String?,
+        _ width: Int?,
+        _ height: Int?
     ) async throws -> ImageEntity.Saved
 
     private struct PendingUpload: Codable {
@@ -300,6 +308,8 @@ actor UploadQueue {
         let userId: Profile.Id
         let createdAt: Date
         let blurHash: String?
+        let width: Int?
+        let height: Int?
     }
 
     private let fileManager = FileManager.default
@@ -330,13 +340,15 @@ actor UploadQueue {
             .sorted { $0.createdAt < $1.createdAt }
     }
 
-    func enqueue(_ checkIn: CheckIn.Joined, imageData: Data, blurHash: String?) async {
+    func enqueue(_ checkIn: CheckIn.Joined, imageData: Data, blurHash: String?, width: Int?, height: Int?) async {
         let pendingUpload = PendingUpload(
             checkInId: checkIn.id,
             imageData: imageData,
             userId: checkIn.profile.id,
             createdAt: Date(),
-            blurHash: blurHash
+            blurHash: blurHash,
+            width: width,
+            height: height
         )
         try? await save(pendingUpload)
         await processQueue()
@@ -388,7 +400,9 @@ actor UploadQueue {
             upload.checkInId,
             upload.imageData,
             upload.userId,
-            upload.blurHash
+            upload.blurHash,
+            upload.width,
+            upload.height
         )
         continuation.yield((upload.checkInId, result))
         logger.info("Successfully uploaded image for check-in \(upload.checkInId.rawValue)")

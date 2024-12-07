@@ -24,7 +24,7 @@ struct CheckInImageSheet: View {
         currentImage = if let firstImage = checkIn.images.first {
             firstImage
         } else {
-            .init(id: 0, file: "", bucket: "", blurHash: nil, createdAt: Date.now)
+            .init()
         }
         self.onDeleteImage = onDeleteImage
     }

@@ -86,5 +86,5 @@ public protocol CheckInRepository: Sendable {
     func delete(id: CheckIn.Id) async throws
     func deleteAsModerator(id: CheckIn.Id) async throws
     func getSummaryByProfileId(id: Profile.Id) async throws -> Profile.Summary
-    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?) async throws -> ImageEntity.Saved
+    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?, width: Int?, height: Int?) async throws -> ImageEntity.Saved
 }

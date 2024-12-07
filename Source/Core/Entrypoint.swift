@@ -27,7 +27,7 @@ struct Entrypoint: App {
             appropriateFor: nil,
             create: true
         )
-        let (infoPlist, bundleIdentifier) = readEnvironment()
+        let (infoPlist, bundleIdentifier, isDebug) = readEnvironment()
         let repository = makeRepository(infoPlist: infoPlist, bundleIdentifier: bundleIdentifier)
         let snackController = SnackController()
         let profileStorage = DiskStorage<Profile.Populated>(fileManager: fileManager, filename: "profile_data.json")
@@ -43,7 +43,7 @@ struct Entrypoint: App {
                 .loadMoreThreshold
         )
         adminModel = AdminModel(repository: repository, onSnack: snackController.open)
-        profileModel = ProfileModel(repository: repository, storage: profileStorage, onSnack: snackController.open)
+        profileModel = ProfileModel(repository: repository, isDebug: isDebug, storage: profileStorage, onSnack: snackController.open)
         self.snackController = snackController
         self.repository = repository
         self.appModel = appModel
@@ -86,7 +86,12 @@ func setupDebugConfiguration(logger: Logger) {
     #endif
 }
 
-func readEnvironment() -> (InfoPlist, String) {
+func readEnvironment() -> (InfoPlist, String, Bool) {
+    #if DEBUG
+        let isDebug = true
+    #else
+        let isDebug = false
+    #endif
     guard let infoDictionary = Bundle.main.infoDictionary,
           let bundleIdentifier = Bundle.main.bundleIdentifier,
           let jsonData = try? JSONSerialization.data(withJSONObject: infoDictionary, options: .prettyPrinted),
@@ -94,7 +99,7 @@ func readEnvironment() -> (InfoPlist, String) {
     else {
         fatalError("Failed to decode required data for main app")
     }
-    return (infoPlist, bundleIdentifier)
+    return (infoPlist, bundleIdentifier, isDebug)
 }
 
 func makeRepository(infoPlist: InfoPlist, bundleIdentifier: String) -> Repository {

@@ -25,9 +25,7 @@ struct TabsView: View {
             Tabs.profile.tab
         }
         .tabViewStyle(.sidebarAdaptable)
-        .overlay(alignment: .top) {
-            SnackContainer()
-        }
+        .injectSnacks(alignment: .top)
         .sensoryFeedback(.selection, trigger: selectedTab)
         .ifLet(appModel.subscriptionGroup) { view, subscriptionGroup in
             view.subscriptionStatusTask(for: subscriptionGroup.groupId) { taskStatus in

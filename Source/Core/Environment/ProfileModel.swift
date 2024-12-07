@@ -5,6 +5,7 @@ import PhotosUI
 import Repositories
 import StoreKit
 import SwiftUI
+import Tagged
 
 enum ProfileState: Sendable, Equatable {
     case loading, populated(Profile.Populated), error(Error), unauthenticated
@@ -182,16 +183,18 @@ final class ProfileModel {
     var task: Task<Void, Never>?
     var notifications = [Models.Notification.Joined]()
     var unreadCount: Int = 0
-    var deviceToken: String?
+    var deviceToken: Tagged<DeviceToken, String>?
     // app icon
     var appIcon: AppIcon = .ramune
     // dependencies
     private let repository: Repository
     private let storage: any StorageProtocol<Profile.Populated>
     private let onSnack: OnSnack
+    private let isDebug: Bool
     // init
-    init(repository: Repository, storage: any StorageProtocol<Profile.Populated>, onSnack: @escaping OnSnack) {
+    init(repository: Repository, isDebug: Bool, storage: any StorageProtocol<Profile.Populated>, onSnack: @escaping OnSnack) {
         self.repository = repository
+        self.isDebug = isDebug
         self.onSnack = onSnack
         self.storage = storage
     }
@@ -227,12 +230,10 @@ final class ProfileModel {
         async let profilePromise = repository.profile.getCurrentUser()
         async let userPromise = repository.auth.getUser()
         async let friendsPromise = repository.friend.getCurrentUserFriends()
-        #if DEBUG
-            let isDevelopment = true
-        #else
-            let isDevelopment = false
-        #endif
-        async let pushNotificationSettingsPromise = repository.notification.refreshPushNotificationToken(deviceToken: deviceToken, isDevelopment: isDevelopment)
+        async let pushNotificationSettingsPromise = repository.notification.refreshPushNotificationToken(
+            deviceToken: deviceToken,
+            isDebug: isDebug
+        )
         do {
             let (currentUserProfile, userResult, friendsResult, pushNotificationSettings) = try await (profilePromise, userPromise, friendsPromise, pushNotificationSettingsPromise)
             notifications = currentUserProfile.notifications.sorted { $0.createdAt > $1.createdAt }
@@ -244,7 +245,7 @@ final class ProfileModel {
                 friends: friendsResult,
                 version: dataVersion
             ))
-            self.deviceToken = self.deviceToken
+            self.deviceToken = deviceToken
             logger.info("Profile refreshed in \(startTime.elapsedTime())ms")
         } catch {
             logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")

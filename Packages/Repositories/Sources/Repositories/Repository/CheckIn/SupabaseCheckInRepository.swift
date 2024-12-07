@@ -178,7 +178,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .value
     }
 
-    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?) async throws -> ImageEntity.Saved {
+    func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?, width: Int?, height: Int?) async throws -> ImageEntity.Saved {
         let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
         let path = "\(userId.uuidString.lowercased())/\(fileName)"
 
@@ -187,16 +187,12 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .from(.checkIns)
             .upload(path, data: data, options: .init(cacheControl: "max-age=3600", contentType: "image/jpeg"))
 
-        if let blurHash {
-            return try await updateImageBlurHash(file: path, blurHash: blurHash)
-        } else {
-            return try await imageEntityRepository.getByFileName(from: .checkInImages, fileName: path)
-        }
+        return try await updateImageBlurHash(file: path, blurHash: blurHash, width: width, height: height)
     }
 
-    func updateImageBlurHash(file: String, blurHash: String) async throws -> ImageEntity.Saved {
+    func updateImageBlurHash(file: String, blurHash: String?, width: Int?, height: Int?) async throws -> ImageEntity.Saved {
         try await client
-            .rpc(fn: .updateCheckInImageBlurHash, params: UpdateCheckInImageBlurHashParams(file: file, blurHash: blurHash))
+            .rpc(fn: .updateCheckInImageBlurHash, params: UpdateCheckInImageBlurHashParams(file: file, blurHash: blurHash, width: width, height: height))
             .select(ImageEntity.getQuery(.saved(nil)))
             .single()
             .execute()
@@ -206,11 +202,15 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
 struct UpdateCheckInImageBlurHashParams: Codable {
     let file: String
-    let blurHash: String
+    let blurHash: String?
+    let width: Int?
+    let height: Int?
 
     enum CodingKeys: String, CodingKey {
         case file = "p_file"
         case blurHash = "p_blur_hash"
+        case width = "p_width"
+        case height = "p_height"
     }
 }
 

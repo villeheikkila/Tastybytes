@@ -21,7 +21,7 @@ struct ImageEntityView<Content: View>: View {
                 content(loadedImage)
             } else if isLoading {
                 if let blurHash = image.blurHash {
-                    BlurHashPlaceholderView(blurHash: blurHash.hash)
+                    BlurHashPlaceholderView(blurHash: blurHash)
                 } else {
                     ProgressView()
                 }

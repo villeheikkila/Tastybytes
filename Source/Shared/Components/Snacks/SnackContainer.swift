@@ -1,5 +1,21 @@
 import SwiftUI
 
+struct InjectSnacksViewModifier: ViewModifier {
+    let alignment: Alignment
+    func body(content: Content) -> some View {
+        content
+            .overlay(alignment: alignment) {
+                SnackContainer()
+            }
+    }
+}
+
+extension View {
+    func injectSnacks(alignment: Alignment) -> some View {
+        modifier(InjectSnacksViewModifier(alignment: alignment))
+    }
+}
+
 struct SnackContainer: View {
     @Environment(SnackController.self) private var snackController
 

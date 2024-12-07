@@ -7,19 +7,35 @@ import SwiftUI
 
 struct AppInfoScreen: View {
     @Environment(ProfileModel.self) private var profileModel
-    @Environment(Repository.self) private var repository
-    @Environment(Router.self) private var router
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         List {
-            Section {
-                LabeledContent("labels.id", value: profileModel.id.rawValue.uuidString)
-                LabeledContent("profile.deviceId.label", value: profileModel.deviceToken ?? "-")
+            Section("about.appInfo.section.profile") {
+                CopyableLabel(title: "labels.id", value: profileModel.id.rawValue.uuidString)
+                CopyableLabel(title: "profile.deviceId.label", value: profileModel.deviceToken?.rawValue ?? "-")
             }
+            .textSelection(.enabled)
         }
-        .scrollContentBackground(.hidden)
+        .listStyle(.insetGrouped)
         .navigationTitle("about.appInfo.navigationTitle")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+struct CopyableLabel: View {
+    @Environment(SnackController.self) private var snackController
+    let title: LocalizedStringKey
+    let value: String
+
+    var body: some View {
+        LabeledContent(title) {
+            Text(value)
+                .onTapGesture {
+                    UIPasteboard.general.string = value
+                    snackController
+                        .open(.init(mode: .snack(tint: .green, systemName: "doc.on.clipboard", message: "labels.copied")))
+                }
+        }
     }
 }
