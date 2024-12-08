@@ -249,7 +249,9 @@ class CheckInModel {
             for image in images {
                 guard let data = image.jpegData(compressionQuality: 0.7) else { continue }
                 let blurHash = image.resize(to: 32)?.blurHash(numberOfComponents: (4, 3))
-                await uploadQueue.enqueue(checkIn, imageData: data, blurHash: blurHash, width: Int(image.size.width), height: Int(image.size.height))
+                let _ = try await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id, blurHash: blurHash, width: Int(image.size.width), height: Int(image.size.height))
+                // TODO: re-enable this when the upload queue is fixed
+                // await uploadQueue.enqueue(checkIn, imageData: data, blurHash: blurHash, width: Int(image.size.width), height: Int(image.size.height))
             }
         }
     }

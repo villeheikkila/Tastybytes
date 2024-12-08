@@ -181,13 +181,16 @@ struct SupabaseCheckInRepository: CheckInRepository {
     func uploadImage(id: CheckIn.Id, data: Data, userId: Profile.Id, blurHash: String?, width: Int?, height: Int?) async throws -> ImageEntity.Saved {
         let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
         let path = "\(userId.uuidString.lowercased())/\(fileName)"
-
+        let metadata = try? ["check_in_id": AnyJSON(id.rawValue), "width": AnyJSON(width), "height": AnyJSON(height), "blur_hash": AnyJSON(blurHash)]
         try await client
             .storage
             .from(.checkIns)
-            .upload(path, data: data, options: .init(cacheControl: "max-age=3600", contentType: "image/jpeg"))
-
-        return try await updateImageBlurHash(file: path, blurHash: blurHash, width: width, height: height)
+            .upload(
+                path,
+                data: data,
+                options: .init(cacheControl: "max-age=3600", contentType: "image/jpeg", metadata: metadata)
+            )
+        return try await imageEntityRepository.getByFileName(from: .checkInImages, fileName: fileName)
     }
 
     func updateImageBlurHash(file: String, blurHash: String?, width: Int?, height: Int?) async throws -> ImageEntity.Saved {

@@ -28,8 +28,7 @@ struct ProfileAvatarPickerSectionView: View {
             router.open(.fullScreenCover(.cropImage(image: image, onSubmit: { image in
                 guard let image else { return }
                 Task {
-                    guard let data = image.jpegData(compressionQuality: 0.7) else { return }
-                    await profileModel.uploadAvatar(data: data)
+                    await profileModel.uploadAvatar(image: image)
                 }
             })))
         }

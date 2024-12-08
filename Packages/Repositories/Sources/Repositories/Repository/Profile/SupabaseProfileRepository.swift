@@ -150,14 +150,14 @@ struct SupabaseProfileRepository: ProfileRepository {
         return try await query.execute().value
     }
 
-    func uploadAvatar(id: Profile.Id, data: Data) async throws -> ImageEntity.Saved {
+    func uploadAvatar(id: Profile.Id, data: Data, width: Int, height: Int, blurHash: String?) async throws -> ImageEntity.Saved {
         let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
         let path = "\(id.uuidString.lowercased())/\(fileName)"
-
+        let metadata = try? ["width": AnyJSON(width), "height": AnyJSON(height), "blur_hash": AnyJSON(blurHash)]
         try await client
             .storage
             .from(.avatars)
-            .upload(path, data: data)
+            .upload(path, data: data, options: .init(cacheControl: "max-age=3600", contentType: "image/jpeg", metadata: metadata))
 
         return try await imageEntityRepository.getByFileName(from: .avatars, fileName: path)
     }

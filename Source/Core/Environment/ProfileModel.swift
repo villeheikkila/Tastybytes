@@ -425,10 +425,12 @@ final class ProfileModel {
         }
     }
 
-    func uploadAvatar(data: Data) async {
+    func uploadAvatar(image: UIImage) async {
         guard case let .populated(extendedProfile) = state else { return }
         do {
-            let imageEntity = try await repository.profile.uploadAvatar(id: extendedProfile.id, data: data)
+            guard let data = image.jpegData(compressionQuality: 0.7) else { return }
+            let blurHash = image.resize(to: 32)?.blurHash(numberOfComponents: (4, 3))
+            let imageEntity = try await repository.profile.uploadAvatar(id: extendedProfile.id, data: data, width: Int(image.size.width), height: Int(image.size.height), blurHash: blurHash)
             state = .populated(extendedProfile.copyWith(avatars: [imageEntity]))
         } catch {
             guard !error.isCancelled else { return }
