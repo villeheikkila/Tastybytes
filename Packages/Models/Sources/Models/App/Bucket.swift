@@ -6,4 +6,5 @@ public enum Bucket: String {
     case checkIns = "check-ins"
     case brandLogos = "brand-logos"
     case avatars
+    case logos
 }

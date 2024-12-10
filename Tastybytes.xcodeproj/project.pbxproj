@@ -457,12 +457,6 @@
 					tvos,
 					xros,
 				);
-				"Features/Discover/DiscoverScreen+Extension.swift" = (
-					ios,
-					maccatalyst,
-					tvos,
-					xros,
-				);
 				Features/Discover/DiscoverScreen.swift = (
 					ios,
 					maccatalyst,

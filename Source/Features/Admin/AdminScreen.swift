@@ -41,6 +41,7 @@ struct AdminTab: View {
                 RouterLink("productsAdmin.navigationTitle", systemImage: "cart", open: .screen(.productsAdmin))
                 RouterLink("admin.locations.title", systemImage: "mappin.square", open: .screen(.locationAdmin))
                 RouterLink("admin.profiles.title", systemImage: "person", open: .screen(.profilesAdmin))
+                RouterLink("admin.logos.title", systemImage: "signature", open: .screen(.logoAdmin))
             }
             .foregroundColor(.primary)
             Section("admin.testings.title") {

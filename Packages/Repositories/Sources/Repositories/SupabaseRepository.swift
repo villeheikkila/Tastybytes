@@ -28,6 +28,7 @@ public final class Repository: RepositoryProtocol {
     public let report: ReportRepository
     public let subscription: SubscriptionRepository
     public let imageEntity: ImageEntityRepository
+    public let logo: LogoRepository
 
     public init(apiUrl: URL, apiKey: String, headers: [String: String]) {
         let client = SupabaseClient(
@@ -62,6 +63,7 @@ public final class Repository: RepositoryProtocol {
         document = SupabaseDocumentRepository(client: client)
         report = SupabaseReportRepository(client: client)
         subscription = SupabaseSubscriptionRepository(client: client)
+        logo = SupabaseLogoRepository(client: client)
     }
 }
 

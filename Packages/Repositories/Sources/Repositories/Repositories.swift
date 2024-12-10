@@ -27,4 +27,5 @@ public protocol RepositoryProtocol: Sendable {
     var report: ReportRepository { get }
     var subscription: SubscriptionRepository { get }
     var imageEntity: ImageEntityRepository { get }
+    var logo: LogoRepository { get }
 }

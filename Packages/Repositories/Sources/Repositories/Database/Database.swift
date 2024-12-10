@@ -13,6 +13,7 @@ enum Database {
         case profiles
         case profileAvatars = "profile_avatars"
         case checkIns = "check_ins"
+        case logos
         case checkInReactions = "check_in_reactions"
         case companyEditSuggestions = "company_edit_suggestions"
         case locations

@@ -479,6 +479,39 @@
         }
       }
     },
+    "admin.logo.changeLabel" : {
+
+    },
+    "admin.logos.label.placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Label for the logo"
+          }
+        }
+      }
+    },
+    "admin.logos.save" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create"
+          }
+        }
+      }
+    },
+    "admin.logos.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logos"
+          }
+        }
+      }
+    },
     "admin.manage.label" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2876,6 +2909,9 @@
     "Failed to add flavor" : {
 
     },
+    "Failed to create logo" : {
+
+    },
     "Failed to create subcategory" : {
 
     },
@@ -2883,6 +2919,9 @@
 
     },
     "Failed to delete flavor" : {
+
+    },
+    "Failed to delete logo" : {
 
     },
     "Failed to delete subcategory" : {
@@ -2894,10 +2933,16 @@
     "Failed to load categories" : {
 
     },
+    "Failed to load logos" : {
+
+    },
     "Failed to load more items" : {
 
     },
     "Failed to refresh flavors" : {
+
+    },
+    "Failed to update logo" : {
 
     },
     "Find new flavors tailored to your taste" : {
@@ -3414,6 +3459,15 @@
         }
       }
     },
+    "labels.rename" : {
+
+    },
+    "labels.rename.placeholder" : {
+
+    },
+    "labels.rename.title" : {
+
+    },
     "labels.report" : {
       "localizations" : {
         "en" : {
@@ -3433,6 +3487,9 @@
           }
         }
       }
+    },
+    "labels.save" : {
+
     },
     "labels.selectAll" : {
       "localizations" : {
@@ -3789,6 +3846,12 @@
           }
         }
       }
+    },
+    "logo.admin.delete.confirmation" : {
+
+    },
+    "logo.admin.delete.label %@" : {
+
     },
     "logos.edit.title" : {
       "localizations" : {

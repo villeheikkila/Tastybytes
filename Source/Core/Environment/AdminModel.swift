@@ -15,6 +15,7 @@ final class AdminModel {
     public var unverified = [VerifiableEntity]()
     public var editSuggestions = [EditSuggestion]()
     public var reports = [Report.Joined]()
+    public var logos = [Logo.Saved]()
 
     public var notificationCount: Int {
         events.count + unverified.count + editSuggestions.count + reports.count
@@ -31,13 +32,15 @@ final class AdminModel {
     }
 
     public func initialize() async {
+        async let logos = repository.logo.getAll()
         async let events = repository.admin.getAdminEventFeed()
         async let roles = repository.role.getRoles()
         async let unverified: Void = loadUnverifiedEntities()
         async let editSuggestions: Void = loadEditSuggestions()
         async let reports: Void = loadReports()
         do {
-            let (events, roles, _, _, _) = try await (events, roles, unverified, editSuggestions, reports)
+            let (logos, events, roles, _, _, _) = try await (logos, events, roles, unverified, editSuggestions, reports)
+            self.logos = logos
             self.events = events
             self.roles = roles
         } catch {
@@ -179,6 +182,52 @@ final class AdminModel {
         } catch {
             guard !error.isCancelled else { return }
             logger.error("Failed to resolve report \(report.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    // logos
+    public func loadLogos() async {
+        do {
+            logos = try await repository.logo.getAll()
+        } catch {
+            guard !error.isCancelled else { return }
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to load logos")))
+            logger.error("Loading logos failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func createLogo(image: UIImage, label: String, onSuccess: () -> Void) async {
+        guard let data = image.pngData() else { return }
+        let width = Int(image.size.width)
+        let height = Int(image.size.height)
+        guard let blurHash = image.resize(to: 32)?.blurHash(numberOfComponents: (4, 3)) else { return }
+        do {
+            let logo = try await repository.logo.insert(data: data, width: width, height: height, blurHash: blurHash, label: label)
+            logos = logos + [logo]
+            onSuccess()
+        } catch {
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to create logo")))
+            logger.error("Creating logo failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func updateLogo(logo: Logo.Saved, label: String) async {
+        do {
+            let updated = try await repository.logo.update(id: logo.id, label: label)
+            logos = logos.replacingWithId(updated.id, with: updated)
+        } catch {
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to update logo")))
+            logger.error("Failed to update logo \(logo.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    public func deleteLogo(_ logo: Logo.Saved) async {
+        do {
+            try await repository.logo.delete(id: logo.id)
+            logos = logos.removing(logo)
+        } catch {
+            onSnack(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to delete logo")))
+            logger.error("Failed to delete logo \(logo.id). Error: \(error) (\(#file):\(#line))")
         }
     }
 }
