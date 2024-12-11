@@ -84,9 +84,7 @@ struct CompanyAdminSheet: View {
             })
         }
         .customListRowBackground()
-        EditLogoSectionView(logos: company.logos, onUpload: { data in
-            await uploadLogo(id: id, data)
-        }, onDelete: deleteLogo)
+        EditLogoSectionView(logos: company.logos, onAdd: addLogo, onRemove: removeLogo)
         Section {
             RouterLink(
                 "subsidiaries.navigationTitle",
@@ -205,22 +203,27 @@ struct CompanyAdminSheet: View {
         }
     }
 
-    private func uploadLogo(id: Company.Id, _ data: Data) async {
+    private func addLogo(logo: Logo.Saved) async {
         do {
-            let imageEntity = try await repository.company.uploadLogo(id: id, data: data)
-            company = company.copyWith(logos: company.logos + [imageEntity])
-            logger.info("Succesfully uploaded company logo: \(imageEntity.file)")
+            try await repository.company.addLogo(id: id, logoId: logo.id)
+            withAnimation {
+                company = company.copyWith(logos: company.logos + [logo])
+            }
+            await onUpdate(company)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
-            logger.error("Uploading company logo failed. Error: \(error) (\(#file):\(#line))")
+            logger.error("Uploading of a brand logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
-    private func deleteLogo(_ entity: ImageEntity.Saved) async {
+    private func removeLogo(logo: Logo.Saved) async {
         do {
-            try await repository.imageEntity.delete(from: .companyLogos, id: entity.id)
-            company = company.copyWith(logos: company.logos.removing(entity))
+            try await repository.company.removeLogo(id: id, logoId: logo.id)
+            withAnimation {
+                company = company.copyWith(logos: company.logos.removing(logo))
+            }
+            await onUpdate(company)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

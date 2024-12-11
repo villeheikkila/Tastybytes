@@ -9,7 +9,7 @@ public extension Product {
         public let isDiscontinued: Bool
         public let category: Category.Saved
         public let subcategories: [Subcategory.Saved]
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -19,7 +19,7 @@ public extension Product {
             case isDiscontinued = "is_discontinued"
             case category = "categories"
             case subcategories
-            case logos = "product_logos"
+            case logos
         }
 
         public init(product: Product.Joined) {
@@ -41,7 +41,7 @@ public extension Product {
             isDiscontinued: Bool,
             category: Category.Saved,
             subcategories: [Subcategory.Saved],
-            logos: [ImageEntity.Saved]
+            logos: [Logo.Saved]
         ) {
             self.id = id
             self.name = name

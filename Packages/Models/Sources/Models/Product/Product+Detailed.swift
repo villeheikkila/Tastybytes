@@ -15,7 +15,7 @@ public extension Product {
         public let variants: [Product.Variant.JoinedCompany]
         public let reports: [Report.Joined]
         public let isDiscontinued: Bool
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
         public let createdBy: Profile.Saved?
         public let createdAt: Date
         public let updatedBy: Profile.Saved?
@@ -34,7 +34,7 @@ public extension Product {
             case variants = "product_variants"
             case reports
             case isDiscontinued = "is_discontinued"
-            case logos = "product_logos"
+            case logos
             case createdBy = "created_by"
             case createdAt = "created_at"
             case updatedBy = "updated_by"
@@ -54,7 +54,7 @@ public extension Product {
             variants: [Product.Variant.JoinedCompany],
             reports: [Report.Joined],
             isDiscontinued: Bool,
-            logos: [ImageEntity.Saved],
+            logos: [Logo.Saved],
             createdBy: Profile.Saved? = nil,
             createdAt: Date,
             updatedBy: Profile.Saved? = nil,
@@ -133,7 +133,7 @@ public extension Product {
             variants: [Product.Variant.JoinedCompany]? = nil,
             reports: [Report.Joined]? = nil,
             isDiscontinued: Bool? = nil,
-            logos: [ImageEntity.Saved]? = nil
+            logos: [Logo.Saved]? = nil
         ) -> Self {
             .init(
                 id: id,

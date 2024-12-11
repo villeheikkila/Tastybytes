@@ -6,7 +6,7 @@ public extension Company {
         public let id: Company.Id
         public let name: String
         public let isVerified: Bool
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
         public let editSuggestions: [EditSuggestion]
         public let subsidiaries: [Company.Saved]
         public let reports: [Report.Joined]
@@ -19,7 +19,7 @@ public extension Company {
         enum CodingKeys: String, CodingKey {
             case id
             case name
-            case logos = "company_logos"
+            case logos
             case isVerified = "is_verified"
             case editSuggestions = "company_edit_suggestions"
             case subsidiaries = "companies"
@@ -35,7 +35,7 @@ public extension Company {
             id: Company.Id,
             name: String,
             isVerified: Bool,
-            logos: [ImageEntity.Saved],
+            logos: [Logo.Saved],
             editSuggestions: [Company.EditSuggestion],
             subsidiaries: [Company.Saved],
             reports: [Report.Joined],
@@ -77,7 +77,7 @@ public extension Company {
         public func copyWith(
             name: String? = nil,
             isVerified: Bool? = nil,
-            logos: [ImageEntity.Saved]? = nil,
+            logos: [Logo.Saved]? = nil,
             editSuggestions: [EditSuggestion]? = nil,
             subsidiaries: [Company.Saved]? = nil,
             reports: [Report.Joined]? = nil,

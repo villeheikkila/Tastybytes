@@ -19,8 +19,9 @@ public protocol BrandRepository: Sendable {
     func editSuggestion(_ updateRequest: Brand.EditSuggestionRequest) async throws
     func verification(id: Brand.Id, isVerified: Bool) async throws
     func delete(id: Brand.Id) async throws
-    func uploadLogo(id: Brand.Id, data: Data) async throws -> ImageEntity.Saved
     func resolveEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws
     func deleteEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws
     func getEditSuggestions() async throws -> [Brand.EditSuggestion]
+    func removeLogo(id: Brand.Id, logoId: Logo.Id) async throws
+    func addLogo(id: Brand.Id, logoId: Logo.Id) async throws
 }

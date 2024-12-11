@@ -7,9 +7,9 @@ public extension Brand {
         public let name: String
         public let isVerified: Bool
         public let brandOwner: Company.Saved
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
 
-        public init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company.Saved, logos: [ImageEntity.Saved]) {
+        public init(id: Brand.Id, name: String, isVerified: Bool, brandOwner: Company.Saved, logos: [Logo.Saved]) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -46,14 +46,14 @@ public extension Brand {
             case name
             case isVerified = "is_verified"
             case brandOwner = "companies"
-            case logos = "brand_logos"
+            case logos
         }
 
         public func copyWith(
             name: String? = nil,
             isVerified: Bool? = nil,
             brandOwner: Company.Saved? = nil,
-            logos: [ImageEntity.Saved]? = nil
+            logos: [Logo.Saved]? = nil
         ) -> Self {
             .init(
                 id: id,

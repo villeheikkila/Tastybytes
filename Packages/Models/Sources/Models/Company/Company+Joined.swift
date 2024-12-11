@@ -6,7 +6,7 @@ public extension Company {
         public let name: String
         public let subsidiaries: [Company.Saved]
         public let brands: [Brand.Saved]
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
         public let isVerified: Bool
 
         enum CodingKeys: String, CodingKey {
@@ -15,14 +15,14 @@ public extension Company {
             case isVerified = "is_verified"
             case subsidiaries = "companies"
             case brands
-            case logos = "company_logos"
+            case logos
         }
 
         public func copyWith(
             name: String? = nil,
             subsidiaries: [Company.Saved]? = nil,
             brands: [Brand.Saved]? = nil,
-            logos: [ImageEntity.Saved]? = nil,
+            logos: [Logo.Saved]? = nil,
             isVerified: Bool? = nil
         ) -> Self {
             .init(

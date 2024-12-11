@@ -171,17 +171,6 @@ struct SupabaseBrandRepository: BrandRepository {
             .value
     }
 
-    func uploadLogo(id: Brand.Id, data: Data) async throws -> ImageEntity.Saved {
-        let fileName = "\(id)_\(Date.now.timeIntervalSince1970)"
-
-        try await client
-            .storage
-            .from(.brandLogos)
-            .upload(fileName, data: data)
-
-        return try await imageEntityRepository.getByFileName(from: .brandLogos, fileName: fileName)
-    }
-
     func resolveEditSuggestion(editSuggestion: Brand.EditSuggestion) async throws {
         try await client
             .from(.brandEditSuggestions)
@@ -202,6 +191,24 @@ struct SupabaseBrandRepository: BrandRepository {
         try await client
             .from(.brandEditSuggestions)
             .select(Brand.EditSuggestion.getQuery(.joined(false)))
+            .execute()
+            .value
+    }
+    
+    func addLogo(id: Brand.Id, logoId: Logo.Id) async throws {
+        try await client
+            .from(.brandsLogos)
+            .insert(["brand_id": AnyJSON(id), "logo_id": AnyJSON(logoId)])
+            .execute()
+            .value
+    }
+    
+    func removeLogo(id: Brand.Id, logoId: Logo.Id) async throws {
+        try await client
+            .from(.brandsLogos)
+            .delete()
+            .eq("brand_id", value: id.rawValue)
+            .eq("logo_id", value: logoId.rawValue)
             .execute()
             .value
     }

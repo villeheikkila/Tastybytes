@@ -5,9 +5,9 @@ public extension Company {
         public let id: Company.Id
         public let name: String
         public let isVerified: Bool
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
 
-        public init(id: Company.Id, name: String, logos: [ImageEntity.Saved] = [], isVerified: Bool) {
+        public init(id: Company.Id, name: String, logos: [Logo.Saved] = [], isVerified: Bool) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -38,11 +38,11 @@ public extension Company {
         enum CodingKeys: String, CodingKey {
             case id
             case name
-            case logos = "company_logos"
+            case logos
             case isVerified = "is_verified"
         }
 
-        public func copyWith(name: String? = nil, logos: [ImageEntity.Saved]? = nil, isVerified: Bool? = nil) -> Self {
+        public func copyWith(name: String? = nil, logos: [Logo.Saved]? = nil, isVerified: Bool? = nil) -> Self {
             .init(
                 id: id,
                 name: name ?? self.name,

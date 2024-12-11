@@ -88,7 +88,7 @@ struct BrandAdminSheet: View {
             }
         }
         .customListRowBackground()
-        EditLogoSectionView(logos: brand.logos, onUpload: uploadLogo, onDelete: deleteLogo)
+        EditLogoSectionView(logos: brand.logos, onAdd: addLogo, onRemove: removeLogo)
         Section("labels.info") {
             LabeledIdView(id: brand.id.rawValue.formatted())
             LabeledContent("brandOwner.label") {
@@ -216,13 +216,12 @@ struct BrandAdminSheet: View {
         }
     }
 
-    private func uploadLogo(data: Data) async {
+    private func addLogo(logo: Logo.Saved) async {
         do {
-            let imageEntity = try await repository.brand.uploadLogo(id: id, data: data)
+            try await repository.brand.addLogo(id: id, logoId: logo.id)
             withAnimation {
-                brand = brand.copyWith(logos: brand.logos + [imageEntity])
+                brand = brand.copyWith(logos: brand.logos + [logo])
             }
-            logger.info("Succesfully uploaded logo \(imageEntity.file)")
             await onUpdate(brand)
         } catch {
             guard !error.isCancelled else { return }
@@ -231,12 +230,13 @@ struct BrandAdminSheet: View {
         }
     }
 
-    private func deleteLogo(entity: ImageEntity.Saved) async {
+    private func removeLogo(logo: Logo.Saved) async {
         do {
-            try await repository.imageEntity.delete(from: .brandLogos, id: entity.id)
+            try await repository.brand.removeLogo(id: id, logoId: logo.id)
             withAnimation {
-                brand = brand.copyWith(logos: brand.logos.removing(entity))
+                brand = brand.copyWith(logos: brand.logos.removing(logo))
             }
+            await onUpdate(brand)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))

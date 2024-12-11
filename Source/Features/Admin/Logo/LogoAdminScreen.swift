@@ -5,18 +5,34 @@ import Repositories
 import SwiftUI
 
 struct LogoAdminScreen: View {
+    typealias OnSelectionCallback = (Logo.Saved) -> Void
     private let logger = Logger(label: "LogoScreen")
     @Environment(AdminModel.self) private var adminModel
+    @Environment(\.dismiss) private var dismiss
     @State private var showFileImporter = false
     @State private var selectedLogo: UIImage?
     @State private var label: String = ""
     @FocusState private var isFocused: Bool
+    
+    let onSelection: OnSelectionCallback?
+    
+    init(onSelection: OnSelectionCallback? = nil) {
+        self.onSelection = onSelection
+    }
+    
+    func selectLogo(_ logo: Logo.Saved) {
+        onSelection?(logo)
+        dismiss()
+    }
 
     var body: some View {
         List(adminModel.logos) { logo in
             LogoAdminRow(logo: logo, onDelete: { logo in
                 await adminModel.deleteLogo(logo)
             }, onRename: { logo, label in await adminModel.updateLogo(logo: logo, label: label) })
+            .onTapGesture {
+                selectLogo(logo)
+            }
         }
         .animation(.interpolatingSpring, value: adminModel.logos)
         .listStyle(.insetGrouped)
@@ -30,6 +46,11 @@ struct LogoAdminScreen: View {
                 Button("admin.logos.save", systemImage: "plus") {
                     showFileImporter = true
                 }
+            }
+        }
+        .task {
+            if adminModel.logos.isEmpty {
+                await adminModel.loadLogos()
             }
         }
         .sheet(isPresented: $selectedLogo.isNotNull()) {

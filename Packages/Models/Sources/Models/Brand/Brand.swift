@@ -10,6 +10,6 @@ public extension Brand {
 public protocol BrandProtocol: Verifiable {
     var id: Brand.Id { get }
     var name: String { get }
-    var logos: [ImageEntity.Saved] { get }
+    var logos: [Logo.Saved] { get }
     var isVerified: Bool { get }
 }

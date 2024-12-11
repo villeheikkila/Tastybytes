@@ -10,7 +10,7 @@ extension Product: Queryable {
             buildQuery(.products,
                        [
                            saved,
-                           ImageEntity.getQuery(.saved(.productLogos)),
+                           Logo.getQuery(.saved(true)),
                        ],
                        withTableName)
         case let .joinedBrandSubcategories(withTableName):
@@ -21,7 +21,7 @@ extension Product: Queryable {
                     SubBrand.getQuery(.joinedBrand(true)),
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.saved(true)),
-                    ImageEntity.getQuery(.saved(.productLogos)),
+                    Logo.getQuery(.saved(true)),
                 ],
                 withTableName
             )
@@ -35,7 +35,7 @@ extension Product: Queryable {
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.saved(true)),
                     Product.Barcode.getQuery(.saved(true)),
-                    ImageEntity.getQuery(.saved(.productLogos)),
+                    Logo.getQuery(.saved(true))
                 ],
                 withTableName
             )
@@ -50,7 +50,7 @@ extension Product: Queryable {
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.saved(true)),
                     Product.Barcode.getQuery(.saved(true)),
-                    ImageEntity.getQuery(.saved(.productLogos)),
+                    Logo.getQuery(.saved(true)),
                 ],
                 withTableName
             )
@@ -65,7 +65,7 @@ extension Product: Queryable {
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.saved(true)),
                     Product.Barcode.getQuery(.saved(true)),
-                    ImageEntity.getQuery(.saved(.productLogos)),
+                    Logo.getQuery(.saved(true)),
                 ],
                 withTableName
             )
@@ -81,7 +81,7 @@ extension Product: Queryable {
                     buildQuery(name: "product_edit_suggestions", foreignKey: "product_edit_suggestions!product_edit_suggestions_product_id_fkey", [Product.EditSuggestion.getQuery(.joined(false))]),
                     Product.Variant.getQuery(.joinedCompany(true)),
                     Report.getQuery(.joined(true)),
-                    ImageEntity.getQuery(.saved(.productLogos)),
+                    Logo.getQuery(.saved(true)),
                     modificationInfoFragment,
                 ],
                 withTableName

@@ -7,9 +7,9 @@ public extension Brand {
         public let name: String
         public let isVerified: Bool
         public let subBrands: [SubBrand.Saved]
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
 
-        public init(id: Brand.Id, name: String, isVerified: Bool, subBrands: [SubBrand.Saved], logos: [ImageEntity.Saved]) {
+        public init(id: Brand.Id, name: String, isVerified: Bool, subBrands: [SubBrand.Saved], logos: [Logo.Saved]) {
             self.id = id
             self.name = name
             self.isVerified = isVerified
@@ -32,7 +32,7 @@ public extension Brand {
             case name
             case isVerified = "is_verified"
             case subBrands = "sub_brands"
-            case logos = "brand_logos"
+            case logos
         }
     }
 }

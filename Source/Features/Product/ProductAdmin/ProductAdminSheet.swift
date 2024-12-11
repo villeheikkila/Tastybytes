@@ -113,11 +113,7 @@ struct ProductAdminSheet: View {
             })
         }
         .customListRowBackground()
-        EditLogoSectionView(logos: product.logos, onUpload: { data in
-            await uploadData(id: id, data: data)
-        }, onDelete: { entity in
-            await deleteLogo(id: id, entity: entity)
-        })
+        EditLogoSectionView(logos: product.logos, onAdd: addLogo, onRemove: removeLogo)
         Section("admin.section.contributions.label") {
             RouterLink(
                 "barcode.management.open",
@@ -231,24 +227,31 @@ struct ProductAdminSheet: View {
         }
     }
 
-    private func deleteLogo(id: Product.Id, entity: ImageEntity.Saved) async {
+    private func addLogo(logo: Logo.Saved) async {
         do {
-            try await repository.imageEntity.delete(from: .productLogos, id: entity.id)
-            product = product.copyWith(logos: product.logos.removing(entity))
+            try await repository.product.addLogo(id: id, logoId: logo.id)
+            withAnimation {
+                product = product.copyWith(logos: product.logos + [logo])
+            }
+            await onUpdate(product)
+        } catch {
+            guard !error.isCancelled else { return }
+            router.open(.alert(.init()))
+            logger.error("Uploading of a brand logo failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    private func removeLogo(logo: Logo.Saved) async {
+        do {
+            try await repository.product.removeLogo(id: id, logoId: logo.id)
+            withAnimation {
+                product = product.copyWith(logos: product.logos.removing(logo))
+            }
+            await onUpdate(product)
         } catch {
             guard !error.isCancelled else { return }
             router.open(.alert(.init()))
             logger.error("Failed to delete image. Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
-    private func uploadData(id: Product.Id, data: Data) async {
-        do {
-            let imageEntity = try await repository.product.uploadLogo(productId: id, data: data)
-            product = product.copyWith(logos: product.logos + [imageEntity])
-            logger.info("Succesfully uploaded logo \(imageEntity.file)")
-        } catch {
-            logger.error("Uploading of a product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 

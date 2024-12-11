@@ -7,7 +7,7 @@ public extension Brand {
         public let name: String
         public let isVerified: Bool
         public let subBrands: [SubBrand.JoinedProduct]
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
 
         public init(newBrand: JoinedSubBrands) {
             id = newBrand.id
@@ -26,7 +26,7 @@ public extension Brand {
             case name
             case isVerified = "is_verified"
             case subBrands = "sub_brands"
-            case logos = "brand_logos"
+            case logos
         }
     }
 }

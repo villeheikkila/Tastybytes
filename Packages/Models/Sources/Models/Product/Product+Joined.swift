@@ -13,9 +13,9 @@ public extension Product {
         public let averageRating: Double?
         public let currentUserCheckIns: Int?
         public let isDiscontinued: Bool
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
 
-        public var effectiveLogo: ImageEntity.Saved? {
+        public var effectiveLogo: Logo.Saved? {
             logos.first ?? subBrand.brand.logos.first ?? subBrand.brand.brandOwner.logos.first
         }
 
@@ -31,7 +31,7 @@ public extension Product {
             case averageRating = "average_rating"
             case currentUserCheckIns = "current_user_check_ins"
             case isDiscontinued = "is_discontinued"
-            case logos = "product_logos"
+            case logos
         }
 
         public var isCheckedInByCurrentUser: Bool {
@@ -52,7 +52,7 @@ public extension Product {
             subcategories: [Subcategory.Saved],
             barcodes: [Product.Barcode.Saved]?,
             isDiscontinued: Bool,
-            logos: [ImageEntity.Saved]
+            logos: [Logo.Saved]
         ) {
             self.id = id
             self.name = name
@@ -185,7 +185,7 @@ public extension Product {
             subcategories: [Subcategory.Saved]? = nil,
             barcodes: [Product.Barcode.Saved]? = nil,
             isDiscontinued: Bool? = nil,
-            logos: [ImageEntity.Saved]? = nil
+            logos: [Logo.Saved]? = nil
         ) -> Self {
             .init(
                 id: id,

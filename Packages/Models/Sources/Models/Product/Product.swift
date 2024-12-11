@@ -8,7 +8,7 @@ public extension Product {
 }
 
 public protocol ProductLogoProtocol {
-    var logos: [ImageEntity.Saved] { get }
+    var logos: [Logo.Saved] { get }
 }
 
 public protocol ProductProtocol: ProductLogoProtocol, Verifiable {

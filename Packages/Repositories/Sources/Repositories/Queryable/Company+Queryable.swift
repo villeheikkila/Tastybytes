@@ -7,7 +7,7 @@ extension Company: Queryable {
     static func getQuery(_ queryType: QueryType) -> String {
         switch queryType {
         case let .saved(withTableName):
-            buildQuery(.companies, [saved, ImageEntity.getQuery(.saved(.companyLogos))], withTableName)
+            buildQuery(.companies, [saved, Logo.getQuery(.saved(true))], withTableName)
         case let .joinedBrandSubcategoriesOwner(withTableName):
             buildQuery(
                 .companies,
@@ -15,7 +15,7 @@ extension Company: Queryable {
                     saved,
                     Company.getQuery(.saved(true)),
                     Brand.getQuery(.joined(true)),
-                    ImageEntity.getQuery(.saved(.companyLogos)),
+                    Logo.getQuery(.saved(true)),
                 ],
                 withTableName
             )
@@ -24,7 +24,7 @@ extension Company: Queryable {
                 .companies,
                 [
                     saved,
-                    ImageEntity.getQuery(.saved(.companyLogos)),
+                    Logo.getQuery(.saved(true)),
                     Company.EditSuggestion.getQuery(.joined(true)),
                     Company.getQuery(.saved(true)),
                     Report.getQuery(.joined(true)),

@@ -8,7 +8,7 @@ public extension Brand {
         public let isVerified: Bool
         public let brandOwner: Company.Saved
         public let subBrands: [SubBrand.JoinedProduct]
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
         public let editSuggestions: [EditSuggestion]
         public let reports: [Report.Joined]
         public let createdBy: Profile.Saved?
@@ -26,7 +26,7 @@ public extension Brand {
             isVerified: Bool,
             brandOwner: Company.Saved,
             subBrands: [SubBrand.JoinedProduct],
-            logos: [ImageEntity.Saved],
+            logos: [Logo.Saved],
             editSuggestions: [Brand.EditSuggestion],
             reports: [Report.Joined],
             createdBy: Profile.Saved? = nil,
@@ -69,7 +69,7 @@ public extension Brand {
             case isVerified = "is_verified"
             case brandOwner = "companies"
             case subBrands = "sub_brands"
-            case logos = "brand_logos"
+            case logos = "logos"
             case editSuggestions = "brand_edit_suggestions"
             case reports
             case createdBy = "created_by"
@@ -83,7 +83,7 @@ public extension Brand {
             isVerified: Bool? = nil,
             brandOwner: Company.Saved? = nil,
             subBrands: [SubBrand.JoinedProduct]? = nil,
-            logos: [ImageEntity.Saved]? = nil,
+            logos: [Logo.Saved]? = nil,
             editSuggestions: [Brand.EditSuggestion]? = nil,
             reports: [Report.Joined]? = nil
         ) -> Self {

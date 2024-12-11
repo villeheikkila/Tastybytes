@@ -58,17 +58,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .value
     }
 
-    func uploadLogo(id: Company.Id, data: Data) async throws -> ImageEntity.Saved {
-        let fileName = "\(id)_\(Date.now.timeIntervalSince1970).jpeg"
-
-        try await client
-            .storage
-            .from(.companyLogos)
-            .upload(fileName, data: data)
-
-        return try await imageEntityRepository.getByFileName(from: .companyLogos, fileName: fileName)
-    }
-
     func getUnverified() async throws -> [Company.Saved] {
         try await client
             .from(.companies)
@@ -189,6 +178,24 @@ struct SupabaseCompanyRepository: CompanyRepository {
     func mergeCompanies(id: Company.Id, mergeToId: Company.Id) async throws {
         try await client
             .rpc(fn: .mergeCompanies, params: ["p_company_id": id, "p_merge_to_company_id": mergeToId])
+            .execute()
+            .value
+    }
+    
+    func addLogo(id: Company.Id, logoId: Logo.Id) async throws {
+        try await client
+            .from(.companiesLogos)
+            .insert(["company_id": AnyJSON(id), "logo_id": AnyJSON(logoId)])
+            .execute()
+            .value
+    }
+    
+    func removeLogo(id: Company.Id, logoId: Logo.Id) async throws {
+        try await client
+            .from(.companiesLogos)
+            .delete()
+            .eq("company_id", value: id.rawValue)
+            .eq("logo_id", value: logoId.rawValue)
             .execute()
             .value
     }

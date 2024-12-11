@@ -6,7 +6,7 @@ public extension Brand {
         public let id: Brand.Id
         public let name: String
         public let isVerified: Bool
-        public let logos: [ImageEntity.Saved]
+        public let logos: [Logo.Saved]
         public let productCount: Int?
 
         public init() {
@@ -29,7 +29,7 @@ public extension Brand {
             case id
             case name
             case isVerified = "is_verified"
-            case logos = "brand_logos"
+            case logos
             case productCount = "product_count"
         }
     }

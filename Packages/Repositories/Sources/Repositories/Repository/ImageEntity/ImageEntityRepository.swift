@@ -9,22 +9,16 @@ public protocol ImageEntityRepository: Sendable {
 }
 
 public enum ImageCategory: String, Sendable {
-    case productLogos
-    case brandLogos
     case checkInImages
-    case companyLogos
     case avatars
+    case logos
 
     var table: Database.Table {
         switch self {
-        case .brandLogos:
-            .brandLogos
+        case .logos:
+            .logos
         case .checkInImages:
             .checkInImages
-        case .productLogos:
-            .productLogos
-        case .companyLogos:
-            .companyLogos
         case .avatars:
             .profileAvatars
         }

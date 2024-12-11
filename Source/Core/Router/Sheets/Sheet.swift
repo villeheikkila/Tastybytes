@@ -86,6 +86,7 @@ enum Sheet: Identifiable, Equatable {
     case settings
     case privacyPolicy
     case termsOfService
+    case logoPicker(onSelection: LogoAdminScreen.OnSelectionCallback)
 
     @MainActor
     @ViewBuilder var view: some View {
@@ -183,6 +184,8 @@ enum Sheet: Identifiable, Equatable {
             PrivacyPolicySheet()
         case .termsOfService:
             TermsOfServiceSheet()
+        case let .logoPicker(onSelection):
+            LogoAdminScreen(onSelection: onSelection)
         }
     }
 
@@ -314,6 +317,8 @@ enum Sheet: Identifiable, Equatable {
             "privacyPolicy"
         case .termsOfService:
             "termsOfService"
+        case .logoPicker:
+            "logoPicker"
         }
     }
 
