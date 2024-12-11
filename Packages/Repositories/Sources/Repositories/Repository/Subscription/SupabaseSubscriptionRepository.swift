@@ -15,12 +15,4 @@ struct SupabaseSubscriptionRepository: SubscriptionRepository {
             .execute()
             .value
     }
-
-    func syncSubscriptionTransaction(transactionInfo: SubscriptionTransaction) async throws {
-        try await client
-            .from(.subscriptionTransactions)
-            .upsert(transactionInfo, onConflict: "id")
-            .execute()
-            .value
-    }
 }

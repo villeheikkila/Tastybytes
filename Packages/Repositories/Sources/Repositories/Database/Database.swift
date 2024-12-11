@@ -50,7 +50,6 @@ enum Database {
         case subcategories
         case subscriptionGroups = "subscription_groups"
         case subscriptionProducts = "subscription_products"
-        case subscriptionTransactions = "subscription_transactions"
         // views
         case viewActivityFeed = "view__activity_feed"
         case viewCheckInsFromFriends = "view__check_ins_from_friends"
@@ -108,7 +107,6 @@ enum Database {
         case verifyProduct = "fnc__verify_product"
         case verifySubBrand = "fnc__verify_sub_brand"
         case verifySubcategory = "fnc__verify_subcategory"
-        case updateCheckInImageBlurHash = "fnc__update_check_in_image_blur_hash"
         case getNumberOfCheckInsByDay = "fnc__get_check_ins_by_time_range"
         case getNumberOfCheckInsByLocation = "fnc__get_number_of_check_ins_by_location"
         case deleteUserAsSuperAdmin = "fnc__delete_user_as_super_admin"

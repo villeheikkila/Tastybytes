@@ -192,15 +192,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
             )
         return try await imageEntityRepository.getByFileName(from: .checkInImages, fileName: fileName)
     }
-
-    func updateImageBlurHash(file: String, blurHash: String?, width: Int?, height: Int?) async throws -> ImageEntity.Saved {
-        try await client
-            .rpc(fn: .updateCheckInImageBlurHash, params: UpdateCheckInImageBlurHashParams(file: file, blurHash: blurHash, width: width, height: height))
-            .select(ImageEntity.getQuery(.saved(nil)))
-            .single()
-            .execute()
-            .value
-    }
 }
 
 struct UpdateCheckInImageBlurHashParams: Codable {
