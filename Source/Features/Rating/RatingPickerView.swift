@@ -49,10 +49,14 @@ public struct RatingPickerView: View {
                 }
             )
             .onPreferenceChange(StarSizeKey.self) { size in
-                starSize = size
+                MainActor.assumeIsolated {
+                    starSize = size
+                }
             }
             .onPreferenceChange(ControlSizeKey.self) { size in
-                controlSize = size
+                MainActor.assumeIsolated {
+                    controlSize = size
+                }
             }
             Color.clear
                 .frame(width: controlSize.width, height: controlSize.height)
