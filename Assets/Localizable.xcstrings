@@ -2909,6 +2909,9 @@
     "Failed to add flavor" : {
 
     },
+    "Failed to create image" : {
+
+    },
     "Failed to create logo" : {
 
     },
@@ -2930,6 +2933,9 @@
     "Failed to edit subcategory" : {
 
     },
+    "Failed to import file" : {
+
+    },
     "Failed to load categories" : {
 
     },
@@ -2937,6 +2943,9 @@
 
     },
     "Failed to load more items" : {
+
+    },
+    "Failed to read file" : {
 
     },
     "Failed to refresh flavors" : {

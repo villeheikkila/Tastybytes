@@ -3,6 +3,7 @@ import Logging
 import Models
 import Repositories
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct LogoAdminScreen: View {
     typealias OnSelectionCallback = (Logo.Saved) -> Void
@@ -87,34 +88,7 @@ struct LogoAdminScreen: View {
             }
             .presentationDetents([.height(400)])
         }
-        .fileImporter(isPresented: $showFileImporter,
-                      allowedContentTypes: [.png])
-        { result in
-            switch result {
-            case let .success(url):
-                Task {
-                    do {
-                        guard url.startAccessingSecurityScopedResource() else {
-                            logger.error("Failed to access the security-scoped resource")
-                            return
-                        }
-                        defer {
-                            url.stopAccessingSecurityScopedResource()
-                        }
-                        let data = try Data(contentsOf: url)
-                        guard let image = UIImage(data: data) else {
-                            logger.error("Failed to create UIImage from data")
-                            return
-                        }
-                        selectedLogo = image
-                    } catch {
-                        logger.error("Failed to read file: \(error.localizedDescription)")
-                    }
-                }
-            case let .failure(error):
-                logger.error("File import failed: \(error.localizedDescription)")
-            }
-        }
+        .imageFileImporter(isPresented: $showFileImporter, selectedImage: $selectedLogo)
     }
 }
 

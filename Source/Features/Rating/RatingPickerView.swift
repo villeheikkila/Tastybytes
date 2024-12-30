@@ -41,7 +41,8 @@ public struct RatingPickerView: View {
                         )
                         .frame(width: starSize.width, height: starSize.height)
                         .foregroundColor(.yellow)
-                }.accessibilityLabel("rating.outOf \(rating) \(outOf)")
+                }
+                .accessibilityLabel("rating.outOf \(rating) \(outOf)")
             }
             .background(
                 GeometryReader { proxy in
