@@ -1,3 +1,4 @@
+import Logging
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -7,7 +8,7 @@ struct ImageFileImporterViewModifier: ViewModifier {
     @Binding var isPresented: Bool
     @Binding var selectedImage: UIImage?
     let allowedContentTypes: [UTType]
-    
+
     func body(content: Content) -> some View {
         content
             .fileImporter(isPresented: $isPresented, allowedContentTypes: allowedContentTypes) { result in
@@ -25,7 +26,7 @@ struct ImageFileImporterViewModifier: ViewModifier {
                             }
                             let data = try Data(contentsOf: url)
                             guard let image = UIImage(data: data) else {
-                                snackController.open(.init(mode: .snack(tint: .red, systemName:"exclamationmark.triangle.fill", message: "Failed to create image")))
+                                snackController.open(.init(mode: .snack(tint: .red, systemName: "exclamationmark.triangle.fill", message: "Failed to create image")))
                                 logger.error("Failed to create UIImage from data")
                                 return
                             }

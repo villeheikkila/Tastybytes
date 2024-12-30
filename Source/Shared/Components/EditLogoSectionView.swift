@@ -13,6 +13,8 @@ struct EditLogoSectionView: View {
     let onAdd: (Logo.Saved) async -> Void
     let onRemove: (Logo.Saved) async -> Void
 
+    let logoSize: Double = 128
+
     var body: some View {
         Section("logos.edit.title") {
             HStack(spacing: 4) {
@@ -21,7 +23,7 @@ struct EditLogoSectionView: View {
                         image.resizable()
                     })
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 120, height: 120)
+                    .frame(width: logoSize, height: logoSize)
                     .accessibility(hidden: true)
                     .contextMenu {
                         AsyncButton("labels.delete") {
@@ -30,11 +32,7 @@ struct EditLogoSectionView: View {
                     }
                 }
                 if profileModel.hasPermission(.canModifyLogos) {
-                    RouterLink(open: .sheet(.logoPicker(onSelection: { logo in
-                        Task {
-                            await onAdd(logo)
-                        }
-                    }))) {
+                    RouterLink(open: .sheet(.logoPicker(onSelection: onAdd))) {
                         VStack(alignment: .center) {
                             Spacer()
                             Label("checkIn.image.add", systemImage: "plus")
@@ -42,7 +40,7 @@ struct EditLogoSectionView: View {
                             Spacer()
                         }
                         .labelStyle(.iconOnly)
-                        .frame(width: 120, height: 120)
+                        .frame(width: logoSize, height: logoSize)
                         .cardStyle()
                     }
                 }

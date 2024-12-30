@@ -3469,7 +3469,14 @@
       }
     },
     "labels.rename" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename"
+          }
+        }
+      }
     },
     "labels.rename.placeholder" : {
 

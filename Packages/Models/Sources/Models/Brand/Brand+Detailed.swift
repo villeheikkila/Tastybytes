@@ -69,7 +69,7 @@ public extension Brand {
             case isVerified = "is_verified"
             case brandOwner = "companies"
             case subBrands = "sub_brands"
-            case logos = "logos"
+            case logos
             case editSuggestions = "brand_edit_suggestions"
             case reports
             case createdBy = "created_by"

@@ -26,7 +26,7 @@ extension Brand: Queryable {
                     saved,
                     SubBrand.getQuery(.saved(true)),
                     Company.getQuery(.saved(true)),
-                    Logo.getQuery(.saved(true))
+                    Logo.getQuery(.saved(true)),
                 ],
                 withTableName
             )

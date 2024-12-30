@@ -6,32 +6,36 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct LogoAdminScreen: View {
-    typealias OnSelectionCallback = (Logo.Saved) -> Void
+    typealias OnSelectionCallback = (Logo.Saved) async -> Void
     private let logger = Logger(label: "LogoScreen")
     @Environment(AdminModel.self) private var adminModel
     @Environment(\.dismiss) private var dismiss
     @State private var showFileImporter = false
     @State private var selectedLogo: UIImage?
-    @State private var label: String = ""
-    @FocusState private var isFocused: Bool
-    
+    @State private var imageSelectionTask: Task<Void, Never>?
+
     let onSelection: OnSelectionCallback?
-    
+
     init(onSelection: OnSelectionCallback? = nil) {
         self.onSelection = onSelection
     }
-    
+
     func selectLogo(_ logo: Logo.Saved) {
-        onSelection?(logo)
-        dismiss()
+        imageSelectionTask = Task {
+            await onSelection?(logo)
+            dismiss()
+        }
     }
 
     var body: some View {
         List(adminModel.logos) { logo in
             LogoAdminRow(logo: logo, onDelete: { logo in
                 await adminModel.deleteLogo(logo)
-            }, onRename: { logo, label in await adminModel.updateLogo(logo: logo, label: label) })
+            }, onRename: { logo, label in
+                await adminModel.updateLogo(logo: logo, label: label)
+            })
             .onTapGesture {
+                guard imageSelectionTask != nil else { return }
                 selectLogo(logo)
             }
         }
@@ -55,38 +59,7 @@ struct LogoAdminScreen: View {
             }
         }
         .sheet(isPresented: $selectedLogo.isNotNull()) {
-            NavigationStack {
-                if let selectedLogo {
-                    Form {
-                        Section {
-                            HStack {
-                                Spacer()
-                                Image(uiImage: selectedLogo)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(height: 128)
-                                Spacer()
-                            }
-                        }
-                        .listRowBackground(Color.clear)
-                        Section {
-                            TextField("admin.logos.label.placeholder", text: $label)
-                        }
-                        AsyncButton("admin.logos.save", role: .destructive) {
-                            await adminModel.createLogo(image: selectedLogo, label: label, onSuccess: {
-                                self.selectedLogo = nil
-                                label = ""
-                            })
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .listRowBackground(Color.clear)
-                    }
-                    .listStyle(.insetGrouped)
-                    .scrollBounceBehavior(.basedOnSize)
-                }
-            }
-            .presentationDetents([.height(400)])
+            LogoCreationSheet(selectedLogo: $selectedLogo)
         }
         .imageFileImporter(isPresented: $showFileImporter, selectedImage: $selectedLogo)
     }
@@ -152,5 +125,45 @@ struct LogoAdminRow: View {
                 .tint(.green)
             }
         }
+    }
+}
+
+struct LogoCreationSheet: View {
+    @Environment(AdminModel.self) private var adminModel
+    @Binding var selectedLogo: UIImage?
+    @State private var label: String = ""
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    HStack {
+                        Spacer()
+                        Image(uiImage: selectedLogo!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 128)
+                        Spacer()
+                    }
+                }
+                .listRowBackground(Color.clear)
+                Section {
+                    TextField("admin.logos.label.placeholder", text: $label)
+                }
+                AsyncButton("admin.logos.save", role: .destructive) {
+                    await adminModel.createLogo(image: selectedLogo!, label: label, onSuccess: {
+                        selectedLogo = nil
+                        label = ""
+                    })
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .listRowBackground(Color.clear)
+            }
+            .listStyle(.insetGrouped)
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .presentationDetents([.height(400)])
     }
 }

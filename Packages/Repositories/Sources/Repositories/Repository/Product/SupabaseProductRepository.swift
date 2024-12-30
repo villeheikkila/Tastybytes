@@ -269,7 +269,7 @@ struct SupabaseProductRepository: ProductRepository {
             .execute()
             .value
     }
-    
+
     func addLogo(id: Product.Id, logoId: Logo.Id) async throws {
         try await client
             .from(.productsLogos)
@@ -277,7 +277,7 @@ struct SupabaseProductRepository: ProductRepository {
             .execute()
             .value
     }
-    
+
     func removeLogo(id: Product.Id, logoId: Logo.Id) async throws {
         try await client
             .from(.productsLogos)

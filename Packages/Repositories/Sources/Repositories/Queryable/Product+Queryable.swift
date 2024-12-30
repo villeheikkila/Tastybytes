@@ -35,7 +35,7 @@ extension Product: Queryable {
                     Category.getQuery(.saved(true)),
                     Subcategory.getQuery(.saved(true)),
                     Product.Barcode.getQuery(.saved(true)),
-                    Logo.getQuery(.saved(true))
+                    Logo.getQuery(.saved(true)),
                 ],
                 withTableName
             )
