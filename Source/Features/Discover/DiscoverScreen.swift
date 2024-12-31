@@ -320,7 +320,7 @@ struct DiscoverTab: View {
 
     @ViewBuilder private var createProductButton: some View {
         Button("checkIn.action.createNew") {
-            router.open(.sheet(.product(.new(barcode: barcode, onCreate: { product in
+            router.open(.screen(.productMutation(.new(barcode: barcode, onCreate: { product in
                 router.open(.screen(.product(product.id)))
             }))))
         }

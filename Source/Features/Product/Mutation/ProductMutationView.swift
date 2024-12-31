@@ -72,6 +72,7 @@ struct ProductMutationView: View {
         .navigationTitle(mode.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .foregroundColor(.primary)
+        .formStyle(.grouped)
         .overlay {
             ScreenStateOverlayView(state: state) {
                 await initialize()
@@ -353,7 +354,7 @@ struct ProductMutationView: View {
 }
 
 extension ProductMutationView {
-    enum Mode: Equatable {
+    enum Mode: Hashable {
         case new(barcode: Barcode?, onCreate: ProductCallback? = nil), edit(Product.Joined, onEdit: ProductCallback?), editSuggestion(Product.Joined),
              addToBrand(Brand.JoinedSubBrandsCompany, onCreate: ProductCallback?),
              addToSubBrand(Brand.JoinedSubBrandsCompany, SubBrand.JoinedProductJoined, onCreate: ProductCallback?)
@@ -372,6 +373,27 @@ extension ProductMutationView {
                 lhsBrand == rhsBrand && lhsSubBrand == rhsSubBrand
             default:
                 false
+            }
+        }
+
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case let .new(product, _):
+                hasher.combine("product")
+                hasher.combine(product)
+            case let .edit(product, _):
+                hasher.combine("edit")
+                hasher.combine(product)
+            case let .editSuggestion(product):
+                hasher.combine("editSuggestion")
+                hasher.combine(product)
+            case let .addToBrand(product, _):
+                hasher.combine("addToBrand")
+                hasher.combine(product)
+            case let .addToSubBrand(product, subBrand, _):
+                hasher.combine("addToSubBrand")
+                hasher.combine(product)
+                hasher.combine(subBrand)
             }
         }
 

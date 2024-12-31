@@ -16,6 +16,7 @@ struct CompanyPickerSheet: View {
     @State private var status: Status?
     @State private var companyName = ""
     @State private var isLoading = false
+    @State private var showCreateModal = false
     @State private var searchTerm: String = "" {
         didSet {
             if searchTerm.isEmpty {
@@ -47,37 +48,16 @@ struct CompanyPickerSheet: View {
             }
         }
         .listStyle(.plain)
-        .safeAreaInset(edge: .bottom) {
-            if status != nil, profileModel.hasPermission(.canCreateCompanies), !showEmptyResults {
-                Form {
-                    if status == .searched {
-                        Section("company.create.notFound.section.title") {
-                            Button("company.create.label", action: { createNew() })
-                        }
-                        .customListRowBackground()
-                    }
-                    if status == .add {
-                        Section("company.create.section.title") {
-                            ScanTextFieldView(title: "company.name.placeholder", text: $companyName)
-                            AsyncButton("company.create.label") {
-                                await createNewCompany(onSuccess: { company in
-                                    onSelect(company)
-                                    dismiss()
-                                })
-                            }
-                            .disabled(!companyName.isValidLength(.normal(allowEmpty: false)))
-                        }
-                        .customListRowBackground()
-                    }
-                }
-                .scrollBounceBehavior(.basedOnSize)
-                .scrollContentBackground(.hidden)
-                .background(.ultraThinMaterial)
-                .animation(.default, value: status)
-                .frame(height: status == .add ? 150 : 100)
-                .clipShape(.rect(cornerRadius: 8))
-                .padding()
+        .sheet(isPresented: $showCreateModal) {
+            CompanyCreateView { company in
+                onSelect(company)
+                dismiss()
             }
+            .presentationBackground(.ultraThinMaterial)
+            .presentationDetents([.height(200)])
+            .presentationCornerRadius(24)
+            .presentationSizing(.form)
+            .presentationDragIndicator(.visible)
         }
         .overlay {
             if searchResults.isEmpty {
@@ -86,7 +66,7 @@ struct CompanyPickerSheet: View {
                         ContentUnavailableView {
                             Label("company.search.noResults.title", systemImage: "magnifyingglass")
                         } actions: {
-                            Button("company.search.noResults.create.label", action: { createNew() })
+                            Button("company.search.noResults.create.label", action: { showCreateModal = true })
                                 .buttonStyle(.borderedProminent)
                                 .controlSize(.large)
                         }
@@ -114,11 +94,6 @@ struct CompanyPickerSheet: View {
         ToolbarDismissAction()
     }
 
-    private func createNew() {
-        companyName = searchTerm
-        status = .add
-    }
-
     private func search(searchTerm: String) async {
         guard searchTerm.count > 1 else { return }
         do {
@@ -131,8 +106,47 @@ struct CompanyPickerSheet: View {
             logger.error("Failed to search companies. Error: \(error) (\(#file):\(#line))")
         }
     }
+}
 
-    private func createNewCompany(onSuccess: @escaping (_ company: Company.Saved) -> Void) async {
+extension CompanyPickerSheet {
+    enum Status {
+        case add
+        case searched
+    }
+}
+
+struct CompanyCreateView: View {
+    private let logger = Logger(label: "CompanyCreateView")
+    @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
+    @State private var companyName: String
+    let onSuccess: (Company.Saved) -> Void
+
+    init(initialName: String = "", onSuccess: @escaping (Company.Saved) -> Void) {
+        _companyName = State(initialValue: initialName)
+        self.onSuccess = onSuccess
+    }
+
+    var body: some View {
+        Form {
+            CRCompanyView(label: "Name of the company", name: $companyName) {}
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+            AsyncButton("company.create.label") {
+                await createNewCompany()
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .disabled(!companyName.isValidLength(.normal(allowEmpty: false)))
+            .listRowBackground(Color.clear)
+        }
+        .scrollContentBackground(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
+        .scrollContentBackground(.hidden)
+        .scrollIndicators(.hidden)
+    }
+
+    private func createNewCompany() async {
         do {
             let newCompany = try await repository.company.insert(newCompany: .init(name: companyName))
             router.open(.toast(.success("company.create.success.toast")))
@@ -149,9 +163,50 @@ struct CompanyPickerSheet: View {
     }
 }
 
-extension CompanyPickerSheet {
-    enum Status {
-        case add
-        case searched
+struct CRCompanyView: View {
+    @State private var isFocused = false
+    @FocusState private var textFieldFocus: Bool
+
+    let label: LocalizedStringKey
+    @Binding var name: String
+    let onAddLogo: () -> Void
+
+    var body: some View {
+        HStack(spacing: 16) {
+            AddLogoView(action: onAddLogo)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(label)
+                    .font(.body)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary.opacity(0.8))
+                TextField("", text: $name)
+                    .textFieldStyle(.roundedBorder)
+                    .background(.ultraThinMaterial)
+                    .foregroundColor(.primary.opacity(0.8))
+                    .tint(.primary.opacity(0.8))
+                    .focused($textFieldFocus)
+                    .onChange(of: textFieldFocus) { _, newValue in
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            isFocused = newValue
+                        }
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(
+                                .linearGradient(
+                                    colors: textFieldFocus ? [.blue.opacity(0.5), .purple.opacity(0.5), .blue.opacity(0.5)] : [.primary.opacity(0.3)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                ),
+                                lineWidth: 2
+                            )
+                            .animation(
+                                .linear(duration: 2)
+                                    .repeatForever(autoreverses: true),
+                                value: isFocused
+                            )
+                    }
+            }
+        }
     }
 }

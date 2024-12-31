@@ -17,7 +17,9 @@ struct ListRowBackgroundModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .listRowBackground(color.opacity(isPresentedInSheet && colorScheme == .dark ? 0.3 : 1))
+            .if(isPresentedInSheet) { view in
+                view.listRowBackground(color.opacity(colorScheme == .dark ? 0.3 : 1))
+            }
     }
 }
 

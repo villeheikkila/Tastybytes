@@ -2,7 +2,7 @@ import Models
 import Repositories
 import SwiftUI
 
-enum Screen: Hashable, Sendable {
+enum Screen: Hashable {
     case product(Product.Id)
     case productFromBarcode(Product.Id, Barcode)
     case profile(Profile.Saved)
@@ -69,6 +69,7 @@ enum Screen: Hashable, Sendable {
     case experiments
     case appInfo
     case logoAdmin
+    case productMutation(_ mode: ProductMutationView.Mode)
 
     @MainActor
     @ViewBuilder
@@ -206,6 +207,8 @@ enum Screen: Hashable, Sendable {
             AppInfoScreen()
         case .logoAdmin:
             LogoAdminScreen()
+        case let .productMutation(mode):
+            ProductMutationView(mode: mode)
         }
     }
 
@@ -404,6 +407,9 @@ enum Screen: Hashable, Sendable {
             hasher.combine("blockedUsers")
         case .contributions:
             hasher.combine("contributions")
+        case let .productMutation(mode):
+            hasher.combine("productMutation")
+            hasher.combine(mode)
         case .about:
             hasher.combine("about")
         case let .reports(reports, initialReport):

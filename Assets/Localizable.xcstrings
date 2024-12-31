@@ -2308,6 +2308,7 @@
       }
     },
     "company.create.notFound.section.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2318,6 +2319,7 @@
       }
     },
     "company.create.section.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2408,6 +2410,7 @@
       }
     },
     "company.name.placeholder" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3869,6 +3872,9 @@
     "logo.admin.delete.label %@" : {
 
     },
+    "logos.addLogo" : {
+
+    },
     "logos.edit.title" : {
       "localizations" : {
         "en" : {
@@ -3878,6 +3884,9 @@
           }
         }
       }
+    },
+    "Name of the company" : {
+
     },
     "nameTag.navigationTitle" : {
       "localizations" : {
